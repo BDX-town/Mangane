@@ -1,5 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+
 import { isIOS } from 'soapbox/is_mobile';
 
 export default class ExtendedVideoPlayer extends React.PureComponent {
@@ -41,7 +42,7 @@ export default class ExtendedVideoPlayer extends React.PureComponent {
 
   render() {
     const { src, muted, controls, alt } = this.props;
-    let conditionalAttributes = {};
+    const conditionalAttributes = {};
     if (isIOS()) {
       conditionalAttributes.playsInline = '1';
     }

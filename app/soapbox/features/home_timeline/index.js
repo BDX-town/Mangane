@@ -1,23 +1,39 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { expandHomeTimeline } from '../../actions/timelines';
+import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import PropTypes from 'prop-types';
-import StatusListContainer from '../ui/containers/status_list_container';
-import Column from '../../components/column';
+import React from 'react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ColumnSettingsContainer from './containers/column_settings_container';
-import HomeColumnHeader from '../../components/home_column_header';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { getFeatures } from 'soapbox/utils/features';
+
+import { expandHomeTimeline } from '../../actions/timelines';
+import Column from '../../components/column';
+import StatusListContainer from '../ui/containers/status_list_container';
+
+function FollowRecommendationsContainer() {
+  return import(/* webpackChunkName: "features/follow_recommendations" */'soapbox/features/follow_recommendations/components/follow_recommendations_container');
+}
 
 const messages = defineMessages({
   title: { id: 'column.home', defaultMessage: 'Home' },
 });
 
-const mapStateToProps = state => ({
-  hasUnread: state.getIn(['timelines', 'home', 'unread']) > 0,
-  isPartial: state.getIn(['timelines', 'home', 'isPartial']),
-  siteTitle: state.getIn(['instance', 'title']),
-});
+const mapStateToProps = state => {
+  const instance = state.get('instance');
+  const features = getFeatures(instance);
+
+  return {
+    hasUnread: state.getIn(['timelines', 'home', 'unread']) > 0,
+    isPartial: state.getIn(['timelines', 'home', 'isPartial']),
+    siteTitle: state.getIn(['instance', 'title']),
+    isLoading: state.getIn(['timelines', 'home', 'isLoading'], true),
+    loadingFailed: state.getIn(['timelines', 'home', 'loadingFailed'], false),
+    isEmpty: state.getIn(['timelines', 'home', 'items'], ImmutableOrderedSet()).isEmpty(),
+    features,
+  };
+};
 
 export default @connect(mapStateToProps)
 @injectIntl
@@ -29,7 +45,15 @@ class HomeTimeline extends React.PureComponent {
     hasUnread: PropTypes.bool,
     isPartial: PropTypes.bool,
     siteTitle: PropTypes.string,
+    isLoading: PropTypes.bool,
+    loadingFailed: PropTypes.bool,
+    isEmpty: PropTypes.bool,
+    features: PropTypes.object.isRequired,
   };
+
+  state = {
+    done: false,
+  }
 
   handleLoadMore = maxId => {
     this.props.dispatch(expandHomeTimeline({ maxId }));
@@ -68,20 +92,36 @@ class HomeTimeline extends React.PureComponent {
     }
   }
 
+  handleDone = e => {
+    this.props.dispatch(expandHomeTimeline());
+    this.setState({ done: true });
+  }
+
+  handleRefresh = () => {
+    const { dispatch } = this.props;
+    return dispatch(expandHomeTimeline());
+  }
+
   render() {
-    const { intl, hasUnread, siteTitle } = this.props;
+    const { intl, siteTitle, isLoading, loadingFailed, isEmpty, features } = this.props;
+    const { done } = this.state;
+    const showSuggestions = features.suggestions && isEmpty && !isLoading && !loadingFailed && !done;
 
     return (
-      <Column label={intl.formatMessage(messages.title)}>
-        <HomeColumnHeader activeItem='home' active={hasUnread}>
-          <ColumnSettingsContainer />
-        </HomeColumnHeader>
-        <StatusListContainer
-          scrollKey='home_timeline'
-          onLoadMore={this.handleLoadMore}
-          timelineId='home'
-          emptyMessage={<FormattedMessage id='empty_column.home' defaultMessage='Your home timeline is empty! Visit {public} to get started and meet other users.' values={{ public: <Link to='/timeline/local'><FormattedMessage id='empty_column.home.local_tab' defaultMessage='the {site_title} tab' values={{ site_title: siteTitle }} /></Link> }} />}
-        />
+      <Column label={intl.formatMessage(messages.title)} transparent={!showSuggestions}>
+        {showSuggestions ? (
+          <BundleContainer fetchComponent={FollowRecommendationsContainer}>
+            {Component => <Component onDone={this.handleDone} />}
+          </BundleContainer>
+        ) : (
+          <StatusListContainer
+            scrollKey='home_timeline'
+            onLoadMore={this.handleLoadMore}
+            onRefresh={this.handleRefresh}
+            timelineId='home'
+            emptyMessage={<FormattedMessage id='empty_column.home' defaultMessage='Your home timeline is empty! Visit {public} to get started and meet other users.' values={{ public: <Link to='/timeline/local'><FormattedMessage id='empty_column.home.local_tab' defaultMessage='the {site_title} tab' values={{ site_title: siteTitle }} /></Link> }} />}
+          />
+        )}
       </Column>
     );
   }

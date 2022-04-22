@@ -1,13 +1,16 @@
+import PropTypes from 'prop-types';
 import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import IconButton from 'soapbox/components/icon_button';
-import { deleteUsers, approveUsers } from 'soapbox/actions/admin';
-import { makeGetAccount } from 'soapbox/selectors';
+
+import { approveUsers } from 'soapbox/actions/admin';
 import snackbar from 'soapbox/actions/snackbar';
+import IconButton from 'soapbox/components/icon_button';
+import { makeGetAccount } from 'soapbox/selectors';
+
+import { rejectUserModal } from '../../../actions/moderation';
 
 const messages = defineMessages({
   approved: { id: 'admin.awaiting_approval.approved_message', defaultMessage: '{acct} was approved!' },
@@ -37,7 +40,6 @@ class UnapprovedAccount extends ImmutablePureComponent {
 
   handleApprove = () => {
     const { dispatch, intl, account } = this.props;
-
     dispatch(approveUsers([account.get('id')]))
       .then(() => {
         const message = intl.formatMessage(messages.approved, { acct: `@${account.get('acct')}` });
@@ -49,12 +51,10 @@ class UnapprovedAccount extends ImmutablePureComponent {
   handleReject = () => {
     const { dispatch, intl, account } = this.props;
 
-    dispatch(deleteUsers([account.get('id')]))
-      .then(() => {
-        const message = intl.formatMessage(messages.rejected, { acct: `@${account.get('acct')}` });
-        dispatch(snackbar.info(message));
-      })
-      .catch(() => {});
+    dispatch(rejectUserModal(intl, account.get('id'), () => {
+      const message = intl.formatMessage(messages.rejected, { acct: `@${account.get('acct')}` });
+      dispatch(snackbar.info(message));
+    }));
   }
 
   render() {
@@ -67,8 +67,8 @@ class UnapprovedAccount extends ImmutablePureComponent {
           <blockquote className='md'>{account.getIn(['pleroma', 'admin', 'registration_reason'])}</blockquote>
         </div>
         <div className='unapproved-account__actions'>
-          <IconButton icon='check' size={22} onClick={this.handleApprove} />
-          <IconButton icon='close' size={22} onClick={this.handleReject} />
+          <IconButton src={require('@tabler/icons/icons/check.svg')} onClick={this.handleApprove} />
+          <IconButton src={require('@tabler/icons/icons/x.svg')} onClick={this.handleReject} />
         </div>
       </div>
     );

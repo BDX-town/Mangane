@@ -1,48 +1,29 @@
+import { Map as ImmutableMap, Record as ImmutableRecord } from 'immutable';
+
+import { ACCOUNT_IMPORT } from 'soapbox/actions/importer';
+
 import reducer from '../accounts';
-import { Map as ImmutableMap } from 'immutable';
-// import * as actions from 'soapbox/actions/importer';
-// import { take } from 'lodash';
-// import accounts from 'soapbox/__fixtures__/accounts.json';
 
 describe('accounts reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(ImmutableMap());
   });
 
-  // fails to add normalized accounts to state
-  // it('should handle ACCOUNT_IMPORT', () => {
-  //   const state = ImmutableMap({ });
-  //   const account = take(accounts, 1);
-  //   const action = {
-  //     type: actions.ACCOUNT_IMPORT,
-  //     account: account,
-  //   };
-  //   debugger;
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //   });
-  // });
+  describe('ACCOUNT_IMPORT', () => {
+    it('parses the account as a Record', () => {
+      const account = require('soapbox/__fixtures__/pleroma-account.json');
+      const action = { type: ACCOUNT_IMPORT, account };
+      const result = reducer(undefined, action).get('9v5bmRalQvjOy0ECcC');
 
-  // fails to add normalized accounts to state
-  // it('should handle ACCOUNTS_IMPORT', () => {
-  //   const state = ImmutableMap({ });
-  //   const accounts = take(accounts, 2);
-  //   const action = {
-  //     type: actions.ACCOUNTS_IMPORT,
-  //     accounts: accounts,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //   });
-  // });
-  //
-  // it('should handle ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP', () => {
-  //   const state = ImmutableMap({ username: 'curtis' });
-  //   const action = {
-  //     type: actions.ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP,
-  //     username: 'curtis',
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     username: 'curtis',
-  //   });
-  // });
+      expect(ImmutableRecord.isRecord(result)).toBe(true);
+    });
 
+    it('minifies a moved account', () => {
+      const account = require('soapbox/__fixtures__/account-moved.json');
+      const action = { type: ACCOUNT_IMPORT, account };
+      const result = reducer(undefined, action).get('106801667066418367');
+
+      expect(result.moved).toBe('107945464165013501');
+    });
+  });
 });

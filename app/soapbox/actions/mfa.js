@@ -1,180 +1,84 @@
 import api from '../api';
 
-export const TOTP_SETTINGS_FETCH_REQUEST = 'TOTP_SETTINGS_FETCH_REQUEST';
-export const TOTP_SETTINGS_FETCH_SUCCESS = 'TOTP_SETTINGS_FETCH_SUCCESS';
-export const TOTP_SETTINGS_FETCH_FAIL = 'TOTP_SETTINGS_FETCH_FAIL';
+export const MFA_FETCH_REQUEST = 'MFA_FETCH_REQUEST';
+export const MFA_FETCH_SUCCESS = 'MFA_FETCH_SUCCESS';
+export const MFA_FETCH_FAIL    = 'MFA_FETCH_FAIL';
 
-export const BACKUP_CODES_FETCH_REQUEST = 'BACKUP_CODES_FETCH_REQUEST';
-export const BACKUP_CODES_FETCH_SUCCESS = 'BACKUP_CODES_FETCH_SUCCESS';
-export const BACKUP_CODES_FETCH_FAIL = 'BACKUP_CODES_FETCH_FAIL';
+export const MFA_BACKUP_CODES_FETCH_REQUEST = 'MFA_BACKUP_CODES_FETCH_REQUEST';
+export const MFA_BACKUP_CODES_FETCH_SUCCESS = 'MFA_BACKUP_CODES_FETCH_SUCCESS';
+export const MFA_BACKUP_CODES_FETCH_FAIL    = 'MFA_BACKUP_CODES_FETCH_FAIL';
 
-export const TOTP_SETUP_FETCH_REQUEST = 'TOTP_SETUP_FETCH_REQUEST';
-export const TOTP_SETUP_FETCH_SUCCESS = 'TOTP_SETUP_FETCH_SUCCESS';
-export const TOTP_SETUP_FETCH_FAIL = 'TOTP_SETUP_FETCH_FAIL';
+export const MFA_SETUP_REQUEST = 'MFA_SETUP_REQUEST';
+export const MFA_SETUP_SUCCESS = 'MFA_SETUP_SUCCESS';
+export const MFA_SETUP_FAIL    = 'MFA_SETUP_FAIL';
 
-export const CONFIRM_TOTP_REQUEST = 'CONFIRM_TOTP_REQUEST';
-export const CONFIRM_TOTP_SUCCESS = 'CONFIRM_TOTP_SUCCESS';
-export const CONFIRM_TOTP_FAIL = 'CONFIRM_TOTP_FAIL';
+export const MFA_CONFIRM_REQUEST = 'MFA_CONFIRM_REQUEST';
+export const MFA_CONFIRM_SUCCESS = 'MFA_CONFIRM_SUCCESS';
+export const MFA_CONFIRM_FAIL    = 'MFA_CONFIRM_FAIL';
 
-export const DISABLE_TOTP_REQUEST = 'DISABLE_TOTP_REQUEST';
-export const DISABLE_TOTP_SUCCESS = 'DISABLE_TOTP_SUCCESS';
-export const DISABLE_TOTP_FAIL = 'DISABLE_TOTP_FAIL';
+export const MFA_DISABLE_REQUEST = 'MFA_DISABLE_REQUEST';
+export const MFA_DISABLE_SUCCESS = 'MFA_DISABLE_SUCCESS';
+export const MFA_DISABLE_FAIL    = 'MFA_DISABLE_FAIL';
 
-export function fetchUserMfaSettings() {
+export function fetchMfa() {
   return (dispatch, getState) => {
-    dispatch({ type: TOTP_SETTINGS_FETCH_REQUEST });
-    return api(getState).get('/api/pleroma/accounts/mfa').then(response => {
-      dispatch({ type: TOTP_SETTINGS_FETCH_SUCCESS, totpEnabled: response.data.totp });
-      return response;
+    dispatch({ type: MFA_FETCH_REQUEST });
+    return api(getState).get('/api/pleroma/accounts/mfa').then(({ data }) => {
+      dispatch({ type: MFA_FETCH_SUCCESS, data });
     }).catch(error => {
-      dispatch({ type: TOTP_SETTINGS_FETCH_FAIL });
+      dispatch({ type: MFA_FETCH_FAIL });
     });
   };
 }
-
-export function fetchUserMfaSettingsRequest() {
-  return {
-    type: TOTP_SETTINGS_FETCH_REQUEST,
-  };
-};
-
-export function fetchUserMfaSettingsSuccess() {
-  return {
-    type: TOTP_SETTINGS_FETCH_SUCCESS,
-  };
-};
-
-export function fetchUserMfaSettingsFail() {
-  return {
-    type: TOTP_SETTINGS_FETCH_FAIL,
-  };
-};
 
 export function fetchBackupCodes() {
   return (dispatch, getState) => {
-    dispatch({ type: BACKUP_CODES_FETCH_REQUEST });
-    return api(getState).get('/api/pleroma/accounts/mfa/backup_codes').then(response => {
-      dispatch({ type: BACKUP_CODES_FETCH_SUCCESS, backup_codes: response.data });
-      return response;
+    dispatch({ type: MFA_BACKUP_CODES_FETCH_REQUEST });
+    return api(getState).get('/api/pleroma/accounts/mfa/backup_codes').then(({ data }) => {
+      dispatch({ type: MFA_BACKUP_CODES_FETCH_SUCCESS, data });
+      return data;
     }).catch(error => {
-      dispatch({ type: BACKUP_CODES_FETCH_FAIL });
+      dispatch({ type: MFA_BACKUP_CODES_FETCH_FAIL });
     });
   };
 }
 
-export function fetchBackupCodesRequest() {
-  return {
-    type: BACKUP_CODES_FETCH_REQUEST,
-  };
-};
-
-export function fetchBackupCodesSuccess(backup_codes, response) {
-  return {
-    type: BACKUP_CODES_FETCH_SUCCESS,
-    backup_codes: response.data,
-  };
-};
-
-export function fetchBackupCodesFail(error) {
-  return {
-    type: BACKUP_CODES_FETCH_FAIL,
-    error,
-  };
-};
-
-export function fetchToptSetup() {
+export function setupMfa(method) {
   return (dispatch, getState) => {
-    dispatch({ type: TOTP_SETUP_FETCH_REQUEST });
-    return api(getState).get('/api/pleroma/accounts/mfa/setup/totp').then(response => {
-      dispatch({ type: TOTP_SETUP_FETCH_SUCCESS, totp_setup: response.data });
-      return response;
+    dispatch({ type: MFA_SETUP_REQUEST, method });
+    return api(getState).get(`/api/pleroma/accounts/mfa/setup/${method}`).then(({ data }) => {
+      dispatch({ type: MFA_SETUP_SUCCESS, data });
+      return data;
     }).catch(error => {
-      dispatch({ type: TOTP_SETUP_FETCH_FAIL });
+      dispatch({ type: MFA_SETUP_FAIL });
+      throw error;
     });
   };
 }
 
-export function fetchToptSetupRequest() {
-  return {
-    type: TOTP_SETUP_FETCH_REQUEST,
-  };
-};
-
-export function fetchToptSetupSuccess(totp_setup, response) {
-  return {
-    type: TOTP_SETUP_FETCH_SUCCESS,
-    totp_setup: response.data,
-  };
-};
-
-export function fetchToptSetupFail(error) {
-  return {
-    type: TOTP_SETUP_FETCH_FAIL,
-    error,
-  };
-};
-
-export function confirmToptSetup(code, password) {
+export function confirmMfa(method, code, password) {
   return (dispatch, getState) => {
-    dispatch({ type: CONFIRM_TOTP_REQUEST, code });
-    return api(getState).post('/api/pleroma/accounts/mfa/confirm/totp', {
-      code,
-      password,
-    }).then(response => {
-      dispatch({ type: CONFIRM_TOTP_SUCCESS });
-      return response;
+    const params = { code, password };
+    dispatch({ type: MFA_CONFIRM_REQUEST, method, code });
+    return api(getState).post(`/api/pleroma/accounts/mfa/confirm/${method}`, params).then(({ data }) => {
+      dispatch({ type: MFA_CONFIRM_SUCCESS, method, code });
+      return data;
     }).catch(error => {
-      dispatch({ type: CONFIRM_TOTP_FAIL });
+      dispatch({ type: MFA_CONFIRM_FAIL, method, code, error, skipAlert: true });
+      throw error;
     });
   };
 }
 
-export function confirmToptRequest() {
-  return {
-    type: CONFIRM_TOTP_REQUEST,
-  };
-};
-
-export function confirmToptSuccess(backup_codes, response) {
-  return {
-    type: CONFIRM_TOTP_SUCCESS,
-  };
-};
-
-export function confirmToptFail(error) {
-  return {
-    type: CONFIRM_TOTP_FAIL,
-    error,
-  };
-};
-
-export function disableToptSetup(password) {
+export function disableMfa(method, password) {
   return (dispatch, getState) => {
-    dispatch({ type: DISABLE_TOTP_REQUEST });
-    return api(getState).delete('/api/pleroma/accounts/mfa/totp', { data: { password } }).then(response => {
-      dispatch({ type: DISABLE_TOTP_SUCCESS });
-      return response;
+    dispatch({ type: MFA_DISABLE_REQUEST, method });
+    return api(getState).delete(`/api/pleroma/accounts/mfa/${method}`, { data: { password } }).then(({ data }) => {
+      dispatch({ type: MFA_DISABLE_SUCCESS, method });
+      return data;
     }).catch(error => {
-      dispatch({ type: DISABLE_TOTP_FAIL });
+      dispatch({ type: MFA_DISABLE_FAIL, method, skipAlert: true });
+      throw error;
     });
   };
 }
-
-export function disableToptRequest() {
-  return {
-    type: DISABLE_TOTP_REQUEST,
-  };
-};
-
-export function disableToptSuccess(backup_codes, response) {
-  return {
-    type: DISABLE_TOTP_SUCCESS,
-  };
-};
-
-export function disableToptFail(error) {
-  return {
-    type: DISABLE_TOTP_FAIL,
-    error,
-  };
-};

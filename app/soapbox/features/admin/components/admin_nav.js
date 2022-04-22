@@ -1,11 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+
 import Icon from 'soapbox/components/icon';
 import IconWithCounter from 'soapbox/components/icon_with_counter';
-import { NavLink } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
 
 const mapStateToProps = (state, props) => ({
   instance: state.get('instance'),
@@ -30,16 +31,16 @@ class AdminNav extends React.PureComponent {
         <div className='wtf-panel promo-panel'>
           <div className='promo-panel__container'>
             <NavLink className='promo-panel-item' to='/admin'>
-              <Icon id='tachometer' className='promo-panel-item__icon' fixedWidth />
+              <Icon src={require('@tabler/icons/icons/dashboard.svg')} className='promo-panel-item__icon' />
               <FormattedMessage id='admin_nav.dashboard' defaultMessage='Dashboard' />
             </NavLink>
             <NavLink className='promo-panel-item' to='/admin/reports'>
-              <IconWithCounter icon='gavel' count={reportsCount} fixedWidth />
+              <IconWithCounter src={require('@tabler/icons/icons/gavel.svg')} count={reportsCount} />
               <FormattedMessage id='admin_nav.reports' defaultMessage='Reports' />
             </NavLink>
             {((instance.get('registrations') && instance.get('approval_required')) || approvalCount > 0) && (
               <NavLink className='promo-panel-item' to='/admin/approval'>
-                <IconWithCounter icon='user' count={approvalCount} fixedWidth />
+                <IconWithCounter src={require('@tabler/icons/icons/user.svg')} count={approvalCount} />
                 <FormattedMessage id='admin_nav.awaiting_approval' defaultMessage='Awaiting Approval' />
               </NavLink>
             )}

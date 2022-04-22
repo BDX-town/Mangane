@@ -104,15 +104,6 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
   alerts: []
     ```
 
-- `loadingBar` - Managed by [react-redux-loading-bar](https://github.com/mironov/react-redux-loading-bar)
-
-    Sample:
-    ```
-  loadingBar: {
-    'default': 0
-  }
-    ```
-
 - `modal`
 
     Sample:
@@ -135,7 +126,8 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
      groups: {},
      followers: {},
      mutes: {},
-     favourited_by: {}
+     favourited_by: {},
+     birthday_reminders: {}
    }
     ```
 
@@ -400,6 +392,9 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
          mention: true,
          poll: true,
          reblog: true
+       },
+       birthdays: {
+         show: true
        }
      },
      theme: 'azure',
@@ -450,6 +445,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
        }
      ],
      systemFont: false,
+     underlineLinks: false,
      home: {
        regex: {
          body: ''

@@ -1,17 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import PropTypes from 'prop-types';
-import { debounce } from 'lodash';
-import { fetchUsers } from 'soapbox/actions/admin';
-import { injectIntl, defineMessages } from 'react-intl';
-import AccountContainer from 'soapbox/containers/account_container';
-import Column from 'soapbox/features/ui/components/column';
-import ScrollableList from 'soapbox/components/scrollable_list';
-import { SimpleForm, TextInput } from 'soapbox/features/forms';
 import { Set as ImmutableSet, OrderedSet as ImmutableOrderedSet, is } from 'immutable';
+import { debounce } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl, defineMessages } from 'react-intl';
+import { connect } from 'react-redux';
+
+import { fetchUsers } from 'soapbox/actions/admin';
+import ScrollableList from 'soapbox/components/scrollable_list';
+import AccountContainer from 'soapbox/containers/account_container';
+import { SimpleForm, TextInput } from 'soapbox/features/forms';
+import Column from 'soapbox/features/ui/components/column';
 
 const messages = defineMessages({
+  heading: { id: 'column.admin.users', defaultMessage: 'Users' },
   empty: { id: 'admin.user_index.empty', defaultMessage: 'No users found.' },
   searchPlaceholder: { id: 'admin.user_index.search_input_placeholder', defaultMessage: 'Who are you looking for?' },
 });
@@ -100,10 +102,9 @@ class UserIndex extends ImmutablePureComponent {
     const showLoading = isLoading && accountIds.isEmpty();
 
     return (
-      <Column>
+      <Column heading={intl.formatMessage(messages.heading)}>
         <SimpleForm style={{ paddingBottom: 0 }}>
           <TextInput
-            value={this.state.q}
             onChange={this.handleQueryChange}
             placeholder={intl.formatMessage(messages.searchPlaceholder)}
           />

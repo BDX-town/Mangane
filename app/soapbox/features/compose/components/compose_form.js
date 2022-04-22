@@ -1,32 +1,38 @@
-import React from 'react';
-import CharacterCounter from './character_counter';
-import Button from '../../../components/button';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
-import ReplyIndicatorContainer from '../containers/reply_indicator_container';
-import AutosuggestTextarea from '../../../components/autosuggest_textarea';
-import AutosuggestInput from '../../../components/autosuggest_input';
-import PollButtonContainer from '../containers/poll_button_container';
-import UploadButtonContainer from '../containers/upload_button_container';
+import { get } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
+// import TextCharacterCounter from './text_character_counter';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import SpoilerButtonContainer from '../containers/spoiler_button_container';
-import MarkdownButtonContainer from '../containers/markdown_button_container';
-import ScheduleFormContainer from '../containers/schedule_form_container';
-import ScheduleButtonContainer from '../containers/schedule_button_container';
-import PrivacyDropdownContainer from '../containers/privacy_dropdown_container';
+import { Link, withRouter } from 'react-router-dom';
+import { length } from 'stringz';
+
+import Icon from 'soapbox/components/icon';
+
+import AutosuggestInput from '../../../components/autosuggest_input';
+import AutosuggestTextarea from '../../../components/autosuggest_textarea';
+import Button from '../../../components/button';
+import { isMobile } from '../../../is_mobile';
+import Warning from '../components/warning';
 import EmojiPickerDropdown from '../containers/emoji_picker_dropdown_container';
+import MarkdownButtonContainer from '../containers/markdown_button_container';
+import PollButtonContainer from '../containers/poll_button_container';
 import PollFormContainer from '../containers/poll_form_container';
+import PrivacyDropdownContainer from '../containers/privacy_dropdown_container';
+import QuotedStatusContainer from '../containers/quoted_status_container';
+import ReplyIndicatorContainer from '../containers/reply_indicator_container';
+import ReplyMentions from '../containers/reply_mentions_container';
+import ScheduleButtonContainer from '../containers/schedule_button_container';
+import ScheduleFormContainer from '../containers/schedule_form_container';
+import SpoilerButtonContainer from '../containers/spoiler_button_container';
+import UploadButtonContainer from '../containers/upload_button_container';
 import UploadFormContainer from '../containers/upload_form_container';
 import WarningContainer from '../containers/warning_container';
-import { isMobile } from '../../../is_mobile';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { length } from 'stringz';
 import { countableText } from '../util/counter';
-import Icon from 'soapbox/components/icon';
-import { get } from 'lodash';
-import Warning from '../components/warning';
+
+import VisualCharacterCounter from './visual_character_counter';
 
 const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029\u0009\u000a\u000b\u000c\u000d';
 
@@ -35,18 +41,16 @@ const messages = defineMessages({
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Publish' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
+  message: { id: 'compose_form.message', defaultMessage: 'Message' },
   schedule: { id: 'compose_form.schedule', defaultMessage: 'Schedule' },
 });
 
-export default class ComposeForm extends ImmutablePureComponent {
+export default @withRouter
+class ComposeForm extends ImmutablePureComponent {
 
   state = {
     composeFocused: false,
   }
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
@@ -76,6 +80,7 @@ export default class ComposeForm extends ImmutablePureComponent {
     isModalOpen: PropTypes.bool,
     clickableAreaRef: PropTypes.object,
     scheduledAt: PropTypes.instanceOf(Date),
+    features: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -117,7 +122,7 @@ export default class ComposeForm extends ImmutablePureComponent {
       document.querySelector('.privacy-dropdown__dropdown'),
       document.querySelector('.emoji-picker-dropdown__menu'),
       document.querySelector('.modal-root__overlay'),
-    ].some(element => element && element.contains(e.target));
+    ].some(element => element?.contains(e.target));
   }
 
   handleClick = (e) => {
@@ -147,7 +152,7 @@ export default class ComposeForm extends ImmutablePureComponent {
       return;
     }
 
-    this.props.onSubmit(this.context.router ? this.context.router.history : null, this.props.group);
+    this.props.onSubmit(this.props.history ? this.props.history : null, this.props.group);
   }
 
   onSuggestionsClearRequested = () => {
@@ -247,7 +252,7 @@ export default class ComposeForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars, scheduledStatusCount } = this.props;
+    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars, scheduledStatusCount, features } = this.props;
     const condensed = shouldCondense && !this.state.composeFocused && this.isEmpty() && !this.props.isUploading;
     const disabled = this.props.isSubmitting;
     const text     = [this.props.spoilerText, countableText(this.props.text)].join('');
@@ -256,8 +261,20 @@ export default class ComposeForm extends ImmutablePureComponent {
 
     let publishText = '';
 
-    if (this.props.privacy === 'private' || this.props.privacy === 'direct') {
-      publishText = <span className='compose-form__publish-private'><Icon id='lock' /> {intl.formatMessage(messages.publish)}</span>;
+    if (this.props.privacy === 'direct') {
+      publishText = (
+        <>
+          <Icon src={require('@tabler/icons/icons/mail.svg')} />
+          {intl.formatMessage(messages.message)}
+        </>
+      );
+    } else if (this.props.privacy === 'private') {
+      publishText = (
+        <>
+          <Icon src={require('@tabler/icons/icons/lock.svg')} />
+          {intl.formatMessage(messages.publish)}
+        </>
+      );
     } else {
       publishText = this.props.privacy !== 'unlisted' ? intl.formatMessage(messages.publishLoud, { publish: intl.formatMessage(messages.publish) }) : intl.formatMessage(messages.publish);
     }
@@ -294,7 +311,9 @@ export default class ComposeForm extends ImmutablePureComponent {
 
         <WarningContainer />
 
-        { !shouldCondense && <ReplyIndicatorContainer /> }
+        {!shouldCondense && <ReplyIndicatorContainer />}
+
+        {!shouldCondense && <ReplyMentions />}
 
         <div className={`spoiler-input ${this.props.spoiler ? 'spoiler-input--visible' : ''}`}>
           <AutosuggestInput
@@ -311,11 +330,8 @@ export default class ComposeForm extends ImmutablePureComponent {
             searchTokens={[':']}
             id='cw-spoiler-input'
             className='spoiler-input__input'
+            autoFocus
           />
-        </div>
-
-        <div className='emoji-picker-wrapper'>
-          <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} />
         </div>
 
         <AutosuggestTextarea
@@ -333,6 +349,7 @@ export default class ComposeForm extends ImmutablePureComponent {
           onPaste={onPaste}
           autoFocus={shouldAutoFocus}
         >
+          <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} />
           {
             !condensed &&
             <div className='compose-form__modifiers'>
@@ -343,23 +360,27 @@ export default class ComposeForm extends ImmutablePureComponent {
           }
         </AutosuggestTextarea>
 
-        {
-          !condensed &&
-          <div className='compose-form__buttons-wrapper'>
-            <div className='compose-form__buttons'>
-              <UploadButtonContainer />
-              <PollButtonContainer />
-              <PrivacyDropdownContainer />
-              <ScheduleButtonContainer />
-              <SpoilerButtonContainer />
-              <MarkdownButtonContainer />
-            </div>
-            {maxTootChars && <div className='character-counter__wrapper'><CharacterCounter max={maxTootChars} text={text} /></div>}
-            <div className='compose-form__publish'>
-              <div className='compose-form__publish-button-wrapper'><Button text={publishText} onClick={this.handleSubmit} disabled={disabledButton} block /></div>
-            </div>
+        <QuotedStatusContainer />
+
+        <div className='compose-form__buttons-wrapper'>
+          <div className='compose-form__buttons'>
+            {features.media && <UploadButtonContainer />}
+            {features.polls && <PollButtonContainer />}
+            {features.privacyScopes && <PrivacyDropdownContainer />}
+            {features.scheduledStatuses && <ScheduleButtonContainer />}
+            {features.spoilers && <SpoilerButtonContainer />}
+            {features.richText && <MarkdownButtonContainer />}
           </div>
-        }
+          {maxTootChars && (
+            <div className='compose-form__counter'>
+              {/* <TextCharacterCounter max={maxTootChars} text={text} /> */}
+              <VisualCharacterCounter max={maxTootChars} text={text} />
+            </div>
+          )}
+          <div className='compose-form__publish'>
+            <div className='compose-form__publish-button-wrapper'><Button text={publishText} onClick={this.handleSubmit} disabled={disabledButton} block /></div>
+          </div>
+        </div>
       </div>
     );
   }

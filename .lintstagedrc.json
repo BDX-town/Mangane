@@ -1,0 +1,5 @@
+{
+  "*.js": "eslint --cache",
+  "*.ts": "eslint --cache",
+  "app/styles/**/*.scss": "stylelint"
+}

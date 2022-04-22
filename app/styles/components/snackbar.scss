@@ -1,13 +1,25 @@
+.notification-list {
+  position: fixed;
+  bottom: var(--thumb-navigation-height);
+  z-index: 1000; /* Above ThumbNavigation */
+  width: 100%;
+
+  @media (min-width: 895px) {
+    bottom: 0;
+  }
+}
+
 .snackbar {
   font-size: 16px !important;
   padding: 10px 20px 10px 14px !important;
-  z-index: 9999 !important;
+  position: absolute !important;
   display: flex;
   align-items: center;
   justify-content: center;
 
   &::before {
-    font-family: ForkAwesome;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     font-size: 20px;
     margin-right: 8px;
   }
@@ -16,15 +28,19 @@
     background-color: #19759e !important;
 
     &::before {
-      content: '';
+      content: '\f05a';
     }
+  }
+
+  &--post {
+    background-color: #0482d8 !important;
   }
 
   &--success {
     background-color: #199e5a !important;
 
     &::before {
-      content: '';
+      content: '\f00c';
     }
   }
 
@@ -32,11 +48,26 @@
     background-color: #9e1919 !important;
 
     &::before {
-      content: '';
+      content: '\f05e';
     }
   }
 
   .notification-bar-wrapper {
     transform: translateY(1px);
+  }
+
+  .notification-bar-action a {
+    @include font-roboto;
+    font-size: 16px;
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: none;
+
+    &:hover,
+    &:active,
+    &:focus {
+      text-decoration: underline;
+    }
   }
 }

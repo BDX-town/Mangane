@@ -1,25 +1,18 @@
 'use strict';
 
-import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { Record as ImmutableRecord } from 'immutable';
 
-const initialState = ImmutableMap();
+import { INSTANCE_FETCH_FAIL } from 'soapbox/actions/instance';
 
-const importAccount = (state, account) => {
-  return state.withMutations(state => {
-    if (account.has('pleroma')) {
-      const pleroPrefs = account.get('pleroma').delete('settings_store');
-      state.mergeIn(['pleroma'], pleroPrefs);
-    }
-  });
-};
+const ReducerRecord = ImmutableRecord({
+  instance_fetch_failed: false,
+});
 
-export default function meta(state = initialState, action) {
+export default function meta(state = ReducerRecord(), action) {
   switch(action.type) {
-  case ME_FETCH_SUCCESS:
-  case ME_PATCH_SUCCESS:
-    return importAccount(state, fromJS(action.me));
+  case INSTANCE_FETCH_FAIL:
+    return state.set('instance_fetch_failed', true);
   default:
     return state;
   }
-};
+}

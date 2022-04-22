@@ -1,18 +1,20 @@
-import React from 'react';
-import AutosuggestAccountContainer from '../features/compose/containers/autosuggest_account_container';
-import AutosuggestEmoji from './autosuggest_emoji';
-import ImmutablePropTypes from 'react-immutable-proptypes';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { isRtl } from '../rtl';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Textarea from 'react-textarea-autosize';
-import classNames from 'classnames';
+
+import AutosuggestAccountContainer from '../features/compose/containers/autosuggest_account_container';
+import { isRtl } from '../rtl';
+
+import AutosuggestEmoji from './autosuggest_emoji';
 
 const textAtCursorMatchesToken = (str, caretPosition) => {
   let word;
 
-  let left  = str.slice(0, caretPosition).search(/\S+$/);
-  let right = str.slice(caretPosition).search(/\s/);
+  const left  = str.slice(0, caretPosition).search(/\S+$/);
+  const right = str.slice(caretPosition).search(/\s/);
 
   if (right < 0) {
     word = str.slice(left);

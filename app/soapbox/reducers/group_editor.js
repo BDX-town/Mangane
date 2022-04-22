@@ -1,4 +1,5 @@
 import { Map as ImmutableMap } from 'immutable';
+
 import {
   GROUP_CREATE_REQUEST,
   GROUP_CREATE_FAIL,
@@ -54,4 +55,4 @@ export default function groupEditorReducer(state = initialState, action) {
   default:
     return state;
   }
-};
+}

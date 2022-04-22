@@ -1,8 +1,11 @@
+import { Record as ImmutableRecord } from 'immutable';
+
 import reducer from '../meta';
-import { Map as ImmutableMap } from 'immutable';
 
 describe('meta reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap());
+    const result = reducer(undefined, {});
+    expect(ImmutableRecord.isRecord(result)).toBe(true);
+    expect(result.instance_fetch_failed).toBe(false);
   });
 });

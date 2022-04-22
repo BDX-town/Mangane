@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Toggle from 'react-toggle';
 
@@ -19,7 +19,7 @@ export default class MultiSettingToggle extends React.PureComponent {
   }
 
   onChange = ({ target }) => {
-    for (var i = 0; i < this.props.settingPaths.length; i++) {
+    for (let i = 0; i < this.props.settingPaths.length; i++) {
       this.props.onChange(this.props.settingPaths[i], target.checked);
     }
   }

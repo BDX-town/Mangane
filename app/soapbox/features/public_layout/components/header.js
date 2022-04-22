@@ -1,16 +1,19 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { Link } from 'react-router-dom';
-import LoginForm from 'soapbox/features/auth_login/components/login_form';
-import SiteLogo from './site_logo';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import { defineMessages, injectIntl } from 'react-intl';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
-import OtpAuthForm from 'soapbox/features/auth_login/components/otp_auth_form';
+import { fetchInstance } from 'soapbox/actions/instance';
 import IconButton from 'soapbox/components/icon_button';
+import LoginForm from 'soapbox/features/auth_login/components/login_form';
+import OtpAuthForm from 'soapbox/features/auth_login/components/otp_auth_form';
+import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
+
+import SiteLogo from './site_logo';
 
 const messages = defineMessages({
   home: { id: 'header.home.label', defaultMessage: 'Home' },
@@ -47,15 +50,13 @@ class Header extends ImmutablePureComponent {
     );
   }
 
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
   handleSubmit = (event) => {
     const { dispatch, intl } = this.props;
     const { username, password } = this.getFormData(event.target);
     dispatch(logIn(intl, username, password)).then(({ access_token }) => {
-      return dispatch(verifyCredentials(access_token));
+      return dispatch(verifyCredentials(access_token))
+        // Refetch the instance for authenticated fetch
+        .then(() => dispatch(fetchInstance()));
     }).catch(error => {
       if (error.response.data.error === 'mfa_required') {
         this.setState({ mfa_auth_needed: true, mfa_token: error.response.data.mfa_token });
@@ -85,7 +86,7 @@ class Header extends ImmutablePureComponent {
         { mfa_auth_needed &&
           <div className='otp-form-overlay__container'>
             <div className='otp-form-overlay__form'>
-              <IconButton className='otp-form-overlay__close' title={intl.formatMessage(messages.close)} icon='times' onClick={this.onClickClose} size={20} />
+              <IconButton className='otp-form-overlay__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={this.onClickClose} />
               <OtpAuthForm mfa_token={mfa_token} />
             </div>
           </div>

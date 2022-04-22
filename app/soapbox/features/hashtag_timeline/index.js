@@ -1,14 +1,14 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
-import StatusListContainer from '../ui/containers/status_list_container';
+import React from 'react';
+import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
+import { connectHashtagStream } from '../../actions/streaming';
+import { expandHashtagTimeline, clearTimeline } from '../../actions/timelines';
 import Column from '../../components/column';
 import ColumnHeader from '../../components/column_header';
-import { expandHashtagTimeline, clearTimeline } from '../../actions/timelines';
-import { FormattedMessage } from 'react-intl';
-import { connectHashtagStream } from '../../actions/streaming';
-import { isEqual } from 'lodash';
-import ColumnBackButton from '../../components/column_back_button';
+import StatusListContainer from '../ui/containers/status_list_container';
 
 const mapStateToProps = (state, props) => ({
   hasUnread: state.getIn(['timelines', `hashtag:${props.params.id}`, 'unread']) > 0,
@@ -26,8 +26,10 @@ class HashtagTimeline extends React.PureComponent {
   };
 
   title = () => {
-    let title = [this.props.params.id];
+    const title = [`#${this.props.params.id}`];
 
+    // TODO: wtf is all this?
+    // It exists in Mastodon's codebase, but undocumented
     if (this.additionalFor('any')) {
       title.push(' ', <FormattedMessage key='any' id='hashtag.column_header.tag_mode.any'  values={{ additional: this.additionalFor('any') }} defaultMessage='or {additional}' />);
     }
@@ -43,6 +45,8 @@ class HashtagTimeline extends React.PureComponent {
     return title;
   }
 
+  // TODO: wtf is this?
+  // It exists in Mastodon's codebase, but undocumented
   additionalFor = (mode) => {
     const { tags } = this.props.params;
 
@@ -54,13 +58,13 @@ class HashtagTimeline extends React.PureComponent {
   }
 
   _subscribe(dispatch, id, tags = {}) {
-    let any  = (tags.any || []).map(tag => tag.value);
-    let all  = (tags.all || []).map(tag => tag.value);
-    let none = (tags.none || []).map(tag => tag.value);
+    const any  = (tags.any || []).map(tag => tag.value);
+    const all  = (tags.all || []).map(tag => tag.value);
+    const none = (tags.none || []).map(tag => tag.value);
 
     [id, ...any].map(tag => {
       this.disconnects.push(dispatch(connectHashtagStream(id, tag, status => {
-        let tags = status.tags.map(tag => tag.name);
+        const tags = status.tags.map(tag => tag.name);
 
         return all.filter(tag => tags.includes(tag)).length === all.length &&
                none.filter(tag => tags.includes(tag)).length === 0;
@@ -108,9 +112,8 @@ class HashtagTimeline extends React.PureComponent {
     const { id } = this.props.params;
 
     return (
-      <Column label={`#${id}`}>
-        <ColumnBackButton />
-        <ColumnHeader icon='hashtag' active={hasUnread} title={this.title()} />
+      <Column label={`#${id}`} transparent>
+        <ColumnHeader active={hasUnread} title={this.title()} />
         <StatusListContainer
           scrollKey='hashtag_timeline'
           timelineId={`hashtag:${id}`}

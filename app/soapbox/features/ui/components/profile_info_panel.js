@@ -1,19 +1,24 @@
 'use strict';
 
+import classNames from 'classnames';
+import { List as ImmutableList } from 'immutable';
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
+import { initAccountNoteModal } from 'soapbox/actions/account_notes';
+import Badge from 'soapbox/components/badge';
 import Icon from 'soapbox/components/icon';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import Badge from 'soapbox/components/badge';
-import { List as ImmutableList } from 'immutable';
-import { getAcct, isAdmin, isModerator } from 'soapbox/utils/accounts';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
+import { getAcct, isAdmin, isModerator, isLocal } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
-import classNames from 'classnames';
-import CryptoAddress from 'soapbox/features/crypto_donate/components/crypto_address';
+
+import ProfileStats from './profile_stats';
 
 const TICKER_REGEX = /\$([a-zA-Z]*)/i;
 
@@ -44,18 +49,79 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     username: PropTypes.string,
     displayFqn: PropTypes.bool,
+    onShowNote: PropTypes.func,
   };
 
   getStaffBadge = () => {
     const { account } = this.props;
 
     if (isAdmin(account)) {
-      return <Badge slug='admin' title='Admin' />;
+      return <Badge slug='admin' title='Admin' key='staff' />;
     } else if (isModerator(account)) {
-      return <Badge slug='moderator' title='Moderator' />;
+      return <Badge slug='moderator' title='Moderator' key='staff' />;
     } else {
       return null;
     }
+  }
+
+  getBadges = () => {
+    const { account } = this.props;
+    const staffBadge = this.getStaffBadge();
+    const isPatron = account.getIn(['patron', 'is_patron']);
+
+    const badges = [];
+
+    if (staffBadge) {
+      badges.push(staffBadge);
+    }
+
+    if (isPatron) {
+      badges.push(<Badge slug='patron' title='Patron' key='patron' />);
+    }
+
+    return badges;
+  }
+
+  getBirthday = () => {
+    const { account, intl } = this.props;
+
+    const birthday = account.get('birthday');
+    if (!birthday) return null;
+
+    const formattedBirthday = intl.formatDate(birthday, { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' });
+
+    const date = new Date(birthday);
+    const today = new Date();
+
+    const hasBirthday = date.getDate() === today.getDate() && date.getMonth() === today.getMonth();
+
+    if (hasBirthday) {
+      return (
+        <div className='profile-info-panel-content__birthday' title={formattedBirthday}>
+          <Icon src={require('@tabler/icons/icons/ballon.svg')} />
+          <FormattedMessage
+            id='account.birthday_today' defaultMessage='Birthday is today!'
+          />
+        </div>
+      );
+    }
+    return (
+      <div className='profile-info-panel-content__birthday'>
+        <Icon src={require('@tabler/icons/icons/ballon.svg')} />
+        <FormattedMessage
+          id='account.birthday' defaultMessage='Born {date}' values={{
+            date: formattedBirthday,
+          }}
+        />
+      </div>
+    );
+  }
+
+  handleShowNote = e => {
+    const { account, onShowNote } = this.props;
+
+    e.preventDefault();
+    onShowNote(account);
   }
 
   render() {
@@ -76,13 +142,13 @@ class ProfileInfoPanel extends ImmutablePureComponent {
       );
     }
 
-    const lockedIcon = account.get('locked') ? (<Icon id='lock' title={intl.formatMessage(messages.account_locked)} />) : '';
     const content = { __html: account.get('note_emojified') };
     const fields = account.get('fields');
     const deactivated = !account.getIn(['pleroma', 'is_active'], true);
     const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.get('display_name_html') };
     const memberSinceDate = intl.formatDate(account.get('created_at'), { month: 'long', year: 'numeric' });
-    const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
+    const verified = account.get('verified');
+    const badges = this.getBadges();
 
     return (
       <div className={classNames('profile-info-panel', { 'deactivated': deactivated })} >
@@ -93,22 +159,20 @@ class ProfileInfoPanel extends ImmutablePureComponent {
               <span dangerouslySetInnerHTML={displayNameHtml} className='profile-info-panel__name-content' />
               {verified && <VerificationBadge />}
               {account.get('bot') && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
-              { <small>@{getAcct(account, displayFqn)} {lockedIcon}</small> }
+              <small>
+                @{getAcct(account, displayFqn)}
+                {account.get('locked') && (
+                  <Icon src={require('@tabler/icons/icons/lock.svg')} title={intl.formatMessage(messages.account_locked)} />
+                )}
+              </small>
             </h1>
           </div>
 
-          <div className='profile-info-panel-content__badges'>
-            {this.getStaffBadge()}
-            {account.getIn(['patron', 'is_patron']) && <Badge slug='patron' title='Patron' />}
-            {account.get('acct').includes('@') || <div className='profile-info-panel-content__badges__join-date'>
-              <Icon id='calendar' />
-              <FormattedMessage
-                id='account.member_since' defaultMessage='Member since {date}' values={{
-                  date: memberSinceDate,
-                }}
-              />
-            </div>}
-          </div>
+          {badges.length > 0 && (
+            <div className='profile-info-panel-content__badges'>
+              {badges}
+            </div>
+          )}
 
           <div className='profile-info-panel-content__deactivated'>
             <FormattedMessage
@@ -120,6 +184,36 @@ class ProfileInfoPanel extends ImmutablePureComponent {
             (account.get('note').length > 0 && account.get('note') !== '<p></p>') &&
             <div className='profile-info-panel-content__bio' dangerouslySetInnerHTML={content} />
           }
+
+          {isLocal(account) && <div className='profile-info-panel-content__join-date'>
+            <Icon src={require('@tabler/icons/icons/calendar.svg')} />
+            <FormattedMessage
+              id='account.member_since' defaultMessage='Joined {date}' values={{
+                date: memberSinceDate,
+              }}
+            />
+          </div>}
+
+          {this.getBirthday()}
+
+          {account.get('location') && (
+            <div className='profile-info-panel-content__location'>
+              <Icon src={require('@tabler/icons/icons/map-pin.svg')} />
+              {account.get('location')}
+            </div>
+          )}
+
+          {!!account.getIn(['relationship', 'note']) && (
+            <a href='#' className='profile-info-panel-content__note' onClick={this.handleShowNote}>
+              <Icon src={require('@tabler/icons/icons/note.svg')} />
+              <FormattedMessage id='account.show_note' defaultMessage='Show note' />
+            </a>
+          )}
+
+          <ProfileStats
+            className='profile-info-panel-content__stats'
+            account={account}
+          />
 
           {(fields.size > 0 || identity_proofs.size > 0) && (
             <div className='profile-info-panel-content__fields'>
@@ -142,7 +236,15 @@ class ProfileInfoPanel extends ImmutablePureComponent {
 
               {fields.map((pair, i) =>
                 isTicker(pair.get('name', '')) ? (
-                  <CryptoAddress key={i} ticker={getTicker(pair.get('name')).toLowerCase()} address={pair.get('value_plain')} />
+                  <BundleContainer fetchComponent={CryptoAddress} key={i}>
+                    {Component => (
+                      <Component
+                        key={i}
+                        ticker={getTicker(pair.get('name')).toLowerCase()}
+                        address={pair.get('value_plain')}
+                      />
+                    )}
+                  </BundleContainer>
                 ) : (
                   <dl className='profile-info-panel-content__fields__item' key={i}>
                     <dt dangerouslySetInnerHTML={{ __html: pair.get('name_emojified') }} title={pair.get('name')} />
@@ -171,8 +273,14 @@ const mapStateToProps = (state, { account }) => {
   };
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  onShowNote(account) {
+    dispatch(initAccountNoteModal(account));
+  },
+});
+
 export default injectIntl(
-  connect(mapStateToProps, null, null, {
+  connect(mapStateToProps, mapDispatchToProps, null, {
     forwardRef: true,
   },
   )(ProfileInfoPanel));

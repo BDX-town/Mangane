@@ -1,6 +1,8 @@
-import reducer from '../list_editor';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+
 import * as actions from 'soapbox/actions/lists';
+
+import reducer from '../list_editor';
 
 describe('list_editor reducer', () => {
   it('should return the initial state', () => {
@@ -137,7 +139,6 @@ describe('list_editor reducer', () => {
   });
 
   it('should handle LIST_UPDATE_FAIL', () => {
-    debugger;
     const state = ImmutableMap({
       isSubmitting: true,
     });

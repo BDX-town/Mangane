@@ -1,0 +1,26 @@
+.profile-stats {
+  display: flex;
+  margin-top: 12px;
+}
+
+.profile-stat {
+  display: flex;
+  font-size: 14px;
+  text-decoration: none;
+
+  &:not(:first-of-type) {
+    margin-left: 18px;
+  }
+
+  &__value {
+    display: flex;
+    margin-right: 3px;
+    font-weight: 700;
+    color: var(--primary-text-color);
+  }
+
+  &__label {
+    display: flex;
+    color: var(--primary-text-color--faint);
+  }
+}

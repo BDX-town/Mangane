@@ -1,19 +1,22 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import { is } from 'immutable';
-import IconButton from './icon_button';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { isIOS } from '../is_mobile';
-import { truncateFilename } from 'soapbox/utils/media';
 import classNames from 'classnames';
-import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
+import { is } from 'immutable';
 import { Map as ImmutableMap } from 'immutable';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
 import { getSettings } from 'soapbox/actions/settings';
+import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still_image';
-import Blurhash from 'soapbox/components/blurhash';
+import { truncateFilename } from 'soapbox/utils/media';
+
+import { isIOS } from '../is_mobile';
+import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
+
+import IconButton from './icon_button';
 
 const ATTACHMENT_LIMIT = 4;
 const MAX_FILENAME_LENGTH = 45;
@@ -169,7 +172,7 @@ class Item extends React.PureComponent {
         </a>
       );
     } else if (attachment.get('type') === 'gifv') {
-      let conditionalAttributes = {};
+      const conditionalAttributes = {};
       if (isIOS()) {
         conditionalAttributes.playsInline = '1';
       }
@@ -197,21 +200,18 @@ class Item extends React.PureComponent {
         </div>
       );
     } else if (attachment.get('type') === 'audio') {
-      const remoteURL = attachment.get('remote_url');
-      const originalUrl = attachment.get('url');
-      const fileExtensionLastIndex = remoteURL.lastIndexOf('.');
-      const fileExtension = remoteURL.substr(fileExtensionLastIndex + 1).toUpperCase();
+      const ext = attachment.get('url').split('.').pop().toUpperCase();
       thumbnail = (
         <a
           className={classNames('media-gallery__item-thumbnail')}
-          href={attachment.get('remote_url') || originalUrl}
+          href={attachment.get('url')}
           onClick={this.handleClick}
           target='_blank'
           alt={attachment.get('description')}
           title={attachment.get('description')}
         >
           <span className='media-gallery__item__icons'><Icon id='volume-up' /></span>
-          <span className='media-gallery__file-extension__label'>{fileExtension}</span>
+          <span className='media-gallery__file-extension__label'>{ext}</span>
         </a>
       );
     } else if (attachment.get('type') === 'video') {
@@ -279,6 +279,7 @@ class MediaGallery extends React.PureComponent {
     visible: PropTypes.bool,
     onToggleVisibility: PropTypes.func,
     displayMedia: PropTypes.string,
+    compact: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -560,12 +561,11 @@ class MediaGallery extends React.PureComponent {
   }
 
   render() {
-    const { media, intl, sensitive } = this.props;
+    const { media, intl, sensitive, compact } = this.props;
     const { visible } = this.state;
     const sizeData = this.getSizeData(media.size);
-    let children, spoilerButton;
 
-    children = media.take(ATTACHMENT_LIMIT).map((attachment, i) => (
+    const children = media.take(ATTACHMENT_LIMIT).map((attachment, i) => (
       <Item
         key={attachment.get('id')}
         onClick={this.handleClick}
@@ -580,20 +580,33 @@ class MediaGallery extends React.PureComponent {
       />
     ));
 
-    if (visible) {
-      spoilerButton = <IconButton title={intl.formatMessage(messages.toggle_visible)} icon='eye-slash' overlay onClick={this.handleOpen} />;
+    let warning;
+
+    if (sensitive) {
+      warning = <FormattedMessage id='status.sensitive_warning' defaultMessage='Sensitive content' />;
     } else {
-      spoilerButton = (
-        <button type='button' onClick={this.handleOpen} className='spoiler-button__overlay'>
-          <span className='spoiler-button__overlay__label'>{sensitive ? <FormattedMessage id='status.sensitive_warning' defaultMessage='Sensitive content' /> : <FormattedMessage id='status.media_hidden' defaultMessage='Media hidden' />}</span>
-        </button>
-      );
+      warning = <FormattedMessage id='status.media_hidden' defaultMessage='Media hidden' />;
     }
 
     return (
-      <div className='media-gallery' style={sizeData.get('style')} ref={this.handleRef}>
-        <div className={classNames('spoiler-button', { 'spoiler-button--minified': visible })}>
-          {spoilerButton}
+      <div className={classNames('media-gallery', { 'media-gallery--compact': compact })} style={sizeData.get('style')} ref={this.handleRef}>
+        <div className={classNames('spoiler-button', { 'spoiler-button--minified': visible || compact })}>
+          {sensitive && (
+            (visible || compact) ? (
+              <IconButton
+                title={intl.formatMessage(messages.toggle_visible)}
+                src={visible ? require('@tabler/icons/icons/eye-off.svg') : require('@tabler/icons/icons/eye.svg')}
+                overlay
+                onClick={this.handleOpen}
+              />
+            ) : (
+              <button type='button' onClick={this.handleOpen} className='spoiler-button__overlay'>
+                <span className='spoiler-button__overlay__label'>
+                  {warning}
+                </span>
+              </button>
+            )
+          )}
         </div>
 
         {children}

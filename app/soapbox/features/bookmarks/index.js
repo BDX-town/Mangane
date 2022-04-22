@@ -1,13 +1,16 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from '../ui/components/column';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import StatusList from '../../components/status_list';
-import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from '../../actions/bookmarks';
 import { debounce } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
+import Column from 'soapbox/components/column';
+import SubNavigation from 'soapbox/components/sub_navigation';
+
+import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from '../../actions/bookmarks';
+import StatusList from '../../components/status_list';
 
 const messages = defineMessages({
   heading: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
@@ -23,10 +26,6 @@ export default @connect(mapStateToProps)
 @injectIntl
 class Bookmarks extends ImmutablePureComponent {
 
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     shouldUpdateScroll: PropTypes.func,
@@ -38,15 +37,22 @@ class Bookmarks extends ImmutablePureComponent {
     isLoading: PropTypes.bool,
   };
 
-  componentDidMount() {
+  fetchData = () => {
     const { dispatch } = this.props;
-    dispatch(fetchBookmarkedStatuses());
+    return dispatch(fetchBookmarkedStatuses());
+  }
+
+  componentDidMount() {
+    this.fetchData();
   }
 
   handleLoadMore = debounce(() => {
     this.props.dispatch(expandBookmarkedStatuses());
   }, 300, { leading: true })
 
+  handleRefresh = () => {
+    return this.fetchData();
+  }
 
   render() {
     const { intl, shouldUpdateScroll, statusIds, columnId, multiColumn, hasMore, isLoading } = this.props;
@@ -55,7 +61,8 @@ class Bookmarks extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='empty_column.bookmarks' defaultMessage="You don't have any bookmarks yet. When you add one, it will show up here." />;
 
     return (
-      <Column icon='bookmark' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column transparent>
+        <SubNavigation message={intl.formatMessage(messages.heading)} />
         <StatusList
           trackScroll={!pinned}
           statusIds={statusIds}
@@ -63,6 +70,7 @@ class Bookmarks extends ImmutablePureComponent {
           hasMore={hasMore}
           isLoading={isLoading}
           onLoadMore={this.handleLoadMore}
+          onRefresh={this.handleRefresh}
           shouldUpdateScroll={shouldUpdateScroll}
           emptyMessage={emptyMessage}
           bindToDocument={!multiColumn}

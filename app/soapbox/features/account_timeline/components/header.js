@@ -1,11 +1,15 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import InnerHeader from '../../account/components/header';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { withRouter } from 'react-router-dom';
+
+import InnerHeader from '../../account/components/header';
+
 import MovedNote from './moved_note';
 
-export default class Header extends ImmutablePureComponent {
+export default @withRouter
+class Header extends ImmutablePureComponent {
 
   static propTypes = {
     account: ImmutablePropTypes.map,
@@ -14,18 +18,16 @@ export default class Header extends ImmutablePureComponent {
     onBlock: PropTypes.func.isRequired,
     onMention: PropTypes.func.isRequired,
     onDirect: PropTypes.func.isRequired,
+    onChat: PropTypes.func,
     onReblogToggle: PropTypes.func.isRequired,
     onReport: PropTypes.func.isRequired,
     onMute: PropTypes.func.isRequired,
     onBlockDomain: PropTypes.func.isRequired,
     onUnblockDomain: PropTypes.func.isRequired,
-    // onEndorseToggle: PropTypes.func.isRequired,
+    onEndorseToggle: PropTypes.func.isRequired,
     onAddToList: PropTypes.func.isRequired,
     username: PropTypes.string,
-  };
-
-  static contextTypes = {
-    router: PropTypes.object,
+    history: PropTypes.object,
   };
 
   handleFollow = () => {
@@ -37,11 +39,11 @@ export default class Header extends ImmutablePureComponent {
   }
 
   handleMention = () => {
-    this.props.onMention(this.props.account, this.context.router.history);
+    this.props.onMention(this.props.account, this.props.history);
   }
 
   handleDirect = () => {
-    this.props.onDirect(this.props.account, this.context.router.history);
+    this.props.onDirect(this.props.account, this.props.history);
   }
 
   handleReport = () => {
@@ -54,6 +56,10 @@ export default class Header extends ImmutablePureComponent {
 
   handleSubscriptionToggle = () => {
     this.props.onSubscriptionToggle(this.props.account);
+  }
+
+  handleNotifyToggle = () => {
+    this.props.onNotifyToggle(this.props.account);
   }
 
   handleMute = () => {
@@ -77,12 +83,12 @@ export default class Header extends ImmutablePureComponent {
   }
 
   handleChat = () => {
-    this.props.onChat(this.props.account, this.context.router.history);
+    this.props.onChat(this.props.account, this.props.history);
   }
 
-  // handleEndorseToggle = () => {
-  //   this.props.onEndorseToggle(this.props.account);
-  // }
+  handleEndorseToggle = () => {
+    this.props.onEndorseToggle(this.props.account);
+  }
 
   handleAddToList = () => {
     this.props.onAddToList(this.props.account);
@@ -116,6 +122,18 @@ export default class Header extends ImmutablePureComponent {
     this.props.onDemoteToUser(this.props.account);
   }
 
+  handleSuggestUser = () => {
+    this.props.onSuggestUser(this.props.account);
+  }
+
+  handleUnsuggestUser = () => {
+    this.props.onUnsuggestUser(this.props.account);
+  }
+
+  handleShowNote = () => {
+    this.props.onShowNote(this.props.account);
+  }
+
   render() {
     const { account, identity_proofs } = this.props;
     const moved = (account) ? account.get('moved') : false;
@@ -134,6 +152,7 @@ export default class Header extends ImmutablePureComponent {
           onChat={this.handleChat}
           onReblogToggle={this.handleReblogToggle}
           onSubscriptionToggle={this.handleSubscriptionToggle}
+          onNotifyToggle={this.handleNotifyToggle}
           onReport={this.handleReport}
           onMute={this.handleMute}
           onBlockDomain={this.handleBlockDomain}
@@ -147,6 +166,9 @@ export default class Header extends ImmutablePureComponent {
           onPromoteToAdmin={this.handlePromoteToAdmin}
           onPromoteToModerator={this.handlePromoteToModerator}
           onDemoteToUser={this.handleDemoteToUser}
+          onSuggestUser={this.handleSuggestUser}
+          onUnsuggestUser={this.handleUnsuggestUser}
+          onShowNote={this.handleShowNote}
           username={this.props.username}
         />
       </div>

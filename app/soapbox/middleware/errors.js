@@ -1,17 +1,20 @@
 import { showAlertForError } from '../actions/alerts';
 
-const defaultFailSuffix = 'FAIL';
+const isFailType = type => type.endsWith('_FAIL');
+const isRememberFailType = type => type.endsWith('_REMEMBER_FAIL');
+
+const hasResponse = error => Boolean(error && error.response);
+
+const shouldShowError = ({ type, skipAlert, error }) => {
+  return !skipAlert && hasResponse(error) && isFailType(type) && !isRememberFailType(type);
+};
 
 export default function errorsMiddleware() {
   return ({ dispatch }) => next => action => {
-    if (action.type && !action.skipAlert) {
-      const isFail = new RegExp(`${defaultFailSuffix}$`, 'g');
-
-      if (action.type.match(isFail)) {
-        dispatch(showAlertForError(action.error));
-      }
+    if (shouldShowError(action)) {
+      dispatch(showAlertForError(action.error));
     }
 
     return next(action);
   };
-};
+}

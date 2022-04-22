@@ -3,12 +3,11 @@
   box-sizing: border-box;
   background: var(--brand-color);
   flex: 0 0 auto;
-  overflow-y: auto;
   height: 50px;
   width: 100%;
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 1100;
   transition: transform 0.2s ease;
 
   &--collapsed {
@@ -24,7 +23,10 @@
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 15px;
+    padding-left: 15px;
+    padding-left: max(15px, env(safe-area-inset-left));
+    padding-right: 15px;
+    padding-right: max(15px, env(safe-area-inset-right));
 
     // NOTE - might need to adjust this based on column sizing
     @media screen and (max-width: $nav-breakpoint-4) { padding: 0 10px; }
@@ -44,9 +46,33 @@
     }
   }
 
+  @media screen and (max-width: 450px) {
+    // Move Profile menu to the left on mobile
+    &__split--right {
+      margin: 0;
+      order: -1;
+      width: 100%;
+    }
+
+    &__profile {
+      margin-left: 0 !important;
+    }
+
+    &__unauthenticated {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      .tabs-bar__button {
+        margin: 0;
+      }
+    }
+  }
+
   &__search-container {
     display: block;
-    width: 251px;
+    width: 351px;
+    align-self: center;
 
     @media screen and (max-width: 895px) {
       display: none;
@@ -107,7 +133,7 @@
     font-size: 18px;
     color: #fff;
 
-    @media (min-width: 895px) {
+    @media (min-width: 896px) {
       display: none;
     }
   }
@@ -138,11 +164,13 @@
   }
 
   .theme-toggle {
-    @media screen and (max-width: $nav-breakpoint-3) { display: none; }
+    margin-left: 20px;
+
+    @media screen and (max-width: $nav-breakpoint-3) {
+      display: none;
+    }
 
     .setting-toggle {
-      margin-left: 10px;
-
       .react-toggle-track {
         background-color: var(--foreground-color);
       }
@@ -152,7 +180,8 @@
           background-color: var(--accent-color);
         }
 
-        &:hover:not(.react-toggle--disabled) .react-toggle-track {
+        &:hover:not(.react-toggle--disabled) .react-toggle-track,
+        &.react-toggle--focus .react-toggle-track {
           background-color: var(--accent-color--bright);
         }
       }
@@ -163,12 +192,10 @@
 .tabs-bar__link {
   display: flex;
   flex: 1 1 auto;
-  margin: 0 20px 0 0;
   color: #fff;
   text-decoration: none;
   position: relative;
   align-items: center;
-  padding-right: 4px;
   font-weight: bold;
   transition: 0.1s;
   outline: none;
@@ -178,44 +205,32 @@
     width: 36px;
     margin: 4px 4px 0 0;
     justify-content: center;
-
-    & > span { display: none; }
+    display: none;
   }
 
   > span {
     font-size: 15px;
     line-height: 50px;
     margin-left: 4px;
+    display: none;
+  }
+
+  & + & {
+    margin-left: 20px;
   }
 
   &--search {
-    @media (min-width: 895px) {
+    @media (min-width: 896px) {
       display: none;
     }
   }
 
-  i.fa {
-    font-size: 14px;
-    transform: translate(-1px, -1px);
-    transition: 0.1s;
+  .svg-icon {
+    width: 22px;
+    height: 22px;
 
-    @media screen and (max-width: 895px) {
-      font-size: 20px;
-    }
-
-    &.fa-home {
-      font-size: 18px;
-      transform: translate(-1px, -2px);
-
-      @media screen and (max-width: 895px) {
-        font-size: 26px;
-      }
-    }
-  }
-
-  .icon-with-counter__counter {
-    @media screen and (min-width: 895px) {
-      left: 5px;
+    svg.icon-tabler {
+      stroke-width: 1.5px;
     }
   }
 
@@ -239,8 +254,8 @@
     height: 15px;
     border-radius: 999px;
     z-index: -1;
-    width: calc(100% + 20px);
-    margin-left: -12px;
+    width: calc(100% + 12px);
+    margin-left: -6px;
 
     @media screen and (max-width: 895px) {
       height: 0;
@@ -250,7 +265,8 @@
   }
 
   &.active::before,
-  &:hover::before {
+  &:hover::before,
+  &:focus::before {
     height: 30px;
     opacity: 1;
 
@@ -266,18 +282,42 @@
     margin-right: 30px;
     border: 0;
     height: 40px;
+    width: max-content;
     overflow: hidden;
     padding: 13px 0 0;
     box-sizing: border-box;
     filter: brightness(0%) grayscale(100%) invert(100%);
-    & span { display: none !important; }
+
+    & span {
+      display: none !important;
+    }
 
     img {
       height: 100%;
     }
 
+    .svg-icon {
+      width: 26px;
+      height: 26px;
+      margin: 0 auto;
+
+      svg {
+        fill: currentColor;
+        stroke-width: 1px;
+      }
+    }
+
     &:hover {
       border: 0 !important;
+    }
+
+    /* Move logo to center on mobile */
+    @media screen and (max-width: 450px) {
+      margin: 0 auto;
+      position: absolute;
+      left: 0;
+      right: 0;
+      text-align: center;
     }
   }
 
@@ -309,4 +349,8 @@
       height: 7px;
     }
   }
+}
+
+.tabs-bar__link + .tabs-bar__profile {
+  margin-left: 20px;
 }

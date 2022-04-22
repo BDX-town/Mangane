@@ -1,52 +1,19 @@
-import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import Overlay from 'react-overlays/lib/Overlay';
-import Motion from '../../ui/util/optional_motion';
-import spring from 'react-motion/lib/spring';
+import React from 'react';
+import { defineMessages, injectIntl } from 'react-intl';
+import { withRouter } from 'react-router-dom';
+
+import AutosuggestAccountInput from 'soapbox/components/autosuggest_account_input';
 import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({
   placeholder: { id: 'search.placeholder', defaultMessage: 'Search' },
+  action: { id: 'search.action', defaultMessage: 'Search for “{query}”' },
 });
 
-class SearchPopout extends React.PureComponent {
-
-  static propTypes = {
-    style: PropTypes.object,
-  };
-
-  render() {
-    const { style } = this.props;
-    const extraInformation = <FormattedMessage id='search_popout.tips.full_text' defaultMessage='Simple text returns posts you have written, favorited, reposted, or have been mentioned in, as well as matching usernames, display names, and hashtags.' />;
-    return (
-      <div className='search-popout-container' style={{ ...style, position: 'absolute', zIndex: 1000 }}>
-        <Motion defaultStyle={{ opacity: 0, scaleX: 1, scaleY: 1 }} style={{ opacity: spring(1, { damping: 35, stiffness: 400 }), scaleX: spring(1, { damping: 35, stiffness: 400 }), scaleY: spring(1, { damping: 35, stiffness: 400 }) }}>
-          {({ opacity, scaleX, scaleY }) => (
-            <div className='search-popout' style={{ opacity: opacity, transform: `scale(${scaleX}, ${scaleY})` }}>
-              <h4><FormattedMessage id='search_popout.search_format' defaultMessage='Advanced search format' /></h4>
-              <ul>
-                <li><em>#example</em> <FormattedMessage id='search_popout.tips.hashtag' defaultMessage='hashtag' /></li>
-                <li><em>@username</em> <FormattedMessage id='search_popout.tips.user' defaultMessage='user' /></li>
-                <li><em>URL</em> <FormattedMessage id='search_popout.tips.user' defaultMessage='user' /></li>
-                <li><em>URL</em> <FormattedMessage id='search_popout.tips.status' defaultMessage='post' /></li>
-              </ul>
-              {extraInformation}
-            </div>
-          )}
-        </Motion>
-      </div>
-    );
-  }
-
-}
-
-export default @injectIntl
+export default @injectIntl @withRouter
 class Search extends React.PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object.isRequired,
-  };
 
   static propTypes = {
     value: PropTypes.string.isRequired,
@@ -55,9 +22,18 @@ class Search extends React.PureComponent {
     onSubmit: PropTypes.func.isRequired,
     onClear: PropTypes.func.isRequired,
     onShow: PropTypes.func.isRequired,
+    onSelected: PropTypes.func,
     openInRoute: PropTypes.bool,
+    autoFocus: PropTypes.bool,
+    autosuggest: PropTypes.bool,
     intl: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
   };
+
+  static defaultProps = {
+    autoFocus: false,
+    ausosuggest: false,
+  }
 
   state = {
     expanded: false,
@@ -75,15 +51,18 @@ class Search extends React.PureComponent {
     }
   }
 
-  handleKeyUp = (e) => {
+  handleSubmit = () => {
+    this.props.onSubmit();
+
+    if (this.props.openInRoute) {
+      this.props.history.push('/search');
+    }
+  }
+
+  handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-
-      this.props.onSubmit();
-
-      if (this.props.openInRoute) {
-        this.context.router.history.push('/search');
-      }
+      this.handleSubmit();
     } else if (e.key === 'Escape') {
       document.querySelector('.ui').parentElement.focus();
     }
@@ -98,33 +77,51 @@ class Search extends React.PureComponent {
     this.setState({ expanded: false });
   }
 
+  handleSelected = accountId => {
+    const { onSelected } = this.props;
+
+    if (onSelected) {
+      onSelected(accountId, this.props.history);
+    }
+  }
+
+  makeMenu = () => {
+    const { intl, value } = this.props;
+
+    return [
+      { text: intl.formatMessage(messages.action, { query: value }), icon: require('@tabler/icons/icons/search.svg'), action: this.handleSubmit },
+    ];
+  }
+
   render() {
-    const { intl, value, submitted } = this.props;
-    const { expanded } = this.state;
+    const { intl, value, autoFocus, autosuggest, submitted } = this.props;
     const hasValue = value.length > 0 || submitted;
+
+    const Component = autosuggest ? AutosuggestAccountInput : 'input';
 
     return (
       <div className='search'>
         <label>
           <span style={{ display: 'none' }}>{intl.formatMessage(messages.placeholder)}</span>
-          <input
+          <Component
             className='search__input'
             type='text'
             placeholder={intl.formatMessage(messages.placeholder)}
             value={value}
             onChange={this.handleChange}
-            onKeyUp={this.handleKeyUp}
+            onKeyDown={this.handleKeyDown}
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
+            onSelected={this.handleSelected}
+            autoFocus={autoFocus}
+            autoSelect={false}
+            menu={this.makeMenu()}
           />
         </label>
         <div role='button' tabIndex='0' className='search__icon' onClick={this.handleClear}>
-          <Icon id='search' className={hasValue ? '' : 'active'} />
-          <Icon id='times-circle' className={hasValue ? 'active' : ''} aria-label={intl.formatMessage(messages.placeholder)} />
+          <Icon src={require('@tabler/icons/icons/search.svg')} className={classNames('svg-icon--search', { active: !hasValue })} />
+          <Icon src={require('@tabler/icons/icons/backspace.svg')} className={classNames('svg-icon--backspace', { active: hasValue })} aria-label={intl.formatMessage(messages.placeholder)} />
         </div>
-        <Overlay show={expanded && !hasValue} placement='bottom' target={this}>
-          <SearchPopout />
-        </Overlay>
       </div>
     );
   }

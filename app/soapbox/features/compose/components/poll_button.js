@@ -1,17 +1,13 @@
-import React from 'react';
-import IconButton from '../../../components/icon_button';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
+
+import IconButton from '../../../components/icon_button';
 
 const messages = defineMessages({
   add_poll: { id: 'poll_button.add_poll', defaultMessage: 'Add a poll' },
   remove_poll: { id: 'poll_button.remove_poll', defaultMessage: 'Remove poll' },
 });
-
-const iconStyle = {
-  height: null,
-  lineHeight: '27px',
-};
 
 export default
 @injectIntl
@@ -39,14 +35,11 @@ class PollButton extends React.PureComponent {
     return (
       <div className='compose-form__poll-button'>
         <IconButton
-          icon='bar-chart'
+          className={`compose-form__poll-button-icon ${active ? 'active' : ''}`}
+          src={require('@tabler/icons/icons/chart-bar.svg')}
           title={intl.formatMessage(active ? messages.remove_poll : messages.add_poll)}
           disabled={disabled}
           onClick={this.handleClick}
-          className={`compose-form__poll-button-icon ${active ? 'active' : ''}`}
-          size={18}
-          inverted
-          style={iconStyle}
         />
       </div>
     );

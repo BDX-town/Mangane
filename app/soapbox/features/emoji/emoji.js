@@ -1,9 +1,10 @@
-import unicodeMapping from './emoji_unicode_mapping_light';
 import Trie from 'substring-trie';
 
-const trie = new Trie(Object.keys(unicodeMapping));
+import { joinPublicPath } from 'soapbox/utils/static';
 
-const assetHost = process.env.CDN_HOST || '';
+import unicodeMapping from './emoji_unicode_mapping_light';
+
+const trie = new Trie(Object.keys(unicodeMapping));
 
 const emojify = (str, customEmojis = {}, autoplay = false) => {
   const tagCharsWithoutEmojis = '<&';
@@ -18,6 +19,8 @@ const emojify = (str, customEmojis = {}, autoplay = false) => {
     if (i === str.length) {
       break;
     } else if (str[i] === ':') {
+      // FIXME: This is insane.
+      /* eslint-disable no-loop-func */
       if (!(() => {
         rend = str.indexOf(':', i + 1) + 1;
         if (!rend) return false; // no pair of ':'
@@ -33,6 +36,7 @@ const emojify = (str, customEmojis = {}, autoplay = false) => {
         }
         return false;
       })()) rend = ++i;
+      /* eslint-enable no-loop-func */
     } else if (tag >= 0) { // <, &
       rend = str.indexOf('>;'[tag], i + 1) + 1;
       if (!rend) {
@@ -59,7 +63,8 @@ const emojify = (str, customEmojis = {}, autoplay = false) => {
     } else { // matched to unicode emoji
       const { filename, shortCode } = unicodeMapping[match];
       const title = shortCode ? `:${shortCode}:` : '';
-      replacement = `<img draggable="false" class="emojione" alt="${match}" title="${title}" src="${assetHost}/emoji/${filename}.svg" />`;
+      const src = joinPublicPath(`packs/emoji/${filename}.svg`);
+      replacement = `<img draggable="false" class="emojione" alt="${match}" title="${title}" src="${src}" />`;
       rend = i + match.length;
       // If the matched character was followed by VS15 (for selecting text presentation), skip it.
       if (str.codePointAt(rend) === 65038) {

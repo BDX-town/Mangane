@@ -1,10 +1,21 @@
+import {
+  Map as ImmutableMap,
+  List as ImmutableList,
+  OrderedSet as ImmutableOrderedSet,
+} from 'immutable';
 import { createSelector } from 'reselect';
-import { List as ImmutableList } from 'immutable';
+
+import { getSettings } from 'soapbox/actions/settings';
+import { getDomain } from 'soapbox/utils/accounts';
+import { validId } from 'soapbox/utils/auth';
+import ConfigDB from 'soapbox/utils/config_db';
+import { shouldFilter } from 'soapbox/utils/timelines';
 
 const getAccountBase         = (state, id) => state.getIn(['accounts', id], null);
 const getAccountCounters     = (state, id) => state.getIn(['accounts_counters', id], null);
 const getAccountRelationship = (state, id) => state.getIn(['relationships', id], null);
 const getAccountMoved        = (state, id) => state.getIn(['accounts', state.getIn(['accounts', id, 'moved'])]);
+const getAccountMeta         = (state, id) => state.getIn(['accounts_meta', id], ImmutableMap());
 const getAccountAdminData    = (state, id) => state.getIn(['admin', 'users', id]);
 const getAccountPatron       = (state, id) => {
   const url = state.getIn(['accounts', id, 'url']);
@@ -17,20 +28,54 @@ export const makeGetAccount = () => {
     getAccountCounters,
     getAccountRelationship,
     getAccountMoved,
+    getAccountMeta,
     getAccountAdminData,
     getAccountPatron,
-  ], (base, counters, relationship, moved, admin, patron) => {
+  ], (base, counters, relationship, moved, meta, admin, patron) => {
     if (base === null) {
       return null;
     }
 
-    return base.merge(counters).withMutations(map => {
+    return base.withMutations(map => {
+      map.merge(counters);
+      map.merge(meta);
+      map.set('pleroma', meta.get('pleroma', ImmutableMap()).merge(base.get('pleroma', ImmutableMap()))); // Lol, thanks Pleroma
       map.set('relationship', relationship);
       map.set('moved', moved);
       map.set('patron', patron);
       map.setIn(['pleroma', 'admin'], admin);
     });
   });
+};
+
+const findAccountsByUsername = (state, username) => {
+  const accounts = state.get('accounts');
+
+  return accounts.filter(account => {
+    return username.toLowerCase() === account.getIn(['acct'], '').toLowerCase();
+  });
+};
+
+export const findAccountByUsername = (state, username) => {
+  const accounts = findAccountsByUsername(state, username);
+
+  if (accounts.size > 1) {
+    const me = state.get('me');
+    const meURL = state.getIn(['accounts', me, 'url']);
+
+    return accounts.find(account => {
+      try {
+        // If more than one account has the same username, try matching its host
+        const { host } = new URL(account.get('url'));
+        const { host: meHost } = new URL(meURL);
+        return host === meHost;
+      } catch {
+        return false;
+      }
+    });
+  } else {
+    return accounts.first();
+  }
 };
 
 const toServerSideType = columnType => {
@@ -120,12 +165,14 @@ export const makeGetStatus = () => {
 const getAlertsBase = state => state.get('alerts');
 
 export const getAlerts = createSelector([getAlertsBase], (base) => {
-  let arr = [];
+  const arr = [];
 
   base.forEach(item => {
     arr.push({
       message: item.get('message'),
       title: item.get('title'),
+      actionLabel: item.get('actionLabel'),
+      actionLink: item.get('actionLink'),
       key: item.get('key'),
       className: `snackbar snackbar--${item.get('severity', 'info')}`,
       activeClassName: 'snackbar--active',
@@ -138,11 +185,12 @@ export const getAlerts = createSelector([getAlertsBase], (base) => {
 
 export const makeGetNotification = () => {
   return createSelector([
-    (_, base)             => base,
-    (state, _, accountId) => state.getIn(['accounts', accountId]),
-    (state, _, __, targetId) => state.getIn(['accounts', targetId]),
-  ], (base, account, target) => {
-    return base.set('account', account).set('target', target);
+    (state, notification) => notification,
+    (state, notification) => state.getIn(['accounts', notification.get('account')]),
+    (state, notification) => state.getIn(['accounts', notification.get('target')]),
+    (state, notification) => state.getIn(['statuses', notification.get('status')]),
+  ], (notification, account, target, status) => {
+    return notification.merge({ account, target, status });
   });
 };
 
@@ -164,8 +212,8 @@ export const getAccountGallery = createSelector([
 export const makeGetChat = () => {
   return createSelector(
     [
-      (state, { id }) => state.getIn(['chats', id]),
-      (state, { id }) => state.getIn(['accounts', state.getIn(['chats', id, 'account'])]),
+      (state, { id }) => state.getIn(['chats', 'items', id]),
+      (state, { id }) => state.getIn(['accounts', state.getIn(['chats', 'items', id, 'account'])]),
       (state, { last_message }) => state.getIn(['chat_messages', last_message]),
     ],
 
@@ -199,15 +247,27 @@ export const makeGetReport = () => {
   );
 };
 
+const getAuthUserIds = createSelector([
+  state => state.getIn(['auth', 'users'], ImmutableMap()),
+], authUsers => {
+  return authUsers.reduce((ids, authUser) => {
+    try {
+      const id = authUser.get('id');
+      return validId(id) ? ids.add(id) : ids;
+    } catch {
+      return ids;
+    }
+  }, ImmutableOrderedSet());
+});
+
 export const makeGetOtherAccounts = () => {
   return createSelector([
     state => state.get('accounts'),
-    state => state.getIn(['auth', 'users']),
+    getAuthUserIds,
     state => state.get('me'),
   ],
-  (accounts, authUsers, me) => {
-    return authUsers
-      .keySeq()
+  (accounts, authUserIds, me) => {
+    return authUserIds
       .reduce((list, id) => {
         if (id === me) return list;
         const account = accounts.get(id);
@@ -215,3 +275,57 @@ export const makeGetOtherAccounts = () => {
       }, ImmutableList());
   });
 };
+
+const getSimplePolicy = createSelector([
+  state => state.getIn(['admin', 'configs'], ImmutableMap()),
+  state => state.getIn(['instance', 'pleroma', 'metadata', 'federation', 'mrf_simple'], ImmutableMap()),
+], (configs, instancePolicy) => {
+  return instancePolicy.merge(ConfigDB.toSimplePolicy(configs));
+});
+
+const getRemoteInstanceFavicon = (state, host) => (
+  state.get('accounts')
+    .find(account => getDomain(account) === host, null, ImmutableMap())
+    .getIn(['pleroma', 'favicon'])
+);
+
+const getRemoteInstanceFederation = (state, host) => (
+  getSimplePolicy(state)
+    .map(hosts => hosts.includes(host))
+);
+
+export const makeGetHosts = () => {
+  return createSelector([getSimplePolicy], (simplePolicy) => {
+    return simplePolicy
+      .deleteAll(['accept', 'reject_deletes', 'report_removal'])
+      .reduce((acc, hosts) => acc.union(hosts), ImmutableOrderedSet())
+      .sort();
+  });
+};
+
+export const makeGetRemoteInstance = () => {
+  return createSelector([
+    (state, host) => host,
+    getRemoteInstanceFavicon,
+    getRemoteInstanceFederation,
+  ], (host, favicon, federation) => {
+    return ImmutableMap({
+      host,
+      favicon,
+      federation,
+    });
+  });
+};
+
+export const makeGetStatusIds = () => createSelector([
+  (state, { type, prefix }) => getSettings(state).get(prefix || type, ImmutableMap()),
+  (state, { type }) => state.getIn(['timelines', type, 'items'], ImmutableOrderedSet()),
+  (state)           => state.get('statuses'),
+  (state)           => state.get('me'),
+], (columnSettings, statusIds, statuses, me) => {
+  return statusIds.filter(id => {
+    const status = statuses.get(id);
+    if (!status) return true;
+    return !shouldFilter(status, columnSettings);
+  });
+});

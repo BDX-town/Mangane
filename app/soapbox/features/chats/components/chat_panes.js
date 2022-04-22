@@ -1,20 +1,29 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import { List as ImmutableList } from 'immutable';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { getSettings } from 'soapbox/actions/settings';
-import ChatList from './chat_list';
 import { FormattedMessage } from 'react-intl';
-import { openChat, toggleMainWindow } from 'soapbox/actions/chats';
-import ChatWindow from './chat_window';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
-import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
-import { List as ImmutableList } from 'immutable';
+import { injectIntl, defineMessages } from 'react-intl';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
+import { openChat, launchChat, toggleMainWindow } from 'soapbox/actions/chats';
+import { getSettings } from 'soapbox/actions/settings';
+import AccountSearch from 'soapbox/components/account_search';
+import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
+import { shortNumberFormat } from 'soapbox/utils/numbers';
+
+import ChatList from './chat_list';
+import ChatWindow from './chat_window';
+
+const messages = defineMessages({
+  searchPlaceholder: { id: 'chats.search_placeholder', defaultMessage: 'Start a chat with…' },
+});
+
 const getChatsUnreadCount = state => {
-  const chats = state.get('chats');
+  const chats = state.getIn(['chats', 'items']);
   return chats.reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0);
 };
 
@@ -24,7 +33,7 @@ const normalizePanes = (chats, panes = ImmutableList()) => (
 );
 
 const makeNormalizeChatPanes = () => createSelector([
-  state => state.get('chats'),
+  state => state.getIn(['chats', 'items']),
   state => getSettings(state).getIn(['chats', 'panes']),
 ], normalizePanes);
 
@@ -43,16 +52,24 @@ const makeMapStateToProps = () => {
 };
 
 export default @connect(makeMapStateToProps)
+@injectIntl
+@withRouter
 class ChatPanes extends ImmutablePureComponent {
 
   static propTypes = {
+    intl: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     mainWindowState: PropTypes.string,
     panes: ImmutablePropTypes.list,
+    history: PropTypes.object,
   }
 
   handleClickChat = (chat) => {
     this.props.dispatch(openChat(chat.get('id')));
+  }
+
+  handleSuggestion = accountId => {
+    this.props.dispatch(launchChat(accountId, this.props.history));
   }
 
   handleMainWindowToggle = () => {
@@ -60,7 +77,7 @@ class ChatPanes extends ImmutablePureComponent {
   }
 
   render() {
-    const { panes, mainWindowState, unreadCount } = this.props;
+    const { intl, panes, mainWindowState, unreadCount } = this.props;
     const open = mainWindowState === 'open';
 
     const mainWindowPane = (
@@ -73,10 +90,17 @@ class ChatPanes extends ImmutablePureComponent {
           <AudioToggle />
         </div>
         <div className='pane__content'>
-          {open && <ChatList
-            onClickChat={this.handleClickChat}
-            emptyMessage={<FormattedMessage id='chat_panels.main_window.empty' defaultMessage="No chats found. To start a chat, visit a user's profile." />}
-          />}
+          {open && (
+            <>
+              <ChatList
+                onClickChat={this.handleClickChat}
+              />
+              <AccountSearch
+                placeholder={intl.formatMessage(messages.searchPlaceholder)}
+                onSelected={this.handleSuggestion}
+              />
+            </>
+          )}
         </div>
       </div>
     );

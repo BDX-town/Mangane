@@ -1,15 +1,18 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages } from 'react-intl';
-import { setupListEditor, clearListSuggestions, resetListEditor } from '../../actions/lists';
-import Account from './components/account';
-import Search from './components/search';
-import EditListForm from './components/edit_list_form';
-import ColumnSubheading from '../ui/components/column_subheading';
+import { connect } from 'react-redux';
+
 import IconButton from 'soapbox/components/icon_button';
+
+import { setupListEditor, clearListSuggestions, resetListEditor } from '../../actions/lists';
+import ColumnSubheading from '../ui/components/column_subheading';
+
+import Account from './components/account';
+import EditListForm from './components/edit_list_form';
+import Search from './components/search';
 
 const mapStateToProps = state => ({
   accountIds: state.getIn(['listEditor', 'accounts', 'items']),
@@ -68,9 +71,9 @@ class ListEditor extends ImmutablePureComponent {
           <h3 className='compose-modal__header__title'>
             {intl.formatMessage(messages.editList)}
           </h3>
-          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} icon='times' onClick={this.onClickClose} size={20} />
+          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={this.onClickClose} />
         </div>
-        <div className='compose-modal__content'>
+        <div className='compose-modal__content list-editor__content'>
           <div className='list-editor'>
             <ColumnSubheading text={intl.formatMessage(messages.changeTitle)} />
             <EditListForm />

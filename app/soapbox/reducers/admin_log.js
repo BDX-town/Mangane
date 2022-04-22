@@ -1,19 +1,21 @@
-import { ADMIN_LOG_FETCH_SUCCESS } from 'soapbox/actions/admin';
 import {
   Map as ImmutableMap,
+  Record as ImmutableRecord,
   OrderedSet as ImmutableOrderedSet,
   fromJS,
 } from 'immutable';
 
-const initialState = ImmutableMap({
+import { ADMIN_LOG_FETCH_SUCCESS } from 'soapbox/actions/admin';
+
+const ReducerRecord = ImmutableRecord({
   items: ImmutableMap(),
   index: ImmutableOrderedSet(),
   total: 0,
 });
 
 const parseItems = items => {
-  let ids = [];
-  let map = {};
+  const ids = [];
+  const map = {};
 
   items.forEach(item => {
     ids.push(item.id);
@@ -33,11 +35,11 @@ const importItems = (state, items, total) => {
   });
 };
 
-export default function admin_log(state = initialState, action) {
+export default function admin_log(state = ReducerRecord(), action) {
   switch(action.type) {
   case ADMIN_LOG_FETCH_SUCCESS:
     return importItems(state, action.items, action.total);
   default:
     return state;
   }
-};
+}

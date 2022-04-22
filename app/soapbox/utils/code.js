@@ -1,6 +1,7 @@
 // @preval
-const pkg = require('../../../package.json');
 const { execSync } = require('child_process');
+
+const pkg = require('../../../package.json');
 
 const shortRepoName = url => new URL(url).pathname.substring(1);
 const trimHash = hash => hash.substring(0, 7);
@@ -33,7 +34,9 @@ const version = pkg => {
 
 module.exports = {
   name: pkg.name,
+  displayName: pkg.displayName,
   url: pkg.repository.url,
   repository: shortRepoName(pkg.repository.url),
   version: version(pkg),
+  homepage: pkg.homepage,
 };

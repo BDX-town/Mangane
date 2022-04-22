@@ -1,11 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
-import { resetPassword } from 'soapbox/actions/auth';
-import { SimpleForm, FieldsGroup, TextInput } from 'soapbox/features/forms';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+
+import { resetPassword } from 'soapbox/actions/security';
 import snackbar from 'soapbox/actions/snackbar';
+import { SimpleForm, FieldsGroup, TextInput } from 'soapbox/features/forms';
 
 const messages = defineMessages({
   nicknameOrEmail: { id: 'password_reset.fields.username_placeholder', defaultMessage: 'Email or username' },

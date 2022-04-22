@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+
 import {
   CONVERSATIONS_MOUNT,
   CONVERSATIONS_UNMOUNT,
@@ -99,4 +100,4 @@ export default function conversations(state = initialState, action) {
   default:
     return state;
   }
-};
+}

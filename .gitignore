@@ -8,10 +8,23 @@
 /.vs/
 yarn-error.log*
 
-/static/packs
-/static/emoji
-/static/index.html
-/static/instance/**
-!/static/instance/**.example
-!/static/instance/**.example.*
-!/static/instance/**.example/**
+/static/
+/static-test/
+/public/
+/dist/
+
+.idea
+.DS_Store
+
+# Custom build files
+/custom/**/*
+!/custom/*
+/custom/*.*
+!/custom/.gitkeep
+!/custom/**/.gitkeep
+
+# surge.sh
+/CNAME
+/AUTH
+/CORS
+/ROUTER

@@ -1,5 +1,6 @@
-import { shouldFilter } from '../timelines';
 import { fromJS } from 'immutable';
+
+import { shouldFilter } from '../timelines';
 
 describe('shouldFilter', () => {
   it('returns false under normal circumstances', () => {

@@ -30,6 +30,10 @@ export function DirectTimeline() {
   return import(/* webpackChunkName: "features/direct_timeline" */'../../direct_timeline');
 }
 
+export function Conversations() {
+  return import(/* webpackChunkName: "features/conversations" */'../../conversations');
+}
+
 export function ListTimeline() {
   return import(/* webpackChunkName: "features/list_timeline" */'../../list_timeline');
 }
@@ -90,14 +94,6 @@ export function Following() {
   return import(/* webpackChunkName: "features/following" */'../../following');
 }
 
-export function Reblogs() {
-  return import(/* webpackChunkName: "features/reblogs" */'../../reblogs');
-}
-
-export function Favourites() {
-  return import(/* webpackChunkName: "features/favourites" */'../../favourites');
-}
-
 export function FollowRequests() {
   return import(/* webpackChunkName: "features/follow_requests" */'../../follow_requests');
 }
@@ -146,8 +142,84 @@ export function Audio() {
   return import(/* webpackChunkName: "features/audio" */'../../audio');
 }
 
+export function MediaModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/media_modal');
+}
+
+export function VideoModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/video_modal');
+}
+
+export function BoostModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/boost_modal');
+}
+
+export function ConfirmationModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/confirmation_modal');
+}
+
+export function MissingDescriptionModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/missing_description_modal');
+}
+
+export function ActionsModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/actions_modal');
+}
+
+export function FocalPointModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/focal_point_modal');
+}
+
+export function HotkeysModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/hotkeys_modal');
+}
+
+export function ComposeModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/compose_modal');
+}
+
+export function ReplyMentionsModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/reply_mentions_modal');
+}
+
+export function UnauthorizedModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/unauthorized_modal');
+}
+
+export function EditFederationModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/edit_federation_modal');
+}
+
 export function EmbedModal() {
   return import(/* webpackChunkName: "modals/embed_modal" */'../components/embed_modal');
+}
+
+export function ComponentModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/component_modal');
+}
+
+export function ReblogsModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/reblogs_modal');
+}
+
+export function FavouritesModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/favourites_modal');
+}
+
+export function ReactionsModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/reactions_modal');
+}
+
+export function MentionsModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/mentions_modal');
+}
+
+export function BirthdaysModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/birthdays_modal');
+}
+
+export function AccountNoteModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/account_note_modal');
 }
 
 export function ListEditor() {
@@ -170,6 +242,10 @@ export function LoginPage() {
   return import(/* webpackChunkName: "features/auth_login" */'../../auth_login/components/login_page');
 }
 
+export function ExternalLogin() {
+  return import(/* webpackChunkName: "features/external_login" */'../../external_login');
+}
+
 export function Preferences() {
   return import(/* webpackChunkName: "features/preferences" */'../../preferences');
 }
@@ -180,6 +256,10 @@ export function EditProfile() {
 
 export function SoapboxConfig() {
   return import(/* webpackChunkName: "features/soapbox_config" */'../../soapbox_config');
+}
+
+export function ExportData() {
+  return import(/* webpackChunkName: "features/export_data" */ '../../export_data');
 }
 
 export function ImportData() {
@@ -234,8 +314,92 @@ export function ModerationLog() {
   return import(/* webpackChunkName: "features/admin/moderation_log" */'../../admin/moderation_log');
 }
 
+export function UserPanel() {
+  return import(/* webpackChunkName: "features/ui" */'../components/user_panel');
+}
+
+export function FeaturesPanel() {
+  return import(/* webpackChunkName: "features/ui" */'../components/features_panel');
+}
+
+export function PromoPanel() {
+  return import(/* webpackChunkName: "features/ui" */'../components/promo_panel');
+}
+
+export function SignUpPanel() {
+  return import(/* webpackChunkName: "features/ui" */'../components/sign_up_panel');
+}
+
+export function FundingPanel() {
+  return import(/* webpackChunkName: "features/ui" */'../components/funding_panel');
+}
+
+export function TrendsPanel() {
+  return import(/* webpackChunkName: "features/trends" */'../components/trends_panel');
+}
+
+export function ProfileInfoPanel() {
+  return import(/* webpackChunkName: "features/account_timeline" */'../components/profile_info_panel');
+}
+
+export function ProfileMediaPanel() {
+  return import(/* webpackChunkName: "features/account_gallery" */'../components/profile_media_panel');
+}
+
+export function PinnedAccountsPanel() {
+  return import(/* webpackChunkName: "features/pinned_accounts" */'../components/pinned_accounts_panel');
+}
+
+export function InstanceInfoPanel() {
+  return import(/* webpackChunkName: "features/remote_timeline" */'../components/instance_info_panel');
+}
+
+export function InstanceModerationPanel() {
+  return import(/* webpackChunkName: "features/remote_timeline" */'../components/instance_moderation_panel');
+}
+
+export function LatestAccountsPanel() {
+  return import(/* webpackChunkName: "features/admin" */'../../admin/components/latest_accounts_panel');
+}
+
+export function AdminNav() {
+  return import(/* webpackChunkName: "features/admin" */'../../admin/components/admin_nav');
+}
+
+export function SidebarMenu() {
+  return import(/* webpackChunkName: "features/ui" */'../../../components/sidebar_menu');
+}
+
+export function UploadArea() {
+  return import(/* webpackChunkName: "features/compose" */'../components/upload_area');
+}
+
+export function NotificationsContainer() {
+  return import(/* webpackChunkName: "features/ui" */'../containers/notifications_container');
+}
+
+export function ModalContainer() {
+  return import(/* webpackChunkName: "features/ui" */'../containers/modal_container');
+}
+
+export function ProfileHoverCard() {
+  return import(/* webpackChunkName: "features/ui" */'soapbox/components/profile_hover_card');
+}
+
 export function CryptoDonate() {
   return import(/* webpackChunkName: "features/crypto_donate" */'../../crypto_donate');
+}
+
+export function CryptoDonatePanel() {
+  return import(/* webpackChunkName: "features/crypto_donate" */'../../crypto_donate/components/crypto_donate_panel');
+}
+
+export function CryptoAddress() {
+  return import(/* webpackChunkName: "features/crypto_donate" */'../../crypto_donate/components/crypto_address');
+}
+
+export function CryptoDonateModal() {
+  return import(/* webpackChunkName: "features/crypto_donate" */'../components/crypto_donate_modal');
 }
 
 export function ScheduledStatuses() {
@@ -244,4 +408,64 @@ export function ScheduledStatuses() {
 
 export function UserIndex() {
   return import(/* webpackChunkName: "features/admin/user_index" */'../../admin/user_index');
+}
+
+export function FederationRestrictions() {
+  return import(/* webpackChunkName: "features/federation_restrictions" */'../../federation_restrictions');
+}
+
+export function Aliases() {
+  return import(/* webpackChunkName: "features/aliases" */'../../aliases');
+}
+
+export function Migration() {
+  return import(/* webpackChunkName: "features/migration" */'../../migration');
+}
+
+export function ScheduleForm() {
+  return import(/* webpackChunkName: "features/compose" */'../../compose/components/schedule_form');
+}
+
+export function WhoToFollowPanel() {
+  return import(/* webpackChunkName: "features/follow_recommendations" */'../components/who_to_follow_panel');
+}
+
+export function FollowRecommendations() {
+  return import(/* webpackChunkName: "features/follow_recommendations" */'../../follow_recommendations');
+}
+
+export function Directory() {
+  return import(/* webpackChunkName: "features/directory" */'../../directory');
+}
+
+export function RegisterInvite() {
+  return import(/* webpackChunkName: "features/register_invite" */'../../register_invite');
+}
+
+export function Share() {
+  return import(/* webpackChunkName: "features/share" */'../../share');
+}
+
+export function NewStatus() {
+  return import(/* webpackChunkName: "features/new_status" */'../../new_status');
+}
+
+export function IntentionalError() {
+  return import(/* webpackChunkName: "error" */'../../intentional_error');
+}
+
+export function Developers() {
+  return import(/* webpackChunkName: "features/developers" */'../../developers');
+}
+
+export function CreateApp() {
+  return import(/* webpackChunkName: "features/developers" */'../../developers/apps/create');
+}
+
+export function SettingsStore() {
+  return import(/* webpackChunkName: "features/developers" */'../../developers/settings_store');
+}
+
+export function DatePicker() {
+  return import(/* webpackChunkName: "date_picker" */'../../birthdays/date_picker');
 }

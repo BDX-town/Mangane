@@ -1,4 +1,21 @@
 import {
+  Map as ImmutableMap,
+  List as ImmutableList,
+  OrderedSet as ImmutableOrderedSet,
+  fromJS,
+} from 'immutable';
+
+import {
+  ACCOUNT_BLOCK_SUCCESS,
+  ACCOUNT_MUTE_SUCCESS,
+  ACCOUNT_UNFOLLOW_SUCCESS,
+} from '../actions/accounts';
+import { GROUP_REMOVE_STATUS_SUCCESS } from '../actions/groups';
+import {
+  STATUS_CREATE_REQUEST,
+  STATUS_CREATE_SUCCESS,
+} from '../actions/statuses';
+import {
   TIMELINE_UPDATE,
   TIMELINE_DELETE,
   TIMELINE_CLEAR,
@@ -12,18 +29,6 @@ import {
   MAX_QUEUED_ITEMS,
   TIMELINE_SCROLL_TOP,
 } from '../actions/timelines';
-import {
-  ACCOUNT_BLOCK_SUCCESS,
-  ACCOUNT_MUTE_SUCCESS,
-  ACCOUNT_UNFOLLOW_SUCCESS,
-} from '../actions/accounts';
-import {
-  Map as ImmutableMap,
-  List as ImmutableList,
-  OrderedSet as ImmutableOrderedSet,
-  fromJS,
-} from 'immutable';
-import { GROUP_REMOVE_STATUS_SUCCESS } from '../actions/groups';
 
 const TRUNCATE_LIMIT = 40;
 const TRUNCATE_SIZE  = 20;
@@ -64,11 +69,17 @@ const setLoading = (state, timelineId, loading) => {
   return state.update(timelineId, initialTimeline, timeline => timeline.set('isLoading', loading));
 };
 
+// Keep track of when a timeline failed to load
+const setFailed = (state, timelineId, failed) => {
+  return state.update(timelineId, initialTimeline, timeline => timeline.set('loadingFailed', failed));
+};
+
 const expandNormalizedTimeline = (state, timelineId, statuses, next, isPartial, isLoadingRecent) => {
   const newIds = getStatusIds(statuses);
 
   return state.update(timelineId, initialTimeline, timeline => timeline.withMutations(timeline => {
     timeline.set('isLoading', false);
+    timeline.set('loadingFailed', false);
     timeline.set('isPartial', isPartial);
 
     if (!next && !isLoadingRecent) timeline.set('hasMore', false);
@@ -215,16 +226,90 @@ const timelineDisconnect = (state, timelineId) => {
     const items = timeline.get('items', ImmutableOrderedSet());
     if (items.isEmpty()) return;
 
-    timeline.set('items', addStatusId(items, null));
+    // This is causing problems. Disable for now.
+    // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/716
+    // timeline.set('items', addStatusId(items, null));
   }));
+};
+
+const getTimelinesByVisibility = visibility => {
+  switch(visibility) {
+  case 'direct':
+    return ['direct'];
+  case 'public':
+    return ['home', 'community', 'public'];
+  default:
+    return ['home'];
+  }
+};
+
+// Given an OrderedSet of IDs, replace oldId with newId maintaining its position
+const replaceId = (ids, oldId, newId) => {
+  const list = ImmutableList(ids);
+  const index = list.indexOf(oldId);
+
+  if (index > -1) {
+    return ImmutableOrderedSet(list.set(index, newId));
+  } else {
+    return ids;
+  }
+};
+
+const importPendingStatus = (state, params, idempotencyKey) => {
+  const statusId = `末pending-${idempotencyKey}`;
+
+  return state.withMutations(state => {
+    const timelineIds = getTimelinesByVisibility(params.visibility);
+
+    timelineIds.forEach(timelineId => {
+      updateTimelineQueue(state, timelineId, statusId);
+    });
+  });
+};
+
+const replacePendingStatus = (state, idempotencyKey, newId) => {
+  const oldId = `末pending-${idempotencyKey}`;
+
+  // Loop through timelines and replace the pending status with the real one
+  return state.withMutations(state => {
+    state.keySeq().forEach(timelineId => {
+      state.updateIn([timelineId, 'items'], ids => replaceId(ids, oldId, newId));
+      state.updateIn([timelineId, 'queuedItems'], ids => replaceId(ids, oldId, newId));
+    });
+  });
+};
+
+const importStatus = (state, status, idempotencyKey) => {
+  return state.withMutations(state => {
+    replacePendingStatus(state, idempotencyKey, status.id);
+
+    const timelineIds = getTimelinesByVisibility(status.visibility);
+
+    timelineIds.forEach(timelineId => {
+      updateTimeline(state, timelineId, status.id);
+    });
+  });
+};
+
+const handleExpandFail = (state, timelineId) => {
+  return state.withMutations(state => {
+    setLoading(state, timelineId, false);
+    setFailed(state, timelineId, true);
+  });
 };
 
 export default function timelines(state = initialState, action) {
   switch(action.type) {
+  case STATUS_CREATE_REQUEST:
+    if (action.params.scheduled_at) return state;
+    return importPendingStatus(state, action.params, action.idempotencyKey);
+  case STATUS_CREATE_SUCCESS:
+    if (action.status.scheduled_at) return state;
+    return importStatus(state, action.status, action.idempotencyKey);
   case TIMELINE_EXPAND_REQUEST:
     return setLoading(state, action.timeline, true);
   case TIMELINE_EXPAND_FAIL:
-    return setLoading(state, action.timeline, false);
+    return handleExpandFail(state, action.timeline);
   case TIMELINE_EXPAND_SUCCESS:
     return expandNormalizedTimeline(state, action.timeline, fromJS(action.statuses), action.next, action.partial, action.isLoadingRecent);
   case TIMELINE_UPDATE:
@@ -253,4 +338,4 @@ export default function timelines(state = initialState, action) {
   default:
     return state;
   }
-};
+}

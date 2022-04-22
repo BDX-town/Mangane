@@ -1,8 +1,11 @@
-import { importFetchedStatus, importFetchedStatuses } from './importer';
-import api, { getLinks } from '../api';
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+
 import { getSettings } from 'soapbox/actions/settings';
 import { shouldFilter } from 'soapbox/utils/timelines';
+
+import api, { getLinks } from '../api';
+
+import { importFetchedStatus, importFetchedStatuses } from './importer';
 
 export const TIMELINE_UPDATE  = 'TIMELINE_UPDATE';
 export const TIMELINE_DELETE  = 'TIMELINE_DELETE';
@@ -22,15 +25,26 @@ export const MAX_QUEUED_ITEMS = 40;
 
 export function processTimelineUpdate(timeline, status, accept) {
   return (dispatch, getState) => {
+    const me = getState().get('me');
+    const ownStatus = status.account?.id === me;
+    const hasPendingStatuses = !getState().get('pending_statuses').isEmpty();
+
     const columnSettings = getSettings(getState()).get(timeline, ImmutableMap());
     const shouldSkipQueue = shouldFilter(fromJS(status), columnSettings);
+
+    if (ownStatus && hasPendingStatuses) {
+      // WebSockets push statuses without the Idempotency-Key,
+      // so if we have pending statuses, don't import it from here.
+      // We implement optimistic non-blocking statuses.
+      return;
+    }
 
     dispatch(importFetchedStatus(status));
 
     if (shouldSkipQueue) {
-      return dispatch(updateTimeline(timeline, status.id, accept));
+      dispatch(updateTimeline(timeline, status.id, accept));
     } else {
-      return dispatch(updateTimelineQueue(timeline, status.id, accept));
+      dispatch(updateTimelineQueue(timeline, status.id, accept));
     }
   };
 }
@@ -47,7 +61,7 @@ export function updateTimeline(timeline, statusId, accept) {
       statusId,
     });
   };
-};
+}
 
 export function updateTimelineQueue(timeline, statusId, accept) {
   return dispatch => {
@@ -61,7 +75,7 @@ export function updateTimelineQueue(timeline, statusId, accept) {
       statusId,
     });
   };
-};
+}
 
 export function dequeueTimeline(timelineId, expandFunc, optionalExpandArgs) {
   return (dispatch, getState) => {
@@ -88,7 +102,7 @@ export function dequeueTimeline(timelineId, expandFunc, optionalExpandArgs) {
       }
     }
   };
-};
+}
 
 export function deleteFromTimelines(id) {
   return (dispatch, getState) => {
@@ -104,15 +118,16 @@ export function deleteFromTimelines(id) {
       reblogOf,
     });
   };
-};
+}
 
 export function clearTimeline(timeline) {
   return (dispatch) => {
     dispatch({ type: TIMELINE_CLEAR, timeline });
   };
-};
+}
 
 const noOp = () => {};
+const noOpAsync = () => () => new Promise(f => f());
 
 const parseTags = (tags = {}, mode) => {
   return (tags[mode] || []).map((tag) => {
@@ -127,7 +142,7 @@ export function expandTimeline(timelineId, path, params = {}, done = noOp) {
 
     if (timeline.get('isLoading')) {
       done();
-      return;
+      return dispatch(noOpAsync());
     }
 
     if (!params.max_id && !params.pinned && timeline.get('items', ImmutableOrderedSet()).size > 0) {
@@ -138,7 +153,7 @@ export function expandTimeline(timelineId, path, params = {}, done = noOp) {
 
     dispatch(expandTimelineRequest(timelineId, isLoadingMore));
 
-    api(getState).get(path, { params }).then(response => {
+    return api(getState).get(path, { params }).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedStatuses(response.data));
       dispatch(expandTimelineSuccess(timelineId, response.data, next ? next.uri : null, response.code === 206, isLoadingRecent, isLoadingMore));
@@ -148,7 +163,7 @@ export function expandTimeline(timelineId, path, params = {}, done = noOp) {
       done();
     });
   };
-};
+}
 
 export const expandHomeTimeline            = ({ maxId } = {}, done = noOp) => expandTimeline('home', '/api/v1/timelines/home', { max_id: maxId }, done);
 
@@ -185,7 +200,7 @@ export function expandTimelineRequest(timeline, isLoadingMore) {
     timeline,
     skipLoading: !isLoadingMore,
   };
-};
+}
 
 export function expandTimelineSuccess(timeline, statuses, next, partial, isLoadingRecent, isLoadingMore) {
   return {
@@ -197,7 +212,7 @@ export function expandTimelineSuccess(timeline, statuses, next, partial, isLoadi
     isLoadingRecent,
     skipLoading: !isLoadingMore,
   };
-};
+}
 
 export function expandTimelineFail(timeline, error, isLoadingMore) {
   return {
@@ -206,21 +221,21 @@ export function expandTimelineFail(timeline, error, isLoadingMore) {
     error,
     skipLoading: !isLoadingMore,
   };
-};
+}
 
 export function connectTimeline(timeline) {
   return {
     type: TIMELINE_CONNECT,
     timeline,
   };
-};
+}
 
 export function disconnectTimeline(timeline) {
   return {
     type: TIMELINE_DISCONNECT,
     timeline,
   };
-};
+}
 
 export function scrollTopTimeline(timeline, top) {
   return {
@@ -228,4 +243,4 @@ export function scrollTopTimeline(timeline, top) {
     timeline,
     top,
   };
-};
+}

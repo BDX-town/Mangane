@@ -1,14 +1,17 @@
+import PropTypes from 'prop-types';
 import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from '../ui/components/better_column';
-import ScrollableList from 'soapbox/components/scrollable_list';
+
 import { fetchReports } from 'soapbox/actions/admin';
-import Report from './components/report';
+import ScrollableList from 'soapbox/components/scrollable_list';
 import { makeGetReport } from 'soapbox/selectors';
+
+import Column from '../ui/components/better_column';
+
+import Report from './components/report';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.reports', defaultMessage: 'Reports' },
@@ -44,6 +47,7 @@ class Reports extends ImmutablePureComponent {
     return [{
       text: intl.formatMessage(messages.modlog),
       to: '/admin/log',
+      icon: require('@tabler/icons/icons/list.svg'),
     }];
   }
 

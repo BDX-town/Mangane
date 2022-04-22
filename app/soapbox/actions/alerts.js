@@ -9,18 +9,20 @@ export const ALERT_SHOW    = 'ALERT_SHOW';
 export const ALERT_DISMISS = 'ALERT_DISMISS';
 export const ALERT_CLEAR   = 'ALERT_CLEAR';
 
+const noOp = () => {};
+
 export function dismissAlert(alert) {
   return {
     type: ALERT_DISMISS,
     alert,
   };
-};
+}
 
 export function clearAlert() {
   return {
     type: ALERT_CLEAR,
   };
-};
+}
 
 export function showAlert(title = messages.unexpectedTitle, message = messages.unexpectedMessage, severity = 'info') {
   return {
@@ -29,31 +31,33 @@ export function showAlert(title = messages.unexpectedTitle, message = messages.u
     message,
     severity,
   };
-};
+}
 
 export function showAlertForError(error) {
-  if (error.response) {
-    const { data, status, statusText } = error.response;
+  return (dispatch, getState) => {
+    if (error.response) {
+      const { data, status, statusText } = error.response;
 
-    if (status === 502) {
-      return showAlert('', 'The server is down', 'error');
+      if (status === 502) {
+        return dispatch(showAlert('', 'The server is down', 'error'));
+      }
+
+      if (status === 404 || status === 410) {
+        // Skip these errors as they are reflected in the UI
+        return dispatch(noOp);
+      }
+
+      let message = statusText;
+      const title = `${status}`;
+
+      if (data.error) {
+        message = data.error;
+      }
+
+      return dispatch(showAlert(title, message, 'error'));
+    } else {
+      console.error(error);
+      return dispatch(showAlert(undefined, undefined, 'error'));
     }
-
-    if (status === 404 || status === 410) {
-      // Skip these errors as they are reflected in the UI
-      return {};
-    }
-
-    let message = statusText;
-    let title   = `${status}`;
-
-    if (data.error) {
-      message = data.error;
-    }
-
-    return showAlert(title, message, 'error');
-  } else {
-    console.error(error);
-    return showAlert(undefined, undefined, 'error');
-  }
+  };
 }

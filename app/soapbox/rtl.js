@@ -30,4 +30,4 @@ export function isRtl(text) {
   }
 
   return matches.length / text.length > 0.3;
-};
+}

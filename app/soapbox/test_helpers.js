@@ -1,14 +1,18 @@
 'use strict';
 
-import React from 'react';
-import thunk from 'redux-thunk';
-import renderer from 'react-test-renderer';
-import { Provider } from 'react-redux';
-import { IntlProvider } from 'react-intl';
-import { BrowserRouter } from 'react-router-dom';
-import configureMockStore from 'redux-mock-store';
 import { Map as ImmutableMap } from 'immutable';
+import React from 'react';
+import { IntlProvider } from 'react-intl';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import renderer from 'react-test-renderer';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
 import rootReducer from 'soapbox/reducers';
+
+export const rootState = rootReducer(undefined, {});
+export const getState = () => rootState;
 
 // Mock Redux
 // https://redux.js.org/recipes/writing-tests/
@@ -19,7 +23,7 @@ export const mockStore = configureMockStore(middlewares);
 export const createComponent = (children, props = {}) => {
   props = ImmutableMap({
     locale: 'en',
-    store: mockStore(rootReducer(ImmutableMap(), {})),
+    store: mockStore(rootState),
   }).merge(props);
 
   return renderer.create(
@@ -31,4 +35,9 @@ export const createComponent = (children, props = {}) => {
       </IntlProvider>
     </Provider>,
   );
+};
+
+// Apply actions to the state, one at a time
+export const applyActions = (state, actions, reducer) => {
+  return actions.reduce((state, action) => reducer(state, action), state);
 };

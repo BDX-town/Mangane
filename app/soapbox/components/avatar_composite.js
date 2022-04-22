@@ -1,6 +1,7 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+
 import StillImage from 'soapbox/components/still_image';
 
 export default class AvatarComposite extends React.PureComponent {

@@ -1,5 +1,7 @@
 /node_modules/**
 /static/**
+/static-test/**
+/public/**
 /tmp/**
 /coverage/**
 !.eslintrc.js

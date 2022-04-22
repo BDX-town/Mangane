@@ -1,7 +1,10 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import Bowser from 'bowser';
+
+import Icon from 'soapbox/components/icon';
+import { captureException } from 'soapbox/monitoring';
+import sourceCode from 'soapbox/utils/code';
 
 export default class ErrorBoundary extends React.PureComponent {
 
@@ -15,11 +18,21 @@ export default class ErrorBoundary extends React.PureComponent {
   }
 
   componentDidCatch(error, info) {
+    captureException(error);
+
     this.setState({
       hasError: true,
       error,
       componentStack: info && info.componentStack,
     });
+
+    import(/* webpackChunkName: "error" */'bowser')
+      .then(({ default: Bowser }) => {
+        this.setState({
+          browser: Bowser.getParser(window.navigator.userAgent),
+        });
+      })
+      .catch(() => {});
   }
 
   setTextareaRef = c => {
@@ -46,9 +59,7 @@ export default class ErrorBoundary extends React.PureComponent {
   }
 
   render() {
-    const browser = Bowser.getParser(window.navigator.userAgent);
-
-    const { hasError } = this.state;
+    const { browser, hasError } = this.state;
 
     if (!hasError) {
       return this.props.children;
@@ -59,12 +70,14 @@ export default class ErrorBoundary extends React.PureComponent {
     return (
       <div className='error-boundary'>
         <div>
-          <i className='fa fa-frown-o' aria-hidden='true' />
+          <Icon src={require('@tabler/icons/icons/mood-sad.svg')} className='sad-face' />
           <FormattedMessage id='alert.unexpected.message' defaultMessage='An unexpected error occurred.' />
-          <a href='/' className='return-home'>
-            <i className='fa fa-reply' aria-hidden='true' />&nbsp;
-            <FormattedMessage id='alert.unexpected.return_home' defaultMessage='Return Home' />
-          </a>
+          <div className='return-home'>
+            <a href='/'>
+              <Icon src={require('@tabler/icons/icons/arrow-back.svg')} />
+              <FormattedMessage id='alert.unexpected.return_home' defaultMessage='Return Home' />
+            </a>
+          </div>
           {errorText && <textarea
             ref={this.setTextareaRef}
             className='error-boundary__component-stack'
@@ -72,9 +85,10 @@ export default class ErrorBoundary extends React.PureComponent {
             onClick={this.handleCopy}
             readOnly
           />}
-          <p className='error-boundary__browser'>
+          {browser && <p className='error-boundary__browser'>
             {browser.getBrowserName()} {browser.getBrowserVersion()}
-          </p>
+          </p>}
+          <p className='error-boundary__version'>{sourceCode.displayName} {sourceCode.version}</p>
           <p className='help-text'>
             <FormattedMessage
               id='alert.unexpected.help_text'

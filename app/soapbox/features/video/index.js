@@ -1,15 +1,17 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { fromJS, is } from 'immutable';
-import { throttle } from 'lodash';
 import classNames from 'classnames';
-import { isFullscreen, requestFullscreen, exitFullscreen } from '../ui/util/fullscreen';
-import Icon from 'soapbox/components/icon';
-import Blurhash from 'soapbox/components/blurhash';
-import { isPanoramic, isPortrait, minimumAspectRatio, maximumAspectRatio } from '../../utils/media_aspect_ratio';
+import { fromJS, is } from 'immutable';
+import { throttle, debounce } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
 import { getSettings } from 'soapbox/actions/settings';
+import Blurhash from 'soapbox/components/blurhash';
+import Icon from 'soapbox/components/icon';
+
+import { isPanoramic, isPortrait, minimumAspectRatio, maximumAspectRatio } from '../../utils/media_aspect_ratio';
+import { isFullscreen, requestFullscreen, exitFullscreen } from '../ui/util/fullscreen';
 
 const messages = defineMessages({
   play: { id: 'video.play', defaultMessage: 'Play' },
@@ -88,6 +90,14 @@ export const getPointerPosition = (el, event) => {
   return position;
 };
 
+export const fileNameFromURL = str => {
+  const url      = new URL(str);
+  const pathname = url.pathname;
+  const index    = pathname.lastIndexOf('/');
+
+  return pathname.substring(index + 1);
+};
+
 const mapStateToProps = state => ({
   displayMedia: getSettings(state).get('displayMedia'),
 });
@@ -131,24 +141,24 @@ class Video extends React.PureComponent {
     revealed: this.props.visible !== undefined ? this.props.visible : (this.props.displayMedia !== 'hide_all' && !this.props.sensitive || this.props.displayMedia === 'show_all'),
   };
 
-  // hard coded in components.scss
-  // any way to get ::before values programatically?
-  volWidth = 50;
-  volOffset = 70;
-  volHandleOffset = v => {
-    const offset = v * this.volWidth + this.volOffset;
-    return (offset > 110) ? 110 : offset;
-  }
-
   setPlayerRef = c => {
     this.player = c;
 
-    if (c) {
-      if (this.props.cacheWidth) this.props.cacheWidth(this.player.offsetWidth);
-      this.setState({
-        containerWidth: c.offsetWidth,
-      });
+    if (this.player) {
+      this._setDimensions();
     }
+  }
+
+  _setDimensions() {
+    const width = this.player.offsetWidth;
+
+    if (this.props.cacheWidth) {
+      this.props.cacheWidth(width);
+    }
+
+    this.setState({
+      containerWidth: width,
+    });
   }
 
   setVideoRef = c => {
@@ -204,16 +214,17 @@ class Video extends React.PureComponent {
   }
 
   handleMouseVolSlide = throttle(e => {
-    const rect = this.volume.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / this.volWidth; //x position within the element.
+    const { x } = getPointerPosition(this.volume, e);
 
     if(!isNaN(x)) {
-      var slideamt = x;
+      let slideamt = x;
+
       if(x > 1) {
         slideamt = 1;
       } else if(x < 0) {
         slideamt = 0;
       }
+
       this.video.volume = slideamt;
       this.setState({ volume: slideamt });
     }
@@ -253,11 +264,86 @@ class Video extends React.PureComponent {
     }
   }, 60);
 
+  seekBy(time) {
+    const currentTime = this.video.currentTime + time;
+
+    if (!isNaN(currentTime)) {
+      this.setState({ currentTime }, () => {
+        this.video.currentTime = currentTime;
+      });
+    }
+  }
+
+  handleVideoKeyDown = e => {
+    // On the video element or the seek bar, we can safely use the space bar
+    // for playback control because there are no buttons to press
+
+    if (e.key === ' ') {
+      e.preventDefault();
+      e.stopPropagation();
+      this.togglePlay();
+    }
+  }
+
+  handleKeyDown = e => {
+    const frameTime = 1 / 25;
+
+    switch(e.key) {
+    case 'k':
+      e.preventDefault();
+      e.stopPropagation();
+      this.togglePlay();
+      break;
+    case 'm':
+      e.preventDefault();
+      e.stopPropagation();
+      this.toggleMute();
+      break;
+    case 'f':
+      e.preventDefault();
+      e.stopPropagation();
+      this.toggleFullscreen();
+      break;
+    case 'j':
+      e.preventDefault();
+      e.stopPropagation();
+      this.seekBy(-10);
+      break;
+    case 'l':
+      e.preventDefault();
+      e.stopPropagation();
+      this.seekBy(10);
+      break;
+    case ',':
+      e.preventDefault();
+      e.stopPropagation();
+      this.seekBy(-frameTime);
+      break;
+    case '.':
+      e.preventDefault();
+      e.stopPropagation();
+      this.seekBy(frameTime);
+      break;
+    }
+
+    // If we are in fullscreen mode, we don't want any hotkeys
+    // interacting with the UI that's not visible
+
+    if (this.state.fullscreen) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (e.key === 'Escape') {
+        exitFullscreen();
+      }
+    }
+  }
+
   togglePlay = () => {
     if (this.state.paused) {
-      this.video.play();
+      this.setState({ paused: false }, () => this.video.play());
     } else {
-      this.video.pause();
+      this.setState({ paused: true }, () => this.video.pause());
     }
   }
 
@@ -274,9 +360,15 @@ class Video extends React.PureComponent {
     document.addEventListener('webkitfullscreenchange', this.handleFullscreenChange, true);
     document.addEventListener('mozfullscreenchange', this.handleFullscreenChange, true);
     document.addEventListener('MSFullscreenChange', this.handleFullscreenChange, true);
+
+    window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('resize', this.handleResize, { passive: true });
   }
 
   componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('resize', this.handleResize);
+
     document.removeEventListener('fullscreenchange', this.handleFullscreenChange, true);
     document.removeEventListener('webkitfullscreenchange', this.handleFullscreenChange, true);
     document.removeEventListener('mozfullscreenchange', this.handleFullscreenChange, true);
@@ -295,6 +387,27 @@ class Video extends React.PureComponent {
     }
   }
 
+  handleResize = debounce(() => {
+    if (this.player) {
+      this._setDimensions();
+    }
+  }, 250, {
+    trailing: true,
+  });
+
+  handleScroll = throttle(() => {
+    if (!this.video) {
+      return;
+    }
+
+    const { top, height } = this.video.getBoundingClientRect();
+    const inView = (top <= (window.innerHeight || document.documentElement.clientHeight)) && (top + height >= 0);
+
+    if (!this.state.paused && !inView) {
+      this.setState({ paused: true }, () => this.video.pause());
+    }
+  }, 150, { trailing: true })
+
   handleFullscreenChange = () => {
     this.setState({ fullscreen: isFullscreen() });
   }
@@ -308,8 +421,11 @@ class Video extends React.PureComponent {
   }
 
   toggleMute = () => {
-    this.video.muted = !this.video.muted;
-    this.setState({ muted: this.video.muted });
+    const muted = !this.video.muted;
+
+    this.setState({ muted }, () => {
+      this.video.muted = muted;
+    });
   }
 
   toggleReveal = () => {
@@ -411,6 +527,7 @@ class Video extends React.PureComponent {
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
         onClick={this.handleClickRoot}
+        onKeyDown={this.handleKeyDown}
         tabIndex={0}
       >
         <Blurhash
@@ -433,6 +550,7 @@ class Video extends React.PureComponent {
           height={height || 300}
           volume={volume}
           onClick={this.togglePlay}
+          onKeyDown={this.handleVideoKeyDown}
           onPlay={this.handlePlay}
           onPause={this.handlePause}
           onTimeUpdate={this.handleTimeUpdate}
@@ -441,7 +559,7 @@ class Video extends React.PureComponent {
           onVolumeChange={this.handleVolumeChange}
         />}
 
-        <div className={classNames('spoiler-button', { 'spoiler-button--hidden': revealed })}>
+        <div className={classNames('spoiler-button', { 'spoiler-button--hidden': !sensitive || revealed })}>
           <button type='button' className='spoiler-button__overlay' onClick={this.toggleReveal}>
             <span className='spoiler-button__overlay__label'>{warning}</span>
           </button>
@@ -456,13 +574,14 @@ class Video extends React.PureComponent {
               className={classNames('video-player__seek__handle', { active: dragging })}
               tabIndex='0'
               style={{ left: `${progress}%` }}
+              onKeyDown={this.handleVideoKeyDown}
             />
           </div>
 
           <div className='video-player__buttons-bar'>
             <div className='video-player__buttons left'>
-              <button type='button' aria-label={intl.formatMessage(paused ? messages.play : messages.pause)} className='player-button' onClick={this.togglePlay}><Icon id={paused ? 'play' : 'pause'} fixedWidth /></button>
-              <button type='button' aria-label={intl.formatMessage(muted ? messages.unmute : messages.mute)} className='player-button' onClick={this.toggleMute}><Icon id={muted ? 'volume-off' : 'volume-up'} fixedWidth /></button>
+              <button type='button' title={intl.formatMessage(paused ? messages.play : messages.pause)} aria-label={intl.formatMessage(paused ? messages.play : messages.pause)} className='player-button' onClick={this.togglePlay} autoFocus={detailed}><Icon src={paused ? require('@tabler/icons/icons/player-play.svg') : require('@tabler/icons/icons/player-pause.svg')} /></button>
+              <button type='button' title={intl.formatMessage(muted ? messages.unmute : messages.mute)} aria-label={intl.formatMessage(muted ? messages.unmute : messages.mute)} className='player-button' onClick={this.toggleMute}><Icon src={muted ? require('@tabler/icons/icons/volume-3.svg') : require('@tabler/icons/icons/volume.svg')} /></button>
 
               <div className={classNames('video-player__volume', { active: this.state.hovered })} onMouseDown={this.handleVolumeMouseDown} ref={this.setVolumeRef}>
                 <div className='video-player__volume__current' style={{ width: `${volume * 100}%` }} />
@@ -485,10 +604,10 @@ class Video extends React.PureComponent {
             </div>
 
             <div className='video-player__buttons right'>
-              {!onCloseVideo && <button type='button' aria-label={intl.formatMessage(messages.hide)} className='player-button' onClick={this.toggleReveal}><Icon id='eye-slash' fixedWidth /></button>}
-              {(!fullscreen && onOpenVideo) && <button type='button' aria-label={intl.formatMessage(messages.expand)} className='player-button' onClick={this.handleOpenVideo}><Icon id='expand' fixedWidth /></button>}
-              {onCloseVideo && <button type='button' aria-label={intl.formatMessage(messages.close)} className='player-button' onClick={this.handleCloseVideo}><Icon id='compress' fixedWidth /></button>}
-              <button type='button' aria-label={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} className='player-button' onClick={this.toggleFullscreen}><Icon id={fullscreen ? 'compress' : 'arrows-alt'} fixedWidth /></button>
+              {(sensitive && !onCloseVideo) && <button type='button' title={intl.formatMessage(messages.hide)} aria-label={intl.formatMessage(messages.hide)} className='player-button' onClick={this.toggleReveal}><Icon src={require('@tabler/icons/icons/eye-off.svg')} /></button>}
+              {(!fullscreen && onOpenVideo) && <button type='button' title={intl.formatMessage(messages.expand)} aria-label={intl.formatMessage(messages.expand)} className='player-button' onClick={this.handleOpenVideo}><Icon src={require('@tabler/icons/icons/maximize.svg')} /></button>}
+              {onCloseVideo && <button type='button' title={intl.formatMessage(messages.close)} aria-label={intl.formatMessage(messages.close)} className='player-button' onClick={this.handleCloseVideo}><Icon src={require('@tabler/icons/icons/minimize.svg')} /></button>}
+              <button type='button' title={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} aria-label={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} className='player-button' onClick={this.toggleFullscreen}><Icon src={fullscreen ? require('@tabler/icons/icons/minimize.svg') : require('@tabler/icons/icons/arrows-maximize.svg')} /></button>
             </div>
           </div>
         </div>

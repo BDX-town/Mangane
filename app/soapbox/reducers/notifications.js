@@ -1,4 +1,23 @@
 import {
+  Record as ImmutableRecord,
+  OrderedMap as ImmutableOrderedMap,
+  fromJS,
+} from 'immutable';
+
+import { normalizeNotification } from 'soapbox/normalizers/notification';
+
+import {
+  ACCOUNT_BLOCK_SUCCESS,
+  ACCOUNT_MUTE_SUCCESS,
+  FOLLOW_REQUEST_AUTHORIZE_SUCCESS,
+  FOLLOW_REQUEST_REJECT_SUCCESS,
+} from '../actions/accounts';
+import {
+  MARKER_FETCH_SUCCESS,
+  MARKER_SAVE_REQUEST,
+  MARKER_SAVE_SUCCESS,
+} from '../actions/markers';
+import {
   NOTIFICATIONS_UPDATE,
   NOTIFICATIONS_EXPAND_SUCCESS,
   NOTIFICATIONS_EXPAND_REQUEST,
@@ -11,17 +30,9 @@ import {
   NOTIFICATIONS_MARK_READ_REQUEST,
   MAX_QUEUED_NOTIFICATIONS,
 } from '../actions/notifications';
-import {
-  ACCOUNT_BLOCK_SUCCESS,
-  ACCOUNT_MUTE_SUCCESS,
-  FOLLOW_REQUEST_AUTHORIZE_SUCCESS,
-  FOLLOW_REQUEST_REJECT_SUCCESS,
-} from '../actions/accounts';
 import { TIMELINE_DELETE } from '../actions/timelines';
-import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap } from 'immutable';
-import { get } from 'lodash';
 
-const initialState = ImmutableMap({
+const ReducerRecord = ImmutableRecord({
   items: ImmutableOrderedMap(),
   hasMore: true,
   top: false,
@@ -32,30 +43,58 @@ const initialState = ImmutableMap({
   lastRead: -1,
 });
 
+const parseId = id => parseInt(id, 10);
+
 // For sorting the notifications
 const comparator = (a, b) => {
-  const parse = m => parseInt(m.get('id'), 10);
+  const parse = m => parseId(m.get('id'));
   if (parse(a) < parse(b)) return 1;
   if (parse(a) > parse(b)) return -1;
   return 0;
 };
 
-const notificationToMap = notification => ImmutableMap({
-  id: notification.id,
-  type: notification.type,
-  account: notification.account.id,
-  target: notification.target ? notification.target.id : null,
-  created_at: notification.created_at,
-  status: notification.status ? notification.status.id : null,
-  emoji: notification.emoji,
-  chat_message: notification.chat_message,
-  is_seen: get(notification, ['pleroma', 'is_seen'], true),
-});
+const minifyNotification = notification => {
+  return notification.mergeWith((o, n) => n || o, {
+    account: notification.getIn(['account', 'id']),
+    target: notification.getIn(['target', 'id']),
+    status: notification.getIn(['status', 'id']),
+  });
+};
 
-// https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/424
-const isValid = notification => Boolean(notification.account.id);
+const fixNotification = notification => {
+  return minifyNotification(normalizeNotification(notification));
+};
 
-const normalizeNotification = (state, notification) => {
+const isValid = notification => {
+  try {
+    // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/424
+    if (!notification.account.id) {
+      return false;
+    }
+
+    // Mastodon can return status notifications with a null status
+    if (['mention', 'reblog', 'favourite', 'poll', 'status'].includes(notification.type) && !notification.status.id) {
+      return false;
+    }
+
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+// Count how many notifications appear after the given ID (for unread count)
+const countFuture = (notifications, lastId) => {
+  return notifications.reduce((acc, notification) => {
+    if (parseId(notification.get('id')) > parseId(lastId)) {
+      return acc + 1;
+    } else {
+      return acc;
+    }
+  }, 0);
+};
+
+const importNotification = (state, notification) => {
   const top = state.get('top');
 
   if (!top) state = state.update('unread', unread => unread + 1);
@@ -65,7 +104,7 @@ const normalizeNotification = (state, notification) => {
       map = map.take(20);
     }
 
-    return map.set(notification.id, notificationToMap(notification)).sort(comparator);
+    return map.set(notification.id, fixNotification(notification)).sort(comparator);
   });
 };
 
@@ -73,7 +112,7 @@ const processRawNotifications = notifications => (
   ImmutableOrderedMap(
     notifications
       .filter(isValid)
-      .map(n => [n.id, notificationToMap(n)]),
+      .map(n => [n.id, fixNotification(n)]),
   ));
 
 const expandNormalizedNotifications = (state, notifications, next) => {
@@ -113,7 +152,7 @@ const updateNotificationsQueue = (state, notification, intlMessages, intlLocale)
   const alreadyExists = queuedNotifications.has(notification.id) || listedNotifications.has(notification.id);
   if (alreadyExists) return state;
 
-  let newQueuedNotifications = queuedNotifications;
+  const newQueuedNotifications = queuedNotifications;
 
   return state.withMutations(mutable => {
     if (totalQueuedNotificationsCount <= MAX_QUEUED_NOTIFICATIONS) {
@@ -127,32 +166,43 @@ const updateNotificationsQueue = (state, notification, intlMessages, intlLocale)
   });
 };
 
-const countUnseen = notifications => notifications.reduce((acc, cur) =>
-  get(cur, ['pleroma', 'is_seen'], false) === false ? acc + 1 : acc, 0);
+const importMarker = (state, marker) => {
+  const lastReadId = marker.getIn(['notifications', 'last_read_id'], -1);
 
-export default function notifications(state = initialState, action) {
+  if (!lastReadId) {
+    return state;
+  }
+
+  return state.withMutations(state => {
+    const notifications = state.get('items');
+    const unread = countFuture(notifications, lastReadId);
+
+    state.set('unread', unread);
+    state.set('lastRead', lastReadId);
+  });
+};
+
+export default function notifications(state = ReducerRecord(), action) {
   switch(action.type) {
   case NOTIFICATIONS_EXPAND_REQUEST:
     return state.set('isLoading', true);
   case NOTIFICATIONS_EXPAND_FAIL:
     return state.set('isLoading', false);
   case NOTIFICATIONS_FILTER_SET:
-    return state.set('items', ImmutableOrderedMap()).set('hasMore', true);
+    return state.delete('items').set('hasMore', true);
   case NOTIFICATIONS_SCROLL_TOP:
     return updateTop(state, action.top);
   case NOTIFICATIONS_UPDATE:
-    return normalizeNotification(state, action.notification);
+    return importNotification(state, action.notification);
   case NOTIFICATIONS_UPDATE_QUEUE:
     return updateNotificationsQueue(state, action.notification, action.intlMessages, action.intlLocale);
   case NOTIFICATIONS_DEQUEUE:
     return state.withMutations(mutable => {
-      mutable.set('queuedNotifications', ImmutableOrderedMap());
+      mutable.delete('queuedNotifications');
       mutable.set('totalQueuedNotificationsCount', 0);
     });
   case NOTIFICATIONS_EXPAND_SUCCESS:
-    const legacyUnread = countUnseen(action.notifications);
-    return expandNormalizedNotifications(state, action.notifications, action.next)
-      .merge({ unread: Math.max(legacyUnread, state.get('unread')) });
+    return expandNormalizedNotifications(state, action.notifications, action.next);
   case ACCOUNT_BLOCK_SUCCESS:
     return filterNotifications(state, action.relationship);
   case ACCOUNT_MUTE_SUCCESS:
@@ -161,22 +211,16 @@ export default function notifications(state = initialState, action) {
   case FOLLOW_REQUEST_REJECT_SUCCESS:
     return filterNotificationIds(state, [action.id], 'follow_request');
   case NOTIFICATIONS_CLEAR:
-    return state.set('items', ImmutableOrderedMap()).set('hasMore', false);
+    return state.delete('items').set('hasMore', false);
   case NOTIFICATIONS_MARK_READ_REQUEST:
     return state.set('lastRead', action.lastRead);
+  case MARKER_FETCH_SUCCESS:
+  case MARKER_SAVE_REQUEST:
+  case MARKER_SAVE_SUCCESS:
+    return importMarker(state, fromJS(action.marker));
   case TIMELINE_DELETE:
     return deleteByStatus(state, action.id);
-
-  // Disable for now
-  // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/432
-  //
-  // case TIMELINE_DISCONNECT:
-  //   // This is kind of a hack - `null` renders a LoadGap in the component
-  //   // https://github.com/tootsuite/mastodon/pull/6886
-  //   return action.timeline === 'home' ?
-  //     state.update('items', items => items.first() ? ImmutableOrderedSet([null]).union(items) : items) :
-  //     state;
   default:
     return state;
   }
-};
+}

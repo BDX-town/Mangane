@@ -1,10 +1,12 @@
-import api from '../api';
-import openDB from '../storage/db';
-import { evictStatus } from '../storage/modifier';
-import { deleteFromTimelines } from './timelines';
-import { importFetchedStatus, importFetchedStatuses, importAccount, importStatus } from './importer';
-import { openModal } from './modal';
 import { isLoggedIn } from 'soapbox/utils/auth';
+import { getFeatures, parseVersion } from 'soapbox/utils/features';
+import { shouldHaveCard } from 'soapbox/utils/status';
+
+import api from '../api';
+
+import { importFetchedStatus, importFetchedStatuses } from './importer';
+import { openModal } from './modals';
+import { deleteFromTimelines } from './timelines';
 
 export const STATUS_CREATE_REQUEST = 'STATUS_CREATE_REQUEST';
 export const STATUS_CREATE_SUCCESS = 'STATUS_CREATE_SUCCESS';
@@ -35,12 +37,8 @@ export const STATUS_HIDE   = 'STATUS_HIDE';
 
 export const REDRAFT = 'REDRAFT';
 
-export function fetchStatusRequest(id, skipLoading) {
-  return {
-    type: STATUS_FETCH_REQUEST,
-    id,
-    skipLoading,
-  };
+const statusExists = (getState, statusId) => {
+  return getState().getIn(['statuses', statusId], null) !== null;
 };
 
 export function createStatus(params, idempotencyKey) {
@@ -50,115 +48,70 @@ export function createStatus(params, idempotencyKey) {
     return api(getState).post('/api/v1/statuses', params, {
       headers: { 'Idempotency-Key': idempotencyKey },
     }).then(({ data: status }) => {
+      // The backend might still be processing the rich media attachment
+      if (!status.card && shouldHaveCard(status)) {
+        status.expectsCard = true;
+      }
+
+      dispatch(importFetchedStatus(status, idempotencyKey));
       dispatch({ type: STATUS_CREATE_SUCCESS, status, params, idempotencyKey });
+
+      // Poll the backend for the updated card
+      if (status.expectsCard) {
+        const delay = 1000;
+
+        const poll = (retries = 5) => {
+          api(getState).get(`/api/v1/statuses/${status.id}`).then(response => {
+            if (response.data?.card) {
+              dispatch(importFetchedStatus(response.data));
+            } else if (retries > 0 && response.status === 200) {
+              setTimeout(() => poll(retries - 1), delay);
+            }
+          }).catch(console.error);
+        };
+
+        setTimeout(() => poll(), delay);
+      }
+
       return status;
     }).catch(error => {
       dispatch({ type: STATUS_CREATE_FAIL, error, params, idempotencyKey });
       throw error;
     });
   };
-};
-
-function getFromDB(dispatch, getState, accountIndex, index, id) {
-  return new Promise((resolve, reject) => {
-    const request = index.get(id);
-
-    request.onerror = reject;
-
-    request.onsuccess = () => {
-      const promises = [];
-
-      if (!request.result) {
-        reject();
-        return;
-      }
-
-      dispatch(importStatus(request.result));
-
-      if (getState().getIn(['accounts', request.result.account], null) === null) {
-        promises.push(new Promise((accountResolve, accountReject) => {
-          const accountRequest = accountIndex.get(request.result.account);
-
-          accountRequest.onerror = accountReject;
-          accountRequest.onsuccess = () => {
-            if (!request.result) {
-              accountReject();
-              return;
-            }
-
-            dispatch(importAccount(accountRequest.result));
-            accountResolve();
-          };
-        }));
-      }
-
-      if (request.result.reblog && getState().getIn(['statuses', request.result.reblog], null) === null) {
-        promises.push(getFromDB(dispatch, getState, accountIndex, index, request.result.reblog));
-      }
-
-      resolve(Promise.all(promises));
-    };
-  });
 }
 
 export function fetchStatus(id) {
   return (dispatch, getState) => {
-    const skipLoading = getState().getIn(['statuses', id], null) !== null;
+    const skipLoading = statusExists(getState, id);
 
-    dispatch(fetchContext(id));
+    dispatch({ type: STATUS_FETCH_REQUEST, id, skipLoading });
 
-    if (skipLoading) {
-      return;
-    }
-
-    dispatch(fetchStatusRequest(id, skipLoading));
-
-    openDB().then(db => {
-      const transaction = db.transaction(['accounts', 'statuses'], 'read');
-      const accountIndex = transaction.objectStore('accounts').index('id');
-      const index = transaction.objectStore('statuses').index('id');
-
-      return getFromDB(dispatch, getState, accountIndex, index, id).then(() => {
-        db.close();
-      }, error => {
-        db.close();
-        throw error;
-      });
-    }).then(() => {
-      dispatch(fetchStatusSuccess(skipLoading));
-    }, () => api(getState).get(`/api/v1/statuses/${id}`).then(response => {
-      dispatch(importFetchedStatus(response.data));
-      dispatch(fetchStatusSuccess(skipLoading));
-    })).catch(error => {
-      dispatch(fetchStatusFail(id, error, skipLoading));
+    return api(getState).get(`/api/v1/statuses/${id}`).then(({ data: status }) => {
+      dispatch(importFetchedStatus(status));
+      dispatch({ type: STATUS_FETCH_SUCCESS, status, skipLoading });
+      return status;
+    }).catch(error => {
+      dispatch({ type: STATUS_FETCH_FAIL, id, error, skipLoading, skipAlert: true });
     });
   };
-};
+}
 
-export function fetchStatusSuccess(skipLoading) {
-  return {
-    type: STATUS_FETCH_SUCCESS,
-    skipLoading,
-  };
-};
+export function redraft(status, raw_text, content_type) {
+  return (dispatch, getState) => {
+    const { instance } = getState();
+    const { explicitAddressing } = getFeatures(instance);
 
-export function fetchStatusFail(id, error, skipLoading) {
-  return {
-    type: STATUS_FETCH_FAIL,
-    id,
-    error,
-    skipLoading,
-    skipAlert: true,
+    dispatch({
+      type: REDRAFT,
+      status,
+      raw_text,
+      explicitAddressing,
+      content_type,
+      v: parseVersion(instance.version),
+    });
   };
-};
-
-export function redraft(status, raw_text) {
-  return {
-    type: REDRAFT,
-    status,
-    raw_text,
-  };
-};
+}
 
 export function deleteStatus(id, routerHistory, withRedraft = false) {
   return (dispatch, getState) => {
@@ -170,159 +123,84 @@ export function deleteStatus(id, routerHistory, withRedraft = false) {
       status = status.set('poll', getState().getIn(['polls', status.get('poll')]));
     }
 
-    dispatch(deleteStatusRequest(id));
+    dispatch({ type: STATUS_DELETE_REQUEST, id });
 
     api(getState).delete(`/api/v1/statuses/${id}`).then(response => {
-      evictStatus(id);
-      dispatch(deleteStatusSuccess(id));
+      dispatch({ type: STATUS_DELETE_SUCCESS, id });
       dispatch(deleteFromTimelines(id));
 
       if (withRedraft) {
-        dispatch(redraft(status, response.data.text));
+        dispatch(redraft(status, response.data.text, response.data.pleroma?.content_type));
         dispatch(openModal('COMPOSE'));
       }
     }).catch(error => {
-      dispatch(deleteStatusFail(id, error));
+      dispatch({ type: STATUS_DELETE_FAIL, id, error });
     });
   };
-};
-
-export function deleteStatusRequest(id) {
-  return {
-    type: STATUS_DELETE_REQUEST,
-    id: id,
-  };
-};
-
-export function deleteStatusSuccess(id) {
-  return {
-    type: STATUS_DELETE_SUCCESS,
-    id: id,
-  };
-};
-
-export function deleteStatusFail(id, error) {
-  return {
-    type: STATUS_DELETE_FAIL,
-    id: id,
-    error: error,
-  };
-};
+}
 
 export function fetchContext(id) {
   return (dispatch, getState) => {
-    dispatch(fetchContextRequest(id));
+    dispatch({ type: CONTEXT_FETCH_REQUEST, id });
 
-    api(getState).get(`/api/v1/statuses/${id}/context`).then(response => {
-      dispatch(importFetchedStatuses(response.data.ancestors.concat(response.data.descendants)));
-      dispatch(fetchContextSuccess(id, response.data.ancestors, response.data.descendants));
-
+    return api(getState).get(`/api/v1/statuses/${id}/context`).then(({ data: context }) => {
+      if (Array.isArray(context)) {
+        // Mitra: returns a list of statuses
+        dispatch(importFetchedStatuses(context));
+      } else if (typeof context === 'object') {
+        // Standard Mastodon API returns a map with `ancestors` and `descendants`
+        const { ancestors, descendants } = context;
+        const statuses = ancestors.concat(descendants);
+        dispatch(importFetchedStatuses(statuses));
+        dispatch({ type: CONTEXT_FETCH_SUCCESS, id, ancestors, descendants });
+      } else {
+        throw context;
+      }
+      return context;
     }).catch(error => {
-      if (error.response && error.response.status === 404) {
+      if (error.response?.status === 404) {
         dispatch(deleteFromTimelines(id));
       }
 
-      dispatch(fetchContextFail(id, error));
+      dispatch({ type: CONTEXT_FETCH_FAIL, id, error, skipAlert: true });
     });
   };
-};
+}
 
-export function fetchContextRequest(id) {
-  return {
-    type: CONTEXT_FETCH_REQUEST,
-    id,
+export function fetchStatusWithContext(id) {
+  return (dispatch, getState) => {
+    return Promise.all([
+      dispatch(fetchContext(id)),
+      dispatch(fetchStatus(id)),
+    ]);
   };
-};
-
-export function fetchContextSuccess(id, ancestors, descendants) {
-  return {
-    type: CONTEXT_FETCH_SUCCESS,
-    id,
-    ancestors,
-    descendants,
-  };
-};
-
-export function fetchContextFail(id, error) {
-  return {
-    type: CONTEXT_FETCH_FAIL,
-    id,
-    error,
-    skipAlert: true,
-  };
-};
+}
 
 export function muteStatus(id) {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
 
-    dispatch(muteStatusRequest(id));
-
+    dispatch({ type: STATUS_MUTE_REQUEST, id });
     api(getState).post(`/api/v1/statuses/${id}/mute`).then(() => {
-      dispatch(muteStatusSuccess(id));
+      dispatch({ type: STATUS_MUTE_SUCCESS, id });
     }).catch(error => {
-      dispatch(muteStatusFail(id, error));
+      dispatch({ type: STATUS_MUTE_FAIL, id, error });
     });
   };
-};
-
-export function muteStatusRequest(id) {
-  return {
-    type: STATUS_MUTE_REQUEST,
-    id,
-  };
-};
-
-export function muteStatusSuccess(id) {
-  return {
-    type: STATUS_MUTE_SUCCESS,
-    id,
-  };
-};
-
-export function muteStatusFail(id, error) {
-  return {
-    type: STATUS_MUTE_FAIL,
-    id,
-    error,
-  };
-};
+}
 
 export function unmuteStatus(id) {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
 
-    dispatch(unmuteStatusRequest(id));
-
+    dispatch({ type: STATUS_UNMUTE_REQUEST, id });
     api(getState).post(`/api/v1/statuses/${id}/unmute`).then(() => {
-      dispatch(unmuteStatusSuccess(id));
+      dispatch({ type: STATUS_UNMUTE_SUCCESS, id });
     }).catch(error => {
-      dispatch(unmuteStatusFail(id, error));
+      dispatch({ type: STATUS_UNMUTE_FAIL, id, error });
     });
   };
-};
-
-export function unmuteStatusRequest(id) {
-  return {
-    type: STATUS_UNMUTE_REQUEST,
-    id,
-  };
-};
-
-export function unmuteStatusSuccess(id) {
-  return {
-    type: STATUS_UNMUTE_SUCCESS,
-    id,
-  };
-};
-
-export function unmuteStatusFail(id, error) {
-  return {
-    type: STATUS_UNMUTE_FAIL,
-    id,
-    error,
-  };
-};
+}
 
 export function hideStatus(ids) {
   if (!Array.isArray(ids)) {
@@ -333,7 +211,7 @@ export function hideStatus(ids) {
     type: STATUS_HIDE,
     ids,
   };
-};
+}
 
 export function revealStatus(ids) {
   if (!Array.isArray(ids)) {
@@ -344,4 +222,4 @@ export function revealStatus(ids) {
     type: STATUS_REVEAL,
     ids,
   };
-};
+}

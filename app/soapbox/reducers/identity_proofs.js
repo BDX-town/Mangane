@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import {
   IDENTITY_PROOFS_ACCOUNT_FETCH_REQUEST,
   IDENTITY_PROOFS_ACCOUNT_FETCH_SUCCESS,
@@ -22,4 +23,4 @@ export default function identityProofsReducer(state = initialState, action) {
   default:
     return state;
   }
-};
+}

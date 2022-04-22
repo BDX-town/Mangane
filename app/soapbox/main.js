@@ -1,34 +1,31 @@
 'use strict';
 
-import './wdyr';
-import * as registerPushNotifications from './actions/push_notifications';
-import { default as Soapbox, store } from './containers/soapbox';
+import './precheck';
+import * as OfflinePluginRuntime from '@lcdp/offline-plugin/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ready from './ready';
 
-const perf = require('./performance');
+import { NODE_ENV } from 'soapbox/build_config';
+
+import { default as Soapbox } from './containers/soapbox';
+import * as monitoring from './monitoring';
+import * as perf from './performance';
+import ready from './ready';
 
 function main() {
   perf.start('main()');
 
-  // if (window.history && history.replaceState) {
-  //   const { pathname, search, hash } = window.location;
-  //   const path = pathname + search + hash;
-  //   if (!(/^\/[$/]/).test(path)) {
-  //     console.log('redirecting you to hell');
-  //     history.replaceState(null, document.title, `${path}`);
-  //   }
-  // }
+  // Sentry
+  monitoring.start();
 
   ready(() => {
     const mountNode = document.getElementById('soapbox');
 
     ReactDOM.render(<Soapbox />, mountNode);
-    if (process.env.NODE_ENV === 'production') {
+
+    if (NODE_ENV === 'production') {
       // avoid offline in dev mode because it's harder to debug
-      require('offline-plugin/runtime').install();
-      store.dispatch(registerPushNotifications.register());
+      OfflinePluginRuntime.install();
     }
     perf.stop('main()');
   });

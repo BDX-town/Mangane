@@ -1,16 +1,19 @@
-import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import StatusContainer from '../../../containers/status_container';
-import AccountContainer from '../../../containers/account_container';
-import { injectIntl, FormattedMessage } from 'react-intl';
-import Permalink from '../../../components/permalink';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import React from 'react';
 import { HotKeys } from 'react-hotkeys';
-import FollowRequestContainer from '../containers/follow_request_container';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl, FormattedMessage } from 'react-intl';
+import { withRouter } from 'react-router-dom';
+
 import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
-import classNames from 'classnames';
+
+import Permalink from '../../../components/permalink';
+import AccountContainer from '../../../containers/account_container';
+import StatusContainer from '../../../containers/status_container';
+import FollowRequestContainer from '../containers/follow_request_container';
 
 const notificationForScreenReader = (intl, message, timestamp) => {
   const output = [message];
@@ -20,12 +23,8 @@ const notificationForScreenReader = (intl, message, timestamp) => {
   return output.join(', ');
 };
 
-export default @injectIntl
+export default @injectIntl @withRouter
 class Notification extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     notification: ImmutablePropTypes.map.isRequired,
@@ -36,7 +35,6 @@ class Notification extends ImmutablePureComponent {
     onFavourite: PropTypes.func.isRequired,
     onReblog: PropTypes.func.isRequired,
     onToggleHidden: PropTypes.func.isRequired,
-    status: ImmutablePropTypes.map,
     intl: PropTypes.object.isRequired,
     getScrollPosition: PropTypes.func,
     updateScrollBottom: PropTypes.func,
@@ -58,7 +56,7 @@ class Notification extends ImmutablePureComponent {
     const { notification } = this.props;
 
     if (notification.get('status')) {
-      this.context.router.history.push(`/@${notification.getIn(['account', 'acct'])}/posts/${notification.get('status')}`);
+      this.props.history.push(`/@${notification.getIn(['account', 'acct'])}/posts/${notification.getIn(['status', 'id'])}`);
     } else {
       this.handleOpenProfile();
     }
@@ -66,28 +64,31 @@ class Notification extends ImmutablePureComponent {
 
   handleOpenProfile = () => {
     const { notification } = this.props;
-    this.context.router.history.push(`/@${notification.getIn(['account', 'acct'])}`);
+    this.props.history.push(`/@${notification.getIn(['account', 'acct'])}`);
   }
 
   handleMention = e => {
     e.preventDefault();
 
     const { notification, onMention } = this.props;
-    onMention(notification.get('account'), this.context.router.history);
+    onMention(notification.get('account'), this.props.history);
   }
 
   handleHotkeyFavourite = () => {
-    const { status } = this.props;
+    const { notification } = this.props;
+    const status = notification.get('status');
     if (status) this.props.onFavourite(status);
   }
 
   handleHotkeyBoost = e => {
-    const { status } = this.props;
+    const { notification } = this.props;
+    const status = notification.get('status');
     if (status) this.props.onReblog(status, e);
   }
 
   handleHotkeyToggleHidden = () => {
-    const { status } = this.props;
+    const { notification } = this.props;
+    const status = notification.get('status');
     if (status) this.props.onToggleHidden(status);
   }
 
@@ -105,15 +106,33 @@ class Notification extends ImmutablePureComponent {
     };
   }
 
-  renderFollow(notification, account, link) {
+  renderLink = account => {
+    return (
+      <bdi>
+        <Permalink
+          className='notification__display-name'
+          href={`/@${account.get('acct')}`}
+          title={account.get('acct')}
+          to={`/@${account.get('acct')}`}
+          dangerouslySetInnerHTML={{ __html: account.get('display_name_html') }}
+        />
+      </bdi>
+    );
+
+  }
+
+  renderFollow(notification) {
     const { intl } = this.props;
+
+    const account = notification.get('account');
+    const link    = this.renderLink(account);
 
     return (
       <HotKeys handlers={this.getHandlers()}>
-        <div className='notification notification-follow focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.follow', defaultMessage: '{name} followed you' }, { name: account.get('acct') }), notification.get('created_at'))}>
+        <div className='notification notification-follow focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.follow', defaultMessage: '{name} followed you' }, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
           <div className='notification__message'>
-            <div className='notification__favourite-icon-wrapper'>
-              <Icon id='user-plus' fixedWidth />
+            <div className='notification__icon-wrapper'>
+              <Icon src={require('@tabler/icons/icons/user-plus.svg')} />
             </div>
 
             <span title={notification.get('created_at')}>
@@ -121,21 +140,24 @@ class Notification extends ImmutablePureComponent {
             </span>
           </div>
 
-          <AccountContainer id={account.get('id')} withNote={false} hidden={this.props.hidden} />
+          <AccountContainer id={notification.getIn(['account', 'id'])} withNote={false} hidden={this.props.hidden} />
         </div>
       </HotKeys>
     );
   }
 
-  renderFollowRequest(notification, account, link) {
+  renderFollowRequest(notification) {
     const { intl, unread } = this.props;
+
+    const account = notification.get('account');
+    const link    = this.renderLink(account);
 
     return (
       <HotKeys handlers={this.getHandlers()}>
-        <div className={classNames('notification notification-follow-request focusable', { unread })} tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.follow_request', defaultMessage: '{name} has requested to follow you' }, { name: account.get('acct') }), notification.get('created_at'))}>
+        <div className={classNames('notification notification-follow-request focusable', { unread })} tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.follow_request', defaultMessage: '{name} has requested to follow you' }, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
           <div className='notification__message'>
-            <div className='notification__favourite-icon-wrapper'>
-              <Icon id='user' fixedWidth />
+            <div className='notification__icon-wrapper'>
+              <Icon src={require('@tabler/icons/icons/user.svg')} />
             </div>
 
             <span title={notification.get('created_at')}>
@@ -143,7 +165,7 @@ class Notification extends ImmutablePureComponent {
             </span>
           </div>
 
-          <FollowRequestContainer id={account.get('id')} withNote={false} hidden={this.props.hidden} />
+          <FollowRequestContainer id={notification.getIn(['account', 'id'])} withNote={false} hidden={this.props.hidden} />
         </div>
       </HotKeys>
     );
@@ -151,30 +173,35 @@ class Notification extends ImmutablePureComponent {
 
   renderMention(notification) {
     return (
-      <StatusContainer
-        id={notification.get('status')}
-        withDismiss
-        hidden={this.props.hidden}
-        onMoveDown={this.handleMoveDown}
-        onMoveUp={this.handleMoveUp}
-        contextType='notifications'
-        getScrollPosition={this.props.getScrollPosition}
-        updateScrollBottom={this.props.updateScrollBottom}
-        cachedMediaWidth={this.props.cachedMediaWidth}
-        cacheMediaWidth={this.props.cacheMediaWidth}
-      />
+      <div className='notification notification-mention focusable-within' tabIndex='0'>
+        <StatusContainer
+          id={notification.getIn(['status', 'id'])}
+          withDismiss
+          hidden={this.props.hidden}
+          onMoveDown={this.handleMoveDown}
+          onMoveUp={this.handleMoveUp}
+          contextType='notifications'
+          getScrollPosition={this.props.getScrollPosition}
+          updateScrollBottom={this.props.updateScrollBottom}
+          cachedMediaWidth={this.props.cachedMediaWidth}
+          cacheMediaWidth={this.props.cacheMediaWidth}
+        />
+      </div>
     );
   }
 
-  renderChatMention(notification, link) {
+  renderChatMention(notification) {
     const { intl } = this.props;
+
+    const account = notification.get('account');
+    const link    = this.renderLink(account);
 
     return (
       <HotKeys handlers={this.getHandlers()}>
         <div className='notification notification-chat-mention focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.chat_mention', defaultMessage: '{name} sent you a message' }, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
           <div className='notification__message'>
-            <div className='notification__favourite-icon-wrapper'>
-              <Icon id='comment' fixedWidth />
+            <div className='notification__icon-wrapper'>
+              <Icon src={require('@tabler/icons/icons/messages.svg')} />
             </div>
 
             <span title={notification.get('created_at')}>
@@ -193,14 +220,17 @@ class Notification extends ImmutablePureComponent {
     );
   }
 
-  renderEmojiReact(notification, link) {
+  renderEmojiReact(notification) {
     const { intl } = this.props;
+
+    const account = notification.get('account');
+    const link    = this.renderLink(account);
 
     return (
       <HotKeys handlers={this.getHandlers()}>
         <div className='notification notification-emoji-react focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.pleroma:emoji_reaction', defaultMessage: '{name} reacted to your post' }, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
           <div className='notification__message'>
-            <div className='notification__favourite-icon-wrapper'>
+            <div className='notification__icon-wrapper'>
               <span dangerouslySetInnerHTML={{ __html: emojify(emojify(notification.get('emoji'))) }} />
             </div>
 
@@ -210,7 +240,7 @@ class Notification extends ImmutablePureComponent {
           </div>
 
           <StatusContainer
-            id={notification.get('status')}
+            id={notification.getIn(['status', 'id'])}
             account={notification.get('account')}
             muted
             withDismiss
@@ -225,15 +255,18 @@ class Notification extends ImmutablePureComponent {
     );
   }
 
-  renderFavourite(notification, link) {
+  renderFavourite(notification) {
     const { intl } = this.props;
+
+    const account = notification.get('account');
+    const link    = this.renderLink(account);
 
     return (
       <HotKeys handlers={this.getHandlers()}>
         <div className='notification notification-favourite focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.favourite', defaultMessage: '{name} liked your post' }, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
           <div className='notification__message'>
-            <div className='notification__favourite-icon-wrapper'>
-              <Icon id='thumbs-up' className='star-icon' fixedWidth />
+            <div className='notification__icon-wrapper'>
+              <Icon src={require('@tabler/icons/icons/thumb-up.svg')} />
             </div>
 
             <span title={notification.get('created_at')}>
@@ -242,7 +275,7 @@ class Notification extends ImmutablePureComponent {
           </div>
 
           <StatusContainer
-            id={notification.get('status')}
+            id={notification.getIn(['status', 'id'])}
             account={notification.get('account')}
             muted
             withDismiss
@@ -257,15 +290,18 @@ class Notification extends ImmutablePureComponent {
     );
   }
 
-  renderReblog(notification, link) {
+  renderReblog(notification) {
     const { intl } = this.props;
+
+    const account = notification.get('account');
+    const link    = this.renderLink(account);
 
     return (
       <HotKeys handlers={this.getHandlers()}>
         <div className='notification notification-reblog focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.reblog', defaultMessage: '{name} reposted your post' }, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
           <div className='notification__message'>
-            <div className='notification__favourite-icon-wrapper'>
-              <Icon id='retweet' fixedWidth />
+            <div className='notification__icon-wrapper'>
+              <Icon src={require('feather-icons/dist/icons/repeat.svg')} />
             </div>
 
             <span title={notification.get('created_at')}>
@@ -274,7 +310,42 @@ class Notification extends ImmutablePureComponent {
           </div>
 
           <StatusContainer
-            id={notification.get('status')}
+            id={notification.getIn(['status', 'id'])}
+            account={notification.get('account')}
+            muted
+            withDismiss
+            hidden={this.props.hidden}
+            getScrollPosition={this.props.getScrollPosition}
+            updateScrollBottom={this.props.updateScrollBottom}
+            cachedMediaWidth={this.props.cachedMediaWidth}
+            cacheMediaWidth={this.props.cacheMediaWidth}
+          />
+        </div>
+      </HotKeys>
+    );
+  }
+
+  renderStatus(notification) {
+    const { intl } = this.props;
+
+    const account = notification.get('account');
+    const link    = this.renderLink(account);
+
+    return (
+      <HotKeys handlers={this.getHandlers()}>
+        <div className='notification notification-status focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.status', defaultMessage: '{name} just posted' }, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
+          <div className='notification__message'>
+            <div className='notification__icon-wrapper'>
+              <Icon src={require('@tabler/icons/icons/home.svg')} />
+            </div>
+
+            <span title={notification.get('created_at')}>
+              <FormattedMessage id='notification.status' defaultMessage='{name} just posted' values={{ name: link }} />
+            </span>
+          </div>
+
+          <StatusContainer
+            id={notification.getIn(['status', 'id'])}
             account={notification.get('account')}
             muted
             withDismiss
@@ -296,8 +367,8 @@ class Notification extends ImmutablePureComponent {
       <HotKeys handlers={this.getHandlers()}>
         <div className='notification notification-poll focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.poll', defaultMessage: 'A poll you have voted in has ended' }), notification.get('created_at'))}>
           <div className='notification__message'>
-            <div className='notification__favourite-icon-wrapper'>
-              <Icon id='tasks' fixedWidth />
+            <div className='notification__icon-wrapper'>
+              <Icon src={require('@tabler/icons/icons/chart-bar.svg')} />
             </div>
 
             <span title={notification.get('created_at')}>
@@ -306,7 +377,7 @@ class Notification extends ImmutablePureComponent {
           </div>
 
           <StatusContainer
-            id={notification.get('status')}
+            id={notification.getIn(['status', 'id'])}
             account={notification.get('account')}
             muted
             withDismiss
@@ -321,17 +392,20 @@ class Notification extends ImmutablePureComponent {
     );
   }
 
-  renderMove(notification, account, targetAccount, link) {
+  renderMove(notification) {
     const { intl } = this.props;
 
-    const targetLink = <bdi><Permalink className='notification__display-name' href={`/@${targetAccount.get('acct')}`} to={`/@${targetAccount.get('acct')}`}>{targetAccount.get('acct')}</Permalink></bdi>;
+    const account = notification.get('account');
+    const target  = notification.get('target');
+    const link    = this.renderLink(account);
+    const targetLink = this.renderLink(target);
 
     return (
       <HotKeys handlers={this.getHandlers()}>
-        <div className='notification notification-move focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.move', defaultMessage: '{name} moved to {targetName}' }, { name: account.get('acct'), targetName: targetAccount.get('acct') }), notification.get('created_at'))}>
+        <div className='notification notification-move focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.move', defaultMessage: '{name} moved to {targetName}' }, { name: notification.getIn(['account', 'acct']), targetName: notification.getIn(['target', 'acct']) }), notification.get('created_at'))}>
           <div className='notification__message'>
-            <div className='notification__favourite-icon-wrapper'>
-              <Icon id='suitcase' fixedWidth />
+            <div className='notification__icon-wrapper'>
+              <Icon src={require('feather-icons/dist/icons/briefcase.svg')} />
             </div>
 
             <span title={notification.get('created_at')}>
@@ -339,7 +413,7 @@ class Notification extends ImmutablePureComponent {
             </span>
           </div>
 
-          <AccountContainer id={targetAccount.get('id')} withNote={false} hidden={this.props.hidden} />
+          <AccountContainer id={notification.getIn(['target', 'id'])} withNote={false} hidden={this.props.hidden} />
         </div>
       </HotKeys>
     );
@@ -347,30 +421,28 @@ class Notification extends ImmutablePureComponent {
 
   render() {
     const { notification } = this.props;
-    const account          = notification.get('account');
-    const targetAccount    = notification.get('target');
-    const displayNameHtml  = { __html: account.get('display_name_html') };
-    const link             = <bdi><Permalink className='notification__display-name' href={`/@${account.get('acct')}`} title={account.get('acct')} to={`/@${account.get('acct')}`} dangerouslySetInnerHTML={displayNameHtml} /></bdi>;
 
     switch(notification.get('type')) {
     case 'follow':
-      return this.renderFollow(notification, account, link);
+      return this.renderFollow(notification);
     case 'follow_request':
-      return this.renderFollowRequest(notification, account, link);
+      return this.renderFollowRequest(notification);
     case 'mention':
       return this.renderMention(notification);
     case 'favourite':
-      return this.renderFavourite(notification, link);
+      return this.renderFavourite(notification);
     case 'reblog':
-      return this.renderReblog(notification, link);
+      return this.renderReblog(notification);
+    case 'status':
+      return this.renderStatus(notification);
     case 'poll':
       return this.renderPoll(notification);
     case 'move':
-      return this.renderMove(notification, account, targetAccount, link);
+      return this.renderMove(notification);
     case 'pleroma:emoji_reaction':
-      return this.renderEmojiReact(notification, link);
+      return this.renderEmojiReact(notification);
     case 'pleroma:chat_mention':
-      return this.renderChatMention(notification, link);
+      return this.renderChatMention(notification);
     }
 
     return null;

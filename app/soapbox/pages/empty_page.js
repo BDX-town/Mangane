@@ -16,7 +16,7 @@ export default class DefaultPage extends ImmutablePureComponent {
             </div>
 
             <div className='columns-area__panels__main'>
-              <div className='columns-area columns-area--mobile'>
+              <div className='columns-area'>
                 {children}
               </div>
             </div>

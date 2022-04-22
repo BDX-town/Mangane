@@ -12,6 +12,7 @@
     position: absolute;
     top: 10px;
     left: 10px;
+    left: max(10px, env(safe-area-inset-left));
     z-index: 1;
   }
 
@@ -19,13 +20,15 @@
     position: absolute;
     top: 10px;
     right: 10px;
+    right: max(10px, env(safe-area-inset-right));
     z-index: 1;
 
     .subscription-button {
       color: var(--primary-text-color);
       margin-bottom: 4px;
-      display: block;
-      vertical-align: top;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background-color: var(--background-color);
       text-transform: uppercase;
       font-size: 13px;
@@ -34,8 +37,19 @@
       border-radius: 4px;
       opacity: 0.7;
 
+      &:active,
+      &:focus,
+      &:hover {
+        opacity: 1;
+      }
+
       &:not(.button-active) i.fa {
         margin: 0;
+      }
+
+      .svg-icon {
+        width: 20px;
+        height: 20px;
       }
     }
   }
@@ -45,8 +59,18 @@
     height: 350px;
     position: relative;
     background: var(--accent-color--faint);
-    @media screen and (max-width: 895px) { height: 225px; }
-    &--none { height: 125px; }
+
+    @media screen and (max-width: 895px) {
+      height: 225px;
+    }
+
+    @media screen and (max-width: 560px) {
+      height: 150px;
+    }
+
+    &--none {
+      height: 125px;
+    }
 
     img {
       object-fit: cover;
@@ -83,20 +107,74 @@
     min-height: 74px;
     width: 100%;
     position: relative;
-    background: var(--background-color);
-    @media (min-width: 895px) { height: 74px; }
+    background: var(--foreground-color);
+
+    @media (min-width: 896px) {
+      height: 74px;
+    }
+  }
+
+  @keyframes fadeIn {
+    1% {
+      visibility: visible;
+    }
+
+    100% {
+      visibility: visible;
+    }
+  }
+
+  @keyframes fadeOut {
+    1% {
+      visibility: visible;
+    }
+
+    100% {
+      visibility: hidden;
+    }
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 0;
+    top: -90px;
+
+    &.is-locked {
+      .account__header__avatar {
+        top: -20px;
+        opacity: 0;
+        animation: 0.3s fadeOut;
+        animation-fill-mode: forwards;
+      }
+
+      .account__header__name {
+        top: 90px;
+        opacity: 1;
+        animation: 0.3s fadeIn;
+        animation-fill-mode: forwards;
+      }
+    }
+
+    @media screen and (max-width: 895px) {
+      top: -45px;
+      left: 10px;
+    }
   }
 
   &__avatar {
     display: block;
     position: absolute;
-    border: 5px solid var(--accent-color--faint);
-    left: 0;
-    top: -90px;
+    top: 0;
     border-radius: 50%;
     height: 200px;
     width: 200px;
     background-color: var(--foreground-color);
+    opacity: 1;
+    animation: 0.3s fadeIn;
+    animation-fill-mode: forwards;
+    transition: top 0.3s, opacity 0.15s;
 
     // NOTE - patch fix for avatar size. Wrapper may not be needed when I do polish up on the page
     .account__avatar {
@@ -123,8 +201,8 @@
     }
 
     @media screen and (max-width: 895px) {
-      top: -45px;
-      left: 10px;
+      left: 20px;
+      left: max(20px + env(safe-area-inset-left));
       height: 90px;
       width: 90px;
 
@@ -132,6 +210,49 @@
         width: 90px;
         height: 90px;
         background-size: 90px 90px;
+      }
+    }
+  }
+
+  &__name {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    width: 265px;
+    height: 74px;
+    position: absolute;
+    top: 100px;
+    opacity: 0;
+    animation: 0.3s fadeOut;
+    animation-fill-mode: forwards;
+    transition: top 0.3s, opacity 0.15s;
+
+    div:nth-child(2) {
+      width: calc(100% - 50px);
+      color: var(--primary-text-color);
+
+      span:first-of-type {
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 18px;
+        line-height: 1.25;
+        font-weight: 600;
+
+        &.with-badge {
+          max-width: calc(100% - 20px);
+        }
+      }
+
+      small {
+        display: flex;
+        font-size: 14px;
+        color: var(--primary-text-color--faint);
+        font-weight: 400;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }
@@ -146,13 +267,19 @@
     max-width: 1200px;
     box-sizing: border-box;
     position: relative;
-    @media (min-width: 895px) and (max-width: 1190px) {
+
+    @media (min-width: 896px) and (max-width: 1190px) {
       max-width: 900px;
       padding-left: 300px;
     }
+
     @media screen and (max-width: 895px) {
       max-width: 900px;
-      padding: 10px 10px 0;
+      padding-top: 10px;
+      padding-left: 10px;
+      padding-left: max(10px, env(safe-area-inset-left));
+      padding-right: 10px;
+      padding-right: max(10px, env(safe-area-inset-right));
       flex-direction: column-reverse;
       min-height: 50px;
     }
@@ -163,17 +290,34 @@
       margin-left: auto;
 
       .icon-button {
-        border: 1px solid var(--brand-color--med);
-        border-radius: 4px;
+        border: 1px solid var(--primary-text-color--faint);
+        border-radius: 999px;
         box-sizing: content-box;
-        padding: 2px;
+        padding: 7px;
+        opacity: 0.6;
 
-        > div {
-          line-height: 31px !important;
+        &:hover,
+        &:focus {
+          opacity: 1;
+        }
+
+        .svg-icon {
+          width: 20px;
+          height: 20px;
+
+          svg {
+            &.feather {
+              // Feather icons are a little larger
+              transform: scale(0.9);
+            }
+          }
         }
       }
 
-      .button { margin-right: 10px; }
+      .button,
+      .icon-button {
+        margin-left: 10px;
+      }
 
       .button-active {
         border-color: #008000;
@@ -186,9 +330,11 @@
       display: flex;
       font-size: 14px;
       color: var(--primary-text-color--faint);
+
       @media screen and (max-width: 895px) {
         justify-content: center;
         flex-wrap: wrap;
+        display: none;
       }
 
       a {
@@ -221,6 +367,7 @@
         }
 
         &:hover,
+        &:focus,
         &.active {
           border-bottom: 2px solid var(--primary-text-color);
         }
@@ -228,10 +375,10 @@
       }
     }
   } // end .account__header__extra
+
   @media screen and (max-width: 895px) {
     .account-mobile-container {
       display: block;
-      background: var(--background-color);
       margin-top: 10px;
       position: relative;
       padding: 10px 10px 0;
@@ -288,5 +435,11 @@
     &:hover {
       text-decoration: none;
     }
+  }
+}
+
+@media (min-width: 896px) {
+  .account-timeline .sub-navigation {
+    top: 134px;
   }
 }

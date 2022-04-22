@@ -1,17 +1,26 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import WhoToFollowPanel from 'soapbox/features/ui/components/who_to_follow_panel';
-import TrendsPanel from 'soapbox/features/ui/components/trends_panel';
-import PromoPanel from 'soapbox/features/ui/components/promo_panel';
-import FeaturesPanel from 'soapbox/features/ui/components/features_panel';
+import { connect } from 'react-redux';
+import Sticky from 'react-stickynode';
+
+import PrimaryNavigation from 'soapbox/components/primary_navigation';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import {
+  WhoToFollowPanel,
+  TrendsPanel,
+  PromoPanel,
+  FeaturesPanel,
+  SignUpPanel,
+} from 'soapbox/features/ui/util/async-components';
 import { getFeatures } from 'soapbox/utils/features';
 
 const mapStateToProps = state => {
+  const me = state.get('me');
   const features = getFeatures(state.get('instance'));
 
   return {
+    me,
     showTrendsPanel: features.trends,
     showWhoToFollowPanel: features.suggestions,
   };
@@ -21,7 +30,7 @@ export default @connect(mapStateToProps)
 class DefaultPage extends ImmutablePureComponent {
 
   render() {
-    const { children, showTrendsPanel, showWhoToFollowPanel } = this.props;
+    const { me, children, showTrendsPanel, showWhoToFollowPanel } = this.props;
 
     return (
       <div className='page'>
@@ -29,22 +38,46 @@ class DefaultPage extends ImmutablePureComponent {
           <div className='columns-area__panels'>
 
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
-              <div className='columns-area__panels__pane__inner' />
+              <div className='columns-area__panels__pane__inner'>
+                <Sticky top={65}>
+                  <PrimaryNavigation />
+                </Sticky>
+              </div>
             </div>
 
             <div className='columns-area__panels__main'>
-              <div className='columns-area columns-area--mobile'>
+              <div className='columns-area'>
                 {children}
               </div>
             </div>
 
             <div className='columns-area__panels__pane columns-area__panels__pane--right'>
               <div className='columns-area__panels__pane__inner'>
-                {showTrendsPanel && <TrendsPanel limit={3} key='trends-panel' />}
-                {showWhoToFollowPanel && <WhoToFollowPanel limit={5} key='wtf-panel' />}
-                <FeaturesPanel key='features-panel' />
-                <PromoPanel key='promo-panel' />
-                <LinkFooter key='link-footer' />
+                <Sticky top={65}>
+                  {me ? (
+                    <BundleContainer fetchComponent={FeaturesPanel}>
+                      {Component => <Component key='features-panel' />}
+                    </BundleContainer>
+                  ) : (
+                    <BundleContainer fetchComponent={SignUpPanel}>
+                      {Component => <Component key='sign-up-panel' />}
+                    </BundleContainer>
+                  )}
+                  <BundleContainer fetchComponent={PromoPanel}>
+                    {Component => <Component key='promo-panel' />}
+                  </BundleContainer>
+                  {showTrendsPanel && (
+                    <BundleContainer fetchComponent={TrendsPanel}>
+                      {Component => <Component limit={3} key='trends-panel' />}
+                    </BundleContainer>
+                  )}
+                  {showWhoToFollowPanel && (
+                    <BundleContainer fetchComponent={WhoToFollowPanel}>
+                      {Component => <Component limit={5} key='wtf-panel' />}
+                    </BundleContainer>
+                  )}
+                  <LinkFooter key='link-footer' />
+                </Sticky>
               </div>
             </div>
           </div>

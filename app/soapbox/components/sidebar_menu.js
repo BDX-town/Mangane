@@ -1,29 +1,35 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import classNames from 'classnames';
+import { is as ImmutableIs } from 'immutable';
 import { throttle } from 'lodash';
-import { Link, NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { injectIntl, defineMessages } from 'react-intl';
-import classNames from 'classnames';
-import Avatar from './avatar';
-import IconButton from './icon_button';
-import Icon from './icon';
-import DisplayName from './display_name';
-import { closeSidebar } from '../actions/sidebar';
-import { isAdmin } from '../utils/accounts';
-import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
+import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { Link, NavLink } from 'react-router-dom';
+
 import { logOut, switchAccount } from 'soapbox/actions/auth';
-import ThemeToggle from '../features/ui/components/theme_toggle_container';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
-import { is as ImmutableIs } from 'immutable';
+import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { getFeatures } from 'soapbox/utils/features';
+
+import { closeSidebar } from '../actions/sidebar';
+import ThemeToggle from '../features/ui/components/theme_toggle_container';
+import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
+import { isAdmin, getBaseURL } from '../utils/accounts';
+
+import Avatar from './avatar';
+import DisplayName from './display_name';
+import Icon from './icon';
+import IconButton from './icon_button';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
   follows: { id: 'account.follows', defaultMessage: 'Follows' },
   profile: { id: 'account.profile', defaultMessage: 'Profile' },
+  invites: { id: 'navigation_bar.invites', defaultMessage: 'Invites' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
   blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
@@ -33,15 +39,20 @@ const messages = defineMessages({
   admin_settings: { id: 'navigation_bar.admin_settings', defaultMessage: 'Admin settings' },
   soapbox_config: { id: 'navigation_bar.soapbox_config', defaultMessage: 'Soapbox config' },
   import_data: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
+  account_aliases: { id: 'navigation_bar.account_aliases', defaultMessage: 'Account aliases' },
+  account_migration: { id: 'navigation_bar.account_migration', defaultMessage: 'Move account' },
   security: { id: 'navigation_bar.security', defaultMessage: 'Security' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
   bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
+  profileDirectory: { id: 'column.profile_directory', defaultMessage: 'Profile directory' },
+  header: { id: 'tabs_bar.header', defaultMessage: 'Account Info' },
   apps: { id: 'tabs_bar.apps', defaultMessage: 'Apps' },
   news: { id: 'tabs_bar.news', defaultMessage: 'News' },
   donate: { id: 'donate', defaultMessage: 'Donate' },
   donate_crypto: { id: 'donate_crypto', defaultMessage: 'Donate cryptocurrency' },
   info: { id: 'column.info', defaultMessage: 'Server information' },
+  developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
   add_account: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
 });
 
@@ -51,6 +62,10 @@ const makeMapStateToProps = () => {
 
   const mapStateToProps = state => {
     const me = state.get('me');
+    const account = state.getIn(['accounts', me]);
+    const instance = state.get('instance');
+
+    const features = getFeatures(instance);
     const soapbox = getSoapboxConfig(state);
 
     return {
@@ -59,6 +74,11 @@ const makeMapStateToProps = () => {
       donateUrl: state.getIn(['patron', 'instance', 'url']),
       hasCrypto: typeof soapbox.getIn(['cryptoAddresses', 0, 'ticker']) === 'string',
       otherAccounts: getOtherAccounts(state),
+      features,
+      instance,
+      settings: getSettings(state),
+      siteTitle: instance.get('title'),
+      baseURL: getBaseURL(account),
     };
   };
 
@@ -81,8 +101,8 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 });
 
-export default @connect(makeMapStateToProps, mapDispatchToProps)
-@injectIntl
+export default @injectIntl
+@connect(makeMapStateToProps, mapDispatchToProps)
 class SidebarMenu extends ImmutablePureComponent {
 
   static propTypes = {
@@ -91,6 +111,10 @@ class SidebarMenu extends ImmutablePureComponent {
     otherAccounts: ImmutablePropTypes.list,
     sidebarOpen: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
+    settings: PropTypes.object.isRequired,
+    features: PropTypes.object.isRequired,
+    instance: ImmutablePropTypes.map.isRequired,
+    baseURL: PropTypes.string,
   };
 
   state = {
@@ -129,6 +153,10 @@ class SidebarMenu extends ImmutablePureComponent {
     if (accountChanged || otherAccountsChanged) {
       this.fetchOwnAccounts();
     }
+
+    if (this.props.sidebarOpen && !prevProps.sidebarOpen) {
+      document.querySelector('.sidebar-menu__close').focus();
+    }
   }
 
   renderAccount = account => {
@@ -147,7 +175,7 @@ class SidebarMenu extends ImmutablePureComponent {
   }
 
   render() {
-    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, otherAccounts, hasCrypto } = this.props;
+    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, otherAccounts, hasCrypto, settings, features, instance, siteTitle, baseURL } = this.props;
     const { switcher } = this.state;
     if (!account) return null;
     const acct = account.get('acct');
@@ -160,15 +188,10 @@ class SidebarMenu extends ImmutablePureComponent {
       <div className={classes}>
         <div className='sidebar-menu__wrapper' role='button' onClick={this.handleClose} />
         <div className='sidebar-menu'>
-
-          <div className='sidebar-menu-header'>
-            <span className='sidebar-menu-header__title'>Account Info</span>
-            <IconButton title='close' onClick={this.handleClose} icon='close' className='sidebar-menu-header__btn' />
-          </div>
-
           <div className='sidebar-menu__content'>
 
             <div className='sidebar-menu-profile'>
+              <IconButton title='close' onClick={this.handleClose} src={require('@tabler/icons/icons/x.svg')} className='sidebar-menu__close' />
               <div className='sidebar-menu-profile__avatar'>
                 <Link to={`/@${acct}`} title={acct} onClick={this.handleClose}>
                   <Avatar account={account} />
@@ -176,7 +199,7 @@ class SidebarMenu extends ImmutablePureComponent {
               </div>
               <a href='#' className='sidebar-menu-profile__name' onClick={this.handleSwitcherClick}>
                 <DisplayName account={account} />
-                <Icon id={switcher ? 'caret-up' : 'caret-down'} />
+                <Icon src={switcher ? require('@tabler/icons/icons/caret-up.svg') : require('@tabler/icons/icons/caret-down.svg')} className='sidebar-menu-profile__caret' />
               </a>
             </div>
 
@@ -184,7 +207,7 @@ class SidebarMenu extends ImmutablePureComponent {
               {otherAccounts.map(account => this.renderAccount(account))}
 
               <NavLink className='sidebar-menu-item' to='/auth/sign_in' onClick={this.handleClose}>
-                <Icon id='plus' />
+                <Icon src={require('@tabler/icons/icons/plus.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.add_account)}</span>
               </NavLink>
             </div>}
@@ -195,81 +218,141 @@ class SidebarMenu extends ImmutablePureComponent {
               </div>
             </div>
 
-            <div className='sidebar-menu__section sidebar-menu__section'>
+            <div className='sidebar-menu__section'>
+              {features.federating ? (
+                <NavLink to='/timeline/local' className='sidebar-menu-item' onClick={this.handleClose}>
+                  <Icon src={require('@tabler/icons/icons/users.svg')} />
+                  <span className='sidebar-menu-item__title'>{siteTitle}</span>
+                </NavLink>
+              ) : (
+                <NavLink to='/timeline/local' className='sidebar-menu-item' onClick={this.handleClose}>
+                  <Icon src={require('@tabler/icons/icons/world.svg')} />
+                  <span className='sidebar-menu-item__title'><FormattedMessage id='tabs_bar.all' defaultMessage='All' /></span>
+                </NavLink>
+              )}
+
+              {features.federating && <NavLink to='/timeline/fediverse' className='sidebar-menu-item' onClick={this.handleClose}>
+                <Icon src={require('icons/fediverse.svg')} />
+                <span className='sidebar-menu-item__title'><FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' /></span>
+              </NavLink>}
+            </div>
+
+            <div className='sidebar-menu__section'>
               <NavLink className='sidebar-menu-item' to={`/@${acct}`} onClick={this.handleClose}>
-                <Icon id='user' />
+                <Icon src={require('@tabler/icons/icons/user.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.profile)}</span>
               </NavLink>
+              {instance.get('invites_enabled') && <a className='sidebar-menu-item' href={`${baseURL}/invites`} onClick={this.handleClose}>
+                <Icon src={require('@tabler/icons/icons/mailbox.svg')} />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.invites)}</span>
+              </a>}
               {donateUrl && <a className='sidebar-menu-item' href={donateUrl} onClick={this.handleClose}>
-                <Icon id='dollar' />
+                <Icon src={require('@tabler/icons/icons/coin.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.donate)}</span>
               </a>}
               {hasCrypto && <NavLink className='sidebar-menu-item' to='/donate/crypto' onClick={this.handleClose}>
-                <Icon id='bitcoin' />
+                <Icon src={require('@tabler/icons/icons/currency-bitcoin.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.donate_crypto)}</span>
               </NavLink>}
-              <NavLink className='sidebar-menu-item' to='/lists' onClick={this.handleClose}>
-                <Icon id='list' />
+              {features.lists && <NavLink className='sidebar-menu-item' to='/lists' onClick={this.handleClose}>
+                <Icon src={require('@tabler/icons/icons/list.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.lists)}</span>
-              </NavLink>
-              <NavLink className='sidebar-menu-item' to='/bookmarks' onClick={this.handleClose}>
-                <Icon id='bookmark' />
+              </NavLink>}
+              {features.bookmarks && <NavLink className='sidebar-menu-item' to='/bookmarks' onClick={this.handleClose}>
+                <Icon src={require('@tabler/icons/icons/bookmarks.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.bookmarks)}</span>
-              </NavLink>
+              </NavLink>}
+              {features.profileDirectory && <NavLink className='sidebar-menu-item' to='/directory' onClick={this.handleClose}>
+                <Icon src={require('@tabler/icons/icons/friends.svg')} />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.profileDirectory)}</span>
+              </NavLink>}
             </div>
 
             <div className='sidebar-menu__section'>
               <NavLink className='sidebar-menu-item' to='/follow_requests' onClick={this.handleClose}>
-                <Icon id='user-plus' />
+                <Icon src={require('@tabler/icons/icons/user-plus.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.follow_requests)}</span>
               </NavLink>
               <NavLink className='sidebar-menu-item' to='/blocks' onClick={this.handleClose}>
-                <Icon id='ban' />
+                <Icon src={require('@tabler/icons/icons/ban.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.blocks)}</span>
               </NavLink>
-              <NavLink className='sidebar-menu-item' to='/domain_blocks' onClick={this.handleClose}>
-                <Icon id='ban' />
+              {features.federating && <NavLink className='sidebar-menu-item' to='/domain_blocks' onClick={this.handleClose}>
+                <Icon src={require('@tabler/icons/icons/ban.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.domain_blocks)}</span>
-              </NavLink>
+              </NavLink>}
               <NavLink className='sidebar-menu-item' to='/mutes' onClick={this.handleClose}>
-                <Icon id='times-circle' />
+                <Icon src={require('@tabler/icons/icons/circle-x.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.mutes)}</span>
               </NavLink>
               <NavLink className='sidebar-menu-item' to='/filters' onClick={this.handleClose}>
-                <Icon id='filter' />
+                <Icon src={require('@tabler/icons/icons/filter.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.filters)}</span>
               </NavLink>
               {isAdmin(account) && <a className='sidebar-menu-item' href='/pleroma/admin' target='_blank' onClick={this.handleClose}>
-                <Icon id='shield' />
+                <Icon src={require('@tabler/icons/icons/shield.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.admin_settings)}</span>
               </a>}
               {isAdmin(account) && <NavLink className='sidebar-menu-item' to='/soapbox/config' onClick={this.handleClose}>
-                <Icon id='cog' />
+                <Icon src={require('@tabler/icons/icons/settings.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.soapbox_config)}</span>
               </NavLink>}
-              <NavLink className='sidebar-menu-item' to='/settings/preferences' onClick={this.handleClose}>
-                <Icon id='cog' />
-                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.preferences)}</span>
-              </NavLink>
-              <NavLink className='sidebar-menu-item' to='/settings/import' onClick={this.handleClose}>
-                <Icon id='cloud-upload' />
-                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_data)}</span>
-              </NavLink>
-              <NavLink className='sidebar-menu-item' to='/auth/edit' onClick={this.handleClose}>
-                <Icon id='lock' />
-                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.security)}</span>
-              </NavLink>
+              {features.settingsStore ? (
+                <NavLink className='sidebar-menu-item' to='/settings/preferences' onClick={this.handleClose}>
+                  <Icon src={require('@tabler/icons/icons/settings.svg')} />
+                  <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.preferences)}</span>
+                </NavLink>
+              ) : (
+                <a className='sidebar-menu-item' href={`${baseURL}/settings/preferences`} onClick={this.handleClose}>
+                  <Icon src={require('@tabler/icons/icons/settings.svg')} />
+                  <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.preferences)}</span>
+                </a>
+              )}
+              {features.importAPI ? (
+                <NavLink className='sidebar-menu-item' to='/settings/import' onClick={this.handleClose}>
+                  <Icon src={require('@tabler/icons/icons/cloud-upload.svg')} />
+                  <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_data)}</span>
+                </NavLink>
+              ) : (
+                <a className='sidebar-menu-item' href={`${baseURL}/settings/import`} onClick={this.handleClose}>
+                  <Icon src={require('@tabler/icons/icons/cloud-upload.svg')} />
+                  <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_data)}</span>
+                </a>
+              )}
+              {(features.federating && features.accountMoving) && <NavLink className='sidebar-menu-item' to='/settings/migration' onClick={this.handleClose}>
+                <Icon src={require('feather-icons/dist/icons/briefcase.svg')} />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.account_migration)}</span>
+              </NavLink>}
+              {features.securityAPI ? (
+                <NavLink className='sidebar-menu-item' to='/auth/edit' onClick={this.handleClose}>
+                  <Icon src={require('@tabler/icons/icons/shield-lock.svg')} />
+                  <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.security)}</span>
+                </NavLink>
+              ) : (
+                <a className='sidebar-menu-item' href={`${baseURL}/auth/edit`} onClick={this.handleClose}>
+                  <Icon src={require('@tabler/icons/icons/shield-lock.svg')} />
+                  <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.security)}</span>
+                </a>
+              )}
             </div>
 
             <div className='sidebar-menu__section'>
               <Link className='sidebar-menu-item' to='/info' onClick={this.handleClose}>
-                <Icon id='info' />
+                <Icon src={require('@tabler/icons/icons/info-circle.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.info)}</span>
               </Link>
             </div>
 
+            {(settings.get('isDeveloper')) && (
+              <Link className='sidebar-menu-item' to='/developers' onClick={this.handleClose}>
+                <Icon src={require('@tabler/icons/icons/code.svg')} />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.developers)}</span>
+              </Link>
+            )}
+
             <div className='sidebar-menu__section'>
               <Link className='sidebar-menu-item' to='/auth/sign_out' onClick={onClickLogOut}>
+                <Icon src={require('@tabler/icons/icons/logout.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.logout)}</span>
               </Link>
             </div>

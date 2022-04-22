@@ -1,6 +1,8 @@
-import api from '../api';
-import { importFetchedStatuses } from './importer';
 import { isLoggedIn } from 'soapbox/utils/auth';
+
+import api from '../api';
+
+import { importFetchedStatuses } from './importer';
 
 export const PINNED_STATUSES_FETCH_REQUEST = 'PINNED_STATUSES_FETCH_REQUEST';
 export const PINNED_STATUSES_FETCH_SUCCESS = 'PINNED_STATUSES_FETCH_SUCCESS';
@@ -20,13 +22,13 @@ export function fetchPinnedStatuses() {
       dispatch(fetchPinnedStatusesFail(error));
     });
   };
-};
+}
 
 export function fetchPinnedStatusesRequest() {
   return {
     type: PINNED_STATUSES_FETCH_REQUEST,
   };
-};
+}
 
 export function fetchPinnedStatusesSuccess(statuses, next) {
   return {
@@ -34,11 +36,11 @@ export function fetchPinnedStatusesSuccess(statuses, next) {
     statuses,
     next,
   };
-};
+}
 
 export function fetchPinnedStatusesFail(error) {
   return {
     type: PINNED_STATUSES_FETCH_FAIL,
     error,
   };
-};
+}

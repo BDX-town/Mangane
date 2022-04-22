@@ -169,7 +169,7 @@
   }
 
   &:hover::before {
-    z-index: 0;
+    z-index: -1;
     content: "";
     position: absolute;
     top: 0;
@@ -261,6 +261,7 @@
   background: var(--foreground-color);
   position: absolute;
   margin-top: 5px;
+  transform: translateX(calc(-1 * env(safe-area-inset-right))); /* iOS PWA */
   z-index: 20000;
 
   .emoji-mart-scroll {
@@ -342,5 +343,9 @@
     width: 22px;
     height: 22px;
     text-align: center;
+  }
+
+  .fa-hack {
+    margin: 0 auto;
   }
 }

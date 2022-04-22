@@ -1,45 +1,44 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import StatusListContainer from '../ui/containers/status_list_container';
-import Column from '../../components/column';
 import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
+import Button from 'soapbox/components/button';
+import Column from 'soapbox/features/ui/components/column';
+
+import { fetchList, deleteList } from '../../actions/lists';
+import { openModal } from '../../actions/modals';
 import { connectListStream } from '../../actions/streaming';
 import { expandListTimeline } from '../../actions/timelines';
-import { fetchList, deleteList } from '../../actions/lists';
-import { openModal } from '../../actions/modal';
-import MissingIndicator from '../../components/missing_indicator';
 import LoadingIndicator from '../../components/loading_indicator';
-import Icon from 'soapbox/components/icon';
-import HomeColumnHeader from '../../components/home_column_header';
-import { Link } from 'react-router-dom';
-import Button from 'soapbox/components/button';
+import MissingIndicator from '../../components/missing_indicator';
+import StatusListContainer from '../ui/containers/status_list_container';
 
 const messages = defineMessages({
+  deleteHeading: { id: 'confirmations.delete_list.heading', defaultMessage: 'Delete list' },
   deleteMessage: { id: 'confirmations.delete_list.message', defaultMessage: 'Are you sure you want to permanently delete this list?' },
   deleteConfirm: { id: 'confirmations.delete_list.confirm', defaultMessage: 'Delete' },
 });
 
 const mapStateToProps = (state, props) => ({
   list: state.getIn(['lists', props.params.id]),
-  hasUnread: state.getIn(['timelines', `list:${props.params.id}`, 'unread']) > 0,
+  // hasUnread: state.getIn(['timelines', `list:${props.params.id}`, 'unread']) > 0,
 });
 
 export default @connect(mapStateToProps)
 @injectIntl
+@withRouter
 class ListTimeline extends React.PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    hasUnread: PropTypes.bool,
+    // hasUnread: PropTypes.bool,
     list: PropTypes.oneOfType([ImmutablePropTypes.map, PropTypes.bool]),
     intl: PropTypes.object.isRequired,
+    history: PropTypes.object,
   };
 
   componentDidMount() {
@@ -87,17 +86,19 @@ class ListTimeline extends React.PureComponent {
     const { id } = this.props.params;
 
     dispatch(openModal('CONFIRM', {
+      icon: require('@tabler/icons/icons/trash.svg'),
+      heading: intl.formatMessage(messages.deleteHeading),
       message: intl.formatMessage(messages.deleteMessage),
       confirm: intl.formatMessage(messages.deleteConfirm),
       onConfirm: () => {
         dispatch(deleteList(id));
-        this.context.router.history.push('/lists');
+        this.props.history.push('/lists');
       },
     }));
   }
 
   render() {
-    const { hasUnread, list } = this.props;
+    const { list } = this.props;
     const { id } = this.props.params;
     const title  = list ? list.get('title') : id;
 
@@ -126,8 +127,8 @@ class ListTimeline extends React.PureComponent {
     );
 
     return (
-      <Column label={title}>
-        <HomeColumnHeader activeItem='lists' activeSubItem={id} active={hasUnread}>
+      <Column label={title} heading={title} transparent>
+        {/* <HomeColumnHeader activeItem='lists' activeSubItem={id} active={hasUnread}>
           <div className='column-header__links'>
             <button className='text-btn column-header__setting-btn' tabIndex='0' onClick={this.handleEditClick}>
               <Icon id='pencil' /> <FormattedMessage id='lists.edit' defaultMessage='Edit list' />
@@ -144,7 +145,7 @@ class ListTimeline extends React.PureComponent {
               <Icon id='arrow-right' />
             </Link>
           </div>
-        </HomeColumnHeader>
+        </HomeColumnHeader> */}
 
         <StatusListContainer
           scrollKey='list_timeline'

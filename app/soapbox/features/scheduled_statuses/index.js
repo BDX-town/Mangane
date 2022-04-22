@@ -1,14 +1,17 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from '../ui/components/column';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import ScrollableList from 'soapbox/components/scrollable_list';
-import { fetchScheduledStatuses, expandScheduledStatuses } from '../../actions/scheduled_statuses';
-import ScheduledStatus from './components/scheduled_status';
 import { debounce } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
+import ScrollableList from 'soapbox/components/scrollable_list';
+
+import { fetchScheduledStatuses, expandScheduledStatuses } from '../../actions/scheduled_statuses';
+import Column from '../ui/components/column';
+
+import ScheduledStatus from './components/scheduled_status';
 
 const messages = defineMessages({
   heading: { id: 'column.scheduled_statuses', defaultMessage: 'Scheduled Posts' },
@@ -23,10 +26,6 @@ const mapStateToProps = state => ({
 export default @connect(mapStateToProps)
 @injectIntl
 class ScheduledStatuses extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -51,7 +50,7 @@ class ScheduledStatuses extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='empty_column.scheduled_statuses' defaultMessage="You don't have any scheduled statuses yet. When you add one, it will show up here." />;
 
     return (
-      <Column icon='calendar' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='calendar' heading={intl.formatMessage(messages.heading)}>
         <ScrollableList
           scrollKey='scheduled_statuses'
           emptyMessage={emptyMessage}

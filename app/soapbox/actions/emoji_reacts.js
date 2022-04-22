@@ -1,7 +1,11 @@
+import { List as ImmutableList } from 'immutable';
+
+import { isLoggedIn } from 'soapbox/utils/auth';
+
 import api from '../api';
+
 import { importFetchedAccounts, importFetchedStatus } from './importer';
 import { favourite, unfavourite } from './interactions';
-import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const EMOJI_REACT_REQUEST = 'EMOJI_REACT_REQUEST';
 export const EMOJI_REACT_SUCCESS = 'EMOJI_REACT_SUCCESS';
@@ -19,7 +23,7 @@ const noOp = () => () => new Promise(f => f());
 
 export const simpleEmojiReact = (status, emoji) => {
   return (dispatch, getState) => {
-    const emojiReacts = status.getIn(['pleroma', 'emoji_reactions']);
+    const emojiReacts = status.getIn(['pleroma', 'emoji_reactions'], ImmutableList());
 
     if (emoji === '👍' && status.get('favourited')) return dispatch(unfavourite(status));
 
@@ -62,7 +66,7 @@ export function fetchEmojiReacts(id, emoji) {
       dispatch(fetchEmojiReactsFail(id, error));
     });
   };
-};
+}
 
 export function emojiReact(status, emoji) {
   return function(dispatch, getState) {
@@ -79,7 +83,7 @@ export function emojiReact(status, emoji) {
         dispatch(emojiReactFail(status, emoji, error));
       });
   };
-};
+}
 
 export function unEmojiReact(status, emoji) {
   return (dispatch, getState) => {
@@ -96,7 +100,7 @@ export function unEmojiReact(status, emoji) {
         dispatch(unEmojiReactFail(status, emoji, error));
       });
   };
-};
+}
 
 export function fetchEmojiReactsRequest(id, emoji) {
   return {
@@ -104,7 +108,7 @@ export function fetchEmojiReactsRequest(id, emoji) {
     id,
     emoji,
   };
-};
+}
 
 export function fetchEmojiReactsSuccess(id, emojiReacts) {
   return {
@@ -112,14 +116,14 @@ export function fetchEmojiReactsSuccess(id, emojiReacts) {
     id,
     emojiReacts,
   };
-};
+}
 
 export function fetchEmojiReactsFail(id, error) {
   return {
     type: EMOJI_REACTS_FETCH_FAIL,
     error,
   };
-};
+}
 
 export function emojiReactRequest(status, emoji) {
   return {
@@ -128,7 +132,7 @@ export function emojiReactRequest(status, emoji) {
     emoji,
     skipLoading: true,
   };
-};
+}
 
 export function emojiReactSuccess(status, emoji) {
   return {
@@ -137,7 +141,7 @@ export function emojiReactSuccess(status, emoji) {
     emoji,
     skipLoading: true,
   };
-};
+}
 
 export function emojiReactFail(status, emoji, error) {
   return {
@@ -147,7 +151,7 @@ export function emojiReactFail(status, emoji, error) {
     error,
     skipLoading: true,
   };
-};
+}
 
 export function unEmojiReactRequest(status, emoji) {
   return {
@@ -156,7 +160,7 @@ export function unEmojiReactRequest(status, emoji) {
     emoji,
     skipLoading: true,
   };
-};
+}
 
 export function unEmojiReactSuccess(status, emoji) {
   return {
@@ -165,7 +169,7 @@ export function unEmojiReactSuccess(status, emoji) {
     emoji,
     skipLoading: true,
   };
-};
+}
 
 export function unEmojiReactFail(status, emoji, error) {
   return {
@@ -175,4 +179,4 @@ export function unEmojiReactFail(status, emoji, error) {
     error,
     skipLoading: true,
   };
-};
+}

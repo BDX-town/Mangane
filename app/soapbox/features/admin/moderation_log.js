@@ -1,12 +1,14 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import { defineMessages, injectIntl, FormattedDate } from 'react-intl';
-import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import PropTypes from 'prop-types';
-import Column from '../ui/components/column';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import { defineMessages, injectIntl, FormattedDate } from 'react-intl';
+import { connect } from 'react-redux';
+
 import { fetchModerationLog } from 'soapbox/actions/admin';
+import ScrollableList from 'soapbox/components/scrollable_list';
+
+import Column from '../ui/components/column';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.moderation_log', defaultMessage: 'Moderation Log' },
@@ -60,7 +62,7 @@ class ModerationLog extends ImmutablePureComponent {
     const showLoading = isLoading && items.count() === 0;
 
     return (
-      <Column icon='balance-scale' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='balance-scale' heading={intl.formatMessage(messages.heading)}>
         <ScrollableList
           isLoading={isLoading}
           showLoading={showLoading}

@@ -1,0 +1,95 @@
+{
+  "id": "017eeb0e-e5e7-98fe-6b2b-ad02349251fb",
+  "uri": "https://gleasonator.com/objects/aa5e66c9-0a10-4167-9c80-f40d9574aaec",
+  "created_at": "2022-02-11T23:11:59.891770Z",
+  "account": {
+    "id": "8fe4d6ed-3a99-43e1-a7d4-66b4e635f756",
+    "username": "alex",
+    "acct": "alex@gleasonator.com",
+    "url": "https://gleasonator.com/users/alex",
+    "display_name": "Alex Gleason",
+    "created_at": "2021-11-14T17:01:17.446307Z",
+    "note": "I create Fediverse software that empowers people online.<br><br>I'm vegan btw<br><br>Note: If you have a question for me, please tag me publicly. This gives the opportunity for others to chime in, and bystanders to learn.",
+    "avatar": "https://mitra.social/media/6d64aecb17348b23aaff78db4687b9476cb0da1c07cc6a819c2e6ec7144c18b1.png",
+    "header": "https://mitra.social/media/bdfb009adac0e31257e9fe527d3844a7234cc71f6e06dff2bec94354639555dd.png",
+    "fields": [
+      {
+        "name": "Website",
+        "value": "<a href=\"https://alexgleason.me\" rel=\"noopener noreferrer\">https://alexgleason.me</a>"
+      },
+      {
+        "name": "Pleroma+Soapbox",
+        "value": "<a href=\"https://soapbox.pub\" rel=\"noopener noreferrer\">https://soapbox.pub</a>"
+      },
+      {
+        "name": "Email",
+        "value": "alex@alexgleason.me"
+      },
+      {
+        "name": "Gender identity",
+        "value": "Soyboy"
+      },
+      {
+        "name": "Donate (PayPal)",
+        "value": "<a href=\"https://paypal.me/gleasonator\" rel=\"noopener noreferrer\">https://paypal.me/gleasonator</a>"
+      },
+      {
+        "name": "$BTC",
+        "value": "bc1q9cx35adpm73aq2fw40ye6ts8hfxqzjr5unwg0n"
+      },
+      {
+        "name": "$ETH",
+        "value": "0xAc9aB5Fc04Dc1cB1789Af75b523Bd23C70B2D717"
+      },
+      {
+        "name": "$DOGE",
+        "value": "D5zVZs6jrRakaPVGiErkQiHt9sayzm6V5D"
+      },
+      {
+        "name": "$XMR",
+        "value": "45JDCLrjJ4bgVUSbbs2yjy9m5Mf4VLPW8fG7jw9sq5u69rXZZopQogZNeyYkMBnXpkaip4p4QwaaJNhdTotPa9g44DBCzdK"
+      }
+    ],
+    "followers_count": 2,
+    "following_count": 2,
+    "statuses_count": 970,
+    "source": null,
+    "wallet_address": null
+  },
+  "content": "<p>Test</p>",
+  "in_reply_to_id": null,
+  "reblog": null,
+  "visibility": "public",
+  "replies_count": 0,
+  "favourites_count": 0,
+  "reblogs_count": 0,
+  "media_attachments": [
+    {
+      "id": "017eeb0e-e5df-30a4-77a7-a929145cb836",
+      "type": "image",
+      "url": "https://mitra.social/media/8e04e6091bbbac79641b5812508683ce72c38693661c18d16040553f2371e18d.png"
+    },
+    {
+      "id": "017eeb0e-e5e4-2a48-2889-afdebf368a54",
+      "type": "unknown",
+      "url": "https://mitra.social/media/8f72dc2e98572eb4ba7c3a902bca5f69c448fc4391837e5f8f0d4556280440ac"
+    },
+    {
+      "id": "017eeb0e-e5e5-79fd-6054-8b6869b1db49",
+      "type": "unknown",
+      "url": "https://mitra.social/media/55a81a090247cc4fc127e5716bcf7964f6e0df9b584f85f4696c0b994747a4d0.oga"
+    },
+    {
+      "id": "017eeb0e-e5e6-c416-a444-21e560c47839",
+      "type": "unknown",
+      "url": "https://mitra.social/media/0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0"
+    }
+  ],
+  "mentions": [],
+  "tags": [],
+  "favourited": false,
+  "reblogged": false,
+  "ipfs_cid": null,
+  "token_id": null,
+  "token_tx_id": null
+}

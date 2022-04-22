@@ -1,8 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+
 import {
   SimpleInput,
   SimpleForm,
@@ -28,7 +29,7 @@ class CSVImporter extends ImmutablePureComponent {
   handleSubmit = (event) => {
     const { dispatch, action, intl } = this.props;
 
-    let params = new FormData();
+    const params = new FormData();
     params.append('list', this.state.file);
 
     this.setState({ isLoading: true });

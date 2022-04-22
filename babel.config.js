@@ -11,6 +11,7 @@ module.exports = (api) => {
   const config = {
     presets: [
       '@babel/react',
+      '@babel/typescript',
       ['@babel/env', envOptions],
     ],
     plugins: [
@@ -26,7 +27,6 @@ module.exports = (api) => {
 
   switch (env) {
   case 'production':
-    envOptions.debug = false;
     config.plugins.push(...[
       'lodash',
       [
@@ -51,13 +51,15 @@ module.exports = (api) => {
     ]);
     break;
   case 'development':
-    envOptions.debug = true;
     config.plugins.push(...[
       '@babel/transform-react-jsx-source',
       '@babel/transform-react-jsx-self',
     ]);
     break;
   case 'test':
+    config.plugins.push(...[
+      'transform-require-context',
+    ]);
     envOptions.modules = 'commonjs';
     break;
   }

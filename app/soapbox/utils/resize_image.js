@@ -1,6 +1,5 @@
-import EXIF from 'exif-js';
-
-const MAX_IMAGE_PIXELS = 2073600; // 1920x1080px
+/* eslint-disable no-case-declarations */
+const DEFAULT_MAX_PIXELS = 1920 * 1080;
 
 const _browser_quirks = {};
 
@@ -44,44 +43,44 @@ const dropOrientationIfNeeded = (orientation) => new Promise(resolve => {
 // Some browsers don't allow reading from a canvas and instead return all-white
 // or randomized data. Use a pre-defined image to check if reading the canvas
 // works.
-const checkCanvasReliability = () => new Promise((resolve, reject) => {
-  switch(_browser_quirks['canvas-read-unreliable']) {
-  case true:
-    reject('Canvas reading unreliable');
-    break;
-  case false:
-    resolve();
-    break;
-  default:
-    // 2×2 GIF with white, red, green and blue pixels
-    const testImageURL =
-      'data:image/gif;base64,R0lGODdhAgACAKEDAAAA//8AAAD/AP///ywAAAAAAgACAAACA1wEBQA7';
-    const refData =
-      [255, 255, 255, 255,  255, 0, 0, 255,  0, 255, 0, 255,  0, 0, 255, 255];
-    const img = new Image();
-    img.onload = () => {
-      const canvas  = document.createElement('canvas');
-      const context = canvas.getContext('2d');
-      context.drawImage(img, 0, 0, 2, 2);
-      const imageData = context.getImageData(0, 0, 2, 2);
-      if (imageData.data.every((x, i) => refData[i] === x)) {
-        _browser_quirks['canvas-read-unreliable'] = false;
-        resolve();
-      } else {
-        _browser_quirks['canvas-read-unreliable'] = true;
-        reject('Canvas reading unreliable');
-      }
-    };
-    img.onerror = () => {
-      _browser_quirks['canvas-read-unreliable'] = true;
-      reject('Failed to load test image');
-    };
-    img.src = testImageURL;
-  }
-});
+// const checkCanvasReliability = () => new Promise((resolve, reject) => {
+//   switch(_browser_quirks['canvas-read-unreliable']) {
+//   case true:
+//     reject('Canvas reading unreliable');
+//     break;
+//   case false:
+//     resolve();
+//     break;
+//   default:
+//     // 2×2 GIF with white, red, green and blue pixels
+//     const testImageURL =
+//       'data:image/gif;base64,R0lGODdhAgACAKEDAAAA//8AAAD/AP///ywAAAAAAgACAAACA1wEBQA7';
+//     const refData =
+//       [255, 255, 255, 255,  255, 0, 0, 255,  0, 255, 0, 255,  0, 0, 255, 255];
+//     const img = new Image();
+//     img.onload = () => {
+//       const canvas  = document.createElement('canvas');
+//       const context = canvas.getContext('2d');
+//       context.drawImage(img, 0, 0, 2, 2);
+//       const imageData = context.getImageData(0, 0, 2, 2);
+//       if (imageData.data.every((x, i) => refData[i] === x)) {
+//         _browser_quirks['canvas-read-unreliable'] = false;
+//         resolve();
+//       } else {
+//         _browser_quirks['canvas-read-unreliable'] = true;
+//         reject('Canvas reading unreliable');
+//       }
+//     };
+//     img.onerror = () => {
+//       _browser_quirks['canvas-read-unreliable'] = true;
+//       reject('Failed to load test image');
+//     };
+//     img.src = testImageURL;
+//   }
+// });
 
 const getImageUrl = inputFile => new Promise((resolve, reject) => {
-  if (window.URL && URL.createObjectURL) {
+  if (window.URL?.createObjectURL) {
     try {
       resolve(URL.createObjectURL(inputFile));
     } catch (error) {
@@ -114,14 +113,16 @@ const getOrientation = (img, type = 'image/png') => new Promise(resolve => {
     return;
   }
 
-  EXIF.getData(img, () => {
-    const orientation = EXIF.getTag(img, 'Orientation');
-    if (orientation !== 1) {
-      dropOrientationIfNeeded(orientation).then(resolve).catch(() => resolve(orientation));
-    } else {
-      resolve(orientation);
-    }
-  });
+  import(/* webpackChunkName: "features/compose" */'exif-js').then(({ default: EXIF }) => {
+    EXIF.getData(img, () => {
+      const orientation = EXIF.getTag(img, 'Orientation');
+      if (orientation !== 1) {
+        dropOrientationIfNeeded(orientation).then(resolve).catch(() => resolve(orientation));
+      } else {
+        resolve(orientation);
+      }
+    });
+  }).catch(() => {});
 });
 
 const processImage = (img, { width, height, orientation, type = 'image/png', name = 'resized.png' }) => new Promise(resolve => {
@@ -154,15 +155,17 @@ const processImage = (img, { width, height, orientation, type = 'image/png', nam
   }, type);
 });
 
-const resizeImage = (img, inputFile) => new Promise((resolve, reject) => {
+const resizeImage = (img, inputFile, maxPixels) => new Promise((resolve, reject) => {
   const { width, height } = img;
   const type = inputFile.type || 'image/png';
 
-  const newWidth  = Math.round(Math.sqrt(MAX_IMAGE_PIXELS * (width / height)));
-  const newHeight = Math.round(Math.sqrt(MAX_IMAGE_PIXELS * (height / width)));
+  const newWidth  = Math.round(Math.sqrt(maxPixels * (width / height)));
+  const newHeight = Math.round(Math.sqrt(maxPixels * (height / width)));
 
-  checkCanvasReliability()
-    .then(getOrientation(img, type))
+  // Skip canvas reliability check for now (it's unreliable)
+  // checkCanvasReliability()
+  //   .then(getOrientation(img, type))
+  getOrientation(img, type)
     .then(orientation => processImage(img, {
       width: newWidth,
       height: newHeight,
@@ -174,20 +177,23 @@ const resizeImage = (img, inputFile) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-export default inputFile => new Promise((resolve) => {
+export default (inputFile, maxPixels = DEFAULT_MAX_PIXELS) => new Promise((resolve) => {
   if (!inputFile.type.match(/image.*/) || inputFile.type === 'image/gif') {
     resolve(inputFile);
     return;
   }
 
   loadImage(inputFile).then(img => {
-    if (img.width * img.height < MAX_IMAGE_PIXELS) {
+    if (img.width * img.height < maxPixels) {
       resolve(inputFile);
       return;
     }
 
-    resizeImage(img, inputFile)
+    resizeImage(img, inputFile, maxPixels)
       .then(resolve)
-      .catch(() => resolve(inputFile));
+      .catch(error => {
+        console.error(error);
+        resolve(inputFile);
+      });
   }).catch(() => resolve(inputFile));
 });

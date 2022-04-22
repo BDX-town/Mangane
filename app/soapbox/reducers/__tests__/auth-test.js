@@ -1,5 +1,5 @@
-import reducer from '../auth';
 import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import {
   AUTH_APP_CREATED,
   AUTH_LOGGED_IN,
@@ -9,6 +9,9 @@ import {
   SWITCH_ACCOUNT,
 } from 'soapbox/actions/auth';
 import { ME_FETCH_SKIP } from 'soapbox/actions/me';
+import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
+
+import reducer from '../auth';
 
 describe('auth reducer', () => {
   it('should return the initial state', () => {
@@ -65,17 +68,20 @@ describe('auth reducer', () => {
 
   describe('AUTH_LOGGED_OUT', () => {
     it('deletes the user', () => {
-      const action = { type: AUTH_LOGGED_OUT, accountId: '1234' };
+      const action = {
+        type: AUTH_LOGGED_OUT,
+        account: fromJS({ url: 'https://gleasonator.com/users/alex' }),
+      };
 
       const state = fromJS({
         users: {
-          '1234': { id: '1234', access_token: 'ABCDEFG' },
-          '5678': { id: '5678', access_token: 'HIJKLMN' },
+          'https://gleasonator.com/users/alex':  { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
+          'https://gleasonator.com/users/benis': { id: '5678', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
         },
       });
 
       const expected = fromJS({
-        '5678': { id: '5678', access_token: 'HIJKLMN' },
+        'https://gleasonator.com/users/benis': { id: '5678', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
       });
 
       const result = reducer(state, action);
@@ -84,16 +90,20 @@ describe('auth reducer', () => {
 
     it('sets `me` to the next available user', () => {
       const state = fromJS({
-        me: '1234',
+        me: 'https://gleasonator.com/users/alex',
         users: {
-          '1234': { id: '1234', access_token: 'ABCDEFG' },
-          '5678': { id: '5678', access_token: 'HIJKLMN' },
+          'https://gleasonator.com/users/alex':  { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
+          'https://gleasonator.com/users/benis': { id: '5678', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
         },
       });
 
-      const action = { type: AUTH_LOGGED_OUT, accountId: '1234' };
+      const action = {
+        type: AUTH_LOGGED_OUT,
+        account: fromJS({ url: 'https://gleasonator.com/users/alex' }),
+      };
+
       const result = reducer(state, action);
-      expect(result.get('me')).toEqual('5678');
+      expect(result.get('me')).toEqual('https://gleasonator.com/users/benis');
     });
   });
 
@@ -102,11 +112,11 @@ describe('auth reducer', () => {
       const action = {
         type: VERIFY_CREDENTIALS_SUCCESS,
         token: 'ABCDEFG',
-        account: { id: '1234' },
+        account: { id: '1234', url: 'https://gleasonator.com/users/alex' },
       };
 
       const expected = fromJS({
-        '1234': { id: '1234', access_token: 'ABCDEFG' },
+        'https://gleasonator.com/users/alex':  { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
       });
 
       const result = reducer(undefined, action);
@@ -117,7 +127,7 @@ describe('auth reducer', () => {
       const action = {
         type: VERIFY_CREDENTIALS_SUCCESS,
         token: 'ABCDEFG',
-        account: { id: '1234' },
+        account: { id: '1234', url: 'https://gleasonator.com/users/alex' },
       };
 
       const state = fromJS({
@@ -125,7 +135,12 @@ describe('auth reducer', () => {
       });
 
       const expected = fromJS({
-        'ABCDEFG': { token_type: 'Bearer', access_token: 'ABCDEFG', account: '1234' },
+        'ABCDEFG': {
+          token_type: 'Bearer',
+          access_token: 'ABCDEFG',
+          account: '1234',
+          me: 'https://gleasonator.com/users/alex',
+        },
       });
 
       const result = reducer(state, action);
@@ -136,46 +151,81 @@ describe('auth reducer', () => {
       const action = {
         type: VERIFY_CREDENTIALS_SUCCESS,
         token: 'ABCDEFG',
-        account: { id: '1234' },
+        account: { id: '1234', url: 'https://gleasonator.com/users/alex' },
       };
 
       const result = reducer(undefined, action);
-      expect(result.get('me')).toEqual('1234');
+      expect(result.get('me')).toEqual('https://gleasonator.com/users/alex');
     });
 
     it('leaves `me` alone if already set', () => {
       const action = {
         type: VERIFY_CREDENTIALS_SUCCESS,
         token: 'ABCDEFG',
-        account: { id: '1234' },
+        account: { id: '1234', url: 'https://gleasonator.com/users/alex' },
       };
 
-      const state = fromJS({ me: '5678' });
+      const state = fromJS({ me: 'https://gleasonator.com/users/benis' });
 
       const result = reducer(state, action);
-      expect(result.get('me')).toEqual('5678');
+      expect(result.get('me')).toEqual('https://gleasonator.com/users/benis');
     });
 
     it('deletes mismatched users', () => {
       const action = {
         type: VERIFY_CREDENTIALS_SUCCESS,
         token: 'ABCDEFG',
-        account: { id: '1234' },
+        account: { id: '1234', url: 'https://gleasonator.com/users/alex' },
       };
 
       const state = fromJS({
-        users: { '4567': { id: '4567', access_token: 'ABCDEFG' } },
-        users: { '8901': { id: '1234', access_token: 'ABCDEFG' } },
-        users: { '5432': { id: '5432', access_token: 'HIJKLMN' } },
+        users: {
+          'https://gleasonator.com/users/mk':     { id: '4567', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/mk' },
+          'https://gleasonator.com/users/curtis': { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/curtis' },
+          'https://gleasonator.com/users/benis':  { id: '5432', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
+        },
       });
 
       const expected = fromJS({
-        '1234': { id: '1234', access_token: 'ABCDEFG' },
-        '5432': { id: '5432', access_token: 'HIJKLMN' },
+        'https://gleasonator.com/users/alex':  { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
+        'https://gleasonator.com/users/benis': { id: '5432', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
       });
 
       const result = reducer(state, action);
       expect(result.get('users')).toEqual(expected);
+    });
+
+    it('upgrades from an ID to a URL', () => {
+      const action = {
+        type: VERIFY_CREDENTIALS_SUCCESS,
+        token: 'ABCDEFG',
+        account: { id: '1234', url: 'https://gleasonator.com/users/alex' },
+      };
+
+      const state = fromJS({
+        me: '1234',
+        users: {
+          '1234': { id: '1234', access_token: 'ABCDEFG' },
+          '5432': { id: '5432', access_token: 'HIJKLMN' },
+        },
+        tokens: {
+          'ABCDEFG': { access_token: 'ABCDEFG', account: '1234' },
+        },
+      });
+
+      const expected = fromJS({
+        me: 'https://gleasonator.com/users/alex',
+        users: {
+          'https://gleasonator.com/users/alex': { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
+          '5432': { id: '5432', access_token: 'HIJKLMN' },
+        },
+        tokens: {
+          'ABCDEFG': { access_token: 'ABCDEFG', account: '1234', me: 'https://gleasonator.com/users/alex' },
+        },
+      });
+
+      const result = reducer(state, action);
+      expect(result).toEqual(expected);
     });
   });
 
@@ -205,13 +255,13 @@ describe('auth reducer', () => {
     it('should delete any users associated with the failed token', () => {
       const state = fromJS({
         users: {
-          '1234': { id: '1234', access_token: 'ABCDEFG' },
-          '5678': { id: '5678', access_token: 'HIJKLMN' },
+          'https://gleasonator.com/users/alex':  { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
+          'https://gleasonator.com/users/benis': { id: '5678', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
         },
       });
 
       const expected = fromJS({
-        '5678': { id: '5678', access_token: 'HIJKLMN' },
+        'https://gleasonator.com/users/benis': { id: '5678', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
       });
 
       const action = {
@@ -226,10 +276,10 @@ describe('auth reducer', () => {
 
     it('should reassign `me` to the next in line', () => {
       const state = fromJS({
-        me: '1234',
+        me: 'https://gleasonator.com/users/alex',
         users: {
-          '1234': { id: '1234', access_token: 'ABCDEFG' },
-          '5678': { id: '5678', access_token: 'HIJKLMN' },
+          'https://gleasonator.com/users/alex':  { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
+          'https://gleasonator.com/users/benis': { id: '5678', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
         },
       });
 
@@ -240,24 +290,61 @@ describe('auth reducer', () => {
       };
 
       const result = reducer(state, action);
-      expect(result.get('me')).toEqual('5678');
+      expect(result.get('me')).toEqual('https://gleasonator.com/users/benis');
     });
   });
 
   describe('SWITCH_ACCOUNT', () => {
     it('sets the value of `me`', () => {
-      const action = { type: SWITCH_ACCOUNT, accountId: '5678' };
+      const action = {
+        type: SWITCH_ACCOUNT,
+        account: fromJS({ url: 'https://gleasonator.com/users/benis' }),
+      };
+
       const result = reducer(undefined, action);
-      expect(result.get('me')).toEqual('5678');
+      expect(result.get('me')).toEqual('https://gleasonator.com/users/benis');
     });
   });
 
   describe('ME_FETCH_SKIP', () => {
     it('sets `me` to null', () => {
-      const state = fromJS({ me: '1234' });
+      const state = fromJS({ me: 'https://gleasonator.com/users/alex' });
       const action = { type: ME_FETCH_SKIP };
       const result = reducer(state, action);
       expect(result.get('me')).toEqual(null);
+    });
+  });
+
+  describe('MASTODON_PRELOAD_IMPORT', () => {
+    it('imports the user and token', () => {
+      const action = {
+        type: MASTODON_PRELOAD_IMPORT,
+        data: require('soapbox/__fixtures__/mastodon_initial_state.json'),
+      };
+
+      const expected = fromJS({
+        me: 'https://mastodon.social/@benis911',
+        app: {},
+        users: {
+          'https://mastodon.social/@benis911': {
+            id: '106801667066418367',
+            access_token: 'Nh15V9JWyY5Fshf2OJ_feNvOIkTV7YGVfEJFr0Y0D6Q',
+            url: 'https://mastodon.social/@benis911',
+          },
+        },
+        tokens: {
+          'Nh15V9JWyY5Fshf2OJ_feNvOIkTV7YGVfEJFr0Y0D6Q': {
+            access_token: 'Nh15V9JWyY5Fshf2OJ_feNvOIkTV7YGVfEJFr0Y0D6Q',
+            account: '106801667066418367',
+            me: 'https://mastodon.social/@benis911',
+            scope: 'read write follow push',
+            token_type: 'Bearer',
+          },
+        },
+      });
+
+      const result = reducer(undefined, action);
+      expect(result).toEqual(expected);
     });
   });
 });

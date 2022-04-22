@@ -1,10 +1,11 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
+
+import IconButton from '../../../components/icon_button';
 
 import Column from './column';
 import ColumnHeader from './column_header';
-import IconButton from '../../../components/icon_button';
 
 const messages = defineMessages({
   title: { id: 'bundle_column_error.title', defaultMessage: 'Network error' },
@@ -30,7 +31,7 @@ class BundleColumnError extends React.PureComponent {
       <Column>
         <ColumnHeader icon='exclamation-circle' type={formatMessage(messages.title)} />
         <div className='error-column'>
-          <IconButton title={formatMessage(messages.retry)} icon='refresh' onClick={this.handleRetry} size={64} />
+          <IconButton title={formatMessage(messages.retry)} src={require('@tabler/icons/icons/refresh.svg')} onClick={this.handleRetry} />
           {formatMessage(messages.body)}
         </div>
       </Column>

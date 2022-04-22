@@ -1,15 +1,20 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import { isRtl } from '../rtl';
-import { FormattedMessage } from 'react-intl';
-import Permalink from './permalink';
 import classnames from 'classnames';
-import Icon from 'soapbox/components/icon';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import Icon from 'soapbox/components/icon';
+import PollContainer from 'soapbox/containers/poll_container';
 import { addGreentext } from 'soapbox/utils/greentext';
 import { onlyEmoji } from 'soapbox/utils/rich_content';
+
+import { isRtl } from '../rtl';
+
+import Permalink from './permalink';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 const BIG_EMOJI_LIMIT = 10;
@@ -19,11 +24,8 @@ const mapStateToProps = state => ({
 });
 
 export default @connect(mapStateToProps)
+@withRouter
 class StatusContent extends React.PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     status: ImmutablePropTypes.map.isRequired,
@@ -33,6 +35,7 @@ class StatusContent extends React.PureComponent {
     onClick: PropTypes.func,
     collapsable: PropTypes.bool,
     greentext: PropTypes.bool,
+    history: PropTypes.object,
   };
 
   state = {
@@ -49,8 +52,8 @@ class StatusContent extends React.PureComponent {
 
     const links = node.querySelectorAll('a');
 
-    for (var i = 0; i < links.length; ++i) {
-      let link = links[i];
+    for (let i = 0; i < links.length; ++i) {
+      const link = links[i];
       if (link.classList.contains('status-link')) {
         continue;
       }
@@ -58,7 +61,7 @@ class StatusContent extends React.PureComponent {
       link.setAttribute('rel', 'nofollow noopener');
       link.setAttribute('target', '_blank');
 
-      let mention = this.props.status.get('mentions').find(item => link.href === `${item.get('url')}`);
+      const mention = this.props.status.get('mentions').find(item => link.href === `${item.get('url')}`);
 
       if (mention) {
         link.addEventListener('click', this.onMentionClick.bind(this, mention), false);
@@ -114,18 +117,18 @@ class StatusContent extends React.PureComponent {
   }
 
   onMentionClick = (mention, e) => {
-    if (this.context.router && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
+    if (this.props.history && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
-      this.context.router.history.push(`/@${mention.get('acct')}`);
+      this.props.history.push(`/@${mention.get('acct')}`);
     }
   }
 
   onHashtagClick = (hashtag, e) => {
     hashtag = hashtag.replace(/^#/, '').toLowerCase();
 
-    if (this.context.router && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
+    if (this.props.history && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
-      this.context.router.history.push(`/tags/${hashtag}`);
+      this.props.history.push(`/tags/${hashtag}`);
     }
   }
 
@@ -198,7 +201,7 @@ class StatusContent extends React.PureComponent {
     const spoilerContent = { __html: status.get('spoilerHtml') };
     const directionStyle = { direction: 'ltr' };
     const classNames = classnames('status__content', {
-      'status__content--with-action': this.props.onClick && this.context.router,
+      'status__content--with-action': this.props.onClick && this.props.history,
       'status__content--with-spoiler': status.get('spoiler_text').length > 0,
       'status__content--collapsed': this.state.collapsed === true,
       'status__content--big': onlyEmoji,
@@ -240,6 +243,8 @@ class StatusContent extends React.PureComponent {
           {mentionsPlaceholder}
 
           <div tabIndex={!hidden ? 0 : null} className={`status__content__text ${!hidden ? 'status__content__text--visible' : ''}`} style={directionStyle} dangerouslySetInnerHTML={content} lang={status.get('language')} />
+
+          {!hidden && !!status.get('poll') && <PollContainer pollId={status.get('poll')} status={status.get('url')} />}
         </div>
       );
     } else if (this.props.onClick) {
@@ -261,20 +266,31 @@ class StatusContent extends React.PureComponent {
         output.push(readMoreButton);
       }
 
+      if (status.get('poll')) {
+        output.push(<PollContainer pollId={status.get('poll')} key='poll' status={status.get('url')} />);
+      }
+
       return output;
     } else {
-      return (
+      const output = [
         <div
-          tabIndex='0'
           ref={this.setRef}
+          tabIndex='0'
+          key='content'
           className={classnames('status__content', {
             'status__content--big': onlyEmoji,
           })}
           style={directionStyle}
           dangerouslySetInnerHTML={content}
           lang={status.get('language')}
-        />
-      );
+        />,
+      ];
+
+      if (status.get('poll')) {
+        output.push(<PollContainer pollId={status.get('poll')} key='poll' status={status.get('url')} />);
+      }
+
+      return output;
     }
   }
 

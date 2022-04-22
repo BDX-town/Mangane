@@ -1,13 +1,14 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import Video from 'soapbox/features/video';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
+import { withRouter } from 'react-router-dom';
 
-export const previewState = 'previewVideoModal';
+import Video from 'soapbox/features/video';
 
-export default class VideoModal extends ImmutablePureComponent {
+export default @withRouter
+class VideoModal extends ImmutablePureComponent {
 
   static propTypes = {
     media: ImmutablePropTypes.map.isRequired,
@@ -15,39 +16,14 @@ export default class VideoModal extends ImmutablePureComponent {
     account: ImmutablePropTypes.map,
     time: PropTypes.number,
     onClose: PropTypes.func.isRequired,
+    history: PropTypes.object,
   };
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
-  componentDidMount() {
-    if (this.context.router) {
-      const history = this.context.router.history;
-
-      history.push(history.location.pathname, previewState);
-
-      this.unlistenHistory = history.listen(() => {
-        this.props.onClose();
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.context.router) {
-      this.unlistenHistory();
-
-      if (this.context.router.history.location.state === previewState) {
-        this.context.router.history.goBack();
-      }
-    }
-  }
 
   handleStatusClick = e => {
     const { status, account } = this.props;
     if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
-      this.context.router.history.push(`/@${account.get('acct')}/posts/${status.get('id')}`);
+      this.props.history.push(`/@${account.get('acct')}/posts/${status.get('id')}`);
     }
   }
 

@@ -1,15 +1,16 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
-import LoadingIndicator from '../../components/loading_indicator';
-import Column from '../ui/components/column';
-import AccountContainer from '../../containers/account_container';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
 import { fetchBlocks, expandBlocks } from '../../actions/blocks';
+import LoadingIndicator from '../../components/loading_indicator';
 import ScrollableList from '../../components/scrollable_list';
+import AccountContainer from '../../containers/account_container';
+import Column from '../ui/components/column';
 
 const messages = defineMessages({
   heading: { id: 'column.blocks', defaultMessage: 'Blocked users' },
@@ -54,7 +55,7 @@ class Blocks extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='empty_column.blocks' defaultMessage="You haven't blocked any users yet." />;
 
     return (
-      <Column icon='ban' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='ban' heading={intl.formatMessage(messages.heading)}>
         <ScrollableList
           scrollKey='blocks'
           onLoadMore={this.handleLoadMore}

@@ -1,7 +1,8 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+
 import Icon from 'soapbox/components/icon';
 
 const filename = url => url.split('/').pop().split('#')[0].split('?')[0];

@@ -1,9 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Immutable from 'immutable';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import punycode from 'punycode';
+
 import classnames from 'classnames';
+import { is, fromJS } from 'immutable';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+
 import Icon from 'soapbox/components/icon';
 
 const IDNA_PREFIX = 'xn--';
@@ -77,7 +79,7 @@ export default class Card extends React.PureComponent {
   };
 
   componentDidUpdate(prevProps) {
-    if (!Immutable.is(prevProps.card, this.props.card)) {
+    if (!is(prevProps.card, this.props.card)) {
       this.setState({ embedded: false });
     }
   }
@@ -86,7 +88,7 @@ export default class Card extends React.PureComponent {
     const { card, onOpenMedia } = this.props;
 
     onOpenMedia(
-      Immutable.fromJS([
+      fromJS([
         {
           type: 'image',
           url: card.get('embed_url'),
@@ -171,24 +173,24 @@ export default class Card extends React.PureComponent {
 
     const description = (
       <div className='status-card__content'>
-        {title}
+        <span className='status-card__title'>{title}</span>
         <p className='status-card__description'>{trim(card.get('description') || '', maxDescription)}</p>
-        <span className='status-card__host'><Icon id='link' /> {provider}</span>
+        <span className='status-card__host'><Icon src={require('@tabler/icons/icons/link.svg')} /> {provider}</span>
       </div>
     );
 
     let embed     = '';
     const imageUrl = card.get('image') || card.getIn(['pleroma', 'opengraph', 'thumbnail_url']);
-    let thumbnail = <div style={{ backgroundImage: `url(${imageUrl})`, width: horizontal ? width : null, height: horizontal ? height : null }} className='status-card__image-image' />;
+    const thumbnail = <div style={{ backgroundImage: `url(${imageUrl})`, width: horizontal ? width : null, height: horizontal ? height : null }} className='status-card__image-image' />;
 
     if (interactive) {
       if (embedded) {
         embed = this.renderVideo();
       } else {
-        let iconVariant = 'play';
+        let iconVariant = require('@tabler/icons/icons/player-play.svg');
 
         if (card.get('type') === 'photo') {
-          iconVariant = 'search-plus';
+          iconVariant = require('@tabler/icons/icons/zoom-in.svg');
         }
 
         embed = (
@@ -197,8 +199,8 @@ export default class Card extends React.PureComponent {
 
             <div className='status-card__actions'>
               <div>
-                <button onClick={this.handleEmbedClick}><Icon id={iconVariant} /></button>
-                {horizontal && <a href={card.get('url')} target='_blank' rel='noopener'><Icon id='external-link' /></a>}
+                <button onClick={this.handleEmbedClick}><Icon src={iconVariant} /></button>
+                {horizontal && <a href={card.get('url')} target='_blank' rel='noopener'><Icon src={require('@tabler/icons/icons/external-link.svg')} /></a>}
               </div>
             </div>
           </div>
@@ -220,7 +222,7 @@ export default class Card extends React.PureComponent {
     } else {
       embed = (
         <div className='status-card__image status-card__image--empty'>
-          <Icon id='file-text' />
+          <Icon src={require('@tabler/icons/icons/file-text.svg')} />
         </div>
       );
     }

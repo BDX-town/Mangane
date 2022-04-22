@@ -1,8 +1,9 @@
+import { Map as ImmutableMap } from 'immutable';
+
 import {
   parseVersion,
   getFeatures,
 } from '../features';
-import { Map as ImmutableMap } from 'immutable';
 
 describe('parseVersion', () => {
   it('with Pleroma version string', () => {
@@ -90,22 +91,6 @@ describe('getFeatures', () => {
       });
       const features = getFeatures(instance);
       expect(features.trends).toBe(false);
-    });
-  });
-
-  describe('attachmentLimit', () => {
-    it('is 4 by default', () => {
-      const instance = ImmutableMap({ version: '3.1.4' });
-      const features = getFeatures(instance);
-      expect(features.attachmentLimit).toEqual(4);
-    });
-
-    it('is Infinity for Pleroma', () => {
-      const instance = ImmutableMap({
-        version: '2.7.2 (compatible; Pleroma 1.1.50-42-g3d9ac6ae-develop)',
-      });
-      const features = getFeatures(instance);
-      expect(features.attachmentLimit).toEqual(Infinity);
     });
   });
 

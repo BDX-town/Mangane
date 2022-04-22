@@ -12,9 +12,23 @@
       &-track-x {
         display: flex;
         align-items: center;
-        height: 15px;
+        justify-content: center;
         color: #fff;
+        width: auto;
+      }
+
+      &-track-check {
+        left: 6px;
+      }
+
+      &-track-x {
+        right: 5px;
       }
     }
+  }
+
+  .svg-icon {
+    width: 18px;
+    height: 18px;
   }
 }

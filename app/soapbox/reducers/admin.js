@@ -1,5 +1,16 @@
 import {
+  Map as ImmutableMap,
+  List as ImmutableList,
+  Set as ImmutableSet,
+  Record as ImmutableRecord,
+  OrderedSet as ImmutableOrderedSet,
+  fromJS,
+  is,
+} from 'immutable';
+
+import {
   ADMIN_CONFIG_FETCH_SUCCESS,
+  ADMIN_CONFIG_UPDATE_SUCCESS,
   ADMIN_REPORTS_FETCH_SUCCESS,
   ADMIN_REPORTS_PATCH_REQUEST,
   ADMIN_REPORTS_PATCH_SUCCESS,
@@ -9,16 +20,8 @@ import {
   ADMIN_USERS_APPROVE_REQUEST,
   ADMIN_USERS_APPROVE_SUCCESS,
 } from '../actions/admin';
-import {
-  Map as ImmutableMap,
-  List as ImmutableList,
-  Set as ImmutableSet,
-  OrderedSet as ImmutableOrderedSet,
-  fromJS,
-  is,
-} from 'immutable';
 
-const initialState = ImmutableMap({
+const ReducerRecord = ImmutableRecord({
   reports: ImmutableMap(),
   openReports: ImmutableOrderedSet(),
   users: ImmutableMap(),
@@ -124,9 +127,10 @@ function handleReportDiffs(state, reports) {
   });
 }
 
-export default function admin(state = initialState, action) {
+export default function admin(state = ReducerRecord(), action) {
   switch(action.type) {
   case ADMIN_CONFIG_FETCH_SUCCESS:
+  case ADMIN_CONFIG_UPDATE_SUCCESS:
     return state.set('configs', fromJS(action.configs));
   case ADMIN_REPORTS_FETCH_SUCCESS:
     return importReports(state, action.reports);
@@ -145,4 +149,4 @@ export default function admin(state = initialState, action) {
   default:
     return state;
   }
-};
+}

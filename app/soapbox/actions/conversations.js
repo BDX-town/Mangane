@@ -1,10 +1,12 @@
+import { isLoggedIn } from 'soapbox/utils/auth';
+
 import api, { getLinks } from '../api';
+
 import {
   importFetchedAccounts,
   importFetchedStatuses,
   importFetchedStatus,
 } from './importer';
-import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const CONVERSATIONS_MOUNT   = 'CONVERSATIONS_MOUNT';
 export const CONVERSATIONS_UNMOUNT = 'CONVERSATIONS_UNMOUNT';

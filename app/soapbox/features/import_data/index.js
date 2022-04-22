@@ -1,16 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
-import Column from '../ui/components/column';
+import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+
 import {
   importFollows,
   importBlocks,
   importMutes,
 } from 'soapbox/actions/import_data';
-import CSVImporter from './components/csv_importer';
 import { getFeatures } from 'soapbox/utils/features';
+
+import Column from '../ui/components/column';
+
+import CSVImporter from './components/csv_importer';
 
 const messages = defineMessages({
   heading: { id: 'column.import_data', defaultMessage: 'Import data' },
@@ -52,7 +55,7 @@ class ImportData extends ImmutablePureComponent {
     const { intl, features } = this.props;
 
     return (
-      <Column icon='cloud-upload' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='cloud-upload-alt' heading={intl.formatMessage(messages.heading)}>
         <CSVImporter action={importFollows} messages={followMessages} />
         <CSVImporter action={importBlocks} messages={blockMessages} />
         {features.importMutes && <CSVImporter action={importMutes} messages={muteMessages} />}

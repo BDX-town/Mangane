@@ -1,25 +1,27 @@
 'use strict';
 
-import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { connect } from 'react-redux';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import IconButton from 'soapbox/components/icon_button';
-import Icon from 'soapbox/components/icon';
+import { connect } from 'react-redux';
+
 import AutosuggestInput from 'soapbox/components/autosuggest_input';
-import classNames from 'classnames';
+import Icon from 'soapbox/components/icon';
+import IconButton from 'soapbox/components/icon_button';
 
 const messages = defineMessages({
   option_placeholder: { id: 'compose_form.poll.option_placeholder', defaultMessage: 'Choice {number}' },
   add_option: { id: 'compose_form.poll.add_option', defaultMessage: 'Add a choice' },
   remove_option: { id: 'compose_form.poll.remove_option', defaultMessage: 'Remove this choice' },
   poll_duration: { id: 'compose_form.poll.duration', defaultMessage: 'Poll duration' },
+  switchToMultiple: { id: 'compose_form.poll.switch_to_multiple', defaultMessage: 'Change poll to allow multiple choices' },
+  switchToSingle: { id: 'compose_form.poll.switch_to_single', defaultMessage: 'Change poll to allow for a single choice' },
   minutes: { id: 'intervals.full.minutes', defaultMessage: '{number, plural, one {# minute} other {# minutes}}' },
   hours: { id: 'intervals.full.hours', defaultMessage: '{number, plural, one {# hour} other {# hours}}' },
   days: { id: 'intervals.full.days', defaultMessage: '{number, plural, one {# day} other {# days}}' },
-  hint: { id: 'compose_form.poll.type.hint', defaultMessage: 'Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.' },
 });
 
 @injectIntl
@@ -63,6 +65,12 @@ class Option extends React.PureComponent {
     this.props.onClearSuggestions();
   }
 
+  handleCheckboxKeypress = e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      this.handleToggleMultiple(e);
+    }
+  }
+
   onSuggestionsFetchRequested = (token) => {
     this.props.onFetchSuggestions(token);
   }
@@ -80,9 +88,11 @@ class Option extends React.PureComponent {
           <span
             className={classNames('poll__input', { checkbox: isPollMultiple })}
             onClick={this.handleToggleMultiple}
+            onKeyPress={this.handleCheckboxKeypress}
             role='button'
             tabIndex='0'
-            title={intl.formatMessage(messages.hint)}
+            title={intl.formatMessage(isPollMultiple ? messages.switchToSingle : messages.switchToMultiple)}
+            aria-label={intl.formatMessage(isPollMultiple ? messages.switchToSingle : messages.switchToMultiple)}
           />
 
           <AutosuggestInput
@@ -95,11 +105,12 @@ class Option extends React.PureComponent {
             onSuggestionsClearRequested={this.onSuggestionsClearRequested}
             onSuggestionSelected={this.onSuggestionSelected}
             searchTokens={[':']}
+            autoFocus
           />
         </label>
 
         <div className='poll__cancel'>
-          <IconButton title={intl.formatMessage(messages.remove_option)} icon='times' onClick={this.handleOptionRemove} />
+          <IconButton title={intl.formatMessage(messages.remove_option)} src={require('@tabler/icons/icons/x.svg')} onClick={this.handleOptionRemove} />
         </div>
       </li>
     );
@@ -168,7 +179,7 @@ class PollForm extends ImmutablePureComponent {
 
         <div className='poll__footer'>
           {options.size < maxOptions && (
-            <button className='button button-secondary' onClick={this.handleAddOption}><Icon id='plus' /> <FormattedMessage {...messages.add_option} /></button>
+            <button className='button button-secondary' onClick={this.handleAddOption}><Icon src={require('@tabler/icons/icons/plus.svg')} /> <FormattedMessage {...messages.add_option} /></button>
           )}
 
           <select value={expiresIn} onChange={this.handleSelectDuration}>
@@ -188,11 +199,11 @@ class PollForm extends ImmutablePureComponent {
 }
 
 const mapStateToProps = state => {
-  const pollLimits = state.getIn(['instance', 'poll_limits']);
+  const pollLimits = state.getIn(['instance', 'configuration', 'polls']);
 
   return {
     maxOptions: pollLimits.get('max_options'),
-    maxOptionChars: pollLimits.get('max_option_chars'),
+    maxOptionChars: pollLimits.get('max_characters_per_option'),
     maxExpiration: pollLimits.get('max_expiration'),
     minExpiration: pollLimits.get('min_expiration'),
   };

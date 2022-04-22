@@ -1,10 +1,11 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-
-import Column from '../../../components/column';
-import ColumnHeader from '../../../components/column_header';
+import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+
+import Column from 'soapbox/components/column';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
+
+import ColumnHeader from '../../../components/column_header';
 
 export default class ColumnLoading extends ImmutablePureComponent {
 
@@ -19,11 +20,13 @@ export default class ColumnLoading extends ImmutablePureComponent {
   };
 
   render() {
-    let { title, icon } = this.props;
+    const { title, icon } = this.props;
     return (
       <Column>
         <ColumnHeader icon={icon} title={title} focusable={false} />
-        <LoadingIndicator />
+        <div className='column-loading'>
+          <LoadingIndicator />
+        </div>
       </Column>
     );
   }

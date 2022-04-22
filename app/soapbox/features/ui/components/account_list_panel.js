@@ -1,10 +1,12 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Icon from 'soapbox/components/icon';
-import AccountContainer from '../../../containers/account_container';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { Link } from 'react-router-dom';
+
+import Icon from 'soapbox/components/icon';
+
+import AccountContainer from '../../../containers/account_container';
 
 export default class AccountListPanel extends ImmutablePureComponent {
 
@@ -34,7 +36,7 @@ export default class AccountListPanel extends ImmutablePureComponent {
     return (
       <div className='wtf-panel'>
         <div className='wtf-panel-header'>
-          <Icon id={icon} className='wtf-panel-header__icon' />
+          <Icon src={icon} className='wtf-panel-header__icon' />
           <span className='wtf-panel-header__label'>
             {title}
           </span>
@@ -51,6 +53,6 @@ export default class AccountListPanel extends ImmutablePureComponent {
         </Link>}
       </div>
     );
-  };
+  }
 
-};
+}

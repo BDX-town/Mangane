@@ -1,6 +1,20 @@
-import api, { getLinks } from '../api';
+import {
+  List as ImmutableList,
+  Map as ImmutableMap,
+  OrderedMap as ImmutableOrderedMap,
+} from 'immutable';
 import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
+import { defineMessages } from 'react-intl';
+
+import { isLoggedIn } from 'soapbox/utils/auth';
+import { parseVersion, PLEROMA } from 'soapbox/utils/features';
+import { joinPublicPath } from 'soapbox/utils/static';
+
+import api, { getLinks } from '../api';
+import { getFilters, regexFromFilters } from '../selectors';
+import { unescapeHTML } from '../utils/html';
+
 import { fetchRelationships } from './accounts';
 import {
   importFetchedAccount,
@@ -8,16 +22,8 @@ import {
   importFetchedStatus,
   importFetchedStatuses,
 } from './importer';
+import { saveMarker } from './markers';
 import { getSettings, saveSettings } from './settings';
-import { defineMessages } from 'react-intl';
-import {
-  List as ImmutableList,
-  Map as ImmutableMap,
-  OrderedMap as ImmutableOrderedMap,
-} from 'immutable';
-import { unescapeHTML } from '../utils/html';
-import { getFilters, regexFromFilters } from '../selectors';
-import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const NOTIFICATIONS_UPDATE      = 'NOTIFICATIONS_UPDATE';
 export const NOTIFICATIONS_UPDATE_NOOP = 'NOTIFICATIONS_UPDATE_NOOP';
@@ -78,7 +84,7 @@ export function updateNotifications(notification, intlMessages, intlLocale) {
       fetchRelatedRelationships(dispatch, [notification]);
     }
   };
-};
+}
 
 export function updateNotificationsQueue(notification, intlMessages, intlLocale, curPath) {
   return (dispatch, getState) => {
@@ -92,7 +98,7 @@ export function updateNotificationsQueue(notification, intlMessages, intlLocale,
 
     const isOnNotificationsPage = curPath === '/notifications';
 
-    if (notification.type === 'mention') {
+    if (['mention', 'status'].includes(notification.type)) {
       const regex = regexFromFilters(filters);
       const searchIndex = notification.status.spoiler_text + '\n' + unescapeHTML(notification.status.content);
       filtered = regex && regex.test(searchIndex);
@@ -100,16 +106,20 @@ export function updateNotificationsQueue(notification, intlMessages, intlLocale,
 
     // Desktop notifications
     try {
-      if (typeof window.Notification !== 'undefined' && showAlert && !filtered) {
+      if (showAlert && !filtered) {
         const title = new IntlMessageFormat(intlMessages[`notification.${notification.type}`], intlLocale).format({ name: notification.account.display_name.length > 0 ? notification.account.display_name : notification.account.username });
         const body = (notification.status && notification.status.spoiler_text.length > 0) ? notification.status.spoiler_text : unescapeHTML(notification.status ? notification.status.content : '');
 
-        const notify = new Notification(title, { body, icon: notification.account.avatar, tag: notification.id });
-
-        notify.addEventListener('click', () => {
-          window.focus();
-          notify.close();
-        });
+        navigator.serviceWorker.ready.then(serviceWorkerRegistration => {
+          serviceWorkerRegistration.showNotification(title, {
+            body,
+            icon: notification.account.avatar,
+            tag: notification.id,
+            data: {
+              url: joinPublicPath('/notifications'),
+            },
+          }).catch(console.error);
+        }).catch(console.error);
       }
     } catch(e) {
       console.warn(e);
@@ -133,7 +143,7 @@ export function updateNotificationsQueue(notification, intlMessages, intlLocale,
       dispatch(updateNotifications(notification, intlMessages, intlLocale));
     }
   };
-};
+}
 
 export function dequeueNotifications() {
   return (dispatch, getState) => {
@@ -155,12 +165,12 @@ export function dequeueNotifications() {
     });
     dispatch(markReadNotifications());
   };
-};
+}
 
 const excludeTypesFromSettings = getState => getSettings(getState()).getIn(['notifications', 'shows']).filter(enabled => !enabled).keySeq().toJS();
 
 const excludeTypesFromFilter = filter => {
-  const allTypes = ImmutableList(['follow', 'follow_request', 'favourite', 'reblog', 'mention', 'poll', 'move', 'pleroma:emoji_reaction']);
+  const allTypes = ImmutableList(['follow', 'follow_request', 'favourite', 'reblog', 'mention', 'status', 'poll', 'move', 'pleroma:emoji_reaction']);
   return allTypes.filterNot(item => item === filter).toJS();
 };
 
@@ -168,7 +178,7 @@ const noOp = () => {};
 
 export function expandNotifications({ maxId } = {}, done = noOp) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return dispatch(noOp);
 
     const activeFilter = getSettings(getState()).getIn(['notifications', 'quickFilter', 'active']);
     const notifications = getState().get('notifications');
@@ -176,7 +186,7 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
 
     if (notifications.get('isLoading')) {
       done();
-      return;
+      return dispatch(noOp);
     }
 
     const params = {
@@ -192,20 +202,20 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
 
     dispatch(expandNotificationsRequest(isLoadingMore));
 
-    api(getState).get('/api/v1/notifications', { params }).then(response => {
+    return api(getState).get('/api/v1/notifications', { params }).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
       const entries = response.data.reduce((acc, item) => {
-        if (item.account && item.account.id) {
+        if (item.account?.id) {
           acc.accounts[item.account.id] = item.account;
         }
 
         // Used by Move notification
-        if (item.target && item.target.id) {
+        if (item.target?.id) {
           acc.accounts[item.target.id] = item.target;
         }
 
-        if (item.status && item.status.id) {
+        if (item.status?.id) {
           acc.statuses[item.status.id] = item.status;
         }
 
@@ -223,14 +233,14 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
       done();
     });
   };
-};
+}
 
 export function expandNotificationsRequest(isLoadingMore) {
   return {
     type: NOTIFICATIONS_EXPAND_REQUEST,
     skipLoading: !isLoadingMore,
   };
-};
+}
 
 export function expandNotificationsSuccess(notifications, next, isLoadingMore) {
   return {
@@ -239,7 +249,7 @@ export function expandNotificationsSuccess(notifications, next, isLoadingMore) {
     next,
     skipLoading: !isLoadingMore,
   };
-};
+}
 
 export function expandNotificationsFail(error, isLoadingMore) {
   return {
@@ -247,7 +257,7 @@ export function expandNotificationsFail(error, isLoadingMore) {
     error,
     skipLoading: !isLoadingMore,
   };
-};
+}
 
 export function clearNotifications() {
   return (dispatch, getState) => {
@@ -259,7 +269,7 @@ export function clearNotifications() {
 
     api(getState).post('/api/v1/notifications/clear');
   };
-};
+}
 
 export function scrollTopNotifications(top) {
   return (dispatch, getState) => {
@@ -283,30 +293,36 @@ export function setFilter(filterType) {
   };
 }
 
+// Of course Markers don't work properly in Pleroma.
+// https://git.pleroma.social/pleroma/pleroma/-/issues/2769
+export function markReadPleroma(max_id) {
+  return (dispatch, getState) => {
+    return api(getState).post('/api/v1/pleroma/notifications/read', { max_id });
+  };
+}
+
 export function markReadNotifications() {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
 
     const state = getState();
-    const topNotification = state.getIn(['notifications', 'items'], ImmutableOrderedMap()).first(ImmutableMap()).get('id');
-    const lastRead = state.getIn(['notifications', 'lastRead']);
+    const instance = state.get('instance');
+    const topNotificationId = state.getIn(['notifications', 'items'], ImmutableOrderedMap()).first(ImmutableMap()).get('id');
+    const lastReadId = state.getIn(['notifications', 'lastRead']);
+    const v = parseVersion(instance.get('version'));
 
-    if (!(topNotification && topNotification > lastRead)) return;
+    if (!(topNotificationId && topNotificationId > lastReadId)) return;
 
-    dispatch({
-      type: NOTIFICATIONS_MARK_READ_REQUEST,
-      lastRead: topNotification,
-    });
+    const marker = {
+      notifications: {
+        last_read_id: topNotificationId,
+      },
+    };
 
-    api(getState).post('/api/v1/pleroma/notifications/read', {
-      max_id: topNotification,
-    }).then(response => {
-      dispatch({
-        type: NOTIFICATIONS_MARK_READ_SUCCESS,
-        notifications: response.data,
-      });
-    }).catch(e => {
-      dispatch({ type: NOTIFICATIONS_MARK_READ_FAIL });
-    });
+    dispatch(saveMarker(marker));
+
+    if (v.software === PLEROMA) {
+      dispatch(markReadPleroma(topNotificationId));
+    }
   };
 }

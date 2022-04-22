@@ -2,12 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link href="/manifest.json" rel="manifest">
     <!--server-generated-meta-->
     <link rel="icon" type="image/png" href="/favicon.png">
   </head>
-  <body class="app-body">
-    <noscript>To use Soapbox, please enable JavaScript.</noscript>
-    <div class="app-holder" id="soapbox"></div>
+  <body class="app-body app-body--loading theme-mode-light no-reduce-motion">
+    <div class="app-holder" id="soapbox">
+      <div class="loading-indicator">
+        <div class="loading-indicator__container">
+          <div class="loading-indicator__figure"></div>
+        </div>
+      </div>
+    </div>
+    <noscript>To use this website, please enable JavaScript.</noscript>
   </body>
 </html>

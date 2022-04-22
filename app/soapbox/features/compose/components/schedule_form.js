@@ -1,25 +1,38 @@
 'use strict';
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import IconButton from 'soapbox/components/icon_button';
-import { removeSchedule } from 'soapbox/actions/compose';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
+import IconButton from 'soapbox/components/icon_button';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { DatePicker } from 'soapbox/features/ui/util/async-components';
+
+import { setSchedule, removeSchedule } from '../../../actions/compose';
 
 const messages = defineMessages({
   schedule: { id: 'schedule.post_time', defaultMessage: 'Post Date/Time' },
   remove: { id: 'schedule.remove', defaultMessage: 'Remove schedule' },
 });
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
+  active: state.getIn(['compose', 'schedule']) ? true : false,
   scheduledAt: state.getIn(['compose', 'schedule']),
 });
 
-export default @connect(mapStateToProps)
+const mapDispatchToProps = dispatch => ({
+  onSchedule(date) {
+    dispatch(setSchedule(date));
+  },
+
+  onRemoveSchedule(date) {
+    dispatch(removeSchedule());
+  },
+});
+
+export default @connect(mapStateToProps, mapDispatchToProps)
 @injectIntl
 class ScheduleForm extends React.Component {
 
@@ -27,6 +40,7 @@ class ScheduleForm extends React.Component {
     scheduledAt: PropTypes.instanceOf(Date),
     intl: PropTypes.object.isRequired,
     onSchedule: PropTypes.func.isRequired,
+    onRemoveSchedule: PropTypes.func.isRequired,
     dispatch: PropTypes.func,
     active: PropTypes.bool,
   };
@@ -57,10 +71,10 @@ class ScheduleForm extends React.Component {
     const selectedDate = new Date(time);
 
     return fiveMinutesFromNow.getTime() < selectedDate.getTime();
-  };
+  }
 
   handleRemove = e => {
-    this.props.dispatch(removeSchedule());
+    this.props.onRemoveSchedule();
     e.preventDefault();
   }
 
@@ -90,20 +104,22 @@ class ScheduleForm extends React.Component {
           <FormattedMessage id='datepicker.hint' defaultMessage='Scheduled to post at…' />
         </div>
         <div className='datepicker__input'>
-          <DatePicker
-            selected={scheduledAt}
-            showTimeSelect
-            dateFormat='MMMM d, yyyy h:mm aa'
-            timeIntervals={15}
-            wrapperClassName='react-datepicker-wrapper'
-            onChange={this.setSchedule}
-            placeholderText={this.props.intl.formatMessage(messages.schedule)}
-            filterDate={this.isCurrentOrFutureDate}
-            filterTime={this.isFiveMinutesFromNow}
-            ref={this.setRef}
-          />
+          <BundleContainer fetchComponent={DatePicker}>
+            {Component => (<Component
+              selected={scheduledAt}
+              showTimeSelect
+              dateFormat='MMMM d, yyyy h:mm aa'
+              timeIntervals={15}
+              wrapperClassName='react-datepicker-wrapper'
+              onChange={this.setSchedule}
+              placeholderText={this.props.intl.formatMessage(messages.schedule)}
+              filterDate={this.isCurrentOrFutureDate}
+              filterTime={this.isFiveMinutesFromNow}
+              ref={this.setRef}
+            />)}
+          </BundleContainer>
           <div className='datepicker__cancel'>
-            <IconButton size={20} title={intl.formatMessage(messages.remove)} icon='times' onClick={this.handleRemove} />
+            <IconButton title={intl.formatMessage(messages.remove)} src={require('@tabler/icons/icons/x.svg')} onClick={this.handleRemove} />
           </div>
         </div>
       </div>

@@ -1,4 +1,6 @@
+import { debounce } from 'lodash';
 import { connect } from 'react-redux';
+
 import {
   changeSearch,
   clearSearch,
@@ -12,24 +14,49 @@ const mapStateToProps = state => ({
   submitted: state.getIn(['search', 'submitted']),
 });
 
-const mapDispatchToProps = dispatch => ({
+function redirectToAccount(accountId, routerHistory) {
+  return (dispatch, getState) => {
+    const acct = getState().getIn(['accounts', accountId, 'acct']);
 
-  onChange(value) {
-    dispatch(changeSearch(value));
-  },
+    if (acct && routerHistory) {
+      routerHistory.push(`/@${acct}`);
+    }
+  };
+}
 
-  onClear() {
-    dispatch(clearSearch());
-  },
+const mapDispatchToProps = (dispatch, { autoSubmit }) => {
 
-  onSubmit() {
+  const debouncedSubmit = debounce(() => {
     dispatch(submitSearch());
-  },
+  }, 900);
 
-  onShow() {
-    dispatch(showSearch());
-  },
+  return {
+    onChange(value) {
+      dispatch(changeSearch(value));
 
-});
+      if (autoSubmit) {
+        debouncedSubmit();
+      }
+    },
+
+    onClear() {
+      dispatch(clearSearch());
+    },
+
+    onSubmit() {
+      dispatch(submitSearch());
+    },
+
+    onShow() {
+      dispatch(showSearch());
+    },
+
+    onSelected(accountId, routerHistory) {
+      dispatch(clearSearch());
+      dispatch(redirectToAccount(accountId, routerHistory));
+    },
+
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

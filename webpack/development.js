@@ -1,16 +1,27 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 console.log('Running in development mode'); // eslint-disable-line no-console
 
-const { resolve } = require('path');
+const { join } = require('path');
+
 const { merge } = require('webpack-merge');
+
 const sharedConfig = require('./shared');
-const { settings, output } = require('./configuration');
 
 const watchOptions = {};
 
-const backendUrl  = process.env.BACKEND_URL || 'http://localhost:4000';
-const patronUrl  = process.env.PATRON_URL || 'http://localhost:3037';
-const secureProxy = !(process.env.PROXY_HTTPS_INSECURE === 'true');
+const {
+  DEVSERVER_URL,
+  BACKEND_URL,
+  PATRON_URL,
+  PROXY_HTTPS_INSECURE,
+} = process.env;
+
+const DEFAULTS = {
+  DEVSERVER_URL: 'http://localhost:3036',
+  PATRON_URL: 'http://localhost:3037',
+};
+
+const { FE_SUBDIRECTORY } = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
 
 const backendEndpoints = [
   '/api',
@@ -23,18 +34,21 @@ const backendEndpoints = [
   '/static',
   '/main/ostatus',
   '/ostatus_subscribe',
+  '/favicon.png',
 ];
 
 const makeProxyConfig = () => {
-  let proxyConfig = {};
+  const secureProxy = PROXY_HTTPS_INSECURE !== 'true';
+
+  const proxyConfig = {};
   proxyConfig['/api/patron'] = {
-    target: patronUrl,
+    target: PATRON_URL || DEFAULTS.PATRON_URL,
     secure: secureProxy,
     changeOrigin: true,
   };
   backendEndpoints.map(endpoint => {
     proxyConfig[endpoint] = {
-      target: backendUrl,
+      target: BACKEND_URL || DEFAULTS.BACKEND_URL,
       secure: secureProxy,
       changeOrigin: true,
     };
@@ -49,12 +63,21 @@ if (process.env.VAGRANT) {
   watchOptions.poll = 1000;
 }
 
+const devServerUrl = (() => {
+  try {
+    return new URL(DEVSERVER_URL);
+  } catch {
+    return new URL(DEFAULTS.DEVSERVER_URL);
+  }
+})();
+
 module.exports = merge(sharedConfig, {
   mode: 'development',
   cache: true,
   devtool: 'source-map',
 
   stats: {
+    preset: 'errors-warnings',
     errorDetails: true,
   },
 
@@ -62,39 +85,32 @@ module.exports = merge(sharedConfig, {
     pathinfo: true,
   },
 
+  watchOptions: Object.assign(
+    {},
+    { ignored: '**/node_modules/**' },
+    watchOptions,
+  ),
+
   devServer: {
-    clientLogLevel: 'none',
     compress: true,
-    quiet: false,
-    disableHostCheck: true,
-    host: 'localhost',
-    port: 3036,
-    https: false,
+    host: devServerUrl.hostname,
+    port: devServerUrl.port,
+    https: devServerUrl.protocol === 'https:',
     hot: false,
-    contentBase: resolve(__dirname, '..', settings.public_root_path),
-    inline: true,
-    useLocalIp: false,
-    public: 'localhost:3036',
-    publicPath: output.publicPath,
+    allowedHosts: 'all',
     historyApiFallback: {
       disableDotRule: true,
+      index: join(FE_SUBDIRECTORY, '/'),
     },
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
-    overlay: true,
-    stats: {
-      entrypoints: false,
-      errorDetails: false,
-      modules: false,
-      moduleTrace: false,
+    client: {
+      overlay: true,
     },
-    watchOptions: Object.assign(
-      {},
-      { ignored: '**/node_modules/**' },
-      watchOptions,
-    ),
-    serveIndex: true,
+    static: {
+      serveIndex: true,
+    },
     proxy: makeProxyConfig(),
   },
 });

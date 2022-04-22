@@ -34,3 +34,11 @@ $media-modal-media-max-width: 100%;
 $media-modal-media-max-height: 80%;
 
 $no-gap-breakpoint: 415px;
+
+// CSS variables
+// NOTE: Prefer CSS variables whenever possible.
+// They're future-proof and more flexible.
+:root {
+  --thumb-navigation-base-height: 60px;
+  --thumb-navigation-height: calc(var(--thumb-navigation-base-height) + env(safe-area-inset-bottom));
+}

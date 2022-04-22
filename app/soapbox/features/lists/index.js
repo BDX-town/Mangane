@@ -1,17 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import LoadingIndicator from '../../components/loading_indicator';
-import Column from '../ui/components/column';
-import { fetchLists } from '../../actions/lists';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
+
+import { fetchLists } from '../../actions/lists';
+import LoadingIndicator from '../../components/loading_indicator';
+import ScrollableList from '../../components/scrollable_list';
+import Column from '../ui/components/column';
 import ColumnLink from '../ui/components/column_link';
 import ColumnSubheading from '../ui/components/column_subheading';
+
 import NewListForm from './components/new_list_form';
-import { createSelector } from 'reselect';
-import ScrollableList from '../../components/scrollable_list';
 
 const messages = defineMessages({
   heading: { id: 'column.lists', defaultMessage: 'Lists' },
@@ -60,7 +62,7 @@ class Lists extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='empty_column.lists' defaultMessage="You don't have any lists yet. When you create one, it will show up here." />;
 
     return (
-      <Column icon='list-ul' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='list-ul' heading={intl.formatMessage(messages.heading)}>
         <br />
         <ColumnSubheading text={intl.formatMessage(messages.add)} />
         <NewListForm />
@@ -71,7 +73,7 @@ class Lists extends ImmutablePureComponent {
           emptyMessage={emptyMessage}
         >
           {lists.map(list =>
-            <ColumnLink key={list.get('id')} to={`/list/${list.get('id')}`} icon='list-ul' text={list.get('title')} />,
+            <ColumnLink key={list.get('id')} to={`/list/${list.get('id')}`} src={require('@tabler/icons/icons/list.svg')} text={list.get('title')} />,
           )}
         </ScrollableList>
       </Column>

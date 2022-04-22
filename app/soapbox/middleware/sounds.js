@@ -28,21 +28,21 @@ export default function soundsMiddleware() {
   const soundCache = {
     boop: createAudio([
       {
-        src: '/sounds/boop.ogg',
+        src: require('../../sounds/boop.ogg'),
         type: 'audio/ogg',
       },
       {
-        src: '/sounds/boop.mp3',
+        src: require('../../sounds/boop.mp3'),
         type: 'audio/mpeg',
       },
     ]),
     chat: createAudio([
       {
-        src: '/sounds/chat.oga',
+        src: require('../../sounds/chat.oga'),
         type: 'audio/ogg',
       },
       {
-        src: '/sounds/chat.mp3',
+        src: require('../../sounds/chat.mp3'),
         type: 'audio/mpeg',
       },
     ]),
@@ -55,4 +55,4 @@ export default function soundsMiddleware() {
 
     return next(action);
   };
-};
+}

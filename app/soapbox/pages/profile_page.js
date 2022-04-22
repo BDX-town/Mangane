@@ -1,25 +1,32 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import Helmet from 'soapbox/components/helmet';
-import HeaderContainer from '../features/account_timeline/containers/header_container';
-import WhoToFollowPanel from '../features/ui/components/who_to_follow_panel';
-import LinkFooter from '../features/ui/components/link_footer';
-import SignUpPanel from '../features/ui/components/sign_up_panel';
-import ProfileInfoPanel from '../features/ui/components/profile_info_panel';
-import ProfileMediaPanel from '../features/ui/components/profile_media_panel';
-import { getAcct } from 'soapbox/utils/accounts';
-import { displayFqn } from 'soapbox/utils/state';
-import { getFeatures } from 'soapbox/utils/features';
-import { makeGetAccount } from '../selectors';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import Sticky from 'react-stickynode';
+
+import Helmet from 'soapbox/components/helmet';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import {
+  WhoToFollowPanel,
+  SignUpPanel,
+  ProfileInfoPanel,
+  ProfileMediaPanel,
+  PinnedAccountsPanel,
+} from 'soapbox/features/ui/util/async-components';
+import { findAccountByUsername, makeGetAccount } from 'soapbox/selectors';
+import { getAcct, isLocal } from 'soapbox/utils/accounts';
+import { getFeatures } from 'soapbox/utils/features';
+import { displayFqn } from 'soapbox/utils/state';
+
+import HeaderContainer from '../features/account_timeline/containers/header_container';
+import LinkFooter from '../features/ui/components/link_footer';
 
 const mapStateToProps = (state, { params, withReplies = false }) => {
   const username = params.username || '';
   const accounts = state.getIn(['accounts']);
-  const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
+  const accountFetchError = ((state.getIn(['accounts', -1, 'username']) || '').toLowerCase() === username.toLowerCase());
   const getAccount = makeGetAccount();
 
   let accountId = -1;
@@ -28,7 +35,7 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
   if (accountFetchError) {
     accountId = null;
   } else {
-    account = accounts.find(acct => username.toLowerCase() === acct.getIn(['acct'], '').toLowerCase());
+    account = findAccountByUsername(state, username);
     accountId = account ? account.getIn(['id'], null) : -1;
     accountUsername = account ? account.getIn(['acct'], '') : '';
   }
@@ -86,22 +93,42 @@ class ProfilePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
               <div className='columns-area__panels__pane__inner'>
-                <ProfileInfoPanel username={accountUsername} account={account} />
+                <Sticky top={149}>
+                  <BundleContainer fetchComponent={ProfileInfoPanel}>
+                    {Component => <Component username={accountUsername} account={account} />}
+                  </BundleContainer>
+                </Sticky>
               </div>
             </div>
 
             <div className='columns-area__panels__main'>
-              <div className='columns-area columns-area--mobile'>
+              <div className='columns-area '>
                 {children}
               </div>
             </div>
 
             <div className='columns-area__panels__pane columns-area__panels__pane--right'>
               <div className='columns-area__panels__pane__inner'>
-                <SignUpPanel />
-                {features.suggestions && <WhoToFollowPanel />}
-                {account && <ProfileMediaPanel account={account} />}
-                <LinkFooter />
+                <Sticky top={149}>
+                  <BundleContainer fetchComponent={SignUpPanel}>
+                    {Component => <Component />}
+                  </BundleContainer>
+                  {account && (
+                    <BundleContainer fetchComponent={ProfileMediaPanel}>
+                      {Component => <Component account={account} />}
+                    </BundleContainer>
+                  )}
+                  {account && features.accountEndorsements && isLocal(account) ? (
+                    <BundleContainer fetchComponent={PinnedAccountsPanel}>
+                      {Component => <Component  account={account} />}
+                    </BundleContainer>
+                  ) : features.suggestions && (
+                    <BundleContainer fetchComponent={WhoToFollowPanel}>
+                      {Component => <Component />}
+                    </BundleContainer>
+                  )}
+                  <LinkFooter />
+                </Sticky>
               </div>
             </div>
 

@@ -1,17 +1,21 @@
-import React from 'react';
-import { defineMessages, injectIntl, FormattedMessage, FormattedNumber } from 'react-intl';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from '../ui/components/column';
-import RegistrationModePicker from './components/registration_mode_picker';
-import { parseVersion } from 'soapbox/utils/features';
-import sourceCode from 'soapbox/utils/code';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage, FormattedNumber } from 'react-intl';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/actions/email_list';
-import { getFeatures } from 'soapbox/utils/features';
 import { isAdmin } from 'soapbox/utils/accounts';
+import sourceCode from 'soapbox/utils/code';
+import { parseVersion } from 'soapbox/utils/features';
+import { getFeatures } from 'soapbox/utils/features';
+import { isNumber } from 'soapbox/utils/numbers';
+
+import Column from '../ui/components/column';
+
+import RegistrationModePicker from './components/registration_mode_picker';
 
 // https://stackoverflow.com/a/53230807
 const download = (response, filename) => {
@@ -80,7 +84,7 @@ class Dashboard extends ImmutablePureComponent {
     if (!account) return null;
 
     return (
-      <Column icon='tachometer' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='tachometer-alt' heading={intl.formatMessage(messages.heading)}>
         <div className='dashcounters'>
           {mau && <div className='dashcounter'>
             <div>
@@ -102,16 +106,18 @@ class Dashboard extends ImmutablePureComponent {
               </div>
             </Link>
           </div>
-          {retention && <div className='dashcounter'>
-            <div>
-              <div className='dashcounter__num'>
-                {retention}%
-              </div>
-              <div className='dashcounter__label'>
-                <FormattedMessage id='admin.dashcounters.retention_label' defaultMessage='user retention' />
+          {isNumber(retention) && (
+            <div className='dashcounter'>
+              <div>
+                <div className='dashcounter__num'>
+                  {retention}%
+                </div>
+                <div className='dashcounter__label'>
+                  <FormattedMessage id='admin.dashcounters.retention_label' defaultMessage='user retention' />
+                </div>
               </div>
             </div>
-          </div>}
+          )}
           <div className='dashcounter'>
             <Link to='/timeline/local'>
               <div className='dashcounter__num'>
@@ -138,7 +144,7 @@ class Dashboard extends ImmutablePureComponent {
           <div className='dashwidget'>
             <h4><FormattedMessage id='admin.dashwidgets.software_header' defaultMessage='Software' /></h4>
             <ul>
-              <li>Soapbox FE <span className='pull-right'>{sourceCode.version}</span></li>
+              <li>{sourceCode.displayName} <span className='pull-right'>{sourceCode.version}</span></li>
               <li>{v.software} <span className='pull-right'>{v.version}</span></li>
             </ul>
           </div>

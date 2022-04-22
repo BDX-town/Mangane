@@ -1,16 +1,19 @@
-import React from 'react';
-import ReactSwipeableViews from 'react-swipeable-views';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import Video from 'soapbox/features/video';
-import Audio from 'soapbox/features/audio';
-import ExtendedVideoPlayer from 'soapbox/components/extended_video_player';
 import classNames from 'classnames';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import IconButton from 'soapbox/components/icon_button';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import ImageLoader from './image_loader';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { withRouter } from 'react-router-dom';
+import ReactSwipeableViews from 'react-swipeable-views';
+
+import ExtendedVideoPlayer from 'soapbox/components/extended_video_player';
 import Icon from 'soapbox/components/icon';
+import IconButton from 'soapbox/components/icon_button';
+import Audio from 'soapbox/features/audio';
+import Video from 'soapbox/features/video';
+
+import ImageLoader from './image_loader';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -18,9 +21,7 @@ const messages = defineMessages({
   next: { id: 'lightbox.next', defaultMessage: 'Next' },
 });
 
-export const previewState = 'previewMediaModal';
-
-export default @injectIntl
+export default @injectIntl @withRouter
 class MediaModal extends ImmutablePureComponent {
 
   static propTypes = {
@@ -30,10 +31,7 @@ class MediaModal extends ImmutablePureComponent {
     index: PropTypes.number.isRequired,
     onClose: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
-  };
-
-  static contextTypes = {
-    router: PropTypes.object,
+    history: PropTypes.object,
   };
 
   state = {
@@ -75,28 +73,10 @@ class MediaModal extends ImmutablePureComponent {
 
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown, false);
-
-    if (this.context.router) {
-      const history = this.context.router.history;
-
-      history.push(history.location.pathname, previewState);
-
-      this.unlistenHistory = history.listen(() => {
-        this.props.onClose();
-      });
-    }
   }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown);
-
-    if (this.context.router) {
-      this.unlistenHistory();
-
-      if (this.context.router.history.location.state === previewState) {
-        this.context.router.history.goBack();
-      }
-    }
   }
 
   getIndex() {
@@ -115,7 +95,8 @@ class MediaModal extends ImmutablePureComponent {
       const { status, account } = this.props;
       const acct = account.get('acct');
       const statusId = status.get('id');
-      this.context.router.history.push(`/@${acct}/posts/${statusId}`);
+      this.props.history.push(`/@${acct}/posts/${statusId}`);
+      this.props.onClose(null, true);
     }
   }
 
@@ -138,8 +119,17 @@ class MediaModal extends ImmutablePureComponent {
     const index = this.getIndex();
     let pagination = [];
 
-    const leftNav  = media.size > 1 && <button tabIndex='0' className='media-modal__nav media-modal__nav--left' onClick={this.handlePrevClick} aria-label={intl.formatMessage(messages.previous)}><Icon id='chevron-left' fixedWidth /></button>;
-    const rightNav = media.size > 1 && <button tabIndex='0' className='media-modal__nav  media-modal__nav--right' onClick={this.handleNextClick} aria-label={intl.formatMessage(messages.next)}><Icon id='chevron-right' fixedWidth /></button>;
+    const leftNav  = media.size > 1 && (
+      <button tabIndex='0' className='media-modal__nav media-modal__nav--left' onClick={this.handlePrevClick} aria-label={intl.formatMessage(messages.previous)}>
+        <Icon src={require('@tabler/icons/icons/arrow-left.svg')} />
+      </button>
+    );
+
+    const rightNav = media.size > 1 && (
+      <button tabIndex='0' className='media-modal__nav  media-modal__nav--right' onClick={this.handleNextClick} aria-label={intl.formatMessage(messages.next)}>
+        <Icon src={require('@tabler/icons/icons/arrow-right.svg')} />
+      </button>
+    );
 
     if (media.size > 1) {
       pagination = media.map((item, i) => {
@@ -159,65 +149,65 @@ class MediaModal extends ImmutablePureComponent {
       return false;
     }).toArray();
 
-    const content = media.map((image) => {
-      const width  = image.getIn(['meta', 'original', 'width']) || null;
-      const height = image.getIn(['meta', 'original', 'height']) || null;
+    const content = media.map(attachment => {
+      const width  = attachment.getIn(['meta', 'original', 'width']) || null;
+      const height = attachment.getIn(['meta', 'original', 'height']) || null;
       const link = (status && account && <a href={status.get('url')} onClick={this.handleStatusClick}><FormattedMessage id='lightbox.view_context' defaultMessage='View context' /></a>);
 
-      if (image.get('type') === 'image') {
+      if (attachment.get('type') === 'image') {
         return (
           <ImageLoader
-            previewSrc={image.get('preview_url')}
-            src={image.get('url')}
+            previewSrc={attachment.get('preview_url')}
+            src={attachment.get('url')}
             width={width}
             height={height}
-            alt={image.get('description')}
-            key={image.get('url')}
+            alt={attachment.get('description')}
+            key={attachment.get('url')}
             onClick={this.toggleNavigation}
           />
         );
-      } else if (image.get('type') === 'video') {
+      } else if (attachment.get('type') === 'video') {
         const { time } = this.props;
 
         return (
           <Video
-            preview={image.get('preview_url')}
-            blurhash={image.get('blurhash')}
-            src={image.get('url')}
-            width={image.get('width')}
-            height={image.get('height')}
+            preview={attachment.get('preview_url')}
+            blurhash={attachment.get('blurhash')}
+            src={attachment.get('url')}
+            width={attachment.get('width')}
+            height={attachment.get('height')}
             startTime={time || 0}
             onCloseVideo={onClose}
             detailed
             link={link}
-            alt={image.get('description')}
-            key={image.get('url')}
+            alt={attachment.get('description')}
+            key={attachment.get('url')}
           />
         );
-      } else if (image.get('type') === 'audio') {
-        const { time } = this.props;
-
+      } else if (attachment.get('type') === 'audio') {
         return (
           <Audio
-            src={image.get('url')}
-            startTime={time || 0}
-            detailed
-            link={link}
-            alt={image.get('description')}
-            key={image.get('url')}
+            src={attachment.get('url')}
+            alt={attachment.get('description')}
+            poster={attachment.get('preview_url') !== attachment.get('url') ? attachment.get('preview_url') : (status && status.getIn(['account', 'avatar_static']))}
+            backgroundColor={attachment.getIn(['meta', 'colors', 'background'])}
+            foregroundColor={attachment.getIn(['meta', 'colors', 'foreground'])}
+            accentColor={attachment.getIn(['meta', 'colors', 'accent'])}
+            duration={attachment.getIn(['meta', 'original', 'duration'], 0)}
+            key={attachment.get('url')}
           />
         );
-      } else if (image.get('type') === 'gifv') {
+      } else if (attachment.get('type') === 'gifv') {
         return (
           <ExtendedVideoPlayer
-            src={image.get('url')}
+            src={attachment.get('url')}
             muted
             controls={false}
             width={width}
             link={link}
             height={height}
-            key={image.get('preview_url')}
-            alt={image.get('description')}
+            key={attachment.get('preview_url')}
+            alt={attachment.get('description')}
             onClick={this.toggleNavigation}
           />
         );
@@ -262,7 +252,7 @@ class MediaModal extends ImmutablePureComponent {
         </div>
 
         <div className={navigationClassName}>
-          <IconButton className='media-modal__close' title={intl.formatMessage(messages.close)} icon='times' onClick={onClose} size={40} />
+          <IconButton className='media-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={onClose} />
 
           {leftNav}
           {rightNav}

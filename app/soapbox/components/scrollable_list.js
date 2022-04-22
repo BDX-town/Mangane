@@ -1,20 +1,34 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import IntersectionObserverArticleContainer from '../containers/intersection_observer_article_container';
-import LoadMore from './load_more';
-import MoreFollows from './more_follows';
-import IntersectionObserverWrapper from '../features/ui/util/intersection_observer_wrapper';
-import { throttle } from 'lodash';
+import classNames from 'classnames';
 import { List as ImmutableList } from 'immutable';
+import { throttle } from 'lodash';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
+import { getSettings } from 'soapbox/actions/settings';
+import PullToRefresh from 'soapbox/components/pull_to_refresh';
+
+import IntersectionObserverArticleContainer from '../containers/intersection_observer_article_container';
+import IntersectionObserverWrapper from '../features/ui/util/intersection_observer_wrapper';
+
+import LoadMore from './load_more';
 import LoadingIndicator from './loading_indicator';
+import MoreFollows from './more_follows';
 
 const MOUSE_IDLE_DELAY = 300;
 
-export default class ScrollableList extends PureComponent {
+const mapStateToProps = state => {
+  const settings = getSettings(state);
 
-  static contextTypes = {
-    router: PropTypes.object,
+  return {
+    autoload: settings.get('autoloadMore'),
   };
+};
+
+export default @connect(mapStateToProps, null, null, { forwardRef: true })
+@withRouter
+class ScrollableList extends PureComponent {
 
   static propTypes = {
     scrollKey: PropTypes.string.isRequired,
@@ -29,6 +43,12 @@ export default class ScrollableList extends PureComponent {
     children: PropTypes.node,
     onScrollToTop: PropTypes.func,
     onScroll: PropTypes.func,
+    placeholderComponent: PropTypes.func,
+    placeholderCount: PropTypes.number,
+    autoload: PropTypes.bool,
+    onRefresh: PropTypes.func,
+    className: PropTypes.string,
+    location: PropTypes.object,
   };
 
   state = {
@@ -124,12 +144,14 @@ export default class ScrollableList extends PureComponent {
   }
 
   handleScroll = throttle(() => {
+    const { autoload } = this.props;
+
     if (this.window) {
       const { scrollTop, scrollHeight } = this.documentElement;
       const { innerHeight } = this.window;
       const offset = scrollHeight - scrollTop - innerHeight;
 
-      if (400 > offset && this.props.onLoadMore && this.props.hasMore && !this.props.isLoading) {
+      if (autoload && 400 > offset && this.props.onLoadMore && this.props.hasMore && !this.props.isLoading) {
         this.props.onLoadMore();
       }
 
@@ -221,67 +243,111 @@ export default class ScrollableList extends PureComponent {
     this.node = c;
   }
 
-  render() {
-    const { children, scrollKey, showLoading, isLoading, hasMore, prepend, alwaysPrepend, emptyMessage, onLoadMore } = this.props;
-    const childrenCount = React.Children.count(children);
-    const trackScroll = true; //placeholder
+  renderLoading = () => {
+    const { className, prepend, placeholderComponent: Placeholder, placeholderCount } = this.props;
 
-    const loadMore     = (hasMore && onLoadMore) ? <LoadMore visible={!isLoading} onClick={this.handleLoadMore} /> : null;
-    let scrollableArea = null;
-
-    if (showLoading) {
-      scrollableArea = (
-        <div className='slist slist--flex'>
+    if (Placeholder && placeholderCount > 0) {
+      return (
+        <div className={classNames('slist slist--flex', className)}>
           <div role='feed' className='item-list'>
-            {prepend}
-          </div>
-
-          <div className='slist__append'>
-            <LoadingIndicator />
-          </div>
-        </div>
-      );
-    } else if (isLoading || childrenCount > 0 || hasMore || !emptyMessage) {
-      scrollableArea = (
-        <div className='slist' ref={this.setRef} onMouseMove={this.handleMouseMove}>
-          <div role='feed' className='item-list'>
-            {prepend}
-
-            {React.Children.map(this.props.children, (child, index) => (
-              <IntersectionObserverArticleContainer
-                key={child.key}
-                id={child.key}
-                index={index}
-                listLength={childrenCount}
-                intersectionObserverWrapper={this.intersectionObserverWrapper}
-                saveHeightKey={trackScroll ? `${this.context.router.route.location.key}:${scrollKey}` : null}
-              >
-                {React.cloneElement(child, {
-                  getScrollPosition: this.getScrollPosition,
-                  updateScrollBottom: this.updateScrollBottom,
-                  cachedMediaWidth: this.state.cachedMediaWidth,
-                  cacheMediaWidth: this.cacheMediaWidth,
-                })}
-              </IntersectionObserverArticleContainer>
+            {Array(placeholderCount).fill().map((_, i) => (
+              <Placeholder key={i} />
             ))}
-            {this.getMoreFollows()}
-            {loadMore}
-          </div>
-        </div>
-      );
-    } else {
-      scrollableArea = (
-        <div className='slist slist--flex' ref={this.setRef}>
-          {alwaysPrepend && prepend}
-
-          <div className='empty-column-indicator'>
-            <div>{emptyMessage}</div>
           </div>
         </div>
       );
     }
 
-    return scrollableArea;
+    return (
+      <div className={classNames('slist slist--flex', className)}>
+        <div role='feed' className='item-list'>
+          {prepend}
+        </div>
+
+        <div className='slist__append'>
+          <LoadingIndicator />
+        </div>
+      </div>
+    );
+  }
+
+  renderEmptyMessage = () => {
+    const { className, prepend, alwaysPrepend, emptyMessage } = this.props;
+
+    return (
+      <div className={classNames('slist slist--flex', className)} ref={this.setRef}>
+        {alwaysPrepend && prepend}
+
+        <div className='empty-column-indicator'>
+          <div>{emptyMessage}</div>
+        </div>
+      </div>
+    );
+  }
+
+  renderFeed = () => {
+    const { className, children, scrollKey, isLoading, hasMore, prepend, onLoadMore, onRefresh, placeholderComponent: Placeholder } = this.props;
+    const childrenCount = React.Children.count(children);
+    const trackScroll = true; //placeholder
+    const loadMore = (hasMore && onLoadMore) ? <LoadMore visible={!isLoading} onClick={this.handleLoadMore} /> : null;
+
+    const feed = (
+      <div className={classNames('slist', className)} ref={this.setRef} onMouseMove={this.handleMouseMove}>
+        <div role='feed' className='item-list'>
+          {prepend}
+
+          {React.Children.map(children, (child, index) => (
+            <IntersectionObserverArticleContainer
+              key={child.key}
+              id={child.key}
+              index={index}
+              listLength={childrenCount}
+              intersectionObserverWrapper={this.intersectionObserverWrapper}
+              saveHeightKey={trackScroll ? `${this.props.location.key}:${scrollKey}` : null}
+            >
+              {React.cloneElement(child, {
+                getScrollPosition: this.getScrollPosition,
+                updateScrollBottom: this.updateScrollBottom,
+                cachedMediaWidth: this.state.cachedMediaWidth,
+                cacheMediaWidth: this.cacheMediaWidth,
+              })}
+            </IntersectionObserverArticleContainer>
+          ))}
+          {(isLoading && Placeholder) && (
+            <div className='slist__placeholder'>
+              {Array(3).fill().map((_, i) => (
+                <Placeholder key={i} />
+              ))}
+            </div>
+          )}
+          {this.getMoreFollows()}
+          {loadMore}
+        </div>
+      </div>
+    );
+
+    if (onRefresh) {
+      return (
+        <PullToRefresh onRefresh={onRefresh}>
+          {feed}
+        </PullToRefresh>
+      );
+    } else {
+      return feed;
+    }
+  }
+
+  render() {
+    const { children, showLoading, isLoading, hasMore, emptyMessage } = this.props;
+    const childrenCount = React.Children.count(children);
+
+    if (showLoading) {
+      return this.renderLoading();
+    } else if (isLoading || childrenCount > 0 || hasMore || !emptyMessage) {
+      return this.renderFeed();
+    } else {
+      return this.renderEmptyMessage();
+    }
   }
 
 }

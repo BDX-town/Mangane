@@ -1,11 +1,13 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import { fetchSuggestions, dismissSuggestion } from '../../../actions/suggestions';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import ImmutablePropTypes from 'react-immutable-proptypes';
+
 import Icon from 'soapbox/components/icon';
+
+import { fetchSuggestions, dismissSuggestion } from '../../../actions/suggestions';
 import AccountContainer from '../../../containers/account_container';
 
 const messages = defineMessages({
@@ -36,18 +38,18 @@ class WhoToFollowPanel extends ImmutablePureComponent {
     return (
       <div className='wtf-panel'>
         <div className='wtf-panel-header'>
-          <Icon id='users' className='wtf-panel-header__icon' />
+          <Icon src={require('@tabler/icons/icons/users.svg')} className='wtf-panel-header__icon' />
           <span className='wtf-panel-header__label'>
             <FormattedMessage id='who_to_follow.title' defaultMessage='Who To Follow' />
           </span>
         </div>
         <div className='wtf-panel__content'>
           <div className='wtf-panel__list'>
-            {suggestions && suggestions.map(accountId => (
+            {suggestions && suggestions.map(suggestion => (
               <AccountContainer
-                key={accountId}
-                id={accountId}
-                actionIcon='times'
+                key={suggestion.get('account')}
+                id={suggestion.get('account')}
+                actionIcon={require('@tabler/icons/icons/x.svg')}
                 actionTitle={intl.formatMessage(messages.dismissSuggestion)}
                 onActionClick={dismissSuggestion}
               />
@@ -56,9 +58,9 @@ class WhoToFollowPanel extends ImmutablePureComponent {
         </div>
       </div>
     );
-  };
+  }
 
-};
+}
 
 const mapStateToProps = state => ({
   suggestions: state.getIn(['suggestions', 'items']),

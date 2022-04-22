@@ -9,7 +9,7 @@
   max-height: calc(100vh - 70px);
   display: flex;
   flex-direction: column;
-  z-index: 999;
+  z-index: 1000; // Above AccountHeader
   transition: 0.05s;
 
   &--main {
@@ -22,6 +22,20 @@
 
   &--minimized {
     height: 31px;
+  }
+
+  .search--account {
+    border-top: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
+    padding: 5px;
+
+    .autosuggest-textarea__suggestions {
+      top: auto;
+      bottom: 100%;
+    }
+
+    input.search__input {
+      border-radius: 6px;
+    }
   }
 
   &__header {
@@ -55,17 +69,26 @@
     }
 
     .icon-button {
+      opacity: 0.7;
       color: #fff;
 
+      &:hover {
+        opacity: 1;
+      }
+
       > div {
-        height: auto !important;
-        width: auto !important;
         margin-right: -6px;
       }
     }
 
     .pane__close {
       margin-left: auto;
+
+      .svg-icon {
+        width: 18px;
+        height: 18px;
+        transform: translateY(2px);
+      }
     }
 
     .icon-with-badge__badge {
@@ -93,6 +116,10 @@
       flex-direction: column;
       overflow: hidden;
     }
+
+    .chat-list {
+      overflow-y: auto;
+    }
   }
 
   .audio-toggle .react-toggle-thumb {
@@ -113,8 +140,8 @@
   }
 
   .audio-toggle .react-toggle-track-check {
-    left: 4px;
-    bottom: 4px;
+    left: 2px;
+    bottom: 5px;
   }
 
   .react-toggle--checked .react-toggle-thumb {
@@ -122,8 +149,8 @@
   }
 
   .audio-toggle .react-toggle-track-x {
-    right: 4px;
-    bottom: 4px;
+    right: 8px;
+    bottom: 5px;
   }
 
   .fa {
@@ -157,7 +184,7 @@
 
     &:hover,
     &:focus,
-    &:active, {
+    &:active {
       .chat-message__menu {
         opacity: 1;
         pointer-events: all;
@@ -187,16 +214,22 @@
     position: absolute;
     top: -8px;
     right: -8px;
+    height: 20px;
+    padding: 1px;
     background: var(--background-color);
     border-radius: 999px;
     opacity: 0;
     pointer-events: none;
     transition: 0.2s;
+
+    .svg-icon {
+      height: 20px;
+      width: 20px;
+    }
   }
 }
 
 .chat-list {
-  overflow-y: auto;
   flex: 1;
 
   &__content {
@@ -208,6 +241,10 @@
     box-sizing: border-box;
     background: transparent;
     align-items: start;
+  }
+
+  .account {
+    border-bottom: none;
   }
 
   .account__display-name {
@@ -287,20 +324,22 @@
     position: relative;
 
     .icon-button {
-      color: var(--primary-text-color--faint);
+      color: var(--primary-text-color);
       position: absolute;
       right: 10px;
-      top: calc(50% - 13px);
+      top: 50%;
+      transform: translateY(-50%);
       width: auto;
       height: auto;
       background: transparent !important;
       border: 0;
       padding: 0;
       margin: 0;
-    }
 
-    .chat-box__send .icon-button {
-      top: calc(50% - 9px);
+      .svg-icon {
+        width: 18px;
+        height: 18px;
+      }
     }
 
     textarea {
@@ -323,7 +362,7 @@
 .ui--chatroom {
   padding-bottom: 0;
 
-  .columns-area__panels__main .columns-area {
+  .columns-area__panels__main .columns-area .column {
     height: calc(100vh - 100px);
     box-sizing: border-box;
     overflow: hidden;
@@ -357,17 +396,27 @@
       max-width: none;
     }
 
-    .columns-area--mobile .column {
+    .columns-area .column {
       border-radius: 0;
     }
 
     .page {
+      .chat-messages {
+        margin-bottom: 60px;
+      }
+
       .chat-box {
         border-radius: 0;
         border: 2px solid var(--foreground-color);
+        margin-bottom: var(--thumb-navigation-height);
 
         &__actions {
+          width: 100%;
           padding: 0;
+          position: fixed;
+          bottom: 60px;
+          left: 0;
+          z-index: 1;
 
           textarea {
             height: 4em;
@@ -429,14 +478,23 @@
 }
 
 .chat {
+  &__attachment-icon {
+    float: right;
+  }
+
   &__last-message {
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    max-height: 19px;
 
     a {
       color: var(--highlight-text-color);
+    }
+
+    &.attachment {
+      font-style: italic;
     }
   }
 }

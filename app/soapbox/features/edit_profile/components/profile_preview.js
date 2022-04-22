@@ -1,11 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { getAcct } from 'soapbox/utils/accounts';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import StillImage from 'soapbox/components/still_image';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import { List as ImmutableList } from 'immutable';
+import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
 const mapStateToProps = state => ({
@@ -14,7 +15,7 @@ const mapStateToProps = state => ({
 
 const ProfilePreview = ({ account, displayFqn }) => (
   <div className='card h-card'>
-    <a target='_blank' rel='noopener' href={account.get('url')}>
+    <Link to={`/@${account.get('acct')}`}>
       <div className='card__img'>
         <StillImage alt='' src={account.get('header')} />
       </div>
@@ -27,13 +28,13 @@ const ProfilePreview = ({ account, displayFqn }) => (
           <bdi>
             <strong className='emojify p-name'>
               {account.get('display_name')}
-              {account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified') && <VerificationBadge />}
+              {account.get('verified') && <VerificationBadge />}
             </strong>
           </bdi>
           <span>@{getAcct(account, displayFqn)}</span>
         </div>
       </div>
-    </a>
+    </Link>
   </div>
 );
 

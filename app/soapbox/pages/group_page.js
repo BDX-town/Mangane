@@ -1,15 +1,16 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import WhoToFollowPanel from '../features/ui/components/who_to_follow_panel';
-import LinkFooter from '../features/ui/components/link_footer';
-import PromoPanel from '../features/ui/components/promo_panel';
-import HeaderContainer from '../features/groups/timeline/containers/header_container';
-import GroupPanel from '../features/groups/timeline/components/panel';
+import { connect } from 'react-redux';
+
 import { fetchGroup } from '../actions/groups';
 import GroupSidebarPanel from '../features/groups/sidebar_panel';
+import GroupPanel from '../features/groups/timeline/components/panel';
+import HeaderContainer from '../features/groups/timeline/containers/header_container';
+import LinkFooter from '../features/ui/components/link_footer';
+import PromoPanel from '../features/ui/components/promo_panel';
+import WhoToFollowPanel from '../features/ui/components/who_to_follow_panel';
 
 const mapStateToProps = (state, { params: { id } }) => ({
   group: state.getIn(['groups', id]),
@@ -54,7 +55,7 @@ class GroupPage extends ImmutablePureComponent {
               </div>
 
               <div className='columns-area__panels__main'>
-                <div className='columns-area columns-area--mobile'>
+                <div className='columns-area'>
                   {children}
                 </div>
               </div>

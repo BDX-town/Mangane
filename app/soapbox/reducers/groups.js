@@ -1,10 +1,11 @@
+import { Map as ImmutableMap, fromJS } from 'immutable';
+
+import { GROUP_UPDATE_SUCCESS } from '../actions/group_editor';
 import {
   GROUP_FETCH_SUCCESS,
   GROUP_FETCH_FAIL,
   GROUPS_FETCH_SUCCESS,
 } from '../actions/groups';
-import { GROUP_UPDATE_SUCCESS } from '../actions/group_editor';
-import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const initialState = ImmutableMap();
 
@@ -30,4 +31,4 @@ export default function groups(state = initialState, action) {
   default:
     return state;
   }
-};
+}

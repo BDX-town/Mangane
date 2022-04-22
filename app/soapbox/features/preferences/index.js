@@ -1,11 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
 import { getSettings, changeSetting } from 'soapbox/actions/settings';
-import Column from '../ui/components/column';
+import SettingsCheckbox from 'soapbox/components/settings_checkbox';
 import {
   SimpleForm,
   FieldsGroup,
@@ -13,7 +14,10 @@ import {
   RadioItem,
   SelectDropdown,
 } from 'soapbox/features/forms';
-import SettingsCheckbox from 'soapbox/components/settings_checkbox';
+import SettingToggle from 'soapbox/features/notifications/components/setting_toggle';
+import { getFeatures } from 'soapbox/utils/features';
+
+import Column from '../ui/components/column';
 
 export const languages = {
   en: 'English',
@@ -28,6 +32,7 @@ export const languages = {
   da: 'Dansk',
   de: 'Deutsch',
   el: 'Ελληνικά',
+  'en-Shaw': '𐑖𐑱𐑝𐑾𐑯',
   eo: 'Esperanto',
   es: 'Español',
   eu: 'Euskara',
@@ -84,9 +89,14 @@ const messages = defineMessages({
   display_media_show_all: { id: 'preferences.fields.display_media.show_all', defaultMessage: 'Always show media' },
 });
 
-const mapStateToProps = state => ({
-  settings: getSettings(state),
-});
+const mapStateToProps = state => {
+  const instance = state.get('instance');
+
+  return {
+    features: getFeatures(instance),
+    settings: getSettings(state),
+  };
+};
 
 export default @connect(mapStateToProps)
 @injectIntl
@@ -95,6 +105,7 @@ class Preferences extends ImmutablePureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
+    features: PropTypes.object.isRequired,
     settings: ImmutablePropTypes.map,
   };
 
@@ -114,8 +125,13 @@ class Preferences extends ImmutablePureComponent {
     dispatch(changeSetting(['defaultContentType'], e.target.value));
   }
 
+  onToggleChange = (key, checked) => {
+    const { dispatch } = this.props;
+    dispatch(changeSetting(key, checked));
+  }
+
   render() {
-    const { settings, intl } = this.props;
+    const { settings, features, intl } = this.props;
 
     const displayMediaOptions = {
       default: intl.formatMessage(messages.display_media_default),
@@ -124,8 +140,22 @@ class Preferences extends ImmutablePureComponent {
     };
 
     return (
-      <Column icon='cog' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='cog' heading={intl.formatMessage(messages.heading)}>
         <SimpleForm>
+          <FormattedMessage id='home.column_settings.title' defaultMessage='Home settings' />
+          <div className='column-settings__content'>
+            <div className='column-settings__row'>
+              <SettingToggle prefix='home_timeline' settings={settings} settingPath={['home', 'shows', 'reblog']} onChange={this.onToggleChange} label={<FormattedMessage id='home.column_settings.show_reblogs' defaultMessage='Show reposts' />} />
+            </div>
+
+            <div className='column-settings__row'>
+              <SettingToggle prefix='home_timeline' settings={settings} settingPath={['home', 'shows', 'reply']} onChange={this.onToggleChange} label={<FormattedMessage id='home.column_settings.show_replies' defaultMessage='Show replies' />} />
+            </div>
+
+            <div className='column-settings__row'>
+              <SettingToggle prefix='home_timeline' settings={settings} settingPath={['home', 'shows', 'direct']} onChange={this.onToggleChange} label={<FormattedMessage id='home.column_settings.show_direct' defaultMessage='Show direct messages' />} />
+            </div>
+          </div>
           <FieldsGroup>
             <SelectDropdown
               label={<FormattedMessage id='preferences.fields.language_label' defaultMessage='Language' />}
@@ -170,24 +200,26 @@ class Preferences extends ImmutablePureComponent {
             </RadioGroup>
           </FieldsGroup>
 
-          <FieldsGroup>
-            <RadioGroup
-              label={<FormattedMessage id='preferences.fields.content_type_label' defaultMessage='Post format' />}
-              onChange={this.onDefaultContentTypeChange}
-            >
-              <RadioItem
-                label={<FormattedMessage id='preferences.options.content_type_plaintext' defaultMessage='Plain text' />}
-                checked={settings.get('defaultContentType') === 'text/plain'}
-                value='text/plain'
-              />
-              <RadioItem
-                label={<FormattedMessage id='preferences.options.content_type_markdown' defaultMessage='Markdown' />}
-                hint={<FormattedMessage id='preferences.hints.content_type_markdown' defaultMessage='Warning: experimental!' />}
-                checked={settings.get('defaultContentType') === 'text/markdown'}
-                value='text/markdown'
-              />
-            </RadioGroup>
-          </FieldsGroup>
+          {features.richText && (
+            <FieldsGroup>
+              <RadioGroup
+                label={<FormattedMessage id='preferences.fields.content_type_label' defaultMessage='Post format' />}
+                onChange={this.onDefaultContentTypeChange}
+              >
+                <RadioItem
+                  label={<FormattedMessage id='preferences.options.content_type_plaintext' defaultMessage='Plain text' />}
+                  checked={settings.get('defaultContentType') === 'text/plain'}
+                  value='text/plain'
+                />
+                <RadioItem
+                  label={<FormattedMessage id='preferences.options.content_type_markdown' defaultMessage='Markdown' />}
+                  hint={<FormattedMessage id='preferences.hints.content_type_markdown' defaultMessage='Warning: experimental!' />}
+                  checked={settings.get('defaultContentType') === 'text/markdown'}
+                  value='text/markdown'
+                />
+              </RadioGroup>
+            </FieldsGroup>
+          )}
 
           <FieldsGroup>
             <SettingsCheckbox
@@ -220,6 +252,18 @@ class Preferences extends ImmutablePureComponent {
             <SettingsCheckbox
               label={<FormattedMessage id='preferences.fields.reduce_motion_label' defaultMessage='Reduce motion in animations' />}
               path={['reduceMotion']}
+            />
+            <SettingsCheckbox
+              label={<FormattedMessage id='preferences.fields.autoload_timelines_label' defaultMessage='Automatically load new posts when scrolled to the top of the page' />}
+              path={['autoloadTimelines']}
+            />
+            <SettingsCheckbox
+              label={<FormattedMessage id='preferences.fields.autoload_more_label' defaultMessage='Automatically load more items when scrolled to the bottom of the page' />}
+              path={['autoloadMore']}
+            />
+            <SettingsCheckbox
+              label={<FormattedMessage id='preferences.fields.underline_links_label' defaultMessage='Always underline links in posts' />}
+              path={['underlineLinks']}
             />
             <SettingsCheckbox
               label={<FormattedMessage id='preferences.fields.system_font_label' defaultMessage="Use system's default font" />}

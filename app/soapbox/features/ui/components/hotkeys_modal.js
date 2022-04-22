@@ -1,7 +1,8 @@
-import React from 'react';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+
 import IconButton from 'soapbox/components/icon_button';
 
 const messages = defineMessages({
@@ -23,7 +24,7 @@ class HotkeysModal extends ImmutablePureComponent {
       <div className='modal-root__modal hotkeys-modal'>
         <div className='compose-modal__header'>
           <h3 className='compose-modal__header__title'><FormattedMessage id='keyboard_shortcuts.heading' defaultMessage='Keyboard shortcuts' /></h3>
-          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} icon='times' onClick={onClose} size={20} />
+          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={onClose} />
         </div>
         <div className='compose-modal__content'>
           <table>
@@ -50,6 +51,10 @@ class HotkeysModal extends ImmutablePureComponent {
                 <td><FormattedMessage id='keyboard_shortcuts.favourite' defaultMessage='to like' /></td>
               </tr>
               <tr>
+                <td><kbd>e</kbd></td>
+                <td><FormattedMessage id='keyboard_shortcuts.react' defaultMessage='to react' /></td>
+              </tr>
+              <tr>
                 <td><kbd>b</kbd></td>
                 <td><FormattedMessage id='keyboard_shortcuts.boost' defaultMessage='to repost' /></td>
               </tr>
@@ -58,12 +63,8 @@ class HotkeysModal extends ImmutablePureComponent {
                 <td><FormattedMessage id='keyboard_shortcuts.enter' defaultMessage='to open post' /></td>
               </tr>
               <tr>
-                <td><kbd>x</kbd></td>
-                <td><FormattedMessage id='keyboard_shortcuts.toggle_hidden' defaultMessage='to show/hide text behind CW' /></td>
-              </tr>
-              <tr>
-                <td><kbd>h</kbd></td>
-                <td><FormattedMessage id='keyboard_shortcuts.toggle_sensitivity' defaultMessage='to show/hide media' /></td>
+                <td><kbd>a</kbd></td>
+                <td><FormattedMessage id='keyboard_shortcuts.open_media' defaultMessage='to open media' /></td>
               </tr>
             </tbody>
           </table>
@@ -74,6 +75,14 @@ class HotkeysModal extends ImmutablePureComponent {
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <td><kbd>x</kbd></td>
+                <td><FormattedMessage id='keyboard_shortcuts.toggle_hidden' defaultMessage='to show/hide text behind CW' /></td>
+              </tr>
+              <tr>
+                <td><kbd>h</kbd></td>
+                <td><FormattedMessage id='keyboard_shortcuts.toggle_sensitivity' defaultMessage='to show/hide media' /></td>
+              </tr>
               <tr>
                 <td><kbd>up</kbd>, <kbd>k</kbd></td>
                 <td><FormattedMessage id='keyboard_shortcuts.up' defaultMessage='to move up in the list' /></td>
@@ -102,10 +111,6 @@ class HotkeysModal extends ImmutablePureComponent {
                 <td><kbd>esc</kbd></td>
                 <td><FormattedMessage id='keyboard_shortcuts.unfocus' defaultMessage='to un-focus compose textarea/search' /></td>
               </tr>
-              <tr>
-                <td><kbd>g</kbd> + <kbd>h</kbd></td>
-                <td><FormattedMessage id='keyboard_shortcuts.home' defaultMessage='to open home timeline' /></td>
-              </tr>
             </tbody>
           </table>
           <table>
@@ -115,6 +120,10 @@ class HotkeysModal extends ImmutablePureComponent {
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <td><kbd>g</kbd> + <kbd>h</kbd></td>
+                <td><FormattedMessage id='keyboard_shortcuts.home' defaultMessage='to open home timeline' /></td>
+              </tr>
               <tr>
                 <td><kbd>g</kbd> + <kbd>n</kbd></td>
                 <td><FormattedMessage id='keyboard_shortcuts.notifications' defaultMessage='to open notifications column' /></td>

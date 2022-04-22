@@ -1,8 +1,8 @@
 // @ts-check
 
 import { decode } from 'blurhash';
-import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import React, { useRef, useEffect } from 'react';
 
 /**
  * @typedef BlurhashPropsBase
@@ -35,7 +35,9 @@ function Blurhash({
 
   useEffect(() => {
     const { current: canvas } = canvasRef;
-    canvas.width = canvas.width; // resets canvas
+
+    // resets canvas
+    canvas.width = canvas.width; // eslint-disable-line no-self-assign
 
     if (dummy || !hash) return;
 

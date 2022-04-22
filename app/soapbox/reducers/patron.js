@@ -1,8 +1,9 @@
+import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import {
   PATRON_INSTANCE_FETCH_SUCCESS,
   PATRON_ACCOUNT_FETCH_SUCCESS,
 } from '../actions/patron';
-import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const initialState = ImmutableMap();
 
@@ -20,4 +21,4 @@ export default function patron(state = initialState, action) {
   default:
     return state;
   }
-};
+}

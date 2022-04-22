@@ -1,9 +1,4 @@
 import { getSettings } from '../settings';
-import {
-  normalizeAccount,
-  normalizeStatus,
-  normalizePoll,
-} from './normalizer';
 
 export const ACCOUNT_IMPORT  = 'ACCOUNT_IMPORT';
 export const ACCOUNTS_IMPORT = 'ACCOUNTS_IMPORT';
@@ -11,12 +6,6 @@ export const STATUS_IMPORT   = 'STATUS_IMPORT';
 export const STATUSES_IMPORT = 'STATUSES_IMPORT';
 export const POLLS_IMPORT    = 'POLLS_IMPORT';
 export const ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP = 'ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP';
-
-function pushUnique(array, object) {
-  if (array.every(element => element.id !== object.id)) {
-    array.push(object);
-  }
-}
 
 export function importAccount(account) {
   return { type: ACCOUNT_IMPORT, account };
@@ -26,12 +15,18 @@ export function importAccounts(accounts) {
   return { type: ACCOUNTS_IMPORT, accounts };
 }
 
-export function importStatus(status) {
-  return { type: STATUS_IMPORT, status };
+export function importStatus(status, idempotencyKey) {
+  return (dispatch, getState) => {
+    const expandSpoilers = getSettings(getState()).get('expandSpoilers');
+    return dispatch({ type: STATUS_IMPORT, status, idempotencyKey, expandSpoilers });
+  };
 }
 
 export function importStatuses(statuses) {
-  return { type: STATUSES_IMPORT, statuses };
+  return (dispatch, getState) => {
+    const expandSpoilers = getSettings(getState()).get('expandSpoilers');
+    return dispatch({ type: STATUSES_IMPORT, statuses, expandSpoilers });
+  };
 }
 
 export function importPolls(polls) {
@@ -48,7 +43,7 @@ export function importFetchedAccounts(accounts) {
   function processAccount(account) {
     if (!account.id) return;
 
-    pushUnique(normalAccounts, normalizeAccount(account));
+    normalAccounts.push(account);
 
     if (account.moved) {
       processAccount(account.moved);
@@ -60,8 +55,31 @@ export function importFetchedAccounts(accounts) {
   return importAccounts(normalAccounts);
 }
 
-export function importFetchedStatus(status) {
-  return importFetchedStatuses([status]);
+export function importFetchedStatus(status, idempotencyKey) {
+  return (dispatch, getState) => {
+    // Skip broken statuses
+    if (isBroken(status)) return;
+
+    if (status.reblog?.id) {
+      dispatch(importFetchedStatus(status.reblog));
+    }
+
+    // Fedibird quotes
+    if (status.quote?.id) {
+      dispatch(importFetchedStatus(status.quote));
+    }
+
+    if (status.pleroma?.quote?.id) {
+      dispatch(importFetchedStatus(status.pleroma.quote));
+    }
+
+    if (status.poll?.id) {
+      dispatch(importFetchedPoll(status.poll));
+    }
+
+    dispatch(importFetchedAccount(status.account));
+    dispatch(importStatus(status, idempotencyKey));
+  };
 }
 
 // Sometimes Pleroma can return an empty account,
@@ -90,18 +108,24 @@ export function importFetchedStatuses(statuses) {
       // Skip broken statuses
       if (isBroken(status)) return;
 
-      const normalOldStatus = getState().getIn(['statuses', status.id]);
-      const expandSpoilers = getSettings(getState()).get('expandSpoilers');
+      normalStatuses.push(status);
+      accounts.push(status.account);
 
-      pushUnique(normalStatuses, normalizeStatus(status, normalOldStatus, expandSpoilers));
-      pushUnique(accounts, status.account);
-
-      if (status.reblog && status.reblog.id) {
+      if (status.reblog?.id) {
         processStatus(status.reblog);
       }
 
-      if (status.poll && status.poll.id) {
-        pushUnique(polls, normalizePoll(status.poll));
+      // Fedibird quotes
+      if (status.quote?.id) {
+        processStatus(status.quote);
+      }
+
+      if (status.pleroma?.quote?.id) {
+        processStatus(status.pleroma.quote);
+      }
+
+      if (status.poll?.id) {
+        polls.push(status.poll);
       }
     }
 
@@ -115,10 +139,10 @@ export function importFetchedStatuses(statuses) {
 
 export function importFetchedPoll(poll) {
   return dispatch => {
-    dispatch(importPolls([normalizePoll(poll)]));
+    dispatch(importPolls([poll]));
   };
 }
 
 export function importErrorWhileFetchingAccountByUsername(username) {
   return { type: ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP, username };
-};
+}

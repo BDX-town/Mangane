@@ -2,55 +2,81 @@
 
 exports[`<EmojiSelector /> renders correctly 1`] = `
 <div
-  className="emoji-react-selector"
+  className="emoji-react-selector-container"
+  onBlur={[Function]}
+  onFocus={[Function]}
+  tabIndex="-1"
 >
-  <button
-    className="emoji-react-selector__emoji"
-    dangerouslySetInnerHTML={
-      Object {
-        "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"👍\\" title=\\":+1:\\" src=\\"/emoji/1f44d.svg\\" />",
+  <div
+    className="emoji-react-selector"
+    onBlur={[Function]}
+  >
+    <button
+      className="emoji-react-selector__emoji"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"👍\\" title=\\":+1:\\" src=\\"/packs/emoji/1f44d.svg\\" />",
+        }
       }
-    }
-  />
-  <button
-    className="emoji-react-selector__emoji"
-    dangerouslySetInnerHTML={
-      Object {
-        "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"❤\\" title=\\":heart:\\" src=\\"/emoji/2764.svg\\" />",
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    />
+    <button
+      className="emoji-react-selector__emoji"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"❤\\" title=\\":heart:\\" src=\\"/packs/emoji/2764.svg\\" />",
+        }
       }
-    }
-  />
-  <button
-    className="emoji-react-selector__emoji"
-    dangerouslySetInnerHTML={
-      Object {
-        "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"😆\\" title=\\":laughing:\\" src=\\"/emoji/1f606.svg\\" />",
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    />
+    <button
+      className="emoji-react-selector__emoji"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"😆\\" title=\\":laughing:\\" src=\\"/packs/emoji/1f606.svg\\" />",
+        }
       }
-    }
-  />
-  <button
-    className="emoji-react-selector__emoji"
-    dangerouslySetInnerHTML={
-      Object {
-        "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"😮\\" title=\\":open_mouth:\\" src=\\"/emoji/1f62e.svg\\" />",
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    />
+    <button
+      className="emoji-react-selector__emoji"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"😮\\" title=\\":open_mouth:\\" src=\\"/packs/emoji/1f62e.svg\\" />",
+        }
       }
-    }
-  />
-  <button
-    className="emoji-react-selector__emoji"
-    dangerouslySetInnerHTML={
-      Object {
-        "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"😢\\" title=\\":cry:\\" src=\\"/emoji/1f622.svg\\" />",
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    />
+    <button
+      className="emoji-react-selector__emoji"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"😢\\" title=\\":cry:\\" src=\\"/packs/emoji/1f622.svg\\" />",
+        }
       }
-    }
-  />
-  <button
-    className="emoji-react-selector__emoji"
-    dangerouslySetInnerHTML={
-      Object {
-        "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"😩\\" title=\\":weary:\\" src=\\"/emoji/1f629.svg\\" />",
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    />
+    <button
+      className="emoji-react-selector__emoji"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"😩\\" title=\\":weary:\\" src=\\"/packs/emoji/1f629.svg\\" />",
+        }
       }
-    }
-  />
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    />
+  </div>
 </div>
 `;

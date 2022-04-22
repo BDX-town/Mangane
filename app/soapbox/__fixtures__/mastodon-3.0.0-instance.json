@@ -1,0 +1,43 @@
+{
+  "uri": "animalliberation.social",
+  "title": "Animal Liberation Network",
+  "short_description": "",
+  "description": "Animal Liberation Network is a community for <b>animal activists</b> on the Fediverse. You can connect with other activists through the <b>local timeline</b>, as well as spread your activism to the outside world with the <b>federated timeline</b>.",
+  "email": "alex@alexgleason.me",
+  "version": "3.0.0",
+  "urls": {
+    "streaming_api": "wss://animalliberation.social"
+  },
+  "stats": {
+    "user_count": 662,
+    "status_count": 2904,
+    "domain_count": 4003
+  },
+  "thumbnail": "https://animalliberation.social/packs/media/images/preview-9a17d32fc48369e8ccd910a75260e67d.jpg",
+  "languages": [
+    "en"
+  ],
+  "registrations": true,
+  "approval_required": false,
+  "contact_account": {
+    "id": "1",
+    "username": "alex",
+    "acct": "alex",
+    "display_name": "Alex Gleason",
+    "locked": false,
+    "bot": false,
+    "created_at": "2016-11-30T22:19:42.956Z",
+    "note": "<p>Animal liberation free software Communist</p>",
+    "url": "https://animalliberation.social/@alex",
+    "avatar": "https://media.animalliberation.social/accounts/avatars/000/000/001/original/media.jpg",
+    "avatar_static": "https://media.animalliberation.social/accounts/avatars/000/000/001/original/media.jpg",
+    "header": "https://media.animalliberation.social/accounts/headers/000/000/001/original/09887023017e02c9.jpg",
+    "header_static": "https://media.animalliberation.social/accounts/headers/000/000/001/original/09887023017e02c9.jpg",
+    "followers_count": 236,
+    "following_count": 83,
+    "statuses_count": 357,
+    "last_status_at": "2021-02-20T19:28:24.353Z",
+    "emojis": [],
+    "fields": []
+  }
+}

@@ -1,18 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import AvatarOverlay from '../../../components/avatar_overlay';
-import DisplayName from '../../../components/display_name';
-import Icon from 'soapbox/components/icon';
+import { FormattedMessage } from 'react-intl';
 import { NavLink } from 'react-router-dom';
 
-export default class MovedNote extends ImmutablePureComponent {
+import Icon from 'soapbox/components/icon';
 
-  static contextTypes = {
-    router: PropTypes.object,
-  };
+import AvatarOverlay from '../../../components/avatar_overlay';
+import DisplayName from '../../../components/display_name';
+
+export default class MovedNote extends ImmutablePureComponent {
 
   static propTypes = {
     from: ImmutablePropTypes.map.isRequired,
@@ -26,7 +23,7 @@ export default class MovedNote extends ImmutablePureComponent {
     return (
       <div className='account__moved-note'>
         <div className='account__moved-note__message'>
-          <div className='account__moved-note__icon-wrapper'><Icon id='suitcase' className='account__moved-note__icon' fixedWidth /></div>
+          <div className='account__moved-note__icon-wrapper'><Icon src={require('feather-icons/dist/icons/briefcase.svg')} className='account__moved-note__icon' fixedWidth /></div>
           <FormattedMessage id='account.moved_to' defaultMessage='{name} has moved to:' values={{ name: <bdi><strong dangerouslySetInnerHTML={displayNameHtml} /></bdi> }} />
         </div>
 

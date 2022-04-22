@@ -1,10 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import { supportsPassiveEvents } from 'detect-passive-events';
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { SketchPicker } from 'react-color';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from '../ui/components/column';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import Overlay from 'react-overlays/lib/Overlay';
+import { connect } from 'react-redux';
+
+import { updateConfig } from 'soapbox/actions/admin';
+import { uploadMedia } from 'soapbox/actions/media';
+import snackbar from 'soapbox/actions/snackbar';
+import { makeDefaultConfig } from 'soapbox/actions/soapbox';
+import Icon from 'soapbox/components/icon';
 import {
   SimpleForm,
   FieldsGroup,
@@ -15,20 +24,15 @@ import {
   FormPropTypes,
   Checkbox,
 } from 'soapbox/features/forms';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
-import { updateConfig } from 'soapbox/actions/admin';
-import Icon from 'soapbox/components/icon';
-import { defaultConfig } from 'soapbox/actions/soapbox';
-import { uploadMedia } from 'soapbox/actions/media';
-import { SketchPicker } from 'react-color';
-import Overlay from 'react-overlays/lib/Overlay';
-import { isMobile } from 'soapbox/is_mobile';
-import { supportsPassiveEvents } from 'detect-passive-events';
-import Accordion from '../ui/components/accordion';
-import SitePreview from './components/site_preview';
 import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
+import { isMobile } from 'soapbox/is_mobile';
+import { getFeatures } from 'soapbox/utils/features';
+
+import Accordion from '../ui/components/accordion';
+import Column from '../ui/components/column';
+
 import IconPickerDropdown from './components/icon_picker_dropdown';
-import snackbar from 'soapbox/actions/snackbar';
+import SitePreview from './components/site_preview';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
@@ -49,6 +53,13 @@ const messages = defineMessages({
   verifiedCanEditNameLabel: { id: 'soapbox_config.verified_can_edit_name_label', defaultMessage: 'Allow verified users to edit their own display name.' },
   displayFqnLabel: { id: 'soapbox_config.display_fqn_label', defaultMessage: 'Display domain (eg @user@domain) for local accounts.' },
   greentextLabel: { id: 'soapbox_config.greentext_label', defaultMessage: 'Enable greentext support' },
+  promoPanelIconsLink: { id: 'soapbox_config.hints.promo_panel_icons.link', defaultMessage: 'Soapbox Icons List' },
+  authenticatedProfileLabel: { id: 'soapbox_config.authenticated_profile_label', defaultMessage: 'Profiles require authentication' },
+  authenticatedProfileHint: { id: 'soapbox_config.authenticated_profile_hint', defaultMessage: 'Users must be logged-in to view replies and media on user profiles.' },
+  singleUserModeLabel: { id: 'soapbox_config.single_user_mode_label', defaultMessage: 'Single user mode' },
+  singleUserModeHint: { id: 'soapbox_config.single_user_mode_hint', defaultMessage: 'Front page will redirect to a given user profile.' },
+  singleUserModeProfileLabel: { id: 'soapbox_config.single_user_mode_profile_label', defaultMessage: 'Main user handle' },
+  singleUserModeProfileHint: { id: 'soapbox_config.single_user_mode_profile_hint', defaultMessage: '@handle' },
 });
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
@@ -59,9 +70,14 @@ const templates = {
   cryptoAddress: ImmutableMap({ ticker: '', address: '', note: '' }),
 };
 
-const mapStateToProps = state => ({
-  soapbox: state.get('soapbox'),
-});
+const mapStateToProps = state => {
+  const instance = state.get('instance');
+
+  return {
+    soapbox: state.get('soapbox'),
+    features: getFeatures(instance),
+  };
+};
 
 export default @connect(mapStateToProps)
 @injectIntl
@@ -69,6 +85,7 @@ class SoapboxConfig extends ImmutablePureComponent {
 
   static propTypes = {
     soapbox: ImmutablePropTypes.map.isRequired,
+    features: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
   };
@@ -178,7 +195,9 @@ class SoapboxConfig extends ImmutablePureComponent {
   }
 
   getSoapboxConfig = () => {
-    return defaultConfig.mergeDeep(this.state.soapbox);
+    const { features } = this.props;
+    const { soapbox } = this.state;
+    return makeDefaultConfig(features).mergeDeep(soapbox);
   }
 
   toggleJSONEditor = (value) => this.setState({ jsonEditorExpanded: value });
@@ -207,7 +226,7 @@ class SoapboxConfig extends ImmutablePureComponent {
     const soapbox = this.getSoapboxConfig();
 
     return (
-      <Column icon='cog' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='cog' heading={intl.formatMessage(messages.heading)}>
         <SimpleForm onSubmit={this.handleSubmit}>
           <fieldset disabled={this.state.isLoading}>
             <SitePreview soapbox={soapbox} />
@@ -219,6 +238,12 @@ class SoapboxConfig extends ImmutablePureComponent {
                     label={<FormattedMessage id='soapbox_config.fields.brand_color_label' defaultMessage='Brand color' />}
                     value={soapbox.get('brandColor')}
                     onChange={this.handleChange(['brandColor'], (e) => e.hex)}
+                  />
+                  <ColorWithPicker
+                    buttonId='accent_color'
+                    label={<FormattedMessage id='soapbox_config.fields.accent_color_label' defaultMessage='Accent color' />}
+                    value={soapbox.get('accentColor')}
+                    onChange={this.handleChange(['accentColor'], (e) => e.hex)}
                   />
                   <div className='input with_label toggle'>
                     <div className='label_input'>
@@ -269,15 +294,38 @@ class SoapboxConfig extends ImmutablePureComponent {
                 checked={soapbox.get('greentext') === true}
                 onChange={this.handleChange(['greentext'], (e) => e.target.checked)}
               />
+              <Checkbox
+                name='authenticatedProfile'
+                label={intl.formatMessage(messages.authenticatedProfileLabel)}
+                hint={intl.formatMessage(messages.authenticatedProfileHint)}
+                checked={soapbox.get('authenticatedProfile') === true}
+                onChange={this.handleChange(['authenticatedProfile'], (e) => e.target.checked)}
+              />
+              <Checkbox
+                name='singleUserMode'
+                label={intl.formatMessage(messages.singleUserModeLabel)}
+                hint={intl.formatMessage(messages.singleUserModeHint)}
+                checked={soapbox.get('singleUserMode') === true}
+                onChange={this.handleChange(['singleUserMode'], (e) => e.target.checked)}
+              />
+              {soapbox.get('singleUserMode') && (
+                <TextInput
+                  name='singleUserModeProfile'
+                  label={intl.formatMessage(messages.singleUserModeProfileLabel)}
+                  placeholder={intl.formatMessage(messages.singleUserModeProfileHint)}
+                  value={soapbox.get('singleUserModeProfile')}
+                  onChange={this.handleChange(['singleUserModeProfile'], (e) => e.target.value)}
+                />
+              )}
             </FieldsGroup>
             <FieldsGroup>
               <div className='input with_block_label popup'>
                 <label><FormattedMessage id='soapbox_config.fields.promo_panel_fields_label' defaultMessage='Promo panel items' /></label>
                 <span className='hint'>
-                  <FormattedMessage id='soapbox_config.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the left panel of the timelines page.' />
+                  <FormattedMessage id='soapbox_config.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the right panel of the timelines page.' />
                 </span>
                 <span className='hint'>
-                  <FormattedMessage id='soapbox_config.hints.promo_panel_icons' defaultMessage='{ link }' values={{ link: <a target='_blank' href='https://forkaweso.me/Fork-Awesome/icons/'>Soapbox Icons List</a> }} />
+                  <FormattedMessage id='soapbox_config.hints.promo_panel_icons' defaultMessage='{ link }' values={{ link: <a target='_blank' href='https://icons8.com/line-awesome'>{intl.formatMessage(messages.promoPanelIconsLink)}</a> }} />
                 </span>
                 {
                   soapbox.getIn(['promoPanel', 'items']).map((field, i) => (
@@ -299,13 +347,13 @@ class SoapboxConfig extends ImmutablePureComponent {
                         value={field.get('url')}
                         onChange={this.handlePromoItemChange(i, 'url', field)}
                       />
-                      <Icon id='times-circle' onClick={this.handleDeleteItem(['promoPanel', 'items', i])} />
+                      <Icon className='delete-field' src={require('@tabler/icons/icons/circle-x.svg')} onClick={this.handleDeleteItem(['promoPanel', 'items', i])} />
                     </div>
                   ))
                 }
                 <div className='actions add-row'>
                   <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['promoPanel', 'items'], templates.promoPanelItem)}>
-                    <Icon id='plus-circle' />
+                    <Icon src={require('@tabler/icons/icons/circle-plus.svg')} />
                     <FormattedMessage id='soapbox_config.fields.promo_panel.add' defaultMessage='Add new Promo panel item' />
                   </div>
                 </div>
@@ -332,13 +380,13 @@ class SoapboxConfig extends ImmutablePureComponent {
                         value={field.get('url')}
                         onChange={this.handleHomeFooterItemChange(i, 'url', field)}
                       />
-                      <Icon id='times-circle' onClick={this.handleDeleteItem(['navlinks', 'homeFooter', i])} />
+                      <Icon className='delete-field' src={require('@tabler/icons/icons/circle-x.svg')} onClick={this.handleDeleteItem(['navlinks', 'homeFooter', i])} />
                     </div>
                   ))
                 }
                 <div className='actions add-row'>
                   <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['navlinks', 'homeFooter'], templates.footerItem)}>
-                    <Icon id='plus-circle' />
+                    <Icon src={require('@tabler/icons/icons/circle-plus.svg')} />
                     <FormattedMessage id='soapbox_config.fields.home_footer.add' defaultMessage='Add new Home Footer Item' />
                   </div>
                 </div>
@@ -371,13 +419,13 @@ class SoapboxConfig extends ImmutablePureComponent {
                         value={address.get('note')}
                         onChange={this.handleCryptoAdressItemChange(i, 'note', address)}
                       />
-                      <Icon id='times-circle' onClick={this.handleDeleteItem(['cryptoAddresses', i])} />
+                      <Icon className='delete-field' src={require('@tabler/icons/icons/circle-x.svg')} onClick={this.handleDeleteItem(['cryptoAddresses', i])} />
                     </div>
                   ))
                 }
                 <div className='actions add-row'>
                   <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['cryptoAddresses'], templates.cryptoAddress)}>
-                    <Icon id='plus-circle' />
+                    <Icon src={require('@tabler/icons/icons/circle-plus.svg')} />
                     <FormattedMessage id='soapbox_config.fields.crypto_address.add' defaultMessage='Add new crypto address' />
                   </div>
                 </div>
@@ -453,7 +501,7 @@ class ColorPicker extends React.PureComponent {
 
   render() {
     const { style, value, onChange } = this.props;
-    let margin_left_picker = isMobile(window.innerWidth) ? '20px' : '12px';
+    const margin_left_picker = isMobile(window.innerWidth) ? '20px' : '12px';
 
     return (
       <div id='SketchPickerContainer' ref={this.setRef} style={{ ...style, marginLeft: margin_left_picker, position: 'absolute', zIndex: 1000 }}>

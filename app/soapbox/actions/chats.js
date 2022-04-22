@@ -1,11 +1,18 @@
-import api from '../api';
-import { getSettings, changeSetting } from 'soapbox/actions/settings';
-import { v4 as uuidv4 } from 'uuid';
 import { Map as ImmutableMap } from 'immutable';
+import { v4 as uuidv4 } from 'uuid';
+
+import { getSettings, changeSetting } from 'soapbox/actions/settings';
+import { getFeatures } from 'soapbox/utils/features';
+
+import api, { getLinks } from '../api';
 
 export const CHATS_FETCH_REQUEST = 'CHATS_FETCH_REQUEST';
 export const CHATS_FETCH_SUCCESS = 'CHATS_FETCH_SUCCESS';
 export const CHATS_FETCH_FAIL    = 'CHATS_FETCH_FAIL';
+
+export const CHATS_EXPAND_REQUEST = 'CHATS_EXPAND_REQUEST';
+export const CHATS_EXPAND_SUCCESS = 'CHATS_EXPAND_SUCCESS';
+export const CHATS_EXPAND_FAIL    = 'CHATS_EXPAND_FAIL';
 
 export const CHAT_MESSAGES_FETCH_REQUEST = 'CHAT_MESSAGES_FETCH_REQUEST';
 export const CHAT_MESSAGES_FETCH_SUCCESS = 'CHAT_MESSAGES_FETCH_SUCCESS';
@@ -27,13 +34,60 @@ export const CHAT_MESSAGE_DELETE_REQUEST = 'CHAT_MESSAGE_DELETE_REQUEST';
 export const CHAT_MESSAGE_DELETE_SUCCESS = 'CHAT_MESSAGE_DELETE_SUCCESS';
 export const CHAT_MESSAGE_DELETE_FAIL    = 'CHAT_MESSAGE_DELETE_FAIL';
 
-export function fetchChats() {
-  return (dispatch, getState) => {
-    dispatch({ type: CHATS_FETCH_REQUEST });
-    return api(getState).get('/api/v1/pleroma/chats').then(({ data }) => {
-      dispatch({ type: CHATS_FETCH_SUCCESS, chats: data });
+export function fetchChatsV1() {
+  return (dispatch, getState) =>
+    api(getState).get('/api/v1/pleroma/chats').then((response) => {
+      dispatch({ type: CHATS_FETCH_SUCCESS, chats: response.data });
     }).catch(error => {
       dispatch({ type: CHATS_FETCH_FAIL, error });
+    });
+}
+
+export function fetchChatsV2() {
+  return (dispatch, getState) =>
+    api(getState).get('/api/v2/pleroma/chats').then((response) => {
+      let next = getLinks(response).refs.find(link => link.rel === 'next');
+
+      if (!next && response.data.length) {
+        next = { uri: `/api/v2/pleroma/chats?max_id=${response.data[response.data.length - 1].id}&offset=0` };
+      }
+
+      dispatch({ type: CHATS_FETCH_SUCCESS, chats: response.data, next: next ? next.uri : null });
+    }).catch(error => {
+      dispatch({ type: CHATS_FETCH_FAIL, error });
+    });
+}
+
+export function fetchChats() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const instance = state.get('instance');
+    const features = getFeatures(instance);
+
+    dispatch({ type: CHATS_FETCH_REQUEST });
+    if (features.chatsV2) {
+      dispatch(fetchChatsV2());
+    } else {
+      dispatch(fetchChatsV1());
+    }
+  };
+}
+
+export function expandChats() {
+  return (dispatch, getState) => {
+    const url = getState().getIn(['chats', 'next']);
+
+    if (url === null) {
+      return;
+    }
+
+    dispatch({ type: CHATS_EXPAND_REQUEST });
+    api(getState).get(url).then(response => {
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
+
+      dispatch({ type: CHATS_EXPAND_SUCCESS, chats: response.data, next: next ? next.uri : null });
+    }).catch(error => {
+      dispatch({ type: CHATS_EXPAND_FAIL, error });
     });
   };
 }
@@ -140,7 +194,7 @@ export function startChat(accountId) {
 
 export function markChatRead(chatId, lastReadId) {
   return (dispatch, getState) => {
-    const chat = getState().getIn(['chats', chatId]);
+    const chat = getState().getIn(['chats', 'items', chatId]);
     if (!lastReadId) lastReadId = chat.get('last_message');
 
     if (chat.get('unread') < 1) return;
@@ -162,6 +216,22 @@ export function deleteChatMessage(chatId, messageId) {
       dispatch({ type: CHAT_MESSAGE_DELETE_SUCCESS, chatId, messageId, chatMessage: data });
     }).catch(error => {
       dispatch({ type: CHAT_MESSAGE_DELETE_FAIL, chatId, messageId, error });
+    });
+  };
+}
+
+/** Start a chat and launch it in the UI */
+export function launchChat(accountId, router, forceNavigate = false) {
+  const isMobile = width => width <= 1190;
+
+  return (dispatch, getState) => {
+    // TODO: make this faster
+    return dispatch(startChat(accountId)).then(chat => {
+      if (forceNavigate || isMobile(window.innerWidth)) {
+        router.push(`/chats/${chat.id}`);
+      } else {
+        dispatch(openChat(chat.id));
+      }
     });
   };
 }

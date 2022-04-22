@@ -3,11 +3,7 @@
   width: 100%;
   overflow: hidden;
   height: 100%;
-  overflow-y: scroll;
-
-  @media screen and (max-width: 420px) {
-    width: 90%;
-  }
+  overflow-y: auto;
 
   h4 {
     padding: 15px 0;
@@ -18,14 +14,8 @@
     border-radius: 8px 8px 0 0;
   }
 
-  .drawer__inner {
-    border-radius: 0 0 8px 8px;
-
-    &.backdrop {
-      width: calc(100% - 60px);
-      box-shadow: 2px 4px 15px rgba($base-shadow-color, 0.4);
-      border-radius: 0 0 0 8px;
-    }
+  &__content {
+    padding: 0;
   }
 
   &__accounts {
@@ -47,14 +37,14 @@
   .search {
     display: flex;
     flex-direction: row;
-    margin: 10px 0;
+    margin: 10px;
 
     > label {
       flex: 1 1;
     }
 
-    > .search__icon .fa {
-      right: 102px !important;
+    > .search__icon {
+      position: relative;
     }
 
     > .button {
@@ -69,11 +59,7 @@
   width: 100%;
   overflow: hidden;
   height: 100%;
-  overflow-y: scroll;
-
-  @media screen and (max-width: 420px) {
-    width: 90%;
-  }
+  overflow-y: auto;
 
   &__account {
     background: var(--background-color);

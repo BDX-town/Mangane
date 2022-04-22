@@ -1,46 +1,29 @@
 const { join } = require('path');
 const { env } = require('process');
 
+const {
+  FE_SUBDIRECTORY,
+  FE_BUILD_DIR,
+} = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
+
 const settings = {
   source_path: 'app',
-  public_root_path: 'static',
-  public_output_path: getPublicOutputPath(),
-  cache_path: 'tmp/cache/webpacker',
+  public_root_path: FE_BUILD_DIR,
+  test_root_path: `${FE_BUILD_DIR}-test`,
+  cache_path: 'tmp/cache',
   resolved_paths: [],
-  static_assets_extensions: [ '.jpg', '.jpeg', '.png', '.tiff', '.ico', '.svg', '.gif', '.eot', '.otf', '.ttf', '.woff', '.woff2' ],
-  extensions: [ '.mjs', '.js', '.sass', '.scss', '.css', '.module.sass', '.module.scss', '.module.css', '.png', '.svg', '.gif', '.jpeg', '.jpg' ],
+  extensions: [ '.mjs', '.js', '.jsx', '.ts', '.tsx', '.sass', '.scss', '.css', '.module.sass', '.module.scss', '.module.css', '.png', '.svg', '.gif', '.jpeg', '.jpg' ],
 };
 
-function removeOuterSlashes(string) {
-  return string.replace(/^\/*/, '').replace(/\/*$/, '');
-}
-
-function getPublicOutputPath() {
-  if (env.NODE_ENV === 'test') {
-    return 'packs-test';
-  }
-
-  return 'packs';
-}
-
-function formatPublicPath(host = '', path = '') {
-  let formattedHost = removeOuterSlashes(host);
-  if (formattedHost && !/^http/i.test(formattedHost)) {
-    formattedHost = `//${formattedHost}`;
-  }
-  const formattedPath = removeOuterSlashes(path);
-  return `${formattedHost}/${formattedPath}/`;
-}
+const outputDir = env.NODE_ENV === 'test' ? settings.test_root_path : settings.public_root_path;
 
 const output = {
-  path: join(__dirname, '..', 'static', settings.public_output_path),
-  publicPath: formatPublicPath(env.CDN_HOST, settings.public_output_path),
+  path: join(__dirname, '..', outputDir, FE_SUBDIRECTORY),
 };
 
 module.exports = {
   settings,
   env: {
-    CDN_HOST: env.CDN_HOST,
     NODE_ENV: env.NODE_ENV,
   },
   output,

@@ -1,29 +1,31 @@
-import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import Avatar from './avatar';
-import AvatarOverlay from './avatar_overlay';
-import AvatarComposite from './avatar_composite';
-import RelativeTimestamp from './relative_timestamp';
-import DisplayName from './display_name';
-import StatusContent from './status_content';
-import StatusActionBar from './status_action_bar';
-import AttachmentList from './attachment_list';
-import Card from '../features/status/components/card';
-import { injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
-import { HotKeys } from 'react-hotkeys';
 import classNames from 'classnames';
-import Icon from 'soapbox/components/icon';
-import PollContainer from 'soapbox/containers/poll_container';
-import { Link, NavLink } from 'react-router-dom';
-import { getDomain } from 'soapbox/utils/accounts';
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { HotKeys } from 'react-hotkeys';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl, FormattedMessage } from 'react-intl';
+import { Link, NavLink, withRouter } from 'react-router-dom';
 
-// We use the component (and not the container) since we do not want
-// to use the progress bar to show download progress
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import Icon from 'soapbox/components/icon';
+import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
+import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
+import { getDomain } from 'soapbox/utils/accounts';
+
+import Card from '../features/status/components/card';
 import Bundle from '../features/ui/components/bundle';
+import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
+
+import AttachmentThumbs from './attachment_thumbs';
+import Avatar from './avatar';
+import AvatarComposite from './avatar_composite';
+import AvatarOverlay from './avatar_overlay';
+import DisplayName from './display_name';
+import RelativeTimestamp from './relative_timestamp';
+import StatusActionBar from './status_action_bar';
+import StatusContent from './status_content';
+import StatusReplyMentions from './status_reply_mentions';
 
 export const textForScreenReader = (intl, status, rebloggedByText = false) => {
   const displayName = status.getIn(['account', 'display_name']);
@@ -54,12 +56,8 @@ export const defaultMediaVisibility = (status, displayMedia) => {
   return (displayMedia !== 'hide_all' && !status.get('sensitive') || displayMedia === 'show_all');
 };
 
-export default @injectIntl
+export default @injectIntl @withRouter
 class Status extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     status: ImmutablePropTypes.map,
@@ -69,8 +67,10 @@ class Status extends ImmutablePureComponent {
     onReply: PropTypes.func,
     onFavourite: PropTypes.func,
     onReblog: PropTypes.func,
+    onQuote: PropTypes.func,
     onDelete: PropTypes.func,
     onDirect: PropTypes.func,
+    onChat: PropTypes.func,
     onMention: PropTypes.func,
     onPin: PropTypes.func,
     onOpenMedia: PropTypes.func,
@@ -86,7 +86,6 @@ class Status extends ImmutablePureComponent {
     unread: PropTypes.bool,
     onMoveUp: PropTypes.func,
     onMoveDown: PropTypes.func,
-    showThread: PropTypes.bool,
     getScrollPosition: PropTypes.func,
     updateScrollBottom: PropTypes.func,
     cacheMediaWidth: PropTypes.func,
@@ -94,6 +93,12 @@ class Status extends ImmutablePureComponent {
     group: ImmutablePropTypes.map,
     displayMedia: PropTypes.string,
     allowedEmoji: ImmutablePropTypes.list,
+    focusable: PropTypes.bool,
+    history: PropTypes.object,
+  };
+
+  static defaultProps = {
+    focusable: true,
   };
 
   // Avoid checking props that are functions (and whose equality will always
@@ -108,6 +113,7 @@ class Status extends ImmutablePureComponent {
   state = {
     showMedia: defaultMediaVisibility(this.props.status, this.props.displayMedia),
     statusId: undefined,
+    emojiSelectorFocused: false,
   };
 
   // Track height changes we know about to compensate scrolling
@@ -172,20 +178,20 @@ class Status extends ImmutablePureComponent {
       return;
     }
 
-    if (!this.context.router) {
+    if (!this.props.history) {
       return;
     }
 
-    this.context.router.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}/posts/${this._properStatus().get('id')}`);
+    this.props.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}/posts/${this._properStatus().get('id')}`);
   }
 
   handleExpandClick = (e) => {
     if (e.button === 0) {
-      if (!this.context.router) {
+      if (!this.props.history) {
         return;
       }
 
-      this.context.router.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}/posts/${this._properStatus().get('id')}`);
+      this.props.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}/posts/${this._properStatus().get('id')}`);
     }
   }
 
@@ -213,9 +219,24 @@ class Status extends ImmutablePureComponent {
     this.props.OnOpenAudio(media, startTime);
   }
 
+  handleHotkeyOpenMedia = e => {
+    const { onOpenMedia, onOpenVideo } = this.props;
+    const status = this._properStatus();
+
+    e.preventDefault();
+
+    if (status.get('media_attachments').size > 0) {
+      if (status.getIn(['media_attachments', 0, 'type']) === 'video') {
+        onOpenVideo(status.getIn(['media_attachments', 0]), 0);
+      } else {
+        onOpenMedia(status.get('media_attachments'), 0);
+      }
+    }
+  }
+
   handleHotkeyReply = e => {
     e.preventDefault();
-    this.props.onReply(this._properStatus(), this.context.router.history);
+    this.props.onReply(this._properStatus(), this.props.history);
   }
 
   handleHotkeyFavourite = () => {
@@ -228,15 +249,15 @@ class Status extends ImmutablePureComponent {
 
   handleHotkeyMention = e => {
     e.preventDefault();
-    this.props.onMention(this._properStatus().get('account'), this.context.router.history);
+    this.props.onMention(this._properStatus().get('account'), this.props.history);
   }
 
   handleHotkeyOpen = () => {
-    this.context.router.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}/posts/${this._properStatus().get('id')}`);
+    this.props.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}/posts/${this._properStatus().get('id')}`);
   }
 
   handleHotkeyOpenProfile = () => {
-    this.context.router.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}`);
+    this.props.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}`);
   }
 
   handleHotkeyMoveUp = e => {
@@ -255,6 +276,27 @@ class Status extends ImmutablePureComponent {
     this.handleToggleMediaVisibility();
   }
 
+  handleHotkeyReact = () => {
+    this._expandEmojiSelector();
+  }
+
+  handleEmojiSelectorExpand = e => {
+    if (e.key === 'Enter') {
+      this._expandEmojiSelector();
+    }
+    e.preventDefault();
+  }
+
+  handleEmojiSelectorUnfocus = () => {
+    this.setState({ emojiSelectorFocused: false });
+  }
+
+  _expandEmojiSelector = () => {
+    this.setState({ emojiSelectorFocused: true });
+    const firstEmoji = this.node.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
+    firstEmoji.focus();
+  };
+
   _properStatus() {
     const { status } = this.props;
 
@@ -271,12 +313,13 @@ class Status extends ImmutablePureComponent {
 
   render() {
     let media = null;
-    let poll = null;
+    const poll = null;
     let statusAvatar, prepend, rebloggedByText, reblogContent;
 
-    const { intl, hidden, featured, otherAccounts, unread, showThread, group } = this.props;
+    const { intl, hidden, featured, otherAccounts, unread, group } = this.props;
 
-    let { status, account, ...other } = this.props;
+    // FIXME: why does this need to reassign status and account??
+    let { status, account, ...other } = this.props; // eslint-disable-line prefer-const
 
     if (status === null) {
       return null;
@@ -299,7 +342,7 @@ class Status extends ImmutablePureComponent {
 
       return (
         <HotKeys handlers={minHandlers}>
-          <div className='status__wrapper status__wrapper--filtered focusable' tabIndex='0' ref={this.handleRef}>
+          <div className={classNames('status__wrapper', 'status__wrapper--filtered', { focusable: this.props.focusable })} tabIndex={this.props.focusable ? 0 : null} ref={this.handleRef}>
             <FormattedMessage id='status.filtered' defaultMessage='Filtered' />
           </div>
         </HotKeys>
@@ -309,7 +352,9 @@ class Status extends ImmutablePureComponent {
     if (featured) {
       prepend = (
         <div className='status__prepend'>
-          <div className='status__prepend-icon-wrapper'><Icon id='thumb-tack' className='status__prepend-icon' fixedWidth /></div>
+          <div className='status__prepend-icon-wrapper'>
+            <Icon src={require('@tabler/icons/icons/pinned.svg')} className='status__prepend-icon status__prepend-icon--pinned' />
+          </div>
           <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
         </div>
       );
@@ -318,7 +363,9 @@ class Status extends ImmutablePureComponent {
 
       prepend = (
         <div className='status__prepend'>
-          <div className='status__prepend-icon-wrapper'><Icon id='retweet' className='status__prepend-icon' fixedWidth /></div>
+          <div className='status__prepend-icon-wrapper'>
+            <Icon src={require('feather-icons/dist/icons/repeat.svg')} className='status__prepend-icon' />
+          </div>
           <FormattedMessage
             id='status.reblogged_by' defaultMessage='{name} reposted' values={{
               name: <NavLink to={`/@${status.getIn(['account', 'acct'])}`} className='status__display-name muted'>
@@ -338,18 +385,15 @@ class Status extends ImmutablePureComponent {
       status        = status.get('reblog');
     }
 
-    if (status.get('poll')) {
-      poll = <PollContainer pollId={status.get('poll')} />;
-    }
-
     const size = status.get('media_attachments').size;
 
     if (size > 0) {
       if (this.props.muted) {
         media = (
-          <AttachmentList
-            compact
+          <AttachmentThumbs
             media={status.get('media_attachments')}
+            onClick={this.handleClick}
+            sensitive={status.get('sensitive')}
           />
         );
       } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'video') {
@@ -377,19 +421,22 @@ class Status extends ImmutablePureComponent {
           </Bundle>
         );
       } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'audio' && status.get('media_attachments').size === 1) {
-        const audio = status.getIn(['media_attachments', 0]);
+        const attachment = status.getIn(['media_attachments', 0]);
 
         media = (
           <Bundle fetchComponent={Audio} loading={this.renderLoadingAudioPlayer} >
             {Component => (
               <Component
-                src={audio.get('url')}
-                alt={audio.get('description')}
-                inline
-                sensitive={status.get('sensitive')}
+                src={attachment.get('url')}
+                alt={attachment.get('description')}
+                poster={attachment.get('preview_url') !== attachment.get('url') ? attachment.get('preview_url') : status.getIn(['account', 'avatar_static'])}
+                backgroundColor={attachment.getIn(['meta', 'colors', 'background'])}
+                foregroundColor={attachment.getIn(['meta', 'colors', 'foreground'])}
+                accentColor={attachment.getIn(['meta', 'colors', 'accent'])}
+                duration={attachment.getIn(['meta', 'original', 'duration'], 0)}
+                width={this.props.cachedMediaWidth}
+                height={263}
                 cacheWidth={this.props.cacheMediaWidth}
-                visible={this.state.showMedia}
-                onOpenAudio={this.handleOpenAudio}
               />
             )}
           </Bundle>
@@ -412,7 +459,7 @@ class Status extends ImmutablePureComponent {
           </Bundle>
         );
       }
-    } else if (status.get('spoiler_text').length === 0 && status.get('card')) {
+    } else if (status.get('spoiler_text').length === 0 && !status.get('quote') && status.get('card')) {
       media = (
         <Card
           onOpenMedia={this.props.onOpenMedia}
@@ -422,6 +469,24 @@ class Status extends ImmutablePureComponent {
           defaultWidth={this.props.cachedMediaWidth}
         />
       );
+    } else if (status.get('expectsCard', false)) {
+      media = (
+        <PlaceholderCard />
+      );
+    }
+
+    let quote;
+
+    if (status.get('quote')) {
+      if (status.getIn(['pleroma', 'quote_visible'], true) === false) {
+        quote = (
+          <div className='quoted-status-tombstone'>
+            <p><FormattedMessage id='statuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
+          </div>
+        );
+      } else {
+        quote = <QuotedStatus statusId={status.get('quote')} />;
+      }
     }
 
     if (otherAccounts && otherAccounts.size > 1) {
@@ -443,6 +508,8 @@ class Status extends ImmutablePureComponent {
       moveDown: this.handleHotkeyMoveDown,
       toggleHidden: this.handleHotkeyToggleHidden,
       toggleSensitive: this.handleHotkeyToggleSensitive,
+      openMedia: this.handleHotkeyOpenMedia,
+      react: this.handleHotkeyReact,
     };
 
     const statusUrl = `/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`;
@@ -451,7 +518,7 @@ class Status extends ImmutablePureComponent {
 
     return (
       <HotKeys handlers={handlers}>
-        <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id'), read: unread === false, focusable: !this.props.muted })} tabIndex={this.props.muted ? null : 0} data-featured={featured ? 'true' : null} aria-label={textForScreenReader(intl, status, rebloggedByText)} ref={this.handleRef}>
+        <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id'), read: unread === false, focusable: this.props.focusable && !this.props.muted })} tabIndex={this.props.focusable && !this.props.muted ? 0 : null} data-featured={featured ? 'true' : null} aria-label={textForScreenReader(intl, status, rebloggedByText)} ref={this.handleRef}>
           {prepend}
 
           <div className={classNames('status', `status-${status.get('visibility')}`, { 'status-reply': !!status.get('in_reply_to_id'), muted: this.props.muted, read: unread === false })} data-id={status.get('id')}>
@@ -488,6 +555,8 @@ class Status extends ImmutablePureComponent {
               </div>
             )}
 
+            <StatusReplyMentions status={this._properStatus()} />
+
             <StatusContent
               status={status}
               reblogContent={reblogContent}
@@ -499,14 +568,15 @@ class Status extends ImmutablePureComponent {
 
             {media}
             {poll}
+            {quote}
 
-            {showThread && status.get('in_reply_to_id') && status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) && (
-              <button className='status__content__read-more-button' onClick={this.handleClick}>
-                <FormattedMessage id='status.show_thread' defaultMessage='Show thread' />
-              </button>
-            )}
-
-            <StatusActionBar status={status} account={account} {...other} />
+            <StatusActionBar
+              status={status}
+              account={account}
+              emojiSelectorFocused={this.state.emojiSelectorFocused}
+              handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
+              {...other}
+            />
           </div>
         </div>
       </HotKeys>

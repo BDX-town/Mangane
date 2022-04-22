@@ -1,8 +1,13 @@
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import {
+  AdminNav,
+  LatestAccountsPanel,
+} from 'soapbox/features/ui/util/async-components';
+
 import LinkFooter from '../features/ui/components/link_footer';
-import AdminNav from 'soapbox/features/admin/components/admin_nav';
-import LatestAccountsPanel from 'soapbox/features/admin/components/latest_accounts_panel';
 
 export default
 class AdminPage extends ImmutablePureComponent {
@@ -17,19 +22,23 @@ class AdminPage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
               <div className='columns-area__panels__pane__inner'>
-                <AdminNav />
+                <BundleContainer fetchComponent={AdminNav}>
+                  {Component => <Component />}
+                </BundleContainer>
               </div>
             </div>
 
             <div className='columns-area__panels__main'>
-              <div className='columns-area columns-area--mobile'>
+              <div className='columns-area'>
                 {children}
               </div>
             </div>
 
             <div className='columns-area__panels__pane columns-area__panels__pane--right'>
               <div className='columns-area__panels__pane__inner'>
-                <LatestAccountsPanel limit={5} />
+                <BundleContainer fetchComponent={LatestAccountsPanel}>
+                  {Component => <Component limit={5} />}
+                </BundleContainer>
                 <LinkFooter />
               </div>
             </div>

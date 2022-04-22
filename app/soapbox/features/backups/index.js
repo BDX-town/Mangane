@@ -1,15 +1,17 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import Column from '../ui/components/better_column';
+import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+
 import {
   fetchBackups,
   createBackup,
 } from 'soapbox/actions/backups';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import classNames from 'classnames';
+
+import Column from '../ui/components/better_column';
 
 const messages = defineMessages({
   heading: { id: 'column.backups', defaultMessage: 'Backups' },
@@ -52,6 +54,7 @@ class Backups extends ImmutablePureComponent {
     return [{
       text: intl.formatMessage(messages.create),
       action: this.handleCreateBackup,
+      icon: require('@tabler/icons/icons/plus.svg'),
     }];
   }
 

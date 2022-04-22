@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { LoadingBar } from 'react-redux-loading-bar';
+import PropTypes from 'prop-types';
+import React from 'react';
+
 import ZoomableImage from './zoomable_image';
 
 export default class ImageLoader extends React.PureComponent {
@@ -138,7 +138,6 @@ export default class ImageLoader extends React.PureComponent {
 
     return (
       <div className={className}>
-        <LoadingBar loading={loading ? 1 : 0} className='loading-bar' style={{ width: this.state.width || width }} />
         {loading ? (
           <canvas
             className='image-loader__preview-canvas'

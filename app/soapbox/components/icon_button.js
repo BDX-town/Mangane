@@ -1,18 +1,25 @@
-import React from 'react';
-import Motion from '../features/ui/util/optional_motion';
-import spring from 'react-motion/lib/spring';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import spring from 'react-motion/lib/spring';
+
 import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
+
+import Motion from '../features/ui/util/optional_motion';
 
 export default class IconButton extends React.PureComponent {
 
   static propTypes = {
     className: PropTypes.string,
     title: PropTypes.string.isRequired,
-    icon: PropTypes.string.isRequired,
+    icon: PropTypes.string,
+    src: PropTypes.string,
     onClick: PropTypes.func,
+    onMouseDown: PropTypes.func,
+    onKeyUp: PropTypes.func,
+    onKeyDown: PropTypes.func,
+    onKeyPress: PropTypes.func,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
     size: PropTypes.number,
@@ -28,6 +35,7 @@ export default class IconButton extends React.PureComponent {
     tabIndex: PropTypes.string,
     text: PropTypes.string,
     emoji: PropTypes.string,
+    type: PropTypes.string,
   };
 
   static defaultProps = {
@@ -37,9 +45,12 @@ export default class IconButton extends React.PureComponent {
     animate: false,
     overlay: false,
     tabIndex: '0',
+    onKeyUp: () => {},
+    onKeyDown: () => {},
     onClick: () => {},
     onMouseEnter: () => {},
     onMouseLeave: () => {},
+    type: 'button',
   };
 
   handleClick = (e) =>  {
@@ -47,6 +58,30 @@ export default class IconButton extends React.PureComponent {
 
     if (!this.props.disabled) {
       this.props.onClick(e);
+    }
+  }
+
+  handleMouseDown = (e) => {
+    if (!this.props.disabled && this.props.onMouseDown) {
+      this.props.onMouseDown(e);
+    }
+  }
+
+  handleKeyDown = (e) => {
+    if (!this.props.disabled && this.props.onKeyDown) {
+      this.props.onKeyDown(e);
+    }
+  }
+
+  handleKeyUp = (e) => {
+    if (!this.props.disabled && this.props.onKeyUp) {
+      this.props.onKeyUp(e);
+    }
+  }
+
+  handleKeyPress = (e) => {
+    if (this.props.onKeyPress && !this.props.disabled) {
+      this.props.onKeyPress(e);
     }
   }
 
@@ -67,6 +102,7 @@ export default class IconButton extends React.PureComponent {
       disabled,
       expanded,
       icon,
+      src,
       inverted,
       overlay,
       pressed,
@@ -74,6 +110,7 @@ export default class IconButton extends React.PureComponent {
       title,
       text,
       emoji,
+      type,
     } = this.props;
 
     const classes = classNames(className, 'icon-button', {
@@ -94,17 +131,22 @@ export default class IconButton extends React.PureComponent {
           title={title}
           className={classes}
           onClick={this.handleClick}
+          onMouseDown={this.handleMouseDown}
+          onKeyDown={this.handleKeyDown}
+          onKeyUp={this.handleKeyUp}
+          onKeyPress={this.handleKeyPress}
           onMouseEnter={this.props.onMouseEnter}
           onMouseLeave={this.props.onMouseLeave}
           tabIndex={tabIndex}
           disabled={disabled}
+          type={type}
         >
-          <div style={style}>
+          <div style={src ? {} : style}>
             {emoji
               ? <div className='icon-button__emoji' dangerouslySetInnerHTML={{ __html: emojify(emoji) }} aria-hidden='true' />
-              : <Icon id={icon} fixedWidth aria-hidden='true' />}
+              : <Icon id={icon} src={src} fixedWidth aria-hidden='true' />}
           </div>
-          {text && <span className='icon_button__text'>{text}</span>}
+          {text && <span className='icon-button__text'>{text}</span>}
         </button>
       );
     }
@@ -119,17 +161,22 @@ export default class IconButton extends React.PureComponent {
             title={title}
             className={classes}
             onClick={this.handleClick}
+            onMouseDown={this.handleMouseDown}
+            onKeyDown={this.handleKeyDown}
+            onKeyUp={this.handleKeyUp}
+            onKeyPress={this.handleKeyPress}
             onMouseEnter={this.props.onMouseEnter}
             onMouseLeave={this.props.onMouseLeave}
             tabIndex={tabIndex}
             disabled={disabled}
+            type={type}
           >
-            <div style={style}>
+            <div style={src ? {} : style}>
               {emoji
                 ? <div className='icon-button__emoji' style={{ transform: `rotate(${rotate}deg)` }} dangerouslySetInnerHTML={{ __html: emojify(emoji) }} aria-hidden='true' />
-                : <Icon id={icon} style={{ transform: `rotate(${rotate}deg)` }} fixedWidth aria-hidden='true' />}
+                : <Icon id={icon} src={src} style={{ transform: `rotate(${rotate}deg)` }} fixedWidth aria-hidden='true' />}
             </div>
-            {text && <span className='icon_button__text'>{text}</span>}
+            {text && <span className='icon-button__text'>{text}</span>}
           </button>
         )}
       </Motion>

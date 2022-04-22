@@ -1,10 +1,11 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from 'react';
 import { injectIntl, defineMessages } from 'react-intl';
-import Icon from 'soapbox/components/icon';
-import { changeSetting, getSettings } from 'soapbox/actions/settings';
+import { connect } from 'react-redux';
 import Toggle from 'react-toggle';
+
+import { changeSetting, getSettings } from 'soapbox/actions/settings';
+import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({
   switchOn: { id: 'chats.audio_toggle_on', defaultMessage: 'Audio notification on' },
@@ -50,7 +51,7 @@ class AudioToggle extends React.PureComponent {
             id={id}
             checked={checked}
             onChange={this.handleToggleAudio}
-            icons={{ checked: <Icon id='volume-up' />, unchecked: <Icon id='volume-off' /> }}
+            icons={{ checked: <Icon src={require('@tabler/icons/icons/volume.svg')} />, unchecked: <Icon src={require('@tabler/icons/icons/volume-3.svg')} /> }}
             onKeyDown={this.onKeyDown}
           />
           {showLabel && (<label htmlFor={id} className='setting-toggle__label'>{label}</label>)}

@@ -6,7 +6,8 @@
 
 .promo-panel-item {
   @include standard-panel-shadow;
-  display: block;
+  display: flex;
+  align-items: center;
   height: 42px;
   line-height: 42px;
   color: var(--primary-text-color);
@@ -20,7 +21,8 @@
     border-bottom: 0;
   }
 
-  &:hover {
+  &:hover,
+  &:focus {
     color: var(--primary-text-color--faint);
 
     span {
@@ -28,8 +30,22 @@
     }
   }
 
-  &__icon,
-  .icon-with-counter {
+  i.fa {
+    font-size: 22px;
+    margin-right: 10px;
+  }
+
+  .svg-icon {
+    width: 24px;
+    height: 24px;
+
+    svg {
+      stroke-width: 1.3px;
+    }
+  }
+
+  > .svg-icon,
+  > .icon-with-counter {
     margin-right: 12px;
   }
 }

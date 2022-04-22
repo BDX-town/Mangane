@@ -1,3 +1,9 @@
+import { Map as ImmutableMap, fromJS } from 'immutable';
+import { get } from 'lodash';
+
+import { STREAMING_FOLLOW_RELATIONSHIPS_UPDATE } from 'soapbox/actions/streaming';
+
+import { ACCOUNT_NOTE_SUBMIT_SUCCESS } from '../actions/account_notes';
 import {
   ACCOUNT_FOLLOW_SUCCESS,
   ACCOUNT_FOLLOW_REQUEST,
@@ -16,16 +22,13 @@ import {
   RELATIONSHIPS_FETCH_SUCCESS,
 } from '../actions/accounts';
 import {
-  ACCOUNT_IMPORT,
-  ACCOUNTS_IMPORT,
-} from '../actions/importer';
-import {
   DOMAIN_BLOCK_SUCCESS,
   DOMAIN_UNBLOCK_SUCCESS,
 } from '../actions/domain_blocks';
-import { STREAMING_FOLLOW_RELATIONSHIPS_UPDATE } from 'soapbox/actions/streaming';
-import { Map as ImmutableMap, fromJS } from 'immutable';
-import { get } from 'lodash';
+import {
+  ACCOUNT_IMPORT,
+  ACCOUNTS_IMPORT,
+} from '../actions/importer';
 
 const normalizeRelationship = (state, relationship) => state.set(relationship.id, fromJS(relationship));
 
@@ -104,6 +107,7 @@ export default function relationships(state = initialState, action) {
   case ACCOUNT_UNSUBSCRIBE_SUCCESS:
   case ACCOUNT_PIN_SUCCESS:
   case ACCOUNT_UNPIN_SUCCESS:
+  case ACCOUNT_NOTE_SUBMIT_SUCCESS:
     return normalizeRelationship(state, action.relationship);
   case RELATIONSHIPS_FETCH_SUCCESS:
     return normalizeRelationships(state, action.relationships);
@@ -120,4 +124,4 @@ export default function relationships(state = initialState, action) {
   default:
     return state;
   }
-};
+}

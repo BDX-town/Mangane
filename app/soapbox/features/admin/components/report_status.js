@@ -1,15 +1,16 @@
+import noop from 'lodash/noop';
 import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages } from 'react-intl';
+import { connect } from 'react-redux';
+
+import { openModal } from 'soapbox/actions/modals';
+import { deleteStatusModal } from 'soapbox/actions/moderation';
 import StatusContent from 'soapbox/components/status_content';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
-import { openModal } from 'soapbox/actions/modal';
-import noop from 'lodash/noop';
-import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components';
 import Bundle from 'soapbox/features/ui/components/bundle';
-import { deleteStatusModal } from 'soapbox/actions/moderation';
+import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components';
 
 const messages = defineMessages({
   viewStatus: { id: 'admin.reports.actions.view_status', defaultMessage: 'View post' },
@@ -32,9 +33,12 @@ class ReportStatus extends ImmutablePureComponent {
     return [{
       text: intl.formatMessage(messages.viewStatus, { acct: `@${acct}` }),
       to: `/@${acct}/posts/${status.get('id')}`,
+      icon: require('@tabler/icons/icons/pencil.svg'),
     }, {
       text: intl.formatMessage(messages.deleteStatus, { acct: `@${acct}` }),
       action: this.handleDeleteStatus,
+      icon: require('@tabler/icons/icons/trash.svg'),
+      destructive: true,
     }];
   }
 
@@ -43,7 +47,7 @@ class ReportStatus extends ImmutablePureComponent {
 
     if (status.get('media_attachments').size > 0) {
       if (status.get('media_attachments').some(item => item.get('type') === 'unknown')) {
-
+        // Do nothing
       } else if (status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
 
@@ -116,7 +120,7 @@ class ReportStatus extends ImmutablePureComponent {
           {media}
         </div>
         <div className='admin-report__status-actions'>
-          <DropdownMenu items={menu} icon='ellipsis-v' size={18} direction='right' />
+          <DropdownMenu items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} direction='right' />
         </div>
       </div>
     );

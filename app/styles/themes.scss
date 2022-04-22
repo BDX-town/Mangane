@@ -31,6 +31,7 @@ body,
   --accent-color: hsl(var(--accent-color_hsl));
   --primary-text-color: hsl(var(--primary-text-color_hsl));
   --background-color: hsl(var(--background-color_hsl));
+  --foreground-color: hsl(var(--foreground-color_hsl));
   --warning-color: hsla(var(--warning-color_hsl));
 
   // Meta-variables
@@ -38,10 +39,8 @@ body,
   --accent-color_hsl: var(--accent-color_h), var(--accent-color_s), var(--accent-color_l);
   --primary-text-color_hsl: var(--primary-text-color_h), var(--primary-text-color_s), var(--primary-text-color_l);
   --background-color_hsl: var(--background-color_h), var(--background-color_s), var(--background-color_l);
+  --foreground-color_hsl: var(--foreground-color_h), var(--foreground-color_s), var(--foreground-color_l);
   --warning-color_hsl: var(--warning-color_h), var(--warning-color_s), var(--warning-color_l);
-  --accent-color_h: calc(var(--brand-color_h) - 15);
-  --accent-color_s: 86%;
-  --accent-color_l: 44%;
 
   // Modifiers
   --brand-color--faint: hsla(var(--brand-color_hsl), 0.1);
@@ -59,7 +58,6 @@ body,
 
 .theme-mode-light {
   // Primary variables
-  --foreground-color: #fff;
   --highlight-text-color: hsl(
     var(--brand-color_h),
     var(--brand-color_s),
@@ -74,6 +72,9 @@ body,
   --background-color_h: 0;
   --background-color_s: 0%;
   --background-color_l: 94.9%;
+  --foreground-color_h: 0;
+  --foreground-color_s: 0%;
+  --foreground-color_l: 100%;
   --warning-color_h: 0;
   --warning-color_s: 100%;
   --warning-color_l: 66%;
@@ -84,11 +85,15 @@ body,
     var(--brand-color_s),
     calc(var(--brand-color_l) - 12%)
   );
+  --warning-color--hicontrast: hsl(
+    var(--warning-color_h),
+    var(--warning-color_s),
+    calc(var(--warning-color_l) - 12%)
+  );
 }
 
 .theme-mode-dark {
   // Primary variables
-  --foreground-color: #222;
   --highlight-text-color: hsl(
     var(--brand-color_h),
     var(--brand-color_s),
@@ -103,6 +108,9 @@ body,
   --background-color_h: 0;
   --background-color_s: 0%;
   --background-color_l: 20%;
+  --foreground-color_h: 0;
+  --foreground-color_s: 0%;
+  --foreground-color_l: 13%;
   --warning-color_h: 0;
   --warning-color_s: 100%;
   --warning-color_l: 66%;
@@ -112,5 +120,10 @@ body,
     var(--brand-color_h),
     var(--brand-color_s),
     calc(var(--brand-color_l) + 12%)
+  );
+  --warning-color--hicontrast: hsl(
+    var(--warning-color_h),
+    var(--warning-color_s),
+    calc(var(--warning-color_l) + 12%)
   );
 }

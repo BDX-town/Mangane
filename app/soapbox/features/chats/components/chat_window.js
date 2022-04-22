@@ -1,28 +1,30 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { injectIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import Avatar from 'soapbox/components/avatar';
-import { getAcct } from 'soapbox/utils/accounts';
-import IconButton from 'soapbox/components/icon_button';
+import { injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import {
   closeChat,
   toggleChat,
 } from 'soapbox/actions/chats';
-import ChatBox from './chat_box';
+import Avatar from 'soapbox/components/avatar';
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import IconButton from 'soapbox/components/icon_button';
+import { makeGetChat } from 'soapbox/selectors';
+import { getAcct } from 'soapbox/utils/accounts';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { displayFqn } from 'soapbox/utils/state';
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
-import { makeGetChat } from 'soapbox/selectors';
+
+import ChatBox from './chat_box';
 
 const makeMapStateToProps = () => {
   const getChat = makeGetChat();
 
   const mapStateToProps = (state, { chatId }) => {
-    const chat = state.getIn(['chats', chatId]);
+    const chat = state.getIn(['chats', 'items', chatId]);
 
     return {
       me: state.get('me'),
@@ -117,7 +119,7 @@ class ChatWindow extends ImmutablePureComponent {
             @{getAcct(account, displayFqn)}
           </button>
           <div className='pane__close'>
-            <IconButton icon='close' title='Close chat' onClick={this.handleChatClose(chat.get('id'))} />
+            <IconButton src={require('@tabler/icons/icons/x.svg')} title='Close chat' onClick={this.handleChatClose(chat.get('id'))} />
           </div>
         </div>
         <div className='pane__content'>

@@ -228,8 +228,7 @@ body.rtl {
   }
 
   @media screen and (min-width: 631px) {
-    .column,
-    .drawer {
+    .column {
       padding-left: 5px;
       padding-right: 5px;
 
@@ -240,8 +239,7 @@ body.rtl {
     }
 
     .columns-area > div {
-      .column,
-      .drawer {
+      .column {
         padding-left: 5px;
         padding-right: 5px;
       }

@@ -1,32 +1,33 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import Button from '../../../components/button';
-import StatusContent from '../../../components/status_content';
-import Avatar from '../../../components/avatar';
-import RelativeTimestamp from '../../../components/relative_timestamp';
-import DisplayName from '../../../components/display_name';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { withRouter } from 'react-router-dom';
+
+import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
 import Icon from 'soapbox/components/icon';
+
+import Avatar from '../../../components/avatar';
+import Button from '../../../components/button';
+import DisplayName from '../../../components/display_name';
+import RelativeTimestamp from '../../../components/relative_timestamp';
+import StatusContent from '../../../components/status_content';
 
 const messages = defineMessages({
   cancel_reblog: { id: 'status.cancel_reblog_private', defaultMessage: 'Un-repost' },
   reblog: { id: 'status.reblog', defaultMessage: 'Repost' },
 });
 
-export default @injectIntl
+export default @injectIntl @withRouter
 class BoostModal extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     status: ImmutablePropTypes.map.isRequired,
     onReblog: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
+    history: PropTypes.object,
   };
 
   componentDidMount() {
@@ -42,7 +43,7 @@ class BoostModal extends ImmutablePureComponent {
     if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
       this.props.onClose();
-      this.context.router.history.push(`/@${this.props.status.getIn(['account', 'acct'])}`);
+      this.props.history.push(`/@${this.props.status.getIn(['account', 'acct'])}`);
     }
   }
 
@@ -50,7 +51,7 @@ class BoostModal extends ImmutablePureComponent {
     if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
       this.props.onClose();
-      this.context.router.history.push(`/@${this.props.status.getIn(['account', 'acct'])}/posts/${this.props.status.get('url')}`);
+      this.props.history.push(`/@${this.props.status.getIn(['account', 'acct'])}/posts/${this.props.status.get('url')}`);
     }
   }
 
@@ -85,6 +86,14 @@ class BoostModal extends ImmutablePureComponent {
             </div>
 
             <StatusContent status={status} />
+
+            {status.get('media_attachments').size > 0 && (
+              <AttachmentThumbs
+                compact
+                media={status.get('media_attachments')}
+                sensitive={status.get('sensitive')}
+              />
+            )}
           </div>
         </div>
 
