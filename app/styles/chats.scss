@@ -4,17 +4,18 @@
   position: fixed;
   bottom: 0;
   right: 20px;
-  width: 265px;
+  width: 365px;
   height: 350px;
-  max-height: calc(100vh - 70px);
+  max-height: calc(60vh);
   display: flex;
   flex-direction: column;
   z-index: 1000; // Above AccountHeader
   transition: 0.05s;
 
   &--main {
-    height: calc(100vh - 70px);
-
+    height: calc(60vh);
+    width: 265px;
+    
     .pane__header .pane__title {
       font-size: 16px;
     }
