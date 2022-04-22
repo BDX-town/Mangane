@@ -68,11 +68,26 @@ const ScrollableList: React.FC<IScrollableList> = ({
   // const settings = useSettings();
   // const autoload = settings.get('autoloadMore');
 
+  /** Normalized children */
+  const elements = Array.from(children || []);
+
   const showPlaceholder = showLoading && Placeholder && placeholderCount > 0;
-  const data = showPlaceholder ? Array(placeholderCount).fill('') : Array.from(children || []);
+
+  // NOTE: We are doing some trickery to load a feed of placeholders
+  // Virtuoso's `EmptyPlaceholder` unfortunately doesn't work for our use-case
+  const data = showPlaceholder ? Array(placeholderCount).fill('') : elements;
+  const isEmpty = data.length === 0; // Yes, if it has placeholders it isn't "empty"
+
+  // Add a placeholder at the bottom for loading
+  // (Don't use Virtuoso's `Footer` component because it doesn't preserve its height)
+  if (hasMore && Placeholder) {
+    data.push(<Placeholder />);
+  } else if (hasMore) {
+    data.push(<Spinner />);
+  }
 
   /* Render an empty state instead of the scrollable list */
-  const renderEmpty = () => {
+  const renderEmpty = (): JSX.Element => {
     return (
       <div className='mt-2'>
         {alwaysPrepend && prepend}
@@ -88,8 +103,8 @@ const ScrollableList: React.FC<IScrollableList> = ({
     );
   };
 
-  /** Render the actual item */
-  const renderItem = (_i: number, element: JSX.Element) => {
+  /** Render a single item */
+  const renderItem = (_i: number, element: JSX.Element): JSX.Element => {
     if (showPlaceholder) {
       return <Placeholder />;
     } else {
@@ -97,40 +112,42 @@ const ScrollableList: React.FC<IScrollableList> = ({
     }
   };
 
-  // Don't use Virtuoso's EmptyPlaceholder component so it preserves height
-  if (data.length === 0) {
-    return renderEmpty();
-  }
+  /** Render the actual Virtuoso list */
+  const renderFeed = (): JSX.Element => (
+    <Virtuoso
+      useWindowScroll
+      className={className}
+      data={data}
+      startReached={onScrollToTop}
+      endReached={onLoadMore}
+      isScrolling={isScrolling => isScrolling && onScroll && onScroll()}
+      itemContent={renderItem}
+      context={{
+        listClassName: className,
+        itemClassName,
+      }}
+      components={{
+        Header: () => prepend,
+        ScrollSeekPlaceholder: Placeholder as any,
+        EmptyPlaceholder: () => renderEmpty(),
+        List,
+        Item,
+      }}
+    />
+  );
 
-  // Don't use Virtuoso's Footer component so it preserves spacing
-  if (hasMore && Placeholder) {
-    data.push(<Placeholder />);
-  } else if (hasMore) {
-    data.push(<Spinner />);
-  }
+  /** Conditionally render inner elements */
+  const renderBody = (): JSX.Element => {
+    if (isEmpty) {
+      return renderEmpty();
+    } else {
+      return renderFeed();
+    }
+  };
 
   return (
     <PullToRefresh onRefresh={onRefresh}>
-      <Virtuoso
-        useWindowScroll
-        className={className}
-        data={data}
-        startReached={onScrollToTop}
-        endReached={onLoadMore}
-        isScrolling={isScrolling => isScrolling && onScroll && onScroll()}
-        itemContent={renderItem}
-        context={{
-          listClassName: className,
-          itemClassName,
-        }}
-        components={{
-          Header: () => prepend,
-          ScrollSeekPlaceholder: Placeholder as any,
-          EmptyPlaceholder: () => renderEmpty(),
-          List,
-          Item,
-        }}
-      />
+      {renderBody()}
     </PullToRefresh>
   );
 };
