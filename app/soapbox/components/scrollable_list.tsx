@@ -61,7 +61,7 @@ const ScrollableList: React.FC<IScrollableList> = ({
       <Virtuoso
         useWindowScroll
         className={className}
-        data={showPlaceholder ? Array(placeholderCount).fill('') : Array.from(children)}
+        data={showPlaceholder ? Array(placeholderCount).fill('') : Array.from(children || [])}
         startReached={onScrollToTop}
         endReached={onLoadMore}
         isScrolling={isScrolling => isScrolling && onScroll && onScroll()}
