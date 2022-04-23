@@ -1,9 +1,9 @@
-import React from 'react';
 import { Map as ImmutableMap } from 'immutable';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { injectIntl, defineMessages } from 'react-intl';
 
 import Card from './card';
-import { injectIntl, defineMessages } from 'react-intl';
 
 export const REGEX = /https?:\/\/omg\.phie\.ovh\/.+\.(webm|gif)/g;
 export const DESCRIPTION = '<a.*href="?\'?{url}"?\'?.*>(.+)<\/a>';

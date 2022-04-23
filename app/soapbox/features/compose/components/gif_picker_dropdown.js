@@ -1,13 +1,14 @@
 /* eslint-disable react/jsx-no-bind */
-import React from 'react';
-import PropTypes from 'prop-types';
-import Overlay from 'react-overlays/lib/Overlay';
 import { debounce } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
+import Overlay from 'react-overlays/lib/Overlay';
+
+import IconButton from '../../../components/icon_button';
+import TextIconButton from '../components/text_icon_button';
 
 import LoadingIndicator from './../../../components/loading_indicator';
-import TextIconButton from '../components/text_icon_button';
-import IconButton from '../../../components/icon_button';
 
 const messages = defineMessages({
   gif: { id: 'gif_picker.gif', defaultMessage: 'GIF' },
@@ -176,7 +177,7 @@ class GIFPicker extends React.Component {
   }
 
   onSelect = async(gif) => {
-    let generated = `[${gif.description}](${gif.url})`;
+    const generated = `[${gif.description}](${gif.url})`;
     //let generated = `![${gif.description}](${gif.url})`;
     // inutile en webm
     // const size = await Provider.GetSize(gif.url);

@@ -1,10 +1,10 @@
-import { NOTIFICATIONS_FILTER_SET } from '../actions/notifications';
-import { GIF_FAV, GIF_UNFAV } from '../actions/gifs';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 import { ME_FETCH_SUCCESS } from 'soapbox/actions/me';
 
 import { EMOJI_USE } from '../actions/emojis';
+import { GIF_FAV, GIF_UNFAV } from '../actions/gifs';
+import { NOTIFICATIONS_FILTER_SET } from '../actions/notifications';
 import { SEARCH_FILTER_SET } from '../actions/search';
 import {
   SETTING_CHANGE,

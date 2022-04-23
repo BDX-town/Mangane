@@ -12,7 +12,7 @@ export function favGIF(gif) {
 
     dispatch(saveSettings());
   };
-};
+}
 
 export function unfavGIF(gif) {
   return dispatch => {
@@ -23,5 +23,5 @@ export function unfavGIF(gif) {
 
     dispatch(saveSettings());
   };
-};
+}
 

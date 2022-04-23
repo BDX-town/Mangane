@@ -1,8 +1,9 @@
-import { connect } from 'react-redux';
-import GIFPickerDropdown from '../components/gif_picker_dropdown';
 import { List as ImmutableList } from 'immutable';
-import { favGIF, unfavGIF } from '../../../actions/gifs';
+import { connect } from 'react-redux';
+
 import { changeComposeContentType } from '../../../actions/compose';
+import { favGIF, unfavGIF } from '../../../actions/gifs';
+import GIFPickerDropdown from '../components/gif_picker_dropdown';
 
 const getFavGIFs = state => state.getIn(['settings', 'favGIFs'], ImmutableList()).toJS();
 
