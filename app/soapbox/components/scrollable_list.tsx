@@ -104,6 +104,12 @@ const ScrollableList: React.FC<IScrollableList> = ({
     }
   };
 
+  const handleEndReached = () => {
+    if (hasMore && onLoadMore) {
+      onLoadMore();
+    }
+  };
+
   /** Render the actual Virtuoso list */
   const renderFeed = (): JSX.Element => (
     <Virtuoso
@@ -111,7 +117,7 @@ const ScrollableList: React.FC<IScrollableList> = ({
       className={className}
       data={data}
       startReached={onScrollToTop}
-      endReached={onLoadMore}
+      endReached={handleEndReached}
       isScrolling={isScrolling => isScrolling && onScroll && onScroll()}
       itemContent={renderItem}
       context={{
