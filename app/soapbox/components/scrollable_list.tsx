@@ -1,5 +1,5 @@
 import React from 'react';
-import { Virtuoso } from 'react-virtuoso';
+import { Virtuoso, Components } from 'react-virtuoso';
 
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 
@@ -10,19 +10,15 @@ type Context = {
   listClassName?: string,
 }
 
-type VComponent = {
-  context?: Context,
-}
-
 // NOTE: It's crucial to space lists with **padding** instead of margin!
 // Pass an `itemClassName` like `pb-3`, NOT a `space-y-3` className
 // https://virtuoso.dev/troubleshooting#list-does-not-scroll-to-the-bottom--items-jump-around
-const Item: React.FC<VComponent> = ({ context, ...rest }) => (
+const Item: Components<Context>['Item'] = ({ context, ...rest }) => (
   <div className={context?.itemClassName} {...rest} />
 );
 
 // Ensure the className winds up here
-const List = React.forwardRef<HTMLDivElement, VComponent>((props, ref) => {
+const List: Components<Context>['List'] = React.forwardRef((props, ref) => {
   const { context, ...rest } = props;
   return <div ref={ref} className={context?.listClassName} {...rest} />;
 });
