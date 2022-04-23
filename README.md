@@ -4,10 +4,6 @@
 
 **Mangane FE** is a frontend for Pleroma with a focus on custom branding and ease of use.
 
-## Try it out
-
-Visit https://fe.soapbox.pub/ and point it to your favorite instance.
-
 ## :rocket: Deploy on Pleroma
 
 Installing Mangane FE on an existing Pleroma server is extremely easy.
