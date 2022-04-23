@@ -1,3 +1,4 @@
+/* eslint sort-keys: "error" */
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import { createSelector } from 'reselect';
 import gte from 'semver/functions/gte';
@@ -51,48 +52,79 @@ const getInstanceFeatures = (instance: Instance) => {
 
   return {
     /**
-     * Can upload media attachments to statuses.
-     * @see POST /api/v1/media
-     * @see POST /api/v1/statuses
+     * Can view and manage ActivityPub aliases through the API.
+     * @see GET /api/pleroma/aliases
+     * @see PATCH /api/v1/accounts/update_credentials
      */
-    media: true,
+    accountAliasesAPI: v.software === PLEROMA,
 
     /**
-     * Can set privacy scopes on statuses.
-     * @see POST /api/v1/statuses
+     * The accounts API allows an acct instead of an ID.
+     * @see GET /api/v1/accounts/:acct_or_id
      */
-    privacyScopes: v.software !== TRUTHSOCIAL,
+    accountByUsername: v.software === PLEROMA,
 
     /**
-     * Can set content warnings on statuses.
-     * @see POST /api/v1/statuses
+     * Ability to pin other accounts on one's profile.
+     * @see POST /api/v1/accounts/:id/pin
+     * @see POST /api/v1/accounts/:id/unpin
+     * @see GET /api/v1/pleroma/accounts/:id/endorsements
      */
-    spoilers: v.software !== TRUTHSOCIAL,
+    accountEndorsements: v.software === PLEROMA && gte(v.version, '2.4.50'),
 
     /**
-     * Can edit and manage timeline filters (aka "muted words").
-     * @see {@link https://docs.joinmastodon.org/methods/accounts/filters/}
+     * Ability to set one's location on their profile.
+     * @see PATCH /api/v1/accounts/update_credentials
      */
-    filters: v.software !== TRUTHSOCIAL,
+    accountLocation: v.software === TRUTHSOCIAL,
 
     /**
-     * Can add polls to statuses.
-     * @see POST /api/v1/statuses
+     * Look up an account by the acct.
+     * @see GET /api/v1/accounts/lookup
      */
-    polls: any([
-      v.software === MASTODON && gte(v.version, '2.8.0'),
-      v.software === PLEROMA,
+    accountLookup: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
+      v.software === PLEROMA && gte(v.version, '2.4.50'),
     ]),
 
     /**
-     * Can schedule statuses to be posted at a later time.
-     * @see POST /api/v1/statuses
-     * @see {@link https://docs.joinmastodon.org/methods/statuses/scheduled_statuses/}
+     * Move followers to a different ActivityPub account.
+     * @see POST /api/pleroma/move_account
      */
-    scheduledStatuses: any([
-      v.software === MASTODON && gte(v.version, '2.7.0'),
-      v.software === PLEROMA,
+    accountMoving: v.software === PLEROMA && gte(v.version, '2.4.50'),
+
+    /**
+     * Ability to subscribe to notifications every time an account posts.
+     * @see POST /api/v1/accounts/:id/follow
+     */
+    accountNotifies: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.3.0'),
+      v.software === PLEROMA && gte(v.version, '2.4.50'),
     ]),
+
+    /**
+     * Ability to subscribe to notifications every time an account posts.
+     * @see POST /api/v1/pleroma/accounts/:id/subscribe
+     * @see POST /api/v1/pleroma/accounts/:id/unsubscribe
+     */
+    accountSubscriptions: v.software === PLEROMA && gte(v.version, '1.0.0'),
+
+    /**
+     * Ability to set one's website on their profile.
+     * @see PATCH /api/v1/accounts/update_credentials
+     */
+    accountWebsite: v.software === TRUTHSOCIAL,
+
+    /**
+     * Set your birthday and view upcoming birthdays.
+     * @see GET /api/v1/pleroma/birthdays
+     * @see POST /api/v1/accounts
+     * @see PATCH /api/v1/accounts/update_credentials
+     */
+    birthdays: v.software === PLEROMA && gte(v.version, '2.4.50'),
+
+    /** Whether people who blocked you are visible through the API. */
+    blockersVisible: features.includes('blockers_visible'),
 
     /**
      * Can bookmark statuses.
@@ -106,66 +138,30 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
-     * Can create, view, and manage lists.
-     * @see {@link https://docs.joinmastodon.org/methods/timelines/lists/}
-     * @see GET /api/v1/timelines/list/:list_id
+     * Pleroma chats API.
+     * @see {@link https://docs.pleroma.social/backend/development/API/chats/}
      */
-    lists: any([
-      v.software === MASTODON && gte(v.compatVersion, '2.1.0'),
+    chats: v.software === PLEROMA && gte(v.version, '2.1.0'),
+
+    /**
+     * Paginated chats API.
+     * @see GET /api/v2/chats
+     */
+    chatsV2: v.software === PLEROMA && gte(v.version, '2.3.0'),
+
+    /**
+     * Mastodon's newer solution for direct messaging.
+     * @see {@link https://docs.joinmastodon.org/methods/timelines/conversations/}
+     */
+    conversations: any([
+      v.software === MASTODON && gte(v.compatVersion, '2.6.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
+      v.software === PIXELFED,
     ]),
 
-    /**
-     * Can display suggested accounts.
-     * @see {@link https://docs.joinmastodon.org/methods/accounts/suggestions/}
-     */
-    suggestions: any([
-      v.software === MASTODON && gte(v.compatVersion, '2.4.3'),
-      v.software === TRUTHSOCIAL,
-      features.includes('v2_suggestions'),
-    ]),
-
-    /**
-     * Supports V2 suggested accounts.
-     * @see GET /api/v2/suggestions
-     */
-    suggestionsV2: any([
-      v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
-      v.software === TRUTHSOCIAL,
-      features.includes('v2_suggestions'),
-    ]),
-
-    /** Whether people who blocked you are visible through the API. */
-    blockersVisible: features.includes('blockers_visible'),
-
-    /**
-     * Can display trending hashtags.
-     * @see GET /api/v1/trends
-     */
-    trends: any([
-      v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
-      v.software === TRUTHSOCIAL,
-    ]),
-
-    /**
-     * Supports V2 media uploads.
-     * @see POST /api/v2/media
-     */
-    mediaV2: any([
-      v.software === MASTODON && gte(v.compatVersion, '3.1.3'),
-      // Even though Pleroma supports these endpoints, it has disadvantages
-      // v.software === PLEROMA && gte(v.version, '2.1.0'),
-    ]),
-
-    /**
-     * Can display a timeline of all known public statuses.
-     * Local and Fediverse timelines both use this feature.
-     * @see GET /api/v1/timelines/public
-     */
-    publicTimeline: any([
-      v.software === MASTODON,
-      v.software === PLEROMA,
-    ]),
+    // FIXME: long-term this shouldn't be a feature,
+    // but for now we want it to be overrideable in the build
+    darkMode: true,
 
     /**
      * Legacy DMs timeline where messages are displayed chronologically without groupings.
@@ -177,14 +173,14 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
-     * Mastodon's newer solution for direct messaging.
-     * @see {@link https://docs.joinmastodon.org/methods/timelines/conversations/}
+     * Soapbox email list.
+     * @see POST /api/v1/accounts
+     * @see PATCH /api/v1/accounts/update_credentials
+     * @see GET /api/v1/pleroma/admin/email_list/subscribers.csv
+     * @see GET /api/v1/pleroma/admin/email_list/unsubscribers.csv
+     * @see GET /api/v1/pleroma/admin/email_list/combined.csv
      */
-    conversations: any([
-      v.software === MASTODON && gte(v.compatVersion, '2.6.0'),
-      v.software === PLEROMA && gte(v.version, '0.9.9'),
-      v.software === PIXELFED,
-    ]),
+    emailList: features.includes('email_list'),
 
     /**
      * Ability to add emoji reactions to a status.
@@ -201,10 +197,43 @@ const getInstanceFeatures = (instance: Instance) => {
     emojiReactsRGI: v.software === PLEROMA && gte(v.version, '2.2.49'),
 
     /**
+     * Sign in with an Ethereum wallet.
+     * @see POST /oauth/token
+     */
+    ethereumLogin: v.software === MITRA,
+
+    /**
+     * Ability to address recipients of a status explicitly (with `to`).
+     * @see POST /api/v1/statuses
+     */
+    explicitAddressing: any([
+      v.software === PLEROMA && gte(v.version, '1.0.0'),
+      v.software === TRUTHSOCIAL,
+    ]),
+
+    /** Whether the accounts who favourited or emoji-reacted to a status can be viewed through the API. */
+    exposableReactions: features.includes('exposable_reactions'),
+
+    /** Whether the instance federates. */
+    federating: federation.get('enabled', true) === true, // Assume true unless explicitly false
+
+    /**
+     * Can edit and manage timeline filters (aka "muted words").
+     * @see {@link https://docs.joinmastodon.org/methods/accounts/filters/}
+     */
+    filters: v.software !== TRUTHSOCIAL,
+
+    /**
      * Allows setting the focal point of a media attachment.
      * @see {@link https://docs.joinmastodon.org/methods/statuses/media/}
      */
     focalPoint: v.software === MASTODON && gte(v.compatVersion, '2.3.0'),
+
+    /**
+     * Whether client settings can be retrieved from the API.
+     * @see GET /api/pleroma/frontend_configurations
+     */
+    frontendConfigurations: v.software === PLEROMA,
 
     /**
      * Pleroma import API.
@@ -221,26 +250,115 @@ const getInstanceFeatures = (instance: Instance) => {
     importMutes: v.software === PLEROMA && gte(v.version, '2.2.0'),
 
     /**
-     * Soapbox email list.
-     * @see POST /api/v1/accounts
-     * @see PATCH /api/v1/accounts/update_credentials
-     * @see GET /api/v1/pleroma/admin/email_list/subscribers.csv
-     * @see GET /api/v1/pleroma/admin/email_list/unsubscribers.csv
-     * @see GET /api/v1/pleroma/admin/email_list/combined.csv
+     * Can create, view, and manage lists.
+     * @see {@link https://docs.joinmastodon.org/methods/timelines/lists/}
+     * @see GET /api/v1/timelines/list/:list_id
      */
-    emailList: features.includes('email_list'),
+    lists: any([
+      v.software === MASTODON && gte(v.compatVersion, '2.1.0'),
+      v.software === PLEROMA && gte(v.version, '0.9.9'),
+    ]),
 
     /**
-     * Pleroma chats API.
-     * @see {@link https://docs.pleroma.social/backend/development/API/chats/}
+     * Can upload media attachments to statuses.
+     * @see POST /api/v1/media
+     * @see POST /api/v1/statuses
      */
-    chats: v.software === PLEROMA && gte(v.version, '2.1.0'),
+    media: true,
 
     /**
-     * Paginated chats API.
-     * @see GET /api/v2/chats
+     * Supports V2 media uploads.
+     * @see POST /api/v2/media
      */
-    chatsV2: v.software === PLEROMA && gte(v.version, '2.3.0'),
+    mediaV2: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.1.3'),
+      // Even though Pleroma supports these endpoints, it has disadvantages
+      // v.software === PLEROMA && gte(v.version, '2.1.0'),
+    ]),
+
+    /**
+     * Add private notes to accounts.
+     * @see POST /api/v1/accounts/:id/note
+     * @see GET /api/v1/accounts/relationships
+     */
+    notes: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.2.0'),
+      v.software === PLEROMA && gte(v.version, '2.4.50'),
+    ]),
+
+    /** Truth Social account registration API. */
+    pepe: v.software === TRUTHSOCIAL,
+
+    /**
+     * Can add polls to statuses.
+     * @see POST /api/v1/statuses
+     */
+    polls: any([
+      v.software === MASTODON && gte(v.version, '2.8.0'),
+      v.software === PLEROMA,
+    ]),
+
+    /**
+     * Can set privacy scopes on statuses.
+     * @see POST /api/v1/statuses
+     */
+    privacyScopes: v.software !== TRUTHSOCIAL,
+
+    /**
+     * A directory of discoverable profiles from the instance.
+     * @see {@link https://docs.joinmastodon.org/methods/instance/directory/}
+     */
+    profileDirectory: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
+      features.includes('profile_directory'),
+    ]),
+
+    /**
+     * Can display a timeline of all known public statuses.
+     * Local and Fediverse timelines both use this feature.
+     * @see GET /api/v1/timelines/public
+     */
+    publicTimeline: any([
+      v.software === MASTODON,
+      v.software === PLEROMA,
+    ]),
+
+    /**
+     * Ability to quote posts in statuses.
+     * @see POST /api/v1/statuses
+     */
+    quotePosts: any([
+      v.software === PLEROMA && gte(v.version, '2.4.50'),
+      instance.feature_quote === true,
+    ]),
+
+    /**
+     * Interact with statuses from another instance while logged-out.
+     * @see POST /api/v1/pleroma/remote_interaction
+     */
+    remoteInteractionsAPI: v.software === PLEROMA && gte(v.version, '2.4.50'),
+
+    /**
+     * Can request a password reset email through the API.
+     * @see POST /auth/password
+     */
+    resetPasswordAPI: v.software === PLEROMA,
+
+    /**
+     * Ability to post statuses in Markdown, BBCode, and HTML.
+     * @see POST /api/v1/statuses
+     */
+    richText: v.software === PLEROMA,
+
+    /**
+     * Can schedule statuses to be posted at a later time.
+     * @see POST /api/v1/statuses
+     * @see {@link https://docs.joinmastodon.org/methods/statuses/scheduled_statuses/}
+     */
+    scheduledStatuses: any([
+      v.software === MASTODON && gte(v.version, '2.7.0'),
+      v.software === PLEROMA,
+    ]),
 
     /**
      * List of OAuth scopes supported by both Soapbox and the backend.
@@ -248,15 +366,6 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /oauth/token
      */
     scopes: v.software === PLEROMA ? 'read write follow push admin' : 'read write follow push',
-
-    /** Whether the instance federates. */
-    federating: federation.get('enabled', true) === true, // Assume true unless explicitly false
-
-    /**
-     * Ability to post statuses in Markdown, BBCode, and HTML.
-     * @see POST /api/v1/statuses
-     */
-    richText: v.software === PLEROMA,
 
     /**
      * Ability to manage account security settings.
@@ -279,128 +388,36 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
-     * Can view and manage ActivityPub aliases through the API.
-     * @see GET /api/pleroma/aliases
-     * @see PATCH /api/v1/accounts/update_credentials
-     */
-    accountAliasesAPI: v.software === PLEROMA,
-
-    /**
-     * Can request a password reset email through the API.
-     * @see POST /auth/password
-     */
-    resetPasswordAPI: v.software === PLEROMA,
-
-    /** Whether the accounts who favourited or emoji-reacted to a status can be viewed through the API. */
-    exposableReactions: features.includes('exposable_reactions'),
-
-    /**
-     * Ability to subscribe to notifications every time an account posts.
-     * @see POST /api/v1/pleroma/accounts/:id/subscribe
-     * @see POST /api/v1/pleroma/accounts/:id/unsubscribe
-     */
-    accountSubscriptions: v.software === PLEROMA && gte(v.version, '1.0.0'),
-
-    /**
-     * Ability to subscribe to notifications every time an account posts.
-     * @see POST /api/v1/accounts/:id/follow
-     */
-    accountNotifies: any([
-      v.software === MASTODON && gte(v.compatVersion, '3.3.0'),
-      v.software === PLEROMA && gte(v.version, '2.4.50'),
-    ]),
-
-    /**
-     * Whether the backend allows adding users you don't follow to lists.
-     * @see POST /api/v1/lists/:id/accounts
-     */
-    unrestrictedLists: v.software === PLEROMA,
-
-    /**
-     * The accounts API allows an acct instead of an ID.
-     * @see GET /api/v1/accounts/:acct_or_id
-     */
-    accountByUsername: v.software === PLEROMA,
-
-    /**
-     * A directory of discoverable profiles from the instance.
-     * @see {@link https://docs.joinmastodon.org/methods/instance/directory/}
-     */
-    profileDirectory: any([
-      v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
-      features.includes('profile_directory'),
-    ]),
-
-    /**
-     * Look up an account by the acct.
-     * @see GET /api/v1/accounts/lookup
-     */
-    accountLookup: any([
-      v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
-      v.software === PLEROMA && gte(v.version, '2.4.50'),
-    ]),
-
-    /**
-     * Interact with statuses from another instance while logged-out.
-     * @see POST /api/v1/pleroma/remote_interaction
-     */
-    remoteInteractionsAPI: v.software === PLEROMA && gte(v.version, '2.4.50'),
-
-    /**
-     * Ability to address recipients of a status explicitly (with `to`).
+     * Can set content warnings on statuses.
      * @see POST /api/v1/statuses
      */
-    explicitAddressing: any([
-      v.software === PLEROMA && gte(v.version, '1.0.0'),
+    spoilers: v.software !== TRUTHSOCIAL,
+
+    /**
+     * Can display suggested accounts.
+     * @see {@link https://docs.joinmastodon.org/methods/accounts/suggestions/}
+     */
+    suggestions: any([
+      v.software === MASTODON && gte(v.compatVersion, '2.4.3'),
       v.software === TRUTHSOCIAL,
+      features.includes('v2_suggestions'),
     ]),
 
     /**
-     * Ability to pin other accounts on one's profile.
-     * @see POST /api/v1/accounts/:id/pin
-     * @see POST /api/v1/accounts/:id/unpin
-     * @see GET /api/v1/pleroma/accounts/:id/endorsements
+     * Supports V2 suggested accounts.
+     * @see GET /api/v2/suggestions
      */
-    accountEndorsements: v.software === PLEROMA && gte(v.version, '2.4.50'),
-
-    /**
-     * Ability to quote posts in statuses.
-     * @see POST /api/v1/statuses
-     */
-    quotePosts: any([
-      v.software === PLEROMA && gte(v.version, '2.4.50'),
-      instance.feature_quote === true,
+    suggestionsV2: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
+      v.software === TRUTHSOCIAL,
+      features.includes('v2_suggestions'),
     ]),
 
     /**
-     * Set your birthday and view upcoming birthdays.
-     * @see GET /api/v1/pleroma/birthdays
-     * @see POST /api/v1/accounts
-     * @see PATCH /api/v1/accounts/update_credentials
+     * Trending statuses.
+     * @see GET /api/v1/trends/statuses
      */
-    birthdays: v.software === PLEROMA && gte(v.version, '2.4.50'),
-
-    /**
-     * Sign in with an Ethereum wallet.
-     * @see POST /oauth/token
-     */
-    ethereumLogin: v.software === MITRA,
-
-    /**
-     * Move followers to a different ActivityPub account.
-     * @see POST /api/pleroma/move_account
-     */
-    accountMoving: v.software === PLEROMA && gte(v.version, '2.4.50'),
-
-    /**
-     * Add private notes to accounts.
-     * @see POST /api/v1/accounts/:id/note
-     * @see GET /api/v1/accounts/relationships
-     */
-    notes: any([
-      v.software === MASTODON && gte(v.compatVersion, '3.2.0'),
-      v.software === PLEROMA && gte(v.version, '2.4.50'),
-    ]),
+    trendingStatuses: v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
 
     /**
      * Truth Social trending statuses API.
@@ -409,35 +426,19 @@ const getInstanceFeatures = (instance: Instance) => {
     trendingTruths: v.software === TRUTHSOCIAL,
 
     /**
-     * Trending statuses.
-     * @see GET /api/v1/trends/statuses
+     * Can display trending hashtags.
+     * @see GET /api/v1/trends
      */
-    trendingStatuses: v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
-
-    /** Truth Social account registration API. */
-    pepe: v.software === TRUTHSOCIAL,
+    trends: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
+      v.software === TRUTHSOCIAL,
+    ]),
 
     /**
-     * Ability to set one's location on their profile.
-     * @see PATCH /api/v1/accounts/update_credentials
+     * Whether the backend allows adding users you don't follow to lists.
+     * @see POST /api/v1/lists/:id/accounts
      */
-    accountLocation: v.software === TRUTHSOCIAL,
-
-    /**
-     * Ability to set one's website on their profile.
-     * @see PATCH /api/v1/accounts/update_credentials
-     */
-    accountWebsite: v.software === TRUTHSOCIAL,
-
-    /**
-     * Whether client settings can be retrieved from the API.
-     * @see GET /api/pleroma/frontend_configurations
-     */
-    frontendConfigurations: v.software === PLEROMA,
-
-    // FIXME: long-term this shouldn't be a feature,
-    // but for now we want it to be overrideable in the build
-    darkMode: true,
+    unrestrictedLists: v.software === PLEROMA,
   };
 };
 
@@ -469,17 +470,17 @@ export const parseVersion = (version: string): Backend => {
 
   if (match) {
     return {
+      compatVersion: match[1],
       software: match[2] || MASTODON,
       version: match[3] || match[1],
-      compatVersion: match[1],
     };
   } else {
     // If we can't parse the version, this is a new and exotic backend.
     // Fall back to minimal featureset.
     return {
+      compatVersion: '0.0.0',
       software: null,
       version: '0.0.0',
-      compatVersion: '0.0.0',
     };
   }
 };
