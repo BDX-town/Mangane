@@ -81,12 +81,12 @@ const SidebarNavigation = () => {
         });
       }
 
-      if (features.localTimeline || features.publicTimeline) {
+      if (features.publicTimeline) {
         menu.push(null);
       }
     }
 
-    if (features.localTimeline) {
+    if (features.publicTimeline) {
       menu.push({
         to: '/timeline/local',
         icon: features.federating ? require('@tabler/icons/icons/users.svg') : require('@tabler/icons/icons/world.svg'),
@@ -94,7 +94,7 @@ const SidebarNavigation = () => {
       });
     }
 
-    if (features.localTimeline && features.federating) {
+    if (features.publicTimeline && features.federating) {
       menu.push({
         to: '/timeline/fediverse',
         icon: require('icons/fediverse.svg'),

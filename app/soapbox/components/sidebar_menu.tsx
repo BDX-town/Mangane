@@ -192,27 +192,25 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   onClick={onClose}
                 />
 
-                {(features.localTimeline || features.publicTimeline) && (
+                {features.publicTimeline && <>
                   <hr className='dark:border-slate-700' />
-                )}
 
-                {features.localTimeline && (
                   <SidebarLink
                     to='/timeline/local'
                     icon={features.federating ? require('@tabler/icons/icons/users.svg') : require('@tabler/icons/icons/world.svg')}
                     text={features.federating ? instance.title : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
                     onClick={onClose}
                   />
-                )}
 
-                {(features.publicTimeline && features.federating) && (
-                  <SidebarLink
-                    to='/timeline/fediverse'
-                    icon={require('icons/fediverse.svg')}
-                    text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
-                    onClick={onClose}
-                  />
-                )}
+                  {features.federating && (
+                    <SidebarLink
+                      to='/timeline/fediverse'
+                      icon={require('icons/fediverse.svg')}
+                      text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
+                      onClick={onClose}
+                    />
+                  )}
+                </>}
 
                 <hr />
 
