@@ -3,7 +3,7 @@ import React from 'react';
 import StickyBox from 'react-sticky-box';
 
 const Layout: React.FC = ({ children }) => (
-  <div className='sm:py-4 relative pb-36'>
+  <div className='sm:pt-4 relative pb-36'>
     <div className='max-w-3xl mx-auto sm:px-6 md:max-w-7xl md:px-8 md:grid md:grid-cols-12 md:gap-8'>
       {children}
     </div>
