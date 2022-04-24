@@ -22,7 +22,7 @@ const SidebarNavigation = () => {
   const followRequestsCount = useAppSelector((state) => state.user_lists.getIn(['follow_requests', 'items'], ImmutableOrderedSet()).count());
   // const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
 
-  const baseURL = account ? getBaseURL(ImmutableMap(account)) : '';
+  const baseURL = account ? getBaseURL(account) : '';
   const features = getFeatures(instance);
 
   const makeMenu = (): Menu => {

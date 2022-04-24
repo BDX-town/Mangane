@@ -2144,6 +2144,16 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.1.tgz#d3357479a0fdfdd5907fe67e17e0a85c906e1301"
   integrity sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==
 
+"@types/object-assign@^4.0.30":
+  version "4.0.30"
+  resolved "https://registry.yarnpkg.com/@types/object-assign/-/object-assign-4.0.30.tgz#8949371d5a99f4381ee0f1df0a9b7a187e07e652"
+  integrity sha1-iUk3HVqZ9Dge4PHfCpt6GH4H5lI=
+
+"@types/object-fit-images@^3.2.3":
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/@types/object-fit-images/-/object-fit-images-3.2.3.tgz#aa17a1cb4ac113ba81ce62f901177c9ccd5194f5"
+  integrity sha512-kpBPy4HIzbM1o3v+DJrK4V5NgUpcUg/ayzjixOVHQNukpdEUYDIaeDrnYJUSemQXWX5mKeEnxDRU1nACAWYnvg==
+
 "@types/parse-json@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"

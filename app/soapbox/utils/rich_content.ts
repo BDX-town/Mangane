@@ -1,15 +1,15 @@
-// Returns `true` if the node contains only emojis, up to a limit
-export const onlyEmoji = (node, limit = 1, ignoreMentions = true) => {
+/** Returns `true` if the node contains only emojis, up to a limit */
+export const onlyEmoji = (node: HTMLElement, limit = 1, ignoreMentions = true): boolean => {
   if (!node) return false;
 
   try {
     // Remove mentions before checking content
     if (ignoreMentions) {
-      node = node.cloneNode(true);
-      node.querySelectorAll('a.mention').forEach(m => m.parentNode.removeChild(m));
+      node = node.cloneNode(true) as HTMLElement;
+      node.querySelectorAll('a.mention').forEach(m => m.parentNode?.removeChild(m));
     }
 
-    if (node.textContent.replace(new RegExp(' ', 'g'), '') !== '') return false;
+    if (node.textContent?.replace(new RegExp(' ', 'g'), '') !== '') return false;
     const emojis = Array.from(node.querySelectorAll('img.emojione'));
     if (emojis.length === 0) return false;
     if (emojis.length > limit) return false;

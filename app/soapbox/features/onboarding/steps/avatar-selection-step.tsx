@@ -37,7 +37,9 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const maxPixels = 400 * 400;
-    const [rawFile] = event.target.files || [] as any;
+    const rawFile = event.target.files?.item(0);
+
+    if (!rawFile) return;
 
     resizeImage(rawFile, maxPixels).then((file) => {
       const url = file ? URL.createObjectURL(file) : account?.avatar as string;
