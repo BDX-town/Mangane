@@ -274,6 +274,18 @@ export function unverifyUser(accountId) {
   };
 }
 
+export function setDonor(accountId) {
+  return (dispatch, getState) => {
+    return dispatch(tagUsers([accountId], ['donor']));
+  };
+}
+
+export function removeDonor(accountId) {
+  return (dispatch, getState) => {
+    return dispatch(untagUsers([accountId], ['donor']));
+  };
+}
+
 export function addPermission(accountIds, permissionGroup) {
   return (dispatch, getState) => {
     const nicknames = nicknamesFromIds(getState, accountIds);

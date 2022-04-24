@@ -3,7 +3,7 @@ import React from 'react';
 
 interface IBadge {
   title: string,
-  slug: 'patron' | 'admin' | 'moderator' | 'bot' | 'opaque',
+  slug: 'patron' | 'donor' | 'admin' | 'moderator' | 'bot' | 'opaque',
 }
 
 /** Badge to display on a user's profile. */
@@ -12,6 +12,7 @@ const Badge: React.FC<IBadge> = ({ title, slug }) => (
     data-testid='badge'
     className={classNames('inline-flex items-center px-2 py-0.5 rounded text-xs font-medium text-white', {
       'bg-fuchsia-700': slug === 'patron',
+      'bg-yellow-500': slug === 'donor',
       'bg-black': slug === 'admin',
       'bg-cyan-600': slug === 'moderator',
       'bg-gray-100 text-gray-800': slug === 'bot',

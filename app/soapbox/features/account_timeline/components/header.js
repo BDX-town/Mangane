@@ -110,6 +110,14 @@ class Header extends ImmutablePureComponent {
     this.props.onUnverifyUser(this.props.account);
   }
 
+  handleSetDonor = () => {
+    this.props.onSetDonor(this.props.account);
+  }
+
+  handleRemoveDonor = () => {
+    this.props.onRemoveDonor(this.props.account);
+  }
+
   handlePromoteToAdmin = () => {
     this.props.onPromoteToAdmin(this.props.account);
   }
@@ -163,6 +171,8 @@ class Header extends ImmutablePureComponent {
           onDeleteUser={this.handleDeleteUser}
           onVerifyUser={this.handleVerifyUser}
           onUnverifyUser={this.handleUnverifyUser}
+          onSetDonor={this.handleSetDonor}
+          onRemoveDonor={this.handleRemoveDonor}
           onPromoteToAdmin={this.handlePromoteToAdmin}
           onPromoteToModerator={this.handlePromoteToModerator}
           onDemoteToUser={this.handleDemoteToUser}

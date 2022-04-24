@@ -91,6 +91,17 @@ const addTags = (
       state.updateIn([id, 'pleroma', 'tags'], ImmutableList(), v =>
         ImmutableOrderedSet(fromJS(v)).union(tags).toList(),
       );
+
+      tags.forEach(tag => {
+        switch(tag) {
+        case 'verified':
+          state.setIn([id, 'verified'], true);
+          break;
+        case 'donor':
+          state.setIn([id, 'donor'], true);
+          break;
+        }
+      });
     });
   });
 };
@@ -105,6 +116,17 @@ const removeTags = (
       state.updateIn([id, 'pleroma', 'tags'], ImmutableList(), v =>
         ImmutableOrderedSet(fromJS(v)).subtract(tags).toList(),
       );
+
+      tags.forEach(tag => {
+        switch(tag) {
+        case 'verified':
+          state.setIn([id, 'verified'], false);
+          break;
+        case 'donor':
+          state.setIn([id, 'donor'], false);
+          break;
+        }
+      });
     });
   });
 };
