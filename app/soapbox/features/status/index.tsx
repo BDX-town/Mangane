@@ -770,6 +770,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
             onRefresh={this.handleRefresh}
             hasMore={!!this.state.next}
             onLoadMore={this.handleLoadMore}
+            placeholderComponent={() => <PlaceholderStatus thread />}
           >
             {children}
           </ScrollableList>
