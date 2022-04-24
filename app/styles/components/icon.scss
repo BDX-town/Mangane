@@ -13,9 +13,17 @@
     transition: 0.2s;
   }
 
+  &.svg-icon--fediverse {
+    color: var(--primary-text-color--faint);
+  }
+
   &--active {
     &.svg-icon--home svg {
       fill: currentColor;
+    }
+
+    &.svg-icon--fediverse {
+      color: var(--primary-text-color);
     }
 
     svg.icon-tabler-search,

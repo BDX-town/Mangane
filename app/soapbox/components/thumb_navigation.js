@@ -9,7 +9,6 @@ import { NavLink, withRouter } from 'react-router-dom';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import Icon from 'soapbox/components/icon';
 import IconWithCounter from 'soapbox/components/icon_with_counter';
-import { isStaff } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
 
 const mapStateToProps = state => {
@@ -19,6 +18,7 @@ const mapStateToProps = state => {
   const instance = state.get('instance');
 
   return {
+    instance,
     account: state.getIn(['accounts', me]),
     logo: getSoapboxConfig(state).get('logo'),
     notificationCount: state.getIn(['notifications', 'unread']),
@@ -40,10 +40,11 @@ class ThumbNavigation extends React.PureComponent {
     chatsCount: PropTypes.number,
     features: PropTypes.object.isRequired,
     location: PropTypes.object,
+    instance: PropTypes.object.isRequired,
   }
 
   render() {
-    const { account, notificationCount, chatsCount, dashboardCount, location, features } = this.props;
+    const { account, notificationCount, chatsCount, location, features, instance } = this.props;
 
     return (
       <div className='thumb-navigation'>
@@ -73,6 +74,37 @@ class ThumbNavigation extends React.PureComponent {
           </NavLink>
         )}
 
+        {features.federating ? (
+          <NavLink to='/timeline/local' className='thumb-navigation__link'>
+            <Icon
+              src={require('@tabler/icons/icons/users.svg')}
+              className={classNames({ 'svg-icon--active': location.pathname === '/timeline/local' })}
+            />
+            <span>
+              { instance.get('title') }
+            </span>
+          </NavLink>
+        ) : (
+          <NavLink to='/timeline/local' className='thumb-navigation__link'>
+            <Icon src={require('@tabler/icons/icons/world.svg')} />
+            <span>
+              <FormattedMessage id='tabs_bar.all' defaultMessage='All' />
+            </span>
+          </NavLink>
+        )}
+
+        {features.federating && (
+          <NavLink to='/timeline/fediverse' className='thumb-navigation__link'>
+            <Icon
+              src={require('icons/fediverse.svg')}
+              className={classNames('svg-icon--fediverse', { 'svg-icon--active': location.pathname === '/timeline/fediverse' })}
+            />
+            <span>
+              <FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />
+            </span>
+          </NavLink>
+        )}
+
         {account && (
           features.chats ? (
             <NavLink to='/chats' className='thumb-navigation__link'>
@@ -96,18 +128,6 @@ class ThumbNavigation extends React.PureComponent {
               </span>
             </NavLink>
           )
-        )}
-
-        {(account && isStaff(account)) && (
-          <NavLink key='dashboard' to='/admin' className='thumb-navigation__link'>
-            <IconWithCounter
-              src={location.pathname.startsWith('/admin') ? require('icons/dashboard-filled.svg') : require('@tabler/icons/icons/dashboard.svg')}
-              count={dashboardCount}
-            />
-            <span>
-              <FormattedMessage id='navigation.dashboard' defaultMessage='Dashboard' />
-            </span>
-          </NavLink>
         )}
       </div>
     );
