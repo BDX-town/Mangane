@@ -16,10 +16,9 @@ export const getDomain = (account: Account): string => {
   return domain ? domain : getDomainFromURL(account);
 };
 
-export const getBaseURL = (account: ImmutableMap<string, any>): string => {
+export const getBaseURL = (account: Account): string => {
   try {
-    const url = account.get('url');
-    return new URL(url).origin;
+    return new URL(account.url).origin;
   } catch {
     return '';
   }

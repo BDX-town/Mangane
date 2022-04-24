@@ -2,15 +2,17 @@
 
 export default class Settings {
 
-  constructor(keyBase = null) {
+  keyBase: string | null = null;
+
+  constructor(keyBase: string | null = null) {
     this.keyBase = keyBase;
   }
 
-  generateKey(id) {
+  generateKey(id: string) {
     return this.keyBase ? [this.keyBase, `id${id}`].join('.') : id;
   }
 
-  set(id, data) {
+  set(id: string, data: any) {
     const key = this.generateKey(id);
     try {
       const encodedData = JSON.stringify(data);
@@ -21,17 +23,17 @@ export default class Settings {
     }
   }
 
-  get(id) {
+  get(id: string) {
     const key = this.generateKey(id);
     try {
       const rawData = localStorage.getItem(key);
-      return JSON.parse(rawData);
+      return rawData ? JSON.parse(rawData) : null;
     } catch (e) {
       return null;
     }
   }
 
-  remove(id) {
+  remove(id: string) {
     const data = this.get(id);
     if (data) {
       const key = this.generateKey(id);
@@ -46,5 +48,8 @@ export default class Settings {
 
 }
 
+/** Remember push notification settings. */
 export const pushNotificationsSetting = new Settings('soapbox_push_notification_data');
+
+/** Remember hashtag usage. */
 export const tagHistory = new Settings('soapbox_tag_history');

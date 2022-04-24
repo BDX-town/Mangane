@@ -1,6 +1,6 @@
 import { processHtml } from './tiny_post_html_processor';
 
-export const addGreentext = html => {
+export const addGreentext = (html: string): string => {
   // Copied from Pleroma FE
   // https://git.pleroma.social/pleroma/pleroma-fe/-/blob/19475ba356c3fd6c54ca0306d3ae392358c212d1/src/components/status_content/status_content.js#L132
   return processHtml(html, (string) => {

@@ -14,7 +14,8 @@
 
 const rtlChars = /[\u0590-\u083F]|[\u08A0-\u08FF]|[\uFB1D-\uFDFF]|[\uFE70-\uFEFF]/mg;
 
-export function isRtl(text) {
+/** Check if text is right-to-left (eg Arabic). */
+export function isRtl(text: string): boolean {
   if (text.length === 0) {
     return false;
   }

@@ -3,9 +3,12 @@
 import 'intl';
 import 'intl/locale-data/jsonp/en';
 import 'es6-symbol/implement';
+// @ts-ignore: No types
 import includes from 'array-includes';
+// @ts-ignore: No types
 import isNaN from 'is-nan';
 import assign from 'object-assign';
+// @ts-ignore: No types
 import values from 'object.values';
 
 import { decode as decodeBase64 } from './utils/base64';
@@ -30,7 +33,7 @@ if (!HTMLCanvasElement.prototype.toBlob) {
   const BASE64_MARKER = ';base64,';
 
   Object.defineProperty(HTMLCanvasElement.prototype, 'toBlob', {
-    value(callback, type = 'image/png', quality) {
+    value(callback: any, type = 'image/png', quality: any) {
       const dataURL = this.toDataURL(type, quality);
       let data;
 

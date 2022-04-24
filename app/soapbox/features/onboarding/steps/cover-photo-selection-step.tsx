@@ -38,7 +38,9 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const maxPixels = 1920 * 1080;
-    const [rawFile] = event.target.files || [] as any;
+    const rawFile = event.target.files?.item(0);
+
+    if (!rawFile) return;
 
     resizeImage(rawFile, maxPixels).then((file) => {
       const url = file ? URL.createObjectURL(file) : account?.header as string;

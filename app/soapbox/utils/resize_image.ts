@@ -1,14 +1,19 @@
 /* eslint-disable no-case-declarations */
 const DEFAULT_MAX_PIXELS = 1920 * 1080;
 
-const _browser_quirks = {};
+interface BrowserCanvasQuirks {
+  'image-orientation-automatic'?: boolean,
+  'canvas-read-unreliable'?: boolean,
+}
+
+const _browser_quirks: BrowserCanvasQuirks = {};
 
 // Some browsers will automatically draw images respecting their EXIF orientation
 // while others won't, and the safest way to detect that is to examine how it
 // is done on a known image.
 // See https://github.com/w3c/csswg-drafts/issues/4666
 // and https://github.com/blueimp/JavaScript-Load-Image/commit/1e4df707821a0afcc11ea0720ee403b8759f3881
-const dropOrientationIfNeeded = (orientation) => new Promise(resolve => {
+const dropOrientationIfNeeded = (orientation: number) => new Promise<number>(resolve => {
   switch (_browser_quirks['image-orientation-automatic']) {
   case true:
     resolve(1);
@@ -40,10 +45,12 @@ const dropOrientationIfNeeded = (orientation) => new Promise(resolve => {
   }
 });
 
-// Some browsers don't allow reading from a canvas and instead return all-white
-// or randomized data. Use a pre-defined image to check if reading the canvas
-// works.
-// const checkCanvasReliability = () => new Promise((resolve, reject) => {
+// /**
+//  *Some browsers don't allow reading from a canvas and instead return all-white
+//  * or randomized data. Use a pre-defined image to check if reading the canvas
+//  * works.
+//  */
+// const checkCanvasReliability = () => new Promise<void>((resolve, reject) => {
 //   switch(_browser_quirks['canvas-read-unreliable']) {
 //   case true:
 //     reject('Canvas reading unreliable');
@@ -61,9 +68,9 @@ const dropOrientationIfNeeded = (orientation) => new Promise(resolve => {
 //     img.onload = () => {
 //       const canvas  = document.createElement('canvas');
 //       const context = canvas.getContext('2d');
-//       context.drawImage(img, 0, 0, 2, 2);
-//       const imageData = context.getImageData(0, 0, 2, 2);
-//       if (imageData.data.every((x, i) => refData[i] === x)) {
+//       context?.drawImage(img, 0, 0, 2, 2);
+//       const imageData = context?.getImageData(0, 0, 2, 2);
+//       if (imageData?.data.every((x, i) => refData[i] === x)) {
 //         _browser_quirks['canvas-read-unreliable'] = false;
 //         resolve();
 //       } else {
@@ -79,7 +86,9 @@ const dropOrientationIfNeeded = (orientation) => new Promise(resolve => {
 //   }
 // });
 
-const getImageUrl = inputFile => new Promise((resolve, reject) => {
+/** Convert the file into a local blob URL. */
+const getImageUrl = (inputFile: File) => new Promise<string>((resolve, reject) => {
+  // @ts-ignore: This is a browser capabilities check.
   if (window.URL?.createObjectURL) {
     try {
       resolve(URL.createObjectURL(inputFile));
@@ -91,29 +100,32 @@ const getImageUrl = inputFile => new Promise((resolve, reject) => {
 
   const reader = new FileReader();
   reader.onerror = (...args) => reject(...args);
-  reader.onload  = ({ target }) => resolve(target.result);
+  reader.onload  = ({ target }) => resolve((target?.result || '') as string);
 
   reader.readAsDataURL(inputFile);
 });
 
-const loadImage = inputFile => new Promise((resolve, reject) => {
+/** Get an image element from a file. */
+const loadImage = (inputFile: File) => new Promise<HTMLImageElement>((resolve, reject) => {
   getImageUrl(inputFile).then(url => {
     const img = new Image();
 
-    img.onerror = (...args) => reject(...args);
+    img.onerror = (...args) => reject([...args]);
     img.onload  = () => resolve(img);
 
     img.src = url;
   }).catch(reject);
 });
 
-const getOrientation = (img, type = 'image/png') => new Promise(resolve => {
+/** Get the exif orientation for the image. */
+const getOrientation = (img: HTMLImageElement, type = 'image/png') => new Promise<number>(resolve => {
   if (!['image/jpeg', 'image/webp'].includes(type)) {
     resolve(1);
     return;
   }
 
   import(/* webpackChunkName: "features/compose" */'exif-js').then(({ default: EXIF }) => {
+    // @ts-ignore: The TypeScript definition is wrong.
     EXIF.getData(img, () => {
       const orientation = EXIF.getTag(img, 'Orientation');
       if (orientation !== 1) {
@@ -125,7 +137,22 @@ const getOrientation = (img, type = 'image/png') => new Promise(resolve => {
   }).catch(() => {});
 });
 
-const processImage = (img, { width, height, orientation, type = 'image/png', name = 'resized.png' }) => new Promise(resolve => {
+const processImage = (
+  img: HTMLImageElement,
+  {
+    width,
+    height,
+    orientation,
+    type = 'image/png',
+    name = 'resized.png',
+  } : {
+    width: number,
+    height: number,
+    orientation: number,
+    type?: string,
+    name?: string,
+  },
+) => new Promise<File>((resolve, reject) => {
   const canvas  = document.createElement('canvas');
 
   if (4 < orientation && orientation < 9) {
@@ -137,6 +164,11 @@ const processImage = (img, { width, height, orientation, type = 'image/png', nam
   }
 
   const context = canvas.getContext('2d');
+
+  if (!context) {
+    reject(context);
+    return;
+  }
 
   switch (orientation) {
   case 2: context.transform(-1, 0, 0, 1, width, 0); break;
@@ -151,11 +183,19 @@ const processImage = (img, { width, height, orientation, type = 'image/png', nam
   context.drawImage(img, 0, 0, width, height);
 
   canvas.toBlob((blob) => {
+    if (!blob) {
+      reject(blob);
+      return;
+    }
     resolve(new File([blob], name, { type, lastModified: new Date().getTime() }));
   }, type);
 });
 
-const resizeImage = (img, inputFile, maxPixels) => new Promise((resolve, reject) => {
+const resizeImage = (
+  img: HTMLImageElement,
+  inputFile: File,
+  maxPixels: number,
+) => new Promise<File>((resolve, reject) => {
   const { width, height } = img;
   const type = inputFile.type || 'image/png';
 
@@ -177,7 +217,8 @@ const resizeImage = (img, inputFile, maxPixels) => new Promise((resolve, reject)
     .catch(reject);
 });
 
-export default (inputFile, maxPixels = DEFAULT_MAX_PIXELS) => new Promise((resolve) => {
+/** Resize an image to the maximum number of pixels. */
+export default (inputFile: File, maxPixels = DEFAULT_MAX_PIXELS) => new Promise<File>((resolve) => {
   if (!inputFile.type.match(/image.*/) || inputFile.type === 'image/gif') {
     resolve(inputFile);
     return;

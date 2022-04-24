@@ -1,14 +1,23 @@
 // Adapted from Pleroma FE
 // https://git.pleroma.social/pleroma/pleroma-fe/-/blob/ef5bbc4e5f84bb9e8da76a0440eea5d656d36977/src/services/favicon_service/favicon_service.js
 
+type Favicon = {
+  favcanvas: HTMLCanvasElement,
+  favimg: HTMLImageElement,
+  favcontext: CanvasRenderingContext2D | null,
+  favicon: HTMLLinkElement,
+};
+
+/** Service to draw and update a notifications dot on the favicon */
 const createFaviconService = () => {
-  const favicons = [];
+  const favicons: Favicon[] = [];
   const faviconWidth = 128;
   const faviconHeight = 128;
   const badgeRadius = 24;
 
-  const initFaviconService = () => {
-    const nodes = document.querySelectorAll('link[rel="icon"]');
+  /** Start the favicon service */
+  const initFaviconService = (): void => {
+    const nodes: NodeListOf<HTMLLinkElement> = document.querySelectorAll('link[rel="icon"]');
     nodes.forEach(favicon => {
       if (favicon) {
         const favcanvas = document.createElement('canvas');
@@ -23,9 +32,11 @@ const createFaviconService = () => {
     });
   };
 
-  const isImageLoaded = (img) => img.complete && img.naturalHeight !== 0;
+  /** Check if the image is loaded */
+  const isImageLoaded = (img: HTMLImageElement): boolean => img.complete && img.naturalHeight !== 0;
 
-  const clearFaviconBadge = () => {
+  /** Reset the favicon image to its initial state */
+  const clearFaviconBadge = (): void => {
     if (favicons.length === 0) return;
     favicons.forEach(({ favimg, favcanvas, favcontext, favicon }) => {
       if (!favimg || !favcontext || !favicon) return;
@@ -37,7 +48,8 @@ const createFaviconService = () => {
     });
   };
 
-  const drawFaviconBadge = () => {
+  /** Replace the favicon image with one that has a notification dot */
+  const drawFaviconBadge = (): void => {
     if (favicons.length === 0) return;
     clearFaviconBadge();
     favicons.forEach(({ favimg, favcanvas, favcontext, favicon }) => {
