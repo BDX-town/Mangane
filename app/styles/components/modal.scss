@@ -159,7 +159,7 @@
 }
 
 .media-modal__button--active {
-  background-color: var(--highlight-text-color);
+  @apply bg-accent-500;
 }
 
 .media-modal__close {
