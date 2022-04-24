@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
