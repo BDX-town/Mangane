@@ -29,6 +29,8 @@ const SvgIcon: React.FC<ISvgIcon> = ({ src, alt, size = 24, className }): JSX.El
       height={size}
       loader={loader}
       data-testid='svg-icon'
+      // The cache causes bugs, and the ServiceWorker already caches icons.
+      cacheRequests={false}
     >
       {/* If the fetch fails, fall back to displaying the loader */}
       {loader}
