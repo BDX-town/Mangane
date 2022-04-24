@@ -75,7 +75,7 @@ const LinkFooter: React.FC = (): JSX.Element => {
             defaultMessage='{code_name} is open source software. You can contribute or report issues at {code_link} (v{code_version}).'
             values={{
               code_name: sourceCode.displayName,
-              code_link: <a href={sourceCode.url} rel='noopener' target='_blank'>{sourceCode.repository}</a>,
+              code_link: <Text theme='subtle'><a className='underline' href={sourceCode.url} rel='noopener' target='_blank'>{sourceCode.repository}</a></Text>,
               code_version: sourceCode.version,
             }}
           />
