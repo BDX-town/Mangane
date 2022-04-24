@@ -24,6 +24,10 @@ export const getLinks = (response: AxiosResponse): LinkHeader => {
   return new LinkHeader(response.headers?.link);
 };
 
+export const getNextLink = (response: AxiosResponse): string | undefined => {
+  return getLinks(response).refs.find(link => link.rel === 'next')?.uri;
+};
+
 const getToken = (state: RootState, authType: string) => {
   return authType === 'app' ? getAppToken(state) : getAccessToken(state);
 };

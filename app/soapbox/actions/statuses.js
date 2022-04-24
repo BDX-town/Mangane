@@ -2,7 +2,7 @@ import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures, parseVersion } from 'soapbox/utils/features';
 import { shouldHaveCard } from 'soapbox/utils/status';
 
-import api from '../api';
+import api, { getNextLink } from '../api';
 
 import { importFetchedStatus, importFetchedStatuses } from './importer';
 import { openModal } from './modals';
@@ -167,12 +167,49 @@ export function fetchContext(id) {
   };
 }
 
+export function fetchNext(next) {
+  return async(dispatch, getState) => {
+    const response = await api(getState).get(next);
+    dispatch(importFetchedStatuses(response.data));
+    return { next: getNextLink(response) };
+  };
+}
+
+export function fetchAncestors(id) {
+  return async(dispatch, getState) => {
+    const response = await api(getState).get(`/api/v1/statuses/${id}/context/ancestors`);
+    dispatch(importFetchedStatuses(response.data));
+    return response;
+  };
+}
+
+export function fetchDescendants(id) {
+  return async(dispatch, getState) => {
+    const response = await api(getState).get(`/api/v1/statuses/${id}/context/descendants`);
+    dispatch(importFetchedStatuses(response.data));
+    return response;
+  };
+}
+
 export function fetchStatusWithContext(id) {
-  return (dispatch, getState) => {
-    return Promise.all([
-      dispatch(fetchContext(id)),
-      dispatch(fetchStatus(id)),
-    ]);
+  return async(dispatch, getState) => {
+    const features = getFeatures(getState().instance);
+
+    if (features.paginatedContext) {
+      const responses = await Promise.all([
+        dispatch(fetchAncestors(id)),
+        dispatch(fetchDescendants(id)),
+        dispatch(fetchStatus(id)),
+      ]);
+      const next = getNextLink(responses[1]);
+      return { next };
+    } else {
+      await Promise.all([
+        dispatch(fetchContext(id)),
+        dispatch(fetchStatus(id)),
+      ]);
+      return { next: undefined };
+    }
   };
 }
 
