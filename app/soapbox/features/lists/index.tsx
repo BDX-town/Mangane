@@ -5,10 +5,11 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
-import { fetchLists } from 'soapbox/actions/lists';
+import { deleteList, fetchLists } from 'soapbox/actions/lists';
+import { openModal } from 'soapbox/actions/modals';
 import Icon from 'soapbox/components/icon';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import { Spinner } from 'soapbox/components/ui';
+import { IconButton, Spinner } from 'soapbox/components/ui';
 import { CardHeader, CardTitle } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
@@ -22,6 +23,11 @@ const messages = defineMessages({
   heading: { id: 'column.lists', defaultMessage: 'Lists' },
   subheading: { id: 'lists.subheading', defaultMessage: 'Your lists' },
   add: { id: 'lists.new.create', defaultMessage: 'Add list' },
+  deleteHeading: { id: 'confirmations.delete_list.heading', defaultMessage: 'Delete list' },
+  deleteMessage: { id: 'confirmations.delete_list.message', defaultMessage: 'Are you sure you want to permanently delete this list?' },
+  deleteConfirm: { id: 'confirmations.delete_list.confirm', defaultMessage: 'Delete' },
+  editList: { id: 'lists.edit', defaultMessage: 'Edit list' },
+  deleteList: { id: 'lists.delete', defaultMessage: 'Delete list' },
 });
 
 const getOrderedLists = createSelector([(state: RootState) => state.lists], lists => {
@@ -50,6 +56,25 @@ const Lists: React.FC = () => {
     );
   }
 
+  const handleEditClick = (id: number) => (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    dispatch(openModal('LIST_EDITOR', { listId: id }));
+  };
+
+  const handleDeleteClick = (id: number) => (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    dispatch(openModal('CONFIRM', {
+      heading: intl.formatMessage(messages.deleteHeading),
+      message: intl.formatMessage(messages.deleteMessage),
+      confirm: intl.formatMessage(messages.deleteConfirm),
+      onConfirm: () => {
+        dispatch(deleteList(id));
+      },
+    }));
+  };
+
   const emptyMessage = <FormattedMessage id='empty_column.lists' defaultMessage="You don't have any lists yet. When you create one, it will show up here." />;
 
   return (
@@ -66,11 +91,16 @@ const Lists: React.FC = () => {
       <ScrollableList
         scrollKey='lists'
         emptyMessage={emptyMessage}
+        itemClassName='py-2'
       >
         {lists.map((list: any) => (
-          <Link key={list.get('id')} to={`/list/${list.get('id')}`} className='flex items-center gap-1.5 p-2 my-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg'>
+          <Link key={list.get('id')} to={`/list/${list.get('id')}`} className='flex items-center gap-1.5 p-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg'>
             <Icon src={require('@tabler/icons/icons/list.svg')} fixedWidth />
-            {list.get('title')}
+            <span className='flex-grow'>
+              {list.get('title')}
+            </span>
+            <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/icons/pencil.svg')} onClick={handleEditClick(list.get('id'))} title={intl.formatMessage(messages.editList)} />
+            <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/icons/trash.svg')} onClick={handleDeleteClick(list.get('id'))} title={intl.formatMessage(messages.deleteList)} />
           </Link>
         ))}
       </ScrollableList>
