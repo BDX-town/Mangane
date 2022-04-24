@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { Text } from 'soapbox/components/ui';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 
 import type { Menu } from 'soapbox/components/dropdown_menu';
@@ -40,10 +41,10 @@ const Accordion: React.FC<IAccordion> = ({ headline, children, menu, expanded = 
         onClick={handleToggle}
         title={intl.formatMessage(expanded ? messages.collapse : messages.expand)}
       >
-        {headline}
+        <Text weight='bold'>{headline}</Text>
       </button>
       <div className='accordion__content'>
-        {children}
+        <Text>{children}</Text>
       </div>
     </div>
   );
