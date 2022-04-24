@@ -26,7 +26,7 @@ const getAccountMeta         = (state: RootState, id: string) => state.accounts_
 const getAccountAdminData    = (state: RootState, id: string) => state.admin.users.get(id);
 const getAccountPatron       = (state: RootState, id: string) => {
   const url = state.accounts.get(id)?.url;
-  return state.patron.getIn(['accounts', url]);
+  return url ? state.patron.accounts.get(url) : null;
 };
 
 export const makeGetAccount = () => {
@@ -47,7 +47,7 @@ export const makeGetAccount = () => {
       map.set('pleroma', meta.get('pleroma', ImmutableMap()).merge(base.get('pleroma', ImmutableMap()))); // Lol, thanks Pleroma
       map.set('relationship', relationship);
       map.set('moved', moved || null);
-      map.set('patron', patron);
+      map.set('patron', patron || null);
       map.setIn(['pleroma', 'admin'], admin);
     });
   });

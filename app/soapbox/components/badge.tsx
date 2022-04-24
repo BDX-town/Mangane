@@ -1,13 +1,25 @@
-import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import React from 'react';
 
-const Badge = (props: any) => (
-  <span data-testid='badge' className={'badge badge--' + props.slug}>{props.title}</span>
-);
+interface IBadge {
+  title: string,
+  slug: 'patron' | 'admin' | 'moderator' | 'bot' | 'opaque',
+}
 
-Badge.propTypes = {
-  title: PropTypes.string.isRequired,
-  slug: PropTypes.string.isRequired,
-};
+/** Badge to display on a user's profile. */
+const Badge: React.FC<IBadge> = ({ title, slug }) => (
+  <span
+    data-testid='badge'
+    className={classNames('inline-flex items-center px-2 py-0.5 rounded text-xs font-medium text-white', {
+      'bg-fuchsia-700': slug === 'patron',
+      'bg-black': slug === 'admin',
+      'bg-cyan-600': slug === 'moderator',
+      'bg-gray-100 text-gray-800': slug === 'bot',
+      'bg-white bg-opacity-75 text-gray-900': slug === 'opaque',
+    })}
+  >
+    {title}
+  </span>
+);
 
 export default Badge;
