@@ -286,6 +286,13 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === PLEROMA && gte(v.version, '2.4.50'),
     ]),
 
+    /**
+     * Supports pagination in threads.
+     * @see GET /api/v1/statuses/:id/context/ancestors
+     * @see GET /api/v1/statuses/:id/context/descendants
+     */
+    paginatedContext: v.software === TRUTHSOCIAL,
+
     /** Truth Social account registration API. */
     pepe: v.software === TRUTHSOCIAL,
 

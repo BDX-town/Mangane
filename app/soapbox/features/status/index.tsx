@@ -51,7 +51,7 @@ import {
   hideStatus,
   revealStatus,
 } from '../../actions/statuses';
-import { fetchStatusWithContext } from '../../actions/statuses';
+import { fetchStatusWithContext, fetchNext } from '../../actions/statuses';
 import MissingIndicator from '../../components/missing_indicator';
 import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
 import { makeGetStatus } from '../../selectors';
@@ -189,6 +189,7 @@ interface IStatusState {
   emojiSelectorFocused: boolean,
   isLoaded: boolean,
   error?: AxiosError,
+  next?: string,
 }
 
 class Status extends ImmutablePureComponent<IStatus, IStatusState> {
@@ -200,17 +201,18 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     emojiSelectorFocused: false,
     isLoaded: Boolean(this.props.status),
     error: undefined,
+    next: undefined,
   };
 
   node: HTMLDivElement | null = null;
   status: HTMLDivElement | null = null;
   _scrolledIntoView: boolean = false;
 
-  fetchData = () => {
+  fetchData = async() => {
     const { dispatch, params } = this.props;
     const { statusId } = params;
-
-    return dispatch(fetchStatusWithContext(statusId));
+    const { next } = await dispatch(fetchStatusWithContext(statusId));
+    this.setState({ next });
   }
 
   componentDidMount() {
@@ -641,6 +643,16 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     return this.fetchData();
   }
 
+  handleLoadMore = () => {
+    const { next } = this.state;
+
+    if (next) {
+      this.props.dispatch(fetchNext(next)).then(({ next }) => {
+        this.setState({ next });
+      }).catch(() => {});
+    }
+  }
+
   render() {
     const { status, ancestorsIds, descendantsIds, intl } = this.props;
 
@@ -754,7 +766,11 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         </div>
 
         <div ref={this.setRef} className='thread'>
-          <ScrollableList onRefresh={this.handleRefresh}>
+          <ScrollableList
+            onRefresh={this.handleRefresh}
+            hasMore={!!this.state.next}
+            onLoadMore={this.handleLoadMore}
+          >
             {children}
           </ScrollableList>
         </div>
