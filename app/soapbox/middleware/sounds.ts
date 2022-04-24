@@ -1,6 +1,15 @@
 'use strict';
 
-const createAudio = sources => {
+import type { ThunkMiddleware } from 'redux-thunk';
+
+/** Soapbox audio clip. */
+type Sound = {
+  src: string,
+  type: string,
+}
+
+/** Produce HTML5 audio from sound data. */
+const createAudio = (sources: Sound[]): HTMLAudioElement => {
   const audio = new Audio();
   sources.forEach(({ type, src }) => {
     const source = document.createElement('source');
@@ -11,7 +20,8 @@ const createAudio = sources => {
   return audio;
 };
 
-const play = audio => {
+/** Play HTML5 sound. */
+const play = (audio: HTMLAudioElement): void => {
   if (!audio.paused) {
     audio.pause();
     if (typeof audio.fastSeek === 'function') {
@@ -24,8 +34,9 @@ const play = audio => {
   audio.play();
 };
 
-export default function soundsMiddleware() {
-  const soundCache = {
+/** Middleware to play sounds in response to certain Redux actions. */
+export default function soundsMiddleware(): ThunkMiddleware {
+  const soundCache: Record<string, HTMLAudioElement> = {
     boop: createAudio([
       {
         src: require('../../sounds/boop.ogg'),
@@ -49,7 +60,7 @@ export default function soundsMiddleware() {
   };
 
   return () => next => action => {
-    if (action.meta && action.meta.sound && soundCache[action.meta.sound]) {
+    if (action.meta?.sound && soundCache[action.meta.sound]) {
       play(soundCache[action.meta.sound]);
     }
 
