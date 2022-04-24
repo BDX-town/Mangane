@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useHistory } from 'react-router-dom';
 
 import { fetchPatronInstance } from 'soapbox/actions/patron';
 import { Widget, Button, Text } from 'soapbox/components/ui';
@@ -29,7 +28,6 @@ const moneyFormat = (amount: number): string => (
 );
 
 const FundingPanel: React.FC = () => {
-  const history = useHistory();
   const dispatch = useAppDispatch();
   const patron = useAppSelector(state => state.patron.instance);
 
