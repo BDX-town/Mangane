@@ -37,6 +37,7 @@ const messages = defineMessages({
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
   invites: { id: 'navigation_bar.invites', defaultMessage: 'Invites' },
   developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
+  addAccount: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
 });
 
 interface ISidebarLink {
@@ -181,6 +182,11 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   {switcher && (
                     <div className='border-t border-solid border-gray-200'>
                       {otherAccounts.map(account => renderAccount(account))}
+
+                      <NavLink className='flex py-2 space-x-1' to='/login' onClick={handleClose}>
+                        <Icon className='dark:text-white' src={require('@tabler/icons/icons/plus.svg')} />
+                        <Text>{intl.formatMessage(messages.addAccount)}</Text>
+                      </NavLink>
                     </div>
                   )}
                 </Stack>

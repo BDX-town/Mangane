@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { logOut, switchAccount } from 'soapbox/actions/auth';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
 import { Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
-import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
+import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
 import Account from '../../../components/account';
@@ -36,9 +36,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const currentAccount = useOwnAccount();
   const authUsers = useAppSelector((state) => state.auth.get('users'));
-  const isCurrentAccountStaff = Boolean(currentAccount?.staff);
   const otherAccounts = useAppSelector((state) => authUsers.map((authUser: any) => getAccount(state, authUser.get('id'))));
 
   const handleLogOut = () => {
@@ -77,13 +75,11 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
 
     menu.push({ text: null });
 
-    if (isCurrentAccountStaff) {
-      menu.push({
-        text: intl.formatMessage(messages.add),
-        to: '/login',
-        icon: require('@tabler/icons/icons/plus.svg'),
-      });
-    }
+    menu.push({
+      text: intl.formatMessage(messages.add),
+      to: '/login',
+      icon: require('@tabler/icons/icons/plus.svg'),
+    });
 
     menu.push({
       text: intl.formatMessage(messages.logout, { acct: account.acct }),
@@ -93,7 +89,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
     });
 
     return menu;
-  }, [account, isCurrentAccountStaff, authUsers]);
+  }, [account, authUsers]);
 
   React.useEffect(() => {
     fetchOwnAccountThrottled();
