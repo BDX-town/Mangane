@@ -20,7 +20,7 @@ const AuthLayout = () => {
 
   return (
     <div>
-      <div className='fixed h-screen w-full bg-gradient-to-tr from-primary-50 via-white to-cyan-50' />
+      <div className='fixed h-screen w-full bg-gradient-to-tr from-primary-50 dark:from-slate-700 via-white dark:via-slate-900 to-cyan-50 dark:to-cyan-900' />
 
       <main className='relative flex flex-col h-screen'>
         <header className='pt-10 flex justify-center relative'>
@@ -29,7 +29,7 @@ const AuthLayout = () => {
               <img src={logo} alt={siteTitle} className='h-7' />
             ) : (
               <SvgIcon
-                className='w-7 h-7'
+                className='w-7 h-7 dark:text-white'
                 alt={siteTitle}
                 src={require('@tabler/icons/icons/home.svg')}
               />

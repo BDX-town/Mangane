@@ -69,10 +69,10 @@ code {
       position: relative;
 
       .label_input > label {
+        @apply text-black dark:text-white;
         font-family: inherit;
         font-size: 14px;
         padding-top: 5px;
-        color: var(--primary-text-color);
         display: block;
         width: auto;
       }
@@ -190,9 +190,9 @@ code {
 
   .input {
     .label_input > label {
+      @apply text-gray-700 dark:text-gray-400;
       font-family: inherit;
       font-size: 14px;
-      color: var(--gray-700);
       display: block;
       word-wrap: break-word;
       font-weight: 500;
