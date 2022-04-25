@@ -10,8 +10,10 @@ export const shortNumberFormat = (number: any): React.ReactNode => {
 
   if (number < 1000) {
     return <FormattedNumber value={number} />;
-  } else {
+  } else if (number < 1000000) {
     return <span><FormattedNumber value={number / 1000} maximumFractionDigits={1} />K</span>;
+  } else {
+    return <span><FormattedNumber value={number / 1000000} maximumFractionDigits={1} />M</span>;
   }
 };
 
