@@ -5245,7 +5245,7 @@
         "id": "bundle_column_error.title"
       },
       {
-        "defaultMessage": "Something went wrong while loading this component.",
+        "defaultMessage": "Something went wrong while loading this page.",
         "id": "bundle_column_error.body"
       },
       {
@@ -5258,7 +5258,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Something went wrong while loading this component.",
+        "defaultMessage": "Something went wrong while loading this page.",
         "id": "bundle_modal_error.message"
       },
       {
