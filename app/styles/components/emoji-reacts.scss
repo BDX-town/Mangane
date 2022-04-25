@@ -1,5 +1,6 @@
 .emoji-react {
   @apply inline-block text-gray-900 dark:text-gray-300 no-underline;
+  transition: 0.2s;
 
   &__emoji {
     img {
@@ -13,7 +14,7 @@
   }
 
   + .emoji-react {
-    margin-right: -8px;
+    @apply -mr-3;
   }
 
   &[type='button'] {
@@ -64,7 +65,6 @@
 
 .emoji-reacts-container {
   display: inline-flex;
-  margin-right: 0.4em;
 
   &:hover {
     .emoji-react {
@@ -79,13 +79,6 @@
       display: none;
     }
   }
-}
-
-.emoji-reacts__count,
-.emoji-react__count {
-  font-size: 12px;
-  font-weight: bold;
-  transform: translateY(2px);
 }
 
 .emoji-react-selector-container {
