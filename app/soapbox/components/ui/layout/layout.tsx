@@ -31,7 +31,7 @@ const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, classN
 
 const Aside: React.FC = ({ children }) => (
   <aside className='hidden xl:block xl:col-span-3'>
-    <StickyBox offsetTop={80} className='space-y-6 pb-4' >
+    <StickyBox offsetTop={80} className='space-y-6 pb-12' >
       {children}
     </StickyBox>
   </aside>

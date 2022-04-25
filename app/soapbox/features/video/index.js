@@ -614,8 +614,8 @@ class Video extends React.PureComponent {
             <div className='video-player__buttons right'>
               {(sensitive && !onCloseVideo) && <button type='button' title={intl.formatMessage(messages.hide)} aria-label={intl.formatMessage(messages.hide)} className='player-button' onClick={this.toggleReveal}><Icon src={require('@tabler/icons/icons/eye-off.svg')} /></button>}
               {(!fullscreen && onOpenVideo) && <button type='button' title={intl.formatMessage(messages.expand)} aria-label={intl.formatMessage(messages.expand)} className='player-button' onClick={this.handleOpenVideo}><Icon src={require('@tabler/icons/icons/maximize.svg')} /></button>}
-              {onCloseVideo && <button type='button' title={intl.formatMessage(messages.close)} aria-label={intl.formatMessage(messages.close)} className='player-button' onClick={this.handleCloseVideo}><Icon src={require('@tabler/icons/icons/minimize.svg')} /></button>}
-              <button type='button' title={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} aria-label={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} className='player-button' onClick={this.toggleFullscreen}><Icon src={fullscreen ? require('@tabler/icons/icons/minimize.svg') : require('@tabler/icons/icons/arrows-maximize.svg')} /></button>
+              {/* onCloseVideo && <button type='button' title={intl.formatMessage(messages.close)} aria-label={intl.formatMessage(messages.close)} className='player-button' onClick={this.handleCloseVideo}><Icon src={require('@tabler/icons/icons/x.svg')} /></button> */}
+              <button type='button' title={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} aria-label={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} className='player-button' onClick={this.toggleFullscreen}><Icon src={fullscreen ? require('@tabler/icons/icons/arrows-minimize.svg') : require('@tabler/icons/icons/arrows-maximize.svg')} /></button>
             </div>
           </div>
         </div>

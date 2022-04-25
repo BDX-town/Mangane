@@ -72,6 +72,10 @@ class ProfileInfoPanel extends ImmutablePureComponent {
       badges.push(<Badge slug='patron' title='Patron' key='patron' />);
     }
 
+    if (account.donor) {
+      badges.push(<Badge slug='donor' title='Donor' key='donor' />);
+    }
+
     return badges;
   }
 

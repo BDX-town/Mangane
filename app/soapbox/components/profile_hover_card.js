@@ -36,6 +36,10 @@ const getBadges = (account) => {
     badges.push(<Badge key='patron' slug='patron' title='Patron' />);
   }
 
+  if (account.donor) {
+    badges.push(<Badge key='donor' slug='donor' title='Donor' />);
+  }
+
   return badges;
 };
 

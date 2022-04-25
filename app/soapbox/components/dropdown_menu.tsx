@@ -6,8 +6,8 @@ import { spring } from 'react-motion';
 import Overlay from 'react-overlays/lib/Overlay';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import Icon from 'soapbox/components/icon';
 import { IconButton } from 'soapbox/components/ui';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import Motion from 'soapbox/features/ui/util/optional_motion';
 
 import type { Status } from 'soapbox/types/entities';
@@ -177,7 +177,7 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
     const { text, href, to, newTab, isLogout, icon, destructive } = option;
 
     return (
-      <li className={classNames('dropdown-menu__item', { destructive })} key={`${text}-${i}`}>
+      <li className={classNames('dropdown-menu__item truncate', { destructive })} key={`${text}-${i}`}>
         <a
           href={href || to || '#'}
           role='button'
@@ -190,8 +190,8 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
           target={newTab ? '_blank' : undefined}
           data-method={isLogout ? 'delete' : undefined}
         >
-          {icon && <Icon src={icon} />}
-          {text}
+          {icon && <SvgIcon src={icon} className='mr-3 h-5 w-5 flex-none' />}
+          <span className='truncate'>{text}</span>
         </a>
       </li>
     );

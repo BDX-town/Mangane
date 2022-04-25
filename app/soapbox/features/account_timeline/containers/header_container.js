@@ -18,6 +18,8 @@ import {
 import {
   verifyUser,
   unverifyUser,
+  setDonor,
+  removeDonor,
   promoteToAdmin,
   promoteToModerator,
   demoteToUser,
@@ -47,6 +49,8 @@ const messages = defineMessages({
   blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
   userVerified: { id: 'admin.users.user_verified_message', defaultMessage: '@{acct} was verified' },
   userUnverified: { id: 'admin.users.user_unverified_message', defaultMessage: '@{acct} was unverified' },
+  setDonor: { id: 'admin.users.set_donor_message', defaultMessage: '@{acct} was set as a donor' },
+  removeDonor: { id: 'admin.users.remove_donor_message', defaultMessage: '@{acct} was removed as a donor' },
   promotedToAdmin: { id: 'admin.users.actions.promote_to_admin_message', defaultMessage: '@{acct} was promoted to an admin' },
   promotedToModerator: { id: 'admin.users.actions.promote_to_moderator_message', defaultMessage: '@{acct} was promoted to a moderator' },
   demotedToModerator: { id: 'admin.users.actions.demote_to_moderator_message', defaultMessage: '@{acct} was demoted to a moderator' },
@@ -205,6 +209,23 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
       .then(() => dispatch(snackbar.success(message)))
       .catch(() => {});
   },
+
+  onSetDonor(account) {
+    const message = intl.formatMessage(messages.setDonor, { acct: account.get('acct') });
+
+    dispatch(setDonor(account.get('id')))
+      .then(() => dispatch(snackbar.success(message)))
+      .catch(() => {});
+  },
+
+  onRemoveDonor(account) {
+    const message = intl.formatMessage(messages.removeDonor, { acct: account.get('acct') });
+
+    dispatch(removeDonor(account.get('id')))
+      .then(() => dispatch(snackbar.success(message)))
+      .catch(() => {});
+  },
+
 
   onPromoteToAdmin(account) {
     const message = intl.formatMessage(messages.promotedToAdmin, { acct: account.get('acct') });

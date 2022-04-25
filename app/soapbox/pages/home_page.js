@@ -11,6 +11,7 @@ import {
   TrendsPanel,
   SignUpPanel,
   PromoPanel,
+  FundingPanel,
   CryptoDonatePanel,
   BirthdayPanel,
 } from 'soapbox/features/ui/util/async-components';
@@ -33,7 +34,7 @@ const mapStateToProps = state => {
   return {
     me,
     account: state.getIn(['accounts', me]),
-    showFundingPanel: hasPatron,
+    hasPatron,
     hasCrypto,
     cryptoLimit,
     features,
@@ -49,7 +50,7 @@ class HomePage extends ImmutablePureComponent {
   }
 
   render() {
-    const { me, children, account, features, hasCrypto, cryptoLimit } = this.props;
+    const { me, children, account, features, hasPatron, hasCrypto, cryptoLimit } = this.props;
 
     const acct = account ? account.get('acct') : '';
 
@@ -88,6 +89,11 @@ class HomePage extends ImmutablePureComponent {
           {features.trends && (
             <BundleContainer fetchComponent={TrendsPanel}>
               {Component => <Component limit={3} />}
+            </BundleContainer>
+          )}
+          {hasPatron && (
+            <BundleContainer fetchComponent={FundingPanel}>
+              {Component => <Component />}
             </BundleContainer>
           )}
           {hasCrypto && cryptoLimit > 0 && (

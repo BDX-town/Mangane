@@ -1,11 +1,13 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { Record as ImmutableRecord } from 'immutable';
 
 import { PATRON_ACCOUNT_FETCH_SUCCESS } from '../../actions/patron';
 import reducer from '../patron';
 
 describe('patron reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap());
+    const result = reducer(undefined, {});
+    expect(ImmutableRecord.isRecord(result)).toBe(true);
+    expect(result.instance.url).toBe('');
   });
 
   describe('PATRON_ACCOUNT_FETCH_SUCCESS', () => {
@@ -17,14 +19,15 @@ describe('patron reducer', () => {
           is_patron: true,
         },
       };
-      const state = ImmutableMap();
-      expect(reducer(state, action)).toEqual(fromJS({
-        accounts: {
-          'https://gleasonator.com/users/alex': {
-            is_patron: true,
-          },
+
+      const result = reducer(undefined, action);
+
+      expect(result.accounts.toJS()).toEqual({
+        'https://gleasonator.com/users/alex': {
+          is_patron: true,
+          url: 'https://gleasonator.com/users/alex',
         },
-      }));
+      });
     });
   });
 });
