@@ -577,7 +577,7 @@
   "login.otp_log_in": "OTP Login",
   "login.otp_log_in.fail": "Invalid code, please try again.",
   "login.reset_password_hint": "Trouble logging in?",
-  "media_gallery.toggle_visible": "Toggle visibility",
+  "media_gallery.toggle_visible": "Hide",
   "media_panel.empty_message": "No media found.",
   "media_panel.title": "Media",
   "mfa.mfa_disable_enter_password": "Enter your current password to disable two-factor auth.",

@@ -378,7 +378,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Toggle visibility",
+        "defaultMessage": "Hide",
         "id": "media_gallery.toggle_visible"
       },
       {
