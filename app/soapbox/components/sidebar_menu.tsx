@@ -79,28 +79,29 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
     onClose();
   };
 
-  const handleSwitchAccount = (account: AccountEntity): React.EventHandler<React.MouseEvent> => {
+  const handleSwitchAccount = (account: AccountEntity): React.MouseEventHandler => {
     return (e) => {
       e.preventDefault();
-      switchAccount(account);
       dispatch(switchAccount(account.id));
     };
   };
 
-  const onClickLogOut: React.EventHandler<React.MouseEvent> = (e) => {
+  const onClickLogOut: React.MouseEventHandler = (e) => {
     e.preventDefault();
     dispatch(logOut(intl));
   };
 
-  const handleSwitcherClick: React.EventHandler<React.MouseEvent> = (e) => {
+  const handleSwitcherClick: React.MouseEventHandler = (e) => {
     e.preventDefault();
 
     setSwitcher((prevState) => (!prevState));
   };
 
   const renderAccount = (account: AccountEntity) => (
-    <a href='/' className='block py-2' onClick={handleSwitchAccount(account)} key={account.id}>
-      <Account account={account} showProfileHoverCard={false} />
+    <a href='#' className='block py-2' onClick={handleSwitchAccount(account)} key={account.id}>
+      <div className='pointer-events-none'>
+        <Account account={account} showProfileHoverCard={false} withRelationship={false} />
+      </div>
     </a>
   );
 
@@ -155,26 +156,26 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   <Account account={account} showProfileHoverCard={false} />
                 </Link>
 
-                {/* TODO: make this available to everyone */}
-                {account.staff && (
-                  <Stack>
-                    <button type='button' onClick={handleSwitcherClick} className='py-1'>
-                      <HStack alignItems='center' justifyContent='between'>
-                        <Text tag='span' size='sm' weight='medium'>Switch accounts</Text>
+                <Stack>
+                  <button type='button' onClick={handleSwitcherClick} className='py-1'>
+                    <HStack alignItems='center' justifyContent='between'>
+                      <Text tag='span' size='sm' weight='medium'>Switch accounts</Text>
 
-                        <Icon
-                          src={switcher ? require('@tabler/icons/icons/chevron-up.svg') : require('@tabler/icons/icons/chevron-down.svg')} className='sidebar-menu-profile__caret'
-                        />
-                      </HStack>
-                    </button>
+                      <Icon
+                        src={require('@tabler/icons/icons/chevron-down.svg')}
+                        className={classNames('text-black dark:text-white transition-transform', {
+                          'rotate-180': switcher,
+                        })}
+                      />
+                    </HStack>
+                  </button>
 
-                    {switcher && (
-                      <div className='border-t border-solid border-gray-200'>
-                        {otherAccounts.map(account => renderAccount(account))}
-                      </div>
-                    )}
-                  </Stack>
-                )}
+                  {switcher && (
+                    <div className='border-t border-solid border-gray-200'>
+                      {otherAccounts.map(account => renderAccount(account))}
+                    </div>
+                  )}
+                </Stack>
               </Stack>
 
               <ProfileStats
