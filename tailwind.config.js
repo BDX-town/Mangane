@@ -47,6 +47,30 @@ module.exports = {
         'bg-shape-1': true,
         'bg-shape-2': true,
       }),
+      animation: {
+        'sonar-scale-4': 'sonar-scale-4 3s linear infinite',
+        'sonar-scale-3': 'sonar-scale-3 3s 0.5s linear infinite',
+        'sonar-scale-2': 'sonar-scale-2 3s 1s linear infinite',
+        'sonar-scale-1': 'sonar-scale-1 3s 1.5s linear infinite',
+      },
+      keyframes: {
+        'sonar-scale-4': {
+          from: { opacity: '0.4' },
+          to: { opacity: 0, transform: 'scale(4)' },
+        },
+        'sonar-scale-3': {
+          from: { opacity: '0.4' },
+          to: { opacity: 0, transform: 'scale(3.5)' },
+        },
+        'sonar-scale-2': {
+          from: { opacity: '0.4' },
+          to: { opacity: 0, transform: 'scale(3)' },
+        },
+        'sonar-scale-1': {
+          from: { opacity: '0.4' },
+          to: { opacity: 0, transform: 'scale(2.5)' },
+        },
+      },
     },
   },
   plugins: [
