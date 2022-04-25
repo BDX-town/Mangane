@@ -1,7 +1,7 @@
 import { Record } from 'immutable';
 
 import { ADMIN_CONFIG_UPDATE_REQUEST } from 'soapbox/actions/admin';
-import { INSTANCE_REMEMBER_SUCCESS } from 'soapbox/actions/instance';
+import { rememberInstance } from 'soapbox/actions/instance';
 
 import reducer from '../instance';
 
@@ -30,11 +30,11 @@ describe('instance reducer', () => {
     expect(result.toJS()).toMatchObject(expected);
   });
 
-  describe('INSTANCE_REMEMBER_SUCCESS', () => {
+  describe('rememberInstance.fulfilled', () => {
     it('normalizes Pleroma instance with Mastodon configuration format', () => {
       const action = {
-        type: INSTANCE_REMEMBER_SUCCESS,
-        instance: require('soapbox/__fixtures__/pleroma-instance.json'),
+        type: rememberInstance.fulfilled.toString(),
+        payload: require('soapbox/__fixtures__/pleroma-instance.json'),
       };
 
       const result = reducer(undefined, action);
@@ -59,8 +59,8 @@ describe('instance reducer', () => {
 
     it('normalizes Mastodon instance with retained configuration', () => {
       const action = {
-        type: INSTANCE_REMEMBER_SUCCESS,
-        instance: require('soapbox/__fixtures__/mastodon-instance.json'),
+        type: rememberInstance.fulfilled.toString(),
+        payload: require('soapbox/__fixtures__/mastodon-instance.json'),
       };
 
       const result = reducer(undefined, action);
@@ -93,8 +93,8 @@ describe('instance reducer', () => {
 
     it('normalizes Mastodon 3.0.0 instance with default configuration', () => {
       const action = {
-        type: INSTANCE_REMEMBER_SUCCESS,
-        instance: require('soapbox/__fixtures__/mastodon-3.0.0-instance.json'),
+        type: rememberInstance.fulfilled.toString(),
+        payload: require('soapbox/__fixtures__/mastodon-3.0.0-instance.json'),
       };
 
       const result = reducer(undefined, action);
