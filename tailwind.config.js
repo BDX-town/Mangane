@@ -48,25 +48,25 @@ module.exports = {
         'bg-shape-2': true,
       }),
       animation: {
-        'pulse-scale-4': 'pulse-scale-4 3s linear infinite',
-        'pulse-scale-3': 'pulse-scale-3 3s 0.5s linear infinite',
-        'pulse-scale-2': 'pulse-scale-2 3s 1s linear infinite',
-        'pulse-scale-1': 'pulse-scale-1 3s 1.5s linear infinite',
+        'sonar-scale-4': 'sonar-scale-4 3s linear infinite',
+        'sonar-scale-3': 'sonar-scale-3 3s 0.5s linear infinite',
+        'sonar-scale-2': 'sonar-scale-2 3s 1s linear infinite',
+        'sonar-scale-1': 'sonar-scale-1 3s 1.5s linear infinite',
       },
       keyframes: {
-        'pulse-scale-4': {
+        'sonar-scale-4': {
           from: { opacity: '0.4' },
           to: { opacity: 0, transform: 'scale(4)' },
         },
-        'pulse-scale-3': {
+        'sonar-scale-3': {
           from: { opacity: '0.4' },
           to: { opacity: 0, transform: 'scale(3.5)' },
         },
-        'pulse-scale-2': {
+        'sonar-scale-2': {
           from: { opacity: '0.4' },
           to: { opacity: 0, transform: 'scale(3)' },
         },
-        'pulse-scale-1': {
+        'sonar-scale-1': {
           from: { opacity: '0.4' },
           to: { opacity: 0, transform: 'scale(2.5)' },
         },

@@ -10,7 +10,7 @@ import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 import { openModal } from '../../../actions/modals';
 import { Button, Form, HStack, IconButton, Input, Tooltip } from '../../../components/ui';
 
-import Pulse from './pulse';
+import Sonar from './sonar';
 
 import type { AxiosError } from 'axios';
 
@@ -73,7 +73,7 @@ const Header = () => {
         <div className='w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none'>
           <div className='flex items-center justify-center relative w-36'>
             <div className='hidden sm:block absolute z-0 -top-24 -left-6'>
-              <Pulse />
+              <Sonar />
             </div>
             <Link to='/' className='z-10'>
               <img alt='Logo' src={logo} className='h-6 w-auto cursor-pointer' />
