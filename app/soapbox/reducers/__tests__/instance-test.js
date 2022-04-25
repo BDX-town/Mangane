@@ -33,7 +33,7 @@ describe('instance reducer', () => {
   describe('rememberInstance.fulfilled', () => {
     it('normalizes Pleroma instance with Mastodon configuration format', () => {
       const action = {
-        type: rememberInstance.fulfilled.toString(),
+        type: rememberInstance.fulfilled.type,
         payload: require('soapbox/__fixtures__/pleroma-instance.json'),
       };
 
@@ -59,7 +59,7 @@ describe('instance reducer', () => {
 
     it('normalizes Mastodon instance with retained configuration', () => {
       const action = {
-        type: rememberInstance.fulfilled.toString(),
+        type: rememberInstance.fulfilled.type,
         payload: require('soapbox/__fixtures__/mastodon-instance.json'),
       };
 
@@ -93,7 +93,7 @@ describe('instance reducer', () => {
 
     it('normalizes Mastodon 3.0.0 instance with default configuration', () => {
       const action = {
-        type: rememberInstance.fulfilled.toString(),
+        type: rememberInstance.fulfilled.type,
         payload: require('soapbox/__fixtures__/mastodon-3.0.0-instance.json'),
       };
 

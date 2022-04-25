@@ -9,7 +9,7 @@ describe('<LandingPage />', () => {
   it('renders a RegistrationForm for an open Pleroma instance', () => {
 
     const state = rootReducer(undefined, {
-      type: rememberInstance.fulfilled.toString(),
+      type: rememberInstance.fulfilled.type,
       payload: {
         version: '2.7.2 (compatible; Pleroma 2.3.0)',
         registrations: true,
@@ -26,7 +26,7 @@ describe('<LandingPage />', () => {
   it('renders "closed" message for a closed Pleroma instance', () => {
 
     const state = rootReducer(undefined, {
-      type: rememberInstance.fulfilled.toString(),
+      type: rememberInstance.fulfilled.type,
       payload: {
         version: '2.7.2 (compatible; Pleroma 2.3.0)',
         registrations: false,
@@ -43,7 +43,7 @@ describe('<LandingPage />', () => {
   it('renders Pepe flow for an open Truth Social instance', () => {
 
     const state = applyActions(undefined, [{
-      type: rememberInstance.fulfilled.toString(),
+      type: rememberInstance.fulfilled.type,
       payload: {
         version: '3.4.1 (compatible; TruthSocial 1.0.0)',
         registrations: false,
@@ -65,7 +65,7 @@ describe('<LandingPage />', () => {
   it('renders "closed" message for a Truth Social instance with Pepe closed', () => {
 
     const state = applyActions(undefined, [{
-      type: rememberInstance.fulfilled.toString(),
+      type: rememberInstance.fulfilled.type,
       payload: {
         version: '3.4.1 (compatible; TruthSocial 1.0.0)',
         registrations: false,
