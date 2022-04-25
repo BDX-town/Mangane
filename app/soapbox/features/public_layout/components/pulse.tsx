@@ -1,38 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
-
-const LottieAsync = () => {
-  return import(/* webpackChunkName: "lottie" */'soapbox/components/lottie');
-};
-
-const fetchAnimationData = () => {
-  return import(/* webpackChunkName: "lottie" */'images/circles.json');
-};
-
-/** Homepage pulse animation chunked to not bloat the entrypoint */
-const Pulse: React.FC = () => {
-  const [animationData, setAnimationData] = useState<any>(undefined);
-
-  useEffect(() => {
-    fetchAnimationData()
-      .then(({ default: json }) => {
-        setAnimationData(json);
-      })
-      .catch(console.error);
-  }, []);
-
-  if (animationData) {
-    return (
-      <BundleContainer fetchComponent={LottieAsync}>
-        {Component => (
-          <Component animationData={animationData} width={800} height={800} />
-        )}
-      </BundleContainer>
-    );
-  } else {
-    return null;
-  }
-};
+const Pulse = () => (
+  <div className='relative'>
+    <div className='relative w-48 h-48 bg-white rounded-full'>
+      <div className='animate-pulse-scale-4 absolute top-0 left-0 w-full h-full rounded-full bg-primary-600/25 opacity-0 -z-[1] pointer-events-none' />
+      <div className='animate-pulse-scale-3 absolute top-0 left-0 w-full h-full rounded-full bg-primary-600/25 opacity-0 -z-[1] pointer-events-none' />
+      <div className='animate-pulse-scale-2 absolute top-0 left-0 w-full h-full rounded-full bg-primary-600/25 opacity-0 -z-[1] pointer-events-none' />
+      <div className='animate-pulse-scale-1 absolute top-0 left-0 w-full h-full rounded-full bg-primary-600/25 opacity-0 -z-[1] pointer-events-none' />
+    </div>
+  </div>
+);
 
 export default Pulse;
