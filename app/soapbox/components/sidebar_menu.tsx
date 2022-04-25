@@ -6,13 +6,14 @@ import { Link, NavLink } from 'react-router-dom';
 
 import { logOut, switchAccount } from 'soapbox/actions/auth';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
+import { getSettings } from 'soapbox/actions/settings';
+import { closeSidebar } from 'soapbox/actions/sidebar';
 import Account from 'soapbox/components/account';
 import { Stack } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile_stats';
 import { useAppSelector, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
-
-import { closeSidebar } from '../actions/sidebar';
-import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
+import { makeGetAccount, makeGetOtherAccounts } from 'soapbox/selectors';
+import { getBaseURL } from 'soapbox/utils/accounts';
 
 import { HStack, Icon, IconButton, Text } from './ui';
 
@@ -32,6 +33,10 @@ const messages = defineMessages({
   importData: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
   accountMigration: { id: 'navigation_bar.account_migration', defaultMessage: 'Move account' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
+  bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
+  lists: { id: 'column.lists', defaultMessage: 'Lists' },
+  invites: { id: 'navigation_bar.invites', defaultMessage: 'Invites' },
+  developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
 });
 
 interface ISidebarLink {
@@ -67,6 +72,9 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const account = useAppSelector((state) =>  me ? getAccount(state, me) : null);
   const otherAccounts: ImmutableList<AccountEntity> = useAppSelector((state) => getOtherAccounts(state));
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
+  const settings = useAppSelector((state) => getSettings(state));
+
+  const baseURL = account ? getBaseURL(account) : '';
 
   const closeButtonRef = React.useRef(null);
 
@@ -191,6 +199,42 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   text={intl.formatMessage(messages.profile)}
                   onClick={onClose}
                 />
+
+                {features.bookmarks && (
+                  <SidebarLink
+                    to='/bookmarks'
+                    icon={require('@tabler/icons/icons/bookmark.svg')}
+                    text={intl.formatMessage(messages.bookmarks)}
+                    onClick={onClose}
+                  />
+                )}
+
+                {features.lists && (
+                  <SidebarLink
+                    to='/lists'
+                    icon={require('@tabler/icons/icons/list.svg')}
+                    text={intl.formatMessage(messages.lists)}
+                    onClick={onClose}
+                  />
+                )}
+
+                {instance.invites_enabled && (
+                  <SidebarLink
+                    to={`${baseURL}/invites`}
+                    icon={require('@tabler/icons/icons/mailbox.svg')}
+                    text={intl.formatMessage(messages.invites)}
+                    onClick={onClose}
+                  />
+                )}
+
+                {settings.get('isDeveloper') && (
+                  <SidebarLink
+                    to='/developers'
+                    icon={require('@tabler/icons/icons/code.svg')}
+                    text={intl.formatMessage(messages.developers)}
+                    onClick={onClose}
+                  />
+                )}
 
                 {features.publicTimeline && <>
                   <hr className='dark:border-slate-700' />
