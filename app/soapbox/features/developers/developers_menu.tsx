@@ -63,6 +63,14 @@ const Developers = () => {
           </Text>
         </Link>
 
+        <Link to='/error/network' className='bg-gray-200 dark:bg-gray-600 p-4 rounded flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 transition-transform'>
+          <SvgIcon src={require('@tabler/icons/icons/refresh.svg')} className='dark:text-gray-100' />
+
+          <Text>
+            <FormattedMessage id='developers.navigation.network_error_label' defaultMessage='Network error' />
+          </Text>
+        </Link>
+
         <button onClick={leaveDevelopers} className='bg-gray-200 dark:bg-gray-600 p-4 rounded flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 transition-transform'>
           <SvgIcon src={require('@tabler/icons/icons/logout.svg')} className='dark:text-gray-100' />
 

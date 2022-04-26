@@ -5,7 +5,7 @@ import { defineMessages, injectIntl } from 'react-intl';
 import IconButton from '../../../components/icon_button';
 
 const messages = defineMessages({
-  error: { id: 'bundle_modal_error.message', defaultMessage: 'Something went wrong while loading this component.' },
+  error: { id: 'bundle_modal_error.message', defaultMessage: 'Something went wrong while loading this page.' },
   retry: { id: 'bundle_modal_error.retry', defaultMessage: 'Try again' },
   close: { id: 'bundle_modal_error.close', defaultMessage: 'Close' },
 });
