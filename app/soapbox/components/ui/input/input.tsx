@@ -11,7 +11,7 @@ const messages = defineMessages({
   hidePassword: { id: 'input.password.hide_password', defaultMessage: 'Hide password' },
 });
 
-interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxLength' | 'onChange' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required'> {
+interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxLength' | 'onChange' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required' | 'disabled'> {
   autoFocus?: boolean,
   defaultValue?: string,
   className?: string,
