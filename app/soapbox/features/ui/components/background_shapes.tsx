@@ -1,6 +1,7 @@
 import React from 'react';
 
-export default () => (
+/** Gradient that appears in the background of the UI. */
+const BackgroundShapes: React.FC = () => (
   <div className='fixed top-0 inset-x-0 flex justify-center overflow-hidden pointer-events-none'>
     <div className='flex-none flex justify-center'>
       <svg width='1754' height='1336' xmlns='http://www.w3.org/2000/svg'>
@@ -26,3 +27,5 @@ export default () => (
     </div>
   </div>
 );
+
+export default BackgroundShapes;
