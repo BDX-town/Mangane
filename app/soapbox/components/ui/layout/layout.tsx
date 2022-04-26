@@ -2,14 +2,19 @@ import classNames from 'classnames';
 import React from 'react';
 import StickyBox from 'react-sticky-box';
 
-const Layout: React.FC = ({ children }) => (
+interface LayoutType extends React.FC {
+  Sidebar: React.FC,
+  Main: React.FC<React.HTMLAttributes<HTMLDivElement>>,
+  Aside: React.FC,
+}
+
+const Layout: LayoutType = ({ children }) => (
   <div className='sm:pt-4 relative pb-36'>
     <div className='max-w-3xl mx-auto sm:px-6 md:max-w-7xl md:px-8 md:grid md:grid-cols-12 md:gap-8'>
       {children}
     </div>
   </div>
 );
-
 
 const Sidebar: React.FC = ({ children }) => (
   <div className='hidden lg:block lg:col-span-3'>
@@ -37,11 +42,8 @@ const Aside: React.FC = ({ children }) => (
   </aside>
 );
 
-// @ts-ignore
 Layout.Sidebar = Sidebar;
-// @ts-ignore
 Layout.Main = Main;
-// @ts-ignore
 Layout.Aside = Aside;
 
 export default Layout;
