@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route, useHistory, RouteComponentProps, match as MatchType } from 'react-router-dom';
+import { Redirect, Route, useHistory, RouteProps, RouteComponentProps, match as MatchType } from 'react-router-dom';
 
 import { useOwnAccount, useSettings } from 'soapbox/hooks';
 
@@ -14,12 +14,12 @@ type PageProps = {
   layout?: any,
 };
 
-interface IWrappedRoute {
+interface IWrappedRoute extends RouteProps {
   component: (...args: any[]) => any,
-  page: React.ComponentType<PageProps>,
-  content: React.ReactNode,
-  componentParams: Record<string, any>,
-  layout: any,
+  page?: React.ComponentType<PageProps>,
+  content?: React.ReactNode,
+  componentParams?: Record<string, any>,
+  layout?: any,
   publicRoute?: boolean,
   staffOnly?: boolean,
   adminOnly?: boolean,
