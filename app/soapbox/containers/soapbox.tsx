@@ -96,7 +96,7 @@ const SoapboxMount = () => {
     dispatch(loadInitial()).then(() => {
       setIsLoaded(true);
     }).catch(() => {
-      setIsLoaded(false);
+      setIsLoaded(true);
     });
   }, []);
 
