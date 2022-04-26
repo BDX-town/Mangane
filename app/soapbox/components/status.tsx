@@ -102,6 +102,7 @@ interface IStatus extends RouteComponentProps {
 }
 
 interface IStatusState {
+  isDragging: boolean,
   showMedia: boolean,
   statusId?: string,
   emojiSelectorFocused: boolean,
@@ -128,6 +129,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   ];
 
   state: IStatusState = {
+    isDragging: false,
     showMedia: defaultMediaVisibility(this.props.status, this.props.displayMedia),
     statusId: undefined,
     emojiSelectorFocused: false,
@@ -191,7 +193,9 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     this.setState({ showMedia: !this.state.showMedia });
   }
 
-  handleClick = (): void => {
+  handleClick = (event: any): void => {
+    event.stopPropagation();
+
     if (this.props.onClick) {
       this.props.onClick();
       return;
@@ -605,7 +609,13 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
           data-featured={featured ? 'true' : null}
           aria-label={textForScreenReader(intl, status, rebloggedByText)}
           ref={this.handleRef}
-          onClick={() => this.props.history.push(statusUrl)}
+          onMouseUp={() => {
+            if (!this.state.isDragging) {
+              this.props.history.push(statusUrl);
+            }
+          }}
+          onMouseDown={() => this.setState({ isDragging: false })}
+          onMouseMove={() => this.setState({ isDragging: true })}
           role='link'
         >
           {prepend}

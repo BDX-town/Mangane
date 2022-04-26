@@ -67,7 +67,7 @@ interface IStatusContent {
   status: Status,
   expanded?: boolean,
   onExpandedToggle?: () => void,
-  onClick?: () => void,
+  onClick?: (event: React.MouseEvent) => void,
   collapsable?: boolean,
 }
 
@@ -182,7 +182,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     }
 
     if (deltaX + deltaY < 5 && e.button === 0 && onClick) {
-      onClick();
+      onClick(e);
     }
 
     startXY.current = undefined;
