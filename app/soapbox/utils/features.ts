@@ -395,6 +395,11 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     remoteInteractionsAPI: v.software === PLEROMA && gte(v.version, '2.4.50'),
 
+    reportMultipleStatuses: any([
+      v.software === MASTODON,
+      v.software === PLEROMA,
+    ]),
+
     /**
      * Can request a password reset email through the API.
      * @see POST /auth/password

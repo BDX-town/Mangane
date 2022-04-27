@@ -127,7 +127,7 @@ export function Filters() {
 }
 
 export function ReportModal() {
-  return import(/* webpackChunkName: "modals/report_modal" */'../components/report_modal');
+  return import(/* webpackChunkName: "modals/report-modal/report-modal" */'../components/modals/report-modal/report-modal');
 }
 
 export function MediaGallery() {

@@ -8,7 +8,7 @@ type Alignments = 'left' | 'center' | 'right'
 type TrackingSizes = 'normal' | 'wide'
 type TransformProperties = 'uppercase' | 'normal'
 type Families = 'sans' | 'mono'
-type Tags = 'abbr' | 'p' | 'span' | 'pre' | 'time' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+type Tags = 'abbr' | 'p' | 'span' | 'pre' | 'time' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label'
 
 const themes = {
   default: 'text-gray-900 dark:text-gray-100',
@@ -66,6 +66,8 @@ interface IText extends Pick<React.HTMLAttributes<HTMLParagraphElement>, 'danger
   className?: string,
   /** Typeface of the text. */
   family?: Families,
+  /** The "for" attribute specifies which form element a label is bound to. */
+  htmlFor?: string,
   /** Font size of the text. */
   size?: Sizes,
   /** HTML element name of the outer element. */
