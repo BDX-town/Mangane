@@ -26,6 +26,7 @@ type Dispatch = ThunkDispatch<RootState, void, AnyAction>;
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
   redraft: { id: 'status.redraft', defaultMessage: 'Delete & re-draft' },
+  edit: { id: 'status.edit', defaultMessage: 'Edit' },
   direct: { id: 'status.direct', defaultMessage: 'Direct message @{name}' },
   chat: { id: 'status.chat', defaultMessage: 'Chat with @{name}' },
   mention: { id: 'status.mention', defaultMessage: 'Mention @{name}' },
@@ -95,6 +96,7 @@ interface OwnProps {
   onFavourite: (status: StatusEntity) => void,
   onEmojiReact: (status: StatusEntity, emoji: string) => void,
   onDelete: (status: StatusEntity, history: History, redraft?: boolean) => void,
+  onEdit: (status: StatusEntity) => void,
   onBookmark: (status: StatusEntity) => void,
   onDirect: (account: AccountEntity, history: History) => void,
   onChat: (account: AccountEntity, history: History) => void,
@@ -240,6 +242,10 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
 
   handleRedraftClick: React.EventHandler<React.MouseEvent> = () => {
     this.props.onDelete(this.props.status, this.props.history, true);
+  }
+
+  handleEditClick: React.EventHandler<React.MouseEvent> = () => {
+    this.props.onEdit(this.props.status);
   }
 
   handleDirectClick: React.EventHandler<React.MouseEvent> = () => {
@@ -394,17 +400,18 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
             action: this.handlePinClick,
             icon: require(mutingConversation ? '@tabler/icons/icons/pinned-off.svg' : '@tabler/icons/icons/pin.svg'),
           });
-        } else {
-          if (status.visibility === 'private') {
-            menu.push({
-              text: intl.formatMessage(status.get('reblogged') ? messages.cancel_reblog_private : messages.reblog_private),
-              action: this.handleReblogClick,
-              icon: require('@tabler/icons/icons/repeat.svg'),
-            });
-          }
+
+          menu.push(null);
+        } else if (status.visibility === 'private') {
+          menu.push({
+            text: intl.formatMessage(status.get('reblogged') ? messages.cancel_reblog_private : messages.reblog_private),
+            action: this.handleReblogClick,
+            icon: require('@tabler/icons/icons/repeat.svg'),
+          });
+
+          menu.push(null);
         }
 
-        menu.push(null);
         menu.push({
           text: intl.formatMessage(mutingConversation ? messages.unmuteConversation : messages.muteConversation),
           action: this.handleConversationMuteClick,
@@ -417,12 +424,20 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
           icon: require('@tabler/icons/icons/trash.svg'),
           destructive: true,
         });
-        menu.push({
-          text: intl.formatMessage(messages.redraft),
-          action: this.handleRedraftClick,
-          icon: require('@tabler/icons/icons/edit.svg'),
-          destructive: true,
-        });
+        if (features.editStatuses) {
+          menu.push({
+            text: intl.formatMessage(messages.edit),
+            action: this.handleEditClick,
+            icon: require('@tabler/icons/icons/edit.svg'),
+          });
+        } else {
+          menu.push({
+            text: intl.formatMessage(messages.redraft),
+            action: this.handleRedraftClick,
+            icon: require('@tabler/icons/icons/edit.svg'),
+            destructive: true,
+          });
+        }
       } else {
         menu.push({
           text: intl.formatMessage(messages.mention, { name: username }),

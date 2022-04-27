@@ -29,6 +29,7 @@ export const StatusRecord = ImmutableRecord({
   card: null as Card | null,
   content: '',
   created_at: new Date(),
+  edited_at: null as Date | null,
   emojis: ImmutableList<Emoji>(),
   favourited: false,
   favourites_count: 0,

@@ -6,6 +6,7 @@ import { connectStream } from '../stream';
 import { updateConversations } from './conversations';
 import { fetchFilters } from './filters';
 import { updateNotificationsQueue, expandNotifications } from './notifications';
+import { updateStatus } from './statuses';
 import {
   deleteFromTimelines,
   expandHomeTimeline,
@@ -53,6 +54,9 @@ export function connectTimelineStream(timelineId, path, pollingRefresh = null, a
         switch(data.event) {
         case 'update':
           dispatch(processTimelineUpdate(timelineId, JSON.parse(data.payload), accept));
+          break;
+        case 'status.update':
+          dispatch(updateStatus(JSON.parse(data.payload)));
           break;
         case 'delete':
           dispatch(deleteFromTimelines(data.payload));

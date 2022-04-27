@@ -91,7 +91,7 @@ export const calculateStatus = (
   oldStatus?: StatusRecord,
   expandSpoilers: boolean = false,
 ): StatusRecord => {
-  if (oldStatus) {
+  if (oldStatus && oldStatus.content === status.content && oldStatus.spoiler_text === status.spoiler_text) {
     return status.merge({
       search_index: oldStatus.search_index,
       contentHtml: oldStatus.contentHtml,

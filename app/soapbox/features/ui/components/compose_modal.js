@@ -18,6 +18,7 @@ const messages = defineMessages({
 const mapStateToProps = state => {
   const me = state.get('me');
   return {
+    statusId: state.getIn(['compose', 'id']),
     account: state.getIn(['accounts', me]),
     composeText: state.getIn(['compose', 'text']),
     privacy: state.getIn(['compose', 'privacy']),
@@ -59,9 +60,11 @@ class ComposeModal extends ImmutablePureComponent {
   };
 
   renderTitle = () => {
-    const { privacy, inReplyTo, quote } = this.props;
+    const { statusId, privacy, inReplyTo, quote } = this.props;
 
-    if (privacy === 'direct') {
+    if (statusId) {
+      return <FormattedMessage id='navigation_bar.compose_edit' defaultMessage='Edit post' />;
+    } else if (privacy === 'direct') {
       return <FormattedMessage id='navigation_bar.compose_direct' defaultMessage='Direct message' />;
     } else if (inReplyTo) {
       return <FormattedMessage id='navigation_bar.compose_reply' defaultMessage='Reply to post' />;

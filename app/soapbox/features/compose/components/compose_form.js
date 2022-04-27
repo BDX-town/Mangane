@@ -43,6 +43,7 @@ const messages = defineMessages({
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
   message: { id: 'compose_form.message', defaultMessage: 'Message' },
   schedule: { id: 'compose_form.schedule', defaultMessage: 'Schedule' },
+  saveChanges: { id: 'compose_form.save_changes', defaultMessage: 'Save changes' },
 });
 
 export default @withRouter
@@ -63,6 +64,7 @@ class ComposeForm extends ImmutablePureComponent {
     caretPosition: PropTypes.number,
     isSubmitting: PropTypes.bool,
     isChangingUpload: PropTypes.bool,
+    isEditing: PropTypes.bool,
     isUploading: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
@@ -261,7 +263,9 @@ class ComposeForm extends ImmutablePureComponent {
 
     let publishText = '';
 
-    if (this.props.privacy === 'direct') {
+    if (this.props.isEditing) {
+      publishText = intl.formatMessage(messages.saveChanges);
+    } else if (this.props.privacy === 'direct') {
       publishText = (
         <>
           <Icon src={require('@tabler/icons/icons/mail.svg')} />

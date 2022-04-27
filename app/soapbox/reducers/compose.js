@@ -50,10 +50,10 @@ import {
   COMPOSE_POLL_SETTINGS_CHANGE,
   COMPOSE_ADD_TO_MENTIONS,
   COMPOSE_REMOVE_FROM_MENTIONS,
+  COMPOSE_SET_STATUS,
 } from '../actions/compose';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from '../actions/me';
 import { SETTING_CHANGE, FE_NAME } from '../actions/settings';
-import { REDRAFT } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 import { unescapeHTML } from '../utils/html';
 
@@ -427,8 +427,9 @@ export default function compose(state = initialState, action) {
 
         return item;
       }));
-  case REDRAFT:
+  case COMPOSE_SET_STATUS:
     return state.withMutations(map => {
+      map.set('id', action.status.get('id'));
       map.set('text', action.raw_text || unescapeHTML(expandMentions(action.status)));
       map.set('to', action.explicitAddressing ? getExplicitMentions(action.status.get('account', 'id'), action.status) : ImmutableOrderedSet());
       map.set('in_reply_to', action.status.get('in_reply_to_id'));

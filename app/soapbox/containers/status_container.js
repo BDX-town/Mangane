@@ -38,6 +38,7 @@ import {
   deleteStatus,
   hideStatus,
   revealStatus,
+  editStatus,
 } from '../actions/statuses';
 import Status from '../components/status';
 import { makeGetStatus } from '../selectors';
@@ -170,6 +171,10 @@ const mapDispatchToProps = (dispatch, { intl }) => {
           }));
         }
       });
+    },
+
+    onEdit(status) {
+      dispatch(editStatus(status.get('id')));
     },
 
     onDirect(account, router) {
