@@ -104,7 +104,7 @@ export const NativeCaptchaField = ({ captcha, onChange, onClick, name, value }) 
   <div className='captcha' >
     <img alt='captcha' src={captcha.get('url')} onClick={onClick} />
     <TextInput
-      placeholder='Enter the pictured text'
+      placeholder="Saisissez le texte visible dans l'image"
       name={name}
       value={value}
       autoComplete='off'
