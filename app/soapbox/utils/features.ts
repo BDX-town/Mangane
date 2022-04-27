@@ -3,6 +3,7 @@ import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import { createSelector } from 'reselect';
 import gte from 'semver/functions/gte';
 import lt from 'semver/functions/lt';
+import semverParse from 'semver/functions/parse';
 
 import { custom } from 'soapbox/custom';
 
@@ -44,6 +45,12 @@ export const PIXELFED = 'Pixelfed';
  */
 export const TRUTHSOCIAL = 'TruthSocial';
 
+/**
+ * Soapbox BE, the recommended Pleroma fork for Soapbox.
+ * @see {@link https://gitlab.com/soapbox-pub/soapbox-be}
+ */
+export const SOAPBOX = 'soapbox';
+
 /** Parse features for the given instance */
 const getInstanceFeatures = (instance: Instance) => {
   const v = parseVersion(instance.version);
@@ -76,7 +83,10 @@ const getInstanceFeatures = (instance: Instance) => {
      * Ability to set one's location on their profile.
      * @see PATCH /api/v1/accounts/update_credentials
      */
-    accountLocation: v.software === TRUTHSOCIAL,
+    accountLocation: any([
+      v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
+      v.software === TRUTHSOCIAL,
+    ]),
 
     /**
      * Look up an account by the acct.
@@ -462,6 +472,8 @@ export const getFeatures = createSelector([
 
 /** Fediverse backend */
 interface Backend {
+  /** Build name, if this software is a fork */
+  build: string | null,
   /** Name of the software */
   software: string | null,
   /** API version number */
@@ -472,19 +484,24 @@ interface Backend {
 
 /** Get information about the software from its version string */
 export const parseVersion = (version: string): Backend => {
-  const regex = /^([\w.]*)(?: \(compatible; ([\w]*) (.*)\))?$/;
+  const regex = /^([\w+.]*)(?: \(compatible; ([\w]*) (.*)\))?$/;
   const match = regex.exec(version);
 
-  if (match) {
+  const semver = match ? semverParse(match[3] || match[1]) : null;
+  const compat = match ? semverParse(match[1]) : null;
+
+  if (match && semver && compat) {
     return {
-      compatVersion: match[1],
+      build: semver.build[0],
+      compatVersion: compat.version,
       software: match[2] || MASTODON,
-      version: match[3] || match[1],
+      version: semver.version,
     };
   } else {
     // If we can't parse the version, this is a new and exotic backend.
     // Fall back to minimal featureset.
     return {
+      build: null,
       compatVersion: '0.0.0',
       software: null,
       version: '0.0.0',
