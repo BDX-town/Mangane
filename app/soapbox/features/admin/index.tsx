@@ -23,7 +23,7 @@ const Admin: React.FC = () => {
 
   return (
     <Column label={intl.formatMessage(messages.heading)} withHeader={false}>
-      <AdminTabs activeItem='dashboard' />
+      <AdminTabs />
 
       <Switch>
         <Route path='/admin' exact component={Dashboard} />

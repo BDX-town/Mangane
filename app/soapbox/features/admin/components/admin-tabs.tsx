@@ -1,5 +1,6 @@
 import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
+import { useRouteMatch } from 'react-router-dom';
 
 import { Tabs } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
@@ -10,33 +11,30 @@ const messages = defineMessages({
   waitlist: { id: 'admin_nav.awaiting_approval', defaultMessage: 'Waitlist' },
 });
 
-interface IAdminTabs {
-  activeItem: 'dashboard' | 'reports' | 'approval',
-}
-
-const AdminTabs: React.FC<IAdminTabs> = ({ activeItem }) => {
+const AdminTabs: React.FC = () => {
   const intl = useIntl();
+  const match = useRouteMatch();
 
   const approvalCount = useAppSelector(state => state.admin.awaitingApproval.count());
   const reportsCount = useAppSelector(state => state.admin.openReports.count());
 
   const tabs = [{
-    name: 'dashboard',
+    name: '/admin',
     text: intl.formatMessage(messages.dashboard),
     to: '/admin',
   }, {
-    name: 'reports',
+    name: '/admin/reports',
     text: intl.formatMessage(messages.reports),
     to: '/admin/reports',
     count: reportsCount,
   }, {
-    name: 'approval',
+    name: '/admin/approval',
     text: intl.formatMessage(messages.waitlist),
     to: '/admin/approval',
     count: approvalCount,
   }];
 
-  return <Tabs items={tabs} activeItem={activeItem} />;
+  return <Tabs items={tabs} activeItem={match.path} />;
 };
 
 export default AdminTabs;
