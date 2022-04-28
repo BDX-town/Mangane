@@ -1,5 +1,4 @@
 import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { Sparklines, SparklinesCurve } from 'react-sparklines';
@@ -11,7 +10,13 @@ import { shortNumberFormat } from '../utils/numbers';
 import Permalink from './permalink';
 import { HStack, Stack, Text } from './ui';
 
-const Hashtag = ({ hashtag }) => {
+import type { Map as ImmutableMap } from 'immutable';
+
+interface IHashtag {
+  hashtag: ImmutableMap<string, any>,
+}
+
+const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {
   const count = Number(hashtag.getIn(['history', 0, 'accounts']));
   const brandColor = useSelector((state) => getSoapboxConfig(state).get('brandColor'));
 
@@ -41,7 +46,7 @@ const Hashtag = ({ hashtag }) => {
           <Sparklines
             width={40}
             height={28}
-            data={hashtag.get('history').reverse().map(day => day.get('uses')).toArray()}
+            data={hashtag.get('history').reverse().map((day: ImmutableMap<string, any>) => day.get('uses')).toArray()}
           >
             <SparklinesCurve style={{ fill: 'none' }} color={brandColor} />
           </Sparklines>
@@ -49,10 +54,6 @@ const Hashtag = ({ hashtag }) => {
       )}
     </HStack>
   );
-};
-
-Hashtag.propTypes = {
-  hashtag: ImmutablePropTypes.map.isRequired,
 };
 
 export default Hashtag;
