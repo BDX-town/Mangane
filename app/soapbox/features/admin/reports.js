@@ -7,10 +7,8 @@ import { connect } from 'react-redux';
 
 import { fetchReports } from 'soapbox/actions/admin';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import { Column } from 'soapbox/components/ui';
 import { makeGetReport } from 'soapbox/selectors';
 
-import AdminTabs from './components/admin-tabs';
 import Report from './components/report';
 
 const messages = defineMessages({
@@ -64,17 +62,14 @@ class Reports extends ImmutablePureComponent {
     const showLoading = isLoading && reports.count() === 0;
 
     return (
-      <Column label={intl.formatMessage(messages.heading)} withHeader={false}>
-        <AdminTabs activeItem='reports' />
-        <ScrollableList
-          isLoading={isLoading}
-          showLoading={showLoading}
-          scrollKey='admin-reports'
-          emptyMessage={intl.formatMessage(messages.emptyMessage)}
-        >
-          {reports.map(report => <Report report={report} key={report.get('id')} />)}
-        </ScrollableList>
-      </Column>
+      <ScrollableList
+        isLoading={isLoading}
+        showLoading={showLoading}
+        scrollKey='admin-reports'
+        emptyMessage={intl.formatMessage(messages.emptyMessage)}
+      >
+        {reports.map(report => <Report report={report} key={report.get('id')} />)}
+      </ScrollableList>
     );
   }
 

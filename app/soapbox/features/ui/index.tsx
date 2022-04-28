@@ -302,8 +302,8 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
 
       <WrappedRoute path='/admin' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
-      <WrappedRoute path='/admin/approval' staffOnly page={AdminPage} component={AwaitingApproval} content={children} exact />
-      <WrappedRoute path='/admin/reports' staffOnly page={AdminPage} component={Reports} content={children} exact />
+      <WrappedRoute path='/admin/approval' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
+      <WrappedRoute path='/admin/reports' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
       <WrappedRoute path='/admin/log' staffOnly page={AdminPage} component={ModerationLog} content={children} exact />
       <WrappedRoute path='/admin/users' staffOnly page={AdminPage} component={UserIndex} content={children} exact />
       <WrappedRoute path='/info' page={EmptyPage} component={ServerInfo} content={children} />
