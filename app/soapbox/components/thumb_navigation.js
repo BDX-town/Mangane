@@ -58,22 +58,6 @@ class ThumbNavigation extends React.PureComponent {
           </span>
         </NavLink>
 
-        {account && (
-          <NavLink to='/notifications' className='thumb-navigation__link'>
-            <IconWithCounter
-              src={require('@tabler/icons/icons/bell.svg')}
-              className={classNames({
-                'svg-icon--active': location.pathname === '/notifications',
-                'svg-icon--unread': notificationCount > 0,
-              })}
-              count={notificationCount}
-            />
-            <span>
-              <FormattedMessage id='navigation.notifications' defaultMessage='Notifications' />
-            </span>
-          </NavLink>
-        )}
-
         {features.federating ? (
           <NavLink to='/timeline/local' className='thumb-navigation__link'>
             <Icon
@@ -81,7 +65,7 @@ class ThumbNavigation extends React.PureComponent {
               className={classNames({ 'svg-icon--active': location.pathname === '/timeline/local' })}
             />
             <span>
-              { instance.get('title') }
+              {instance.get('title')}
             </span>
           </NavLink>
         ) : (
@@ -129,6 +113,24 @@ class ThumbNavigation extends React.PureComponent {
             </NavLink>
           )
         )}
+
+
+        {account && (
+          <NavLink to='/notifications' className='thumb-navigation__link'>
+            <IconWithCounter
+              src={require('@tabler/icons/icons/bell.svg')}
+              className={classNames({
+                'svg-icon--active': location.pathname === '/notifications',
+                'svg-icon--unread': notificationCount > 0,
+              })}
+              count={notificationCount}
+            />
+            <span>
+              <FormattedMessage id='navigation.notifications' defaultMessage='Notifications' />
+            </span>
+          </NavLink>
+        )}
+
       </div>
     );
   }
