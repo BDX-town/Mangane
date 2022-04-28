@@ -95,14 +95,14 @@ const messages: Record<NotificationType, { id: string, defaultMessage: string }>
   },
 };
 
-const buildMessage = (type: NotificationType, account: Account): JSX.Element => {
+const buildMessage = (type: NotificationType, account: Account, targetName?: string): JSX.Element => {
   const link = buildLink(account);
 
   return (
     <FormattedMessageFixed
       id={messages[type].id}
       defaultMessage={messages[type].defaultMessage}
-      values={{ name: link }}
+      values={{ name: link, targetName }}
     />
   );
 };
@@ -257,7 +257,9 @@ const Notification: React.FC<INotificaton> = (props) => {
     }
   };
 
-  const message: React.ReactNode = type && account && typeof account === 'object' ? buildMessage(type, account) : null;
+  const targetName = notification.target && typeof notification.target === 'object' ? notification.target.acct : '';
+
+  const message: React.ReactNode = type && account && typeof account === 'object' ? buildMessage(type, account, targetName) : null;
 
   return (
     <HotKeys handlers={getHandlers()} data-testid='notification'>
@@ -273,7 +275,7 @@ const Notification: React.FC<INotificaton> = (props) => {
             },
             {
               name: account && typeof account === 'object' ? account.acct : '',
-              targetName: notification.target && typeof notification.target === 'object' ? notification.target.acct : '',
+              targetName,
             }),
             notification.created_at,
           )
