@@ -109,7 +109,7 @@
   "admin.users.user_unsuggested_message": "@{acct} was unsuggested",
   "admin.users.user_unverified_message": "@{acct} was unverified",
   "admin.users.user_verified_message": "@{acct} was verified",
-  "admin_nav.awaiting_approval": "Awaiting Approval",
+  "admin_nav.awaiting_approval": "Waitlist",
   "admin_nav.dashboard": "Dashboard",
   "admin_nav.reports": "Reports",
   "alert.unexpected.clear_cookies": "clear cookies and browser data",

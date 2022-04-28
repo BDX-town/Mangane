@@ -386,10 +386,6 @@ export function LatestAccountsPanel() {
   return import(/* webpackChunkName: "features/admin" */'../../admin/components/latest_accounts_panel');
 }
 
-export function AdminNav() {
-  return import(/* webpackChunkName: "features/admin" */'../../admin/components/admin_nav');
-}
-
 export function SidebarMenu() {
   return import(/* webpackChunkName: "features/ui" */'../../../components/sidebar_menu');
 }
