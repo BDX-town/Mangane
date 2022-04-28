@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import {
   WhoToFollowPanel,
@@ -35,11 +34,7 @@ const HomePage: React.FC = ({ children }) => {
   const acct = account ? account.acct : '';
 
   return (
-    <Layout>
-      <Layout.Sidebar>
-        <SidebarNavigation />
-      </Layout.Sidebar>
-
+    <>
       <Layout.Main className='divide-y divide-gray-200 divide-solid sm:divide-none'>
         {me && (
           <Card variant='rounded' ref={composeBlock}>
@@ -99,7 +94,7 @@ const HomePage: React.FC = ({ children }) => {
         )}
         <LinkFooter key='link-footer' />
       </Layout.Aside>
-    </Layout>
+    </>
   );
 };
 

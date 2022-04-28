@@ -1,6 +1,5 @@
 import React from 'react';
 
-import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
@@ -17,11 +16,7 @@ const DefaultPage: React.FC = ({ children }) => {
   const features = useFeatures();
 
   return (
-    <Layout>
-      <Layout.Sidebar>
-        <SidebarNavigation />
-      </Layout.Sidebar>
-
+    <>
       <Layout.Main>
         {children}
       </Layout.Main>
@@ -44,7 +39,7 @@ const DefaultPage: React.FC = ({ children }) => {
         )}
         <LinkFooter key='link-footer' />
       </Layout.Aside>
-    </Layout>
+    </>
   );
 };
 
