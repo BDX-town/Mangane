@@ -5,7 +5,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Select } from '../../components/ui';
+import { Text, Select } from '../../components/ui';
 
 export const FormPropTypes = {
   label: PropTypes.oneOfType([
@@ -224,7 +224,8 @@ export class RadioItem extends ImmutablePureComponent {
     return (
       <li className='radio'>
         <label htmlFor={id}>
-          <input id={id} type='radio' {...props} /> {label}
+          <input id={id} type='radio' {...props} />
+          <Text>{label}</Text>
           {hint && <span className='hint'>{hint}</span>}
         </label>
       </li>
