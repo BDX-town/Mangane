@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedNumber } from 'react-intl';
 
 /** Check if a value is REALLY a number. */
-export const isNumber = (number: unknown): boolean => typeof number === 'number' && !isNaN(number);
+export const isNumber = (value: unknown): value is number => typeof value === 'number' && !isNaN(value);
 
 /** Display a number nicely for the UI, eg 1000 becomes 1K. */
 export const shortNumberFormat = (number: any): React.ReactNode => {

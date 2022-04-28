@@ -9,6 +9,8 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 
+import Counter from '../counter/counter';
+
 import './tabs.css';
 
 const HORIZONTAL_PADDING = 8;
@@ -95,6 +97,7 @@ type Item = {
   href?: string,
   to?: string,
   action?: () => void,
+  count?: number,
   name: string
 }
 interface ITabs {
@@ -118,7 +121,7 @@ const Tabs = ({ items, activeItem }: ITabs) => {
   };
 
   const renderItem = (item: Item, idx: number) => {
-    const { name, text, title } = item;
+    const { name, text, title, count } = item;
 
     return (
       <AnimatedTab
@@ -129,7 +132,15 @@ const Tabs = ({ items, activeItem }: ITabs) => {
         title={title}
         index={idx}
       >
-        {text}
+        <div className='relative'>
+          {count ? (
+            <span className='absolute -top-2 left-full ml-1'>
+              <Counter count={count} />
+            </span>
+          ) : null}
+
+          {text}
+        </div>
       </AnimatedTab>
     );
   };

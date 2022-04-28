@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { Icon, Text } from './ui';
+import { Icon, Text, Counter } from './ui';
 
 interface ISidebarNavigationLink {
   count?: number,
@@ -44,8 +44,8 @@ const SidebarNavigationLink = React.forwardRef((props: ISidebarNavigationLink, r
       })}
       >
         {withCounter && count > 0 ? (
-          <span className='absolute -top-2 -right-2 block px-1.5 py-0.5 bg-accent-500 text-xs text-white rounded-full ring-2 ring-white'>
-            {count}
+          <span className='absolute -top-2 -right-2'>
+            <Counter count={count} />
           </span>
         ) : null}
 
