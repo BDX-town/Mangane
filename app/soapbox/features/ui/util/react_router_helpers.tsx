@@ -1,7 +1,6 @@
 import React from 'react';
 import { Redirect, Route, useHistory, RouteProps, RouteComponentProps, match as MatchType } from 'react-router-dom';
 
-import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import { Layout } from 'soapbox/components/ui';
 import { useOwnAccount, useSettings } from 'soapbox/hooks';
 
@@ -111,19 +110,7 @@ const WrappedRoute: React.FC<IWrappedRoute> = ({
     }
   }
 
-  const renderBody = (props: RouteComponentProps) => {
-    return (
-      <Layout>
-        <Layout.Sidebar>
-          <SidebarNavigation />
-        </Layout.Sidebar>
-
-        {renderComponent(props)}
-      </Layout>
-    );
-  };
-
-  return <Route {...rest} render={renderBody} />;
+  return <Route {...rest} render={renderComponent} />;
 };
 
 export {

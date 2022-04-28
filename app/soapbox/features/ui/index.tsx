@@ -13,7 +13,9 @@ import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
 import { fetchMarker } from 'soapbox/actions/markers';
 import { register as registerPushNotifications } from 'soapbox/actions/push_notifications';
 import Icon from 'soapbox/components/icon';
+import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb_navigation';
+import { Layout } from 'soapbox/components/ui';
 import { useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
 import AdminPage from 'soapbox/pages/admin_page';
 import DefaultPage from 'soapbox/pages/default_page';
@@ -647,9 +649,15 @@ const UI: React.FC = ({ children }) => {
         <div className='z-10 flex flex-col'>
           <Navbar />
 
-          <SwitchingColumnsArea>
-            {children}
-          </SwitchingColumnsArea>
+          <Layout>
+            <Layout.Sidebar>
+              <SidebarNavigation />
+            </Layout.Sidebar>
+
+            <SwitchingColumnsArea>
+              {children}
+            </SwitchingColumnsArea>
+          </Layout>
 
           {me && floatingActionButton}
 
