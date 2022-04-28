@@ -134,7 +134,7 @@ const Preferences = () => {
         <ListItem label={<FormattedMessage id='preferences.fields.language_label' defaultMessage='Language' />}>
           <SelectDropdown
             items={languages}
-            defaultValue={settings.get('locale')}
+            defaultValue={settings.get('locale') as string | undefined}
             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['locale'])}
           />
         </ListItem>
@@ -142,7 +142,7 @@ const Preferences = () => {
         <ListItem label={<FormattedMessage id='preferences.fields.media_display_label' defaultMessage='Media display' />}>
           <SelectDropdown
             items={displayMediaOptions}
-            defaultValue={settings.get('displayMedia')}
+            defaultValue={settings.get('displayMedia') as string | undefined}
             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['displayMedia'])}
           />
         </ListItem>
