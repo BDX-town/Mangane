@@ -6,7 +6,7 @@ import ScrollableList from 'soapbox/components/scrollable_list';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetReport } from 'soapbox/selectors';
 
-import Report from './components/report';
+import Report from '../components/report';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.reports', defaultMessage: 'Reports' },
