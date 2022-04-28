@@ -20,9 +20,10 @@ interface ICard {
   variant?: 'rounded',
   size?: 'md' | 'lg' | 'xl',
   className?: string,
+  children: React.ReactNode,
 }
 
-const Card: React.FC<ICard> = React.forwardRef(({ children, variant, size = 'md', className, ...filteredProps }, ref: React.ForwardedRef<HTMLDivElement>): JSX.Element => (
+const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant, size = 'md', className, ...filteredProps }, ref): JSX.Element => (
   <div
     ref={ref}
     {...filteredProps}
