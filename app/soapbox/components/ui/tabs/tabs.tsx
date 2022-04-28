@@ -9,6 +9,8 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 
+import Counter from '../counter/counter';
+
 import './tabs.css';
 
 const HORIZONTAL_PADDING = 8;
@@ -132,8 +134,8 @@ const Tabs = ({ items, activeItem }: ITabs) => {
       >
         <div className='relative'>
           {count ? (
-            <span className='absolute -top-2 left-full ml-1 block px-1.5 py-0.5 bg-accent-500 text-xs text-white rounded-full ring-2 ring-white'>
-              {count}
+            <span className='absolute -top-2 left-full ml-1'>
+              <Counter count={count} />
             </span>
           ) : null}
 

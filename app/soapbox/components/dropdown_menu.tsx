@@ -6,7 +6,7 @@ import { spring } from 'react-motion';
 import Overlay from 'react-overlays/lib/Overlay';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { IconButton } from 'soapbox/components/ui';
+import { IconButton, Counter } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import Motion from 'soapbox/features/ui/util/optional_motion';
 
@@ -196,8 +196,8 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
           <span className='truncate'>{text}</span>
 
           {count ? (
-            <span className='ml-auto h-5 w-5 flex-none block px-1.5 py-0.5 bg-accent-500 text-xs text-white rounded-full ring-2 ring-white'>
-              {count}
+            <span className='ml-auto h-5 w-5 flex-none'>
+              <Counter count={count} />
             </span>
           ) : null}
         </a>

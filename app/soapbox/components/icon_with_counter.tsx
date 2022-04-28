@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Icon from 'soapbox/components/icon';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
+import { Counter } from 'soapbox/components/ui';
 
 interface IIconWithCounter extends React.HTMLAttributes<HTMLDivElement> {
   count: number,
@@ -14,9 +14,11 @@ const IconWithCounter: React.FC<IIconWithCounter> = ({ icon, count, ...rest }) =
     <div className='relative'>
       <Icon id={icon} {...rest} />
 
-      {count > 0 && <i className='absolute -top-2 -right-2 block px-1.5 py-0.5 bg-accent-500 text-xs text-white rounded-full ring-2 ring-white'>
-        {shortNumberFormat(count)}
-      </i>}
+      {count > 0 && (
+        <i className='absolute -top-2 -right-2'>
+          <Counter count={count} />
+        </i>
+      )}
     </div>
   );
 };
