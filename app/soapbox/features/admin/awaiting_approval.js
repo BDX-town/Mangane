@@ -10,6 +10,7 @@ import ScrollableList from 'soapbox/components/scrollable_list';
 
 import Column from '../ui/components/column';
 
+import AdminTabs from './components/admin-tabs';
 import UnapprovedAccount from './components/unapproved_account';
 
 const messages = defineMessages({
@@ -47,7 +48,8 @@ class AwaitingApproval extends ImmutablePureComponent {
     const showLoading = isLoading && accountIds.count() === 0;
 
     return (
-      <Column icon='user' label={intl.formatMessage(messages.heading)}>
+      <Column label={intl.formatMessage(messages.heading)} withHeader={false}>
+        <AdminTabs activeItem='approval' />
         <ScrollableList
           isLoading={isLoading}
           showLoading={showLoading}
