@@ -1,6 +1,5 @@
 import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
-import { useHistory } from 'react-router-dom';
 
 import { Tabs } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
@@ -17,7 +16,6 @@ interface IAdminTabs {
 
 const AdminTabs: React.FC<IAdminTabs> = ({ activeItem }) => {
   const intl = useIntl();
-  const history = useHistory();
 
   const approvalCount = useAppSelector(state => state.admin.awaitingApproval.count());
   const reportsCount = useAppSelector(state => state.admin.openReports.count());
@@ -25,16 +23,16 @@ const AdminTabs: React.FC<IAdminTabs> = ({ activeItem }) => {
   const tabs = [{
     name: 'dashboard',
     text: intl.formatMessage(messages.dashboard),
-    action: () => history.push('/admin'),
+    to: '/admin',
   }, {
     name: 'reports',
     text: intl.formatMessage(messages.reports),
-    action: () => history.push('/admin/reports'),
+    to: '/admin/reports',
     count: reportsCount,
   }, {
     name: 'approval',
     text: intl.formatMessage(messages.waitlist),
-    action: () => history.push('/admin/approval'),
+    to: '/admin/approval',
     count: approvalCount,
   }];
 
