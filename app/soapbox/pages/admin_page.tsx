@@ -1,5 +1,7 @@
 import React from 'react';
 
+import SidebarNavigation from 'soapbox/components/sidebar-navigation';
+import { Layout } from 'soapbox/components/ui';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
   AdminNav,
@@ -10,35 +12,27 @@ import LinkFooter from '../features/ui/components/link_footer';
 
 const AdminPage: React.FC = ({ children }) => {
   return (
-    <div className='page page--admin'>
-      <div className='page__columns'>
-        <div className='columns-area__panels'>
+    <Layout>
+      <Layout.Sidebar>
+        <SidebarNavigation />
+      </Layout.Sidebar>
 
-          <div className='columns-area__panels__pane columns-area__panels__pane--left'>
-            <div className='columns-area__panels__pane__inner'>
-              <BundleContainer fetchComponent={AdminNav}>
-                {Component => <Component />}
-              </BundleContainer>
-            </div>
-          </div>
+      <Layout.Main>
+        {children}
+      </Layout.Main>
 
-          <div className='columns-area__panels__main'>
-            <div className='columns-area'>
-              {children}
-            </div>
-          </div>
+      <Layout.Aside>
+        <BundleContainer fetchComponent={AdminNav}>
+          {Component => <Component />}
+        </BundleContainer>
 
-          <div className='columns-area__panels__pane columns-area__panels__pane--right'>
-            <div className='columns-area__panels__pane__inner'>
-              <BundleContainer fetchComponent={LatestAccountsPanel}>
-                {Component => <Component limit={5} />}
-              </BundleContainer>
-              <LinkFooter />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+        <BundleContainer fetchComponent={LatestAccountsPanel}>
+          {Component => <Component limit={5} />}
+        </BundleContainer>
+
+        <LinkFooter />
+      </Layout.Aside>
+    </Layout>
   );
 };
 
