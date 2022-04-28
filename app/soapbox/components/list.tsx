@@ -1,19 +1,20 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import Icon from './icon';
 
-const List = ({ children }) => (
+const List: React.FC = ({ children }) => (
   <div className='space-y-0.5'>{children}</div>
 );
 
-List.propTypes = {
-  children: PropTypes.node,
-};
+interface IListItem {
+  label: React.ReactNode,
+  hint?: React.ReactNode,
+  onClick?: () => void,
+}
 
-const ListItem = ({ label, hint, children, onClick }) => {
+const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick }) => {
   const id = uuidv4();
   const domId = `list-group-${id}`;
 
@@ -58,13 +59,6 @@ const ListItem = ({ label, hint, children, onClick }) => {
       ) : renderChildren()}
     </Comp>
   );
-};
-
-ListItem.propTypes = {
-  label: PropTypes.node.isRequired,
-  hint: PropTypes.node,
-  children: PropTypes.node,
-  onClick: PropTypes.func,
 };
 
 export { List as default, ListItem };
