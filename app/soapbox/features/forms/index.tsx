@@ -78,6 +78,7 @@ interface ISimpleInput {
   label?: React.ReactNode,
   hint?: React.ReactNode,
   error?: boolean,
+  onChange?: React.ChangeEventHandler,
 }
 
 export const SimpleInput: React.FC<ISimpleInput> = (props) => {
@@ -111,6 +112,7 @@ interface ISimpleForm {
   className?: string,
   onSubmit?: React.FormEventHandler,
   acceptCharset?: string,
+  style?: React.CSSProperties,
 }
 
 export const SimpleForm: React.FC<ISimpleForm> = (props) => {
@@ -217,7 +219,12 @@ export const SelectDropdown: React.FC<ISelectDropdown> = (props) => {
   ) : selectElem;
 };
 
-export const TextInput: React.FC = props => (
+interface ITextInput {
+  onChange?: React.ChangeEventHandler,
+  placeholder?: string,
+}
+
+export const TextInput: React.FC<ITextInput> = props => (
   <SimpleInput type='text' {...props} />
 );
 
