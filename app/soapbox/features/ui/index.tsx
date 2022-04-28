@@ -91,8 +91,6 @@ import {
   ChatPanes,
   ServerInfo,
   Dashboard,
-  AwaitingApproval,
-  Reports,
   ModerationLog,
   CryptoDonate,
   ScheduledStatuses,

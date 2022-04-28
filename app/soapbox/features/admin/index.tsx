@@ -6,9 +6,9 @@ import { useOwnAccount } from 'soapbox/hooks';
 
 import Column from '../ui/components/column';
 
-import Waitlist from './awaiting_approval';
 import AdminTabs from './components/admin-tabs';
 import Reports from './reports';
+import Waitlist from './tabs/awaiting-approval';
 import Dashboard from './tabs/dashboard';
 
 const messages = defineMessages({

@@ -330,14 +330,6 @@ export function Dashboard() {
   return import(/* webpackChunkName: "features/admin" */'../../admin');
 }
 
-export function AwaitingApproval() {
-  return import(/* webpackChunkName: "features/admin/awaiting_approval" */'../../admin/awaiting_approval');
-}
-
-export function Reports() {
-  return import(/* webpackChunkName: "features/admin/reports" */'../../admin/reports');
-}
-
 export function ModerationLog() {
   return import(/* webpackChunkName: "features/admin/moderation_log" */'../../admin/moderation_log');
 }
