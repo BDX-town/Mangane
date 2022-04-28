@@ -4,7 +4,6 @@ import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import { Layout } from 'soapbox/components/ui';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
-  AdminNav,
   LatestAccountsPanel,
 } from 'soapbox/features/ui/util/async-components';
 
@@ -22,10 +21,6 @@ const AdminPage: React.FC = ({ children }) => {
       </Layout.Main>
 
       <Layout.Aside>
-        <BundleContainer fetchComponent={AdminNav}>
-          {Component => <Component />}
-        </BundleContainer>
-
         <BundleContainer fetchComponent={LatestAccountsPanel}>
           {Component => <Component limit={5} />}
         </BundleContainer>

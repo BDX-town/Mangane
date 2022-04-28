@@ -3,7 +3,7 @@ import { defineMessages, useIntl, FormattedMessage, FormattedNumber } from 'reac
 import { Link } from 'react-router-dom';
 
 import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/actions/email_list';
-import { Text } from 'soapbox/components/ui';
+import { Text, Tabs } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
 import sourceCode from 'soapbox/utils/code';
 import { parseVersion } from 'soapbox/utils/features';
@@ -70,9 +70,22 @@ const Dashboard: React.FC = () => {
 
   if (!account) return null;
 
+  const tabs = [{
+    name: 'dashboard',
+    text: 'Dashboard',
+  }, {
+    name: 'reports',
+    text: 'Reports',
+  }, {
+    name: 'approval',
+    text: 'Waitlist',
+  }];
+
   return (
-    <Column icon='tachometer-alt' label={intl.formatMessage(messages.heading)}>
-      <div className='dashcounters'>
+    <Column label={intl.formatMessage(messages.heading)} withHeader={false}>
+      <Tabs items={tabs} activeItem='dashboard' />
+
+      <div className='dashcounters mt-8'>
         {isNumber(mau) && (
           <div className='dashcounter'>
             <Text align='center' size='2xl' weight='medium'>
