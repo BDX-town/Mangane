@@ -24,6 +24,7 @@ export interface MenuItem {
   newTab?: boolean,
   isLogout?: boolean,
   icon: string,
+  count?: number,
   destructive?: boolean,
 }
 
@@ -174,7 +175,7 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
       return <li key={`sep-${i}`} className='dropdown-menu__separator' />;
     }
 
-    const { text, href, to, newTab, isLogout, icon, destructive } = option;
+    const { text, href, to, newTab, isLogout, icon, count, destructive } = option;
 
     return (
       <li className={classNames('dropdown-menu__item truncate', { destructive })} key={`${text}-${i}`}>
@@ -191,7 +192,14 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
           data-method={isLogout ? 'delete' : undefined}
         >
           {icon && <SvgIcon src={icon} className='mr-3 h-5 w-5 flex-none' />}
+
           <span className='truncate'>{text}</span>
+
+          {count ? (
+            <span className='ml-auto h-5 w-5 flex-none block px-1.5 py-0.5 bg-accent-500 text-xs text-white rounded-full ring-2 ring-white'>
+              {count}
+            </span>
+          ) : null}
         </a>
       </li>
     );

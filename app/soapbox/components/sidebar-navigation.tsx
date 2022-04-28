@@ -20,7 +20,7 @@ const SidebarNavigation = () => {
   const notificationCount = useAppSelector((state) => state.notifications.get('unread'));
   const chatsCount = useAppSelector((state) => state.chats.get('items').reduce((acc: any, curr: any) => acc + Math.min(curr.get('unread', 0), 1), 0));
   const followRequestsCount = useAppSelector((state) => state.user_lists.getIn(['follow_requests', 'items'], ImmutableOrderedSet()).count());
-  // const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
+  const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
 
   const baseURL = account ? getBaseURL(account) : '';
   const features = getFeatures(instance);
@@ -76,8 +76,7 @@ const SidebarNavigation = () => {
           to: '/admin',
           icon: require('@tabler/icons/icons/dashboard.svg'),
           text: <FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />,
-          // TODO: let menu items have a counter
-          // count: dashboardCount,
+          count: dashboardCount,
         });
       }
 
@@ -160,6 +159,7 @@ const SidebarNavigation = () => {
           <DropdownMenu items={menu}>
             <SidebarNavigationLink
               icon={require('@tabler/icons/icons/dots-circle-horizontal.svg')}
+              count={dashboardCount}
               text={<FormattedMessage id='tabs_bar.more' defaultMessage='More' />}
             />
           </DropdownMenu>
