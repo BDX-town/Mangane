@@ -95,6 +95,7 @@ type Item = {
   href?: string,
   to?: string,
   action?: () => void,
+  count?: number,
   name: string
 }
 interface ITabs {
@@ -118,7 +119,7 @@ const Tabs = ({ items, activeItem }: ITabs) => {
   };
 
   const renderItem = (item: Item, idx: number) => {
-    const { name, text, title } = item;
+    const { name, text, title, count } = item;
 
     return (
       <AnimatedTab
@@ -129,7 +130,15 @@ const Tabs = ({ items, activeItem }: ITabs) => {
         title={title}
         index={idx}
       >
-        {text}
+        <div className='relative'>
+          {count ? (
+            <span className='absolute -top-2 left-full ml-1 block px-1.5 py-0.5 bg-accent-500 text-xs text-white rounded-full ring-2 ring-white'>
+              {count}
+            </span>
+          ) : null}
+
+          {text}
+        </div>
       </AnimatedTab>
     );
   };
