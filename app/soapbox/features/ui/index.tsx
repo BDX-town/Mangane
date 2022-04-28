@@ -28,6 +28,7 @@ import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
 import StatusPage from 'soapbox/pages/status_page';
 import { getAccessToken } from 'soapbox/utils/auth';
 import { getVapidKey } from 'soapbox/utils/auth';
+import { isStandalone } from 'soapbox/utils/state';
 
 import { fetchFollowRequests } from '../../actions/accounts';
 import { fetchReports, fetchUsers, fetchConfig } from '../../actions/admin';
@@ -346,6 +347,7 @@ const UI: React.FC = ({ children }) => {
   const dropdownMenuIsOpen = useAppSelector(state => state.dropdown_menu.get('openId') !== null);
   const accessToken = useAppSelector(state => getAccessToken(state));
   const streamingUrl = useAppSelector(state => state.instance.urls.get('streaming_api'));
+  const standalone = useAppSelector(isStandalone);
 
   const handleDragEnter = (e: DragEvent) => {
     e.preventDefault();
@@ -651,7 +653,7 @@ const UI: React.FC = ({ children }) => {
 
           <Layout>
             <Layout.Sidebar>
-              <SidebarNavigation />
+              {!standalone && <SidebarNavigation />}
             </Layout.Sidebar>
 
             <SwitchingColumnsArea>
