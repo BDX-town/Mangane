@@ -1,5 +1,5 @@
 import { isLoggedIn } from 'soapbox/utils/auth';
-import { getFeatures, parseVersion } from 'soapbox/utils/features';
+import { getFeatures } from 'soapbox/utils/features';
 import { shouldHaveCard } from 'soapbox/utils/status';
 
 import api, { getNextLink } from '../api';
@@ -39,8 +39,6 @@ export const STATUS_UNMUTE_FAIL    = 'STATUS_UNMUTE_FAIL';
 
 export const STATUS_REVEAL = 'STATUS_REVEAL';
 export const STATUS_HIDE   = 'STATUS_HIDE';
-
-export const REDRAFT = 'REDRAFT';
 
 const statusExists = (getState, statusId) => {
   return getState().getIn(['statuses', statusId], null) !== null;
@@ -120,22 +118,6 @@ export function fetchStatus(id) {
       return status;
     }).catch(error => {
       dispatch({ type: STATUS_FETCH_FAIL, id, error, skipLoading, skipAlert: true });
-    });
-  };
-}
-
-export function redraft(status, raw_text, content_type) {
-  return (dispatch, getState) => {
-    const { instance } = getState();
-    const { explicitAddressing } = getFeatures(instance);
-
-    dispatch({
-      type: REDRAFT,
-      status,
-      raw_text,
-      explicitAddressing,
-      content_type,
-      v: parseVersion(instance.version),
     });
   };
 }
