@@ -27,6 +27,7 @@ export const AccountRecord = ImmutableRecord({
   birthday: undefined as Date | undefined,
   bot: false,
   created_at: new Date(),
+  discoverable: false,
   display_name: '',
   emojis: ImmutableList<Emoji>(),
   favicon: '',
@@ -255,6 +256,11 @@ const addStaffFields = (account: ImmutableMap<string, any>) => {
   });
 };
 
+const normalizeDiscoverable = (account: ImmutableMap<string, any>) => {
+  const discoverable = Boolean(account.get('discoverable') || account.getIn(['source', 'pleroma', 'discoverable']));
+  return account.set('discoverable', discoverable);
+};
+
 export const normalizeAccount = (account: Record<string, any>) => {
   return AccountRecord(
     ImmutableMap(fromJS(account)).withMutations(account => {
@@ -269,6 +275,7 @@ export const normalizeAccount = (account: Record<string, any>) => {
       normalizeLocation(account);
       normalizeFqn(account);
       normalizeFavicon(account);
+      normalizeDiscoverable(account);
       addDomain(account);
       addStaffFields(account);
       fixUsername(account);
