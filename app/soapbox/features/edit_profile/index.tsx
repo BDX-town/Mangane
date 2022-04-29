@@ -2,7 +2,7 @@ import { unescape } from 'lodash';
 import React, { useState, useEffect, useMemo } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-// import { updateNotificationSettings } from 'soapbox/actions/accounts';
+import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
 import {
@@ -46,13 +46,6 @@ const messages = defineMessages({
 //   ImmutableList(fields).setSize(Math.max(fields.size, maxFields)).map(field =>
 //     field ? field : ImmutableMap({ name: '', value: '' }),
 //   )
-// );
-//
-// /** HTML unescape for special chars, eg <br> */
-// const unescapeParams = (map, params) => (
-//   params.reduce((map, param) => (
-//     map.set(param, unescape(map.get(param)))
-//   ), map)
 // );
 
 /**
@@ -153,11 +146,14 @@ const EditProfile: React.FC = () => {
 
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState<AccountCredentials>({});
+  const [muteStrangers, setMuteStrangers] = useState(false);
 
   useEffect(() => {
     if (account) {
       const credentials = accountToCredentials(account);
+      const strangerNotifications = account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']) === true;
       setData(credentials);
+      setMuteStrangers(strangerNotifications);
     }
   }, [account?.id]);
 
@@ -169,15 +165,21 @@ const EditProfile: React.FC = () => {
   };
 
   const handleSubmit: React.FormEventHandler = (event) => {
-    const credentials = dispatch(patchMe(data, true));
-    /* Bad API url, was causing errors in the promise call below blocking the success message after making edits. */
-    /* const notifications = dispatch(updateNotificationSettings({
-      block_from_strangers: this.state.stranger_notifications || false,
-    })); */
+    const promises = [];
+
+    promises.push(dispatch(patchMe(data, true)));
+
+    if (features.muteStrangers) {
+      promises.push(
+        dispatch(updateNotificationSettings({
+          block_from_strangers: muteStrangers,
+        })).catch(console.error),
+      );
+    }
 
     setLoading(true);
 
-    Promise.all([credentials /*notifications*/]).then(() => {
+    Promise.all(promises).then(() => {
       setLoading(false);
       dispatch(snackbar.success(intl.formatMessage(messages.success)));
     }).catch(() => {
@@ -383,14 +385,14 @@ const EditProfile: React.FC = () => {
             />
           )}
 
-          {/*
-          <Checkbox
-            label={<FormattedMessage id='edit_profile.fields.stranger_notifications_label' defaultMessage='Block notifications from strangers' />}
-            hint={<FormattedMessage id='edit_profile.hints.stranger_notifications' defaultMessage='Only show notifications from people you follow' />}
-            checked={this.state.stranger_notifications}
-            onChange={this.handleCheckboxChange('stranger_notifications')}
-          />
-          */}
+          {features.muteStrangers && (
+            <Checkbox
+              label={<FormattedMessage id='edit_profile.fields.stranger_notifications_label' defaultMessage='Block notifications from strangers' />}
+              hint={<FormattedMessage id='edit_profile.hints.stranger_notifications' defaultMessage='Only show notifications from people you follow' />}
+              checked={muteStrangers}
+              onChange={(e) => setMuteStrangers(e.target.checked)}
+            />
+          )}
 
           {features.profileDirectory && (
             <Checkbox

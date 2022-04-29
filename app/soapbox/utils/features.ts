@@ -312,6 +312,12 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Ability to hide notifications from people you don't follow.
+     * @see PUT /api/pleroma/notification_settings
+     */
+    muteStrangers: v.software === PLEROMA,
+
+    /**
      * Add private notes to accounts.
      * @see POST /api/v1/accounts/:id/note
      * @see GET /api/v1/accounts/relationships
