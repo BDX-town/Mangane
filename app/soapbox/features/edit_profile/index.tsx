@@ -353,59 +353,64 @@ const EditProfile: React.FC = () => {
           </div>
         </div>
 
-        {features.followRequests && (
-          <Checkbox
-            label={<FormattedMessage id='edit_profile.fields.locked_label' defaultMessage='Lock account' />}
-            hint={<FormattedMessage id='edit_profile.hints.locked' defaultMessage='Requires you to manually approve followers' />}
-            checked={data.locked}
-            onChange={handleCheckboxChange('locked')}
-          />
-        )}
+        {/* HACK: wrap these checkboxes in a .simple_form container so they get styled (for now) */}
+        {/* Need a either move, replace, or refactor these checkboxes. */}
+        <div className='simple_form'>
+          {features.followRequests && (
+            <Checkbox
+              label={<FormattedMessage id='edit_profile.fields.locked_label' defaultMessage='Lock account' />}
+              hint={<FormattedMessage id='edit_profile.hints.locked' defaultMessage='Requires you to manually approve followers' />}
+              checked={data.locked}
+              onChange={handleCheckboxChange('locked')}
+            />
+          )}
 
-        {features.hideNetwork && (
-          <Checkbox
-            label={<FormattedMessage id='edit_profile.fields.hide_network_label' defaultMessage='Hide network' />}
-            hint={<FormattedMessage id='edit_profile.hints.hide_network' defaultMessage='Who you follow and who follows you will not be shown on your profile' />}
-            checked={account ? hidesNetwork(account): false}
-            onChange={handleHideNetworkChange}
-          />
-        )}
+          {features.hideNetwork && (
+            <Checkbox
+              label={<FormattedMessage id='edit_profile.fields.hide_network_label' defaultMessage='Hide network' />}
+              hint={<FormattedMessage id='edit_profile.hints.hide_network' defaultMessage='Who you follow and who follows you will not be shown on your profile' />}
+              checked={account ? hidesNetwork(account): false}
+              onChange={handleHideNetworkChange}
+            />
+          )}
 
-        {features.bots && (
-          <Checkbox
-            label={<FormattedMessage id='edit_profile.fields.bot_label' defaultMessage='This is a bot account' />}
-            hint={<FormattedMessage id='edit_profile.hints.bot' defaultMessage='This account mainly performs automated actions and might not be monitored' />}
-            checked={data.bot}
-            onChange={handleCheckboxChange('bot')}
-          />
-        )}
+          {features.bots && (
+            <Checkbox
+              label={<FormattedMessage id='edit_profile.fields.bot_label' defaultMessage='This is a bot account' />}
+              hint={<FormattedMessage id='edit_profile.hints.bot' defaultMessage='This account mainly performs automated actions and might not be monitored' />}
+              checked={data.bot}
+              onChange={handleCheckboxChange('bot')}
+            />
+          )}
 
-        {/*
-        <Checkbox
-          label={<FormattedMessage id='edit_profile.fields.stranger_notifications_label' defaultMessage='Block notifications from strangers' />}
-          hint={<FormattedMessage id='edit_profile.hints.stranger_notifications' defaultMessage='Only show notifications from people you follow' />}
-          checked={this.state.stranger_notifications}
-          onChange={this.handleCheckboxChange('stranger_notifications')}
-        />
-        */}
-
-        {features.profileDirectory && (
+          {/*
           <Checkbox
-            label={<FormattedMessage id='edit_profile.fields.discoverable_label' defaultMessage='Allow account discovery' />}
-            hint={<FormattedMessage id='edit_profile.hints.discoverable' defaultMessage='Display account in profile directory and allow indexing by external services' />}
-            checked={data.discoverable}
-            onChange={handleCheckboxChange('discoverable')}
+            label={<FormattedMessage id='edit_profile.fields.stranger_notifications_label' defaultMessage='Block notifications from strangers' />}
+            hint={<FormattedMessage id='edit_profile.hints.stranger_notifications' defaultMessage='Only show notifications from people you follow' />}
+            checked={this.state.stranger_notifications}
+            onChange={this.handleCheckboxChange('stranger_notifications')}
           />
-        )}
+          */}
 
-        {features.emailList && (
-          <Checkbox
-            label={<FormattedMessage id='edit_profile.fields.accepts_email_list_label' defaultMessage='Subscribe to newsletter' />}
-            hint={<FormattedMessage id='edit_profile.hints.accepts_email_list' defaultMessage='Opt-in to news and marketing updates.' />}
-            checked={data.accepts_email_list}
-            onChange={handleCheckboxChange('accepts_email_list')}
-          />
-        )}
+          {features.profileDirectory && (
+            <Checkbox
+              label={<FormattedMessage id='edit_profile.fields.discoverable_label' defaultMessage='Allow account discovery' />}
+              hint={<FormattedMessage id='edit_profile.hints.discoverable' defaultMessage='Display account in profile directory and allow indexing by external services' />}
+              checked={data.discoverable}
+              onChange={handleCheckboxChange('discoverable')}
+            />
+          )}
+
+          {features.emailList && (
+            <Checkbox
+              label={<FormattedMessage id='edit_profile.fields.accepts_email_list_label' defaultMessage='Subscribe to newsletter' />}
+              hint={<FormattedMessage id='edit_profile.hints.accepts_email_list' defaultMessage='Opt-in to news and marketing updates.' />}
+              checked={data.accepts_email_list}
+              onChange={handleCheckboxChange('accepts_email_list')}
+            />
+          )}
+        </div>
+
         {/* </FieldsGroup> */}
         {/*<FieldsGroup>
             <div className='fields-row__column fields-group'>

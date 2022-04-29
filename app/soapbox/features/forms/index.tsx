@@ -82,8 +82,8 @@ interface ISimpleInput {
 }
 
 export const SimpleInput: React.FC<ISimpleInput> = (props) => {
-  const { hint, label, error, ...rest } = props;
-  const Input = label ? LabelInput : 'input';
+  const { hint, error, ...rest } = props;
+  const Input = props.label ? LabelInput : 'input';
 
   return (
     <InputContainer {...props}>
