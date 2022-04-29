@@ -1,19 +1,14 @@
-import {
-  Map as ImmutableMap,
-  List as ImmutableList,
-} from 'immutable';
 import { unescape } from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 // import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
-// import Icon from 'soapbox/components/icon';
 import {
   Checkbox,
 } from 'soapbox/features/forms';
-import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
 import resizeImage from 'soapbox/utils/resize_image';
 
@@ -93,9 +88,9 @@ interface AccountCredentials {
   /** The account bio. */
   note?: string,
   /** Avatar image encoded using multipart/form-data */
-  avatar?: string,
+  avatar?: File,
   /** Header image encoded using multipart/form-data */
-  header?: string,
+  header?: File,
   /** Whether manual approval of follow requests is required. */
   locked?: boolean,
   /** Private information (settings) about the account. */
@@ -214,7 +209,6 @@ const EditProfile: React.FC = () => {
       if (!f) return;
 
       resizeImage(f, maxPixels).then(file => {
-        // const url = file ? URL.createObjectURL(file) : data[name];
         updateData(name, file);
       }).catch(console.error);
     };
@@ -241,6 +235,26 @@ const EditProfile: React.FC = () => {
   //     });
   //   };
   // };
+
+  /** Memoized avatar preview URL. */
+  const avatarUrl = useMemo(() => {
+    return data.avatar ? URL.createObjectURL(data.avatar) : account?.avatar;
+  }, [data.avatar, account?.avatar]);
+
+  /** Memoized header preview URL. */
+  const headerUrl = useMemo(() => {
+    return data.header ? URL.createObjectURL(data.header) : account?.header;
+  }, [data.header, account?.header]);
+
+  /** Preview account data. */
+  const previewAccount = useMemo(() => {
+    return normalizeAccount({
+      ...account?.toJS(),
+      ...data,
+      avatar: avatarUrl,
+      header: headerUrl,
+    }) as Account;
+  }, [account?.id, data.display_name, avatarUrl, headerUrl]);
 
   return (
     <Column label={intl.formatMessage(messages.header)}>
@@ -306,7 +320,7 @@ const EditProfile: React.FC = () => {
         </FormGroup>
 
         <div className='grid grid-cols-2 gap-4'>
-          <ProfilePreview account={normalizeAccount(data) as Account} />
+          <ProfilePreview account={previewAccount} />
 
           <div className='space-y-4'>
             <FormGroup
