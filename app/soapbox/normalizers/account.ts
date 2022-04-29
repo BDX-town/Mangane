@@ -24,7 +24,7 @@ export const AccountRecord = ImmutableRecord({
   acct: '',
   avatar: '',
   avatar_static: '',
-  birthday: undefined as Date | undefined,
+  birthday: undefined as string | undefined,
   bot: false,
   created_at: new Date(),
   discoverable: false,

@@ -146,7 +146,14 @@ export const FieldsGroup: React.FC = ({ children }) => (
   <div className='fields-group'>{children}</div>
 );
 
-export const Checkbox: React.FC = (props) => (
+interface ICheckbox {
+  label?: React.ReactNode,
+  hint?: React.ReactNode,
+  checked?: boolean,
+  onChange?: React.ChangeEventHandler<HTMLInputElement>,
+}
+
+export const Checkbox: React.FC<ICheckbox> = (props) => (
   <SimpleInput type='checkbox' {...props} />
 );
 

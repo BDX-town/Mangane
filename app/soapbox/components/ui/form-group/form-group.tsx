@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 interface IFormGroup {
-  hintText?: string | React.ReactNode,
-  labelText: string,
+  hintText?: React.ReactNode,
+  labelText: React.ReactNode,
   errors?: string[]
 }
 
