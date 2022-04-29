@@ -338,6 +338,7 @@ code {
   input[type=password],
   textarea,
   .rfipbtn {
+    @apply border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-black dark:text-white;
     box-sizing: border-box;
     font-size: 16px;
     color: var(--primary-text-color);
@@ -643,6 +644,7 @@ code {
     }
 
     .icon-button {
+      @apply text-black dark:text-white;
       position: absolute;
       top: 0;
       right: 0;
@@ -651,7 +653,6 @@ code {
       padding: 0;
       margin: 0;
       background: transparent;
-      color: var(--primary-text-color);
 
       .svg-icon {
         height: 20px;

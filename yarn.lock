@@ -2242,6 +2242,13 @@
     "@types/history" "^4.7.11"
     "@types/react" "*"
 
+"@types/react-sparklines@^1.7.2":
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/@types/react-sparklines/-/react-sparklines-1.7.2.tgz#c14e80623abd3669a10f18d13f6fb9fbdc322f70"
+  integrity sha512-N1GwO7Ri5C5fE8+CxhiDntuSw1qYdGytBuedKrCxWpaojXm4WnfygbdBdc5sXGX7feMxDXBy9MNhxoUTwrMl4A==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-swipeable-views@^0.13.1":
   version "0.13.1"
   resolved "https://registry.yarnpkg.com/@types/react-swipeable-views/-/react-swipeable-views-0.13.1.tgz#381c8513deef5426623aa851033ff4f4831ae15c"

@@ -9,7 +9,7 @@ interface LayoutType extends React.FC {
 }
 
 const Layout: LayoutType = ({ children }) => (
-  <div className='sm:pt-4 relative pb-36'>
+  <div className='sm:pt-4 relative'>
     <div className='max-w-3xl mx-auto sm:px-6 md:max-w-7xl md:px-8 md:grid md:grid-cols-12 md:gap-8'>
       {children}
     </div>
@@ -27,7 +27,7 @@ const Sidebar: React.FC = ({ children }) => (
 const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className }) => (
   <main
     className={classNames({
-      'md:col-span-12 lg:col-span-9 xl:col-span-6 sm:space-y-4': true,
+      'md:col-span-12 lg:col-span-9 xl:col-span-6 sm:space-y-4 pb-36': true,
     }, className)}
   >
     {children}

@@ -2,18 +2,18 @@ import { OrderedSet as ImmutableOrderedSet, is } from 'immutable';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { fetchUsers } from 'soapbox/actions/admin';
 import compareId from 'soapbox/compare_id';
-import { Text, Widget } from 'soapbox/components/ui';
+import { Widget } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import { useAppSelector } from 'soapbox/hooks';
 import { useAppDispatch } from 'soapbox/hooks';
 
 const messages = defineMessages({
   title: { id: 'admin.latest_accounts_panel.title', defaultMessage: 'Latest Accounts' },
-  expand: { id: 'admin.latest_accounts_panel.expand_message', defaultMessage: 'Click to see {count} more {count, plural, one {account} other {accounts}}' },
+  expand: { id: 'admin.latest_accounts_panel.more', defaultMessage: 'Click to see {count} {count, plural, one {account} other {accounts}}' },
 });
 
 interface ILatestAccountsPanel {
@@ -21,8 +21,9 @@ interface ILatestAccountsPanel {
 }
 
 const LatestAccountsPanel: React.FC<ILatestAccountsPanel> = ({ limit = 5 }) => {
-  const dispatch = useAppDispatch();
   const intl = useIntl();
+  const history = useHistory();
+  const dispatch = useAppDispatch();
 
   const accountIds = useAppSelector<ImmutableOrderedSet<string>>((state) => state.admin.get('latestUsers').take(limit));
   const hasDates = useAppSelector((state) => accountIds.every(id => !!state.accounts.getIn([id, 'created_at'])));
@@ -44,18 +45,19 @@ const LatestAccountsPanel: React.FC<ILatestAccountsPanel> = ({ limit = 5 }) => {
     return null;
   }
 
-  const expandCount = total - accountIds.size;
+  const handleAction = () => {
+    history.push('/admin/users');
+  };
 
   return (
-    <Widget title={intl.formatMessage(messages.title)}>
+    <Widget
+      title={intl.formatMessage(messages.title)}
+      onActionClick={handleAction}
+      actionTitle={intl.formatMessage(messages.expand, { count: total })}
+    >
       {accountIds.take(limit).map((account) => (
         <AccountContainer key={account} id={account} withRelationship={false} withDate />
       ))}
-      {!!expandCount && (
-        <Link className='wtf-panel__expand-btn' to='/admin/users'>
-          <Text>{intl.formatMessage(messages.expand, { count: expandCount })}</Text>
-        </Link>
-      )}
     </Widget>
   );
 };

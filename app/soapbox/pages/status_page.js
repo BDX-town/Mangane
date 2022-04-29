@@ -2,7 +2,6 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 
-import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import {
   WhoToFollowPanel,
@@ -33,11 +32,7 @@ class StatusPage extends ImmutablePureComponent {
     const { me, children, showTrendsPanel, showWhoToFollowPanel } = this.props;
 
     return (
-      <Layout>
-        <Layout.Sidebar>
-          <SidebarNavigation />
-        </Layout.Sidebar>
-
+      <>
         <Layout.Main>
           {children}
         </Layout.Main>
@@ -60,7 +55,7 @@ class StatusPage extends ImmutablePureComponent {
           )}
           <LinkFooter key='link-footer' />
         </Layout.Aside>
-      </Layout>
+      </>
     );
   }
 

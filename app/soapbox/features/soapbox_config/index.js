@@ -21,7 +21,6 @@ import {
   SimpleInput,
   SimpleTextarea,
   FileChooserLogo,
-  FormPropTypes,
   Checkbox,
 } from 'soapbox/features/forms';
 import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
@@ -509,7 +508,7 @@ class ColorWithPicker extends ImmutablePureComponent {
 
   static propTypes = {
     buttonId: PropTypes.string.isRequired,
-    label: FormPropTypes.label,
+    label: PropTypes.node,
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
   }
@@ -559,7 +558,7 @@ export class IconPicker extends ImmutablePureComponent {
 
   static propTypes = {
     icons: PropTypes.object,
-    label: FormPropTypes.label,
+    label: PropTypes.node,
     value: PropTypes.string,
     onChange: PropTypes.func.isRequired,
   }

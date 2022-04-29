@@ -2,7 +2,6 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 
-import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
@@ -32,11 +31,7 @@ class RemoteInstancePage extends ImmutablePureComponent {
     const { children, params: { instance: host }, disclosed, isAdmin } = this.props;
 
     return (
-      <Layout>
-        <Layout.Sidebar>
-          <SidebarNavigation />
-        </Layout.Sidebar>
-
+      <>
         <Layout.Main>
           {children}
         </Layout.Main>
@@ -55,7 +50,7 @@ class RemoteInstancePage extends ImmutablePureComponent {
           )}
           <LinkFooter key='link-footer' />
         </Layout.Aside>
-      </Layout>
+      </>
     );
   }
 

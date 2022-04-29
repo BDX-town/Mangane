@@ -2,11 +2,7 @@
   @apply text-gray-500 dark:text-gray-400 mb-1 text-sm;
 
   &__account {
-    @apply text-primary-600 no-underline;
-
-    &:hover {
-      @apply underline text-primary-800;
-    }
+    @apply text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 no-underline hover:underline;
   }
 }
 

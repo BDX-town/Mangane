@@ -25,6 +25,7 @@
     width: 100%;
 
     &::after {
+      @apply text-black dark:text-white;
       content: '';
       display: block;
       font-family: 'Font Awesome 5 Free';

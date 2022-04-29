@@ -1,5 +1,4 @@
 import { debounce } from 'lodash';
-import PropTypes from 'prop-types';
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -13,10 +12,16 @@ const showProfileHoverCard = debounce((dispatch, ref, accountId) => {
   dispatch(openProfileHoverCard(ref, accountId));
 }, 600);
 
-export const HoverRefWrapper = ({ accountId, children, inline }) => {
+interface IHoverRefWrapper {
+  accountId: string,
+  inline: boolean,
+}
+
+/** Makes a profile hover card appear when the wrapped element is hovered. */
+export const HoverRefWrapper: React.FC<IHoverRefWrapper> = ({ accountId, children, inline = false }) => {
   const dispatch = useDispatch();
-  const ref = useRef();
-  const Elem = inline ? 'span' : 'div';
+  const ref = useRef<HTMLElement>();
+  const Elem: keyof JSX.IntrinsicElements = inline ? 'span' : 'div';
 
   const handleMouseEnter = () => {
     if (!isMobile(window.innerWidth)) {
@@ -36,6 +41,7 @@ export const HoverRefWrapper = ({ accountId, children, inline }) => {
 
   return (
     <Elem
+      // @ts-ignore: not sure how to fix :\
       ref={ref}
       className='hover-ref-wrapper'
       onMouseEnter={handleMouseEnter}
@@ -45,16 +51,6 @@ export const HoverRefWrapper = ({ accountId, children, inline }) => {
       {children}
     </Elem>
   );
-};
-
-HoverRefWrapper.propTypes = {
-  accountId: PropTypes.string,
-  children: PropTypes.node,
-  inline: PropTypes.bool,
-};
-
-HoverRefWrapper.defaultProps = {
-  inline: false,
 };
 
 export { HoverRefWrapper as default, showProfileHoverCard };

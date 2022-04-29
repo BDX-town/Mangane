@@ -13,7 +13,9 @@ import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
 import { fetchMarker } from 'soapbox/actions/markers';
 import { register as registerPushNotifications } from 'soapbox/actions/push_notifications';
 import Icon from 'soapbox/components/icon';
+import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb_navigation';
+import { Layout } from 'soapbox/components/ui';
 import { useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
 import AdminPage from 'soapbox/pages/admin_page';
 import DefaultPage from 'soapbox/pages/default_page';
@@ -26,6 +28,7 @@ import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
 import StatusPage from 'soapbox/pages/status_page';
 import { getAccessToken } from 'soapbox/utils/auth';
 import { getVapidKey } from 'soapbox/utils/auth';
+import { isStandalone } from 'soapbox/utils/state';
 
 import { fetchFollowRequests } from '../../actions/accounts';
 import { fetchReports, fetchUsers, fetchConfig } from '../../actions/admin';
@@ -91,8 +94,6 @@ import {
   ChatPanes,
   ServerInfo,
   Dashboard,
-  AwaitingApproval,
-  Reports,
   ModerationLog,
   CryptoDonate,
   ScheduledStatuses,
@@ -172,7 +173,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
   // Ex: use /login instead of /auth, but redirect /auth to /login
   return (
     <Switch>
-      <WrappedRoute path='/login/external' component={ExternalLogin} publicRoute exact />
+      <WrappedRoute path='/login/external' page={EmptyPage} component={ExternalLogin} content={children} publicRoute exact />
       <WrappedRoute path='/email-confirmation' page={EmptyPage} component={EmailConfirmation} publicRoute exact />
       <WrappedRoute path='/logout' page={EmptyPage} component={LogoutPage} publicRoute exact />
 
@@ -302,8 +303,8 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
 
       <WrappedRoute path='/admin' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
-      <WrappedRoute path='/admin/approval' staffOnly page={AdminPage} component={AwaitingApproval} content={children} exact />
-      <WrappedRoute path='/admin/reports' staffOnly page={AdminPage} component={Reports} content={children} exact />
+      <WrappedRoute path='/admin/approval' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
+      <WrappedRoute path='/admin/reports' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
       <WrappedRoute path='/admin/log' staffOnly page={AdminPage} component={ModerationLog} content={children} exact />
       <WrappedRoute path='/admin/users' staffOnly page={AdminPage} component={UserIndex} content={children} exact />
       <WrappedRoute path='/info' page={EmptyPage} component={ServerInfo} content={children} />
@@ -346,6 +347,7 @@ const UI: React.FC = ({ children }) => {
   const dropdownMenuIsOpen = useAppSelector(state => state.dropdown_menu.get('openId') !== null);
   const accessToken = useAppSelector(state => getAccessToken(state));
   const streamingUrl = useAppSelector(state => state.instance.urls.get('streaming_api'));
+  const standalone = useAppSelector(isStandalone);
 
   const handleDragEnter = (e: DragEvent) => {
     e.preventDefault();
@@ -649,9 +651,15 @@ const UI: React.FC = ({ children }) => {
         <div className='z-10 flex flex-col'>
           <Navbar />
 
-          <SwitchingColumnsArea>
-            {children}
-          </SwitchingColumnsArea>
+          <Layout>
+            <Layout.Sidebar>
+              {!standalone && <SidebarNavigation />}
+            </Layout.Sidebar>
+
+            <SwitchingColumnsArea>
+              {children}
+            </SwitchingColumnsArea>
+          </Layout>
 
           {me && floatingActionButton}
 

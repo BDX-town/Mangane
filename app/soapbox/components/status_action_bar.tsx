@@ -646,7 +646,11 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
         />
 
         {features.quotePosts && me ? (
-          <DropdownMenuContainer items={reblogMenu} onShiftClick={this.handleReblogClick}>
+          <DropdownMenuContainer
+            items={reblogMenu}
+            disabled={!publicStatus}
+            onShiftClick={this.handleReblogClick}
+          >
             {reblogButton}
           </DropdownMenuContainer>
         ) : (
