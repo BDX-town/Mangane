@@ -200,6 +200,20 @@ const EditProfile: React.FC = () => {
     };
   };
 
+  const handleHideNetworkChange: React.ChangeEventHandler<HTMLInputElement> = e => {
+    const hide = e.target.checked;
+
+    setData(prevData => {
+      return {
+        ...prevData,
+        hide_followers: hide,
+        hide_follows: hide,
+        hide_followers_count: hide,
+        hide_follows_count: hide,
+      };
+    });
+  };
+
   const handleFileChange = (
     name: keyof AccountCredentials,
     maxPixels: number,
@@ -339,36 +353,51 @@ const EditProfile: React.FC = () => {
           </div>
         </div>
 
-        {/*<Checkbox
-              label={<FormattedMessage id='edit_profile.fields.locked_label' defaultMessage='Lock account' />}
-              hint={<FormattedMessage id='edit_profile.hints.locked' defaultMessage='Requires you to manually approve followers' />}
-              checked={this.state.locked}
-              onChange={this.handleCheckboxChange('locked')}
-            />
-            <Checkbox
-              label={<FormattedMessage id='edit_profile.fields.hide_network_label' defaultMessage='Hide network' />}
-              hint={<FormattedMessage id='edit_profile.hints.hide_network' defaultMessage='Who you follow and who follows you will not be shown on your profile' />}
-              checked={this.state.hide_network}
-              onChange={this.handleCheckboxChange('hide_network')}
-            />
-            <Checkbox
-              label={<FormattedMessage id='edit_profile.fields.bot_label' defaultMessage='This is a bot account' />}
-              hint={<FormattedMessage id='edit_profile.hints.bot' defaultMessage='This account mainly performs automated actions and might not be monitored' />}
-              checked={this.state.bot}
-              onChange={this.handleCheckboxChange('bot')}
-            />
-            <Checkbox
-              label={<FormattedMessage id='edit_profile.fields.stranger_notifications_label' defaultMessage='Block notifications from strangers' />}
-              hint={<FormattedMessage id='edit_profile.hints.stranger_notifications' defaultMessage='Only show notifications from people you follow' />}
-              checked={this.state.stranger_notifications}
-              onChange={this.handleCheckboxChange('stranger_notifications')}
-            />
-            <Checkbox
-              label={<FormattedMessage id='edit_profile.fields.discoverable_label' defaultMessage='Allow account discovery' />}
-              hint={<FormattedMessage id='edit_profile.hints.discoverable' defaultMessage='Display account in profile directory and allow indexing by external services' />}
-              checked={this.state.discoverable}
-              onChange={this.handleCheckboxChange('discoverable')}
-            />*/}
+        {features.followRequests && (
+          <Checkbox
+            label={<FormattedMessage id='edit_profile.fields.locked_label' defaultMessage='Lock account' />}
+            hint={<FormattedMessage id='edit_profile.hints.locked' defaultMessage='Requires you to manually approve followers' />}
+            checked={data.locked}
+            onChange={handleCheckboxChange('locked')}
+          />
+        )}
+
+        {features.hideNetwork && (
+          <Checkbox
+            label={<FormattedMessage id='edit_profile.fields.hide_network_label' defaultMessage='Hide network' />}
+            hint={<FormattedMessage id='edit_profile.hints.hide_network' defaultMessage='Who you follow and who follows you will not be shown on your profile' />}
+            checked={account ? hidesNetwork(account): false}
+            onChange={handleHideNetworkChange}
+          />
+        )}
+
+        {features.bots && (
+          <Checkbox
+            label={<FormattedMessage id='edit_profile.fields.bot_label' defaultMessage='This is a bot account' />}
+            hint={<FormattedMessage id='edit_profile.hints.bot' defaultMessage='This account mainly performs automated actions and might not be monitored' />}
+            checked={data.bot}
+            onChange={handleCheckboxChange('bot')}
+          />
+        )}
+
+        {/*
+        <Checkbox
+          label={<FormattedMessage id='edit_profile.fields.stranger_notifications_label' defaultMessage='Block notifications from strangers' />}
+          hint={<FormattedMessage id='edit_profile.hints.stranger_notifications' defaultMessage='Only show notifications from people you follow' />}
+          checked={this.state.stranger_notifications}
+          onChange={this.handleCheckboxChange('stranger_notifications')}
+        />
+        */}
+
+        {features.profileDirectory && (
+          <Checkbox
+            label={<FormattedMessage id='edit_profile.fields.discoverable_label' defaultMessage='Allow account discovery' />}
+            hint={<FormattedMessage id='edit_profile.hints.discoverable' defaultMessage='Display account in profile directory and allow indexing by external services' />}
+            checked={data.discoverable}
+            onChange={handleCheckboxChange('discoverable')}
+          />
+        )}
+
         {features.emailList && (
           <Checkbox
             label={<FormattedMessage id='edit_profile.fields.accepts_email_list_label' defaultMessage='Subscribe to newsletter' />}
