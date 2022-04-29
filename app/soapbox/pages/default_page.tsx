@@ -1,6 +1,5 @@
 import React from 'react';
 
-import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
@@ -9,25 +8,23 @@ import {
   SignUpPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
+import { isStandalone } from 'soapbox/utils/state';
 
 import { Layout } from '../components/ui';
 
 const DefaultPage: React.FC = ({ children }) => {
   const me = useAppSelector(state => state.me);
+  const standalone = useAppSelector(isStandalone);
   const features = useFeatures();
 
   return (
-    <Layout>
-      <Layout.Sidebar>
-        <SidebarNavigation />
-      </Layout.Sidebar>
-
+    <>
       <Layout.Main>
         {children}
       </Layout.Main>
 
       <Layout.Aside>
-        {!me && (
+        {!me && !standalone && (
           <BundleContainer fetchComponent={SignUpPanel}>
             {Component => <Component key='sign-up-panel' />}
           </BundleContainer>
@@ -44,7 +41,7 @@ const DefaultPage: React.FC = ({ children }) => {
         )}
         <LinkFooter key='link-footer' />
       </Layout.Aside>
-    </Layout>
+    </>
   );
 };
 

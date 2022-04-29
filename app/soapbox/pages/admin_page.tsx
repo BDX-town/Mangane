@@ -1,6 +1,5 @@
 import React from 'react';
 
-import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import { Layout } from 'soapbox/components/ui';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
@@ -11,11 +10,7 @@ import LinkFooter from '../features/ui/components/link_footer';
 
 const AdminPage: React.FC = ({ children }) => {
   return (
-    <Layout>
-      <Layout.Sidebar>
-        <SidebarNavigation />
-      </Layout.Sidebar>
-
+    <>
       <Layout.Main>
         {children}
       </Layout.Main>
@@ -27,7 +22,7 @@ const AdminPage: React.FC = ({ children }) => {
 
         <LinkFooter />
       </Layout.Aside>
-    </Layout>
+    </>
   );
 };
 

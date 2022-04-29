@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect, Route, useHistory, RouteProps, RouteComponentProps, match as MatchType } from 'react-router-dom';
 
+import { Layout } from 'soapbox/components/ui';
 import { useOwnAccount, useSettings } from 'soapbox/hooks';
 
 import BundleColumnError from '../components/bundle_column_error';
@@ -75,29 +76,19 @@ const WrappedRoute: React.FC<IWrappedRoute> = ({
     );
   };
 
-  const renderLoading = () => {
-    return (
-      <ColumnsArea layout={layout}>
-        <ColumnLoading />
-      </ColumnsArea>
-    );
-  };
+  const renderWithLayout = (children: JSX.Element) => (
+    <>
+      <Layout.Main>
+        {children}
+      </Layout.Main>
 
-  const renderForbidden = () => {
-    return (
-      <ColumnsArea layout={layout}>
-        <ColumnForbidden />
-      </ColumnsArea>
-    );
-  };
+      <Layout.Aside />
+    </>
+  );
 
-  const renderError = (props: any) => {
-    return (
-      <ColumnsArea layout={layout}>
-        <BundleColumnError {...props} />
-      </ColumnsArea>
-    );
-  };
+  const renderLoading   = () => renderWithLayout(<ColumnLoading />);
+  const renderForbidden = () => renderWithLayout(<ColumnForbidden />);
+  const renderError     = (props: any) => renderWithLayout(<BundleColumnError {...props} />);
 
   const loginRedirect = () => {
     const actualUrl = encodeURIComponent(`${history.location.pathname}${history.location.search}`);

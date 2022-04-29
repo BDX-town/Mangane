@@ -6,7 +6,6 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 
-import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
@@ -127,11 +126,7 @@ class ProfilePage extends ImmutablePureComponent {
     }
 
     return (
-      <Layout>
-        <Layout.Sidebar>
-          <SidebarNavigation />
-        </Layout.Sidebar>
-
+      <>
         <Layout.Main>
           <Column label={account ? `@${getAcct(account, displayFqn)}` : null} withHeader={false}>
             <div className='space-y-4'>
@@ -171,7 +166,7 @@ class ProfilePage extends ImmutablePureComponent {
           )}
           <LinkFooter key='link-footer' />
         </Layout.Aside>
-      </Layout>
+      </>
     );
   }
 
