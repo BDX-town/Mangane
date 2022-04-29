@@ -62,7 +62,7 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
         setSelectedFile(null);
 
         if (error.response?.status === 422) {
-          dispatch(snackbar.error(error.response.data.error.replace('Validation failed: ', '')));
+          dispatch(snackbar.error((error.response.data as any).error.replace('Validation failed: ', '')));
         } else {
           dispatch(snackbar.error('An unexpected error occurred. Please try again or skip this step.'));
         }

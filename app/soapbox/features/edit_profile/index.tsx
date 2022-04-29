@@ -169,7 +169,7 @@ const EditProfile: React.FC = () => {
   };
 
   const handleSubmit: React.FormEventHandler = (event) => {
-    const credentials = dispatch(patchMe(data));
+    const credentials = dispatch(patchMe(data, true));
     /* Bad API url, was causing errors in the promise call below blocking the success message after making edits. */
     /* const notifications = dispatch(updateNotificationSettings({
       block_from_strangers: this.state.stranger_notifications || false,
