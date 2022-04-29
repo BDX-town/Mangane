@@ -95,6 +95,7 @@ const getInstanceFeatures = (instance: Instance) => {
     accountLookup: any([
       v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
+      v.software === TRUTHSOCIAL,
     ]),
 
     /**
