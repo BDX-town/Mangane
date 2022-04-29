@@ -92,7 +92,7 @@ const AnimatedTab: React.FC<IAnimatedTab> = ({ index, ...props }) => {
 };
 
 type Item = {
-  text: string,
+  text: React.ReactNode,
   title?: string,
   href?: string,
   to?: string,
