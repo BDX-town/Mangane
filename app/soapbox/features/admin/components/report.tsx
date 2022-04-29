@@ -6,7 +6,7 @@ import { closeReports } from 'soapbox/actions/admin';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 import snackbar from 'soapbox/actions/snackbar';
 import Avatar from 'soapbox/components/avatar';
-import { Button } from 'soapbox/components/ui';
+import { Button, HStack } from 'soapbox/components/ui';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 import Accordion from 'soapbox/features/ui/components/accordion';
 import { useAppDispatch } from 'soapbox/hooks';
@@ -98,19 +98,19 @@ const Report: React.FC<IReport> = ({ report }) => {
           )}
         </div>
         <div className='admin-report__quote'>
-          {report.get('content', '').length > 0 &&
+          {report.get('content', '').length > 0 && (
             <blockquote className='md' dangerouslySetInnerHTML={{ __html: report.get('content') }} />
-          }
+          )}
           <span className='byline'>&mdash; <Link to={`/@${reporterAcct}`} title={reporterAcct}>@{reporterAcct}</Link></span>
         </div>
       </div>
-      <div className='admin-report__actions'>
+      <HStack space={2} alignItems='start'>
         <Button onClick={handleCloseReport}>
           <FormattedMessage id='admin.reports.actions.close' defaultMessage='Close' />
         </Button>
 
         <DropdownMenu items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} />
-      </div>
+      </HStack>
     </div>
   );
 };
