@@ -6,6 +6,7 @@ import { closeReports } from 'soapbox/actions/admin';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 import snackbar from 'soapbox/actions/snackbar';
 import Avatar from 'soapbox/components/avatar';
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import { Button, HStack } from 'soapbox/components/ui';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 import Accordion from 'soapbox/features/ui/components/accordion';
@@ -74,16 +75,22 @@ const Report: React.FC<IReport> = ({ report }) => {
   return (
     <div className='admin-report' key={report.get('id')}>
       <div className='admin-report__avatar'>
-        <Link to={`/@${acct}`} title={acct}>
-          <Avatar account={report.get('account')} size={32} />
-        </Link>
+        <HoverRefWrapper accountId={report.getIn(['account', 'id']) as string} inline>
+          <Link to={`/@${acct}`} title={acct}>
+            <Avatar account={report.get('account')} size={32} />
+          </Link>
+        </HoverRefWrapper>
       </div>
       <div className='admin-report__content'>
         <h4 className='admin-report__title'>
           <FormattedMessage
             id='admin.reports.report_title'
             defaultMessage='Report on {acct}'
-            values={{ acct: <Link to={`/@${acct}`} title={acct}>@{acct}</Link> }}
+            values={{ acct: (
+              <HoverRefWrapper accountId={report.getIn(['account', 'id']) as string} inline>
+                <Link to={`/@${acct}`} title={acct}>@{acct}</Link>
+              </HoverRefWrapper>
+            ) }}
           />
         </h4>
         <div className='admin-report__statuses'>
@@ -101,7 +108,12 @@ const Report: React.FC<IReport> = ({ report }) => {
           {report.get('content', '').length > 0 && (
             <blockquote className='md' dangerouslySetInnerHTML={{ __html: report.get('content') }} />
           )}
-          <span className='byline'>&mdash; <Link to={`/@${reporterAcct}`} title={reporterAcct}>@{reporterAcct}</Link></span>
+          <span className='byline'>
+            &mdash;
+            <HoverRefWrapper accountId={report.getIn(['actor', 'id']) as string} inline>
+              <Link to={`/@${reporterAcct}`} title={reporterAcct}>@{reporterAcct}</Link>
+            </HoverRefWrapper>
+          </span>
         </div>
       </div>
       <HStack space={2} alignItems='start'>
