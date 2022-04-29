@@ -2,6 +2,7 @@ import classnames from 'classnames';
 import { List as ImmutableList } from 'immutable';
 import React, { useState, useEffect } from 'react';
 
+import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import { HStack } from 'soapbox/components/ui';
 import { normalizeAttachment } from 'soapbox/normalizers';
@@ -161,6 +162,13 @@ const Card: React.FC<ICard> = ({
 
   let embed: React.ReactNode = '';
 
+  const canvas = (
+    <Blurhash
+      className='absolute w-full h-full inset-0 -z-10'
+      hash={card.blurhash}
+    />
+  );
+
   const thumbnail = (
     <div
       style={{
@@ -184,6 +192,7 @@ const Card: React.FC<ICard> = ({
 
       embed = (
         <div className='status-card__image'>
+          {canvas}
           {thumbnail}
 
           <div className='absolute inset-0 flex items-center justify-center'>
@@ -226,6 +235,7 @@ const Card: React.FC<ICard> = ({
   } else if (card.image) {
     embed = (
       <div className='status-card__image'>
+        {canvas}
         {thumbnail}
       </div>
     );
