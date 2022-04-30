@@ -20,7 +20,7 @@ import PublicLayout from 'soapbox/features/public_layout';
 import NotificationsContainer from 'soapbox/features/ui/containers/notifications_container';
 import WaitlistPage from 'soapbox/features/verification/waitlist_page';
 import { createGlobals } from 'soapbox/globals';
-import { useAppSelector, useAppDispatch, useOwnAccount, useSoapboxConfig, useSettings } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures, useSoapboxConfig, useSettings } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
 import { getFeatures } from 'soapbox/utils/features';
 import { generateThemeCss } from 'soapbox/utils/theme';
@@ -68,9 +68,11 @@ const SoapboxMount = () => {
   const dispatch = useAppDispatch();
 
   const me = useAppSelector(state => state.me);
+  const instance = useAppSelector(state => state.instance);
   const account = useOwnAccount();
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
+  const features = useFeatures();
 
   const locale = validLocale(settings.get('locale')) ? settings.get('locale') : 'en';
 
@@ -170,7 +172,9 @@ const SoapboxMount = () => {
                 <Route exact path='/beta/:slug?' component={PublicLayout} />
                 <Route exact path='/mobile/:slug?' component={PublicLayout} />
                 <Route exact path='/login' component={AuthLayout} />
-                <Route exact path='/signup' component={AuthLayout} />
+                {(features.accountCreation && instance.registrations) && (
+                  <Route exact path='/signup' component={AuthLayout} />
+                )}
                 <Route path='/verify' component={AuthLayout} />
                 <Route path='/reset-password' component={AuthLayout} />
                 <Route path='/edit-password' component={AuthLayout} />

@@ -72,6 +72,15 @@ const getInstanceFeatures = (instance: Instance) => {
     accountByUsername: v.software === PLEROMA,
 
     /**
+     * Ability to create accounts.
+     * @see POST /api/v1/accounts
+     */
+    accountCreation: any([
+      v.software === MASTODON,
+      v.software === PLEROMA,
+    ]),
+
+    /**
      * Ability to pin other accounts on one's profile.
      * @see POST /api/v1/accounts/:id/pin
      * @see POST /api/v1/accounts/:id/unpin
