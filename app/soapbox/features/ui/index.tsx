@@ -227,7 +227,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <Redirect from='/home' to='/' />
 
       {/* Mastodon rendered pages */}
-      <Redirect from='/admin/dashboard' to='/admin' exact />
+      <Redirect from='/admin' to='/soapbox/admin' />
       <Redirect from='/terms' to='/about' />
       <Redirect from='/settings/preferences' to='/settings' />
       <Redirect from='/settings/two_factor_authentication_methods' to='/settings/mfa' />
@@ -302,11 +302,11 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {/* <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} /> */}
       <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
 
-      <WrappedRoute path='/admin' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
-      <WrappedRoute path='/admin/approval' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
-      <WrappedRoute path='/admin/reports' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
-      <WrappedRoute path='/admin/log' staffOnly page={AdminPage} component={ModerationLog} content={children} exact />
-      <WrappedRoute path='/admin/users' staffOnly page={AdminPage} component={UserIndex} content={children} exact />
+      <WrappedRoute path='/soapbox/admin' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
+      <WrappedRoute path='/soapbox/admin/approval' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
+      <WrappedRoute path='/soapbox/admin/reports' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
+      <WrappedRoute path='/soapbox/admin/log' staffOnly page={AdminPage} component={ModerationLog} content={children} exact />
+      <WrappedRoute path='/soapbox/admin/users' staffOnly page={AdminPage} component={UserIndex} content={children} exact />
       <WrappedRoute path='/info' page={EmptyPage} component={ServerInfo} content={children} />
 
       <WrappedRoute path='/developers/apps/create' developerOnly page={DefaultPage} component={CreateApp} content={children} />

@@ -73,7 +73,7 @@ const SidebarNavigation = () => {
 
       if (account.staff) {
         menu.push({
-          to: '/admin',
+          to: '/soapbox/admin',
           icon: require('@tabler/icons/icons/dashboard.svg'),
           text: <FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />,
           count: dashboardCount,
