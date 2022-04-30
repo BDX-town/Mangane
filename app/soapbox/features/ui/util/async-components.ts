@@ -362,6 +362,10 @@ export function ProfileMediaPanel() {
   return import(/* webpackChunkName: "features/account_gallery" */'../components/profile_media_panel');
 }
 
+export function ProfileFieldsPanel() {
+  return import(/* webpackChunkName: "features/account_timeline" */'../components/profile_fields_panel');
+}
+
 export function PinnedAccountsPanel() {
   return import(/* webpackChunkName: "features/pinned_accounts" */'../components/pinned_accounts_panel');
 }

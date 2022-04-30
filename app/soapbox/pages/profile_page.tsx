@@ -9,6 +9,7 @@ import {
   TrendsPanel,
   ProfileInfoPanel,
   ProfileMediaPanel,
+  ProfileFieldsPanel,
   SignUpPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
@@ -141,9 +142,9 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
         <BundleContainer fetchComponent={ProfileMediaPanel}>
           {Component => <Component account={account} />}
         </BundleContainer>
-        {features.trends && (
-          <BundleContainer fetchComponent={TrendsPanel}>
-            {Component => <Component limit={3} key='trends-panel' />}
+        {account && !account.fields.isEmpty() && (
+          <BundleContainer fetchComponent={ProfileFieldsPanel}>
+            {Component => <Component account={account} />}
           </BundleContainer>
         )}
         {features.suggestions && (
