@@ -1,11 +1,74 @@
-'use strict';
-
+import classNames from 'classnames';
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { defineMessages, useIntl, FormattedMessage, FormatDateOptions } from 'react-intl';
 
-import { Widget, Stack } from 'soapbox/components/ui';
+import { Widget, Stack, Icon, Text } from 'soapbox/components/ui';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
 
-import type { Account } from 'soapbox/types/entities';
+import type { Account, Field } from 'soapbox/types/entities';
+
+const getTicker = (value: string): string => (value.match(/\$([a-zA-Z]*)/i) || [])[1];
+const isTicker = (value: string): boolean => Boolean(getTicker(value));
+
+const messages = defineMessages({
+  linkVerifiedOn: { id: 'account.link_verified_on', defaultMessage: 'Ownership of this link was checked on {date}' },
+  account_locked: { id: 'account.locked_info', defaultMessage: 'This account privacy status is set to locked. The owner manually reviews who can follow them.' },
+  deactivated: { id: 'account.deactivated', defaultMessage: 'Deactivated' },
+  bot: { id: 'account.badges.bot', defaultMessage: 'Bot' },
+});
+
+const dateFormatOptions: FormatDateOptions = {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+  hour12: false,
+  hour: '2-digit',
+  minute: '2-digit',
+};
+
+interface IProfileField {
+  field: Field,
+}
+
+/** Renders a single profile field. */
+const ProfileField: React.FC<IProfileField> = ({ field }) => {
+  const intl = useIntl();
+
+  if (isTicker(field.name)) {
+    return (
+      <BundleContainer fetchComponent={CryptoAddress}>
+        {Component => (
+          <Component
+            ticker={getTicker(field.name).toLowerCase()}
+            address={field.value_plain}
+          />
+        )}
+      </BundleContainer>
+    );
+  }
+
+  return (
+    <dl>
+      <dt title={field.name}>
+        <Text weight='bold' tag='span' dangerouslySetInnerHTML={{ __html: field.name_emojified }} />
+      </dt>
+
+      <dd
+        className={classNames({ 'verified': field.verified_at })}
+        title={field.value_plain}
+      >
+        {field.verified_at && (
+          <span title={intl.formatMessage(messages.linkVerifiedOn, { date: intl.formatDate(field.verified_at, dateFormatOptions) })}>
+            <Icon className='verified__mark' src={require('@tabler/icons/icons/check.svg')} />
+          </span>
+        )}
+
+        <Text tag='span' dangerouslySetInnerHTML={{ __html: field.value_emojified }} />
+      </dd>
+    </dl>
+  );
+};
 
 interface IProfileFieldsPanel {
   account: Account,
@@ -15,12 +78,9 @@ interface IProfileFieldsPanel {
 const ProfileFieldsPanel: React.FC<IProfileFieldsPanel> = ({ account }) => {
   return (
     <Widget title={<FormattedMessage id='profile_fields_panel.title' defaultMessage='Profile fields' />}>
-      <Stack space={2}>
-        {account.fields.map(field => (
-          <div>
-            {field.name_emojified}<br />
-            {field.value_emojified}
-          </div>
+      <Stack space={4}>
+        {account.fields.map((field, i) => (
+          <ProfileField field={field} key={i} />
         ))}
       </Stack>
     </Widget>
