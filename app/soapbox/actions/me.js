@@ -50,14 +50,11 @@ export function patchMe(params, formData = false) {
   return (dispatch, getState) => {
     dispatch(patchMeRequest());
 
-    let options = {};
-    if (formData) {
-      options = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      };
-    }
+    const options = formData ? {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    } : {};
 
     return api(getState)
       .patch('/api/v1/accounts/update_credentials', params, options)
