@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage, FormatDateOptions } from 'react-intl';
 
-import { Widget, Stack, Icon, Text } from 'soapbox/components/ui';
+import { Widget, Stack, HStack, Icon, Text } from 'soapbox/components/ui';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
 
@@ -55,16 +55,18 @@ const ProfileField: React.FC<IProfileField> = ({ field }) => {
       </dt>
 
       <dd
-        className={classNames({ 'verified': field.verified_at })}
+        className={classNames({ 'text-success-500': field.verified_at })}
         title={field.value_plain}
       >
-        {field.verified_at && (
-          <span title={intl.formatMessage(messages.linkVerifiedOn, { date: intl.formatDate(field.verified_at, dateFormatOptions) })}>
-            <Icon className='verified__mark' src={require('@tabler/icons/icons/check.svg')} />
-          </span>
-        )}
+        <HStack space={2} alignItems='center'>
+          {field.verified_at && (
+            <span className='flex-none' title={intl.formatMessage(messages.linkVerifiedOn, { date: intl.formatDate(field.verified_at, dateFormatOptions) })}>
+              <Icon src={require('@tabler/icons/icons/check.svg')} />
+            </span>
+          )}
 
-        <Text tag='span' dangerouslySetInnerHTML={{ __html: field.value_emojified }} />
+          <Text tag='span' dangerouslySetInnerHTML={{ __html: field.value_emojified }} />
+        </HStack>
       </dd>
     </dl>
   );
