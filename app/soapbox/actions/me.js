@@ -46,11 +46,18 @@ export function fetchMe() {
   };
 }
 
-export function patchMe(params) {
+export function patchMe(params, formData = false) {
   return (dispatch, getState) => {
     dispatch(patchMeRequest());
+
+    const options = formData ? {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    } : {};
+
     return api(getState)
-      .patch('/api/v1/accounts/update_credentials', params)
+      .patch('/api/v1/accounts/update_credentials', params, options)
       .then(response => {
         dispatch(patchMeSuccess(response.data));
       }).catch(error => {

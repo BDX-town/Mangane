@@ -82,8 +82,8 @@ interface ISimpleInput {
 }
 
 export const SimpleInput: React.FC<ISimpleInput> = (props) => {
-  const { hint, label, error, ...rest } = props;
-  const Input = label ? LabelInput : 'input';
+  const { hint, error, ...rest } = props;
+  const Input = props.label ? LabelInput : 'input';
 
   return (
     <InputContainer {...props}>
@@ -146,7 +146,14 @@ export const FieldsGroup: React.FC = ({ children }) => (
   <div className='fields-group'>{children}</div>
 );
 
-export const Checkbox: React.FC = (props) => (
+interface ICheckbox {
+  label?: React.ReactNode,
+  hint?: React.ReactNode,
+  checked?: boolean,
+  onChange?: React.ChangeEventHandler<HTMLInputElement>,
+}
+
+export const Checkbox: React.FC<ICheckbox> = (props) => (
   <SimpleInput type='checkbox' {...props} />
 );
 

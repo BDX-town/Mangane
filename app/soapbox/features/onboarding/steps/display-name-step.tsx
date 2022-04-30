@@ -40,7 +40,7 @@ const DisplayNameStep = ({ onNext }: { onNext: () => void }) => {
         setSubmitting(false);
 
         if (error.response?.status === 422) {
-          setErrors([error.response.data.error.replace('Validation failed: ', '')]);
+          setErrors([(error.response.data as any).error.replace('Validation failed: ', '')]);
         } else {
           dispatch(snackbar.error('An unexpected error occurred. Please try again or skip this step.'));
         }

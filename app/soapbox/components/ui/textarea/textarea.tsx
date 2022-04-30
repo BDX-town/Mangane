@@ -8,6 +8,7 @@ interface ITextarea extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElemen
   isCodeEditor?: boolean,
   placeholder?: string,
   value?: string,
+  autoComplete?: string,
 }
 
 const Textarea = React.forwardRef(

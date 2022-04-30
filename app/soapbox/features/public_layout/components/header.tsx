@@ -57,7 +57,7 @@ const Header = () => {
       .catch((error: AxiosError) => {
         setLoading(false);
 
-        const data = error.response?.data;
+        const data: any = error.response?.data;
         if (data?.error === 'mfa_required') {
           setMfaToken(data.mfa_token);
         }
