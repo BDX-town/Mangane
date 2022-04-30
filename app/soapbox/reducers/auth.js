@@ -260,7 +260,16 @@ const importMastodonPreload = (state, data) => {
 
 const persistAuthAccount = account => {
   if (account && account.url) {
-    KVStore.setItem(`authAccount:${account.url}`, account).catch(console.error);
+    const key = `authAccount:${account.url}`;
+    if (!account.pleroma) account.pleroma = {};
+    KVStore.getItem(key).then(oldAccount => {
+      const settings = oldAccount?.pleroma?.settings_store || {};
+      if (!account.pleroma.settings_store) {
+        account.pleroma.settings_store = settings;
+      }
+      KVStore.setItem(key, account);
+    })
+      .catch(console.error);
   }
 };
 
