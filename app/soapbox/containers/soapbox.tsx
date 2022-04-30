@@ -157,7 +157,7 @@ const SoapboxMount = () => {
           <>
             <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
               <Switch>
-                <Redirect from='/v1/verify_email/:token' to='/auth/verify/email/:token' />
+                <Redirect from='/v1/verify_email/:token' to='/verify/email/:token' />
 
                 {waitlisted && <Route render={(props) => <WaitlistPage {...props} account={account} />} />}
 
@@ -170,7 +170,7 @@ const SoapboxMount = () => {
                 <Route exact path='/beta/:slug?' component={PublicLayout} />
                 <Route exact path='/mobile/:slug?' component={PublicLayout} />
                 <Route exact path='/login' component={AuthLayout} />
-                <Route path='/auth/verify' component={AuthLayout} />
+                <Route path='/verify' component={AuthLayout} />
                 <Route path='/reset-password' component={AuthLayout} />
                 <Route path='/edit-password' component={AuthLayout} />
 

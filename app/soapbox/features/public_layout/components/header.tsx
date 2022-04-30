@@ -96,7 +96,7 @@ const Header = () => {
 
                 {(isOpen || features.pepe && pepeOpen) && (
                   <Button
-                    to={features.pepe ? '/auth/verify' : '/signup'} // FIXME: actually route this somewhere
+                    to={features.pepe ? '/verify' : '/signup'} // FIXME: actually route this somewhere
                     theme='primary'
                   >
                     {intl.formatMessage(messages.register)}

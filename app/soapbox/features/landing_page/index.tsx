@@ -49,7 +49,7 @@ const LandingPage = () => {
           <Text theme='muted' align='center'>Social Media Without Discrimination</Text>
         </Stack>
 
-        <Button to='/auth/verify' theme='primary' block>Create an account</Button>
+        <Button to='/verify' theme='primary' block>Create an account</Button>
       </Stack>
     );
   };

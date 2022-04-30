@@ -42,12 +42,11 @@ const AuthLayout = () => {
             <Card variant='rounded' size='xl'>
               <CardBody>
                 <Switch>
-                  <Route exact path='/auth/verify' component={Verification} />
-                  <Route exact path='/auth/verify/email/:token' component={EmailPassthru} />
+                  <Route exact path='/verify' component={Verification} />
+                  <Route exact path='/verify/email/:token' component={EmailPassthru} />
                   <Route exact path='/login' component={LoginPage} />
                   <Route exact path='/reset-password' component={PasswordReset} />
                   <Route exact path='/edit-password' component={PasswordResetConfirm} />
-                  {/* <Route exact path='/auth/confirmation' component={EmailConfirmation} /> */}
 
                   <Redirect from='/auth/password/new' to='/reset-password' />
                   <Redirect from='/auth/password/edit' to='/edit-password' />
