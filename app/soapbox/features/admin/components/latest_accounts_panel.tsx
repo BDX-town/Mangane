@@ -46,7 +46,7 @@ const LatestAccountsPanel: React.FC<ILatestAccountsPanel> = ({ limit = 5 }) => {
   }
 
   const handleAction = () => {
-    history.push('/admin/users');
+    history.push('/soapbox/admin/users');
   };
 
   return (

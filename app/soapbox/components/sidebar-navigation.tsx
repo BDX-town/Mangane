@@ -73,7 +73,7 @@ const SidebarNavigation = () => {
 
       if (account.staff) {
         menu.push({
-          to: '/admin',
+          to: '/soapbox/admin',
           icon: require('@tabler/icons/icons/dashboard.svg'),
           text: <FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />,
           count: dashboardCount,
@@ -105,6 +105,32 @@ const SidebarNavigation = () => {
   };
 
   const menu = makeMenu();
+
+  /** Conditionally render the supported messages link */
+  const renderMessagesLink = (): React.ReactNode => {
+    if (features.chats) {
+      return (
+        <SidebarNavigationLink
+          to='/chats'
+          icon={require('@tabler/icons/icons/messages.svg')}
+          count={chatsCount}
+          text={<FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' />}
+        />
+      );
+    }
+
+    if (features.directTimeline || features.conversations) {
+      return (
+        <SidebarNavigationLink
+          to='/messages'
+          icon={require('icons/mail.svg')}
+          text={<FormattedMessage id='navigation.direct_messages' defaultMessage='Messages' />}
+        />
+      );
+    }
+
+    return null;
+  };
 
   return (
     <div>
@@ -138,22 +164,7 @@ const SidebarNavigation = () => {
           </>
         )}
 
-        {account && (
-          features.chats ? (
-            <SidebarNavigationLink
-              to='/chats'
-              icon={require('@tabler/icons/icons/messages.svg')}
-              count={chatsCount}
-              text={<FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' />}
-            />
-          ) : (
-            <SidebarNavigationLink
-              to='/messages'
-              icon={require('icons/mail.svg')}
-              text={<FormattedMessage id='navigation.direct_messages' defaultMessage='Messages' />}
-            />
-          )
-        )}
+        {account && renderMessagesLink()}
 
         {menu.length > 0 && (
           <DropdownMenu items={menu}>

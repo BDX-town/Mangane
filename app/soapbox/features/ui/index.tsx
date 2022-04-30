@@ -187,8 +187,12 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.federating && <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />}
       {features.federating && <WrappedRoute path='/timeline/:instance' exact page={RemoteInstancePage} component={RemoteTimeline} content={children} />}
 
-      <WrappedRoute path='/conversations' page={DefaultPage} component={Conversations} content={children} />
-      <WrappedRoute path='/messages' page={DefaultPage} component={features.directTimeline ? DirectTimeline : Conversations} content={children} />
+      {features.conversations && <WrappedRoute path='/conversations' page={DefaultPage} component={Conversations} content={children} />}
+      {features.directTimeline ? (
+        <WrappedRoute path='/messages' page={DefaultPage} component={DirectTimeline} content={children} />
+      ) : (
+        <WrappedRoute path='/messages' page={DefaultPage} component={Conversations} content={children} />
+      )}
 
       {/* Gab groups */}
       {/*
@@ -227,7 +231,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <Redirect from='/home' to='/' />
 
       {/* Mastodon rendered pages */}
-      <Redirect from='/admin/dashboard' to='/admin' exact />
+      <Redirect from='/admin' to='/soapbox/admin' />
       <Redirect from='/terms' to='/about' />
       <Redirect from='/settings/preferences' to='/settings' />
       <Redirect from='/settings/two_factor_authentication_methods' to='/settings/mfa' />
@@ -286,7 +290,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/statuses/:statusId' exact component={Status} content={children} />
       {features.scheduledStatuses && <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />}
 
-      <WrappedRoute path='/invite/:token' component={RegisterInvite} content={children} publicRoute />
+      <WrappedRoute path='/invite/:token' page={DefaultPage} component={RegisterInvite} content={children} publicRoute />
 
       <WrappedRoute path='/settings/profile' page={DefaultPage} component={EditProfile} content={children} />
       <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} />
@@ -302,11 +306,11 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {/* <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} /> */}
       <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
 
-      <WrappedRoute path='/admin' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
-      <WrappedRoute path='/admin/approval' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
-      <WrappedRoute path='/admin/reports' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
-      <WrappedRoute path='/admin/log' staffOnly page={AdminPage} component={ModerationLog} content={children} exact />
-      <WrappedRoute path='/admin/users' staffOnly page={AdminPage} component={UserIndex} content={children} exact />
+      <WrappedRoute path='/soapbox/admin' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
+      <WrappedRoute path='/soapbox/admin/approval' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
+      <WrappedRoute path='/soapbox/admin/reports' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
+      <WrappedRoute path='/soapbox/admin/log' staffOnly page={AdminPage} component={ModerationLog} content={children} exact />
+      <WrappedRoute path='/soapbox/admin/users' staffOnly page={AdminPage} component={UserIndex} content={children} exact />
       <WrappedRoute path='/info' page={EmptyPage} component={ServerInfo} content={children} />
 
       <WrappedRoute path='/developers/apps/create' developerOnly page={DefaultPage} component={CreateApp} content={children} />

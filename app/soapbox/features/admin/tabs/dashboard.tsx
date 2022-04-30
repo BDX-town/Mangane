@@ -77,7 +77,7 @@ const Dashboard: React.FC = () => {
           </div>
         )}
         {isNumber(userCount) && (
-          <Link className='dashcounter' to='/admin/users'>
+          <Link className='dashcounter' to='/soapbox/admin/users'>
             <Text align='center' size='2xl' weight='medium'>
               <FormattedNumber value={userCount} />
             </Text>
