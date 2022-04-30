@@ -170,6 +170,7 @@ const SoapboxMount = () => {
                 <Route exact path='/beta/:slug?' component={PublicLayout} />
                 <Route exact path='/mobile/:slug?' component={PublicLayout} />
                 <Route exact path='/login' component={AuthLayout} />
+                <Route exact path='/signup' component={AuthLayout} />
                 <Route path='/verify' component={AuthLayout} />
                 <Route path='/reset-password' component={AuthLayout} />
                 <Route path='/edit-password' component={AuthLayout} />
