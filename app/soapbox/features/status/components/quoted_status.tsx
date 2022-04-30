@@ -129,6 +129,7 @@ class QuotedStatus extends ImmutablePureComponent<IQuotedStatus> {
           {...actions}
           id={account.id}
           timestamp={status.created_at}
+          withRelationship={false}
           showProfileHoverCard={!compose}
         />
 
