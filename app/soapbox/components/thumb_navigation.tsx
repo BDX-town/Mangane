@@ -12,6 +12,34 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
   const features = getFeatures(useAppSelector((state) => state.instance));
 
+  /** Conditionally render the supported messages link */
+  const renderMessagesLink = (): React.ReactNode => {
+    if (features.chats) {
+      return (
+        <ThumbNavigationLink
+          src={require('@tabler/icons/icons/messages.svg')}
+          text={<FormattedMessage id='navigation.chats' defaultMessage='Chats' />}
+          to='/chats'
+          exact
+          count={chatsCount}
+        />
+      );
+    }
+
+    if (features.directTimeline || features.conversations) {
+      return (
+        <ThumbNavigationLink
+          src={require('@tabler/icons/icons/mail.svg')}
+          text={<FormattedMessage id='navigation.direct_messages' defaultMessage='Messages' />}
+          to='/messages'
+          paths={['/messages', '/conversations']}
+        />
+      );
+    }
+
+    return null;
+  };
+
   return (
     <div className='thumb-navigation'>
       <ThumbNavigationLink
@@ -38,24 +66,7 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
         />
       )}
 
-      {account && (
-        features.chats ? (
-          <ThumbNavigationLink
-            src={require('@tabler/icons/icons/messages.svg')}
-            text={<FormattedMessage id='navigation.chats' defaultMessage='Chats' />}
-            to='/chats'
-            exact
-            count={chatsCount}
-          />
-        ) : (
-          <ThumbNavigationLink
-            src={require('@tabler/icons/icons/mail.svg')}
-            text={<FormattedMessage id='navigation.direct_messages' defaultMessage='Messages' />}
-            to='/messages'
-            paths={['/messages', '/conversations']}
-          />
-        )
-      )}
+      {account && renderMessagesLink()}
 
       {(account && account.staff) && (
         <ThumbNavigationLink
