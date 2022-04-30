@@ -6,7 +6,6 @@ import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
   WhoToFollowPanel,
-  TrendsPanel,
   ProfileInfoPanel,
   ProfileMediaPanel,
   ProfileFieldsPanel,
