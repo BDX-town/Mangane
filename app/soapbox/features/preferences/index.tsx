@@ -38,6 +38,7 @@ const languages = {
   hy: 'Հայերեն',
   id: 'Bahasa Indonesia',
   io: 'Ido',
+  is: 'íslenska',
   it: 'Italiano',
   ja: '日本語',
   ka: 'ქართული',
