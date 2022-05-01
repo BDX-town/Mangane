@@ -129,7 +129,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
     'emojiSelectorFocused',
   ]
 
-  handleReplyClick = () => {
+  handleReplyClick: React.MouseEventHandler = (e) => {
     const { me, onReply, onOpenUnauthorizedModal, status } = this.props;
 
     if (me) {
@@ -137,6 +137,8 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
     } else {
       onOpenUnauthorizedModal('REPLY');
     }
+
+    e.stopPropagation();
   }
 
   handleShareClick = () => {
