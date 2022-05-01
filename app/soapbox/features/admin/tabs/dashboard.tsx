@@ -125,7 +125,7 @@ const Dashboard: React.FC = () => {
           <h4><FormattedMessage id='admin.dashwidgets.software_header' defaultMessage='Software' /></h4>
           <ul>
             <li>{sourceCode.displayName} <span className='pull-right'>{sourceCode.version}</span></li>
-            <li>{v.software} <span className='pull-right'>{v.version}</span></li>
+            <li>{v.software + (v.build ? `+${v.build}` : '')} <span className='pull-right'>{v.version}</span></li>
           </ul>
         </div>
         {features.emailList && account.admin && (

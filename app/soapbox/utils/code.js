@@ -6,6 +6,14 @@ const pkg = require('../../../package.json');
 const shortRepoName = url => new URL(url).pathname.substring(1);
 const trimHash = hash => hash.substring(0, 7);
 
+const tryGit = cmd => {
+  try {
+    return String(execSync(cmd));
+  } catch (e) {
+    return null;
+  }
+};
+
 const version = pkg => {
   // Try to discern from GitLab CI first
   const { CI_COMMIT_TAG, CI_COMMIT_REF_NAME, CI_COMMIT_SHA } = process.env;
@@ -19,14 +27,10 @@ const version = pkg => {
   }
 
   // Fall back to git directly
-  try {
-    const head = String(execSync('git rev-parse HEAD'));
-    const tag = String(execSync(`git rev-parse v${pkg.version}`));
+  const head = tryGit('git rev-parse HEAD');
+  const tag = tryGit(`git rev-parse v${pkg.version}`);
 
-    if (head !== tag) return `${pkg.version}-${trimHash(head)}`;
-  } catch (e) {
-    // Continue
-  }
+  if (head && head !== tag) return `${pkg.version}-${trimHash(head)}`;
 
   // Fall back to version in package.json
   return pkg.version;
