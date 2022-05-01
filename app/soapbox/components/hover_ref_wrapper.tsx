@@ -20,7 +20,7 @@ interface IHoverRefWrapper {
 /** Makes a profile hover card appear when the wrapped element is hovered. */
 export const HoverRefWrapper: React.FC<IHoverRefWrapper> = ({ accountId, children, inline = false }) => {
   const dispatch = useDispatch();
-  const ref = useRef<HTMLElement>();
+  const ref = useRef<HTMLDivElement>(null);
   const Elem: keyof JSX.IntrinsicElements = inline ? 'span' : 'div';
 
   const handleMouseEnter = () => {
@@ -41,7 +41,6 @@ export const HoverRefWrapper: React.FC<IHoverRefWrapper> = ({ accountId, childre
 
   return (
     <Elem
-      // @ts-ignore: not sure how to fix :\
       ref={ref}
       className='hover-ref-wrapper'
       onMouseEnter={handleMouseEnter}
