@@ -107,7 +107,7 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
   );
 
   return (
-    <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <div className='relative' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       {React.cloneElement(children, {
         onClick: handleClick,
         ref: setReferenceElement,
