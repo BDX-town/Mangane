@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { usePopper } from 'react-popper';
 import { useDispatch } from 'react-redux';
 
@@ -22,6 +22,7 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
   const status = useAppSelector(state => state.statuses.get(statusId));
   const soapboxConfig = useSoapboxConfig();
 
+  const timeout = useRef<NodeJS.Timeout>();
   const [visible, setVisible] = useState(false);
   // const [focused, setFocused] = useState(false);
 
@@ -42,16 +43,40 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
     ],
   });
 
+  useEffect(() => {
+    return () => {
+      if (timeout.current) {
+        clearTimeout(timeout.current);
+      }
+    };
+  }, []);
+
   if (!status) return null;
 
   const handleMouseEnter = () => {
+    if (timeout.current) {
+      clearTimeout(timeout.current);
+    }
+
     if (!isUserTouching()) {
       setVisible(true);
     }
   };
 
   const handleMouseLeave = () => {
-    setVisible(false);
+    if (timeout.current) {
+      clearTimeout(timeout.current);
+    }
+
+    // Unless the user is touching, delay closing the emoji selector briefly
+    // so the user can move the mouse diagonally to make a selection.
+    if (isUserTouching()) {
+      setVisible(false);
+    } else {
+      timeout.current = setTimeout(() => {
+        setVisible(false);
+      }, 500);
+    }
   };
 
   const handleReact = (emoji: string): void => {
@@ -107,7 +132,7 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
   );
 
   return (
-    <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <div className='relative' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       {React.cloneElement(children, {
         onClick: handleClick,
         ref: setReferenceElement,
