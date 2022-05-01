@@ -22,7 +22,7 @@ export default @connect(mapStateToProps)
 class DisplayName extends React.PureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map.isRequired,
+    account: ImmutablePropTypes.record.isRequired,
     displayFqn: PropTypes.bool,
     others: ImmutablePropTypes.list,
     children: PropTypes.node,
@@ -72,7 +72,7 @@ class DisplayName extends React.PureComponent {
     }
 
     return (
-      <span className='display-name'>
+      <span className='display-name' data-testid='display-name'>
         <HoverRefWrapper accountId={account.get('id')} inline>
           {displayName}
         </HoverRefWrapper>

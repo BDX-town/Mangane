@@ -231,14 +231,16 @@ describe('compose reducer', () => {
     });
   });
 
-  it('should handle COMPOSE_CHANGE', () => {
-    const state = ImmutableMap({ text: 'prevtext' });
-    const action = {
-      type: actions.COMPOSE_CHANGE,
-      text: 'nexttext',
-    };
-    expect(reducer(state, action).toJS()).toMatchObject({
-      text: 'nexttext',
+  describe('COMPOSE_CHANGE', () => {
+    it('should handle text changing', () => {
+      const state = ImmutableMap({ text: 'prevtext' });
+      const action = {
+        type: actions.COMPOSE_CHANGE,
+        text: 'nexttext',
+      };
+      expect(reducer(state, action).toJS()).toMatchObject({
+        text: 'nexttext',
+      });
     });
   });
 

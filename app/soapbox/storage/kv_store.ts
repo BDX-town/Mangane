@@ -1,17 +1,17 @@
 import localforage from 'localforage';
 
 interface IKVStore extends LocalForage {
-  getItemOrError?: (key: string) => Promise<any>,
+  getItemOrError: (key: string) => Promise<any>,
 }
 
 // localForage
 // https://localforage.github.io/localForage/#settings-api-config
-export const KVStore: IKVStore = localforage.createInstance({
+export const KVStore = localforage.createInstance({
   name: 'soapbox',
   description: 'Soapbox offline data store',
   driver: localforage.INDEXEDDB,
   storeName: 'keyvaluepairs',
-});
+}) as IKVStore;
 
 // localForage returns 'null' when a key isn't found.
 // In the Redux action flow, we want it to fail harder.

@@ -16,13 +16,13 @@ import { truncateFilename } from 'soapbox/utils/media';
 import { isIOS } from '../is_mobile';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
 
-import IconButton from './icon_button';
+import { Button, Text } from './ui';
 
 const ATTACHMENT_LIMIT = 4;
 const MAX_FILENAME_LENGTH = 45;
 
 const messages = defineMessages({
-  toggle_visible: { id: 'media_gallery.toggle_visible', defaultMessage: 'Toggle visibility' },
+  toggle_visible: { id: 'media_gallery.toggle_visible', defaultMessage: 'Hide' },
 });
 
 const mapStateToItemProps = state => ({
@@ -44,7 +44,7 @@ const shouldLetterbox = attachment => {
 class Item extends React.PureComponent {
 
   static propTypes = {
-    attachment: ImmutablePropTypes.map.isRequired,
+    attachment: ImmutablePropTypes.record.isRequired,
     standalone: PropTypes.bool,
     index: PropTypes.number.isRequired,
     size: PropTypes.number.isRequired,
@@ -156,8 +156,6 @@ class Item extends React.PureComponent {
         </div>
       );
     } else if (attachment.get('type') === 'image') {
-      const previewUrl = attachment.get('preview_url');
-
       const originalUrl = attachment.get('url');
       const letterboxed = shouldLetterbox(attachment);
 
@@ -168,7 +166,7 @@ class Item extends React.PureComponent {
           onClick={this.handleClick}
           target='_blank'
         >
-          <StillImage src={previewUrl} alt={attachment.get('description')} />
+          <StillImage src={originalUrl} alt={attachment.get('description')} />
         </a>
       );
     } else if (attachment.get('type') === 'gifv') {
@@ -300,7 +298,9 @@ class MediaGallery extends React.PureComponent {
     }
   }
 
-  handleOpen = () => {
+  handleOpen = (e) => {
+    e.stopPropagation();
+
     if (this.props.onToggleVisibility) {
       this.props.onToggleVisibility();
     } else {
@@ -593,17 +593,27 @@ class MediaGallery extends React.PureComponent {
         <div className={classNames('spoiler-button', { 'spoiler-button--minified': visible || compact })}>
           {sensitive && (
             (visible || compact) ? (
-              <IconButton
-                title={intl.formatMessage(messages.toggle_visible)}
-                src={visible ? require('@tabler/icons/icons/eye-off.svg') : require('@tabler/icons/icons/eye.svg')}
-                overlay
+              <Button
+                text={intl.formatMessage(messages.toggle_visible)}
+                icon={visible ? require('@tabler/icons/icons/eye-off.svg') : require('@tabler/icons/icons/eye.svg')}
                 onClick={this.handleOpen}
+                theme='transparent'
+                size='sm'
               />
             ) : (
-              <button type='button' onClick={this.handleOpen} className='spoiler-button__overlay'>
-                <span className='spoiler-button__overlay__label'>
-                  {warning}
-                </span>
+              <button type='button' onClick={this.handleOpen} className='bg-transparent w-full h-full border-0'>
+                <div className='p-4 rounded-xl shadow-xl backdrop-blur-sm bg-white/75 dark:bg-slate-800/75 text-center inline-block space-y-4 max-w-[280px]'>
+                  <div className='space-y-1'>
+                    <Text weight='semibold'>{warning}</Text>
+                    <Text size='sm'>
+                      {intl.formatMessage({ id: 'status.sensitive_warning.subtitle', defaultMessage: 'This content may not be suitable for all audiences.' })}
+                    </Text>
+                  </div>
+
+                  <Button type='button' theme='primary' size='sm' icon={require('@tabler/icons/icons/eye.svg')}>
+                    {intl.formatMessage({ id: 'status.sensitive_warning.action', defaultMessage: 'Show content' })}
+                  </Button>
+                </div>
               </button>
             )
           )}

@@ -43,20 +43,18 @@
     }
 
     input[type=text] {
+      @apply border border-solid border-primary-600;
       display: block;
       box-sizing: border-box;
       width: 100%;
       font-size: 14px;
-      color: var(--primary-text-color);
       outline: 0;
       font-family: inherit;
-      background: var(--foreground-color);
-      border: 1px solid var(--foreground-color);
       border-radius: 4px;
       padding: 6px 10px;
 
       &:focus {
-        border-color: var(--highlight-text-color);
+        @apply border border-solid border-primary-500;
       }
     }
 
@@ -76,9 +74,9 @@
   }
 
   &__input {
+    @apply border border-solid border-primary-600;
     display: inline-block;
     position: relative;
-    border: 1px solid var(--brand-color);
     box-sizing: border-box;
     width: 18px;
     height: 18px;
@@ -136,9 +134,7 @@
   }
 
   &__footer {
-    padding-top: 6px;
-    padding-bottom: 5px;
-    color: var(--primary-text-color);
+    @apply pt-1.5 pb-[5px] text-black dark:text-white;
   }
 
   &__link {
@@ -169,11 +165,10 @@
   }
 
   &__cancel {
-    height: 20px;
+    @apply h-5;
 
     .svg-icon {
-      height: 20px;
-      width: 20px;
+      @apply h-5 w-5;
     }
   }
 }
@@ -198,13 +193,7 @@
   }
 
   .button.button-secondary {
-    font-size: 14px;
-    font-weight: 400;
-    padding: 6px 10px;
-    height: auto;
-    line-height: inherit;
-    color: var(--brand-color);
-    border-color: var(--brand-color);
+    @apply h-auto py-1.5 px-2.5 text-primary-600 border-primary-600;
   }
 
   li {
@@ -219,18 +208,16 @@
   }
 
   select {
+    @apply border border-solid border-primary-600 bg-white dark:bg-slate-800;
     box-sizing: border-box;
     font-size: 14px;
-    color: var(--brand-color);
     display: inline-block;
     width: auto;
     outline: 0;
     font-family: inherit;
-    background-color: var(--foreground-color);
     background-repeat: no-repeat;
     background-position: right 8px center;
     background-size: auto 16px;
-    border: 1px solid var(--brand-color);
     border-radius: 4px;
     padding: 6px 10px;
     padding-right: 30px;

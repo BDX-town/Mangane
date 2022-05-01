@@ -10,7 +10,7 @@
 .status__display-name,
 .account__display-name {
   strong {
-    color: var(--primary-text-color);
+    @apply text-gray-800 dark:text-gray-200;
   }
 }
 

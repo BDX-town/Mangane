@@ -94,6 +94,12 @@ module.exports = {
     'no-loop-func': 'error',
     'no-mixed-spaces-and-tabs': 'error',
     'no-nested-ternary': 'warn',
+    'no-restricted-imports': ['error', {
+      patterns: [{
+        group: ['react-inlinesvg'],
+        message: 'Use the SvgIcon component instead.',
+      }],
+    }],
     'no-trailing-spaces': 'warn',
     'no-undef': 'error',
     'no-unreachable': 'error',
@@ -134,7 +140,8 @@ module.exports = {
     'react/jsx-equals-spacing': 'error',
     'react/jsx-first-prop-new-line': ['error', 'multiline-multiprop'],
     'react/jsx-indent': ['error', 2],
-    'react/jsx-no-bind': 'error',
+    // 'react/jsx-no-bind': ['error'],
+    'react/jsx-no-comment-textnodes': 'error',
     'react/jsx-no-duplicate-props': 'error',
     'react/jsx-no-undef': 'error',
     'react/jsx-tag-spacing': 'error',
@@ -143,7 +150,6 @@ module.exports = {
     'react/jsx-wrap-multilines': 'error',
     'react/no-multi-comp': 'off',
     'react/no-string-refs': 'error',
-    'react/prop-types': 'error',
     'react/self-closing-comp': 'error',
 
     'jsx-a11y/accessible-emoji': 'warn',
@@ -217,15 +223,15 @@ module.exports = {
     'import/newline-after-import': 'error',
     'import/no-extraneous-dependencies': [
       'error',
-      {
-        devDependencies: [
-          'webpack/**',
-          'app/soapbox/test_setup.js',
-          'app/soapbox/test_helpers.js',
-          'app/**/__tests__/**',
-          'app/**/__mocks__/**',
-        ],
-      },
+      // {
+      //   devDependencies: [
+      //     'webpack/**',
+      //     'app/soapbox/test_setup.js',
+      //     'app/soapbox/test_helpers.js',
+      //     'app/**/__tests__/**',
+      //     'app/**/__mocks__/**',
+      //   ],
+      // },
     ],
     'import/no-unresolved': 'error',
     'import/no-webpack-loader-syntax': 'error',
@@ -250,14 +256,12 @@ module.exports = {
     'promise/catch-or-return': 'error',
 
     'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
   },
   overrides: [
     {
       files: ['**/*.ts', '**/*.tsx'],
       rules: {
         'no-undef': 'off', // https://stackoverflow.com/a/69155899
-        'react/prop-types': 'off',
       },
       parser: '@typescript-eslint/parser',
     },

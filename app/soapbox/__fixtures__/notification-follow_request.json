@@ -1,0 +1,61 @@
+{
+  "account": {
+    "acct": "alex@spinster.xyz",
+    "avatar": "https://gleasonator.com/images/avi.png",
+    "avatar_static": "https://gleasonator.com/images/avi.png",
+    "bot": false,
+    "created_at": "2020-01-08T03:08:22.000Z",
+    "display_name": "**MOVED**",
+    "emojis": [],
+    "fields": [],
+    "followers_count": 1005,
+    "following_count": 724,
+    "fqn": "alex@spinster.xyz",
+    "header": "https://gleasonator.com/proxy/yxa7ucolLFAsmBHYJzksSh_zoao/aHR0cHM6Ly9tZWRpYS5zcGluc3Rlci54eXovYWNjb3VudHMvaGVhZGVycy8wMDAvMDAwLzAwMS9vcmlnaW5hbC83ZmE4MWY5ZmZiYWVjZDk3LnBuZw/7fa81f9ffbaecd97.png",
+    "header_static": "https://gleasonator.com/proxy/yxa7ucolLFAsmBHYJzksSh_zoao/aHR0cHM6Ly9tZWRpYS5zcGluc3Rlci54eXovYWNjb3VudHMvaGVhZGVycy8wMDAvMDAwLzAwMS9vcmlnaW5hbC83ZmE4MWY5ZmZiYWVjZDk3LnBuZw/7fa81f9ffbaecd97.png",
+    "id": "9v5bmXkCYkqU30gp9s",
+    "last_status_at": null,
+    "locked": true,
+    "note": "Moved to <a href=\"https://spinster.xyz/@alex@gleasonator.com\">https://spinster.xyz/@alex@gleasonator.com</a>",
+    "pleroma": {
+      "accepts_chat_messages": true,
+      "also_known_as": [],
+      "ap_id": "https://spinster.xyz/users/alex",
+      "background_image": null,
+      "deactivated": false,
+      "favicon": "https://gleasonator.com/proxy/owo6QgsHm_0ogz5enHyvD68wDUA/aHR0cHM6Ly9zcGluc3Rlci54eXovZmF2aWNvbi5wbmc/favicon.png",
+      "hide_favorites": true,
+      "hide_followers": false,
+      "hide_followers_count": false,
+      "hide_follows": false,
+      "hide_follows_count": false,
+      "is_admin": false,
+      "is_confirmed": false,
+      "is_moderator": false,
+      "is_suggested": false,
+      "location": null,
+      "relationship": {},
+      "skip_thread_containment": false,
+      "tags": []
+    },
+    "source": {
+      "fields": [],
+      "note": "",
+      "pleroma": {
+        "actor_type": "Person",
+        "discoverable": false
+      },
+      "sensitive": false
+    },
+    "statuses_count": 2687,
+    "url": "https://spinster.xyz/users/alex",
+    "username": "alex"
+  },
+  "created_at": "2020-12-30T02:23:35.000Z",
+  "id": "87967",
+  "pleroma": {
+    "is_muted": false,
+    "is_seen": true
+  },
+  "type": "follow_request"
+}

@@ -5,25 +5,21 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+import { Virtuoso } from 'react-virtuoso';
 import { createSelector } from 'reselect';
 
 import { getSettings } from 'soapbox/actions/settings';
-import BirthdayReminders from 'soapbox/components/birthday_reminders';
-import SubNavigation from 'soapbox/components/sub_navigation';
+import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
-import { getFeatures } from 'soapbox/utils/features';
 
 import {
   expandNotifications,
   scrollTopNotifications,
   dequeueNotifications,
 } from '../../actions/notifications';
-import Column from '../../components/column';
-import LoadGap from '../../components/load_gap';
-import ScrollableList from '../../components/scrollable_list';
 import TimelineQueueButtonHeader from  '../../components/timeline_queue_button_header';
+import { Column, Text } from '../../components/ui';
 
-import ColumnSettingsContainer from './containers/column_settings_container';
 import FilterBarContainer from './containers/filter_bar_container';
 import NotificationContainer from './containers/notification_container';
 
@@ -31,6 +27,16 @@ const messages = defineMessages({
   title: { id: 'column.notifications', defaultMessage: 'Notifications' },
   queue: { id: 'notifications.queue_label', defaultMessage: 'Click to see {count} new {count, plural, one {notification} other {notifications}}' },
 });
+
+const Footer = ({ context }) => (
+  context.hasMore ? (
+    <PlaceholderNotification />
+  ) : null
+);
+
+const Item = ({ context, ...rest }) => (
+  <div className='border-solid border-b border-gray-200 dark:border-gray-600' {...rest} />
+);
 
 const getNotifications = createSelector([
   state => getSettings(state).getIn(['notifications', 'quickFilter', 'show']),
@@ -49,10 +55,6 @@ const getNotifications = createSelector([
 
 const mapStateToProps = state => {
   const settings = getSettings(state);
-  const instance = state.get('instance');
-  const features = getFeatures(instance);
-  const showBirthdayReminders = settings.getIn(['notifications', 'birthdays', 'show']) && settings.getIn(['notifications', 'quickFilter', 'active']) === 'all' && features.birthdays;
-  const birthdays = showBirthdayReminders && state.getIn(['user_lists', 'birthday_reminders', state.get('me')]);
 
   return {
     showFilterBar: settings.getIn(['notifications', 'quickFilter', 'show']),
@@ -61,8 +63,6 @@ const mapStateToProps = state => {
     isUnread: state.getIn(['notifications', 'unread']) > 0,
     hasMore: state.getIn(['notifications', 'hasMore']),
     totalQueuedNotificationsCount: state.getIn(['notifications', 'totalQueuedNotificationsCount'], 0),
-    showBirthdayReminders,
-    hasBirthdays: !!birthdays,
   };
 };
 
@@ -80,8 +80,6 @@ class Notifications extends React.PureComponent {
     hasMore: PropTypes.bool,
     dequeueNotifications: PropTypes.func,
     totalQueuedNotificationsCount: PropTypes.number,
-    showBirthdayReminders: PropTypes.bool,
-    hasBirthdays: PropTypes.bool,
   };
 
   componentWillUnmount() {
@@ -118,27 +116,17 @@ class Notifications extends React.PureComponent {
   }
 
   handleMoveUp = id => {
-    const { hasBirthdays } = this.props;
-
-    let elementIndex = this.props.notifications.findIndex(item => item !== null && item.get('id') === id) - 1;
-    if (hasBirthdays) elementIndex++;
+    const elementIndex = this.props.notifications.findIndex(item => item !== null && item.get('id') === id) - 1;
     this._selectChild(elementIndex, true);
   }
 
   handleMoveDown = id => {
-    const { hasBirthdays } = this.props;
-
-    let elementIndex = this.props.notifications.findIndex(item => item !== null && item.get('id') === id) + 1;
-    if (hasBirthdays) elementIndex++;
+    const elementIndex = this.props.notifications.findIndex(item => item !== null && item.get('id') === id) + 1;
     this._selectChild(elementIndex, false);
   }
 
-  handleMoveBelowBirthdays = () => {
-    this._selectChild(1, false);
-  }
-
   _selectChild(index, align_top) {
-    const container = this.column.node;
+    const container = this.column;
     const element = container.querySelector(`article:nth-of-type(${index + 1}) .focusable`);
 
     if (element) {
@@ -161,67 +149,50 @@ class Notifications extends React.PureComponent {
   }
 
   render() {
-    const { intl, notifications, isLoading, hasMore, showFilterBar, totalQueuedNotificationsCount, showBirthdayReminders } = this.props;
+    const { intl, notifications, isLoading, hasMore, showFilterBar, totalQueuedNotificationsCount } = this.props;
     const emptyMessage = <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />;
-
-    let scrollableContent = null;
 
     const filterBarContainer = showFilterBar
       ? (<FilterBarContainer />)
       : null;
 
-    if (isLoading && this.scrollableContent) {
-      scrollableContent = this.scrollableContent;
-    } else if (notifications.size > 0 || hasMore) {
-      scrollableContent = notifications.map((item, index) => item === null ? (
-        <LoadGap
-          key={'gap:' + notifications.getIn([index + 1, 'id'])}
-          disabled={isLoading}
-          maxId={index > 0 ? notifications.getIn([index - 1, 'id']) : null}
-          onClick={this.handleLoadGap}
+    const showLoading = isLoading && !notifications || notifications.isEmpty();
+
+    const scrollContainer  = (
+      <PullToRefresh onRefresh={this.handleRefresh}>
+        <Virtuoso
+          useWindowScroll
+          data={showLoading ? Array(20).fill() : notifications.toArray()}
+          startReached={this.handleScrollToTop}
+          endReached={this.handleLoadOlder}
+          isScrolling={isScrolling => isScrolling && this.handleScroll()}
+          itemContent={(_index, notification) => (
+            showLoading ? (
+              <PlaceholderNotification />
+            ) : (
+              <NotificationContainer
+                key={notification.id}
+                notification={notification}
+                onMoveUp={this.handleMoveUp}
+                onMoveDown={this.handleMoveDown}
+              />
+            )
+          )}
+          context={{
+            hasMore,
+          }}
+          components={{
+            ScrollSeekPlaceholder: PlaceholderNotification,
+            Footer,
+            EmptyPlaceholder: () => <Text>{emptyMessage}</Text>,
+            Item,
+          }}
         />
-      ) : (
-        <NotificationContainer
-          key={item.get('id')}
-          notification={item}
-          onMoveUp={this.handleMoveUp}
-          onMoveDown={this.handleMoveDown}
-        />
-      ));
-
-      if (showBirthdayReminders) scrollableContent = scrollableContent.unshift(
-        <BirthdayReminders
-          key='birthdays'
-          onMoveDown={this.handleMoveBelowBirthdays}
-        />,
-      );
-    } else {
-      scrollableContent = null;
-    }
-
-    this.scrollableContent = scrollableContent;
-
-    const scrollContainer = (
-      <ScrollableList
-        scrollKey='notifications'
-        isLoading={isLoading}
-        showLoading={isLoading && notifications.size === 0}
-        hasMore={hasMore}
-        emptyMessage={emptyMessage}
-        placeholderComponent={PlaceholderNotification}
-        placeholderCount={20}
-        onLoadMore={this.handleLoadOlder}
-        onRefresh={this.handleRefresh}
-        onScrollToTop={this.handleScrollToTop}
-        onScroll={this.handleScroll}
-      >
-        {scrollableContent}
-      </ScrollableList>
+      </PullToRefresh>
     );
 
     return (
-      <Column ref={this.setColumnRef} label={intl.formatMessage(messages.title)} className='column--notifications'>
-        <SubNavigation message={intl.formatMessage(messages.title)} settings={ColumnSettingsContainer} />
+      <Column ref={this.setColumnRef} label={intl.formatMessage(messages.title)} withHeader={false}>
         {filterBarContainer}
         <TimelineQueueButtonHeader
           onClick={this.handleDequeueNotifications}

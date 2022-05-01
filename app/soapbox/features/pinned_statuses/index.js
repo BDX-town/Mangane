@@ -47,14 +47,12 @@ class PinnedStatuses extends ImmutablePureComponent {
 
     if (!isMyAccount) {
       return (
-        <Column>
-          <MissingIndicator />
-        </Column>
+        <MissingIndicator />
       );
     }
 
     return (
-      <Column heading={intl.formatMessage(messages.heading)}>
+      <Column label={intl.formatMessage(messages.heading)}>
         <StatusList
           statusIds={statusIds}
           scrollKey='pinned_statuses'

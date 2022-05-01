@@ -15,17 +15,19 @@ import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { makeEmojiMap } from 'soapbox/utils/normalizers';
 
+import type { Emoji, PollOption } from 'soapbox/types/entities';
+
 // https://docs.joinmastodon.org/entities/poll/
 export const PollRecord = ImmutableRecord({
-  emojis: ImmutableList(),
+  emojis: ImmutableList<Emoji>(),
   expired: false,
   expires_at: new Date(),
   id: '',
   multiple: false,
-  options: ImmutableList(),
+  options: ImmutableList<PollOption>(),
   voters_count: 0,
   votes_count: 0,
-  own_votes: null,
+  own_votes: null as ImmutableList<number> | null,
   voted: false,
 });
 

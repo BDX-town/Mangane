@@ -757,6 +757,14 @@
         "id": "tabs_bar.fediverse"
       },
       {
+        "defaultMessage": "Chats",
+        "id": "tabs_bar.chats"
+      },
+      {
+        "defaultMessage": "Messages",
+        "id": "navigation.direct_messages"
+      },
+      {
         "defaultMessage": "Home",
         "id": "tabs_bar.home"
       },
@@ -771,14 +779,6 @@
       {
         "defaultMessage": "Settings",
         "id": "tabs_bar.settings"
-      },
-      {
-        "defaultMessage": "Chats",
-        "id": "tabs_bar.chats"
-      },
-      {
-        "defaultMessage": "Messages",
-        "id": "navigation.direct_messages"
       },
       {
         "defaultMessage": "More",
@@ -1048,6 +1048,14 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Chats",
+        "id": "navigation.chats"
+      },
+      {
+        "defaultMessage": "Messages",
+        "id": "navigation.direct_messages"
+      },
+      {
         "defaultMessage": "Home",
         "id": "navigation.home"
       },
@@ -1058,14 +1066,6 @@
       {
         "defaultMessage": "Alerts",
         "id": "navigation.notifications"
-      },
-      {
-        "defaultMessage": "Chats",
-        "id": "navigation.chats"
-      },
-      {
-        "defaultMessage": "Messages",
-        "id": "navigation.direct_messages"
       },
       {
         "defaultMessage": "Dashboard",
@@ -1566,12 +1566,29 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Dashboard",
+        "id": "admin_nav.dashboard"
+      },
+      {
+        "defaultMessage": "Reports",
+        "id": "admin_nav.reports"
+      },
+      {
+        "defaultMessage": "Waitlist",
+        "id": "admin_nav.awaiting_approval"
+      }
+    ],
+    "path": "app/soapbox/features/admin/components/admin-tabs.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Latest Accounts",
         "id": "admin.latest_accounts_panel.title"
       },
       {
-        "defaultMessage": "Click to see {count} more {count, plural, one {account} other {accounts}}",
-        "id": "admin.latest_accounts_panel.expand_message"
+        "defaultMessage": "Click to see {count} {count, plural, one {account} other {accounts}}",
+        "id": "admin.latest_accounts_panel.more"
       }
     ],
     "path": "app/soapbox/features/admin/components/latest_accounts_panel.json"
@@ -1669,34 +1686,6 @@
       {
         "defaultMessage": "Dashboard",
         "id": "column.admin.dashboard"
-      },
-      {
-        "defaultMessage": "monthly active users",
-        "id": "admin.dashcounters.mau_label"
-      },
-      {
-        "defaultMessage": "total users",
-        "id": "admin.dashcounters.user_count_label"
-      },
-      {
-        "defaultMessage": "user retention",
-        "id": "admin.dashcounters.retention_label"
-      },
-      {
-        "defaultMessage": "posts",
-        "id": "admin.dashcounters.status_count_label"
-      },
-      {
-        "defaultMessage": "peers",
-        "id": "admin.dashcounters.domain_count_label"
-      },
-      {
-        "defaultMessage": "Software",
-        "id": "admin.dashwidgets.software_header"
-      },
-      {
-        "defaultMessage": "Email list",
-        "id": "admin.dashwidgets.email_list_header"
       }
     ],
     "path": "app/soapbox/features/admin/index.json"
@@ -1730,6 +1719,69 @@
       }
     ],
     "path": "app/soapbox/features/admin/reports.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Awaiting Approval",
+        "id": "column.admin.awaiting_approval"
+      },
+      {
+        "defaultMessage": "There is nobody waiting for approval. When a new user signs up, you can review them here.",
+        "id": "admin.awaiting_approval.empty_message"
+      }
+    ],
+    "path": "app/soapbox/features/admin/tabs/awaiting-approval.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "monthly active users",
+        "id": "admin.dashcounters.mau_label"
+      },
+      {
+        "defaultMessage": "total users",
+        "id": "admin.dashcounters.user_count_label"
+      },
+      {
+        "defaultMessage": "user retention",
+        "id": "admin.dashcounters.retention_label"
+      },
+      {
+        "defaultMessage": "posts",
+        "id": "admin.dashcounters.status_count_label"
+      },
+      {
+        "defaultMessage": "peers",
+        "id": "admin.dashcounters.domain_count_label"
+      },
+      {
+        "defaultMessage": "Software",
+        "id": "admin.dashwidgets.software_header"
+      },
+      {
+        "defaultMessage": "Email list",
+        "id": "admin.dashwidgets.email_list_header"
+      }
+    ],
+    "path": "app/soapbox/features/admin/tabs/dashboard.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Reports",
+        "id": "column.admin.reports"
+      },
+      {
+        "defaultMessage": "Moderation Log",
+        "id": "column.admin.reports.menu.moderation_log"
+      },
+      {
+        "defaultMessage": "There are no open reports. If a user gets reported, they will show up here.",
+        "id": "admin.reports.empty_message"
+      }
+    ],
+    "path": "app/soapbox/features/admin/tabs/reports.json"
   },
   {
     "descriptors": [
@@ -2615,8 +2667,8 @@
         "id": "direct.search_placeholder"
       },
       {
-        "defaultMessage": "A new direct messaging experience will be available soon. Please stay tuned.",
-        "id": "direct.body"
+        "defaultMessage": "You don't have any direct messages yet. When you send or receive one, it will show up here.",
+        "id": "empty_column.direct"
       }
     ],
     "path": "app/soapbox/features/conversations/index.json"
@@ -2997,10 +3049,6 @@
         "id": "edit_profile.fields.meta_fields.content_placeholder"
       },
       {
-        "defaultMessage": "Verified users may not update their display name",
-        "id": "edit_profile.fields.verified_display_name"
-      },
-      {
         "defaultMessage": "Profile saved!",
         "id": "edit_profile.success"
       },
@@ -3063,6 +3111,46 @@
       {
         "defaultMessage": "PNG, GIF or JPG. Will be downscaled to {size}",
         "id": "edit_profile.hints.avatar"
+      },
+      {
+        "defaultMessage": "Lock account",
+        "id": "edit_profile.fields.locked_label"
+      },
+      {
+        "defaultMessage": "Requires you to manually approve followers",
+        "id": "edit_profile.hints.locked"
+      },
+      {
+        "defaultMessage": "Hide network",
+        "id": "edit_profile.fields.hide_network_label"
+      },
+      {
+        "defaultMessage": "Who you follow and who follows you will not be shown on your profile",
+        "id": "edit_profile.hints.hide_network"
+      },
+      {
+        "defaultMessage": "This is a bot account",
+        "id": "edit_profile.fields.bot_label"
+      },
+      {
+        "defaultMessage": "This account mainly performs automated actions and might not be monitored",
+        "id": "edit_profile.hints.bot"
+      },
+      {
+        "defaultMessage": "Block notifications from strangers",
+        "id": "edit_profile.fields.stranger_notifications_label"
+      },
+      {
+        "defaultMessage": "Only show notifications from people you follow",
+        "id": "edit_profile.hints.stranger_notifications"
+      },
+      {
+        "defaultMessage": "Allow account discovery",
+        "id": "edit_profile.fields.discoverable_label"
+      },
+      {
+        "defaultMessage": "Display account in profile directory and allow indexing by external services",
+        "id": "edit_profile.hints.discoverable"
       },
       {
         "defaultMessage": "Subscribe to newsletter",
@@ -4243,6 +4331,10 @@
       {
         "defaultMessage": "{name} reposted your post",
         "id": "notification.reblog"
+      },
+      {
+        "defaultMessage": "{name} just posted",
+        "id": "notification.status"
       },
       {
         "defaultMessage": "A poll you have voted in has ended",
@@ -6310,6 +6402,31 @@
       }
     ],
     "path": "app/soapbox/features/ui/components/profile_dropdown.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Ownership of this link was checked on {date}",
+        "id": "account.link_verified_on"
+      },
+      {
+        "defaultMessage": "This account privacy status is set to locked. The owner manually reviews who can follow them.",
+        "id": "account.locked_info"
+      },
+      {
+        "defaultMessage": "Deactivated",
+        "id": "account.deactivated"
+      },
+      {
+        "defaultMessage": "Bot",
+        "id": "account.badges.bot"
+      },
+      {
+        "defaultMessage": "Profile fields",
+        "id": "profile_fields_panel.title"
+      }
+    ],
+    "path": "app/soapbox/features/ui/components/profile_fields_panel.json"
   },
   {
     "descriptors": [

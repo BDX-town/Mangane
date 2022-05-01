@@ -7,45 +7,45 @@
 .autosuggest-textarea__textarea,
 .autosuggest-input input,
 .react-datepicker__input-container input {
-  display: block;
-  box-sizing: border-box;
-  width: 100%;
-  margin: 0;
-  background: transparent;
-  color: var(--primary-text-color);
-  padding: 10px;
-  font-family: inherit;
-  font-size: 16px;
-  resize: vertical;
-  border: 0;
-  outline: 0;
+  // display: block;
+  // box-sizing: border-box;
+  // width: 100%;
+  // margin: 0;
+  // background: transparent;
+  // color: var(--primary-text-color);
+  // padding: 10px;
+  // font-family: inherit;
+  // font-size: 16px;
+  // resize: vertical;
+  // border: 0;
+  // outline: 0;
 
-  &:focus {
-    outline: 0;
-  }
+  // &:focus {
+  //   outline: 0;
+  // }
 
-  @media screen and (max-width: 600px) {
-    font-size: 16px;
-  }
+  // @media screen and (max-width: 600px) {
+  //   font-size: 16px;
+  // }
 }
 
 .autosuggest-textarea__textarea {
   min-height: 100px;
-  border-radius: 5px 5px 0 0;
-  padding-bottom: 0;
-  padding-right: 10px + 22px;
-  resize: none;
-  scrollbar-color: initial;
-  transition: 0.2s;
+  // border-radius: 5px 5px 0 0;
+  // padding-bottom: 0;
+  // padding-right: 10px + 22px;
+  // resize: none;
+  // scrollbar-color: initial;
+  // transition: 0.2s;
 
-  &::-webkit-scrollbar {
-    all: unset;
-  }
+  // &::-webkit-scrollbar {
+  //   all: unset;
+  // }
 
-  @media screen and (max-width: 600px) {
-    max-height: 100px !important; // prevent auto-resize textarea
-    resize: vertical;
-  }
+  // @media screen and (max-width: 600px) {
+  //   max-height: 100px !important; // prevent auto-resize textarea
+  //   resize: vertical;
+  // }
 }
 
 .autosuggest-textarea__suggestions-wrapper {

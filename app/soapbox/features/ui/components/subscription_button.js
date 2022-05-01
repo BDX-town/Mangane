@@ -11,8 +11,8 @@ import {
   subscribeAccount,
   unsubscribeAccount,
 } from 'soapbox/actions/accounts';
-import Button from 'soapbox/components/button';
 import Icon from 'soapbox/components/icon';
+import { Button } from 'soapbox/components/ui';
 
 const messages = defineMessages({
   subscribe: { id: 'account.subscribe', defaultMessage: 'Subscribe to notifications from @{name}' },
@@ -49,7 +49,7 @@ export default @connect(mapStateToProps, mapDispatchToProps)
 class SubscriptionButton extends ImmutablePureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
     features: PropTypes.object.isRequired,
   };
 

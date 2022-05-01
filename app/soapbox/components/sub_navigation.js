@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { throttle } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -7,9 +6,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
-import Helmet from 'soapbox/components/helmet';
-import Icon from 'soapbox/components/icon';
-import IconButton from 'soapbox/components/icon_button';
+
+import { CardHeader, CardTitle } from './ui';
 
 const messages = defineMessages({
   back: { id: 'column_back_button.label', defaultMessage: 'Back' },
@@ -92,39 +90,15 @@ class SubNavigation extends React.PureComponent {
   }
 
   render() {
-    const { intl, message, settings: Settings } = this.props;
-    const { scrolled } = this.state;
+    const { intl, message } = this.props;
 
     return (
-      <div className={classNames('sub-navigation', { 'sub-navigation--scrolled': scrolled })} ref={this.setRef}>
-        <div className='sub-navigation__content'>
-          <button
-            className='sub-navigation__back'
-            onClick={this.handleBackClick}
-            onKeyUp={this.handleBackKeyUp}
-            aria-label={intl.formatMessage(messages.back)}
-            title={intl.formatMessage(messages.back)}
-          >
-            <Icon src={require('@tabler/icons/icons/arrow-left.svg')} />
-            {intl.formatMessage(messages.back)}
-          </button>
-          {message && (
-            <div className='sub-navigation__message'>
-              <Helmet><title>{message}</title></Helmet>
-              {message}
-            </div>
-          )}
-          {Settings && (
-            <div className='sub-navigation__cog'>
-              <IconButton
-                src={require('@tabler/icons/icons/settings.svg')}
-                onClick={this.handleOpenSettings}
-                title={intl.formatMessage(messages.settings)}
-              />
-            </div>
-          )}
-        </div>
-      </div>
+      <CardHeader
+        aria-label={intl.formatMessage(messages.back)}
+        onBackClick={this.handleBackClick}
+      >
+        <CardTitle title={message} />
+      </CardHeader>
     );
   }
 

@@ -121,7 +121,7 @@ export function updateNotificationsQueue(notification, intlMessages, intlLocale,
           }).catch(console.error);
         }).catch(console.error);
       }
-    } catch(e) {
+    } catch (e) {
       console.warn(e);
     }
 

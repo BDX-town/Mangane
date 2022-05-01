@@ -13,21 +13,25 @@ import {
 
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
-import { acctFull } from 'soapbox/utils/accounts';
 import { unescapeHTML } from 'soapbox/utils/html';
 import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers';
+
+import type { PatronAccount } from 'soapbox/reducers/patron';
+import type { Emoji, Field, EmbeddedEntity } from 'soapbox/types/entities';
 
 // https://docs.joinmastodon.org/entities/account/
 export const AccountRecord = ImmutableRecord({
   acct: '',
   avatar: '',
   avatar_static: '',
-  birthday: undefined,
+  birthday: undefined as string | undefined,
   bot: false,
   created_at: new Date(),
+  discoverable: false,
   display_name: '',
-  emojis: ImmutableList(),
-  fields: ImmutableList(),
+  emojis: ImmutableList<Emoji>(),
+  favicon: '',
+  fields: ImmutableList<Field>(),
   followers_count: 0,
   following_count: 0,
   fqn: '',
@@ -37,10 +41,10 @@ export const AccountRecord = ImmutableRecord({
   last_status_at: new Date(),
   location: '',
   locked: false,
-  moved: null,
+  moved: null as EmbeddedEntity<any>,
   note: '',
-  pleroma: ImmutableMap(),
-  source: ImmutableMap(),
+  pleroma: ImmutableMap<string, any>(),
+  source: ImmutableMap<string, any>(),
   statuses_count: 0,
   uri: '',
   url: '',
@@ -49,19 +53,24 @@ export const AccountRecord = ImmutableRecord({
   verified: false,
 
   // Internal fields
+  admin: false,
   display_name_html: '',
+  domain: '',
+  donor: false,
+  moderator: false,
   note_emojified: '',
   note_plain: '',
-  patron: ImmutableMap(),
-  relationship: ImmutableList(),
+  patron: null as PatronAccount | null,
+  relationship: ImmutableList<ImmutableMap<string, any>>(),
   should_refetch: false,
+  staff: false,
 });
 
 // https://docs.joinmastodon.org/entities/field/
 export const FieldRecord = ImmutableRecord({
   name: '',
   value: '',
-  verified_at: null,
+  verified_at: null as Date | null,
 
   // Internal fields
   name_emojified: '',
@@ -85,7 +94,7 @@ const normalizePleromaLegacyFields = (account: ImmutableMap<string, any>) => {
   });
 };
 
-// Add avatar, if missing
+/** Add avatar, if missing */
 const normalizeAvatar = (account: ImmutableMap<string, any>) => {
   const avatar = account.get('avatar');
   const avatarStatic = account.get('avatar_static');
@@ -97,7 +106,7 @@ const normalizeAvatar = (account: ImmutableMap<string, any>) => {
   });
 };
 
-// Add header, if missing
+/** Add header, if missing */
 const normalizeHeader = (account: ImmutableMap<string, any>) => {
   const header = account.get('header');
   const headerStatic = account.get('header_static');
@@ -109,18 +118,18 @@ const normalizeHeader = (account: ImmutableMap<string, any>) => {
   });
 };
 
-// Normalize custom fields
+/** Normalize custom fields */
 const normalizeFields = (account: ImmutableMap<string, any>) => {
   return account.update('fields', ImmutableList(), fields => fields.map(FieldRecord));
 };
 
-// Normalize emojis
+/** Normalize emojis */
 const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
   const emojis = entity.get('emojis', ImmutableList()).map(normalizeEmoji);
   return entity.set('emojis', emojis);
 };
 
-// Normalize Pleroma/Fedibird birthday
+/** Normalize Pleroma/Fedibird birthday */
 const normalizeBirthday = (account: ImmutableMap<string, any>) => {
   const birthday = [
     account.getIn(['pleroma', 'birthday']),
@@ -130,13 +139,13 @@ const normalizeBirthday = (account: ImmutableMap<string, any>) => {
   return account.set('birthday', birthday);
 };
 
-// Get Pleroma tags
+/** Get Pleroma tags */
 const getTags = (account: ImmutableMap<string, any>): ImmutableList<any> => {
   const tags = account.getIn(['pleroma', 'tags']);
   return ImmutableList(ImmutableList.isList(tags) ? tags : []);
 };
 
-// Normalize Truth Social/Pleroma verified
+/** Normalize Truth Social/Pleroma verified */
 const normalizeVerified = (account: ImmutableMap<string, any>) => {
   return account.update('verified', verified => {
     return [
@@ -146,7 +155,12 @@ const normalizeVerified = (account: ImmutableMap<string, any>) => {
   });
 };
 
-// Normalize Fedibird/Truth Social/Pleroma location
+/** Get donor status from tags. */
+const normalizeDonor = (account: ImmutableMap<string, any>) => {
+  return account.set('donor', getTags(account).includes('donor'));
+};
+
+/** Normalize Fedibird/Truth Social/Pleroma location */
 const normalizeLocation = (account: ImmutableMap<string, any>) => {
   return account.update('location', location => {
     return [
@@ -157,20 +171,20 @@ const normalizeLocation = (account: ImmutableMap<string, any>) => {
   });
 };
 
-// Set username from acct, if applicable
+/** Set username from acct, if applicable */
 const fixUsername = (account: ImmutableMap<string, any>) => {
   const acct = account.get('acct') || '';
   const username = account.get('username') || '';
   return account.set('username', username || acct.split('@')[0]);
 };
 
-// Set display name from username, if applicable
+/** Set display name from username, if applicable */
 const fixDisplayName = (account: ImmutableMap<string, any>) => {
   const displayName = account.get('display_name') || '';
   return account.set('display_name', displayName.trim().length === 0 ? account.get('username') : displayName);
 };
 
-// Emojification, etc
+/** Emojification, etc */
 const addInternalFields = (account: ImmutableMap<string, any>) => {
   const emojiMap = makeEmojiMap(account.get('emojis'));
 
@@ -195,8 +209,56 @@ const addInternalFields = (account: ImmutableMap<string, any>) => {
   });
 };
 
+const getDomainFromURL = (account: ImmutableMap<string, any>): string => {
+  try {
+    const url = account.get('url');
+    return new URL(url).host;
+  } catch {
+    return '';
+  }
+};
+
+export const guessFqn = (account: ImmutableMap<string, any>): string => {
+  const acct = account.get('acct', '');
+  const [user, domain] = acct.split('@');
+
+  if (domain) {
+    return acct;
+  } else {
+    return [user, getDomainFromURL(account)].join('@');
+  }
+};
+
 const normalizeFqn = (account: ImmutableMap<string, any>) => {
-  return account.set('fqn', acctFull(account));
+  const fqn = account.get('fqn') || guessFqn(account);
+  return account.set('fqn', fqn);
+};
+
+const normalizeFavicon = (account: ImmutableMap<string, any>) => {
+  const favicon = account.getIn(['pleroma', 'favicon']) || '';
+  return account.set('favicon', favicon);
+};
+
+const addDomain = (account: ImmutableMap<string, any>) => {
+  const domain = account.get('fqn', '').split('@')[1] || '';
+  return account.set('domain', domain);
+};
+
+const addStaffFields = (account: ImmutableMap<string, any>) => {
+  const admin = account.getIn(['pleroma', 'is_admin']) === true;
+  const moderator = account.getIn(['pleroma', 'is_moderator']) === true;
+  const staff = admin || moderator;
+
+  return account.merge({
+    admin,
+    moderator,
+    staff,
+  });
+};
+
+const normalizeDiscoverable = (account: ImmutableMap<string, any>) => {
+  const discoverable = Boolean(account.get('discoverable') || account.getIn(['source', 'pleroma', 'discoverable']));
+  return account.set('discoverable', discoverable);
 };
 
 export const normalizeAccount = (account: Record<string, any>) => {
@@ -208,9 +270,14 @@ export const normalizeAccount = (account: Record<string, any>) => {
       normalizeHeader(account);
       normalizeFields(account);
       normalizeVerified(account);
+      normalizeDonor(account);
       normalizeBirthday(account);
       normalizeLocation(account);
       normalizeFqn(account);
+      normalizeFavicon(account);
+      normalizeDiscoverable(account);
+      addDomain(account);
+      addStaffFields(account);
       fixUsername(account);
       fixDisplayName(account);
       addInternalFields(account);

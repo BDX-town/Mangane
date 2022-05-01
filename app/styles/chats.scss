@@ -1,15 +1,6 @@
 .pane {
-  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
-  border-radius: 6px 6px 0 0;
-  position: fixed;
-  bottom: 0;
-  right: 20px;
-  width: 265px;
-  height: 350px;
+  @apply flex flex-col shadow-md rounded-t-md fixed bottom-0 right-5 w-[256px] h-[350px] z-[1000];
   max-height: calc(100vh - 70px);
-  display: flex;
-  flex-direction: column;
-  z-index: 1000; // Above AccountHeader
   transition: 0.05s;
 
   &--main {
@@ -39,14 +30,7 @@
   }
 
   &__header {
-    box-sizing: border-box;
-    background: var(--brand-color);
-    color: #fff;
-    padding: 0 10px;
-    font-weight: bold;
-    border-radius: 6px 6px 0 0;
-    display: flex;
-    align-items: center;
+    @apply flex items-center py-0 px-2.5 box-border rounded-t-md font-bold bg-primary-600 text-white;
     height: 31px;
 
     .account__avatar {
@@ -104,21 +88,18 @@
   }
 
   &__content {
-    background: var(--foreground-color);
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    overflow: hidden;
+    @apply flex flex-1 flex-col overflow-hidden bg-white dark:bg-slate-800;
+
+    > div {
+      @apply max-h-full;
+    }
 
     .chat-box {
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-      overflow: hidden;
+      @apply flex flex-1 flex-col overflow-hidden;
     }
 
     .chat-list {
-      overflow-y: auto;
+      @apply overflow-y-auto max-h-full;
     }
   }
 
@@ -168,11 +149,8 @@
   display: flex;
 
   &__bubble {
-    font-size: 15px;
-    padding: 4px 10px;
+    @apply px-2.5 py-1 rounded-lg bg-primary-50 dark:bg-slate-700;
     max-width: 70%;
-    border-radius: 10px;
-    background-color: var(--background-color);
     text-overflow: ellipsis;
     overflow-wrap: break-word;
     white-space: break-spaces;
@@ -202,8 +180,8 @@
   }
 
   &--me .chat-message__bubble {
+    @apply bg-primary-200 dark:bg-primary-900;
     margin-left: auto;
-    background-color: hsla(var(--brand-color_hsl), 0.2);
   }
 
   &--pending .chat-message__bubble {
@@ -280,26 +258,6 @@
 }
 
 .chat-box {
-  .upload-progress {
-    padding: 0 10px;
-    align-items: center;
-    height: 25px;
-
-    .fa {
-      font-size: 22px;
-    }
-
-    &__message {
-      font-size: 13px;
-      flex: 1;
-      align-items: center;
-    }
-
-    &__backdrop {
-      margin-top: 2px;
-    }
-  }
-
   &__attachment {
     display: flex;
     align-items: center;
@@ -323,25 +281,6 @@
     padding: 6px;
     position: relative;
 
-    .icon-button {
-      color: var(--primary-text-color);
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: auto;
-      height: auto;
-      background: transparent !important;
-      border: 0;
-      padding: 0;
-      margin: 0;
-
-      .svg-icon {
-        width: 18px;
-        height: 18px;
-      }
-    }
-
     textarea {
       width: 100%;
       height: 100%;
@@ -355,6 +294,20 @@
       color: var(--primary-text-color);
       font-size: 15px;
       overflow: hidden;
+    }
+  }
+
+  &__send {
+    .icon-button,
+    button {
+      @apply absolute right-2.5 w-auto h-auto border-0 p-0 m-0 text-black dark:text-white;
+      top: 50%;
+      transform: translateY(-50%);
+
+      .svg-icon,
+      svg {
+        @apply w-[18px] h-[18px];
+      }
     }
   }
 }
@@ -528,9 +481,7 @@
 }
 
 .chat-messages__divider {
-  text-align: center;
-  text-transform: uppercase;
+  @apply pt-3.5 pb-0.5 text-center uppercase text-black dark:text-white;
   font-size: 13px;
-  padding: 14px 0 2px;
   opacity: 0.8;
 }

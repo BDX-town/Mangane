@@ -23,6 +23,7 @@ describe('normalizeInstance()', () => {
       description: '',
       description_limit: 1500,
       email: '',
+      feature_quote: false,
       fedibird_capabilities: [],
       invites_enabled: false,
       languages: [],
@@ -183,5 +184,11 @@ describe('normalizeInstance()', () => {
     const result = normalizeInstance(instance);
 
     expect(result.version).toEqual('3.5.0-rc1');
+  });
+
+  it('normalizes Pixelfed instance', () => {
+    const instance = require('soapbox/__fixtures__/pixelfed-instance.json');
+    const result = normalizeInstance(instance);
+    expect(result.title).toBe('pixelfed');
   });
 });

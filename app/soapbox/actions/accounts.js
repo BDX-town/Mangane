@@ -1035,7 +1035,7 @@ export function accountLookup(acct, cancelToken) {
   };
 }
 
-export function fetchBirthdayReminders(day, month) {
+export function fetchBirthdayReminders(month, day) {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
 

@@ -14,6 +14,7 @@ import { createApp } from 'soapbox/actions/apps';
 import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
 import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
 import snackbar from 'soapbox/actions/snackbar';
+import { custom } from 'soapbox/custom';
 import KVStore from 'soapbox/storage/kv_store';
 import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
@@ -39,12 +40,14 @@ export const AUTH_ACCOUNT_REMEMBER_REQUEST = 'AUTH_ACCOUNT_REMEMBER_REQUEST';
 export const AUTH_ACCOUNT_REMEMBER_SUCCESS = 'AUTH_ACCOUNT_REMEMBER_SUCCESS';
 export const AUTH_ACCOUNT_REMEMBER_FAIL    = 'AUTH_ACCOUNT_REMEMBER_FAIL';
 
+const customApp = custom('app');
+
 export const messages = defineMessages({
   loggedOut: { id: 'auth.logged_out', defaultMessage: 'Logged out.' },
   invalidCredentials: { id: 'auth.invalid_credentials', defaultMessage: 'Wrong username or password' },
 });
 
-const noOp = () => () => new Promise(f => f());
+const noOp = () => new Promise(f => f());
 
 const getScopes = state => {
   const instance = state.get('instance');
@@ -54,9 +57,20 @@ const getScopes = state => {
 
 function createAppAndToken() {
   return (dispatch, getState) => {
-    return dispatch(createAuthApp()).then(() => {
+    return dispatch(getAuthApp()).then(() => {
       return dispatch(createAppToken());
     });
+  };
+}
+
+/** Create an auth app, or use it from build config */
+function getAuthApp() {
+  return (dispatch, getState) => {
+    if (customApp?.client_secret) {
+      return noOp().then(() => dispatch({ type: AUTH_APP_CREATED, app: customApp }));
+    } else {
+      return dispatch(createAuthApp());
+    }
   };
 }
 
@@ -117,7 +131,7 @@ export function refreshUserToken() {
     const refreshToken = getState().getIn(['auth', 'user', 'refresh_token']);
     const app = getState().getIn(['auth', 'app']);
 
-    if (!refreshToken) return dispatch(noOp());
+    if (!refreshToken) return dispatch(noOp);
 
     const params = {
       client_id:     app.get('client_id'),
@@ -160,8 +174,18 @@ export function verifyCredentials(token, accountUrl) {
       if (account.id === getState().get('me')) dispatch(fetchMeSuccess(account));
       return account;
     }).catch(error => {
-      if (getState().get('me') === null) dispatch(fetchMeFail(error));
-      dispatch({ type: VERIFY_CREDENTIALS_FAIL, token, error, skipAlert: true });
+      if (error?.response?.status === 403 && error?.response?.data?.id) {
+        // The user is waitlisted
+        const account = error.response.data;
+        dispatch(importFetchedAccount(account));
+        dispatch({ type: VERIFY_CREDENTIALS_SUCCESS, token, account });
+        if (account.id === getState().get('me')) dispatch(fetchMeSuccess(account));
+        return account;
+      } else {
+        if (getState().get('me') === null) dispatch(fetchMeFail(error));
+        dispatch({ type: VERIFY_CREDENTIALS_FAIL, token, error, skipAlert: true });
+        return error;
+      }
     });
   };
 }
@@ -190,7 +214,7 @@ export function loadCredentials(token, accountUrl) {
 
 export function logIn(intl, username, password) {
   return (dispatch, getState) => {
-    return dispatch(createAuthApp()).then(() => {
+    return dispatch(getAuthApp()).then(() => {
       return dispatch(createUserToken(username, password));
     }).catch(error => {
       if (error.response.data.error === 'mfa_required') {
@@ -213,19 +237,30 @@ export function logIn(intl, username, password) {
   };
 }
 
+export function deleteSession() {
+  return (dispatch, getState) => {
+    return api(getState).delete('/api/sign_out');
+  };
+}
+
 export function logOut(intl) {
   return (dispatch, getState) => {
     const state = getState();
     const account = getLoggedInAccount(state);
     const standalone = isStandalone(state);
 
+    if (!account) return dispatch(noOp);
+
     const params = {
       client_id: state.getIn(['auth', 'app', 'client_id']),
       client_secret: state.getIn(['auth', 'app', 'client_secret']),
-      token: state.getIn(['auth', 'users', account.get('url'), 'access_token']),
+      token: state.getIn(['auth', 'users', account.url, 'access_token']),
     };
 
-    return dispatch(revokeOAuthToken(params)).finally(() => {
+    return Promise.all([
+      dispatch(revokeOAuthToken(params)),
+      dispatch(deleteSession()),
+    ]).finally(() => {
       dispatch({ type: AUTH_LOGGED_OUT, account, standalone });
       dispatch(snackbar.success(intl.formatMessage(messages.loggedOut)));
     });

@@ -1,0 +1,17 @@
+.w-10i {
+  width: 2.5rem !important;
+}
+
+.z-1000 {
+  z-index: 1000;
+}
+
+.divide-x-dot > *:not(:last-child)::after {
+  content: '·';
+  padding-right: 4px;
+  padding-left: 4px;
+}
+
+.mention {
+  @apply text-primary-600 hover:underline;
+}

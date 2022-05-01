@@ -5,7 +5,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
-import IconButton from '../../../components/icon_button';
+import { IconButton } from '../../../components/ui';
 
 const messages = defineMessages({
   upload: { id: 'upload_button.label', defaultMessage: 'Add media attachment' },
@@ -63,16 +63,17 @@ class UploadButton extends ImmutablePureComponent {
       : require('@tabler/icons/icons/paperclip.svg');
 
     return (
-      <div className='compose-form__upload-button'>
+      <div>
         <IconButton
-          className='compose-form__upload-button-icon'
           src={src}
+          className='text-gray-400 hover:text-gray-600'
           title={intl.formatMessage(messages.upload)}
           disabled={disabled}
           onClick={this.handleClick}
         />
+
         <label>
-          <span style={{ display: 'none' }}>{intl.formatMessage(messages.upload)}</span>
+          <span className='sr-only'>{intl.formatMessage(messages.upload)}</span>
           <input
             key={resetFileKey}
             ref={this.setRef}
@@ -81,7 +82,7 @@ class UploadButton extends ImmutablePureComponent {
             accept={attachmentTypes && attachmentTypes.toArray().join(',')}
             onChange={this.handleChange}
             disabled={disabled}
-            style={{ display: 'none' }}
+            className='hidden'
           />
         </label>
       </div>

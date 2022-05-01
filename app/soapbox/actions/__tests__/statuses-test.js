@@ -1,6 +1,6 @@
 import { STATUSES_IMPORT } from 'soapbox/actions/importer';
 import { __stub } from 'soapbox/api';
-import { mockStore, rootState } from 'soapbox/test_helpers';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 
 import { fetchContext } from '../statuses';
 

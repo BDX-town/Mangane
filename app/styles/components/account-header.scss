@@ -114,67 +114,15 @@
     }
   }
 
-  @keyframes fadeIn {
-    1% {
-      visibility: visible;
-    }
-
-    100% {
-      visibility: visible;
-    }
-  }
-
-  @keyframes fadeOut {
-    1% {
-      visibility: visible;
-    }
-
-    100% {
-      visibility: hidden;
-    }
-  }
-
-  &__card {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    left: 0;
-    top: -90px;
-
-    &.is-locked {
-      .account__header__avatar {
-        top: -20px;
-        opacity: 0;
-        animation: 0.3s fadeOut;
-        animation-fill-mode: forwards;
-      }
-
-      .account__header__name {
-        top: 90px;
-        opacity: 1;
-        animation: 0.3s fadeIn;
-        animation-fill-mode: forwards;
-      }
-    }
-
-    @media screen and (max-width: 895px) {
-      top: -45px;
-      left: 10px;
-    }
-  }
-
   &__avatar {
     display: block;
     position: absolute;
-    top: 0;
+    left: 0;
+    top: -90px;
     border-radius: 50%;
     height: 200px;
     width: 200px;
     background-color: var(--foreground-color);
-    opacity: 1;
-    animation: 0.3s fadeIn;
-    animation-fill-mode: forwards;
-    transition: top 0.3s, opacity 0.15s;
 
     // NOTE - patch fix for avatar size. Wrapper may not be needed when I do polish up on the page
     .account__avatar {
@@ -201,6 +149,7 @@
     }
 
     @media screen and (max-width: 895px) {
+      top: -45px;
       left: 20px;
       left: max(20px + env(safe-area-inset-left));
       height: 90px;
@@ -210,49 +159,6 @@
         width: 90px;
         height: 90px;
         background-size: 90px 90px;
-      }
-    }
-  }
-
-  &__name {
-    display: flex;
-    align-items: center;
-    column-gap: 10px;
-    width: 265px;
-    height: 74px;
-    position: absolute;
-    top: 100px;
-    opacity: 0;
-    animation: 0.3s fadeOut;
-    animation-fill-mode: forwards;
-    transition: top 0.3s, opacity 0.15s;
-
-    div:nth-child(2) {
-      width: calc(100% - 50px);
-      color: var(--primary-text-color);
-
-      span:first-of-type {
-        display: inline-block;
-        max-width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-size: 18px;
-        line-height: 1.25;
-        font-weight: 600;
-
-        &.with-badge {
-          max-width: calc(100% - 20px);
-        }
-      }
-
-      small {
-        display: flex;
-        font-size: 14px;
-        color: var(--primary-text-color--faint);
-        font-weight: 400;
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
     }
   }
@@ -405,13 +311,6 @@
 
 // end .account__header
 
-.account-timeline {
-  &__header {
-    display: block;
-    width: 100%;
-  }
-}
-
 .account__header__content {
   color: var(--primary-text-color--faint);
   font-size: 14px;
@@ -435,11 +334,5 @@
     &:hover {
       text-decoration: none;
     }
-  }
-}
-
-@media (min-width: 896px) {
-  .account-timeline .sub-navigation {
-    top: 134px;
   }
 }

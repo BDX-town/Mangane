@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -5,7 +6,6 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
 import { defineMessages, injectIntl } from 'react-intl';
 
-import FilterBar from 'soapbox/components/filter_bar';
 import Pullable from 'soapbox/components/pullable';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder_account';
@@ -13,6 +13,7 @@ import PlaceholderHashtag from 'soapbox/features/placeholder/components/placehol
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 
 import Hashtag from '../../../components/hashtag';
+import { Tabs } from '../../../components/ui';
 import AccountContainer from '../../../containers/account_container';
 import StatusContainer from '../../../containers/status_container';
 
@@ -34,6 +35,7 @@ class SearchResults extends ImmutablePureComponent {
     selectFilter: PropTypes.func.isRequired,
     features: PropTypes.object.isRequired,
     suggestions: ImmutablePropTypes.list,
+    trendingStatuses: ImmutablePropTypes.list,
     trends: ImmutablePropTypes.list,
     intl: PropTypes.object.isRequired,
   };
@@ -41,6 +43,10 @@ class SearchResults extends ImmutablePureComponent {
   handleLoadMore = () => this.props.expandSearch(this.props.selectedFilter);
 
   handleSelectFilter = newActiveFilter => this.props.selectFilter(newActiveFilter);
+
+  componentDidMount() {
+    this.props.fetchTrendingStatuses();
+  }
 
   renderFilterBar() {
     const { intl, selectedFilter } = this.props;
@@ -63,11 +69,11 @@ class SearchResults extends ImmutablePureComponent {
       },
     ];
 
-    return <FilterBar className='search__filter-bar' items={items} active={selectedFilter} />;
+    return <Tabs items={items} activeItem={selectedFilter} />;
   }
 
   render() {
-    const { value, results, submitted, selectedFilter, suggestions, trends } = this.props;
+    const { value, results, submitted, selectedFilter, suggestions, trendingStatuses, trends } = this.props;
 
     let searchResults;
     let hasMore = false;
@@ -97,13 +103,15 @@ class SearchResults extends ImmutablePureComponent {
       }
     }
 
-    if (selectedFilter === 'statuses' && results.get('statuses')) {
+    if (selectedFilter === 'statuses') {
       hasMore = results.get('statusesHasMore');
       loaded = results.get('statusesLoaded');
 
-      if (results.get('statuses').size > 0) {
+      if (results.get('statuses') && results.get('statuses').size > 0) {
         searchResults = results.get('statuses').map(statusId => <StatusContainer key={statusId} id={statusId} />);
-      } else {
+      } else if (!submitted && trendingStatuses && !trendingStatuses.isEmpty()) {
+        searchResults = trendingStatuses.map(statusId => <StatusContainer key={statusId} id={statusId} />);
+      } else if (loaded) {
         noResultsMessage = (
           <div className='empty-column-indicator'>
             <FormattedMessage
@@ -153,6 +161,10 @@ class SearchResults extends ImmutablePureComponent {
               onLoadMore={this.handleLoadMore}
               placeholderComponent={placeholderComponent}
               placeholderCount={20}
+              className={classNames({
+                'divide-gray-200 divide-solid divide-y': selectedFilter === 'statuses',
+                'space-y-4': selectedFilter === 'accounts',
+              })}
             >
               {searchResults}
             </ScrollableList>

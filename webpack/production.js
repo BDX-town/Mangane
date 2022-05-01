@@ -95,7 +95,6 @@ module.exports = merge(sharedConfig, {
             '/nodeinfo',
             '/socket',
             '/oauth',
-            '/auth/password',
             '/.well-known/webfinger',
             '/static',
             '/instance',
@@ -103,6 +102,7 @@ module.exports = merge(sharedConfig, {
             '/ostatus_subscribe',
             '/pghero',
             '/sidekiq',
+            '/open-source',
           ];
 
           const isBackendRoute = ({ pathname }) => {

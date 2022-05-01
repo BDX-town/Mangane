@@ -1,23 +1,20 @@
 .emoji-react {
-  display: inline-block;
-  transition: 0.1s;
-  color: var(--primary-text-color--faint);
-  text-decoration: none;
+  @apply inline-block text-gray-900 dark:text-gray-300 no-underline;
+  transition: 0.2s;
 
   &__emoji {
     img {
-      width: 20px;
-      height: 20px;
+      @apply w-5 h-5;
       filter: drop-shadow(2px 0 0 var(--foreground-color));
     }
   }
 
   &__count {
-    display: none;
+    @apply hidden;
   }
 
   + .emoji-react {
-    margin-right: -8px;
+    @apply -mr-3;
   }
 
   &[type='button'] {
@@ -48,7 +45,11 @@
 
 .emoji-react--favourites {
   .svg-icon {
-    color: $gold-star;
+    color: var(--accent-color);
+
+    svg path {
+      fill: var(--accent-color);
+    }
   }
 }
 
@@ -64,7 +65,6 @@
 
 .emoji-reacts-container {
   display: inline-flex;
-  margin-right: 0.4em;
 
   &:hover {
     .emoji-react {
@@ -79,13 +79,6 @@
       display: none;
     }
   }
-}
-
-.emoji-reacts__count,
-.emoji-react__count {
-  font-size: 12px;
-  font-weight: bold;
-  transform: translateY(2px);
 }
 
 .emoji-react-selector-container {
@@ -121,8 +114,8 @@
     background: transparent;
 
     img {
-      width: 30px;
-      height: 30px;
+      width: 36px;
+      height: 36px;
       padding: 3px;
       transition: 0.1s;
     }

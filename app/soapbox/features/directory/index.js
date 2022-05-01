@@ -89,7 +89,7 @@ class Directory extends React.PureComponent {
     const { order, local }  = this.getParams(this.props, this.state);
 
     return (
-      <Column icon='address-book-o' heading={intl.formatMessage(messages.title)}>
+      <Column icon='address-book-o' label={intl.formatMessage(messages.title)}>
         <div className='directory__filter-form'>
           <div className='directory__filter-form__column' role='group'>
             <RadioButton name='order' value='active' label={intl.formatMessage(messages.recentlyActive)} checked={order === 'active'} onChange={this.handleChangeOrder} />

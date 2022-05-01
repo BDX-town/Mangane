@@ -8,18 +8,14 @@ import StillImage from 'soapbox/components/still_image';
 export default class Avatar extends React.PureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
     size: PropTypes.number,
     style: PropTypes.object,
-    inline: PropTypes.bool,
-  };
-
-  static defaultProps = {
-    inline: false,
+    className: PropTypes.string,
   };
 
   render() {
-    const { account, size, inline } = this.props;
+    const { account, size, className } = this.props;
     if (!account) return null;
 
     // : TODO : remove inline and change all avatars to be sized using css
@@ -30,7 +26,9 @@ export default class Avatar extends React.PureComponent {
 
     return (
       <StillImage
-        className={classNames('account__avatar', { 'account__avatar-inline': inline })}
+        className={classNames('rounded-full', {
+          [className]: typeof className !== 'undefined',
+        })}
         style={style}
         src={account.get('avatar')}
         alt=''

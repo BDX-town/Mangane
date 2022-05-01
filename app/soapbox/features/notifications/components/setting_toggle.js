@@ -7,16 +7,11 @@ import Toggle from 'react-toggle';
 export default class SettingToggle extends ImmutablePureComponent {
 
   static propTypes = {
+    id: PropTypes.string,
     prefix: PropTypes.string,
     settings: ImmutablePropTypes.map.isRequired,
     settingPath: PropTypes.array.isRequired,
-    label: PropTypes.node,
     onChange: PropTypes.func.isRequired,
-    icons: PropTypes.oneOfType([
-      PropTypes.bool,
-      PropTypes.object,
-    ]),
-    ariaLabel: PropTypes.string,
   }
 
   onChange = ({ target }) => {
@@ -24,20 +19,16 @@ export default class SettingToggle extends ImmutablePureComponent {
   }
 
   render() {
-    const { prefix, settings, settingPath, label, icons, ariaLabel } = this.props;
-    const id = ['setting-toggle', prefix, ...settingPath].filter(Boolean).join('-');
+    const { id, settings, settingPath } = this.props;
 
     return (
-      <div className='setting-toggle' aria-label={ariaLabel}>
-        <Toggle
-          id={id}
-          checked={settings.getIn(settingPath)}
-          onChange={this.onChange}
-          icons={icons}
-          onKeyDown={this.onKeyDown}
-        />
-        {label && (<label htmlFor={id} className='setting-toggle__label'>{label}</label>)}
-      </div>
+      <Toggle
+        id={id}
+        checked={settings.getIn(settingPath)}
+        onChange={this.onChange}
+        icons={false}
+        onKeyDown={this.onKeyDown}
+      />
     );
   }
 

@@ -4,11 +4,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
-import {
-  SimpleInput,
-  SimpleForm,
-  FieldsGroup,
-} from 'soapbox/features/forms';
+import { Button, Form, FormActions, Text } from 'soapbox/components/ui';
 
 export default @connect()
 @injectIntl
@@ -51,29 +47,24 @@ class CSVImporter extends ImmutablePureComponent {
     const { intl, messages } = this.props;
 
     return (
-      <SimpleForm onSubmit={this.handleSubmit}>
-        <fieldset disabled={this.state.isLoading}>
-          <FieldsGroup>
-            <div className='fields-row file-picker'>
-              <div className='fields-row__column fields-group fields-row__column-6'>
-                <SimpleInput
-                  type='file'
-                  accept={['.csv', 'text/csv']}
-                  label={intl.formatMessage(messages.input_label)}
-                  hint={intl.formatMessage(messages.input_hint)}
-                  onChange={this.handleFileChange}
-                  required
-                />
-              </div>
-            </div>
-          </FieldsGroup>
-        </fieldset>
-        <div className='actions'>
-          <button name='button' type='submit' className='btn button button-primary'>
-            {intl.formatMessage(messages.submit)}
-          </button>
+      <Form onSubmit={this.handleSubmit} disabled={this.state.isLoading}>
+        <Text size='xl' weight='bold' tag='label'>{intl.formatMessage(messages.input_label)}</Text>
+        <div>
+          <input
+            className='text-black dark:text-white'
+            type='file'
+            accept={['.csv', 'text/csv']}
+            onChange={this.handleFileChange}
+            required
+          />
+          <Text theme='muted'>{intl.formatMessage(messages.input_hint)}</Text>
         </div>
-      </SimpleForm>
+        <FormActions>
+          <Button type='submit' theme='primary' disabled={this.state.isLoading}>
+            {intl.formatMessage(messages.submit)}
+          </Button>
+        </FormActions>
+      </Form>
     );
   }
 

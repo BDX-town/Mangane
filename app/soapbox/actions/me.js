@@ -1,3 +1,4 @@
+import KVStore from 'soapbox/storage/kv_store';
 import { getAuthUserId, getAuthUserUrl } from 'soapbox/utils/auth';
 
 import api from '../api';
@@ -46,12 +47,32 @@ export function fetchMe() {
   };
 }
 
-export function patchMe(params) {
+/** Update the auth account in IndexedDB for Mastodon, etc. */
+const persistAuthAccount = (account, params) => {
+  if (account && account.url) {
+    if (!account.pleroma) account.pleroma = {};
+
+    if (!account.pleroma.settings_store) {
+      account.pleroma.settings_store = params.pleroma_settings_store || {};
+    }
+    KVStore.setItem(`authAccount:${account.url}`, account).catch(console.error);
+  }
+};
+
+export function patchMe(params, formData = false) {
   return (dispatch, getState) => {
     dispatch(patchMeRequest());
+
+    const options = formData ? {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    } : {};
+
     return api(getState)
-      .patch('/api/v1/accounts/update_credentials', params)
+      .patch('/api/v1/accounts/update_credentials', params, options)
       .then(response => {
+        persistAuthAccount(response.data, params);
         dispatch(patchMeSuccess(response.data));
       }).catch(error => {
         dispatch(patchMeFail(error));

@@ -7,11 +7,10 @@ import { connect } from 'react-redux';
 import { fetchAliases, removeFromAliases } from 'soapbox/actions/aliases';
 import Icon from 'soapbox/components/icon';
 import ScrollableList from 'soapbox/components/scrollable_list';
+import { CardHeader, CardTitle, Column, HStack, Text } from 'soapbox/components/ui';
 import { makeGetAccount } from 'soapbox/selectors';
 import { getFeatures } from 'soapbox/utils/features';
 
-import Column from '../ui/components/column';
-import ColumnSubheading from '../ui/components/column_subheading';
 
 import Account from './components/account';
 import Search from './components/search';
@@ -70,8 +69,10 @@ class Aliases extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='empty_column.aliases' defaultMessage="You haven't created any account alias yet." />;
 
     return (
-      <Column className='aliases-settings-panel' icon='suitcase' heading={intl.formatMessage(messages.heading)}>
-        <ColumnSubheading text={intl.formatMessage(messages.subheading_add_new)} />
+      <Column className='aliases-settings-panel' icon='suitcase' label={intl.formatMessage(messages.heading)}>
+        <CardHeader>
+          <CardTitle title={intl.formatMessage(messages.subheading_add_new)} />
+        </CardHeader>
         <Search />
         {
           loaded && searchAccountIds.size === 0 ? (
@@ -84,23 +85,26 @@ class Aliases extends ImmutablePureComponent {
             </div>
           )
         }
-        <ColumnSubheading text={intl.formatMessage(messages.subheading_aliases)} />
+        <CardHeader>
+          <CardTitle title={intl.formatMessage(messages.subheading_aliases)} />
+        </CardHeader>
         <div className='aliases-settings-panel'>
           <ScrollableList
             scrollKey='aliases'
             emptyMessage={emptyMessage}
           >
             {aliases.map((alias, i) => (
-              <div key={i} className='alias__container'>
-                <div className='alias__details'>
-                  <span className='alias__list-label'><FormattedMessage id='aliases.account_label' defaultMessage='Old account:' /></span>
-                  <span className='alias__list-value'>{alias}</span>
+              <HStack alignItems='center' justifyContent='between' space={1} key={i} className='p-2'>
+                <div>
+                  <Text tag='span' theme='muted'><FormattedMessage id='aliases.account_label' defaultMessage='Old account:' /></Text>
+                  {' '}
+                  <Text tag='span'>{alias}</Text>
                 </div>
-                <div className='alias__delete' role='button' tabIndex='0' onClick={this.handleFilterDelete} data-value={alias} aria-label={intl.formatMessage(messages.delete)}>
-                  <Icon className='alias__delete-icon' id='times' size={40} />
-                  <span className='alias__delete-label'><FormattedMessage id='aliases.aliases_list_delete' defaultMessage='Unlink alias' /></span>
+                <div className='flex items-center' role='button' tabIndex='0' onClick={this.handleFilterDelete} data-value={alias} aria-label={intl.formatMessage(messages.delete)}>
+                  <Icon className='pr-1.5 text-lg' id='times' size={40} />
+                  <Text weight='bold' theme='muted'><FormattedMessage id='aliases.aliases_list_delete' defaultMessage='Unlink alias' /></Text>
                 </div>
-              </div>
+              </HStack>
             ))}
           </ScrollableList>
         </div>

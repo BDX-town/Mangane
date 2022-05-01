@@ -5,15 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="referrer" content="same-origin" />
     <link href="/manifest.json" rel="manifest">
     <!--server-generated-meta-->
     <link rel="icon" type="image/png" href="/favicon.png">
+    <%= snippets %>
   </head>
-  <body class="app-body app-body--loading theme-mode-light no-reduce-motion">
-    <div class="app-holder" id="soapbox">
-      <div class="loading-indicator">
-        <div class="loading-indicator__container">
-          <div class="loading-indicator__figure"></div>
+  <body class="theme-mode-light no-reduce-motion">
+    <div id="soapbox">
+      <div class="loading-indicator-wrapper">
+        <div class="loading-indicator">
+          <div class="loading-indicator__container">
+            <div class="loading-indicator__figure"></div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,85 +1,69 @@
 .security-settings-panel {
-  margin: 20px;
-
-  .simple_form {
-    padding: 0 !important;
-  }
-
-  h1.security-settings-panel__setup-otp {
-    font-size: 20px;
-    line-height: 1.25;
-    color: var(--primary-text-color);
-    font-weight: 600;
-  }
-
-  h2.security-settings-panel__setup-otp {
-    display: block;
-    font-size: 16px;
-    line-height: 1.5;
-    color: var(--primary-text-color--faint);
-    font-weight: 400;
-  }
-
-  .security-warning {
-    color: var(--primary-text-color);
-    padding: 15px 20px;
-    font-size: 14px;
-    background-color: var(--warning-color--faint);
-    margin: 20px auto;
-    border-radius: 8px;
+  .security-settings-panel__setup-otp {
+    margin-bottom: 5px;
   }
 
   .backup_codes {
-    margin: 10px 0;
-    font-weight: bold;
-    padding: 15px 20px;
-    font-size: 14px;
+    display: inline-block;
     background-color: var(--brand-color--faint);
-    border-radius: 8px;
-    text-align: center;
-    position: relative;
-    min-height: 125px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: 10px;
+    border-radius: var(--border-radius-lg);
 
-    .backup_code {
-      margin: 5px auto;
+    .backup_code:not(:last-child) {
+      margin-bottom: 5px;
     }
   }
-
-  .security-settings-panel__setup-otp__buttons {
-    margin: 15px 0;
-    display: flex;
-    justify-content: space-between;
-
-    .button {
-      flex: 1;
-    }
-  }
-
-  &__qr-code {
-    margin: 20px 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  &__confirm-key {
-    display: block;
-    font-size: 14px;
-    line-height: 1.5;
-    color: var(--primary-text-color--faint);
-    font-weight: 400;
-    margin-top: 10px;
-  }
 }
+//   margin: 20px;
 
-form.otp-auth {
-  .error-box {
-    width: 100%;
-    text-align: center;
-    color: $error-red;
-  }
-}
+//   h1.security-settings-panel__setup-otp {
+//     font-size: 20px;
+//     line-height: 1.25;
+//     color: var(--primary-text-color);
+//     font-weight: 600;
+//   }
+
+//   h2.security-settings-panel__setup-otp {
+//     display: block;
+//     font-size: 16px;
+//     line-height: 1.5;
+//     color: var(--primary-text-color--faint);
+//     font-weight: 400;
+//   }
+
+//   .security-warning {
+//     color: var(--primary-text-color);
+//     padding: 15px 20px;
+//     font-size: 14px;
+//     background-color: var(--warning-color--faint);
+//     margin: 20px auto;
+//     border-radius: 8px;
+//   }
+
+//   .security-settings-panel__setup-otp__buttons {
+//     margin: 20px;
+//     display: flex;
+//     justify-content: space-between;
+
+//     .button {
+//       min-width: 182px;
+//     }
+//   }
+
+//   div.confirm-key {
+//     display: block;
+//     font-size: 16px;
+//     line-height: 1.5;
+//     color: var(--primary-text-color--faint);
+//     font-weight: 400;
+//     margin: 0 0 20px 20px;
+//   }
+// }
+
+// form.otp-auth {
+//   .error-box {
+//     width: 100%;
+//     text-align: center;
+//     color: $error-red;
+//   }
+// }

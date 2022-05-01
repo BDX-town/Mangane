@@ -6,14 +6,14 @@ import {
 } from 'immutable';
 import { trimStart } from 'lodash';
 
-type Config = ImmutableMap<string, any>;
-type Policy = ImmutableMap<string, any>;
+export type Config = ImmutableMap<string, any>;
+export type Policy = ImmutableMap<string, any>;
 
 const find = (
   configs: ImmutableList<Config>,
   group: string,
   key: string,
-): Config => {
+): Config | undefined => {
   return configs.find(config =>
     config.isSuperset(ImmutableMap({ group, key })),
   );

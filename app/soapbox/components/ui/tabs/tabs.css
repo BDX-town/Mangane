@@ -1,0 +1,21 @@
+:root {
+  --reach-tabs: 1;
+}
+
+[data-reach-tabs] {
+  @apply relative pb-[3px];
+}
+
+[data-reach-tab-list] {
+  @apply flex;
+}
+
+[data-reach-tab] {
+  @apply flex-1 flex justify-center items-center
+  py-4 px-1 text-center font-medium text-sm text-gray-500
+  dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200;
+}
+
+[data-reach-tab][data-selected] {
+  @apply text-gray-900 dark:text-white;
+}

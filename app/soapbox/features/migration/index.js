@@ -7,9 +7,8 @@ import { Link } from 'react-router-dom';
 
 import { moveAccount } from 'soapbox/actions/security';
 import snackbar from 'soapbox/actions/snackbar';
-import ShowablePassword from 'soapbox/components/showable_password';
-import { FieldsGroup, SimpleForm, TextInput } from 'soapbox/features/forms';
-import Column from 'soapbox/features/ui/components/column';
+// import Column from 'soapbox/features/ui/components/column';
+import { Button, Column, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
 
 const messages = defineMessages({
   heading: { id: 'column.migration', defaultMessage: 'Account migration' },
@@ -62,52 +61,57 @@ class Migration extends ImmutablePureComponent {
     const { intl } = this.props;
 
     return (
-      <Column heading={intl.formatMessage(messages.heading)}>
-        <SimpleForm onSubmit={this.handleSubmit}>
-          <fieldset disabled={this.state.isLoading}>
-            <FieldsGroup>
-              <p className='hint'>
-                <FormattedMessage
-                  id='migration.hint'
-                  defaultMessage='This will move your followers to the new account. No other data will be moved. To perform migration, you need to {link} on your new account first.'
-                  values={{
-                    link: (
-                      <Link to='/settings/aliases'>
-                        <FormattedMessage
-                          id='migration.hint.link'
-                          defaultMessage='create an account alias'
-                        />
-                      </Link>
-                    ),
-                  }}
-                />
-              </p>
-              <TextInput
-                label={intl.formatMessage(messages.acctFieldLabel)}
-                placeholder={intl.formatMessage(messages.acctFieldPlaceholder)}
-                name='targetAccount'
-                value={this.state.targetAccount}
-                onChange={this.handleInputChange}
-              />
-              <ShowablePassword
-                label={intl.formatMessage(messages.currentPasswordFieldLabel)}
-                name='password'
-                value={this.state.password}
-                onChange={this.handleInputChange}
-              />
-              <div className='actions'>
-                <button
-                  name='button'
-                  type='submit'
-                  className='btn button button-primary'
-                  disabled={!this.state.password || !this.state.targetAccount}
-                >
-                  {intl.formatMessage(messages.submit)}
-                </button>
-              </div>
-            </FieldsGroup>
-          </fieldset>
-        </SimpleForm>
+      <Column label={intl.formatMessage(messages.heading)}>
+        <Form onSubmit={this.handleSubmit}>
+          <Text theme='muted'>
+            <FormattedMessage
+              id='migration.hint'
+              defaultMessage='This will move your followers to the new account. No other data will be moved. To perform migration, you need to {link} on your new account first.'
+              values={{
+                link: (
+                  <Link
+                    className='hover:underline text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-500'
+                    to='/settings/aliases'
+                  >
+                    <FormattedMessage
+                      id='migration.hint.link'
+                      defaultMessage='create an account alias'
+                    />
+                  </Link>
+                ),
+              }}
+            />
+          </Text>
+          <FormGroup
+            labelText={intl.formatMessage(messages.acctFieldLabel)}
+          >
+            <Input
+              name='targetAccount'
+              placeholder={intl.formatMessage(messages.acctFieldPlaceholder)}
+              onChange={this.handleInputChange}
+              value={this.state.targetAccount}
+              required
+            />
+          </FormGroup>
+          <FormGroup
+            labelText={intl.formatMessage(messages.currentPasswordFieldLabel)}
+          >
+            <Input
+              type='password'
+              name='password'
+              onChange={this.handleInputChange}
+              value={this.state.password}
+              required
+            />
+          </FormGroup>
+          <FormActions>
+            <Button
+              theme='primary'
+              text={intl.formatMessage(messages.submit)}
+              onClick={this.handleSubmit}
+            />
+          </FormActions>
+        </Form>
       </Column>
     );
   }

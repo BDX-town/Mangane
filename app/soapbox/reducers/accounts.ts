@@ -1,6 +1,7 @@
 import {
   Map as ImmutableMap,
   List as ImmutableList,
+  OrderedSet as ImmutableOrderedSet,
   fromJS,
 } from 'immutable';
 import { AnyAction } from 'redux';
@@ -31,6 +32,7 @@ import {
 import { CHATS_FETCH_SUCCESS, CHATS_EXPAND_SUCCESS, CHAT_FETCH_SUCCESS } from 'soapbox/actions/chats';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { normalizeAccount } from 'soapbox/normalizers/account';
+import { normalizeId } from 'soapbox/utils/normalizers';
 
 import {
   ACCOUNT_IMPORT,
@@ -43,14 +45,18 @@ type AccountMap = ImmutableMap<string, any>;
 type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
 
-type State = ImmutableMap<string | number, AccountRecord>;
+export interface ReducerAccount extends AccountRecord {
+  moved: string | null,
+}
+
+type State = ImmutableMap<any, ReducerAccount>;
 
 const initialState: State = ImmutableMap();
 
-const minifyAccount = (account: AccountRecord): AccountRecord => {
+const minifyAccount = (account: AccountRecord): ReducerAccount => {
   return account.mergeWith((o, n) => n || o, {
-    moved: account.getIn(['moved', 'id']),
-  });
+    moved: normalizeId(account.getIn(['moved', 'id'])),
+  }) as ReducerAccount;
 };
 
 const fixAccount = (state: State, account: APIEntity) => {
@@ -82,9 +88,20 @@ const addTags = (
 ): State => {
   return state.withMutations(state => {
     accountIds.forEach(id => {
-      state.updateIn([id, 'pleroma', 'tags'], ImmutableList(), (v: ImmutableList<string>) =>
-        v.toOrderedSet().union(tags).toList(),
+      state.updateIn([id, 'pleroma', 'tags'], ImmutableList(), v =>
+        ImmutableOrderedSet(fromJS(v)).union(tags).toList(),
       );
+
+      tags.forEach(tag => {
+        switch(tag) {
+        case 'verified':
+          state.setIn([id, 'verified'], true);
+          break;
+        case 'donor':
+          state.setIn([id, 'donor'], true);
+          break;
+        }
+      });
     });
   });
 };
@@ -96,9 +113,20 @@ const removeTags = (
 ): State => {
   return state.withMutations(state => {
     accountIds.forEach(id => {
-      state.updateIn([id, 'pleroma', 'tags'], ImmutableList(), (v: ImmutableList<string>) =>
-        v.toOrderedSet().subtract(tags).toList(),
+      state.updateIn([id, 'pleroma', 'tags'], ImmutableList(), v =>
+        ImmutableOrderedSet(fromJS(v)).subtract(tags).toList(),
       );
+
+      tags.forEach(tag => {
+        switch(tag) {
+        case 'verified':
+          state.setIn([id, 'verified'], false);
+          break;
+        case 'donor':
+          state.setIn([id, 'donor'], false);
+          break;
+        }
+      });
     });
   });
 };
@@ -192,16 +220,16 @@ const importAdminUser = (state: State, adminUser: ImmutableMap<string, any>): St
   const account = state.get(id);
 
   if (!account) {
-    return state.set(id, buildAccount(adminUser));
+    return state.set(id, minifyAccount(buildAccount(adminUser)));
   } else {
-    return state.set(id, mergeAdminUser(account, adminUser));
+    return state.set(id, minifyAccount(mergeAdminUser(account, adminUser)));
   }
 };
 
 const importAdminUsers = (state: State, adminUsers: Array<Record<string, any>>): State => {
   return state.withMutations((state: State) => {
-    fromJS(adminUsers).forEach(adminUser => {
-      importAdminUser(state, ImmutableMap(adminUser));
+    adminUsers.forEach(adminUser => {
+      importAdminUser(state, ImmutableMap(fromJS(adminUser)));
     });
   });
 };
@@ -221,7 +249,7 @@ export default function accounts(state: State = initialState, action: AnyAction)
   case ACCOUNTS_IMPORT:
     return normalizeAccounts(state, action.accounts);
   case ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP:
-    return state.set(-1, normalizeAccount({ username: action.username }));
+    return fixAccount(state, { id: -1, username: action.username });
   case CHATS_FETCH_SUCCESS:
   case CHATS_EXPAND_SUCCESS:
     return importAccountsFromChats(state, action.chats);

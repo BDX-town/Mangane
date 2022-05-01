@@ -6,6 +6,7 @@ import { Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
+import { closeModal } from 'soapbox/actions/modals';
 import { isStandalone } from 'soapbox/utils/state';
 
 import LoginForm from './login_form';
@@ -39,6 +40,14 @@ class LoginPage extends ImmutablePureComponent {
     );
   }
 
+  componentDidMount() {
+    const token = new URLSearchParams(window.location.search).get('token');
+
+    if (token) {
+      this.setState({ mfa_token: token, mfa_auth_needed: true });
+    }
+  }
+
   handleSubmit = (event) => {
     const { dispatch, intl, me } = this.props;
     const { username, password } = this.getFormData(event.target);
@@ -47,6 +56,7 @@ class LoginPage extends ImmutablePureComponent {
         // Refetch the instance for authenticated fetch
         .then(() => dispatch(fetchInstance()));
     }).then(account => {
+      dispatch(closeModal());
       this.setState({ shouldRedirect: true });
       if (typeof me === 'string') {
         dispatch(switchAccount(account.id));
@@ -66,7 +76,7 @@ class LoginPage extends ImmutablePureComponent {
     const { standalone } = this.props;
     const { isLoading, mfa_auth_needed, mfa_token, shouldRedirect } = this.state;
 
-    if (standalone) return <Redirect to='/auth/external' />;
+    if (standalone) return <Redirect to='/login/external' />;
 
     if (shouldRedirect) return <Redirect to='/' />;
 

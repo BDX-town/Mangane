@@ -1,3 +1,4 @@
+import Portal from '@reach/portal';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -5,7 +6,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Textarea from 'react-textarea-autosize';
 
-import AutosuggestAccountContainer from '../features/compose/containers/autosuggest_account_container';
+import AutosuggestAccount from '../features/compose/components/autosuggest_account';
 import { isRtl } from '../rtl';
 
 import AutosuggestEmoji from './autosuggest_emoji';
@@ -52,6 +53,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     autoFocus: PropTypes.bool,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
+    condensed: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -203,35 +205,63 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
       inner = suggestion;
       key   = suggestion;
     } else {
-      inner = <AutosuggestAccountContainer id={suggestion} />;
+      inner = <AutosuggestAccount id={suggestion} />;
       key   = suggestion;
     }
 
     return (
-      <div role='button' tabIndex='0' key={key} data-index={i} className={classNames('autosuggest-textarea__suggestions__item', { selected: i === selectedSuggestion })} onMouseDown={this.onSuggestionClick}>
+      <div
+        role='button'
+        tabIndex='0'
+        key={key}
+        data-index={i}
+        className={classNames({
+          'px-4 py-2.5 text-sm text-gray-700 dark:text-gray-400 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
+          'bg-gray-100 dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700': i === selectedSuggestion,
+        })}
+        onMouseDown={this.onSuggestionClick}
+      >
         {inner}
       </div>
     );
   }
 
+  setPortalPosition() {
+    if (!this.textarea) {
+      return {};
+    }
+
+    const { top, height, left, width } = this.textarea.getBoundingClientRect();
+
+    return {
+      top: top + height,
+      left,
+      width,
+    };
+  }
+
   render() {
-    const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, children } = this.props;
+    const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, children, condensed, id } = this.props;
     const { suggestionsHidden } = this.state;
-    const style = { direction: 'ltr' };
+    const style = { direction: 'ltr', minRows: 10 };
 
     if (isRtl(value)) {
       style.direction = 'rtl';
     }
 
     return [
-      <div className='compose-form__autosuggest-wrapper' key='compose-form__autosuggest-wrapper'>
-        <div className='autosuggest-textarea'>
+      <div key='textarea'>
+        <div className='relative'>
           <label>
             <span style={{ display: 'none' }}>{placeholder}</span>
 
             <Textarea
               ref={this.setTextarea}
-              className='autosuggest-textarea__textarea'
+              className={classNames('transition-[min-height] motion-reduce:transition-none dark:bg-slate-800 px-0 border-0 text-gray-800 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 resize-none w-full focus:shadow-none focus:border-0 focus:ring-0', {
+                'min-h-[40px]': condensed,
+                'min-h-[100px]': !condensed,
+              })}
+              id={id}
               disabled={disabled}
               placeholder={placeholder}
               autoFocus={autoFocus}
@@ -247,13 +277,22 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
             />
           </label>
         </div>
+
         {children}
       </div>,
-      <div className='autosuggest-textarea__suggestions-wrapper' key='autosuggest-textarea__suggestions-wrapper'>
-        <div className={`autosuggest-textarea__suggestions ${suggestionsHidden || suggestions.isEmpty() ? '' : 'autosuggest-textarea__suggestions--visible'}`}>
+
+      <Portal key='portal'>
+        <div
+          style={this.setPortalPosition()}
+          className={classNames({
+            'fixed z-1000 shadow bg-white dark:bg-slate-900 rounded-lg py-1 space-y-0': true,
+            hidden: suggestionsHidden || suggestions.isEmpty(),
+            block: !suggestionsHidden && !suggestions.isEmpty(),
+          })}
+        >
           {suggestions.map(this.renderSuggestion)}
         </div>
-      </div>,
+      </Portal>,
     ];
   }
 

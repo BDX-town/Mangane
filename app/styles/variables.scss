@@ -1,3 +1,32 @@
+// Truth Colors
+$color-1: #c62828;
+$color-1-dark: #8e0000;
+$color-1-light: #ff5f52;
+$color-2: #e53935;
+$color-2-dark: #ab000d;
+$color-2-light: #ff6f60;
+$color-3: #1a237e;
+$color-3-dark: #000051;
+$color-3-light: #534bae;
+$color-4: #3949ab;
+$color-4-dark: #00227b;
+$color-4-light: #6f74dd;
+$color-5: #37474f;
+$color-5-dark: #102027;
+$color-5-light: #62727b;
+$color-6: #f5f5f5;
+$color-6-dark: #c2c2c2;
+$color-6-light: #fff;
+$color-7: #00e676;
+$color-7-dark: #00b248;
+$color-7-light: #66ffa6;
+$color-8: #ffea00;
+$color-8-dark: #c7b800;
+$color-8-light: #ffff56;
+$color-9: #ffab00;
+$color-9-dark: #c67c00;
+$color-9-light: #ffdd4b;
+
 // BREAKPOINT SETS
 
 // navigation breakpoints - by default show all elements and link names along with icons
@@ -13,10 +42,10 @@ $nav-breakpoint-4: 375px;
 
 // Commonly used web colors
 
-$success-green: #79bd9a !default;    // Padua
-$error-red: #df405a !default;        // Cerise
-$warning-red: #ff5050 !default;      // Sunset Orange
-$gold-star: #ca8f04 !default;        // Dark Goldenrod
+$success-green: #79bd9a !default; // Padua
+$error-red: #df405a !default; // Cerise
+$warning-red: #ff5050 !default; // Sunset Orange
+$gold-star: #ca8f04 !default; // Dark Goldenrod
 
 // Variables for defaults in UI
 $base-shadow-color: #000 !default;
@@ -40,5 +69,7 @@ $no-gap-breakpoint: 415px;
 // They're future-proof and more flexible.
 :root {
   --thumb-navigation-base-height: 60px;
-  --thumb-navigation-height: calc(var(--thumb-navigation-base-height) + env(safe-area-inset-bottom));
+  --thumb-navigation-height: calc(
+    var(--thumb-navigation-base-height) + env(safe-area-inset-bottom)
+  );
 }

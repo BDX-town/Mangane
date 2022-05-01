@@ -7,12 +7,12 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import InlineSVG from 'react-inlinesvg';
+import InlineSVG from 'react-inlinesvg'; // eslint-disable-line no-restricted-imports
 
 export default class SvgIcon extends React.PureComponent {
 
   static propTypes = {
-    src: PropTypes.string.isRequired,
+    src: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
     alt: PropTypes.string,
     className: PropTypes.string,
   };
@@ -25,7 +25,7 @@ export default class SvgIcon extends React.PureComponent {
         className={classNames('svg-icon', className)}
         {...other}
       >
-        <InlineSVG src={src} title={alt} />
+        <InlineSVG src={src} title={alt} loader={<></>} />
       </div>
     );
   }

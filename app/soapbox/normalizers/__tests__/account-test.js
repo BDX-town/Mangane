@@ -168,4 +168,27 @@ describe('normalizeAccount()', () => {
 
     expect(result.fqn).toEqual('benis911@mastodon.social');
   });
+
+  it('normalizes Pleroma staff', () => {
+    const account = require('soapbox/__fixtures__/pleroma-account.json');
+    const result = normalizeAccount(account);
+
+    expect(result.admin).toBe(true);
+    expect(result.staff).toBe(true);
+    expect(result.moderator).toBe(false);
+  });
+
+  it('normalizes Pleroma favicon', () => {
+    const account = require('soapbox/__fixtures__/pleroma-account.json');
+    const result = normalizeAccount(account);
+
+    expect(result.favicon).toEqual('https://gleasonator.com/favicon.png');
+  });
+
+  it('adds account domain', () => {
+    const account = require('soapbox/__fixtures__/pleroma-account.json');
+    const result = normalizeAccount(account);
+
+    expect(result.domain).toEqual('gleasonator.com');
+  });
 });

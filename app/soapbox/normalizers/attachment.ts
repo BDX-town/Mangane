@@ -15,6 +15,7 @@ import { mergeDefined } from 'soapbox/utils/normalizers';
 export const AttachmentRecord = ImmutableRecord({
   blurhash: undefined,
   description: '',
+  external_video_id: null as string | null, // TruthSocial
   id: '',
   meta: ImmutableMap(),
   pleroma: ImmutableMap(),
@@ -25,8 +26,8 @@ export const AttachmentRecord = ImmutableRecord({
 
   // Internal fields
   // TODO: Remove these? They're set in selectors/index.js
-  account: null,
-  status: null,
+  account: null as any,
+  status: null as any,
 });
 
 // Ensure attachments have required fields

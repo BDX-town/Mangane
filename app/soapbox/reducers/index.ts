@@ -2,6 +2,7 @@ import { Record as ImmutableRecord } from 'immutable';
 import { combineReducers } from 'redux-immutable';
 
 import { AUTH_LOGGED_OUT } from 'soapbox/actions/auth';
+import * as BuildConfig from 'soapbox/build_config';
 
 import account_notes from './account_notes';
 import accounts from './accounts';
@@ -27,7 +28,6 @@ import group_editor from './group_editor';
 import group_lists from './group_lists';
 import group_relationships from './group_relationships';
 import groups from './groups';
-import height_cache from './height_cache';
 import identity_proofs from './identity_proofs';
 import instance from './instance';
 import listAdder from './list_adder';
@@ -55,8 +55,10 @@ import status_lists from './status_lists';
 import statuses from './statuses';
 import suggestions from './suggestions';
 import timelines from './timelines';
+import trending_statuses from './trending_statuses';
 import trends from './trends';
 import user_lists from './user_lists';
+import verification from './verification';
 
 const reducers = {
   dropdown_menu,
@@ -80,7 +82,6 @@ const reducers = {
   compose,
   search,
   notifications,
-  height_cache,
   custom_emojis,
   identity_proofs,
   lists,
@@ -113,6 +114,8 @@ const reducers = {
   pending_statuses,
   aliases,
   accounts_meta,
+  trending_statuses,
+  verification,
 };
 
 // Build a default state from all reducers: it has the key and `undefined`
@@ -123,10 +126,15 @@ export const StateRecord = ImmutableRecord(
   }, {}),
 );
 
+// @ts-ignore: This type is fine but TS thinks it's wrong
 const appReducer = combineReducers(reducers, StateRecord);
 
 // Clear the state (mostly) when the user logs out
 const logOut = (state: any = StateRecord()): ReturnType<typeof appReducer> => {
+  if (BuildConfig.NODE_ENV === 'production') {
+    location.href = '/login';
+  }
+
   const whitelist: string[] = ['instance', 'soapbox', 'custom_emojis', 'auth'];
 
   return StateRecord(

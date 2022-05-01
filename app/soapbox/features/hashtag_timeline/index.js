@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 
 import { connectHashtagStream } from '../../actions/streaming';
 import { expandHashtagTimeline, clearTimeline } from '../../actions/timelines';
-import Column from '../../components/column';
 import ColumnHeader from '../../components/column_header';
+import { Column } from '../../components/ui';
 import StatusListContainer from '../ui/containers/status_list_container';
 
 const mapStateToProps = (state, props) => ({
@@ -119,6 +119,7 @@ class HashtagTimeline extends React.PureComponent {
           timelineId={`hashtag:${id}`}
           onLoadMore={this.handleLoadMore}
           emptyMessage={<FormattedMessage id='empty_column.hashtag' defaultMessage='There is nothing in this hashtag yet.' />}
+          divideType='space'
         />
       </Column>
     );

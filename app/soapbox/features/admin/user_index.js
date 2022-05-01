@@ -102,7 +102,7 @@ class UserIndex extends ImmutablePureComponent {
     const showLoading = isLoading && accountIds.isEmpty();
 
     return (
-      <Column heading={intl.formatMessage(messages.heading)}>
+      <Column label={intl.formatMessage(messages.heading)}>
         <SimpleForm style={{ paddingBottom: 0 }}>
           <TextInput
             onChange={this.handleQueryChange}
@@ -116,6 +116,8 @@ class UserIndex extends ImmutablePureComponent {
           showLoading={showLoading}
           onLoadMore={this.handleLoadMore}
           emptyMessage={intl.formatMessage(messages.empty)}
+          className='mt-4'
+          itemClassName='pb-4'
         >
           {accountIds.map(id =>
             <AccountContainer key={id} id={id} withDate />,

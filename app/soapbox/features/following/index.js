@@ -7,6 +7,7 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
 import MissingIndicator from 'soapbox/components/missing_indicator';
+import { Spinner } from 'soapbox/components/ui';
 import { findAccountByUsername } from 'soapbox/selectors';
 import { getFollowDifference } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
@@ -17,7 +18,6 @@ import {
   expandFollowing,
   fetchAccountByUsername,
 } from '../../actions/accounts';
-import LoadingIndicator from '../../components/loading_indicator';
 import ScrollableList from '../../components/scrollable_list';
 import AccountContainer from '../../containers/account_container';
 import Column from '../ui/components/column';
@@ -99,38 +99,33 @@ class Following extends ImmutablePureComponent {
 
     if (!isAccount && accountId !== -1) {
       return (
-        <Column>
-          <MissingIndicator />
-        </Column>
+        <MissingIndicator />
       );
     }
 
     if (accountId === -1 || (!accountIds)) {
       return (
-        <Column>
-          <LoadingIndicator />
-        </Column>
+        <Spinner />
       );
     }
 
     if (unavailable) {
       return (
-        <Column>
-          <div className='empty-column-indicator'>
-            <FormattedMessage id='empty_column.account_unavailable' defaultMessage='Profile unavailable' />
-          </div>
-        </Column>
+        <div className='empty-column-indicator'>
+          <FormattedMessage id='empty_column.account_unavailable' defaultMessage='Profile unavailable' />
+        </div>
       );
     }
 
     return (
-      <Column heading={intl.formatMessage(messages.heading)}>
+      <Column label={intl.formatMessage(messages.heading)} withHeader={false} transparent>
         <ScrollableList
           scrollKey='following'
           hasMore={hasMore}
           diffCount={diffCount}
           onLoadMore={this.handleLoadMore}
           emptyMessage={<FormattedMessage id='account.follows.empty' defaultMessage="This user doesn't follow anyone yet." />}
+          itemClassName='pb-4'
         >
           {accountIds.map(id =>
             <AccountContainer key={id} id={id} withNote={false} />,

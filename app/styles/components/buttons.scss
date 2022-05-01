@@ -8,32 +8,23 @@ button {
 }
 
 .button {
-  background-color: var(--brand-color);
-  border: 10px none;
+  align-items: center;
+  border-color: transparent;
   border-radius: 999px;
+  border-width: 1px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
-  color: #fff;
   cursor: pointer;
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-family: inherit;
   font-size: 14px;
   font-weight: 500;
-  height: 36px;
-  letter-spacing: 0;
-  line-height: 36px;
-  overflow: hidden;
-  padding: 0 16px;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: auto;
+  justify-content: center;
+  line-height: 20px;
+  padding: 8px 16px;
   transition: 0.2s;
 
-  .svg-icon {
+  .svg-icon,
+  i.fa {
     margin-right: 5px;
   }
 
@@ -41,33 +32,28 @@ button {
     text-decoration: none;
   }
 
-  &:active,
-  &:focus,
-  &:hover {
-    background-color: var(--brand-color--hicontrast);
-  }
-
   &--destructive {
-    transition: none;
-
-    &:active,
-    &:focus,
-    &:hover {
-      background-color: $error-red;
-      transition: none;
-    }
+    background-color: var(--brand-color);
   }
 
   &--small {
     font-size: 13px;
     height: auto;
     line-height: normal;
-    padding: 4px 8px;
+    padding: 6px 10px;
+  }
+
+  &--large {
+    font-size: 16px;
+    padding: 10px 20px;
   }
 
   &:disabled,
-  &.disabled {
-    opacity: 0.2;
+  &.disabled,
+  &:disabled:hover,
+  &.disabled:hover {
+    opacity: 0.75;
+    user-select: none;
     cursor: default;
   }
 
@@ -100,31 +86,6 @@ button {
     &:hover {
       background-color: var(--accent-color--bright);
     }
-  }
-
-  &.button-secondary {
-    color: var(--primary-text-color);
-    background: transparent;
-    border: 1px solid var(--brand-color);
-
-    &:active,
-    &:focus,
-    &:hover {
-      border-color: var(--accent-color);
-    }
-
-    &:disabled {
-      opacity: 0.5;
-    }
-
-    i.fa {
-      margin-right: 0.5em;
-    }
-  }
-
-  &.button--block {
-    display: flex;
-    width: 100%;
   }
 }
 
@@ -162,5 +123,11 @@ a.button {
     margin: 0 0 0 6px;
     width: 20px;
     height: 20px;
+  }
+}
+
+.button--welcome {
+  .emojione {
+    margin: -1px 6px 0 -4px;
   }
 }

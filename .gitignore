@@ -2,6 +2,7 @@
 /tmp/
 /build/
 /coverage/
+/.coverage/
 /.eslintcache
 /.env
 /deploy.sh

@@ -29,7 +29,7 @@ body,
   // Primary variables
   --brand-color: hsl(var(--brand-color_hsl));
   --accent-color: hsl(var(--accent-color_hsl));
-  --primary-text-color: hsl(var(--primary-text-color_hsl));
+  --primary-text-color: var(--gray-900);
   --background-color: hsl(var(--background-color_hsl));
   --foreground-color: hsl(var(--foreground-color_hsl));
   --warning-color: hsla(var(--warning-color_hsl));
@@ -41,6 +41,9 @@ body,
   --background-color_hsl: var(--background-color_h), var(--background-color_s), var(--background-color_l);
   --foreground-color_hsl: var(--foreground-color_h), var(--foreground-color_s), var(--foreground-color_l);
   --warning-color_hsl: var(--warning-color_h), var(--warning-color_s), var(--warning-color_l);
+  --accent-color_h: calc(var(--brand-color_h) - 15);
+  --accent-color_s: 86%;
+  --accent-color_l: 44%;
 
   // Modifiers
   --brand-color--faint: hsla(var(--brand-color_hsl), 0.1);
@@ -52,8 +55,36 @@ body,
     var(--accent-color_s),
     calc(var(--accent-color_l) + 3%)
   );
-  --primary-text-color--faint: hsla(var(--primary-text-color_hsl), 0.6);
+  --primary-text-color--faint: var(--gray-400);
   --warning-color--faint: hsla(var(--warning-color_hsl), 0.5);
+
+  // Colors
+  --gray-900: #08051b;
+  // --gray-800: #1d1932;
+  --gray-700: #37344c;
+  --gray-500: #656175;
+  --gray-400: #868393;
+  --gray-300: #c9c8cc;
+  --gray-50: #f9f8fc;
+  --white: #fff;
+  --dark-blue: #1d1953;
+  --electric-blue: #5448ee;
+  --electric-blue-contrast: #e8e7fd;
+  --sea-blue: #2feecc;
+
+  // Sizes
+  --border-radius-base: 4px;
+  --border-radius-lg: 8px;
+  --border-radius-xl: 12px;
+
+  // Forms
+  --input-height: 30px;
+  --input-border-color: #d1d5db;
+
+  // Typography
+  --font-sans: 'Inter', arial, sans-serif;
+  --font-weight-heading: 700;
+  --font-weight-body: 400;
 }
 
 .theme-mode-light {
@@ -83,7 +114,7 @@ body,
   --brand-color--hicontrast: hsl(
     var(--brand-color_h),
     var(--brand-color_s),
-    calc(var(--brand-color_l) - 12%)
+    calc(var(--brand-color_l) - 5%)
   );
   --warning-color--hicontrast: hsl(
     var(--warning-color_h),

@@ -1,8 +1,9 @@
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { createSelector } from 'reselect';
 
 import { getHost } from 'soapbox/actions/instance';
+import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 import KVStore from 'soapbox/storage/kv_store';
+import { removeVS16s } from 'soapbox/utils/emoji';
 import { getFeatures } from 'soapbox/utils/features';
 
 import api, { staticClient } from '../api';
@@ -14,63 +15,24 @@ export const SOAPBOX_CONFIG_REMEMBER_REQUEST = 'SOAPBOX_CONFIG_REMEMBER_REQUEST'
 export const SOAPBOX_CONFIG_REMEMBER_SUCCESS = 'SOAPBOX_CONFIG_REMEMBER_SUCCESS';
 export const SOAPBOX_CONFIG_REMEMBER_FAIL    = 'SOAPBOX_CONFIG_REMEMBER_FAIL';
 
-const allowedEmoji = ImmutableList([
-  '👍',
-  '❤',
-  '😆',
-  '😮',
-  '😢',
-  '😩',
-]);
-
-// https://git.pleroma.social/pleroma/pleroma/-/issues/2355
-const allowedEmojiRGI = ImmutableList([
-  '👍',
-  '❤️',
-  '😆',
-  '😮',
-  '😢',
-  '😩',
-]);
-
-const year = new Date().getFullYear();
-
-export const makeDefaultConfig = features => {
-  return ImmutableMap({
-    logo: '',
-    banner: '',
-    brandColor: '', // Empty
-    accentColor: '',
-    customCss: ImmutableList(),
-    promoPanel: ImmutableMap({
-      items: ImmutableList(),
-    }),
-    extensions: ImmutableMap(),
-    defaultSettings: ImmutableMap(),
-    copyright: `♥${year}. Copying is an act of love. Please copy and share.`,
-    navlinks: ImmutableMap({
-      homeFooter: ImmutableList(),
-    }),
-    allowedEmoji: features.emojiReactsRGI ? allowedEmojiRGI : allowedEmoji,
-    verifiedIcon: '',
-    verifiedCanEditName: false,
-    displayFqn: Boolean(features.federating),
-    cryptoAddresses: ImmutableList(),
-    cryptoDonatePanel: ImmutableMap({
-      limit: 1,
-    }),
-    aboutPages: ImmutableMap(),
-    authenticatedProfile: true,
-    singleUserMode: false,
-    singleUserModeProfile: '',
-  });
-};
-
 export const getSoapboxConfig = createSelector([
-  state => state.get('soapbox'),
-  state => getFeatures(state.get('instance')),
+  state => state.soapbox,
+  state => getFeatures(state.instance),
 ], (soapbox, features) => {
-  return makeDefaultConfig(features).merge(soapbox);
+  // Do some additional normalization with the state
+  return normalizeSoapboxConfig(soapbox).withMutations(soapboxConfig => {
+
+    // If displayFqn isn't set, infer it from federation
+    if (soapbox.get('displayFqn') === undefined) {
+      soapboxConfig.set('displayFqn', features.federating);
+    }
+
+    // If RGI reacts aren't supported, strip VS16s
+    // // https://git.pleroma.social/pleroma/pleroma/-/issues/2355
+    if (!features.emojiReactsRGI) {
+      soapboxConfig.set('allowedEmoji', soapboxConfig.allowedEmoji.map(removeVS16s));
+    }
+  });
 });
 
 export function rememberSoapboxConfig(host) {
@@ -85,21 +47,34 @@ export function rememberSoapboxConfig(host) {
   };
 }
 
-export function fetchSoapboxConfig(host) {
+export function fetchFrontendConfigurations() {
   return (dispatch, getState) => {
-    api(getState).get('/api/pleroma/frontend_configurations').then(response => {
-      if (response.data.soapbox_fe) {
-        dispatch(importSoapboxConfig(response.data.soapbox_fe, host));
-      } else {
-        dispatch(fetchSoapboxJson(host));
-      }
-    }).catch(error => {
-      dispatch(fetchSoapboxJson(host));
-    });
+    return api(getState)
+      .get('/api/pleroma/frontend_configurations')
+      .then(({ data }) => data);
   };
 }
 
-// Tries to remember the config from browser storage before fetching it
+/** Conditionally fetches Soapbox config depending on backend features */
+export function fetchSoapboxConfig(host) {
+  return (dispatch, getState) => {
+    const features = getFeatures(getState().instance);
+
+    if (features.frontendConfigurations) {
+      return dispatch(fetchFrontendConfigurations()).then(data => {
+        if (data.soapbox_fe) {
+          dispatch(importSoapboxConfig(data.soapbox_fe, host));
+        } else {
+          dispatch(fetchSoapboxJson(host));
+        }
+      });
+    } else {
+      return dispatch(fetchSoapboxJson(host));
+    }
+  };
+}
+
+/** Tries to remember the config from browser storage before fetching it */
 export function loadSoapboxConfig() {
   return (dispatch, getState) => {
     const host = getHost(getState());

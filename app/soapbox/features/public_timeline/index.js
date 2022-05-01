@@ -10,7 +10,7 @@ import Accordion from 'soapbox/features/ui/components/accordion';
 
 import { connectPublicStream } from '../../actions/streaming';
 import { expandPublicTimeline } from '../../actions/timelines';
-import Column from '../../components/column';
+import { Column } from '../../components/ui';
 import PinnedHostsPicker from '../remote_timeline/components/pinned_hosts_picker';
 import StatusListContainer from '../ui/containers/status_list_container';
 
@@ -136,6 +136,7 @@ class CommunityTimeline extends React.PureComponent {
           onLoadMore={this.handleLoadMore}
           onRefresh={this.handleRefresh}
           emptyMessage={<FormattedMessage id='empty_column.public' defaultMessage='There is nothing here! Write something publicly, or manually follow users from other servers to fill it up' />}
+          divideType='space'
         />
       </Column>
     );

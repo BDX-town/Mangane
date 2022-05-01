@@ -5,12 +5,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import { fetchChat, markChatRead } from 'soapbox/actions/chats';
-import Avatar from 'soapbox/components/avatar';
-import Column from 'soapbox/components/column';
-import ColumnBackButton from 'soapbox/components/column_back_button';
+import { Column } from 'soapbox/components/ui';
 import { makeGetChat } from 'soapbox/selectors';
 import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
@@ -78,8 +75,8 @@ class ChatRoom extends ImmutablePureComponent {
     const account = chat.get('account');
 
     return (
-      <Column>
-        <div className='chatroom__back'>
+      <Column label={`@${getAcct(account, displayFqn)}`}>
+        {/* <div className='chatroom__back'>
           <ColumnBackButton />
           <Link to={`/@${account.get('acct')}`} className='chatroom__header'>
             <Avatar account={account} size={18} />
@@ -87,7 +84,7 @@ class ChatRoom extends ImmutablePureComponent {
               @{getAcct(account, displayFqn)}
             </div>
           </Link>
-        </div>
+        </div> */}
         <ChatBox
           chatId={chat.get('id')}
           onSetInputRef={this.handleInputRef}

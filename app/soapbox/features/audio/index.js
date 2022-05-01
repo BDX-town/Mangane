@@ -255,7 +255,7 @@ class Audio extends React.PureComponent {
   handleMouseVolSlide = throttle(e => {
     const { x } = getPointerPosition(this.volume, e);
 
-    if(!isNaN(x)) {
+    if (!isNaN(x)) {
       this.setState({ volume: x }, () => {
         this.audio.volume = x;
       });

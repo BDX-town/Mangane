@@ -3,24 +3,22 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import { defaultSettings } from 'soapbox/actions/settings';
-import { themeColorsToCSS } from 'soapbox/utils/theme';
+import { generateThemeCss } from 'soapbox/utils/theme';
 
 export default function SitePreview({ soapbox }) {
 
   const settings = defaultSettings.mergeDeep(soapbox.get('defaultSettings'));
 
-  const bodyClass = classNames('site-preview app-body', `theme-mode-${settings.get('themeMode')}`, {
-    'system-font': settings.get('systemFont'),
+  const bodyClass = classNames('site-preview', `theme-mode-${settings.get('themeMode')}`, {
     'no-reduce-motion': !settings.get('reduceMotion'),
     'underline-links': settings.get('underlineLinks'),
     'dyslexic': settings.get('dyslexicFont'),
     'demetricator': settings.get('demetricator'),
-    'halloween': settings.get('halloween'),
   });
 
   return (
     <div className={bodyClass}>
-      <style>{`.site-preview {${themeColorsToCSS(soapbox.get('brandColor'), soapbox.get('accentColor'))}}`}</style>
+      <style>{`.site-preview {${generateThemeCss(soapbox)}}`}</style>
       <div className='app-holder'>
         <div>
           <div className='ui'>
@@ -54,5 +52,5 @@ export default function SitePreview({ soapbox }) {
 }
 
 SitePreview.propTypes = {
-  soapbox: ImmutablePropTypes.map.isRequired,
+  soapbox: ImmutablePropTypes.record.isRequired,
 };

@@ -8,8 +8,8 @@ import AccountSearch from 'soapbox/components/account_search';
 
 import { connectDirectStream } from '../../actions/streaming';
 import { expandDirectTimeline } from '../../actions/timelines';
-import Column from '../../components/column';
 import ColumnHeader from '../../components/column_header';
+import { Column } from '../../components/ui';
 import StatusListContainer from '../ui/containers/status_list_container';
 
 const messages = defineMessages({
@@ -75,6 +75,7 @@ class DirectTimeline extends React.PureComponent {
           timelineId='direct'
           onLoadMore={this.handleLoadMore}
           emptyMessage={<FormattedMessage id='empty_column.direct' defaultMessage="You don't have any direct messages yet. When you send or receive one, it will show up here." />}
+          divideType='space'
         />
       </Column>
     );

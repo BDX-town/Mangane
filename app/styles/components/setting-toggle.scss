@@ -1,12 +1,13 @@
-.setting-toggle {
-  display: block;
-  line-height: 24px;
+.setting-toggle__text {
+  display: flex;
+  flex-direction: column;
 }
 
 .setting-toggle__label {
-  color: var(--primary-text-color--faint);
-  display: inline-block;
-  margin-bottom: 14px;
-  margin-left: 8px;
-  vertical-align: middle;
+  color: var(--gray-800);
+}
+
+.setting-toggle__hint {
+  color: var(--gray-500);
+  font-size: 12px;
 }

@@ -8,8 +8,7 @@ import AccountSearch from 'soapbox/components/account_search';
 
 import { mountConversations, unmountConversations, expandConversations } from '../../actions/conversations';
 import { connectDirectStream } from '../../actions/streaming';
-import Column from '../../components/column';
-import ColumnHeader from '../../components/column_header';
+import { Column } from '../../components/ui';
 
 import ConversationsListContainer from './containers/conversations_list_container';
 
@@ -54,12 +53,10 @@ class ConversationsTimeline extends React.PureComponent {
   }
 
   render() {
-    const { intl, hasUnread } = this.props;
+    const { intl } = this.props;
 
     return (
       <Column label={intl.formatMessage(messages.title)}>
-        <ColumnHeader icon='envelope' active={hasUnread} title={intl.formatMessage(messages.title)} />
-
         <AccountSearch
           placeholder={intl.formatMessage(messages.searchPlaceholder)}
           onSelected={this.handleSuggestion}

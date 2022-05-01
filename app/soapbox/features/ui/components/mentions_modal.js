@@ -2,19 +2,14 @@ import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { fetchStatusWithContext } from 'soapbox/actions/statuses';
-import IconButton from 'soapbox/components/icon_button';
-import LoadingIndicator from 'soapbox/components/loading_indicator';
 import ScrollableList from 'soapbox/components/scrollable_list';
+import { Modal, Spinner } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import { makeGetStatus } from 'soapbox/selectors';
-
-const messages = defineMessages({
-  close: { id: 'lightbox.close', defaultMessage: 'Close' },
-});
 
 const mapStateToProps = (state, props) => {
   const getStatus = makeGetStatus();
@@ -56,16 +51,17 @@ class MentionsModal extends React.PureComponent {
   };
 
   render() {
-    const { intl, accountIds } = this.props;
+    const { accountIds } = this.props;
 
     let body;
 
     if (!accountIds) {
-      body = <LoadingIndicator />;
+      body = <Spinner />;
     } else {
       body = (
         <ScrollableList
           scrollKey='mentions'
+          itemClassName='pb-3'
         >
           {accountIds.map(id =>
             <AccountContainer key={id} id={id} withNote={false} />,
@@ -75,20 +71,12 @@ class MentionsModal extends React.PureComponent {
     }
 
     return (
-      <div className='modal-root__modal reactions-modal'>
-        <div className='compose-modal__header'>
-          <h3 className='compose-modal__header__title'>
-            <FormattedMessage id='column.mentions' defaultMessage='Mentions' />
-          </h3>
-          <IconButton
-            className='compose-modal__close'
-            title={intl.formatMessage(messages.close)}
-            src={require('@tabler/icons/icons/x.svg')}
-            onClick={this.onClickClose} size={20}
-          />
-        </div>
+      <Modal
+        title={<FormattedMessage id='column.mentions' defaultMessage='Mentions' />}
+        onClose={this.onClickClose}
+      >
         {body}
-      </div>
+      </Modal>
     );
   }
 

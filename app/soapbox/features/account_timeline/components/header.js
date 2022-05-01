@@ -12,7 +12,7 @@ export default @withRouter
 class Header extends ImmutablePureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
     identity_proofs: ImmutablePropTypes.list,
     onFollow: PropTypes.func.isRequired,
     onBlock: PropTypes.func.isRequired,
@@ -110,6 +110,14 @@ class Header extends ImmutablePureComponent {
     this.props.onUnverifyUser(this.props.account);
   }
 
+  handleSetDonor = () => {
+    this.props.onSetDonor(this.props.account);
+  }
+
+  handleRemoveDonor = () => {
+    this.props.onRemoveDonor(this.props.account);
+  }
+
   handlePromoteToAdmin = () => {
     this.props.onPromoteToAdmin(this.props.account);
   }
@@ -139,7 +147,7 @@ class Header extends ImmutablePureComponent {
     const moved = (account) ? account.get('moved') : false;
 
     return (
-      <div className='account-timeline__header'>
+      <>
         { moved && <MovedNote from={account} to={account.get('moved')} /> }
 
         <InnerHeader
@@ -163,6 +171,8 @@ class Header extends ImmutablePureComponent {
           onDeleteUser={this.handleDeleteUser}
           onVerifyUser={this.handleVerifyUser}
           onUnverifyUser={this.handleUnverifyUser}
+          onSetDonor={this.handleSetDonor}
+          onRemoveDonor={this.handleRemoveDonor}
           onPromoteToAdmin={this.handlePromoteToAdmin}
           onPromoteToModerator={this.handlePromoteToModerator}
           onDemoteToUser={this.handleDemoteToUser}
@@ -171,7 +181,7 @@ class Header extends ImmutablePureComponent {
           onShowNote={this.handleShowNote}
           username={this.props.username}
         />
-      </div>
+      </>
     );
   }
 

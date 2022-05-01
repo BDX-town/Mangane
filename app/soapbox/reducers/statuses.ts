@@ -1,12 +1,11 @@
 import escapeTextContentForBrowser from 'escape-html';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
-import { AnyAction } from 'redux';
 
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeStatus } from 'soapbox/normalizers';
 import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
 import { stripCompatibilityFeatures, unescapeHTML } from 'soapbox/utils/html';
-import { makeEmojiMap } from 'soapbox/utils/normalizers';
+import { makeEmojiMap, normalizeId } from 'soapbox/utils/normalizers';
 
 import {
   EMOJI_REACT_REQUEST,
@@ -32,31 +31,44 @@ import {
 } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
+import type { AnyAction } from 'redux';
+
 const domParser = new DOMParser();
 
 type StatusRecord = ReturnType<typeof normalizeStatus>;
 type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
 
-type State = ImmutableMap<string, StatusRecord>;
+type State = ImmutableMap<string, ReducerStatus>;
 
-const minifyStatus = (status: StatusRecord): StatusRecord => {
+export interface ReducerStatus extends StatusRecord {
+  account: string | null,
+  reblog: string | null,
+  poll: string | null,
+  quote: string | null,
+}
+
+const minifyStatus = (status: StatusRecord): ReducerStatus => {
   return status.mergeWith((o, n) => n || o, {
-    account: status.getIn(['account', 'id']),
-    reblog: status.getIn(['reblog', 'id']),
-    poll: status.getIn(['poll', 'id']),
-    quote: status.getIn(['quote', 'id']),
-  });
+    account: normalizeId(status.getIn(['account', 'id'])),
+    reblog: normalizeId(status.getIn(['reblog', 'id'])),
+    poll: normalizeId(status.getIn(['poll', 'id'])),
+    quote: normalizeId(status.getIn(['quote', 'id'])),
+  }) as ReducerStatus;
 };
 
 // Gets titles of poll options from status
-const getPollOptionTitles = (status: StatusRecord): Array<string> => {
-  return status.poll?.options.map(({ title }: { title: string }) => title);
+const getPollOptionTitles = ({ poll }: StatusRecord): ImmutableList<string> => {
+  if (poll && typeof poll === 'object') {
+    return poll.options.map(({ title }) => title);
+  } else {
+    return ImmutableList();
+  }
 };
 
 // Gets usernames of mentioned users from status
 const getMentionedUsernames = (status: StatusRecord): ImmutableList<string> => {
-  return status.mentions?.map(({ username }: { username: string }) => username);
+  return status.mentions.map(({ acct }) => `@${acct}`);
 };
 
 // Creates search text from the status
@@ -69,14 +81,14 @@ const buildSearchContent = (status: StatusRecord): string => {
     status.content,
   ]).concat(pollOptionTitles).concat(mentionedUsernames);
 
-  return unescapeHTML(fields.join('\n\n'));
+  return unescapeHTML(fields.join('\n\n')) || '';
 };
 
 // Only calculate these values when status first encountered
 // Otherwise keep the ones already in the reducer
 export const calculateStatus = (
   status: StatusRecord,
-  oldStatus: StatusRecord,
+  oldStatus?: StatusRecord,
   expandSpoilers: boolean = false,
 ): StatusRecord => {
   if (oldStatus) {
@@ -92,7 +104,7 @@ export const calculateStatus = (
     const emojiMap      = makeEmojiMap(status.emojis);
 
     return status.merge({
-      search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent,
+      search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent || '',
       contentHtml: stripCompatibilityFeatures(emojify(status.content, emojiMap)),
       spoilerHtml: emojify(escapeTextContentForBrowser(spoilerText), emojiMap),
       hidden: expandSpoilers ? false : spoilerText.length > 0 || status.sensitive,
@@ -106,7 +118,7 @@ const isQuote = (status: StatusRecord) => {
 };
 
 // Preserve quote if an existing status already has it
-const fixQuote = (status: StatusRecord, oldStatus: StatusRecord): StatusRecord => {
+const fixQuote = (status: StatusRecord, oldStatus?: StatusRecord): StatusRecord => {
   if (oldStatus && !status.quote && isQuote(status)) {
     return status
       .set('quote', oldStatus.quote)
@@ -116,14 +128,14 @@ const fixQuote = (status: StatusRecord, oldStatus: StatusRecord): StatusRecord =
   }
 };
 
-const fixStatus = (state: State, status: APIEntity, expandSpoilers: boolean): StatusRecord => {
-  const oldStatus: StatusRecord = state.get(status.id);
+const fixStatus = (state: State, status: APIEntity, expandSpoilers: boolean): ReducerStatus => {
+  const oldStatus = state.get(status.id);
 
   return normalizeStatus(status).withMutations(status => {
     fixQuote(status, oldStatus);
     calculateStatus(status, oldStatus, expandSpoilers);
     minifyStatus(status);
-  });
+  }) as ReducerStatus;
 };
 
 const importStatus = (state: State, status: APIEntity, expandSpoilers: boolean): State =>
@@ -142,7 +154,9 @@ const deleteStatus = (state: State, id: string, references: Array<string>) => {
 
 const importPendingStatus = (state: State, { in_reply_to_id }: APIEntity) => {
   if (in_reply_to_id) {
-    return state.updateIn([in_reply_to_id, 'replies_count'], 0, (count: number) => count + 1);
+    return state.updateIn([in_reply_to_id, 'replies_count'], 0, count => {
+      return typeof count === 'number' ? count + 1 : 0;
+    });
   } else {
     return state;
   }
@@ -150,10 +164,31 @@ const importPendingStatus = (state: State, { in_reply_to_id }: APIEntity) => {
 
 const deletePendingStatus = (state: State, { in_reply_to_id }: APIEntity) => {
   if (in_reply_to_id) {
-    return state.updateIn([in_reply_to_id, 'replies_count'], 0, (count: number) => Math.max(0, count - 1));
+    return state.updateIn([in_reply_to_id, 'replies_count'], 0, count => {
+      return typeof count === 'number' ? Math.max(0, count - 1) : 0;
+    });
   } else {
     return state;
   }
+};
+
+/** Simulate favourite/unfavourite of status for optimistic interactions */
+const simulateFavourite = (
+  state: State,
+  statusId: string,
+  favourited: boolean,
+): State => {
+  const status = state.get(statusId);
+  if (!status) return state;
+
+  const delta = favourited ? +1 : -1;
+
+  const updatedStatus = status.merge({
+    favourited,
+    favourites_count: Math.max(0, status.favourites_count + delta),
+  });
+
+  return state.set(statusId, updatedStatus);
 };
 
 const initialState: State = ImmutableMap();
@@ -169,26 +204,20 @@ export default function statuses(state = initialState, action: AnyAction): State
   case STATUS_CREATE_FAIL:
     return deletePendingStatus(state, action.params);
   case FAVOURITE_REQUEST:
-    return state.update(action.status.get('id'), status =>
-      status
-        .set('favourited', true)
-        .update('favourites_count', count => count + 1));
+    return simulateFavourite(state, action.status.id, true);
   case UNFAVOURITE_REQUEST:
-    return state.update(action.status.get('id'), status =>
-      status
-        .set('favourited', false)
-        .update('favourites_count', count => Math.max(0, count - 1)));
+    return simulateFavourite(state, action.status.id, false);
   case EMOJI_REACT_REQUEST:
     return state
       .updateIn(
         [action.status.get('id'), 'pleroma', 'emoji_reactions'],
-        emojiReacts => simulateEmojiReact(emojiReacts, action.emoji),
+        emojiReacts => simulateEmojiReact(emojiReacts as any, action.emoji),
       );
   case UNEMOJI_REACT_REQUEST:
     return state
       .updateIn(
         [action.status.get('id'), 'pleroma', 'emoji_reactions'],
-        emojiReacts => simulateUnEmojiReact(emojiReacts, action.emoji),
+        emojiReacts => simulateUnEmojiReact(emojiReacts as any, action.emoji),
       );
   case FAVOURITE_FAIL:
     return state.get(action.status.get('id')) === undefined ? state : state.setIn([action.status.get('id'), 'favourited'], false);

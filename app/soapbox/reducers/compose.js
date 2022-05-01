@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+import { v4 as uuid } from 'uuid';
 
 import { tagHistory } from 'soapbox/settings';
 import { PLEROMA } from 'soapbox/utils/features';
@@ -55,7 +56,6 @@ import { SETTING_CHANGE, FE_NAME } from '../actions/settings';
 import { REDRAFT } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 import { unescapeHTML } from '../utils/html';
-import uuid from '../uuid';
 
 const initialState = ImmutableMap({
   id: null,
@@ -104,7 +104,7 @@ const statusToTextMentions = (state, status, account) => {
     .join('');
 };
 
-export const statusToMentionsArray = (state, status, account) => {
+export const statusToMentionsArray = (status, account) => {
   const author = status.getIn(['account', 'acct']);
   const mentions = status.get('mentions', []).map(m => m.get('acct'));
 
@@ -113,7 +113,7 @@ export const statusToMentionsArray = (state, status, account) => {
     .delete(account.get('acct'));
 };
 
-export const statusToMentionsAccountIdsArray = (state, status, account) => {
+export const statusToMentionsAccountIdsArray = (status, account) => {
   const author = status.getIn(['account', 'id']);
   const mentions = status.get('mentions', []).map(m => m.get('id'));
 
@@ -330,7 +330,7 @@ export default function compose(state = initialState, action) {
   case COMPOSE_REPLY:
     return state.withMutations(map => {
       map.set('in_reply_to', action.status.get('id'));
-      map.set('to', action.explicitAddressing ? statusToMentionsArray(state, action.status, action.account) : undefined);
+      map.set('to', action.explicitAddressing ? statusToMentionsArray(action.status, action.account) : ImmutableOrderedSet());
       map.set('text', !action.explicitAddressing ? statusToTextMentions(state, action.status, action.account) : '');
       map.set('privacy', privacyPreference(action.status.get('visibility'), state.get('default_privacy')));
       map.set('focusDate', new Date());
@@ -430,7 +430,7 @@ export default function compose(state = initialState, action) {
   case REDRAFT:
     return state.withMutations(map => {
       map.set('text', action.raw_text || unescapeHTML(expandMentions(action.status)));
-      map.set('to', action.explicitAddressing ? getExplicitMentions(action.status.get('account', 'id'), action.status) : undefined);
+      map.set('to', action.explicitAddressing ? getExplicitMentions(action.status.get('account', 'id'), action.status) : ImmutableOrderedSet());
       map.set('in_reply_to', action.status.get('in_reply_to_id'));
       map.set('privacy', action.status.get('visibility'));
       map.set('focusDate', new Date());

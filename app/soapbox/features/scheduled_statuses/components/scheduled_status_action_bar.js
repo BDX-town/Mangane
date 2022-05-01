@@ -48,7 +48,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 class ScheduledStatusActionBar extends ImmutablePureComponent {
 
   static propTypes = {
-    status: ImmutablePropTypes.map.isRequired,
+    status: ImmutablePropTypes.record.isRequired,
     intl: PropTypes.object.isRequired,
     me: SoapboxPropTypes.me,
     onCancelClick: PropTypes.func.isRequired,

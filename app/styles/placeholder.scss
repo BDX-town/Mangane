@@ -1,4 +1,3 @@
-.placeholder-status,
 .placeholder-hashtag,
 .notification--placeholder,
 .status-card--placeholder,
@@ -30,33 +29,20 @@
   }
 }
 
-.placeholder-status .display-name__account {
-  display: none;
-}
-
 @keyframes placeholder-pulse {
   0% { background-position-x: 200%; }
   100% { background-position-x: 0; }
 }
 
-.notification--placeholder .notification__message span,
 .placeholder-hashtag .trends__item__name {
   color: var(--brand-color);
   opacity: 0.1;
 }
 
-.status__content--placeholder,
-.display-name--placeholder,
 .chat-list-item--placeholder .chat__last-message {
   letter-spacing: -1px;
   color: var(--brand-color) !important;
   opacity: 0.1;
-}
-
-.display-name--placeholder {
-  .display-name__html {
-    color: var(--brand-color) !important;
-  }
 }
 
 .slist {

@@ -46,7 +46,7 @@ class ChatWindow extends ImmutablePureComponent {
     chatId: PropTypes.string.isRequired,
     windowState: PropTypes.string.isRequired,
     idx: PropTypes.number,
-    chat: ImmutablePropTypes.map,
+    chat: ImmutablePropTypes.record,
     me: PropTypes.node,
     displayFqn: PropTypes.bool,
   }

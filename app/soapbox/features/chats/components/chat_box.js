@@ -12,8 +12,8 @@ import {
 } from 'soapbox/actions/chats';
 import { uploadMedia } from 'soapbox/actions/media';
 import IconButton from 'soapbox/components/icon_button';
+import UploadProgress from 'soapbox/features/compose/components/upload-progress';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
-import UploadProgress from 'soapbox/features/compose/components/upload_progress';
 import { truncateFilename } from 'soapbox/utils/media';
 
 import ChatMessageList from './chat_message_list';
@@ -40,7 +40,7 @@ class ChatBox extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     chatId: PropTypes.string.isRequired,
     chatMessageIds: ImmutablePropTypes.orderedSet,
-    chat: ImmutablePropTypes.map,
+    chat: ImmutablePropTypes.record,
     onSetInputRef: PropTypes.func,
     me: PropTypes.node,
   }
@@ -174,13 +174,11 @@ class ChatBox extends ImmutablePureComponent {
     const { resetFileKey } = this.state;
 
     return this.canSubmit() ? (
-      <div className='chat-box__send'>
-        <IconButton
-          src={require('@tabler/icons/icons/send.svg')}
-          title={intl.formatMessage(messages.send)}
-          onClick={this.sendMessage}
-        />
-      </div>
+      <IconButton
+        src={require('@tabler/icons/icons/send.svg')}
+        title={intl.formatMessage(messages.send)}
+        onClick={this.sendMessage}
+      />
     ) : (
       <UploadButton onSelectFile={this.handleFiles} resetFileKey={resetFileKey} />
     );
@@ -197,7 +195,9 @@ class ChatBox extends ImmutablePureComponent {
         {this.renderAttachment()}
         <UploadProgress active={isUploading} progress={uploadProgress*100} />
         <div className='chat-box__actions simple_form'>
-          {this.renderActionButton()}
+          <div className='chat-box__send'>
+            {this.renderActionButton()}
+          </div>
           <textarea
             rows={1}
             placeholder={intl.formatMessage(messages.placeholder)}

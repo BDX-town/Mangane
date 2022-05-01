@@ -8,7 +8,7 @@ import SubNavigation from 'soapbox/components/sub_navigation';
 
 import { connectCommunityStream } from '../../actions/streaming';
 import { expandCommunityTimeline } from '../../actions/timelines';
-import Column from '../../components/column';
+import { Column } from '../../components/ui';
 import StatusListContainer from '../ui/containers/status_list_container';
 
 import ColumnSettings from './containers/column_settings_container';
@@ -87,6 +87,7 @@ class CommunityTimeline extends React.PureComponent {
           onLoadMore={this.handleLoadMore}
           onRefresh={this.handleRefresh}
           emptyMessage={<FormattedMessage id='empty_column.community' defaultMessage='The local timeline is empty. Write something publicly to get the ball rolling!' />}
+          divideType='space'
         />
       </Column>
     );

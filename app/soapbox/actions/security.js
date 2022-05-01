@@ -6,6 +6,7 @@
 
 import snackbar from 'soapbox/actions/snackbar';
 import { getLoggedInAccount } from 'soapbox/utils/auth';
+import { parseVersion, TRUTHSOCIAL } from 'soapbox/utils/features';
 
 import api from '../api';
 
@@ -22,6 +23,10 @@ export const REVOKE_TOKEN_FAIL    = 'REVOKE_TOKEN_FAIL';
 export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
 export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
 export const RESET_PASSWORD_FAIL    = 'RESET_PASSWORD_FAIL';
+
+export const RESET_PASSWORD_CONFIRM_REQUEST = 'RESET_PASSWORD_CONFIRM_REQUEST';
+export const RESET_PASSWORD_CONFIRM_SUCCESS = 'RESET_PASSWORD_CONFIRM_SUCCESS';
+export const RESET_PASSWORD_CONFIRM_FAIL    = 'RESET_PASSWORD_CONFIRM_FAIL';
 
 export const CHANGE_PASSWORD_REQUEST = 'CHANGE_PASSWORD_REQUEST';
 export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_SUCCESS';
@@ -78,17 +83,41 @@ export function changePassword(oldPassword, newPassword, confirmation) {
   };
 }
 
-export function resetPassword(nickNameOrEmail) {
+export function resetPassword(usernameOrEmail) {
   return (dispatch, getState) => {
+    const state = getState();
+    const v = parseVersion(state.instance);
+
     dispatch({ type: RESET_PASSWORD_REQUEST });
+
     const params =
-      nickNameOrEmail.includes('@')
-        ? { email: nickNameOrEmail }
-        : { nickname: nickNameOrEmail };
-    return api(getState).post('/auth/password', params).then(() => {
+      usernameOrEmail.includes('@')
+        ? { email: usernameOrEmail }
+        : { nickname: usernameOrEmail, username: usernameOrEmail };
+
+    const endpoint =
+      v.software === TRUTHSOCIAL
+        ? '/api/v1/truth/password_reset/request'
+        : '/auth/password';
+
+    return api(getState).post(endpoint, params).then(() => {
       dispatch({ type: RESET_PASSWORD_SUCCESS });
     }).catch(error => {
       dispatch({ type: RESET_PASSWORD_FAIL, error });
+      throw error;
+    });
+  };
+}
+
+export function resetPasswordConfirm(password, token) {
+  return (dispatch, getState) => {
+    const params = { password, reset_password_token: token };
+    dispatch({ type: RESET_PASSWORD_CONFIRM_REQUEST });
+
+    return api(getState).post('/api/v1/truth/password_reset/confirm', params).then(() => {
+      dispatch({ type: RESET_PASSWORD_CONFIRM_SUCCESS });
+    }).catch(error => {
+      dispatch({ type: RESET_PASSWORD_CONFIRM_FAIL, error });
       throw error;
     });
   };
@@ -107,6 +136,12 @@ export function changeEmail(email, password) {
       dispatch({ type: CHANGE_EMAIL_FAIL, email, error, skipAlert: true });
       throw error;
     });
+  };
+}
+
+export function confirmChangedEmail(token) {
+  return (_dispatch, getState) => {
+    return api(getState).get(`/api/v1/truth/email/confirm?confirmation_token=${token}`);
   };
 }
 

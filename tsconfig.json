@@ -2,14 +2,15 @@
   "compilerOptions": {
     "baseUrl": "app/",
     "sourceMap": true,
-    "noImplicitAny": true,
-    "module": "es6",
+    "strict": true,
+    "module": "es2022",
     "target": "es5",
     "jsx": "react",
     "allowJs": true,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "typeRoots": [ "./types", "./node_modules/@types"]
   },
   "exclude": ["node_modules", "types", "**/*.test.*", "**/__mocks__/*", "**/__tests__/*"]

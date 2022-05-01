@@ -1,4 +1,5 @@
 .radio-button {
+  @apply text-black dark:text-white;
   font-size: 14px;
   position: relative;
   display: inline-block;
@@ -15,10 +16,7 @@
   }
 
   &__input {
-    display: inline-block;
-    position: relative;
-    border: 1px solid var(--primary-text-color--faint);
-    box-sizing: border-box;
+    @apply inline-block relative box-border border border-solid border-primary-600;
     width: 18px;
     height: 18px;
     flex: 0 0 auto;
@@ -28,8 +26,13 @@
     vertical-align: middle;
 
     &.checked {
-      border-color: var(--brand-color);
-      background: var(--brand-color);
+      @apply bg-primary-600;
+    }
+
+    &:active,
+    &:focus,
+    &:hover {
+      @apply border-4;
     }
   }
 }

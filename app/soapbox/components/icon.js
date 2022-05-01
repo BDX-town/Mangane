@@ -15,17 +15,18 @@ export default class Icon extends React.PureComponent {
 
   static propTypes = {
     id: PropTypes.string,
-    src: PropTypes.string,
+    src: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     className: PropTypes.string,
+    fixedWidth: PropTypes.bool,
   };
 
   render() {
-    const { id, src, ...rest } = this.props;
+    const { id, src, fixedWidth, ...rest } = this.props;
 
     if (src) {
       return <SvgIcon src={src} {...rest} />;
     } else {
-      return <ForkAwesomeIcon id={id} {...rest} />;
+      return <ForkAwesomeIcon id={id} fixedWidth={fixedWidth} {...rest} />;
     }
   }
 

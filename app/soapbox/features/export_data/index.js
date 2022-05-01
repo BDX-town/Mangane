@@ -55,7 +55,7 @@ class ExportData extends ImmutablePureComponent {
     const { intl } = this.props;
 
     return (
-      <Column icon='cloud-download-alt' heading={intl.formatMessage(messages.heading)}>
+      <Column icon='cloud-download-alt' label={intl.formatMessage(messages.heading)}>
         <CSVExporter action={exportFollows} messages={followMessages} />
         <CSVExporter action={exportBlocks} messages={blockMessages} />
         <CSVExporter action={exportMutes} messages={muteMessages} />

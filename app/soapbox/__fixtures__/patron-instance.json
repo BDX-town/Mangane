@@ -1,0 +1,17 @@
+{
+  "funding": {
+    "amount": 3500,
+    "patrons": 3,
+    "currency": "usd",
+    "interval": "monthly"
+  },
+  "goals": [
+    {
+      "amount": 20000,
+      "currency": "usd",
+      "interval": "monthly",
+      "text": "I'll be able to afford an avocado."
+    }
+  ],
+  "url": "https://patron.gleasonator.com"
+}

@@ -58,7 +58,7 @@ const expandNormalizedConversations = (state, conversations, next, isLoadingRece
         list = list.concat(items);
 
         return list.sortBy(x => x.get('last_status'), (a, b) => {
-          if(a === null || b === null) {
+          if (a === null || b === null) {
             return -1;
           }
 

@@ -22,10 +22,7 @@
       flex-wrap: wrap;
     }
 
-    &__join-date,
-    &__birthday,
-    &__location,
-    &__note {
+    &__join-date {
       display: flex;
       font-size: 14px;
       color: var(--primary-text-color--faint);
@@ -41,15 +38,6 @@
       }
     }
 
-    &__note {
-      text-decoration: none;
-
-      &:hover,
-      &:focus {
-        text-decoration: underline;
-      }
-    }
-
     &__stats {
       margin: 15px 0;
 
@@ -60,6 +48,7 @@
 
     &__name {
       display: block;
+      margin-bottom: 15px;
 
       .emojione {
         width: 22px;
@@ -86,7 +75,7 @@
           font-size: 15px;
           line-height: 1.5;
           color: var(--primary-text-color--faint);
-          font-weight: 400;
+          font-weight: 600;
           overflow: hidden;
           text-overflow: ellipsis;
         }
@@ -97,7 +86,7 @@
       display: block;
       flex: 1 1;
       color: var(--primary-text-color);
-      margin-top: 15px;
+      margin-bottom: 15px;
       font-size: 15px;
       line-height: 1.25;
       overflow: hidden;
@@ -154,6 +143,32 @@
       display: none;
     }
   }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: -10px;
+
+    > div {
+      display: flex;
+      font-size: 14px;
+      color: var(--primary-text-color--faint);
+      align-items: center;
+      line-height: normal;
+      margin-top: 10px;
+      margin-right: 20px;
+
+      .svg-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+
+        svg {
+          stroke: currentColor;
+        }
+      }
+    }
+  }
 }
 
 .profile-info-panel.deactivated {
@@ -174,10 +189,10 @@
   }
 
   .profile-info-panel__name-content::before {
-    content: "[";
+    content: '[';
   }
 
   .profile-info-panel__name-content::after {
-    content: "]";
+    content: ']';
   }
 }

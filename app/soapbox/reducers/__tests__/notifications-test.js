@@ -28,7 +28,7 @@ import {
   NOTIFICATIONS_MARK_READ_REQUEST,
 } from 'soapbox/actions/notifications';
 import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
-import { applyActions } from 'soapbox/test_helpers';
+import { applyActions } from 'soapbox/jest/test-helpers';
 
 import reducer from '../notifications';
 
@@ -186,6 +186,16 @@ describe('notifications reducer', () => {
       const result = reducer(initialState, action);
 
       expect(result.items.get('10743').type).toEqual('favourite');
+    });
+
+    it('imports follow_request notification', () => {
+      const action = {
+        type: NOTIFICATIONS_UPDATE,
+        notification: require('soapbox/__fixtures__/notification-follow_request.json'),
+      };
+
+      const result = reducer(initialState, action);
+      expect(result.items.get('87967').type).toEqual('follow_request');
     });
 
     it('increments `unread` counter when top is false', () => {
