@@ -58,6 +58,7 @@ const locales: string[] = [
   'hy',
   'id',
   'io',
+  'is',
   'it',
   'ja',
   'ka',
