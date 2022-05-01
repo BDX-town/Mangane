@@ -11,18 +11,29 @@ const messages = defineMessages({
 });
 
 interface IModal {
+  /** Callback when the modal is cancelled. */
   cancelAction?: () => void,
+  /** Cancel button text. */
   cancelText?: string,
+  /** Callback when the modal is confirmed. */
   confirmationAction?: () => void,
+  /** Whether the confirmation button is disabled. */
   confirmationDisabled?: boolean,
+  /** Confirmation button text. */
   confirmationText?: string,
+  /** Confirmation button theme. */
   confirmationTheme?: 'danger',
+  /** Callback when the modal is closed. */
   onClose?: () => void,
+  /** Callback when the secondary action is chosen. */
   secondaryAction?: () => void,
+  /** Secondary button text. */
   secondaryText?: string,
+  /** Title text for the modal. */
   title: string | React.ReactNode,
 }
 
+/** Displays a modal dialog box. */
 const Modal: React.FC<IModal> = ({
   cancelAction,
   cancelText,

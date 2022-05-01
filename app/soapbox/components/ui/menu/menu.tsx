@@ -13,10 +13,12 @@ import React from 'react';
 import './menu.css';
 
 interface IMenuList extends Omit<MenuPopoverProps, 'position'> {
+  /** Position of the dropdown menu. */
   position?: 'left' | 'right'
 }
 
-const MenuList = (props: IMenuList) => (
+/** Renders children as a dropdown menu. */
+const MenuList: React.FC<IMenuList> = (props) => (
   <MenuPopover position={props.position === 'left' ? positionDefault : positionRight}>
     <MenuItems
       onKeyDown={(event) => event.nativeEvent.stopImmediatePropagation()}
@@ -26,6 +28,7 @@ const MenuList = (props: IMenuList) => (
   </MenuPopover>
 );
 
+/** Divides menu items. */
 const MenuDivider = () => <hr />;
 
 export { Menu, MenuButton, MenuDivider, MenuItems, MenuItem, MenuList, MenuLink };

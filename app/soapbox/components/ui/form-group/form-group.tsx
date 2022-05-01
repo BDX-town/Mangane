@@ -2,11 +2,15 @@ import React, { useMemo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 interface IFormGroup {
+  /** Input label message. */
   hintText?: React.ReactNode,
+  /** Input hint message. */
   labelText: React.ReactNode,
+  /** Input errors. */
   errors?: string[]
 }
 
+/** Input element with label and hint. */
 const FormGroup: React.FC<IFormGroup> = (props) => {
   const { children, errors = [], labelText, hintText } = props;
   const formFieldId: string = useMemo(() => `field-${uuidv4()}`, []);

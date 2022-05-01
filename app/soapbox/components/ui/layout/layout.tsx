@@ -2,13 +2,14 @@ import classNames from 'classnames';
 import React from 'react';
 import StickyBox from 'react-sticky-box';
 
-interface LayoutType extends React.FC {
+interface LayoutComponent extends React.FC {
   Sidebar: React.FC,
   Main: React.FC<React.HTMLAttributes<HTMLDivElement>>,
   Aside: React.FC,
 }
 
-const Layout: LayoutType = ({ children }) => (
+/** Layout container, to hold Sidebar, Main, and Aside. */
+const Layout: LayoutComponent = ({ children }) => (
   <div className='sm:pt-4 relative'>
     <div className='max-w-3xl mx-auto sm:px-6 md:max-w-7xl md:px-8 md:grid md:grid-cols-12 md:gap-8'>
       {children}
@@ -16,6 +17,7 @@ const Layout: LayoutType = ({ children }) => (
   </div>
 );
 
+/** Left sidebar container in the UI. */
 const Sidebar: React.FC = ({ children }) => (
   <div className='hidden lg:block lg:col-span-3'>
     <StickyBox offsetTop={80} className='pb-4'>
@@ -24,6 +26,7 @@ const Sidebar: React.FC = ({ children }) => (
   </div>
 );
 
+/** Center column container in the UI. */
 const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className }) => (
   <main
     className={classNames({
@@ -34,6 +37,7 @@ const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, classN
   </main>
 );
 
+/** Right sidebar container in the UI. */
 const Aside: React.FC = ({ children }) => (
   <aside className='hidden xl:block xl:col-span-3'>
     <StickyBox offsetTop={80} className='space-y-6 pb-12' >
