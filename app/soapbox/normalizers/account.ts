@@ -61,7 +61,7 @@ export const AccountRecord = ImmutableRecord({
   note_emojified: '',
   note_plain: '',
   patron: null as PatronAccount | null,
-  relationship: ImmutableList<ImmutableMap<string, any>>(),
+  relationship: ImmutableMap<string, any>(),
   should_refetch: false,
   staff: false,
 });

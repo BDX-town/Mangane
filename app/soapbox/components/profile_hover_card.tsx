@@ -1,10 +1,7 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { useIntl } from 'react-intl';
 import { usePopper } from 'react-popper';
-import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
@@ -16,14 +13,18 @@ import Badge from 'soapbox/components/badge';
 import ActionButton from 'soapbox/features/ui/components/action_button';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { UserPanel } from 'soapbox/features/ui/util/async-components';
+import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
 import { showProfileHoverCard } from './hover_ref_wrapper';
 import { Card, CardBody, Stack, Text } from './ui';
 
+import type { AppDispatch } from 'soapbox/store';
+import type { Account } from 'soapbox/types/entities';
+
 const getAccount = makeGetAccount();
 
-const getBadges = (account) => {
+const getBadges = (account: Account): JSX.Element[] => {
   const badges = [];
 
   if (account.admin) {
@@ -43,29 +44,34 @@ const getBadges = (account) => {
   return badges;
 };
 
-const handleMouseEnter = (dispatch) => {
-  return e => {
+const handleMouseEnter = (dispatch: AppDispatch): React.MouseEventHandler => {
+  return () => {
     dispatch(updateProfileHoverCard());
   };
 };
 
-const handleMouseLeave = (dispatch) => {
-  return e => {
+const handleMouseLeave = (dispatch: AppDispatch): React.MouseEventHandler => {
+  return () => {
     dispatch(closeProfileHoverCard(true));
   };
 };
 
-export const ProfileHoverCard = ({ visible }) => {
-  const dispatch = useDispatch();
+interface IProfileHoverCard {
+  visible: boolean,
+}
+
+/** Popup profile preview that appears when hovering avatars and display names. */
+export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }) => {
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const intl = useIntl();
 
-  const [popperElement, setPopperElement] = useState(null);
+  const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
 
-  const me = useSelector(state => state.get('me'));
-  const accountId = useSelector(state => state.getIn(['profile_hover_card', 'accountId']));
-  const account   = useSelector(state => accountId && getAccount(state, accountId));
-  const targetRef = useSelector(state => state.getIn(['profile_hover_card', 'ref', 'current']));
+  const me = useAppSelector(state => state.me);
+  const accountId: string | undefined = useAppSelector(state => state.profile_hover_card.get<string | undefined>('accountId', undefined));
+  const account   = useAppSelector(state => accountId && getAccount(state, accountId));
+  const targetRef = useAppSelector(state => state.profile_hover_card.getIn(['ref', 'current']) as Element | null);
   const badges = account ? getBadges(account) : [];
 
   useEffect(() => {
@@ -86,8 +92,8 @@ export const ProfileHoverCard = ({ visible }) => {
   const { styles, attributes } = usePopper(targetRef, popperElement);
 
   if (!account) return null;
-  const accountBio = { __html: account.get('note_emojified') };
-  const followedBy = me !== account.get('id') && account.getIn(['relationship', 'followed_by']);
+  const accountBio = { __html: account.note_emojified };
+  const followedBy = me !== account.id && account.relationship.get('followed_by') === true;
 
   return (
     <div
@@ -115,7 +121,7 @@ export const ProfileHoverCard = ({ visible }) => {
               )}
             </BundleContainer>
 
-            {account.getIn(['source', 'note'], '').length > 0 && (
+            {account.source.get('note', '').length > 0 && (
               <Text size='sm' dangerouslySetInnerHTML={accountBio} />
             )}
           </Stack>
@@ -132,16 +138,6 @@ export const ProfileHoverCard = ({ visible }) => {
       </Card>
     </div>
   );
-};
-
-ProfileHoverCard.propTypes = {
-  visible: PropTypes.bool,
-  accountId: PropTypes.string,
-  account: ImmutablePropTypes.record,
-};
-
-ProfileHoverCard.defaultProps = {
-  visible: true,
 };
 
 export default ProfileHoverCard;
