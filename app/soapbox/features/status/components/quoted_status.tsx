@@ -136,6 +136,7 @@ class QuotedStatus extends ImmutablePureComponent<IQuotedStatus> {
         {this.renderReplyMentions()}
 
         <Text
+          className='break-words'
           size='sm'
           dangerouslySetInnerHTML={{ __html: status.contentHtml }}
         />
