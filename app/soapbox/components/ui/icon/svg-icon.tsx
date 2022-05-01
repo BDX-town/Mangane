@@ -2,9 +2,13 @@ import React from 'react';
 import InlineSVG from 'react-inlinesvg'; // eslint-disable-line no-restricted-imports
 
 interface ISvgIcon {
+  /** Class name for the <svg> */
   className?: string,
+  /** Tooltip text for the icon. */
   alt?: string,
+  /** URL to the svg file. */
   src: string,
+  /** Width and height of the icon in pixels. */
   size?: number,
 }
 

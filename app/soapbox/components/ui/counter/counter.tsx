@@ -3,6 +3,7 @@ import React from 'react';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 interface ICounter {
+  /** Number this counter should display. */
   count: number,
 }
 

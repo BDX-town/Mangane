@@ -7,13 +7,19 @@ import Helmet from 'soapbox/components/helmet';
 import { Card, CardBody, CardHeader, CardTitle } from '../card/card';
 
 interface IColumn {
+  /** Route the back button goes to. */
   backHref?: string,
+  /** Column title text. */
   label?: string,
+  /** Whether this column should have a transparent background. */
   transparent?: boolean,
+  /** Whether this column should have a title and back button. */
   withHeader?: boolean,
+  /** Extra class name for top <div> element. */
   className?: string,
 }
 
+/** A backdrop for the main section of the UI. */
 const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedRef<HTMLDivElement>): JSX.Element => {
   const { backHref, children, label, transparent = false, withHeader = true, className } = props;
 

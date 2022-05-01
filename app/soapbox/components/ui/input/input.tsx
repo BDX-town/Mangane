@@ -12,17 +12,27 @@ const messages = defineMessages({
 });
 
 interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxLength' | 'onChange' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required' | 'disabled'> {
+  /** Put the cursor into the input on mount. */
   autoFocus?: boolean,
+  /** The initial text in the input. */
   defaultValue?: string,
+  /** Extra class names for the <input> element. */
   className?: string,
+  /** URL to the svg icon. */
   icon?: string,
+  /** Internal input name. */
   name?: string,
+  /** Text to display before a value is entered. */
   placeholder?: string,
+  /** Text in the input. */
   value?: string,
+  /** Change event handler for the input. */
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  /** HTML input type. */
   type: 'text' | 'email' | 'tel' | 'password',
 }
 
+/** Form input element. */
 const Input = React.forwardRef<HTMLInputElement, IInput>(
   (props, ref) => {
     const intl = useIntl();

@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+/** Multiple-select dropdown. */
 const Select = React.forwardRef<HTMLSelectElement>((props, ref) => {
   const { children, ...filteredProps } = props;
 

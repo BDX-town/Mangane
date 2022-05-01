@@ -24,14 +24,21 @@ const spaces = {
 };
 
 interface IHStack {
+  /** Vertical alignment of children. */
   alignItems?: 'top' | 'bottom' | 'center' | 'start',
+  /** Extra class names on the <div> element. */
   className?: string,
+  /** Horizontal alignment of children. */
   justifyContent?: 'between' | 'center',
+  /** Size of the gap between elements. */
   space?: 0.5 | 1 | 1.5 | 2 | 3 | 4 | 6,
+  /** Whether to let the flexbox grow. */
   grow?: boolean,
+  /** Extra CSS styles for the <div> */
   style?: React.CSSProperties
 }
 
+/** Horizontal row of child elements. */
 const HStack: React.FC<IHStack> = (props) => {
   const { space, alignItems, grow, justifyContent, className, ...filteredProps } = props;
 
