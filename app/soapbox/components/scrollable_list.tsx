@@ -1,9 +1,8 @@
 import React from 'react';
 import { Virtuoso, Components } from 'react-virtuoso';
 
-import { getSettings } from 'soapbox/actions/settings';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import { useAppSelector } from 'soapbox/hooks';
+import { useSettings } from 'soapbox/hooks';
 
 import LoadMore from './load_more';
 import { Spinner, Text } from './ui';
@@ -63,7 +62,7 @@ const ScrollableList: React.FC<IScrollableList> = ({
   placeholderComponent: Placeholder,
   placeholderCount = 0,
 }) => {
-  const settings = useAppSelector((state) => getSettings(state));
+  const settings = useSettings();
   const autoloadMore = settings.get('autoloadMore');
 
   /** Normalized children */
