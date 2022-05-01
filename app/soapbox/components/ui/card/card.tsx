@@ -81,8 +81,8 @@ interface ICardTitle {
 }
 
 /** A card's title. */
-const CardTitle = ({ title }: ICardTitle): JSX.Element => (
-  <Text size='xl' weight='bold' tag='h1' data-testid='card-title'>{title}</Text>
+const CardTitle: React.FC<ICardTitle> = ({ title }): JSX.Element => (
+  <Text size='xl' weight='bold' tag='h1' data-testid='card-title' truncate>{title}</Text>
 );
 
 /** A card's body. */
