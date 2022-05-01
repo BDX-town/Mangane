@@ -5,24 +5,32 @@ import HStack from 'soapbox/components/ui/hstack/hstack';
 import Stack from 'soapbox/components/ui/stack/stack';
 
 interface IWidgetTitle {
-  title: string | React.ReactNode,
+  /** Title text for the widget. */
+  title: React.ReactNode,
 }
 
+/** Title of a widget. */
 const WidgetTitle = ({ title }: IWidgetTitle): JSX.Element => (
   <Text size='xl' weight='bold' tag='h1'>{title}</Text>
 );
 
+/** Body of a widget. */
 const WidgetBody: React.FC = ({ children }): JSX.Element => (
   <Stack space={3}>{children}</Stack>
 );
 
 interface IWidget {
-  title: string | React.ReactNode,
+  /** Widget title text. */
+  title: React.ReactNode,
+  /** Callback when the widget action is clicked. */
   onActionClick?: () => void,
+  /** URL to the svg icon for the widget action. */
   actionIcon?: string,
+  /** Text for the action. */
   actionTitle?: string,
 }
 
+/** Sidebar widget. */
 const Widget: React.FC<IWidget> = ({
   title,
   children,

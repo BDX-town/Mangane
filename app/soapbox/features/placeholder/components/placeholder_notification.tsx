@@ -4,6 +4,7 @@ import PlaceholderAvatar from './placeholder_avatar';
 import PlaceholderDisplayName from './placeholder_display_name';
 import PlaceholderStatusContent from './placeholder_status_content';
 
+/** Fake notification to display while data is loading. */
 const PlaceholderNotification = () => (
   <div className='bg-white dark:bg-slate-800 px-4 py-6 sm:p-6'>
     <div className='w-full animate-pulse'>

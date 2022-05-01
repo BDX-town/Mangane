@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -73,11 +72,6 @@ const DeleteAccount = () => {
       </CardBody>
     </Card>
   );
-};
-
-DeleteAccount.propTypes = {
-  intl: PropTypes.object,
-  dispatch: PropTypes.func,
 };
 
 export default DeleteAccount;

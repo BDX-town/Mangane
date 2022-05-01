@@ -10,7 +10,7 @@ import { Card, CardBody } from '../../components/ui';
 import LoginPage from '../auth_login/components/login_page';
 import PasswordReset from '../auth_login/components/password_reset';
 import PasswordResetConfirm from '../auth_login/components/password_reset_confirm';
-// import EmailConfirmation from '../email_confirmation';
+import RegistrationForm from '../auth_login/components/registration_form';
 import Verification from '../verification';
 import EmailPassthru from '../verification/email_passthru';
 
@@ -42,12 +42,12 @@ const AuthLayout = () => {
             <Card variant='rounded' size='xl'>
               <CardBody>
                 <Switch>
-                  <Route exact path='/auth/verify' component={Verification} />
-                  <Route exact path='/auth/verify/email/:token' component={EmailPassthru} />
+                  <Route exact path='/verify' component={Verification} />
+                  <Route exact path='/verify/email/:token' component={EmailPassthru} />
                   <Route exact path='/login' component={LoginPage} />
+                  <Route exact path='/signup' component={RegistrationForm} />
                   <Route exact path='/reset-password' component={PasswordReset} />
                   <Route exact path='/edit-password' component={PasswordResetConfirm} />
-                  {/* <Route exact path='/auth/confirmation' component={EmailConfirmation} /> */}
 
                   <Redirect from='/auth/password/new' to='/reset-password' />
                   <Redirect from='/auth/password/edit' to='/edit-password' />

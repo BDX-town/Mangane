@@ -22,13 +22,18 @@ const alignItemsOptions = {
   center: 'items-center',
 };
 
-interface IStack extends React.HTMLAttributes<HTMLDivElement  > {
+interface IStack extends React.HTMLAttributes<HTMLDivElement> {
+  /** Size of the gap between elements. */
   space?: SIZES,
+  /** Horizontal alignment of children. */
   alignItems?: 'center',
+  /** Vertical alignment of children. */
   justifyContent?: 'center',
+  /** Extra class names on the <div> element. */
   className?: string,
 }
 
+/** Vertical stack of child elements. */
 const Stack: React.FC<IStack> = (props) => {
   const { space, alignItems, justifyContent, className, ...filteredProps } = props;
 

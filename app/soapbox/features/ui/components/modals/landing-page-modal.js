@@ -39,7 +39,7 @@ const LandingPageModal = ({ onClose }) => {
           </Button>
 
           {isOpen && (
-            <Button to='/auth/verify' theme='primary' block>
+            <Button to='/verify' theme='primary' block>
               {intl.formatMessage(messages.register)}
             </Button>
           )}

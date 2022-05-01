@@ -3,7 +3,8 @@ import * as React from 'react';
 
 import { randomIntFromInterval, generateText } from '../utils';
 
-const PlaceholderCard = () => (
+/** Fake link preview to display while data is loading. */
+const PlaceholderCard: React.FC = () => (
   <div className={classNames('status-card', {
     'animate-pulse': true,
   })}
