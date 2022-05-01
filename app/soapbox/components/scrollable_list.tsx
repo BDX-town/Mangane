@@ -1,8 +1,11 @@
 import React from 'react';
 import { Virtuoso, Components } from 'react-virtuoso';
 
+import { getSettings } from 'soapbox/actions/settings';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
+import { useAppSelector } from 'soapbox/hooks';
 
+import LoadMore from './load_more';
 import { Spinner, Text } from './ui';
 
 type Context = {
@@ -60,6 +63,9 @@ const ScrollableList: React.FC<IScrollableList> = ({
   placeholderComponent: Placeholder,
   placeholderCount = 0,
 }) => {
+  const settings = useAppSelector((state) => getSettings(state));
+  const autoloadMore = settings.get('autoloadMore');
+
   /** Normalized children */
   const elements = Array.from(children || []);
 
@@ -72,9 +78,9 @@ const ScrollableList: React.FC<IScrollableList> = ({
 
   // Add a placeholder at the bottom for loading
   // (Don't use Virtuoso's `Footer` component because it doesn't preserve its height)
-  if (hasMore && Placeholder) {
+  if (hasMore && (autoloadMore || isLoading) && Placeholder) {
     data.push(<Placeholder />);
-  } else if (hasMore) {
+  } else if (hasMore && (autoloadMore || isLoading)) {
     data.push(<Spinner />);
   }
 
@@ -105,8 +111,16 @@ const ScrollableList: React.FC<IScrollableList> = ({
   };
 
   const handleEndReached = () => {
-    if (hasMore && onLoadMore) {
+    if (autoloadMore && hasMore && onLoadMore) {
       onLoadMore();
+    }
+  };
+
+  const loadMore = () => {
+    if (autoloadMore || !hasMore || !onLoadMore) {
+      return null;
+    } else {
+      return <LoadMore visible={!isLoading} onClick={onLoadMore} />;
     }
   };
 
@@ -130,6 +144,7 @@ const ScrollableList: React.FC<IScrollableList> = ({
         EmptyPlaceholder: () => renderEmpty(),
         List,
         Item,
+        Footer: loadMore,
       }}
     />
   );
