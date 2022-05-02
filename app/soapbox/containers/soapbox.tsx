@@ -25,7 +25,7 @@ import MESSAGES from 'soapbox/locales/messages';
 import { getFeatures } from 'soapbox/utils/features';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
-import { ONBOARDING_VERSION } from '../actions/onboarding';
+import { checkOnboardingStatus } from '../actions/onboarding';
 import { preload } from '../actions/preload';
 import ErrorBoundary from '../components/error_boundary';
 import UI from '../features/ui';
@@ -39,6 +39,9 @@ createGlobals(store);
 
 // Preload happens synchronously
 store.dispatch(preload() as any);
+
+// This happens synchronously
+store.dispatch(checkOnboardingStatus() as any);
 
 /** Load initial data from the backend */
 const loadInitial = () => {
@@ -76,7 +79,7 @@ const SoapboxMount = () => {
 
   const locale = validLocale(settings.get('locale')) ? settings.get('locale') : 'en';
 
-  const needsOnboarding = settings.get('onboardingVersion') < ONBOARDING_VERSION;
+  const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const singleUserMode = soapboxConfig.singleUserMode && soapboxConfig.singleUserModeProfile;
 
   const [messages, setMessages] = useState<Record<string, string>>({});
