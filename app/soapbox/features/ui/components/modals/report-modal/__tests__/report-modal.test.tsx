@@ -28,6 +28,7 @@ describe('<ReportModal />', () => {
         new: {
           account_id: '1',
           status_ids: ImmutableSet(['1']),
+          rule_ids: ImmutableSet(),
         },
       }),
       statuses: ImmutableMap({
