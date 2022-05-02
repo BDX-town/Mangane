@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -14,7 +13,11 @@ const messages = defineMessages({
   register: { id: 'header.register.label', defaultMessage: 'Register' },
 });
 
-const LandingPageModal = ({ onClose }) => {
+interface ILandingPageModal {
+  onClose: (type: string) => void,
+}
+
+const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
   const intl = useIntl();
 
   const { logo } = useSoapboxConfig();
@@ -49,10 +52,6 @@ const LandingPageModal = ({ onClose }) => {
       </div>
     </Modal>
   );
-};
-
-LandingPageModal.propTypes = {
-  onClose: PropTypes.func.isRequired,
 };
 
 export default LandingPageModal;
