@@ -1,4 +1,3 @@
-import { unescape } from 'lodash';
 import React, { useState, useEffect, useMemo } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
@@ -119,8 +118,8 @@ const accountToCredentials = (account: Account): AccountCredentials => {
   return {
     discoverable: account.discoverable,
     bot: account.bot,
-    display_name: unescape(account.display_name),
-    note: account.source.get('note') || unescape(account.note),
+    display_name: account.display_name,
+    note: account.source.get('note'),
     locked: account.locked,
     fields_attributes: [...account.source.get<Iterable<AccountCredentialsField>>('fields', [])],
     stranger_notifications: account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']) === true,
