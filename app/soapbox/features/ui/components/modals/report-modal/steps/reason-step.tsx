@@ -127,6 +127,7 @@ const ReasonStep = (_props: IReasonStep) => {
               return (
                 <button
                   key={idx}
+                  data-testid={`rule-${rule.id}`}
                   onClick={() => dispatch(changeReportRule(rule.id))}
                   className={classNames({
                     'relative border border-solid border-gray-200 hover:bg-gray-50 text-left w-full p-4 flex justify-between items-center cursor-pointer': true,
