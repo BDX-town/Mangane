@@ -60,6 +60,7 @@ export function submitReport() {
     return api(getState).post('/api/v1/reports', {
       account_id: getState().getIn(['reports', 'new', 'account_id']),
       status_ids: getState().getIn(['reports', 'new', 'status_ids']),
+      rule_ids: getState().getIn(['reports', 'new', 'rule_ids']),
       comment: getState().getIn(['reports', 'new', 'comment']),
       forward: getState().getIn(['reports', 'new', 'forward']),
     });
