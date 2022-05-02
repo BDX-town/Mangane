@@ -1,53 +1,25 @@
-import { OrderedSet, Set as ImmutableSet } from 'immutable';
-import React, { useCallback, useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { OrderedSet } from 'immutable';
+import React, { useEffect, useState } from 'react';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import Toggle from 'react-toggle';
 
 import { changeReportBlock, changeReportForward } from 'soapbox/actions/reports';
 import { fetchRules } from 'soapbox/actions/rules';
-import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
-import StatusContent from 'soapbox/components/status_content';
 import { Button, FormGroup, HStack, Stack, Text } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
 import StatusCheckBox from 'soapbox/features/report/containers/status_check_box_container';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { isRemote, getDomain } from 'soapbox/utils/accounts';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 
-const SelectedStatus = ({ statusId }: { statusId: string }) => {
-  const status = useAppSelector((state) => state.statuses.get(statusId));
-
-  if (!status) {
-    return null;
-  }
-
-  return (
-    <Stack space={2} className='p-4 rounded-lg bg-gray-100 dark:bg-slate-700'>
-      <AccountContainer
-        id={status.get('account') as any}
-        showProfileHoverCard={false}
-        timestamp={status.get('created_at')}
-        hideActions
-      />
-
-      <StatusContent
-        status={status}
-        expanded
-        collapsable
-      />
-
-      {status.get('media_attachments').size > 0 && (
-        <AttachmentThumbs
-          compact
-          media={status.get('media_attachments')}
-          sensitive={status.get('sensitive')}
-        />
-      )}
-    </Stack>
-  );
-};
+const messages = defineMessages({
+  addAdditionalStatuses: { id: 'report.otherActions.addAdditionl', defaultMessage: 'Would you like to add additional statuses to this report?' },
+  addMore: { id: 'report.otherActions.addMore', defaultMessage: 'Add more' },
+  furtherActions: { id: 'report.otherActions.furtherActions', defaultMessage: 'Further actions:' },
+  hideAdditonalStatuses: { id: 'report.otherActions.hideAdditional', defaultMessage: 'Hide additional statuses' },
+  otherStatuses: { id: 'report.otherActions.otherStatuses', defaultMessage: 'Include other statuses?' },
+});
 
 interface IOtherActionsStep {
   account: ReducerAccount
@@ -56,8 +28,8 @@ interface IOtherActionsStep {
 const OtherActionsStep = ({ account }: IOtherActionsStep) => {
   const dispatch = useDispatch();
   const features = useFeatures();
+  const intl = useIntl();
 
-  const selectedStatusIds = useAppSelector((state) => state.reports.getIn(['new', 'status_ids']) as ImmutableSet<string>);
   const statusIds = useAppSelector((state) => OrderedSet(state.timelines.getIn([`account:${account.id}:with_replies`, 'items'])).union(state.reports.getIn(['new', 'status_ids']) as Iterable<unknown>) as OrderedSet<string>);
   const isBlocked = useAppSelector((state) => state.reports.getIn(['new', 'block']) as boolean);
   const isForward = useAppSelector((state) => state.reports.getIn(['reports', 'forward']) as boolean);
@@ -65,19 +37,6 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
   const isSubmitting = useAppSelector((state) => state.reports.getIn(['new', 'isSubmitting']) as boolean);
 
   const [showAdditionalStatuses, setShowAdditionalStatuses] = useState<boolean>(false);
-
-  const renderSelectedStatuses = useCallback(() => {
-    switch (selectedStatusIds.size) {
-    case 0:
-      return (
-        <div className='bg-gray-100 dark:bg-slate-700 p-4 rounded-lg flex items-center justify-center w-full'>
-          <Text theme='muted'>You have removed all statuses from being selected.</Text>
-        </div>
-      );
-    default:
-      return <SelectedStatus statusId={selectedStatusIds.first()} />;
-    }
-  }, [selectedStatusIds.size]);
 
   const handleBlockChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(changeReportBlock(event.target.checked));
@@ -93,15 +52,13 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
 
   return (
     <Stack space={4}>
-      {renderSelectedStatuses()}
-
       {features.reportMultipleStatuses && (
         <Stack space={2}>
-          <Text tag='h1' size='xl' weight='semibold'>Include other statuses?</Text>
+          <Text tag='h1' size='xl' weight='semibold'>
+            {intl.formatMessage(messages.otherStatuses)}
+          </Text>
 
-          <FormGroup
-            labelText='Would you like to add additional statuses to this report?'
-          >
+          <FormGroup labelText={intl.formatMessage(messages.addAdditionalStatuses)}>
             {showAdditionalStatuses ? (
               <Stack space={2}>
                 <div className='bg-gray-100 rounded-lg p-4'>
@@ -115,7 +72,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
                     size='sm'
                     onClick={() => setShowAdditionalStatuses(false)}
                   >
-                    Hide additional statuses
+                    {intl.formatMessage(messages.hideAdditonalStatuses)}
                   </Button>
                 </div>
               </Stack>
@@ -126,7 +83,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
                 size='sm'
                 onClick={() => setShowAdditionalStatuses(true)}
               >
-                Add more
+                {intl.formatMessage(messages.addMore)}
               </Button>
             )}
           </FormGroup>
@@ -134,7 +91,9 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
       )}
 
       <Stack space={2}>
-        <Text tag='h1' size='xl' weight='semibold'>Further actions:</Text>
+        <Text tag='h1' size='xl' weight='semibold'>
+          {intl.formatMessage(messages.furtherActions)}
+        </Text>
 
         <FormGroup
           labelText={<FormattedMessage id='report.block_hint' defaultMessage='Do you also want to block this account?' />}

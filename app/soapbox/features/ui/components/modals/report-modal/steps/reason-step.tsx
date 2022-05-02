@@ -1,55 +1,19 @@
 import classNames from 'classnames';
-import { Set as ImmutableSet } from 'immutable';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { changeReportComment, changeReportRule } from 'soapbox/actions/reports';
 import { fetchRules } from 'soapbox/actions/rules';
-import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
-import StatusContent from 'soapbox/components/status_content';
-import { FormGroup, HStack, Stack, Text, Textarea } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
+import { FormGroup, Stack, Text, Textarea } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 
 const messages = defineMessages({
   placeholder: { id: 'report.placeholder', defaultMessage: 'Additional comments' },
+  reasonForReporting: { id: 'report.reason.title', defaultMessage: 'Reason for reporting' },
 });
-
-const SelectedStatus = ({ statusId }: { statusId: string }) => {
-  const status = useAppSelector((state) => state.statuses.get(statusId));
-
-  if (!status) {
-    return null;
-  }
-
-  return (
-    <Stack space={2} className='p-4 rounded-lg bg-gray-100 dark:bg-slate-700'>
-      <AccountContainer
-        id={status.get('account') as any}
-        showProfileHoverCard={false}
-        timestamp={status.get('created_at')}
-        hideActions
-      />
-
-      <StatusContent
-        status={status}
-        expanded
-        collapsable
-      />
-
-      {status.get('media_attachments').size > 0 && (
-        <AttachmentThumbs
-          compact
-          media={status.get('media_attachments')}
-          sensitive={status.get('sensitive')}
-        />
-      )}
-    </Stack>
-  );
-};
 
 interface IReasonStep {
   account: ReducerAccount
@@ -64,24 +28,10 @@ const ReasonStep = (_props: IReasonStep) => {
   const [isNearBottom, setNearBottom] = useState<boolean>(false);
   const [isNearTop, setNearTop] = useState<boolean>(true);
 
-  const selectedStatusIds = useAppSelector((state) => state.reports.getIn(['new', 'status_ids']) as ImmutableSet<string>);
   const comment = useAppSelector((state) => state.reports.getIn(['new', 'comment']) as string);
   const rules = useAppSelector((state) => state.rules.items);
   const ruleId = useAppSelector((state) => state.reports.getIn(['new', 'rule_id']) as boolean);
   const shouldRequireRule = rules.length > 0;
-
-  const renderSelectedStatuses = useCallback(() => {
-    switch (selectedStatusIds.size) {
-    case 0:
-      return (
-        <div className='bg-gray-100 dark:bg-slate-700 p-4 rounded-lg flex items-center justify-center w-full'>
-          <Text theme='muted'>You have removed all statuses from being selected.</Text>
-        </div>
-      );
-    default:
-      return <SelectedStatus statusId={selectedStatusIds.first()} />;
-    }
-  }, [selectedStatusIds.size]);
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     dispatch(changeReportComment(event.target.value));
@@ -111,11 +61,11 @@ const ReasonStep = (_props: IReasonStep) => {
 
   return (
     <Stack space={4}>
-      {renderSelectedStatuses()}
-
       {shouldRequireRule && (
         <Stack space={2}>
-          <Text size='xl' weight='semibold' tag='h1'>Reason for reporting</Text>
+          <Text size='xl' weight='semibold' tag='h1'>
+            {intl.formatMessage(messages.reasonForReporting)}
+          </Text>
 
           <div className='relative'>
             <div
@@ -138,16 +88,17 @@ const ReasonStep = (_props: IReasonStep) => {
                       'bg-gray-50 dark:bg-slate-900': isSelected,
                     })}
                   >
-                    <div className='mr-3 flex flex-col'>
+                    <Stack className='mr-3'>
                       <Text
+                        tag='span'
                         size='sm'
                         weight='medium'
                         theme={isSelected ? 'primary' : 'default'}
                       >
                         {rule.text}
                       </Text>
-                      <Text theme='muted' size='sm'>{rule.subtext}</Text>
-                    </div>
+                      <Text tag='span' theme='muted' size='sm'>{rule.subtext}</Text>
+                    </Stack>
 
                     <input
                       name='reason'
