@@ -13,6 +13,7 @@ import { createAccount } from 'soapbox/actions/accounts';
 import { createApp } from 'soapbox/actions/apps';
 import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
 import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
+import { startOnboarding } from 'soapbox/actions/onboarding';
 import snackbar from 'soapbox/actions/snackbar';
 import { custom } from 'soapbox/custom';
 import KVStore from 'soapbox/storage/kv_store';
@@ -292,7 +293,10 @@ export function register(params) {
 
     return dispatch(createAppAndToken())
       .then(() => dispatch(createAccount(params)))
-      .then(({ token }) => dispatch(authLoggedIn(token)));
+      .then(({ token }) => {
+        dispatch(startOnboarding());
+        return dispatch(authLoggedIn(token));
+      });
   };
 }
 
