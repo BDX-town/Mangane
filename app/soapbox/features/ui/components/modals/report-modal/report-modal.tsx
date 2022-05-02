@@ -84,7 +84,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
   const isBlocked = useAppSelector((state) => state.reports.getIn(['new', 'block']) as boolean);
   const isSubmitting = useAppSelector((state) => state.reports.getIn(['new', 'isSubmitting']) as boolean);
   const rules = useAppSelector((state) => state.rules.items);
-  const ruleId = useAppSelector((state) => state.reports.getIn(['new', 'rule_id']) as string);
+  const ruleIds = useAppSelector((state) => state.reports.getIn(['new', 'rule_ids']) as ImmutableSet<string>);
   const selectedStatusIds = useAppSelector((state) => state.reports.getIn(['new', 'status_ids']) as ImmutableSet<string>);
 
   const shouldRequireRule = rules.length > 0;
@@ -152,8 +152,8 @@ const ReportModal = ({ onClose }: IReportModal) => {
       return false;
     }
 
-    return isSubmitting || (shouldRequireRule && !ruleId) || selectedStatusIds.size === 0;
-  }, [currentStep, isSubmitting, shouldRequireRule, ruleId, selectedStatusIds.size]);
+    return isSubmitting || (shouldRequireRule && ruleIds.isEmpty()) || selectedStatusIds.size === 0;
+  }, [currentStep, isSubmitting, shouldRequireRule, ruleIds, selectedStatusIds.size]);
 
   const calculateProgress = useCallback(() => {
     switch (currentStep) {

@@ -8,6 +8,7 @@ import { fetchRules } from 'soapbox/actions/rules';
 import { FormGroup, Stack, Text, Textarea } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
+import type { Set as ImmutableSet } from 'immutable';
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 
 const messages = defineMessages({
@@ -32,7 +33,7 @@ const ReasonStep = (_props: IReasonStep) => {
 
   const comment = useAppSelector((state) => state.reports.getIn(['new', 'comment']) as string);
   const rules = useAppSelector((state) => state.rules.items);
-  const ruleId = useAppSelector((state) => state.reports.getIn(['new', 'rule_id']) as boolean);
+  const ruleIds = useAppSelector((state) => state.reports.getIn(['new', 'rule_ids']) as ImmutableSet<string>);
   const shouldRequireRule = rules.length > 0;
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -87,7 +88,7 @@ const ReasonStep = (_props: IReasonStep) => {
               ref={rulesListRef}
             >
               {rules.map((rule, idx) => {
-                const isSelected = String(ruleId) === String(rule.id);
+                const isSelected = ruleIds.includes(String(rule.id));
 
                 return (
                   <button
