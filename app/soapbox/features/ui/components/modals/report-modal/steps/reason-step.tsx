@@ -19,6 +19,8 @@ interface IReasonStep {
   account: ReducerAccount
 }
 
+const RULES_HEIGHT = 385;
+
 const ReasonStep = (_props: IReasonStep) => {
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -59,6 +61,16 @@ const ReasonStep = (_props: IReasonStep) => {
     dispatch(fetchRules());
   }, []);
 
+  useEffect(() => {
+    if (rules.length > 0 && rulesListRef.current) {
+      const { clientHeight } = rulesListRef.current;
+
+      if (clientHeight <= RULES_HEIGHT) {
+        setNearBottom(true);
+      }
+    }
+  }, [rules, rulesListRef.current]);
+
   return (
     <Stack space={4}>
       {shouldRequireRule && (
@@ -69,7 +81,8 @@ const ReasonStep = (_props: IReasonStep) => {
 
           <div className='relative'>
             <div
-              className='rounded-lg -space-y-px max-h-96 overflow-y-auto'
+              style={{ maxHeight: RULES_HEIGHT }}
+              className='rounded-lg -space-y-px overflow-y-auto'
               onScroll={handleRulesScrolling}
               ref={rulesListRef}
             >
@@ -106,7 +119,7 @@ const ReasonStep = (_props: IReasonStep) => {
                       value={rule.id}
                       checked={isSelected}
                       readOnly
-                      className='h-4 w-4 mt-0.5 cursor-pointer text-indigo-600 border-gray-300 focus:ring-indigo-500'
+                      className='h-4 w-4 mt-0.5 cursor-pointer text-primary-600 border-gray-300 focus:ring-primary-500'
                     />
                   </button>
                 );
