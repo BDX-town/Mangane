@@ -74,7 +74,7 @@ const ReasonStep = (_props: IReasonStep) => {
               ref={rulesListRef}
             >
               {rules.map((rule, idx) => {
-                const isSelected = String(ruleId) === rule.id;
+                const isSelected = String(ruleId) === String(rule.id);
 
                 return (
                   <button
