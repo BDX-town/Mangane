@@ -1,24 +1,101 @@
-import { getSettings } from 'soapbox/actions/settings';
-import { createTestStore, rootState } from 'soapbox/jest/test-helpers';
+import { mockStore, mockWindowProperty } from 'soapbox/jest/test-helpers';
+import rootReducer from 'soapbox/reducers';
 
-import { ONBOARDING_VERSION, endOnboarding } from '../onboarding';
+import { checkOnboardingStatus, startOnboarding, endOnboarding } from '../onboarding';
+
+describe('checkOnboarding()', () => {
+  let mockGetItem: any;
+
+  mockWindowProperty('localStorage', {
+    getItem: (key: string) => mockGetItem(key),
+  });
+
+  beforeEach(() => {
+    mockGetItem = jest.fn().mockReturnValue(null);
+  });
+
+  it('does nothing if localStorage item is not set', async() => {
+    mockGetItem = jest.fn().mockReturnValue(null);
+
+    const state = rootReducer(undefined, { onboarding: { needsOnboarding: false } });
+    const store = mockStore(state);
+
+    await store.dispatch(checkOnboardingStatus());
+    const actions = store.getActions();
+
+    expect(actions).toEqual([]);
+    expect(mockGetItem.mock.calls.length).toBe(1);
+  });
+
+  it('does nothing if localStorage item is invalid', async() => {
+    mockGetItem = jest.fn().mockReturnValue('invalid');
+
+    const state = rootReducer(undefined, { onboarding: { needsOnboarding: false } });
+    const store = mockStore(state);
+
+    await store.dispatch(checkOnboardingStatus());
+    const actions = store.getActions();
+
+    expect(actions).toEqual([]);
+    expect(mockGetItem.mock.calls.length).toBe(1);
+  });
+
+  it('dispatches the correct action', async() => {
+    mockGetItem = jest.fn().mockReturnValue('1');
+
+    const state = rootReducer(undefined, { onboarding: { needsOnboarding: false } });
+    const store = mockStore(state);
+
+    await store.dispatch(checkOnboardingStatus());
+    const actions = store.getActions();
+
+    expect(actions).toEqual([{ type: 'ONBOARDING_START' }]);
+    expect(mockGetItem.mock.calls.length).toBe(1);
+  });
+});
+
+describe('startOnboarding()', () => {
+  let mockSetItem: any;
+
+  mockWindowProperty('localStorage', {
+    setItem: (key: string, value: string) => mockSetItem(key, value),
+  });
+
+  beforeEach(() => {
+    mockSetItem = jest.fn();
+  });
+
+  it('dispatches the correct action', async() => {
+    const state = rootReducer(undefined, { onboarding: { needsOnboarding: false } });
+    const store = mockStore(state);
+
+    await store.dispatch(startOnboarding());
+    const actions = store.getActions();
+
+    expect(actions).toEqual([{ type: 'ONBOARDING_START' }]);
+    expect(mockSetItem.mock.calls.length).toBe(1);
+  });
+});
 
 describe('endOnboarding()', () => {
-  it('updates the onboardingVersion setting', async() => {
-    const store = createTestStore(rootState);
+  let mockRemoveItem: any;
 
-    // Sanity check:
-    // `onboardingVersion` should be `0` by default
-    const initialVersion = getSettings(store.getState()).get('onboardingVersion');
-    expect(initialVersion).toBe(0);
+  mockWindowProperty('localStorage', {
+    removeItem: (key: string) => mockRemoveItem(key),
+  });
+
+  beforeEach(() => {
+    mockRemoveItem = jest.fn();
+  });
+
+  it('dispatches the correct action', async() => {
+    const state = rootReducer(undefined, { onboarding: { needsOnboarding: false } });
+    const store = mockStore(state);
 
     await store.dispatch(endOnboarding());
+    const actions = store.getActions();
 
-    // After dispatching, `onboardingVersion` is updated
-    const updatedVersion = getSettings(store.getState()).get('onboardingVersion');
-    expect(updatedVersion).toBe(ONBOARDING_VERSION);
-
-    // Sanity check: `updatedVersion` is greater than `initialVersion`
-    expect(updatedVersion > initialVersion).toBe(true);
+    expect(actions).toEqual([{ type: 'ONBOARDING_END' }]);
+    expect(mockRemoveItem.mock.calls.length).toBe(1);
   });
 });
