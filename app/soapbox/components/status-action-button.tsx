@@ -56,7 +56,6 @@ const StatusActionButton = React.forwardRef((props: IStatusActionButton, ref: Re
       <Icon
         src={icon}
         className={classNames(
-          'rounded-full',
           {
             'fill-accent-300 hover:fill-accent-300': active && filled && color === COLORS.accent,
           },

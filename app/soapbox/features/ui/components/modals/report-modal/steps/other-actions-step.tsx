@@ -97,7 +97,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
 
       {features.reportMultipleStatuses && (
         <Stack space={2}>
-          <Text size='xl' weight='semibold'>Include other statuses?</Text>
+          <Text tag='h1' size='xl' weight='semibold'>Include other statuses?</Text>
 
           <FormGroup
             labelText='Would you like to add additional statuses to this report?'
@@ -134,7 +134,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
       )}
 
       <Stack space={2}>
-        <Text size='xl' weight='semibold'>Further actions:</Text>
+        <Text tag='h1' size='xl' weight='semibold'>Further actions:</Text>
 
         <FormGroup
           labelText={<FormattedMessage id='report.block_hint' defaultMessage='Do you also want to block this account?' />}

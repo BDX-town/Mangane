@@ -66,6 +66,8 @@ export default function reports(state = initialState, action) {
       map.setIn(['new', 'status_ids'], ImmutableSet());
       map.setIn(['new', 'comment'], '');
       map.setIn(['new', 'isSubmitting'], false);
+      map.setIn(['new', 'rule_id'], null);
+      map.setIn(['new', 'block'], false);
     });
   default:
     return state;

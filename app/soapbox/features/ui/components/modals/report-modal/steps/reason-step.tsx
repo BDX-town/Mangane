@@ -8,7 +8,7 @@ import { changeReportComment, changeReportRule } from 'soapbox/actions/reports';
 import { fetchRules } from 'soapbox/actions/rules';
 import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
 import StatusContent from 'soapbox/components/status_content';
-import { FormGroup, Stack, Text, Textarea } from 'soapbox/components/ui';
+import { FormGroup, HStack, Stack, Text, Textarea } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import { useAppSelector } from 'soapbox/hooks';
 
@@ -115,11 +115,11 @@ const ReasonStep = (_props: IReasonStep) => {
 
       {shouldRequireRule && (
         <Stack space={2}>
-          <Text size='xl' weight='semibold'>Reason for reporting</Text>
+          <Text size='xl' weight='semibold' tag='h1'>Reason for reporting</Text>
 
           <div className='relative'>
             <div
-              className='bg-white rounded-lg -space-y-px max-h-96 overflow-y-auto'
+              className='rounded-lg -space-y-px max-h-96 overflow-y-auto'
               onScroll={handleRulesScrolling}
               ref={rulesListRef}
             >
@@ -132,21 +132,20 @@ const ReasonStep = (_props: IReasonStep) => {
                     data-testid={`rule-${rule.id}`}
                     onClick={() => dispatch(changeReportRule(rule.id))}
                     className={classNames({
-                      'relative border border-solid border-gray-200 hover:bg-gray-50 text-left w-full p-4 flex justify-between items-center cursor-pointer': true,
+                      'relative border border-solid border-gray-200 dark:border-slate-900/75 hover:bg-gray-50 dark:hover:bg-slate-900/50 text-left w-full p-4 flex justify-between items-center cursor-pointer': true,
                       'rounded-tl-lg rounded-tr-lg': idx === 0,
                       'rounded-bl-lg rounded-br-lg': idx === rules.length - 1,
-                      'bg-gray-50': isSelected,
+                      'bg-gray-50 dark:bg-slate-900': isSelected,
                     })}
                   >
                     <div className='mr-3 flex flex-col'>
-                      <span
-                        className={classNames('block text-sm font-medium', {
-                          'text-primary-800': isSelected,
-                          'text-gray-800': !isSelected,
-                        })}
+                      <Text
+                        size='sm'
+                        weight='medium'
+                        theme={isSelected ? 'primary' : 'default'}
                       >
                         {rule.text}
-                      </span>
+                      </Text>
                       <Text theme='muted' size='sm'>{rule.subtext}</Text>
                     </div>
 
@@ -164,13 +163,13 @@ const ReasonStep = (_props: IReasonStep) => {
             </div>
 
             <div
-              className={classNames('inset-x-0 top-0 flex justify-center bg-gradient-to-b from-white pb-12 pt-8 pointer-events-none dark:from-slate-900 absolute transition-opacity duration-500', {
+              className={classNames('inset-x-0 top-0 flex rounded-t-lg justify-center bg-gradient-to-b from-white pb-12 pt-8 pointer-events-none dark:from-slate-900 absolute transition-opacity duration-500', {
                 'opacity-0': isNearTop,
                 'opacity-100': !isNearTop,
               })}
             />
             <div
-              className={classNames('inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-white pt-12 pb-8 pointer-events-none dark:from-slate-900 absolute transition-opacity duration-500', {
+              className={classNames('inset-x-0 bottom-0 flex rounded-b-lg justify-center bg-gradient-to-t from-white pt-12 pb-8 pointer-events-none dark:from-slate-900 absolute transition-opacity duration-500', {
                 'opacity-0': isNearBottom,
                 'opacity-100': !isNearBottom,
               })}

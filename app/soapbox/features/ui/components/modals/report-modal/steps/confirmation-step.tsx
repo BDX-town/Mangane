@@ -11,7 +11,7 @@ interface IOtherActionsStep {
 const ConfirmationStep = ({ account }: IOtherActionsStep) => {
   return (
     <Stack space={1}>
-      <Text weight='medium'>
+      <Text weight='semibold' tag='h1' size='xl'>
         Thanks for submitting your report.
       </Text>
 
