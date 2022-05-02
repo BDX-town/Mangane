@@ -23,7 +23,7 @@ const AuthLayout = () => {
       <div className='fixed h-screen w-full bg-gradient-to-tr from-primary-50 dark:from-slate-700 via-white dark:via-slate-900 to-cyan-50 dark:to-cyan-900' />
 
       <main className='relative flex flex-col h-screen'>
-        <header className='pt-10 flex justify-center relative'>
+        <header className='py-10 flex justify-center relative'>
           <Link to='/' className='cursor-pointer'>
             {logo ? (
               <img src={logo} alt={siteTitle} className='h-7' />
@@ -37,8 +37,8 @@ const AuthLayout = () => {
           </Link>
         </header>
 
-        <div className='-mt-10 flex flex-col justify-center items-center h-full'>
-          <div className='sm:mx-auto w-full sm:max-w-lg md:max-w-2xl'>
+        <div className='flex flex-col justify-center items-center'>
+          <div className='pb-10 sm:mx-auto w-full sm:max-w-lg md:max-w-2xl'>
             <Card variant='rounded' size='xl'>
               <CardBody>
                 <Switch>
