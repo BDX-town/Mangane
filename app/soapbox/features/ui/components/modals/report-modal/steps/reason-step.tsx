@@ -68,6 +68,7 @@ const ReasonStep = (_props: IReasonStep) => {
   const comment = useAppSelector((state) => state.reports.getIn(['new', 'comment']) as string);
   const rules = useAppSelector((state) => state.rules.items);
   const ruleId = useAppSelector((state) => state.reports.getIn(['new', 'rule_id']) as boolean);
+  const shouldRequireRule = rules.length > 0;
 
   const renderSelectedStatuses = useCallback(() => {
     switch (selectedStatusIds.size) {
@@ -112,69 +113,71 @@ const ReasonStep = (_props: IReasonStep) => {
     <Stack space={4}>
       {renderSelectedStatuses()}
 
-      <Stack space={2}>
-        <Text size='xl' weight='semibold'>Reason for reporting</Text>
+      {shouldRequireRule && (
+        <Stack space={2}>
+          <Text size='xl' weight='semibold'>Reason for reporting</Text>
 
-        <div className='relative'>
-          <div
-            className='bg-white rounded-lg -space-y-px max-h-96 overflow-y-auto'
-            onScroll={handleRulesScrolling}
-            ref={rulesListRef}
-          >
-            {rules.map((rule, idx) => {
-              const isSelected = String(ruleId) === rule.id;
+          <div className='relative'>
+            <div
+              className='bg-white rounded-lg -space-y-px max-h-96 overflow-y-auto'
+              onScroll={handleRulesScrolling}
+              ref={rulesListRef}
+            >
+              {rules.map((rule, idx) => {
+                const isSelected = String(ruleId) === rule.id;
 
-              return (
-                <button
-                  key={idx}
-                  data-testid={`rule-${rule.id}`}
-                  onClick={() => dispatch(changeReportRule(rule.id))}
-                  className={classNames({
-                    'relative border border-solid border-gray-200 hover:bg-gray-50 text-left w-full p-4 flex justify-between items-center cursor-pointer': true,
-                    'rounded-tl-lg rounded-tr-lg': idx === 0,
-                    'rounded-bl-lg rounded-br-lg': idx === rules.length - 1,
-                    'bg-gray-50': isSelected,
-                  })}
-                >
-                  <div className='mr-3 flex flex-col'>
-                    <span
-                      className={classNames('block text-sm font-medium', {
-                        'text-primary-800': isSelected,
-                        'text-gray-800': !isSelected,
-                      })}
-                    >
-                      {rule.text}
-                    </span>
-                    <Text theme='muted' size='sm'>{rule.subtext}</Text>
-                  </div>
+                return (
+                  <button
+                    key={idx}
+                    data-testid={`rule-${rule.id}`}
+                    onClick={() => dispatch(changeReportRule(rule.id))}
+                    className={classNames({
+                      'relative border border-solid border-gray-200 hover:bg-gray-50 text-left w-full p-4 flex justify-between items-center cursor-pointer': true,
+                      'rounded-tl-lg rounded-tr-lg': idx === 0,
+                      'rounded-bl-lg rounded-br-lg': idx === rules.length - 1,
+                      'bg-gray-50': isSelected,
+                    })}
+                  >
+                    <div className='mr-3 flex flex-col'>
+                      <span
+                        className={classNames('block text-sm font-medium', {
+                          'text-primary-800': isSelected,
+                          'text-gray-800': !isSelected,
+                        })}
+                      >
+                        {rule.text}
+                      </span>
+                      <Text theme='muted' size='sm'>{rule.subtext}</Text>
+                    </div>
 
-                  <input
-                    name='reason'
-                    type='radio'
-                    value={rule.id}
-                    checked={isSelected}
-                    readOnly
-                    className='h-4 w-4 mt-0.5 cursor-pointer text-indigo-600 border-gray-300 focus:ring-indigo-500'
-                  />
-                </button>
-              );
-            })}
+                    <input
+                      name='reason'
+                      type='radio'
+                      value={rule.id}
+                      checked={isSelected}
+                      readOnly
+                      className='h-4 w-4 mt-0.5 cursor-pointer text-indigo-600 border-gray-300 focus:ring-indigo-500'
+                    />
+                  </button>
+                );
+              })}
+            </div>
+
+            <div
+              className={classNames('inset-x-0 top-0 flex justify-center bg-gradient-to-b from-white pb-12 pt-8 pointer-events-none dark:from-slate-900 absolute transition-opacity duration-500', {
+                'opacity-0': isNearTop,
+                'opacity-100': !isNearTop,
+              })}
+            />
+            <div
+              className={classNames('inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-white pt-12 pb-8 pointer-events-none dark:from-slate-900 absolute transition-opacity duration-500', {
+                'opacity-0': isNearBottom,
+                'opacity-100': !isNearBottom,
+              })}
+            />
           </div>
-
-          <div
-            className={classNames('inset-x-0 top-0 flex justify-center bg-gradient-to-b from-white pb-12 pt-8 pointer-events-none dark:from-slate-900 absolute transition-opacity duration-500', {
-              'opacity-0': isNearTop,
-              'opacity-100': !isNearTop,
-            })}
-          />
-          <div
-            className={classNames('inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-white pt-12 pb-8 pointer-events-none dark:from-slate-900 absolute transition-opacity duration-500', {
-              'opacity-0': isNearBottom,
-              'opacity-100': !isNearBottom,
-            })}
-          />
-        </div>
-      </Stack>
+        </Stack>
+      )}
 
       <FormGroup labelText={intl.formatMessage(messages.placeholder)}>
         <Textarea

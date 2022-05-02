@@ -95,7 +95,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
     <Stack space={4}>
       {renderSelectedStatuses()}
 
-      {!features.reportMultipleStatuses && (
+      {features.reportMultipleStatuses && (
         <Stack space={2}>
           <Text size='xl' weight='semibold'>Include other statuses?</Text>
 
