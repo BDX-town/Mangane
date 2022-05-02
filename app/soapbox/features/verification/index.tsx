@@ -10,11 +10,10 @@ import AgeVerification from './steps/age-verification';
 import EmailVerification from './steps/email-verification';
 import SmsVerification from './steps/sms-verification';
 
-// eslint-disable-next-line no-unused-vars
 enum ChallengeTypes {
-  EMAIL = 'email', // eslint-disable-line no-unused-vars
-  SMS = 'sms', // eslint-disable-line no-unused-vars
-  AGE = 'age', // eslint-disable-line no-unused-vars
+  EMAIL = 'email',
+  SMS = 'sms',
+  AGE = 'age',
 }
 
 const verificationSteps = {

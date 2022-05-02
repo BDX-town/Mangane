@@ -1,3 +1,4 @@
+export { useAccount } from './useAccount';
 export { useAppDispatch } from './useAppDispatch';
 export { useAppSelector } from './useAppSelector';
 export { useFeatures } from './useFeatures';

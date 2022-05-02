@@ -12,6 +12,7 @@ describe('reports reducer', () => {
         comment: '',
         forward: false,
         block: false,
+        rule_id: null,
       }),
     }));
   });

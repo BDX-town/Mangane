@@ -82,7 +82,7 @@ export default class StatusCheckBox extends React.PureComponent {
         </div>
 
         <div className='status-check-box-toggle'>
-          <Toggle checked={checked} onChange={onToggle} disabled={disabled} />
+          <Toggle checked={checked} onChange={onToggle} disabled={disabled} icons={false} />
         </div>
       </div>
     );

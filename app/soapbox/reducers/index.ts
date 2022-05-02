@@ -45,6 +45,7 @@ import profile_hover_card from './profile_hover_card';
 import push_notifications from './push_notifications';
 import relationships from './relationships';
 import reports from './reports';
+import rules from './rules';
 import scheduled_statuses from './scheduled_statuses';
 import search from './search';
 import security from './security';
@@ -116,6 +117,7 @@ const reducers = {
   accounts_meta,
   trending_statuses,
   verification,
+  rules,
 };
 
 // Build a default state from all reducers: it has the key and `undefined`

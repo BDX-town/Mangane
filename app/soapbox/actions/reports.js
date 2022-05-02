@@ -1,6 +1,6 @@
 import api from '../api';
 
-import { openModal, closeModal } from './modals';
+import { openModal } from './modals';
 
 export const REPORT_INIT   = 'REPORT_INIT';
 export const REPORT_CANCEL = 'REPORT_CANCEL';
@@ -13,6 +13,8 @@ export const REPORT_STATUS_TOGGLE  = 'REPORT_STATUS_TOGGLE';
 export const REPORT_COMMENT_CHANGE = 'REPORT_COMMENT_CHANGE';
 export const REPORT_FORWARD_CHANGE = 'REPORT_FORWARD_CHANGE';
 export const REPORT_BLOCK_CHANGE   = 'REPORT_BLOCK_CHANGE';
+
+export const REPORT_RULE_CHANGE    = 'REPORT_RULE_CHANGE';
 
 export function initReport(account, status) {
   return dispatch => {
@@ -55,15 +57,12 @@ export function submitReport() {
   return (dispatch, getState) => {
     dispatch(submitReportRequest());
 
-    api(getState).post('/api/v1/reports', {
+    return api(getState).post('/api/v1/reports', {
       account_id: getState().getIn(['reports', 'new', 'account_id']),
       status_ids: getState().getIn(['reports', 'new', 'status_ids']),
       comment: getState().getIn(['reports', 'new', 'comment']),
       forward: getState().getIn(['reports', 'new', 'forward']),
-    }).then(response => {
-      dispatch(closeModal());
-      dispatch(submitReportSuccess(response.data));
-    }).catch(error => dispatch(submitReportFail(error)));
+    });
   };
 }
 
@@ -73,10 +72,9 @@ export function submitReportRequest() {
   };
 }
 
-export function submitReportSuccess(report) {
+export function submitReportSuccess() {
   return {
     type: REPORT_SUBMIT_SUCCESS,
-    report,
   };
 }
 
@@ -105,5 +103,12 @@ export function changeReportBlock(block) {
   return {
     type: REPORT_BLOCK_CHANGE,
     block,
+  };
+}
+
+export function changeReportRule(ruleId) {
+  return {
+    type: REPORT_RULE_CHANGE,
+    rule_id: ruleId,
   };
 }
