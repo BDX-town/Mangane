@@ -39,12 +39,16 @@ const needsNodeinfo = (instance: Record<string, any>): boolean => {
 
 export const fetchInstance = createAsyncThunk<void, void, { state: RootState }>(
   'instance/fetch',
-  async(_arg, { dispatch, getState }) => {
-    const { data: instance } = await api(getState).get('/api/v1/instance');
-    if (needsNodeinfo(instance)) {
-      dispatch(fetchNodeinfo());
+  async(_arg, { dispatch, getState, rejectWithValue }) => {
+    try {
+      const { data: instance } = await api(getState).get('/api/v1/instance');
+      if (needsNodeinfo(instance)) {
+        dispatch(fetchNodeinfo());
+      }
+      return instance;
+    } catch(e) {
+      return rejectWithValue(e);
     }
-    return instance;
   },
 );
 
