@@ -212,6 +212,12 @@ const getInstanceFeatures = (instance: Instance) => {
     emailList: features.includes('email_list'),
 
     /**
+     * Ability to embed posts on external sites.
+     * @see GET /api/oembed
+     */
+    embeds: v.software === MASTODON,
+
+    /**
      * Ability to add emoji reactions to a status.
      * @see PUT /api/v1/pleroma/statuses/:id/reactions/:emoji
      * @see GET /api/v1/pleroma/statuses/:id/reactions/:emoji?
