@@ -17,23 +17,26 @@ import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
-  unfollow: { id: 'account.unfollow', defaultMessage: 'Unfollow' },
+  block: { id: 'account.block', defaultMessage: 'Block @{name}' },
+  blocked: { id: 'account.blocked', defaultMessage: 'Blocked' },
+  edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
   follow: { id: 'account.follow', defaultMessage: 'Follow' },
+  mute: { id: 'account.mute', defaultMessage: 'Mute @{name}' },
   remote_follow: { id: 'account.remote_follow', defaultMessage: 'Remote follow' },
   requested: { id: 'account.requested', defaultMessage: 'Awaiting approval. Click to cancel follow request' },
   requested_small: { id: 'account.requested_small', defaultMessage: 'Awaiting approval' },
   unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
+  unfollow: { id: 'account.unfollow', defaultMessage: 'Unfollow' },
   unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
-  edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
-  blocked: { id: 'account.blocked', defaultMessage: 'Blocked' },
 });
 
-interface IAccount {
+interface iActionButton {
   account: AccountEntity
+  actionType?: 'muting' | 'blocking'
   small?: boolean
 }
 
-const ActionButton = ({ account, small }: IAccount) => {
+const ActionButton = ({ account, actionType, small }: iActionButton) => {
   const dispatch = useDispatch();
   const features = useFeatures();
   const intl = useIntl();
@@ -72,6 +75,36 @@ const ActionButton = ({ account, small }: IAccount) => {
     }));
   };
 
+  const mutingAction = () => {
+    const isMuted = account.getIn(['relationship', 'muting']);
+    const messageKey = isMuted ? messages.unmute : messages.mute;
+    const text = intl.formatMessage(messageKey, { name: account.get('username') });
+
+    return (
+      <Button
+        theme={isMuted ? 'danger' : 'secondary'}
+        size='sm'
+        text={text}
+        onClick={handleMute}
+      />
+    );
+  };
+
+  const blockingAction = () => {
+    const isBlocked = account.getIn(['relationship', 'blocking']);
+    const messageKey = isBlocked ? messages.unblock : messages.block;
+    const text = intl.formatMessage(messageKey, { name: account.get('username') });
+
+    return (
+      <Button
+        theme={isBlocked ? 'danger' : 'secondary'}
+        size='sm'
+        text={text}
+        onClick={handleBlock}
+      />
+    );
+  };
+
   const empty = <></>;
 
   if (!me) {
@@ -98,6 +131,14 @@ const ActionButton = ({ account, small }: IAccount) => {
   if (me !== account.get('id')) {
     const isFollowing = account.getIn(['relationship', 'following']);
     const blockedBy = account.getIn(['relationship', 'blocked_by']) as boolean;
+
+    if (actionType) {
+      if (actionType === 'muting') {
+        return mutingAction();
+      } else if (actionType === 'blocking') {
+        return blockingAction();
+      }
+    }
 
     if (!account.get('relationship')) {
       // Wait until the relationship is loaded
@@ -137,16 +178,6 @@ const ActionButton = ({ account, small }: IAccount) => {
           size='sm'
           text={intl.formatMessage(messages.unblock, { name: account.get('username') })}
           onClick={handleBlock}
-        />
-      );
-    } else if (account.getIn(['relationship', 'muting'])) {
-      // Unmute
-      return (
-        <Button
-          theme='danger'
-          size='sm'
-          text={intl.formatMessage(messages.unmute, { name: account.get('username') })}
-          onClick={handleMute}
         />
       );
     }

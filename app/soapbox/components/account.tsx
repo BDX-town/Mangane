@@ -46,6 +46,8 @@ interface IAccount {
   actionAlignment?: 'center' | 'top',
   actionIcon?: string,
   actionTitle?: string,
+  /** Override other actions for specificity like mute/unmute.  */
+  actionType?: 'muting' | 'blocking',
   avatarSize?: number,
   hidden?: boolean,
   hideActions?: boolean,
@@ -60,6 +62,7 @@ interface IAccount {
 
 const Account = ({
   account,
+  actionType,
   action,
   actionIcon,
   actionTitle,
@@ -111,7 +114,7 @@ const Account = ({
     }
 
     if (account.id !== me) {
-      return <ActionButton account={account} />;
+      return <ActionButton account={account} actionType={actionType} />;
     }
 
     return null;
