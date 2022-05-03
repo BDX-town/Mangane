@@ -17,7 +17,7 @@ import { stripCompatibilityFeatures } from 'soapbox/utils/html';
 import { makeEmojiMap } from 'soapbox/utils/normalizers';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
-import type { Account, Attachment, Emoji, EmbeddedEntity } from 'soapbox/types/entities';
+import type { Account, Attachment, Emoji, EmbeddedEntity, Poll } from 'soapbox/types/entities';
 
 export const StatusEditRecord = ImmutableRecord({
   account: null as EmbeddedEntity<Account | ReducerAccount>,
@@ -26,6 +26,7 @@ export const StatusEditRecord = ImmutableRecord({
   emojis: ImmutableList<Emoji>(),
   favourited: false,
   media_attachments: ImmutableList<Attachment>(),
+  poll: null as EmbeddedEntity<Poll>,
   sensitive: false,
   spoiler_text: '',
 
