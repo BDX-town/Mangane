@@ -2,13 +2,14 @@ import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { __stub } from '../../../__mocks__/api';
+import { __stub } from 'soapbox/api';
+
 import { render, screen } from '../../../jest/test-helpers';
 import Verification from '../index';
 
 const TestableComponent = () => (
   <Switch>
-    <Route path='/auth/verify' exact><Verification /></Route>
+    <Route path='/verify' exact><Verification /></Route>
     <Route path='/' exact><span data-testid='home'>Homepage</span></Route>
   </Switch>
 );
@@ -17,7 +18,7 @@ const renderComponent = (store) => render(
   <TestableComponent />,
   {},
   store,
-  { initialEntries: ['/auth/verify'] },
+  { initialEntries: ['/verify'] },
 );
 
 describe('<Verification />', () => {

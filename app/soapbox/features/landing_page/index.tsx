@@ -49,7 +49,7 @@ const LandingPage = () => {
           <Text theme='muted' align='center'>Social Media Without Discrimination</Text>
         </Stack>
 
-        <Button to='/auth/verify' theme='primary' block>Create an account</Button>
+        <Button to='/verify' theme='primary' block>Create an account</Button>
       </Stack>
     );
   };
@@ -66,10 +66,10 @@ const LandingPage = () => {
   };
 
   return (
-    <main className='mt-16 sm:mt-24'>
+    <main className='mt-16 sm:mt-24' data-testid='homepage'>
       <div className='mx-auto max-w-7xl'>
-        <div className='lg:grid lg:grid-cols-12 lg:gap-8 items-center py-24'>
-          <div className='px-4 sm:px-6 sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left lg:flex lg:items-center'>
+        <div className='lg:grid lg:grid-cols-12 lg:gap-8 py-12'>
+          <div className='px-4 sm:px-6 sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left lg:flex'>
             <div>
               <Stack space={3}>
                 <h1 className='text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-pink-600 via-primary-500 to-blue-600 sm:mt-5 sm:leading-none lg:mt-6 lg:text-6xl xl:text-7xl'>
@@ -81,7 +81,7 @@ const LandingPage = () => {
               </Stack>
             </div>
           </div>
-          <div className='hidden lg:block sm:mt-24 lg:mt-0 lg:col-span-6'>
+          <div className='hidden lg:block sm:mt-24 lg:mt-0 lg:col-span-6 self-center'>
             <Card size='xl' variant='rounded' className='sm:max-w-md sm:w-full sm:mx-auto'>
               <CardBody>
                 {renderBody()}

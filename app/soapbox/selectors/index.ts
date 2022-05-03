@@ -12,6 +12,7 @@ import { validId } from 'soapbox/utils/auth';
 import ConfigDB from 'soapbox/utils/config_db';
 import { shouldFilter } from 'soapbox/utils/timelines';
 
+import type { ReducerChat } from 'soapbox/reducers/chats';
 import type { RootState } from 'soapbox/store';
 import type { Notification } from 'soapbox/types/entities';
 
@@ -25,7 +26,7 @@ const getAccountMeta         = (state: RootState, id: string) => state.accounts_
 const getAccountAdminData    = (state: RootState, id: string) => state.admin.users.get(id);
 const getAccountPatron       = (state: RootState, id: string) => {
   const url = state.accounts.get(id)?.url;
-  return state.patron.getIn(['accounts', url]);
+  return url ? state.patron.accounts.get(url) : null;
 };
 
 export const makeGetAccount = () => {
@@ -46,7 +47,7 @@ export const makeGetAccount = () => {
       map.set('pleroma', meta.get('pleroma', ImmutableMap()).merge(base.get('pleroma', ImmutableMap()))); // Lol, thanks Pleroma
       map.set('relationship', relationship);
       map.set('moved', moved || null);
-      map.set('patron', patron);
+      map.set('patron', patron || null);
       map.setIn(['pleroma', 'admin'], admin);
     });
   });
@@ -241,16 +242,18 @@ type APIChat = { id: string, last_message: string };
 export const makeGetChat = () => {
   return createSelector(
     [
-      (state: RootState, { id }: APIChat) => state.chats.getIn(['items', id]),
+      (state: RootState, { id }: APIChat) => state.chats.getIn(['items', id]) as ReducerChat,
       (state: RootState, { id }: APIChat) => state.accounts.get(state.chats.getIn(['items', id, 'account'])),
       (state: RootState, { last_message }: APIChat) => state.chat_messages.get(last_message),
     ],
 
-    (chat, account, lastMessage: string) => {
-      if (!chat) return null;
+    (chat, account, lastMessage) => {
+      if (!chat || !account) return null;
 
-      return chat.withMutations((map: ImmutableMap<string, any>) => {
+      return chat.withMutations((map) => {
+        // @ts-ignore
         map.set('account', account);
+        // @ts-ignore
         map.set('last_message', lastMessage);
       });
     },

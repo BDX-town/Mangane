@@ -13,7 +13,9 @@ import { createAccount } from 'soapbox/actions/accounts';
 import { createApp } from 'soapbox/actions/apps';
 import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
 import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
+import { startOnboarding } from 'soapbox/actions/onboarding';
 import snackbar from 'soapbox/actions/snackbar';
+import { custom } from 'soapbox/custom';
 import KVStore from 'soapbox/storage/kv_store';
 import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
@@ -39,12 +41,14 @@ export const AUTH_ACCOUNT_REMEMBER_REQUEST = 'AUTH_ACCOUNT_REMEMBER_REQUEST';
 export const AUTH_ACCOUNT_REMEMBER_SUCCESS = 'AUTH_ACCOUNT_REMEMBER_SUCCESS';
 export const AUTH_ACCOUNT_REMEMBER_FAIL    = 'AUTH_ACCOUNT_REMEMBER_FAIL';
 
+const customApp = custom('app');
+
 export const messages = defineMessages({
   loggedOut: { id: 'auth.logged_out', defaultMessage: 'Logged out.' },
   invalidCredentials: { id: 'auth.invalid_credentials', defaultMessage: 'Wrong username or password' },
 });
 
-const noOp = () => () => new Promise(f => f());
+const noOp = () => new Promise(f => f());
 
 const getScopes = state => {
   const instance = state.get('instance');
@@ -54,9 +58,20 @@ const getScopes = state => {
 
 function createAppAndToken() {
   return (dispatch, getState) => {
-    return dispatch(createAuthApp()).then(() => {
+    return dispatch(getAuthApp()).then(() => {
       return dispatch(createAppToken());
     });
+  };
+}
+
+/** Create an auth app, or use it from build config */
+function getAuthApp() {
+  return (dispatch, getState) => {
+    if (customApp?.client_secret) {
+      return noOp().then(() => dispatch({ type: AUTH_APP_CREATED, app: customApp }));
+    } else {
+      return dispatch(createAuthApp());
+    }
   };
 }
 
@@ -117,7 +132,7 @@ export function refreshUserToken() {
     const refreshToken = getState().getIn(['auth', 'user', 'refresh_token']);
     const app = getState().getIn(['auth', 'app']);
 
-    if (!refreshToken) return dispatch(noOp());
+    if (!refreshToken) return dispatch(noOp);
 
     const params = {
       client_id:     app.get('client_id'),
@@ -200,7 +215,7 @@ export function loadCredentials(token, accountUrl) {
 
 export function logIn(intl, username, password) {
   return (dispatch, getState) => {
-    return dispatch(createAuthApp()).then(() => {
+    return dispatch(getAuthApp()).then(() => {
       return dispatch(createUserToken(username, password));
     }).catch(error => {
       if (error.response.data.error === 'mfa_required') {
@@ -235,10 +250,12 @@ export function logOut(intl) {
     const account = getLoggedInAccount(state);
     const standalone = isStandalone(state);
 
+    if (!account) return dispatch(noOp);
+
     const params = {
       client_id: state.getIn(['auth', 'app', 'client_id']),
       client_secret: state.getIn(['auth', 'app', 'client_secret']),
-      token: state.getIn(['auth', 'users', account.get('url'), 'access_token']),
+      token: state.getIn(['auth', 'users', account.url, 'access_token']),
     };
 
     return Promise.all([
@@ -276,7 +293,10 @@ export function register(params) {
 
     return dispatch(createAppAndToken())
       .then(() => dispatch(createAccount(params)))
-      .then(({ token }) => dispatch(authLoggedIn(token)));
+      .then(({ token }) => {
+        dispatch(startOnboarding());
+        return dispatch(authLoggedIn(token));
+      });
   };
 }
 

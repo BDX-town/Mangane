@@ -25,7 +25,7 @@ const WaitlistPage = ({ account }) => {
   };
 
   return (
-    <div className='h-screen w-full bg-gradient-to-tr from-primary-50 via-white to-cyan-50'>
+    <div className='h-screen w-full bg-gradient-to-tr from-primary-50 dark:from-slate-700 via-white dark:via-slate-900 to-cyan-50 dark:to-cyan-900'>
       <main className='relative flex flex-col h-screen max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
         <header className='relative flex justify-between h-16'>
           <div className='flex-1 flex items-stretch justify-center relative'>
@@ -34,7 +34,7 @@ const WaitlistPage = ({ account }) => {
             </Link>
 
             <div className='absolute inset-y-0 right-0 flex items-center pr-2 space-x-3'>
-              <Button onClick={onClickLogOut} theme='primary' to='/auth/sign_out'>
+              <Button onClick={onClickLogOut} theme='primary' to='/logout'>
                 Sign out
               </Button>
             </div>

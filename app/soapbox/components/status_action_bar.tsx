@@ -6,8 +6,7 @@ import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
-import EmojiSelector from 'soapbox/components/emoji_selector';
-import Hoverable from 'soapbox/components/hoverable';
+import EmojiButtonWrapper from 'soapbox/components/emoji-button-wrapper';
 import StatusActionButton from 'soapbox/components/status-action-button';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { isUserTouching } from 'soapbox/is_mobile';
@@ -130,7 +129,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
     'emojiSelectorFocused',
   ]
 
-  handleReplyClick = () => {
+  handleReplyClick: React.MouseEventHandler = (e) => {
     const { me, onReply, onOpenUnauthorizedModal, status } = this.props;
 
     if (me) {
@@ -138,12 +137,14 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
     } else {
       onOpenUnauthorizedModal('REPLY');
     }
+
+    e.stopPropagation();
   }
 
   handleShareClick = () => {
     navigator.share({
       text: this.props.status.search_index,
-      url: this.props.status.url,
+      url: this.props.status.uri,
     }).catch((e) => {
       if (e.name !== 'AbortError') console.error(e);
     });
@@ -554,7 +555,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
   }
 
   render() {
-    const { status, intl, allowedEmoji, emojiSelectorFocused, handleEmojiSelectorUnfocus, features, me } = this.props;
+    const { status, intl, allowedEmoji, features, me } = this.props;
 
     const publicStatus = ['public', 'unlisted'].includes(status.visibility);
 
@@ -633,7 +634,11 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
         />
 
         {features.quotePosts && me ? (
-          <DropdownMenuContainer items={reblogMenu} onShiftClick={this.handleReblogClick}>
+          <DropdownMenuContainer
+            items={reblogMenu}
+            disabled={!publicStatus}
+            onShiftClick={this.handleReblogClick}
+          >
             {reblogButton}
           </DropdownMenuContainer>
         ) : (
@@ -641,24 +646,16 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
         )}
 
         {features.emojiReacts ? (
-          <Hoverable
-            component={(
-              <EmojiSelector
-                onReact={this.handleReact}
-                focused={emojiSelectorFocused}
-                onUnfocus={handleEmojiSelectorUnfocus}
-              />
-            )}
-          >
+          <EmojiButtonWrapper statusId={status.id}>
             <StatusActionButton
               title={meEmojiTitle}
-              icon={require('@tabler/icons/icons/thumb-up.svg')}
+              icon={require('@tabler/icons/icons/heart.svg')}
+              filled
               color='accent'
-              onClick={this.handleLikeButtonClick}
               active={Boolean(meEmojiReact)}
               count={emojiReactCount}
             />
-          </Hoverable>
+          </EmojiButtonWrapper>
         ): (
           <StatusActionButton
             title={intl.formatMessage(messages.favourite)}

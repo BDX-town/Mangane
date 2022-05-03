@@ -11,18 +11,31 @@ const messages = defineMessages({
 });
 
 interface IModal {
+  /** Callback when the modal is cancelled. */
   cancelAction?: () => void,
+  /** Cancel button text. */
   cancelText?: string,
+  /** Callback when the modal is confirmed. */
   confirmationAction?: () => void,
+  /** Whether the confirmation button is disabled. */
   confirmationDisabled?: boolean,
+  /** Confirmation button text. */
   confirmationText?: string,
+  /** Confirmation button theme. */
   confirmationTheme?: 'danger',
+  /** Callback when the modal is closed. */
   onClose?: () => void,
+  /** Callback when the secondary action is chosen. */
   secondaryAction?: () => void,
+  /** Secondary button text. */
   secondaryText?: string,
+  /** Don't focus the "confirm" button on mount. */
+  skipFocus?: boolean,
+  /** Title text for the modal. */
   title: string | React.ReactNode,
 }
 
+/** Displays a modal dialog box. */
 const Modal: React.FC<IModal> = ({
   cancelAction,
   cancelText,
@@ -34,16 +47,17 @@ const Modal: React.FC<IModal> = ({
   onClose,
   secondaryAction,
   secondaryText,
+  skipFocus = false,
   title,
 }) => {
   const intl = useIntl();
   const buttonRef = React.useRef<HTMLButtonElement>(null);
 
   React.useEffect(() => {
-    if (buttonRef?.current) {
+    if (buttonRef?.current && !skipFocus) {
       buttonRef.current.focus();
     }
-  }, [buttonRef]);
+  }, [skipFocus, buttonRef]);
 
   return (
     <div data-testid='modal' className='block w-full max-w-xl p-6 mx-auto overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-slate-800 text-black dark:text-white shadow-xl rounded-2xl pointer-events-auto'>
@@ -78,7 +92,7 @@ const Modal: React.FC<IModal> = ({
                 theme='ghost'
                 onClick={cancelAction}
               >
-                {cancelText}
+                {cancelText || 'Cancel'}
               </Button>
             )}
           </div>

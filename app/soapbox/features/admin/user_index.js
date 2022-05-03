@@ -116,6 +116,8 @@ class UserIndex extends ImmutablePureComponent {
           showLoading={showLoading}
           onLoadMore={this.handleLoadMore}
           emptyMessage={intl.formatMessage(messages.empty)}
+          className='mt-4'
+          itemClassName='pb-4'
         >
           {accountIds.map(id =>
             <AccountContainer key={id} id={id} withDate />,

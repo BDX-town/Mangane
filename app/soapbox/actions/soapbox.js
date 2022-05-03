@@ -47,21 +47,34 @@ export function rememberSoapboxConfig(host) {
   };
 }
 
-export function fetchSoapboxConfig(host) {
+export function fetchFrontendConfigurations() {
   return (dispatch, getState) => {
-    api(getState).get('/api/pleroma/frontend_configurations').then(response => {
-      if (response.data.soapbox_fe) {
-        dispatch(importSoapboxConfig(response.data.soapbox_fe, host));
-      } else {
-        dispatch(fetchSoapboxJson(host));
-      }
-    }).catch(error => {
-      dispatch(fetchSoapboxJson(host));
-    });
+    return api(getState)
+      .get('/api/pleroma/frontend_configurations')
+      .then(({ data }) => data);
   };
 }
 
-// Tries to remember the config from browser storage before fetching it
+/** Conditionally fetches Soapbox config depending on backend features */
+export function fetchSoapboxConfig(host) {
+  return (dispatch, getState) => {
+    const features = getFeatures(getState().instance);
+
+    if (features.frontendConfigurations) {
+      return dispatch(fetchFrontendConfigurations()).then(data => {
+        if (data.soapbox_fe) {
+          dispatch(importSoapboxConfig(data.soapbox_fe, host));
+        } else {
+          dispatch(fetchSoapboxJson(host));
+        }
+      });
+    } else {
+      return dispatch(fetchSoapboxJson(host));
+    }
+  };
+}
+
+/** Tries to remember the config from browser storage before fetching it */
 export function loadSoapboxConfig() {
   return (dispatch, getState) => {
     const host = getHost(getState());

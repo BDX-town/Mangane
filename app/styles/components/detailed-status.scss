@@ -71,8 +71,7 @@
     }
   }
 
-  .svg-icon,
-  .status__favicon {
+  .svg-icon {
     margin-right: 5px;
   }
 }
@@ -171,7 +170,7 @@
   @apply sm:bg-white sm:dark:bg-slate-800 p-4 sm:shadow-xl sm:p-6 sm:rounded-xl;
 
   &__status {
-    @apply relative;
+    @apply relative pb-4;
 
     .status__wrapper {
       @apply shadow-none p-0;
@@ -183,16 +182,7 @@
     // }
   }
 
-  &__descendants {
-    @apply pt-4;
-  }
-
-  &__descendants .thread__status {
-    // @apply py-4;
-  }
-
-  &__descendants .status__content-wrapper,
-  &__ancestors .status__content-wrapper {
+  .status__content-wrapper {
     padding-left: calc(42px + 12px);
   }
 
@@ -226,7 +216,7 @@
 
     &--bottom {
       @apply block;
-      height: calc(100% - 42px - 8px);
+      height: calc(100% - 42px - 8px - 1rem);
       top: calc(12px + 42px);
     }
   }

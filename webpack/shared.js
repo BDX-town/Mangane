@@ -1,5 +1,6 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 
+const fs = require('fs');
 const { join, resolve } = require('path');
 
 const CopyPlugin = require('copy-webpack-plugin');
@@ -9,11 +10,21 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 const AssetsManifestPlugin = require('webpack-assets-manifest');
+const DeadCodePlugin = require('webpack-deadcode-plugin');
 
 const { env, settings, output } = require('./configuration');
 const rules = require('./rules');
 
 const { FE_SUBDIRECTORY, FE_INSTANCE_SOURCE_DIR } = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
+
+// Return file as string, or return empty string
+const readFile = filename => {
+  try {
+    return fs.readFileSync(filename, 'utf8');
+  } catch {
+    return '';
+  }
+};
 
 const makeHtmlConfig = (params = {}) => {
   return Object.assign({
@@ -29,12 +40,15 @@ const makeHtmlConfig = (params = {}) => {
       removeStyleLinkTypeAttributes: true,
       useShortDoctype: true,
     },
+    templateParameters: {
+      snippets: readFile(resolve('custom/snippets.html')),
+    },
   }, params);
 };
 
 module.exports = {
   entry: {
-    application: resolve('app/application.js'),
+    application: resolve('app/application.ts'),
   },
 
   output: {
@@ -75,7 +89,7 @@ module.exports = {
     new webpack.ProvidePlugin({
       process: 'process/browser',
     }),
-    new ForkTsCheckerWebpackPlugin(),
+    new ForkTsCheckerWebpackPlugin({ typescript: { memoryLimit: 8192 } }),
     new MiniCssExtractPlugin({
       filename: 'packs/css/[name]-[contenthash:8].css',
       chunkFilename: 'packs/css/[name]-[contenthash:8].chunk.css',
@@ -85,6 +99,19 @@ module.exports = {
       entrypoints: true,
       writeToDisk: true,
       publicPath: true,
+    }),
+    // https://github.com/MQuy/webpack-deadcode-plugin
+    new DeadCodePlugin({
+      patterns: [
+        'app/**/*',
+      ],
+      exclude: [
+        '**/*.test.*',
+        '**/__*__/*',
+        '**/(LICENSE|README|COPYING)(.md|.txt)?',
+        // This file is imported with @preval
+        'app/soapbox/features/emoji/emoji_map.json',
+      ],
     }),
     // https://github.com/jantimon/html-webpack-plugin#options
     new HtmlWebpackPlugin(makeHtmlConfig()),

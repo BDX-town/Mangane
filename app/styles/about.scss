@@ -709,11 +709,11 @@ $fluid-breakpoint: $maximum-width + 20px;
 }
 
 .rich-formatting {
+  @apply text-gray-900 dark:text-gray-100;
   font-family: var(--font-sans-serif), sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 30px;
-  color: $color-5-dark;
   padding: 15px 30px;
 
   .text-center {
@@ -735,11 +735,11 @@ $fluid-breakpoint: $maximum-width + 20px;
 
   p,
   li {
+    @apply text-gray-900 dark:text-gray-100;
     font-family: var(--font-sans-serif), sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 30px;
-    color: $color-5-dark;
 
     a {
       color: var(--highlight-text-color);
@@ -760,10 +760,10 @@ $fluid-breakpoint: $maximum-width + 20px;
   h4,
   h5,
   h6 {
+    @apply text-gray-900 dark:text-gray-100;
     font-family: var(--font-display), sans-serif;
     margin-top: 2em;
     margin-bottom: 1.25em;
-    color: $color-5-dark;
   }
 
   hr + {
@@ -1050,8 +1050,7 @@ $fluid-breakpoint: $maximum-width + 20px;
   }
 
   .simple_form .user_agreement .label_input > label {
-    font-weight: 400;
-    color: $color-5-dark;
+    @apply text-gray-900 dark:text-gray-100 font-normal;
   }
 
   .simple_form p.lead {

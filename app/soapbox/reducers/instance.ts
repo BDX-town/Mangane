@@ -8,10 +8,9 @@ import KVStore from 'soapbox/storage/kv_store';
 import { ConfigDB } from 'soapbox/utils/config_db';
 
 import {
-  INSTANCE_REMEMBER_SUCCESS,
-  INSTANCE_FETCH_SUCCESS,
-  INSTANCE_FETCH_FAIL,
-  NODEINFO_FETCH_SUCCESS,
+  rememberInstance,
+  fetchInstance,
+  fetchNodeinfo,
 } from '../actions/instance';
 
 const initialState = normalizeInstance(ImmutableMap());
@@ -115,15 +114,15 @@ export default function instance(state = initialState, action: AnyAction) {
   switch(action.type) {
   case PLEROMA_PRELOAD_IMPORT:
     return preloadImport(state, action, '/api/v1/instance');
-  case INSTANCE_REMEMBER_SUCCESS:
-    return importInstance(state, ImmutableMap(fromJS(action.instance)));
-  case INSTANCE_FETCH_SUCCESS:
-    persistInstance(action.instance);
-    return importInstance(state, ImmutableMap(fromJS(action.instance)));
-  case INSTANCE_FETCH_FAIL:
+  case rememberInstance.fulfilled.type:
+    return importInstance(state, ImmutableMap(fromJS(action.payload)));
+  case fetchInstance.fulfilled.type:
+    persistInstance(action.payload);
+    return importInstance(state, ImmutableMap(fromJS(action.payload)));
+  case fetchInstance.rejected.type:
     return handleInstanceFetchFail(state, action.error);
-  case NODEINFO_FETCH_SUCCESS:
-    return importNodeinfo(state, ImmutableMap(fromJS(action.nodeinfo)));
+  case fetchNodeinfo.fulfilled.type:
+    return importNodeinfo(state, ImmutableMap(fromJS(action.payload)));
   case ADMIN_CONFIG_UPDATE_REQUEST:
   case ADMIN_CONFIG_UPDATE_SUCCESS:
     return importConfigs(state, ImmutableList(fromJS(action.configs)));

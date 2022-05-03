@@ -38,6 +38,7 @@ const languages = {
   hy: 'Հայերեն',
   id: 'Bahasa Indonesia',
   io: 'Ido',
+  is: 'íslenska',
   it: 'Italiano',
   ja: '日本語',
   ka: 'ქართული',
@@ -112,7 +113,7 @@ const Preferences = () => {
     <Form>
       <List>
         <ListItem
-          label={<FormattedMessage id='home.column_settings.show_reblogs' defaultMessage='Show reTRUTHs' />}
+          label={<FormattedMessage id='home.column_settings.show_reblogs' defaultMessage='Show reposts' />}
           hint={<FormattedMessage id='preferences.hints.feed' defaultMessage='In your home feed' />}
         >
           <SettingToggle settings={settings} settingPath={['home', 'shows', 'reblog']} onChange={onToggleChange} />
@@ -134,7 +135,7 @@ const Preferences = () => {
         <ListItem label={<FormattedMessage id='preferences.fields.language_label' defaultMessage='Language' />}>
           <SelectDropdown
             items={languages}
-            defaultValue={settings.get('locale')}
+            defaultValue={settings.get('locale') as string | undefined}
             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['locale'])}
           />
         </ListItem>
@@ -142,7 +143,7 @@ const Preferences = () => {
         <ListItem label={<FormattedMessage id='preferences.fields.media_display_label' defaultMessage='Media display' />}>
           <SelectDropdown
             items={displayMediaOptions}
-            defaultValue={settings.get('displayMedia')}
+            defaultValue={settings.get('displayMedia') as string | undefined}
             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['displayMedia'])}
           />
         </ListItem>

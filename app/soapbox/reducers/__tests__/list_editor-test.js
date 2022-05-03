@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 
 import * as actions from 'soapbox/actions/lists';
 
@@ -6,83 +6,83 @@ import reducer from '../list_editor';
 
 describe('list_editor reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap({
+    expect(reducer(undefined, {})).toMatchObject({
       listId: null,
       isSubmitting: false,
       isChanged: false,
       title: '',
 
-      accounts: ImmutableMap({
+      accounts: {
         items: ImmutableList(),
         loaded: false,
         isLoading: false,
-      }),
+      },
 
-      suggestions: ImmutableMap({
+      suggestions: {
         value: '',
         items: ImmutableList(),
-      }),
-    }));
+      },
+    });
   });
 
   it('should handle LIST_EDITOR_RESET', () => {
-    const state = ImmutableMap({
+    const state = ImmutableRecord({
       listId: null,
       isSubmitting: false,
       isChanged: false,
       title: '',
 
-      accounts: ImmutableMap({
+      accounts: ImmutableRecord({
         items: ImmutableList(),
         loaded: false,
         isLoading: false,
-      }),
+      })(),
 
-      suggestions: ImmutableMap({
+      suggestions: ImmutableRecord({
         value: '',
         items: ImmutableList(),
-      }),
-    });
+      })(),
+    })();
     const action = {
       type: actions.LIST_EDITOR_RESET,
     };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
+    expect(reducer(state, action)).toMatchObject({
       listId: null,
       isSubmitting: false,
       isChanged: false,
       title: '',
 
-      accounts: ImmutableMap({
+      accounts: {
         items: ImmutableList(),
         loaded: false,
         isLoading: false,
-      }),
+      },
 
-      suggestions: ImmutableMap({
+      suggestions: {
         value: '',
         items: ImmutableList(),
-      }),
-    }));
+      },
+    });
   });
 
   it('should handle LIST_EDITOR_SETUP', () => {
-    const state = ImmutableMap({
+    const state = ImmutableRecord({
       listId: null,
       isSubmitting: false,
       isChanged: false,
       title: '',
 
-      accounts: ImmutableMap({
+      accounts: ImmutableRecord({
         items: ImmutableList(),
         loaded: false,
         isLoading: false,
-      }),
+      })(),
 
-      suggestions: ImmutableMap({
+      suggestions: ImmutableRecord({
         value: '',
         items: ImmutableList(),
-      }),
-    });
+      })(),
+    })();
     const action = {
       type: actions.LIST_EDITOR_SETUP,
       list: ImmutableMap({
@@ -90,23 +90,23 @@ describe('list_editor reducer', () => {
         title: 'list 1',
       }),
     };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
+    expect(reducer(state, action)).toMatchObject({
       listId: '22',
       isSubmitting: false,
       isChanged: false,
       title: 'list 1',
 
-      accounts: ImmutableMap({
+      accounts: {
         items: ImmutableList(),
         loaded: false,
         isLoading: false,
-      }),
+      },
 
-      suggestions: ImmutableMap({
+      suggestions: {
         value: '',
         items: ImmutableList(),
-      }),
-    }));
+      },
+    });
   });
 
   it('should handle LIST_EDITOR_TITLE_CHANGE', () => {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import LandingPage from '..';
-import { INSTANCE_REMEMBER_SUCCESS } from '../../../actions/instance';
+import { rememberInstance } from '../../../actions/instance';
 import { PEPE_FETCH_INSTANCE_SUCCESS } from '../../../actions/verification';
 import { render, screen, rootReducer, applyActions } from '../../../jest/test-helpers';
 
@@ -9,8 +9,8 @@ describe('<LandingPage />', () => {
   it('renders a RegistrationForm for an open Pleroma instance', () => {
 
     const state = rootReducer(undefined, {
-      type: INSTANCE_REMEMBER_SUCCESS,
-      instance: {
+      type: rememberInstance.fulfilled.type,
+      payload: {
         version: '2.7.2 (compatible; Pleroma 2.3.0)',
         registrations: true,
       },
@@ -26,8 +26,8 @@ describe('<LandingPage />', () => {
   it('renders "closed" message for a closed Pleroma instance', () => {
 
     const state = rootReducer(undefined, {
-      type: INSTANCE_REMEMBER_SUCCESS,
-      instance: {
+      type: rememberInstance.fulfilled.type,
+      payload: {
         version: '2.7.2 (compatible; Pleroma 2.3.0)',
         registrations: false,
       },
@@ -43,8 +43,8 @@ describe('<LandingPage />', () => {
   it('renders Pepe flow for an open Truth Social instance', () => {
 
     const state = applyActions(undefined, [{
-      type: INSTANCE_REMEMBER_SUCCESS,
-      instance: {
+      type: rememberInstance.fulfilled.type,
+      payload: {
         version: '3.4.1 (compatible; TruthSocial 1.0.0)',
         registrations: false,
       },
@@ -65,8 +65,8 @@ describe('<LandingPage />', () => {
   it('renders "closed" message for a Truth Social instance with Pepe closed', () => {
 
     const state = applyActions(undefined, [{
-      type: INSTANCE_REMEMBER_SUCCESS,
-      instance: {
+      type: rememberInstance.fulfilled.type,
+      payload: {
         version: '3.4.1 (compatible; TruthSocial 1.0.0)',
         registrations: false,
       },

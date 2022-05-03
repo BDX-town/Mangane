@@ -87,7 +87,7 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, ...props
       <ScrollableList
         scrollKey='reactions'
         emptyMessage={emptyMessage}
-        className='space-y-3'
+        itemClassName='pb-3'
       >
         {accounts.map((account) =>
           <AccountContainer key={`${account.id}-${account.reaction}`} id={account.id} /* reaction={account.reaction} */ />,

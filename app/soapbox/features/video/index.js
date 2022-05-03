@@ -13,6 +13,8 @@ import Icon from 'soapbox/components/icon';
 import { isPanoramic, isPortrait, minimumAspectRatio, maximumAspectRatio } from '../../utils/media_aspect_ratio';
 import { isFullscreen, requestFullscreen, exitFullscreen } from '../ui/util/fullscreen';
 
+const DEFAULT_HEIGHT = 300;
+
 const messages = defineMessages({
   play: { id: 'video.play', defaultMessage: 'Play' },
   pause: { id: 'video.pause', defaultMessage: 'Pause' },
@@ -216,12 +218,12 @@ class Video extends React.PureComponent {
   handleMouseVolSlide = throttle(e => {
     const { x } = getPointerPosition(this.volume, e);
 
-    if(!isNaN(x)) {
+    if (!isNaN(x)) {
       let slideamt = x;
 
-      if(x > 1) {
+      if (x > 1) {
         slideamt = 1;
-      } else if(x < 0) {
+      } else if (x < 0) {
         slideamt = 0;
       }
 
@@ -513,7 +515,7 @@ class Video extends React.PureComponent {
         height = Math.floor(containerWidth / aspectRatio);
       }
 
-      if (height) playerStyle.height = height;
+      playerStyle.height = height || DEFAULT_HEIGHT;
     }
 
     let warning;
@@ -553,7 +555,7 @@ class Video extends React.PureComponent {
           aria-label={alt}
           title={alt}
           width={width}
-          height={height || 300}
+          height={height || DEFAULT_HEIGHT}
           volume={volume}
           onClick={this.togglePlay}
           onKeyDown={this.handleVideoKeyDown}
@@ -612,8 +614,8 @@ class Video extends React.PureComponent {
             <div className='video-player__buttons right'>
               {(sensitive && !onCloseVideo) && <button type='button' title={intl.formatMessage(messages.hide)} aria-label={intl.formatMessage(messages.hide)} className='player-button' onClick={this.toggleReveal}><Icon src={require('@tabler/icons/icons/eye-off.svg')} /></button>}
               {(!fullscreen && onOpenVideo) && <button type='button' title={intl.formatMessage(messages.expand)} aria-label={intl.formatMessage(messages.expand)} className='player-button' onClick={this.handleOpenVideo}><Icon src={require('@tabler/icons/icons/maximize.svg')} /></button>}
-              {onCloseVideo && <button type='button' title={intl.formatMessage(messages.close)} aria-label={intl.formatMessage(messages.close)} className='player-button' onClick={this.handleCloseVideo}><Icon src={require('@tabler/icons/icons/minimize.svg')} /></button>}
-              <button type='button' title={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} aria-label={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} className='player-button' onClick={this.toggleFullscreen}><Icon src={fullscreen ? require('@tabler/icons/icons/minimize.svg') : require('@tabler/icons/icons/arrows-maximize.svg')} /></button>
+              {/* onCloseVideo && <button type='button' title={intl.formatMessage(messages.close)} aria-label={intl.formatMessage(messages.close)} className='player-button' onClick={this.handleCloseVideo}><Icon src={require('@tabler/icons/icons/x.svg')} /></button> */}
+              <button type='button' title={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} aria-label={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} className='player-button' onClick={this.toggleFullscreen}><Icon src={fullscreen ? require('@tabler/icons/icons/arrows-minimize.svg') : require('@tabler/icons/icons/arrows-maximize.svg')} /></button>
             </div>
           </div>
         </div>

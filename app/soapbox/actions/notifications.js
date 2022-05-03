@@ -98,7 +98,7 @@ export function updateNotificationsQueue(notification, intlMessages, intlLocale,
 
     const isOnNotificationsPage = curPath === '/notifications';
 
-    if (notification.type === 'mention') {
+    if (['mention', 'status'].includes(notification.type)) {
       const regex = regexFromFilters(filters);
       const searchIndex = notification.status.spoiler_text + '\n' + unescapeHTML(notification.status.content);
       filtered = regex && regex.test(searchIndex);
@@ -121,7 +121,7 @@ export function updateNotificationsQueue(notification, intlMessages, intlLocale,
           }).catch(console.error);
         }).catch(console.error);
       }
-    } catch(e) {
+    } catch (e) {
       console.warn(e);
     }
 
@@ -170,7 +170,7 @@ export function dequeueNotifications() {
 const excludeTypesFromSettings = getState => getSettings(getState()).getIn(['notifications', 'shows']).filter(enabled => !enabled).keySeq().toJS();
 
 const excludeTypesFromFilter = filter => {
-  const allTypes = ImmutableList(['follow', 'follow_request', 'favourite', 'reblog', 'mention', 'poll', 'move', 'pleroma:emoji_reaction']);
+  const allTypes = ImmutableList(['follow', 'follow_request', 'favourite', 'reblog', 'mention', 'status', 'poll', 'move', 'pleroma:emoji_reaction']);
   return allTypes.filterNot(item => item === filter).toJS();
 };
 

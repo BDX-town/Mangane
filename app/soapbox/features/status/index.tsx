@@ -17,7 +17,7 @@ import {
 } from 'soapbox/actions/moderation';
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import PullToRefresh from 'soapbox/components/pull-to-refresh';
+import ScrollableList from 'soapbox/components/scrollable_list';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { Column } from 'soapbox/components/ui';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
@@ -51,7 +51,7 @@ import {
   hideStatus,
   revealStatus,
 } from '../../actions/statuses';
-import { fetchStatusWithContext } from '../../actions/statuses';
+import { fetchStatusWithContext, fetchNext } from '../../actions/statuses';
 import MissingIndicator from '../../components/missing_indicator';
 import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
 import { makeGetStatus } from '../../selectors';
@@ -189,6 +189,7 @@ interface IStatusState {
   emojiSelectorFocused: boolean,
   isLoaded: boolean,
   error?: AxiosError,
+  next?: string,
 }
 
 class Status extends ImmutablePureComponent<IStatus, IStatusState> {
@@ -200,17 +201,18 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     emojiSelectorFocused: false,
     isLoaded: Boolean(this.props.status),
     error: undefined,
+    next: undefined,
   };
 
   node: HTMLDivElement | null = null;
   status: HTMLDivElement | null = null;
   _scrolledIntoView: boolean = false;
 
-  fetchData = () => {
+  fetchData = async() => {
     const { dispatch, params } = this.props;
     const { statusId } = params;
-
-    return dispatch(fetchStatusWithContext(statusId));
+    const { next } = await dispatch(fetchStatusWithContext(statusId));
+    this.setState({ next });
   }
 
   componentDidMount() {
@@ -641,9 +643,21 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     return this.fetchData();
   }
 
+  handleLoadMore = () => {
+    const { next } = this.state;
+
+    if (next) {
+      this.props.dispatch(fetchNext(next)).then(({ next }) => {
+        this.setState({ next });
+      }).catch(() => {});
+    }
+  }
+
   render() {
-    let ancestors, descendants;
     const { status, ancestorsIds, descendantsIds, intl } = this.props;
+
+    const hasAncestors = ancestorsIds && ancestorsIds.size > 0;
+    const hasDescendants = descendantsIds && descendantsIds.size > 0;
 
     if (!status && this.state.isLoaded) {
       // TODO: handle errors other than 404 with `this.state.error?.response?.status`
@@ -654,14 +668,6 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
       return (
         <PlaceholderStatus />
       );
-    }
-
-    if (ancestorsIds && ancestorsIds.size > 0) {
-      ancestors = this.renderChildren(ancestorsIds);
-    }
-
-    if (descendantsIds && descendantsIds.size > 0) {
-      descendants = this.renderChildren(descendantsIds);
     }
 
     type HotkeyHandlers = { [key: string]: (keyEvent?: KeyboardEvent) => void };
@@ -683,6 +689,76 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     const username = String(status.getIn(['account', 'acct']));
     const titleMessage = status.visibility === 'direct' ? messages.titleDirect : messages.title;
 
+    const focusedStatus = (
+      <div className={classNames('thread__detailed-status', { 'pb-4': hasDescendants })} key={status.id}>
+        <HotKeys handlers={handlers}>
+          <div
+            ref={this.setStatusRef}
+            className={classNames('detailed-status__wrapper')}
+            tabIndex={0}
+            // FIXME: no "reblogged by" text is added for the screen reader
+            aria-label={textForScreenReader(intl, status)}
+          >
+            {/* @ts-ignore */}
+            <DetailedStatus
+              status={status}
+              onOpenVideo={this.handleOpenVideo}
+              onOpenMedia={this.handleOpenMedia}
+              onToggleHidden={this.handleToggleHidden}
+              showMedia={this.state.showMedia}
+              onToggleMediaVisibility={this.handleToggleMediaVisibility}
+            />
+
+            <hr className='mb-2 dark:border-slate-600' />
+
+            <ActionBar
+              status={status}
+              onReply={this.handleReplyClick}
+              onFavourite={this.handleFavouriteClick}
+              onEmojiReact={this.handleEmojiReactClick}
+              onReblog={this.handleReblogClick}
+              onQuote={this.handleQuoteClick}
+              onDelete={this.handleDeleteClick}
+              onDirect={this.handleDirectClick}
+              onChat={this.handleChatClick}
+              onMention={this.handleMentionClick}
+              onMute={this.handleMuteClick}
+              onMuteConversation={this.handleConversationMuteClick}
+              onBlock={this.handleBlockClick}
+              onReport={this.handleReport}
+              onPin={this.handlePin}
+              onBookmark={this.handleBookmark}
+              onEmbed={this.handleEmbed}
+              onDeactivateUser={this.handleDeactivateUser}
+              onDeleteUser={this.handleDeleteUser}
+              onToggleStatusSensitivity={this.handleToggleStatusSensitivity}
+              onDeleteStatus={this.handleDeleteStatus}
+              allowedEmoji={this.props.allowedEmoji}
+              emojiSelectorFocused={this.state.emojiSelectorFocused}
+              handleEmojiSelectorExpand={this.handleEmojiSelectorExpand}
+              handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
+            />
+          </div>
+        </HotKeys>
+
+        {hasDescendants && (
+          <hr className='mt-2 dark:border-slate-600' />
+        )}
+      </div>
+    );
+
+    const children: JSX.Element[] = [];
+
+    if (hasAncestors) {
+      children.push(...this.renderChildren(ancestorsIds).toArray());
+    }
+
+    children.push(focusedStatus);
+
+    if (hasDescendants) {
+      children.push(...this.renderChildren(descendantsIds).toArray());
+    }
+
     return (
       <Column label={intl.formatMessage(titleMessage, { username })} transparent>
         <div className='px-4 pt-4 sm:p-0'>
@@ -690,70 +766,14 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         </div>
 
         <div ref={this.setRef} className='thread'>
-          <PullToRefresh onRefresh={this.handleRefresh}>
-            {ancestors && (
-              <div className='thread__ancestors space-y-4 mb-4'>{ancestors}</div>
-            )}
-
-            <div className='thread__status thread__status--focused'>
-              <HotKeys handlers={handlers}>
-                <div
-                  ref={this.setStatusRef}
-                  className={classNames('detailed-status__wrapper')}
-                  tabIndex={0}
-                  // FIXME: no "reblogged by" text is added for the screen reader
-                  aria-label={textForScreenReader(intl, status)}
-                >
-                  {/* @ts-ignore */}
-                  <DetailedStatus
-                    status={status}
-                    onOpenVideo={this.handleOpenVideo}
-                    onOpenMedia={this.handleOpenMedia}
-                    onToggleHidden={this.handleToggleHidden}
-                    showMedia={this.state.showMedia}
-                    onToggleMediaVisibility={this.handleToggleMediaVisibility}
-                  />
-
-                  <hr className='mb-2 dark:border-slate-600' />
-
-                  <ActionBar
-                    status={status}
-                    onReply={this.handleReplyClick}
-                    onFavourite={this.handleFavouriteClick}
-                    onEmojiReact={this.handleEmojiReactClick}
-                    onReblog={this.handleReblogClick}
-                    onQuote={this.handleQuoteClick}
-                    onDelete={this.handleDeleteClick}
-                    onDirect={this.handleDirectClick}
-                    onChat={this.handleChatClick}
-                    onMention={this.handleMentionClick}
-                    onMute={this.handleMuteClick}
-                    onMuteConversation={this.handleConversationMuteClick}
-                    onBlock={this.handleBlockClick}
-                    onReport={this.handleReport}
-                    onPin={this.handlePin}
-                    onBookmark={this.handleBookmark}
-                    onEmbed={this.handleEmbed}
-                    onDeactivateUser={this.handleDeactivateUser}
-                    onDeleteUser={this.handleDeleteUser}
-                    onToggleStatusSensitivity={this.handleToggleStatusSensitivity}
-                    onDeleteStatus={this.handleDeleteStatus}
-                    allowedEmoji={this.props.allowedEmoji}
-                    emojiSelectorFocused={this.state.emojiSelectorFocused}
-                    handleEmojiSelectorExpand={this.handleEmojiSelectorExpand}
-                    handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
-                  />
-                </div>
-              </HotKeys>
-            </div>
-
-            {descendants && (
-              <>
-                <hr className='mt-2 dark:border-slate-600' />
-                <div className='thread__descendants space-y-4'>{descendants}</div>
-              </>
-            )}
-          </PullToRefresh>
+          <ScrollableList
+            onRefresh={this.handleRefresh}
+            hasMore={!!this.state.next}
+            onLoadMore={this.handleLoadMore}
+            placeholderComponent={() => <PlaceholderStatus thread />}
+          >
+            {children}
+          </ScrollableList>
         </div>
       </Column>
     );

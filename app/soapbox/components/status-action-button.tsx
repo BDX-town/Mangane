@@ -41,9 +41,10 @@ const StatusActionButton = React.forwardRef((props: IStatusActionButton, ref: Re
       ref={ref}
       type='button'
       className={classNames(
-        'group flex items-center p-1 space-x-0.5 rounded-full',
+        'flex items-center p-1 space-x-0.5 rounded-full',
         'text-gray-400 hover:text-gray-600 dark:hover:text-white',
         'bg-white dark:bg-transparent',
+        'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:ring-offset-0',
         {
           'text-accent-300 hover:text-accent-300 dark:hover:text-accent-300': active && color === COLORS.accent,
           'text-success-600 hover:text-success-600 dark:hover:text-success-600': active && color === COLORS.success,
@@ -55,8 +56,6 @@ const StatusActionButton = React.forwardRef((props: IStatusActionButton, ref: Re
       <Icon
         src={icon}
         className={classNames(
-          'rounded-full',
-          'group-focus:outline-none group-focus:ring-2 group-focus:ring-offset-2 dark:ring-offset-0 group-focus:ring-primary-500',
           {
             'fill-accent-300 hover:fill-accent-300': active && filled && color === COLORS.accent,
           },

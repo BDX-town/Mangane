@@ -28,7 +28,6 @@ import group_editor from './group_editor';
 import group_lists from './group_lists';
 import group_relationships from './group_relationships';
 import groups from './groups';
-import height_cache from './height_cache';
 import identity_proofs from './identity_proofs';
 import instance from './instance';
 import listAdder from './list_adder';
@@ -39,6 +38,7 @@ import meta from './meta';
 import modals from './modals';
 import mutes from './mutes';
 import notifications from './notifications';
+import onboarding from './onboarding';
 import patron from './patron';
 import pending_statuses from './pending_statuses';
 import polls from './polls';
@@ -46,6 +46,7 @@ import profile_hover_card from './profile_hover_card';
 import push_notifications from './push_notifications';
 import relationships from './relationships';
 import reports from './reports';
+import rules from './rules';
 import scheduled_statuses from './scheduled_statuses';
 import search from './search';
 import security from './security';
@@ -83,7 +84,6 @@ const reducers = {
   compose,
   search,
   notifications,
-  height_cache,
   custom_emojis,
   identity_proofs,
   lists,
@@ -118,6 +118,8 @@ const reducers = {
   accounts_meta,
   trending_statuses,
   verification,
+  onboarding,
+  rules,
 };
 
 // Build a default state from all reducers: it has the key and `undefined`

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { Column } from 'soapbox/components/ui';
+import { Column, Stack } from 'soapbox/components/ui';
 import Accordion from 'soapbox/features/ui/components/accordion';
 import { useAppSelector } from 'soapbox/hooks';
 
@@ -18,23 +18,21 @@ const CryptoDonate: React.FC = (): JSX.Element => {
 
   return (
     <Column label={intl.formatMessage(messages.heading)} withHeader>
-      <div className='crypto-donate'>
-        <div className='explanation-box'>
-          <Accordion
-            headline={<FormattedMessage id='crypto_donate.explanation_box.title' defaultMessage='Sending cryptocurrency donations' />}
-            expanded={explanationBoxExpanded}
-            onToggle={toggleExplanationBox}
-          >
-            <FormattedMessage
-              id='crypto_donate.explanation_box.message'
-              defaultMessage='{siteTitle} accepts cryptocurrency donations. You may send a donation to any of the addresses below. Thank you for your support!'
-              values={{ siteTitle }}
-            />
-          </Accordion>
+      <Stack space={5}>
+        <Accordion
+          headline={<FormattedMessage id='crypto_donate.explanation_box.title' defaultMessage='Sending cryptocurrency donations' />}
+          expanded={explanationBoxExpanded}
+          onToggle={toggleExplanationBox}
+        >
+          <FormattedMessage
+            id='crypto_donate.explanation_box.message'
+            defaultMessage='{siteTitle} accepts cryptocurrency donations. You may send a donation to any of the addresses below. Thank you for your support!'
+            values={{ siteTitle }}
+          />
+        </Accordion>
 
-        </div>
         <SiteWallet />
-      </div>
+      </Stack>
     </Column>
   );
 };

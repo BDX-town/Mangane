@@ -208,14 +208,13 @@
   }
 
   select {
-    @apply border border-solid border-primary-600;
+    @apply border border-solid border-primary-600 bg-white dark:bg-slate-800;
     box-sizing: border-box;
     font-size: 14px;
     display: inline-block;
     width: auto;
     outline: 0;
     font-family: inherit;
-    background-color: var(--foreground-color);
     background-repeat: no-repeat;
     background-position: right 8px center;
     background-size: auto 16px;

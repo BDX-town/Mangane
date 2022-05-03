@@ -18,16 +18,16 @@ import { isNumber } from 'soapbox/utils/numbers';
 // https://docs.joinmastodon.org/entities/instance/
 export const InstanceRecord = ImmutableRecord({
   approval_required: false,
-  contact_account: ImmutableMap(),
-  configuration: ImmutableMap({
-    media_attachments: ImmutableMap(),
-    polls: ImmutableMap({
+  contact_account: ImmutableMap<string, any>(),
+  configuration: ImmutableMap<string, any>({
+    media_attachments: ImmutableMap<string, any>(),
+    polls: ImmutableMap<string, number>({
       max_options: 4,
       max_characters_per_option: 25,
       min_expiration: 300,
       max_expiration: 2629746,
     }),
-    statuses: ImmutableMap({
+    statuses: ImmutableMap<string, number>({
       max_characters: 500,
       max_media_attachments: 4,
     }),
@@ -39,13 +39,13 @@ export const InstanceRecord = ImmutableRecord({
   fedibird_capabilities: ImmutableList(),
   invites_enabled: false,
   languages: ImmutableList(),
-  pleroma: ImmutableMap({
-    metadata: ImmutableMap({
+  pleroma: ImmutableMap<string, any>({
+    metadata: ImmutableMap<string, any>({
       account_activation_required: false,
       birthday_min_age: 0,
       birthday_required: false,
       features: ImmutableList(),
-      federation: ImmutableMap({
+      federation: ImmutableMap<string, any>({
         enabled: true,
         exclusions: false,
       }),
@@ -55,7 +55,7 @@ export const InstanceRecord = ImmutableRecord({
   registrations: false,
   rules: ImmutableList(),
   short_description: '',
-  stats: ImmutableMap({
+  stats: ImmutableMap<string, number>({
     domain_count: 0,
     status_count: 0,
     user_count: 0,
@@ -63,7 +63,7 @@ export const InstanceRecord = ImmutableRecord({
   title: '',
   thumbnail: '',
   uri: '',
-  urls: ImmutableMap(),
+  urls: ImmutableMap<string, string>(),
   version: '0.0.0',
 });
 

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1",
+    "text": "Illegal activity and behavior",
+    "subtext": "Content that depicts illegal or criminal acts, threats of violence.",
+    "rule_type": "content"
+  },
+  {
+    "id": "2",
+    "text": "Intellectual property infringement",
+    "subtext": "Impersonating another account or business, infringing on intellectual property rights.",
+    "rule_type": "content"
+  }
+]

@@ -216,8 +216,8 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
         key={key}
         data-index={i}
         className={classNames({
-          'px-4 py-2.5 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 group': true,
-          'bg-gray-100 hover:bg-gray-100': i === selectedSuggestion,
+          'px-4 py-2.5 text-sm text-gray-700 dark:text-gray-400 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
+          'bg-gray-100 dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700': i === selectedSuggestion,
         })}
         onMouseDown={this.onSuggestionClick}
       >
@@ -257,7 +257,8 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
 
             <Textarea
               ref={this.setTextarea}
-              className={classNames('dark:bg-slate-800 px-0 border-0 text-gray-800 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 resize-none w-full focus:shadow-none focus:border-0 focus:ring-0', {
+              className={classNames('transition-[min-height] motion-reduce:transition-none dark:bg-slate-800 px-0 border-0 text-gray-800 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 resize-none w-full focus:shadow-none focus:border-0 focus:ring-0', {
+                'min-h-[40px]': condensed,
                 'min-h-[100px]': !condensed,
               })}
               id={id}
@@ -284,7 +285,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
         <div
           style={this.setPortalPosition()}
           className={classNames({
-            'fixed z-1000 shadow bg-white rounded-lg py-1 space-y-0': true,
+            'fixed z-1000 shadow bg-white dark:bg-slate-900 rounded-lg py-1 space-y-0': true,
             hidden: suggestionsHidden || suggestions.isEmpty(),
             block: !suggestionsHidden && !suggestions.isEmpty(),
           })}

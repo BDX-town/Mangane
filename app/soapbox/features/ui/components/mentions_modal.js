@@ -61,7 +61,7 @@ class MentionsModal extends React.PureComponent {
       body = (
         <ScrollableList
           scrollKey='mentions'
-          className='space-y-3'
+          itemClassName='pb-3'
         >
           {accountIds.map(id =>
             <AccountContainer key={id} id={id} withNote={false} />,

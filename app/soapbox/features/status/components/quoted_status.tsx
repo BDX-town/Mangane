@@ -8,7 +8,8 @@ import { withRouter } from 'react-router-dom';
 import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
 import { Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
-import { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
+
+import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   cancel: { id: 'reply_indicator.cancel', defaultMessage: 'Cancel' },
@@ -38,6 +39,7 @@ class QuotedStatus extends ImmutablePureComponent<IQuotedStatus> {
 
       this.props.history.push(`/@${account.acct}/posts/${status.id}`);
 
+      e.stopPropagation();
       e.preventDefault();
     }
   }
@@ -127,12 +129,14 @@ class QuotedStatus extends ImmutablePureComponent<IQuotedStatus> {
           {...actions}
           id={account.id}
           timestamp={status.created_at}
+          withRelationship={false}
           showProfileHoverCard={!compose}
         />
 
         {this.renderReplyMentions()}
 
         <Text
+          className='break-words'
           size='sm'
           dangerouslySetInnerHTML={{ __html: status.contentHtml }}
         />

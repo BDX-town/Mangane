@@ -5,12 +5,17 @@ import SvgIcon from '../icon/svg-icon';
 import Text from '../text/text';
 
 interface IIconButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  /** Class name for the <svg> icon. */
   iconClassName?: string,
+  /** URL to the svg icon. */
   src: string,
+  /** Text to display next ot the button. */
   text?: string,
+  /** Don't render a background behind the icon. */
   transparent?: boolean
 }
 
+/** A clickable icon. */
 const IconButton = React.forwardRef((props: IIconButton, ref: React.ForwardedRef<HTMLButtonElement>): JSX.Element => {
   const { src, className, iconClassName, text, transparent = false, ...filteredProps } = props;
 

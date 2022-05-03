@@ -39,7 +39,7 @@ const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u20
 const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here' },
-  publish: { id: 'compose_form.publish', defaultMessage: 'Truth' },
+  publish: { id: 'compose_form.publish', defaultMessage: 'Post' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
   message: { id: 'compose_form.message', defaultMessage: 'Message' },
   schedule: { id: 'compose_form.schedule', defaultMessage: 'Schedule' },
@@ -364,21 +364,21 @@ class ComposeForm extends ImmutablePureComponent {
         <QuotedStatusContainer />
 
         <div
-          className={classNames('flex items-center justify-between', {
+          className={classNames('flex flex-wrap items-center justify-between', {
             'hidden': condensed,
           })}
         >
           <div className='flex items-center space-x-2'>
             {features.media && <UploadButtonContainer />}
+            <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} />
             {features.polls && <PollButtonContainer />}
             {features.privacyScopes && <PrivacyDropdownContainer />}
             {features.scheduledStatuses && <ScheduleButtonContainer />}
             {features.spoilers && <SpoilerButtonContainer />}
             {features.richText && <MarkdownButtonContainer />}
-            <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} />
           </div>
 
-          <div className='flex items-center space-x-4 ml-4'>
+          <div className='flex items-center space-x-4 ml-auto'>
             {maxTootChars && (
               <div className='flex items-center space-x-1'>
                 <TextCharacterCounter max={maxTootChars} text={text} />

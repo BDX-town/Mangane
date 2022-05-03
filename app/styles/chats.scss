@@ -90,12 +90,16 @@
   &__content {
     @apply flex flex-1 flex-col overflow-hidden bg-white dark:bg-slate-800;
 
+    > div {
+      @apply max-h-full;
+    }
+
     .chat-box {
       @apply flex flex-1 flex-col overflow-hidden;
     }
 
     .chat-list {
-      @apply overflow-y-auto;
+      @apply overflow-y-auto max-h-full;
     }
   }
 

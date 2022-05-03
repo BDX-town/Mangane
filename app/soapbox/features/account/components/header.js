@@ -54,6 +54,8 @@ const messages = defineMessages({
   deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete @{name}' },
   verifyUser: { id: 'admin.users.actions.verify_user', defaultMessage: 'Verify @{name}' },
   unverifyUser: { id: 'admin.users.actions.unverify_user', defaultMessage: 'Unverify @{name}' },
+  setDonor: { id: 'admin.users.actions.set_donor', defaultMessage: 'Set @{name} as a donor' },
+  removeDonor: { id: 'admin.users.actions.remove_donor', defaultMessage: 'Remove @{name} as a donor' },
   promoteToAdmin: { id: 'admin.users.actions.promote_to_admin', defaultMessage: 'Promote @{name} to an admin' },
   promoteToModerator: { id: 'admin.users.actions.promote_to_moderator', defaultMessage: 'Promote @{name} to a moderator' },
   demoteToModerator: { id: 'admin.users.actions.demote_to_moderator', defaultMessage: 'Demote @{name} to a moderator' },
@@ -386,17 +388,31 @@ class Header extends ImmutablePureComponent {
         }
       }
 
-      if (account.get('verified')) {
+      if (account.verified) {
         menu.push({
-          text: intl.formatMessage(messages.unverifyUser, { name: account.get('username') }),
+          text: intl.formatMessage(messages.unverifyUser, { name: account.username }),
           action: this.props.onUnverifyUser,
           icon: require('@tabler/icons/icons/check.svg'),
         });
       } else {
         menu.push({
-          text: intl.formatMessage(messages.verifyUser, { name: account.get('username') }),
+          text: intl.formatMessage(messages.verifyUser, { name: account.username }),
           action: this.props.onVerifyUser,
           icon: require('@tabler/icons/icons/check.svg'),
+        });
+      }
+
+      if (account.donor) {
+        menu.push({
+          text: intl.formatMessage(messages.removeDonor, { name: account.username }),
+          action: this.props.onRemoveDonor,
+          icon: require('@tabler/icons/icons/coin.svg'),
+        });
+      } else {
+        menu.push({
+          text: intl.formatMessage(messages.setDonor, { name: account.username }),
+          action: this.props.onSetDonor,
+          icon: require('@tabler/icons/icons/coin.svg'),
         });
       }
 
@@ -614,7 +630,7 @@ class Header extends ImmutablePureComponent {
                           return (
                             <Comp key={idx} {...itemProps} className='group'>
                               <div className='flex items-center'>
-                                <SvgIcon src={menuItem.icon} className='mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500' />
+                                <SvgIcon src={menuItem.icon} className='mr-3 h-5 w-5 text-gray-400 flex-none group-hover:text-gray-500' />
 
                                 <div className='truncate'>{menuItem.text}</div>
                               </div>

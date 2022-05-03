@@ -3,7 +3,7 @@
 }
 
 .accordion {
-  @apply text-black dark:text-white bg-gray-100 dark:bg-slate-800;
+  @apply text-black dark:text-white bg-gray-100 dark:bg-slate-900;
   padding: 15px 20px;
   font-size: 14px;
   border-radius: 8px;
@@ -25,6 +25,7 @@
     width: 100%;
 
     &::after {
+      @apply text-black dark:text-white;
       content: '';
       display: block;
       font-family: 'Font Awesome 5 Free';
@@ -50,6 +51,7 @@
     margin-bottom: 10px !important;
 
     &::after {
+      @apply text-black dark:text-white;
       content: '';
     }
   }

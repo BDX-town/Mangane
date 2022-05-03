@@ -5,11 +5,10 @@ import { FormattedNumber } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
-import emojify from 'soapbox/features/emoji/emoji';
 import { useAppSelector, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
 import { reduceEmoji } from 'soapbox/utils/emoji_reacts';
 
-import { HStack, IconButton, Text } from '../../../components/ui';
+import { HStack, IconButton, Text, Emoji } from '../../../components/ui';
 
 import type { Status } from 'soapbox/types/entities';
 
@@ -135,39 +134,28 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
 
     if (count > 0) {
       return (
-        <div className='emoji-reacts-container'>
+        <HStack space={0.5} className='emoji-reacts-container' alignItems='center'>
           <div className='emoji-reacts'>
             {emojiReacts.map((e, i) => {
-              const emojiReact = (
-                <>
-                  <span
-                    className='emoji-react__emoji'
-                    dangerouslySetInnerHTML={{ __html: emojify(e.get('name')) }}
+              return (
+                <HStack space={0.5} className='emoji-react p-1' alignItems='center' key={i}>
+                  <Emoji
+                    className='emoji-react__emoji w-5 h-5 flex-none'
+                    emoji={e.get('name')}
+                    onClick={features.exposableReactions ? handleOpenReactionsModal(e) : undefined}
                   />
-                  <span className='emoji-react__count'>{e.get('count')}</span>
-                </>
+                  <Text theme='muted' size='sm' className='emoji-react__count'>
+                    <FormattedNumber value={e.get('count')} />
+                  </Text>
+                </HStack>
               );
-
-              if (features.exposableReactions) {
-                return (
-                  <span
-                    className='emoji-react'
-                    role='presentation'
-                    key={i}
-                    onClick={handleOpenReactionsModal(e)}
-                  >
-                    {emojiReact}
-                  </span>
-                );
-              }
-
-              return <span className='emoji-react' key={i}>{emojiReact}</span>;
             })}
           </div>
-          <div className='emoji-reacts__count'>
-            {count}
-          </div>
-        </div>
+
+          <Text theme='muted' size='sm' className='emoji-reacts__count'>
+            <FormattedNumber value={count} />
+          </Text>
+        </HStack>
       );
     }
 

@@ -36,8 +36,16 @@ const WhoToFollowPanel = ({ limit }: IWhoToFollowPanel) => {
     return null;
   }
 
+  // FIXME: This page actually doesn't look good right now
+  // const handleAction = () => {
+  //   history.push('/suggestions');
+  // };
+
   return (
-    <Widget title={<FormattedMessage id='who_to_follow.title' defaultMessage='People To Follow' />}>
+    <Widget
+      title={<FormattedMessage id='who_to_follow.title' defaultMessage='People To Follow' />}
+      // onAction={handleAction}
+    >
       {suggestionsToRender.map((suggestion: ImmutableMap<string, any>) => (
         <AccountContainer
           key={suggestion.get('account')}

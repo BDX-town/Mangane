@@ -198,16 +198,3 @@ body.admin {
     padding: 15px;
   }
 }
-
-.progress-bar {
-  height: 8px;
-  width: 100%;
-  border-radius: 4px;
-  background: var(--background-color);
-  overflow: hidden;
-
-  &__progress {
-    height: 100%;
-    background: var(--brand-color);
-  }
-}

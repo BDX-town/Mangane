@@ -25,6 +25,7 @@ module.exports = {
     'import',
     'promise',
     'react-hooks',
+    '@typescript-eslint',
   ],
 
   parserOptions: {
@@ -104,7 +105,8 @@ module.exports = {
     'no-undef': 'error',
     'no-unreachable': 'error',
     'no-unused-expressions': 'error',
-    'no-unused-vars': [
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': [
       'error',
       {
         vars: 'all',
@@ -141,6 +143,7 @@ module.exports = {
     'react/jsx-first-prop-new-line': ['error', 'multiline-multiprop'],
     'react/jsx-indent': ['error', 2],
     // 'react/jsx-no-bind': ['error'],
+    'react/jsx-no-comment-textnodes': 'error',
     'react/jsx-no-duplicate-props': 'error',
     'react/jsx-no-undef': 'error',
     'react/jsx-tag-spacing': 'error',
@@ -149,7 +152,6 @@ module.exports = {
     'react/jsx-wrap-multilines': 'error',
     'react/no-multi-comp': 'off',
     'react/no-string-refs': 'error',
-    'react/prop-types': 'error',
     'react/self-closing-comp': 'error',
 
     'jsx-a11y/accessible-emoji': 'warn',
@@ -256,14 +258,12 @@ module.exports = {
     'promise/catch-or-return': 'error',
 
     'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
   },
   overrides: [
     {
       files: ['**/*.ts', '**/*.tsx'],
       rules: {
         'no-undef': 'off', // https://stackoverflow.com/a/69155899
-        'react/prop-types': 'off',
       },
       parser: '@typescript-eslint/parser',
     },

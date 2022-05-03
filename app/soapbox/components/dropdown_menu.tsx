@@ -6,8 +6,8 @@ import { spring } from 'react-motion';
 import Overlay from 'react-overlays/lib/Overlay';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import Icon from 'soapbox/components/icon';
-import { IconButton } from 'soapbox/components/ui';
+import { IconButton, Counter } from 'soapbox/components/ui';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import Motion from 'soapbox/features/ui/util/optional_motion';
 
 import type { Status } from 'soapbox/types/entities';
@@ -18,12 +18,13 @@ let id = 0;
 export interface MenuItem {
   action?: React.EventHandler<React.KeyboardEvent | React.MouseEvent>,
   middleClick?: React.EventHandler<React.MouseEvent>,
-  text: string,
+  text: string | JSX.Element,
   href?: string,
   to?: string,
   newTab?: boolean,
   isLogout?: boolean,
   icon: string,
+  count?: number,
   destructive?: boolean,
 }
 
@@ -174,10 +175,10 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
       return <li key={`sep-${i}`} className='dropdown-menu__separator' />;
     }
 
-    const { text, href, to, newTab, isLogout, icon, destructive } = option;
+    const { text, href, to, newTab, isLogout, icon, count, destructive } = option;
 
     return (
-      <li className={classNames('dropdown-menu__item', { destructive })} key={`${text}-${i}`}>
+      <li className={classNames('dropdown-menu__item truncate', { destructive })} key={`${text}-${i}`}>
         <a
           href={href || to || '#'}
           role='button'
@@ -190,8 +191,15 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
           target={newTab ? '_blank' : undefined}
           data-method={isLogout ? 'delete' : undefined}
         >
-          {icon && <Icon src={icon} />}
-          {text}
+          {icon && <SvgIcon src={icon} className='mr-3 h-5 w-5 flex-none' />}
+
+          <span className='truncate'>{text}</span>
+
+          {count ? (
+            <span className='ml-auto h-5 w-5 flex-none'>
+              <Counter count={count} />
+            </span>
+          ) : null}
         </a>
       </li>
     );
@@ -278,7 +286,7 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
       onShiftClick(e);
     } else if (this.state.id === openDropdownId) {
       this.handleClose();
-    } else if(onOpen) {
+    } else if (onOpen) {
       const { top } = e.currentTarget.getBoundingClientRect();
       const placement: DropdownPlacement = top * 2 < innerHeight ? 'bottom' : 'top';
 
