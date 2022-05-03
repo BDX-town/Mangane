@@ -134,6 +134,7 @@ interface IProfileField {
 }
 
 const ProfileField: React.FC<IProfileField> = ({ value, onChange }) => {
+  const intl = useIntl();
 
   const handleChange = (key: string): React.ChangeEventHandler<HTMLInputElement> => {
     return e => {
@@ -143,8 +144,20 @@ const ProfileField: React.FC<IProfileField> = ({ value, onChange }) => {
 
   return (
     <HStack space={2} grow>
-      <Input outerClassName='w-full flex-grow' type='text' value={value.name} onChange={handleChange('name')} />
-      <Input outerClassName='w-full flex-grow' type='text' value={value.value} onChange={handleChange('value')} />
+      <Input
+        type='text'
+        outerClassName='w-full flex-grow'
+        value={value.name}
+        onChange={handleChange('name')}
+        placeholder={intl.formatMessage(messages.metaFieldLabel)}
+      />
+      <Input
+        type='text'
+        outerClassName='w-full flex-grow'
+        value={value.value}
+        onChange={handleChange('value')}
+        placeholder={intl.formatMessage(messages.metaFieldContent)}
+      />
     </HStack>
   );
 };
