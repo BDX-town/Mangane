@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import ActionButton from 'soapbox/features/ui/components/action_button';
+import ActionButton from 'soapbox/features/ui/components/action-button';
 import { useAppSelector, useOnScreen } from 'soapbox/hooks';
 import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';

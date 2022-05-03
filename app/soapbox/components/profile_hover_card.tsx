@@ -10,7 +10,7 @@ import {
   updateProfileHoverCard,
 } from 'soapbox/actions/profile_hover_card';
 import Badge from 'soapbox/components/badge';
-import ActionButton from 'soapbox/features/ui/components/action_button';
+import ActionButton from 'soapbox/features/ui/components/action-button';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { UserPanel } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
