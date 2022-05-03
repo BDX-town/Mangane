@@ -374,7 +374,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
         menu.push({
           text: intl.formatMessage(messages.embed),
           action: this.handleEmbed,
-          icon: require('feather-icons/dist/icons/link-2.svg'),
+          icon: require('@tabler/icons/icons/share.svg'),
         });
       }
     }

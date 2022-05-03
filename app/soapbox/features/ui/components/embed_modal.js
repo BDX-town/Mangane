@@ -5,6 +5,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
 import api from 'soapbox/api';
+import { Modal, Stack, Text, Input } from 'soapbox/components/ui';
 
 export default @connect()
 @injectIntl
@@ -42,9 +43,13 @@ class EmbedModal extends ImmutablePureComponent {
       iframeDocument.write(res.data.html);
       iframeDocument.close();
 
+      const innerFrame = iframeDocument.querySelector('iframe');
+
       iframeDocument.body.style.margin = 0;
-      this.iframe.width  = iframeDocument.body.scrollWidth;
-      this.iframe.height = iframeDocument.body.scrollHeight;
+
+      if (innerFrame) {
+        innerFrame.width = '100%';
+      }
     }).catch(error => {
       this.props.onError(error);
     });
@@ -62,35 +67,30 @@ class EmbedModal extends ImmutablePureComponent {
     const { oembed } = this.state;
 
     return (
-      <div className='modal-root__modal embed-modal'>
-        <h4><FormattedMessage id='status.embed' defaultMessage='Embed' /></h4>
+      <Modal title={<FormattedMessage id='status.embed' defaultMessage='Embed' />}>
+        <Stack space={4}>
+          <Stack>
+            <Text theme='muted' size='sm'>
+              <FormattedMessage id='embed.instructions' defaultMessage='Embed this post on your website by copying the code below.' />
+            </Text>
 
-        <div className='embed-modal__container'>
-          <p className='hint'>
-            <FormattedMessage id='embed.instructions' defaultMessage='Embed this post on your website by copying the code below.' />
-          </p>
-
-          <input
-            type='text'
-            className='embed-modal__html'
-            readOnly
-            value={oembed && oembed.html || ''}
-            onClick={this.handleTextareaClick}
-          />
-
-          <p className='hint'>
-            <FormattedMessage id='embed.preview' defaultMessage='Here is what it will look like:' />
-          </p>
+            <Input
+              type='text'
+              readOnly
+              value={oembed?.html || ''}
+              onClick={this.handleTextareaClick}
+            />
+          </Stack>
 
           <iframe
-            className='embed-modal__iframe'
+            className='inline-flex rounded-xl overflow-hidden max-w-full'
             frameBorder='0'
             ref={this.setIframeRef}
             sandbox='allow-same-origin'
             title='preview'
           />
-        </div>
-      </div>
+        </Stack>
+      </Modal>
     );
   }
 
