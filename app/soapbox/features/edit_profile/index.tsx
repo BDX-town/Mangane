@@ -143,8 +143,8 @@ const ProfileField: React.FC<IProfileField> = ({ value, onChange }) => {
 
   return (
     <HStack space={2} grow>
-      <Input type='text' value={value.name} onChange={handleChange('name')} />
-      <Input type='text' value={value.value} onChange={handleChange('value')} />
+      <Input outerClassName='w-full flex-grow' type='text' value={value.name} onChange={handleChange('name')} />
+      <Input outerClassName='w-full flex-grow' type='text' value={value.value} onChange={handleChange('value')} />
     </HStack>
   );
 };
@@ -251,6 +251,13 @@ const EditProfile: React.FC = () => {
   const handleAddField = () => {
     const oldFields = data.fields_attributes || [];
     const fields = [...oldFields, { name: '', value: '' }];
+    updateData('fields_attributes', fields);
+  };
+
+  const handleRemoveField = (i: number) => {
+    const oldFields = data.fields_attributes || [];
+    const fields = [...oldFields];
+    fields.splice(i, 1);
     updateData('fields_attributes', fields);
   };
 
@@ -419,6 +426,7 @@ const EditProfile: React.FC = () => {
           values={data.fields_attributes || []}
           onChange={handleFieldsChange}
           onAddItem={handleAddField}
+          onRemoveItem={handleRemoveField}
           component={ProfileField}
           maxItems={maxFields}
         />
