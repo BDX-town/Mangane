@@ -1,10 +1,16 @@
 import React from 'react';
+import { useIntl, defineMessages } from 'react-intl';
 
 import Button from '../button/button';
 import HStack from '../hstack/hstack';
 import IconButton from '../icon-button/icon-button';
 import Stack from '../stack/stack';
 import Text from '../text/text';
+
+const messages = defineMessages({
+  add: { id: 'streamfield.add', defaultMessage: 'Add' },
+  remove: { id: 'streamfield.remove', defaultMessage: 'Remove' },
+});
 
 interface IStreamfield {
   /** Array of values for the streamfield. */
@@ -36,6 +42,7 @@ const Streamfield: React.FC<IStreamfield> = ({
   component: Component,
   maxItems = Infinity,
 }) => {
+  const intl = useIntl();
 
   const handleChange = (i: number) => {
     return (value: any) => {
@@ -62,6 +69,7 @@ const Streamfield: React.FC<IStreamfield> = ({
                 className='bg-transparent text-gray-400 hover:text-gray-600'
                 src={require('@tabler/icons/icons/x.svg')}
                 onClick={() => onRemoveItem(i)}
+                title={intl.formatMessage(messages.remove)}
               />
             )}
           </HStack>
@@ -76,7 +84,7 @@ const Streamfield: React.FC<IStreamfield> = ({
           theme='ghost'
           block
         >
-          Add
+          {intl.formatMessage(messages.add)}
         </Button>
       )}
     </Stack>
