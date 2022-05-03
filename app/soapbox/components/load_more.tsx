@@ -15,7 +15,7 @@ const LoadMore: React.FC<ILoadMore> = ({ onClick, disabled, visible = true }) =>
   }
 
   return (
-    <Button theme='secondary' block disabled={disabled || !visible} onClick={onClick}>
+    <Button theme='primary' block disabled={disabled || !visible} onClick={onClick}>
       <FormattedMessage id='status.load_more' defaultMessage='Load more' />
     </Button>
   );

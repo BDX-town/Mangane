@@ -77,7 +77,7 @@ const Dashboard: React.FC = () => {
           </div>
         )}
         {isNumber(userCount) && (
-          <Link className='dashcounter' to='/admin/users'>
+          <Link className='dashcounter' to='/soapbox/admin/users'>
             <Text align='center' size='2xl' weight='medium'>
               <FormattedNumber value={userCount} />
             </Text>
@@ -125,7 +125,7 @@ const Dashboard: React.FC = () => {
           <h4><FormattedMessage id='admin.dashwidgets.software_header' defaultMessage='Software' /></h4>
           <ul>
             <li>{sourceCode.displayName} <span className='pull-right'>{sourceCode.version}</span></li>
-            <li>{v.software} <span className='pull-right'>{v.version}</span></li>
+            <li>{v.software + (v.build ? `+${v.build}` : '')} <span className='pull-right'>{v.version}</span></li>
           </ul>
         </div>
         {features.emailList && account.admin && (

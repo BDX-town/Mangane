@@ -25,6 +25,7 @@ module.exports = {
     'import',
     'promise',
     'react-hooks',
+    '@typescript-eslint',
   ],
 
   parserOptions: {
@@ -104,7 +105,8 @@ module.exports = {
     'no-undef': 'error',
     'no-unreachable': 'error',
     'no-unused-expressions': 'error',
-    'no-unused-vars': [
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': [
       'error',
       {
         vars: 'all',

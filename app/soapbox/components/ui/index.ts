@@ -23,6 +23,7 @@ export {
   MenuList,
 } from './menu/menu';
 export { default as Modal } from './modal/modal';
+export { default as ProgressBar } from './progress-bar/progress-bar';
 export { default as Select } from './select/select';
 export { default as Spinner } from './spinner/spinner';
 export { default as Stack } from './stack/stack';

@@ -9,7 +9,8 @@ interface IPlaceholderStatus {
   thread?: boolean
 }
 
-const PlaceholderStatus = ({ thread = false }: IPlaceholderStatus) => (
+/** Fake status to display while data is loading. */
+const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ thread = false }) => (
   <div
     className={classNames({
       'status-placeholder bg-white dark:bg-slate-800': true,

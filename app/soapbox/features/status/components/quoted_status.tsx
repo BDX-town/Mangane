@@ -129,12 +129,14 @@ class QuotedStatus extends ImmutablePureComponent<IQuotedStatus> {
           {...actions}
           id={account.id}
           timestamp={status.created_at}
+          withRelationship={false}
           showProfileHoverCard={!compose}
         />
 
         {this.renderReplyMentions()}
 
         <Text
+          className='break-words'
           size='sm'
           dangerouslySetInnerHTML={{ __html: status.contentHtml }}
         />

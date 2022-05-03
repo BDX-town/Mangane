@@ -20,12 +20,12 @@ import PublicLayout from 'soapbox/features/public_layout';
 import NotificationsContainer from 'soapbox/features/ui/containers/notifications_container';
 import WaitlistPage from 'soapbox/features/verification/waitlist_page';
 import { createGlobals } from 'soapbox/globals';
-import { useAppSelector, useAppDispatch, useOwnAccount, useSoapboxConfig, useSettings } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures, useSoapboxConfig, useSettings } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
 import { getFeatures } from 'soapbox/utils/features';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
-import { ONBOARDING_VERSION } from '../actions/onboarding';
+import { checkOnboardingStatus } from '../actions/onboarding';
 import { preload } from '../actions/preload';
 import ErrorBoundary from '../components/error_boundary';
 import UI from '../features/ui';
@@ -39,6 +39,9 @@ createGlobals(store);
 
 // Preload happens synchronously
 store.dispatch(preload() as any);
+
+// This happens synchronously
+store.dispatch(checkOnboardingStatus() as any);
 
 /** Load initial data from the backend */
 const loadInitial = () => {
@@ -68,13 +71,15 @@ const SoapboxMount = () => {
   const dispatch = useAppDispatch();
 
   const me = useAppSelector(state => state.me);
+  const instance = useAppSelector(state => state.instance);
   const account = useOwnAccount();
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
+  const features = useFeatures();
 
   const locale = validLocale(settings.get('locale')) ? settings.get('locale') : 'en';
 
-  const needsOnboarding = settings.get('onboardingVersion') < ONBOARDING_VERSION;
+  const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const singleUserMode = soapboxConfig.singleUserMode && soapboxConfig.singleUserModeProfile;
 
   const [messages, setMessages] = useState<Record<string, string>>({});
@@ -146,10 +151,6 @@ const SoapboxMount = () => {
         <body className={bodyClass} />
         {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
         <meta name='theme-color' content={soapboxConfig.brandColor} />
-
-        {soapboxConfig.appleAppId && (
-          <meta name='apple-itunes-app' content={`app-id=${soapboxConfig.appleAppId}`} />
-        )}
       </Helmet>
 
       <ErrorBoundary>
@@ -157,7 +158,7 @@ const SoapboxMount = () => {
           <>
             <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
               <Switch>
-                <Redirect from='/v1/verify_email/:token' to='/auth/verify/email/:token' />
+                <Redirect from='/v1/verify_email/:token' to='/verify/email/:token' />
 
                 {waitlisted && <Route render={(props) => <WaitlistPage {...props} account={account} />} />}
 
@@ -170,7 +171,10 @@ const SoapboxMount = () => {
                 <Route exact path='/beta/:slug?' component={PublicLayout} />
                 <Route exact path='/mobile/:slug?' component={PublicLayout} />
                 <Route exact path='/login' component={AuthLayout} />
-                <Route path='/auth/verify' component={AuthLayout} />
+                {(features.accountCreation && instance.registrations) && (
+                  <Route exact path='/signup' component={AuthLayout} />
+                )}
+                <Route path='/verify' component={AuthLayout} />
                 <Route path='/reset-password' component={AuthLayout} />
                 <Route path='/edit-password' component={AuthLayout} />
 

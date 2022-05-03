@@ -7,10 +7,13 @@ import Text from '../text/text';
 import './spinner.css';
 
 interface ILoadingIndicator {
+  /** Width and height of the spinner in pixels. */
   size?: number,
+  /** Whether to display "Loading..." beneath the spinner. */
   withText?: boolean
 }
 
+/** Spinning loading placeholder. */
 const LoadingIndicator = ({ size = 30, withText = true }: ILoadingIndicator) => (
   <Stack space={2} justifyContent='center' alignItems='center'>
     <div className='spinner' style={{ width: size, height: size }}>

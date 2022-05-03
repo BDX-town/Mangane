@@ -2,10 +2,8 @@ import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { fetchPatronInstance } from 'soapbox/actions/patron';
-import { Widget, Button, Text } from 'soapbox/components/ui';
+import { Widget, Button, ProgressBar, Text } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
-
-import ProgressBar from '../../../components/progress_bar';
 
 /** Open link in a new tab. */
 // https://stackoverflow.com/a/28374344/8811886

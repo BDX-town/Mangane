@@ -10,6 +10,7 @@ import {
   REPORT_COMMENT_CHANGE,
   REPORT_FORWARD_CHANGE,
   REPORT_BLOCK_CHANGE,
+  REPORT_RULE_CHANGE,
 } from '../actions/reports';
 
 const initialState = ImmutableMap({
@@ -20,6 +21,7 @@ const initialState = ImmutableMap({
     comment: '',
     forward: false,
     block: false,
+    rule_ids: ImmutableSet(),
   }),
 });
 
@@ -51,6 +53,14 @@ export default function reports(state = initialState, action) {
     return state.setIn(['new', 'forward'], action.forward);
   case REPORT_BLOCK_CHANGE:
     return state.setIn(['new', 'block'], action.block);
+  case REPORT_RULE_CHANGE:
+    return state.updateIn(['new', 'rule_ids'], ImmutableSet(), (set) => {
+      if (set.includes(action.rule_id)) {
+        return set.remove(action.rule_id);
+      }
+
+      return set.add(action.rule_id);
+    });
   case REPORT_SUBMIT_REQUEST:
     return state.setIn(['new', 'isSubmitting'], true);
   case REPORT_SUBMIT_FAIL:
@@ -62,6 +72,8 @@ export default function reports(state = initialState, action) {
       map.setIn(['new', 'status_ids'], ImmutableSet());
       map.setIn(['new', 'comment'], '');
       map.setIn(['new', 'isSubmitting'], false);
+      map.setIn(['new', 'rule_ids'], ImmutableSet());
+      map.setIn(['new', 'block'], false);
     });
   default:
     return state;

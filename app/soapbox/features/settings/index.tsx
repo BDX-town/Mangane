@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { fetchMfa } from 'soapbox/actions/mfa';
+import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
 
 import List, { ListItem } from '../../components/list';
 import { Button, Card, CardBody, CardHeader, CardTitle, Column } from '../../components/ui';
@@ -21,15 +22,14 @@ const messages = defineMessages({
   deleteAccount: { id: 'settings.delete_account', defaultMessage: 'Delete Account' },
 });
 
+/** User settings page. */
 const Settings = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const intl = useIntl();
 
-  const mfa = useSelector((state) => state.getIn(['security', 'mfa']));
-  const me = useSelector((state) => state.get('me'));
-  const account = useSelector((state) => state.getIn(['accounts', me]));
-  const displayName = account.get('display_name') || account.get('username');
+  const mfa = useAppSelector((state) => state.security.get('mfa'));
+  const account = useOwnAccount();
 
   const navigateToChangeEmail = React.useCallback(() => history.push('/settings/email'), [history]);
   const navigateToChangePassword = React.useCallback(() => history.push('/settings/password'), [history]);
@@ -41,6 +41,10 @@ const Settings = () => {
   React.useEffect(() => {
     dispatch(fetchMfa());
   }, [dispatch]);
+
+  if (!account) return null;
+
+  const displayName = account.display_name || account.username;
 
   return (
     <Column label={intl.formatMessage(messages.settings)} transparent withHeader={false}>
@@ -73,7 +77,7 @@ const Settings = () => {
           </List>
         </CardBody>
 
-        <CardHeader className='mt-4'>
+        <CardHeader>
           <CardTitle title={intl.formatMessage(messages.preferences)} />
         </CardHeader>
 

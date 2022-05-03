@@ -127,7 +127,7 @@ export function Filters() {
 }
 
 export function ReportModal() {
-  return import(/* webpackChunkName: "modals/report_modal" */'../components/report_modal');
+  return import(/* webpackChunkName: "modals/report-modal/report-modal" */'../components/modals/report-modal/report-modal');
 }
 
 export function MediaGallery() {
@@ -360,6 +360,10 @@ export function ProfileInfoPanel() {
 
 export function ProfileMediaPanel() {
   return import(/* webpackChunkName: "features/account_gallery" */'../components/profile_media_panel');
+}
+
+export function ProfileFieldsPanel() {
+  return import(/* webpackChunkName: "features/account_timeline" */'../components/profile_fields_panel');
 }
 
 export function PinnedAccountsPanel() {

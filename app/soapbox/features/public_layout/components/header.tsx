@@ -57,7 +57,7 @@ const Header = () => {
       .catch((error: AxiosError) => {
         setLoading(false);
 
-        const data = error.response?.data;
+        const data: any = error.response?.data;
         if (data?.error === 'mfa_required') {
           setMfaToken(data.mfa_token);
         }
@@ -71,7 +71,7 @@ const Header = () => {
     <header>
       <nav className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8' aria-label='Header'>
         <div className='w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none'>
-          <div className='flex items-center justify-center relative w-36'>
+          <div className='flex items-center sm:justify-center relative w-36'>
             <div className='hidden sm:block absolute z-0 -top-24 -left-6'>
               <Sonar />
             </div>
@@ -96,7 +96,7 @@ const Header = () => {
 
                 {(isOpen || features.pepe && pepeOpen) && (
                   <Button
-                    to={features.pepe ? '/auth/verify' : '/signup'} // FIXME: actually route this somewhere
+                    to={features.pepe ? '/verify' : '/signup'}
                     theme='primary'
                   >
                     {intl.formatMessage(messages.register)}

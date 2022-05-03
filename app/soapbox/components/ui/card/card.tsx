@@ -17,12 +17,17 @@ const messages = defineMessages({
 });
 
 interface ICard {
+  /** The type of card. */
   variant?: 'rounded',
+  /** Card size preset. */
   size?: 'md' | 'lg' | 'xl',
+  /** Extra classnames for the <div> element. */
   className?: string,
+  /** Elements inside the card. */
   children: React.ReactNode,
 }
 
+/** An opaque backdrop to hold a collection of related elements. */
 const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant, size = 'md', className, ...filteredProps }, ref): JSX.Element => (
   <div
     ref={ref}
@@ -42,6 +47,7 @@ interface ICardHeader {
   onBackClick?: (event: React.MouseEvent) => void
 }
 
+/** Typically holds a CardTitle. */
 const CardHeader: React.FC<ICardHeader> = ({ children, backHref, onBackClick }): JSX.Element => {
   const intl = useIntl();
 
@@ -74,10 +80,12 @@ interface ICardTitle {
   title: string | React.ReactNode
 }
 
-const CardTitle = ({ title }: ICardTitle): JSX.Element => (
-  <Text size='xl' weight='bold' tag='h1' data-testid='card-title'>{title}</Text>
+/** A card's title. */
+const CardTitle: React.FC<ICardTitle> = ({ title }): JSX.Element => (
+  <Text size='xl' weight='bold' tag='h1' data-testid='card-title' truncate>{title}</Text>
 );
 
+/** A card's body. */
 const CardBody: React.FC = ({ children }): JSX.Element => (
   <div data-testid='card-body'>{children}</div>
 );

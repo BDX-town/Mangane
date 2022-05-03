@@ -1,15 +1,22 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import spring from 'react-motion/lib/spring';
+import { spring } from 'react-motion';
 
 import { Icon, Stack, Text } from 'soapbox/components/ui';
 
 import Motion from '../../ui/util/optional_motion';
 
-const UploadArea = ({ active, onClose }) => {
-  const handleKeyUp = (e) => {
+interface IUploadArea {
+  /** Whether the upload area is active. */
+  active: boolean,
+  /** Callback when the upload area is closed. */
+  onClose: () => void,
+}
+
+/** Component to display when a file is dragged over the UI. */
+const UploadArea: React.FC<IUploadArea> = ({ active, onClose }) => {
+  const handleKeyUp = (e: KeyboardEvent) => {
     const keyCode = e.keyCode;
 
     if (active) {
@@ -61,11 +68,6 @@ const UploadArea = ({ active, onClose }) => {
       )}
     </Motion>
   );
-};
-
-UploadArea.propTypes = {
-  active: PropTypes.bool,
-  onClose: PropTypes.func,
 };
 
 export default UploadArea;

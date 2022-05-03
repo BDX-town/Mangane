@@ -8,7 +8,7 @@ type Alignments = 'left' | 'center' | 'right'
 type TrackingSizes = 'normal' | 'wide'
 type TransformProperties = 'uppercase' | 'normal'
 type Families = 'sans' | 'mono'
-type Tags = 'abbr' | 'p' | 'span' | 'pre' | 'time' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+type Tags = 'abbr' | 'p' | 'span' | 'pre' | 'time' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label'
 
 const themes = {
   default: 'text-gray-900 dark:text-gray-100',
@@ -60,19 +60,31 @@ const families = {
 };
 
 interface IText extends Pick<React.HTMLAttributes<HTMLParagraphElement>, 'dangerouslySetInnerHTML'> {
+  /** How to align the text. */
   align?: Alignments,
+  /** Extra class names for the outer element. */
   className?: string,
-  dateTime?: string,
+  /** Typeface of the text. */
   family?: Families,
+  /** The "for" attribute specifies which form element a label is bound to. */
+  htmlFor?: string,
+  /** Font size of the text. */
   size?: Sizes,
+  /** HTML element name of the outer element. */
   tag?: Tags,
+  /** Theme for the text. */
   theme?: Themes,
+  /** Letter-spacing of the text. */
   tracking?: TrackingSizes,
+  /** Transform (eg uppercase) for the text. */
   transform?: TransformProperties,
+  /** Whether to truncate the text if its container is too small. */
   truncate?: boolean,
+  /** Font weight of the text. */
   weight?: Weights
 }
 
+/** UI-friendly text container with dark mode support. */
 const Text: React.FC<IText> = React.forwardRef(
   (props: IText, ref: React.LegacyRef<any>) => {
     const {

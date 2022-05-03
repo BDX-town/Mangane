@@ -72,6 +72,15 @@ const getInstanceFeatures = (instance: Instance) => {
     accountByUsername: v.software === PLEROMA,
 
     /**
+     * Ability to create accounts.
+     * @see POST /api/v1/accounts
+     */
+    accountCreation: any([
+      v.software === MASTODON,
+      v.software === PLEROMA,
+    ]),
+
+    /**
      * Ability to pin other accounts on one's profile.
      * @see POST /api/v1/accounts/:id/pin
      * @see POST /api/v1/accounts/:id/unpin
@@ -146,6 +155,15 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
       v.software === PIXELFED,
+    ]),
+
+    /**
+     * Accounts can be marked as bots.
+     * @see PATCH /api/v1/accounts/update_credentials
+     */
+    bots: any([
+      v.software === MASTODON,
+      v.software === PLEROMA,
     ]),
 
     /**
@@ -243,10 +261,25 @@ const getInstanceFeatures = (instance: Instance) => {
     focalPoint: v.software === MASTODON && gte(v.compatVersion, '2.3.0'),
 
     /**
+     * Ability to lock accounts and manually approve followers.
+     * @see PATCH /api/v1/accounts/update_credentials
+     */
+    followRequests: any([
+      v.software === MASTODON,
+      v.software === PLEROMA,
+    ]),
+
+    /**
      * Whether client settings can be retrieved from the API.
      * @see GET /api/pleroma/frontend_configurations
      */
     frontendConfigurations: v.software === PLEROMA,
+
+    /**
+     * Can hide follows/followers lists and counts.
+     * @see PATCH /api/v1/accounts/update_credentials
+     */
+    hideNetwork: v.software === PLEROMA,
 
     /**
      * Pleroma import API.
@@ -288,6 +321,12 @@ const getInstanceFeatures = (instance: Instance) => {
       // Even though Pleroma supports these endpoints, it has disadvantages
       // v.software === PLEROMA && gte(v.version, '2.1.0'),
     ]),
+
+    /**
+     * Ability to hide notifications from people you don't follow.
+     * @see PUT /api/pleroma/notification_settings
+     */
+    muteStrangers: v.software === PLEROMA,
 
     /**
      * Add private notes to accounts.
@@ -334,6 +373,15 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Ability to set custom profile fields.
+     * @see PATCH /api/v1/accounts/update_credentials
+     */
+    profileFields: any([
+      v.software === MASTODON,
+      v.software === PLEROMA,
+    ]),
+
+    /**
      * Can display a timeline of all known public statuses.
      * Local and Fediverse timelines both use this feature.
      * @see GET /api/v1/timelines/public
@@ -357,6 +405,11 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/pleroma/remote_interaction
      */
     remoteInteractionsAPI: v.software === PLEROMA && gte(v.version, '2.4.50'),
+
+    reportMultipleStatuses: any([
+      v.software === MASTODON,
+      v.software === PLEROMA,
+    ]),
 
     /**
      * Can request a password reset email through the API.

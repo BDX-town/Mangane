@@ -9,7 +9,7 @@ import Verification from '../index';
 
 const TestableComponent = () => (
   <Switch>
-    <Route path='/auth/verify' exact><Verification /></Route>
+    <Route path='/verify' exact><Verification /></Route>
     <Route path='/' exact><span data-testid='home'>Homepage</span></Route>
   </Switch>
 );
@@ -18,7 +18,7 @@ const renderComponent = (store) => render(
   <TestableComponent />,
   {},
   store,
-  { initialEntries: ['/auth/verify'] },
+  { initialEntries: ['/verify'] },
 );
 
 describe('<Verification />', () => {
