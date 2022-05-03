@@ -371,6 +371,15 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Ability to set custom profile fields.
+     * @see PATCH /api/v1/accounts/update_credentials
+     */
+    profileFields: any([
+      v.software === MASTODON,
+      v.software === PLEROMA,
+    ]),
+
+    /**
      * Can display a timeline of all known public statuses.
      * Local and Fediverse timelines both use this feature.
      * @see GET /api/v1/timelines/public
