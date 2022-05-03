@@ -8,13 +8,8 @@ const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();
 
   const mapStateToProps = state => {
-    let statusId = state.getIn(['compose', 'id'], null);
-    let editing  = true;
-
-    if (statusId === null) {
-      statusId = state.getIn(['compose', 'in_reply_to']);
-      editing  = false;
-    }
+    const statusId = state.getIn(['compose', 'in_reply_to']);
+    const editing = !!state.getIn(['compose', 'id']);
 
     return {
       status: getStatus(state, { id: statusId }),

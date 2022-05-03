@@ -34,6 +34,7 @@ class PrivacyDropdownMenu extends React.PureComponent {
     placement: PropTypes.string.isRequired,
     onClose: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
+    unavailable: PropTypes.bool,
   };
 
   state = {
@@ -244,8 +245,12 @@ class PrivacyDropdown extends React.PureComponent {
   }
 
   render() {
-    const { value, intl } = this.props;
+    const { value, intl, unavailable } = this.props;
     const { open, placement } = this.state;
+
+    if (unavailable) {
+      return null;
+    }
 
     const valueOption = this.options.find(item => item.value === value);
 

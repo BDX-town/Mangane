@@ -1,8 +1,6 @@
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
-import { getFeatures } from 'soapbox/utils/features';
-
 import {
   changeCompose,
   submitCompose,
@@ -12,7 +10,9 @@ import {
   changeComposeSpoilerText,
   insertEmojiCompose,
   uploadCompose,
-} from '../../../actions/compose';
+} from 'soapbox/actions/compose';
+import { getFeatures } from 'soapbox/utils/features';
+
 import ComposeForm from '../components/compose_form';
 
 const mapStateToProps = state => {

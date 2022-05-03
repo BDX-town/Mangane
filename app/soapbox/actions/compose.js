@@ -98,7 +98,7 @@ export const ensureComposeIsVisible = (getState, routerHistory) => {
   }
 };
 
-export function setComposeToStatus(status, text, spoiler_text, content_type) {
+export function setComposeToStatus(status, raw_text, spoiler_text, content_type) {
   return (dispatch, getState) => {
     const { instance } = getState();
     const { explicitAddressing } = getFeatures(instance);
@@ -106,7 +106,7 @@ export function setComposeToStatus(status, text, spoiler_text, content_type) {
     dispatch({
       type: COMPOSE_SET_STATUS,
       status,
-      text,
+      raw_text,
       explicitAddressing,
       spoiler_text,
       content_type,

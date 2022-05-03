@@ -16,6 +16,7 @@ class ScheduleButton extends React.PureComponent {
   static propTypes = {
     disabled: PropTypes.bool,
     active: PropTypes.bool,
+    unavailable: PropTypes.bool,
     onClick: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
   };
@@ -25,7 +26,11 @@ class ScheduleButton extends React.PureComponent {
   }
 
   render() {
-    const { intl, active, disabled } = this.props;
+    const { intl, active, unavailable, disabled } = this.props;
+
+    if (unavailable) {
+      return null;
+    }
 
     return (
       <ComposeFormButton
