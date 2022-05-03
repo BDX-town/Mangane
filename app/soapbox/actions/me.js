@@ -59,18 +59,12 @@ const persistAuthAccount = (account, params) => {
   }
 };
 
-export function patchMe(params, formData = false) {
+export function patchMe(params) {
   return (dispatch, getState) => {
     dispatch(patchMeRequest());
 
-    const options = formData ? {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    } : {};
-
     return api(getState)
-      .patch('/api/v1/accounts/update_credentials', params, options)
+      .patch('/api/v1/accounts/update_credentials', params)
       .then(response => {
         persistAuthAccount(response.data, params);
         dispatch(patchMeSuccess(response.data));
