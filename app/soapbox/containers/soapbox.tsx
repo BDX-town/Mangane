@@ -151,10 +151,6 @@ const SoapboxMount = () => {
         <body className={bodyClass} />
         {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
         <meta name='theme-color' content={soapboxConfig.brandColor} />
-
-        {soapboxConfig.appleAppId && (
-          <meta name='apple-itunes-app' content={`app-id=${soapboxConfig.appleAppId}`} />
-        )}
       </Helmet>
 
       <ErrorBoundary>

@@ -3,6 +3,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Helmet from 'soapbox/components/helmet';
+import { useSoapboxConfig } from 'soapbox/hooks';
 
 import { Card, CardBody, CardHeader, CardTitle } from '../card/card';
 
@@ -24,6 +25,7 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
   const { backHref, children, label, transparent = false, withHeader = true, className } = props;
 
   const history = useHistory();
+  const soapboxConfig = useSoapboxConfig();
 
   const handleBackClick = () => {
     if (backHref) {
@@ -60,7 +62,17 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
 
   return (
     <div role='region' className='relative' ref={ref} aria-label={label} column-type={transparent ? 'transparent' : 'filled'}>
-      <Helmet><title>{label}</title></Helmet>
+      <Helmet>
+        <title>{label}</title>
+
+        {soapboxConfig.appleAppId && (
+          <meta
+            data-react-helmet='true'
+            name='apple-itunes-app'
+            content={`app-id=${soapboxConfig.appleAppId}, app-argument=${location.href}`}
+          />
+        )}
+      </Helmet>
 
       {renderChildren()}
     </div>
