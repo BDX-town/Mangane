@@ -4,19 +4,32 @@ import Button from '../button/button';
 import HStack from '../hstack/hstack';
 import IconButton from '../icon-button/icon-button';
 import Stack from '../stack/stack';
+import Text from '../text/text';
 
 interface IStreamfield {
+  /** Array of values for the streamfield. */
   values: any[],
+  /** Input label message. */
+  labelText?: React.ReactNode,
+  /** Input hint message. */
+  hintText?: React.ReactNode,
+  /** Callback to add an item. */
   onAddItem?: () => void,
+  /** Callback to remove an item by index. */
   onRemoveItem?: (i: number) => void,
+  /** Callback when values are changed. */
   onChange: (values: any[]) => void,
+  /** Input to render for each value. */
   component: React.ComponentType<{ onChange: (value: any) => void, value: any }>,
+  /** Maximum number of allowed inputs. */
   maxItems?: number,
 }
 
 /** List of inputs that can be added or removed. */
 const Streamfield: React.FC<IStreamfield> = ({
   values,
+  labelText,
+  hintText,
   onAddItem,
   onRemoveItem,
   onChange,
@@ -34,6 +47,10 @@ const Streamfield: React.FC<IStreamfield> = ({
 
   return (
     <Stack space={4}>
+      <Stack>
+        {labelText && <Text size='sm' weight='medium'>{labelText}</Text>}
+        {hintText && <Text size='xs' theme='muted'>{hintText}</Text>}
+      </Stack>
 
       <Stack>
         {values.map((value, i) => (
