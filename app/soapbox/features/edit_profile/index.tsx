@@ -165,14 +165,14 @@ const ProfileField: React.FC<IProfileField> = ({ value, onChange }) => {
     <HStack space={2} grow>
       <Input
         type='text'
-        outerClassName='w-full flex-grow'
+        outerClassName='w-2/5 flex-grow'
         value={value.name}
         onChange={handleChange('name')}
         placeholder={intl.formatMessage(messages.metaFieldLabel)}
       />
       <Input
         type='text'
-        outerClassName='w-full flex-grow'
+        outerClassName='w-3/5 flex-grow'
         value={value.value}
         onChange={handleChange('value')}
         placeholder={intl.formatMessage(messages.metaFieldContent)}
