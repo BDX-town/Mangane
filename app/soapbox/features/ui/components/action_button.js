@@ -10,6 +10,8 @@ import {
   unfollowAccount,
   blockAccount,
   unblockAccount,
+  muteAccount,
+  unmuteAccount,
 } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
 import Icon from 'soapbox/components/icon';
@@ -23,6 +25,7 @@ const messages = defineMessages({
   requested: { id: 'account.requested', defaultMessage: 'Awaiting approval. Click to cancel follow request' },
   requested_small: { id: 'account.requested_small', defaultMessage: 'Awaiting approval' },
   unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
+  unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
   blocked: { id: 'account.blocked', defaultMessage: 'Blocked' },
 });
@@ -51,6 +54,14 @@ const mapDispatchToProps = (dispatch) => ({
       dispatch(unblockAccount(account.get('id')));
     } else {
       dispatch(blockAccount(account.get('id')));
+    }
+  },
+
+  onMute(account) {
+    if (account.getIn(['relationship', 'muting'])) {
+      dispatch(unmuteAccount(account.get('id')));
+    } else {
+      dispatch(muteAccount(account.get('id')));
     }
   },
 
@@ -97,6 +108,10 @@ class ActionButton extends ImmutablePureComponent {
     this.props.onBlock(this.props.account);
   }
 
+  handleMute = () => {
+    this.props.onMute(this.props.account);
+  }
+
   handleRemoteFollow = () => {
     this.props.onOpenUnauthorizedModal(this.props.account);
   }
@@ -133,7 +148,7 @@ class ActionButton extends ImmutablePureComponent {
       } else if (account.getIn(['relationship', 'requested'])) {
         // Awaiting acceptance
         return <Button size='sm' theme='secondary' text={small ? intl.formatMessage(messages.requested_small) : intl.formatMessage(messages.requested)} onClick={this.handleFollow} />;
-      } else if (!account.getIn(['relationship', 'blocking'])) {
+      } else if (!account.getIn(['relationship', 'blocking']) && !account.getIn(['relationship', 'muting'])) {
         // Follow & Unfollow
         return (<Button
           size='sm'
@@ -151,6 +166,9 @@ class ActionButton extends ImmutablePureComponent {
       } else if (account.getIn(['relationship', 'blocking'])) {
         // Unblock
         return <Button theme='danger' size='sm' text={intl.formatMessage(messages.unblock, { name: account.get('username') })} onClick={this.handleBlock} />;
+      } else if (account.getIn(['relationship', 'muting'])) {
+        // Unmute
+        return <Button theme='danger' size='sm' text={intl.formatMessage(messages.unmute, { name: account.get('username') })} onClick={this.handleMute} />;
       }
     } else {
       // Edit profile
