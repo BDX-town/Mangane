@@ -631,6 +631,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
                   timestampUrl={statusUrl}
                   action={reblogElement}
                   hideActions={!reblogElement}
+                  showEdit={!!status.edited_at}
                 />
               </HStack>
             </div>
