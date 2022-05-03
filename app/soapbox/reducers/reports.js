@@ -54,7 +54,13 @@ export default function reports(state = initialState, action) {
   case REPORT_BLOCK_CHANGE:
     return state.setIn(['new', 'block'], action.block);
   case REPORT_RULE_CHANGE:
-    return state.setIn(['new', 'rule_ids'], ImmutableSet([action.rule_id]));
+    return state.updateIn(['new', 'rule_ids'], ImmutableSet(), (set) => {
+      if (set.includes(action.rule_id)) {
+        return set.remove(action.rule_id);
+      }
+
+      return set.add(action.rule_id);
+    });
   case REPORT_SUBMIT_REQUEST:
     return state.setIn(['new', 'isSubmitting'], true);
   case REPORT_SUBMIT_FAIL:
