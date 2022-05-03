@@ -7,11 +7,12 @@ import snackbar from 'soapbox/actions/snackbar';
 import {
   Checkbox,
 } from 'soapbox/features/forms';
-import { useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
 import resizeImage from 'soapbox/utils/resize_image';
 
-import { Button, Column, Form, FormActions, FormGroup, Input, Textarea } from '../../components/ui';
+import { Button, Column, Form, FormActions, FormGroup, Input, Textarea, HStack } from '../../components/ui';
+import Streamfield from '../../components/ui/streamfield/streamfield';
 
 import ProfilePreview from './components/profile_preview';
 
@@ -26,6 +27,25 @@ const hidesNetwork = (account: Account): boolean => {
   return Boolean(hide_followers && hide_follows && hide_followers_count && hide_follows_count);
 };
 
+/** Converts JSON objects to FormData. */
+// https://stackoverflow.com/a/60286175/8811886
+// @ts-ignore
+const toFormData = (f => f(f))(h => f => f(x => h(h)(f)(x)))(f => fd => pk => d => {
+  if (d instanceof Object) {
+    // eslint-disable-next-line consistent-return
+    Object.keys(d).forEach(k => {
+      const v = d[k];
+      if (pk) k = `${pk}[${k}]`;
+      if (v instanceof Object && !(v instanceof Date) && !(v instanceof File)) {
+        return f(fd)(k)(v);
+      } else {
+        fd.append(k, v);
+      }
+    });
+  }
+  return fd;
+})(new FormData())();
+
 const messages = defineMessages({
   heading: { id: 'column.edit_profile', defaultMessage: 'Edit profile' },
   header: { id: 'edit_profile.header', defaultMessage: 'Edit Profile' },
@@ -39,13 +59,6 @@ const messages = defineMessages({
   locationPlaceholder: { id: 'edit_profile.fields.location_placeholder', defaultMessage: 'Location' },
   cancel: { id: 'common.cancel', defaultMessage: 'Cancel' },
 });
-
-// /** Forces fields to be maxFields size, filling empty values. */
-// const normalizeFields = (fields, maxFields: number) => (
-//   ImmutableList(fields).setSize(Math.max(fields.size, maxFields)).map(field =>
-//     field ? field : ImmutableMap({ name: '', value: '' }),
-//   )
-// );
 
 /**
  * Profile metadata `name` and `value`.
@@ -121,7 +134,7 @@ const accountToCredentials = (account: Account): AccountCredentials => {
     display_name: account.display_name,
     note: account.source.get('note'),
     locked: account.locked,
-    fields_attributes: [...account.source.get<Iterable<AccountCredentialsField>>('fields', [])],
+    fields_attributes: [...account.source.get<Iterable<AccountCredentialsField>>('fields', []).toJS()],
     stranger_notifications: account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']) === true,
     accepts_email_list: account.getIn(['pleroma', 'accepts_email_list']) === true,
     hide_followers: hideNetwork,
@@ -134,6 +147,40 @@ const accountToCredentials = (account: Account): AccountCredentials => {
   };
 };
 
+interface IProfileField {
+  value: AccountCredentialsField,
+  onChange: (field: AccountCredentialsField) => void,
+}
+
+const ProfileField: React.FC<IProfileField> = ({ value, onChange }) => {
+  const intl = useIntl();
+
+  const handleChange = (key: string): React.ChangeEventHandler<HTMLInputElement> => {
+    return e => {
+      onChange({ ...value, [key]: e.currentTarget.value });
+    };
+  };
+
+  return (
+    <HStack space={2} grow>
+      <Input
+        type='text'
+        outerClassName='w-2/5 flex-grow'
+        value={value.name}
+        onChange={handleChange('name')}
+        placeholder={intl.formatMessage(messages.metaFieldLabel)}
+      />
+      <Input
+        type='text'
+        outerClassName='w-3/5 flex-grow'
+        value={value.value}
+        onChange={handleChange('value')}
+        placeholder={intl.formatMessage(messages.metaFieldContent)}
+      />
+    </HStack>
+  );
+};
+
 /** Edit profile page. */
 const EditProfile: React.FC = () => {
   const intl = useIntl();
@@ -141,7 +188,7 @@ const EditProfile: React.FC = () => {
 
   const account   = useOwnAccount();
   const features  = useFeatures();
-  // const maxFields = useAppSelector(state => state.instance.pleroma.getIn(['metadata', 'fields_limits', 'max_fields'], 4) as number);
+  const maxFields = useAppSelector(state => state.instance.pleroma.getIn(['metadata', 'fields_limits', 'max_fields'], 4) as number);
 
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState<AccountCredentials>({});
@@ -165,8 +212,9 @@ const EditProfile: React.FC = () => {
 
   const handleSubmit: React.FormEventHandler = (event) => {
     const promises = [];
+    const formData = toFormData(data);
 
-    promises.push(dispatch(patchMe(data, true)));
+    promises.push(dispatch(patchMe(formData)));
 
     if (features.muteStrangers) {
       promises.push(
@@ -229,27 +277,22 @@ const EditProfile: React.FC = () => {
     };
   };
 
-  // handleFieldChange = (i, key) => {
-  //   return (e) => {
-  //     this.setState({
-  //       fields: this.state.fields.setIn([i, key], e.target.value),
-  //     });
-  //   };
-  // };
-  //
-  // handleAddField = () => {
-  //   this.setState({
-  //     fields: this.state.fields.push(ImmutableMap({ name: '', value: '' })),
-  //   });
-  // };
-  //
-  // handleDeleteField = i => {
-  //   return () => {
-  //     this.setState({
-  //       fields: normalizeFields(this.state.fields.delete(i), Math.min(this.props.maxFields, 4)),
-  //     });
-  //   };
-  // };
+  const handleFieldsChange = (fields: AccountCredentialsField[]) => {
+    updateData('fields_attributes', fields);
+  };
+
+  const handleAddField = () => {
+    const oldFields = data.fields_attributes || [];
+    const fields = [...oldFields, { name: '', value: '' }];
+    updateData('fields_attributes', fields);
+  };
+
+  const handleRemoveField = (i: number) => {
+    const oldFields = data.fields_attributes || [];
+    const fields = [...oldFields];
+    fields.splice(i, 1);
+    updateData('fields_attributes', fields);
+  };
 
   /** Memoized avatar preview URL. */
   const avatarUrl = useMemo(() => {
@@ -412,47 +455,19 @@ const EditProfile: React.FC = () => {
           )}
         </div>
 
-        {/* </FieldsGroup> */}
-        {/*<FieldsGroup>
-            <div className='fields-row__column fields-group'>
-              <div className='input with_block_label'>
-                <label><FormattedMessage id='edit_profile.fields.meta_fields_label' defaultMessage='Profile metadata' /></label>
-                <span className='hint'>
-                  <FormattedMessage id='edit_profile.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# item} other {# items}} displayed as a table on your profile' values={{ count: maxFields }} />
-                </span>
-                {
-                  this.state.fields.map((field, i) => (
-                    <div className='row' key={i}>
-                      <TextInput
-                        placeholder={intl.formatMessage(messages.metaFieldLabel)}
-                        value={field.get('name')}
-                        onChange={this.handleFieldChange(i, 'name')}
-                      />
-                      <TextInput
-                        placeholder={intl.formatMessage(messages.metaFieldContent)}
-                        value={field.get('value')}
-                        onChange={this.handleFieldChange(i, 'value')}
-                      />
-                      {
-                        this.state.fields.size > 4 && <Icon className='delete-field' src={require('@tabler/icons/icons/circle-x.svg')} onClick={this.handleDeleteField(i)} />
-                      }
-                    </div>
-                  ))
-                }
-                {
-                  this.state.fields.size < maxFields && (
-                    <div className='actions add-row'>
-                      <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddField}>
-                        <Icon src={require('@tabler/icons/icons/circle-plus.svg')} />
-                        <FormattedMessage id='edit_profile.meta_fields.add' defaultMessage='Add new item' />
-                      </div>
-                    </div>
-                  )
-                }
-              </div>
-            </div>
-          </FieldsGroup>*/}
-        {/* </fieldset> */}
+        {features.profileFields && (
+          <Streamfield
+            labelText={<FormattedMessage id='edit_profile.fields.meta_fields_label' defaultMessage='Profile fields' />}
+            hintText={<FormattedMessage id='edit_profile.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# custom field} other {# custom fields}} displayed on your profile.' values={{ count: maxFields }} />}
+            values={data.fields_attributes || []}
+            onChange={handleFieldsChange}
+            onAddItem={handleAddField}
+            onRemoveItem={handleRemoveField}
+            component={ProfileField}
+            maxItems={maxFields}
+          />
+        )}
+
         <FormActions>
           <Button to='/settings' theme='ghost'>
             {intl.formatMessage(messages.cancel)}

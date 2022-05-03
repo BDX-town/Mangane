@@ -18,6 +18,8 @@ interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxL
   defaultValue?: string,
   /** Extra class names for the <input> element. */
   className?: string,
+  /** Extra class names for the outer <div> element. */
+  outerClassName?: string,
   /** URL to the svg icon. */
   icon?: string,
   /** Internal input name. */
@@ -37,7 +39,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
   (props, ref) => {
     const intl = useIntl();
 
-    const { type = 'text', icon, className, ...filteredProps } = props;
+    const { type = 'text', icon, className, outerClassName, ...filteredProps } = props;
 
     const [revealed, setRevealed] = React.useState(false);
 
@@ -48,7 +50,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
     }, []);
 
     return (
-      <div className='mt-1 relative rounded-md shadow-sm'>
+      <div className={classNames('mt-1 relative rounded-md shadow-sm', outerClassName)}>
         {icon ? (
           <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
             <Icon src={icon} className='h-4 w-4 text-gray-400' aria-hidden='true' />

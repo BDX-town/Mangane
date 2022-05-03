@@ -3,9 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 interface IFormGroup {
   /** Input label message. */
-  hintText?: string | React.ReactNode,
+  labelText: React.ReactNode,
   /** Input hint message. */
-  labelText: string | React.ReactNode,
+  hintText?: React.ReactNode,
   /** Input errors. */
   errors?: string[]
 }
