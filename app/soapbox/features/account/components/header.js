@@ -550,7 +550,7 @@ class Header extends ImmutablePureComponent {
       return (
         <div className='-mt-4 -mx-4'>
           <div>
-            <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200' />
+            <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-slate-900/50' />
           </div>
 
           <div className='px-4 sm:px-6'>
@@ -578,7 +578,7 @@ class Header extends ImmutablePureComponent {
     return (
       <div className='-mt-4 -mx-4'>
         <div>
-          <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200'>
+          <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-slate-900/50'>
             {header && (
               <a href={account.get('header')} onClick={this.handleHeaderClick} target='_blank'>
                 <StillImage
