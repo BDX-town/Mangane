@@ -557,7 +557,7 @@ class Header extends ImmutablePureComponent {
             <div className='-mt-12 flex items-end space-x-5'>
               <div className='flex relative'>
                 <div
-                  className='h-24 w-24 bg-gray-400 rounded-full ring-4 ring-white'
+                  className='h-24 w-24 bg-gray-400 rounded-full ring-4 ring-white dark:ring-slate-800'
                 />
               </div>
             </div>
@@ -603,7 +603,7 @@ class Header extends ImmutablePureComponent {
               <a href={account.get('avatar')} onClick={this.handleAvatarClick} target='_blank'>
                 <Avatar
                   account={account}
-                  className='h-24 w-24 rounded-full ring-4 ring-white'
+                  className='h-24 w-24 rounded-full ring-4 ring-white dark:ring-slate-800'
                 />
               </a>
             </div>
@@ -615,7 +615,7 @@ class Header extends ImmutablePureComponent {
                     <MenuButton
                       as={IconButton}
                       src={require('@tabler/icons/icons/dots.svg')}
-                      className='text-primary-700 bg-primary-100 hover:bg-primary-200 p-2'
+                      className='text-primary-700 bg-primary-100 dark:!bg-slate-700 dark:!text-white hover:bg-primary-200 p-2'
                       iconClassName='w-5 h-5'
                     />
 
