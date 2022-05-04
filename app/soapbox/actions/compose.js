@@ -291,7 +291,7 @@ export function submitCompose(routerHistory, force = false) {
     };
 
     dispatch(createStatus(params, idempotencyKey, statusId)).then(function(data) {
-      if (data.visibility === 'direct' && getState().getIn(['conversations', 'mounted']) <= 0 && routerHistory) {
+      if (!statusId && data.visibility === 'direct' && getState().getIn(['conversations', 'mounted']) <= 0 && routerHistory) {
         routerHistory.push('/messages');
       }
       handleComposeSubmit(dispatch, getState, data, status);
