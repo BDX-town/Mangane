@@ -86,7 +86,16 @@ const SoapboxMount = () => {
   const [localeLoading, setLocaleLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  const colorSchemeQueryList = window.matchMedia('(prefers-color-scheme: dark)');
+  const [isSystemDarkMode, setSystemDarkMode] = useState(colorSchemeQueryList.matches);
+  const userTheme = settings.get('themeMode');
+  const darkMode = userTheme === 'dark' || (userTheme === 'system' && isSystemDarkMode);
+
   const themeCss = generateThemeCss(soapboxConfig);
+
+  const handleSystemModeChange = (event: MediaQueryListEvent) => {
+    setSystemDarkMode(event.matches);
+  };
 
   // Load the user's locale
   useEffect(() => {
@@ -103,6 +112,12 @@ const SoapboxMount = () => {
     }).catch(() => {
       setIsLoaded(true);
     });
+  }, []);
+
+  useEffect(() => {
+    colorSchemeQueryList.addEventListener('change', handleSystemModeChange);
+
+    return () => colorSchemeQueryList.removeEventListener('change', handleSystemModeChange);
   }, []);
 
   // @ts-ignore: I don't actually know what these should be, lol
@@ -128,7 +143,7 @@ const SoapboxMount = () => {
     return (
       <IntlProvider locale={locale} messages={messages}>
         <Helmet>
-          <html lang={locale} className={classNames({ dark: settings.get('themeMode') === 'dark' })} />
+          <html lang={locale} className={classNames({ dark: darkMode })} />
           <body className={bodyClass} />
           {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
           <meta name='theme-color' content={soapboxConfig.brandColor} />
@@ -147,7 +162,7 @@ const SoapboxMount = () => {
   return (
     <IntlProvider locale={locale} messages={messages}>
       <Helmet>
-        <html lang={locale} className={classNames({ dark: settings.get('themeMode') === 'dark' })} />
+        <html lang={locale} className={classNames({ dark: darkMode })} />
         <body className={bodyClass} />
         {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
         <meta name='theme-color' content={soapboxConfig.brandColor} />
