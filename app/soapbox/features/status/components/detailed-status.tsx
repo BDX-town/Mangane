@@ -32,6 +32,7 @@ interface IDetailedStatus extends IntlProps {
   domain: string,
   compact: boolean,
   showMedia: boolean,
+  onOpenCompareHistoryModal: (status: StatusEntity) => void,
   onToggleMediaVisibility: () => void,
 }
 
@@ -55,6 +56,10 @@ class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedSt
 
   handleExpandedToggle = () => {
     this.props.onToggleHidden(this.props.status);
+  }
+
+  handleOpenCompareHistoryModal = () => {
+    this.props.onOpenCompareHistoryModal(this.props.status);
   }
 
   _measureHeight(heightJustChanged = false) {
@@ -238,14 +243,33 @@ class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedSt
           <HStack justifyContent='between' alignItems='center' className='py-2'>
             <StatusInteractionBar status={status} />
 
+
             <div className='detailed-status__timestamp'>
               {statusTypeIcon}
 
-              <a href={status.url} target='_blank' rel='noopener' className='hover:underline'>
-                <Text tag='span' theme='muted' size='sm'>
-                  <FormattedDate value={new Date(status.created_at)} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
-                </Text>
-              </a>
+              <span>
+                <a href={status.url} target='_blank' rel='noopener' className='hover:underline'>
+                  <Text tag='span' theme='muted' size='sm'>
+                    <FormattedDate value={new Date(status.created_at)} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
+                  </Text>
+                </a>
+
+                {status.edited_at && (
+                  <>
+                    {' · '}
+                    <div
+                      className='inline hover:underline'
+                      onClick={this.handleOpenCompareHistoryModal}
+                      role='button'
+                      tabIndex={0}
+                    >
+                      <Text tag='span' theme='muted' size='sm'>
+                        <FormattedMessage id='status.edited' defaultMessage='Edited {date}' values={{ date: this.props.intl.formatDate(new Date(status.edited_at), { hour12: false, month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }) }} />
+                      </Text>
+                    </div>
+                  </>
+                )}
+              </span>
             </div>
           </HStack>
         </div>

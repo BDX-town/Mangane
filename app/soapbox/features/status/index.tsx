@@ -50,6 +50,7 @@ import {
   deleteStatus,
   hideStatus,
   revealStatus,
+  editStatus,
 } from '../../actions/statuses';
 import { fetchStatusWithContext, fetchNext } from '../../actions/statuses';
 import MissingIndicator from '../../components/missing_indicator';
@@ -318,6 +319,12 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         }));
       }
     });
+  }
+
+  handleEditClick = (status: StatusEntity) => {
+    const { dispatch } = this.props;
+
+    dispatch(editStatus(status.get('id')));
   }
 
   handleDirectClick = (account: AccountEntity, router: History) => {
@@ -653,6 +660,14 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     }
   }
 
+  handleOpenCompareHistoryModal = (status: StatusEntity) => {
+    const { dispatch } = this.props;
+
+    dispatch(openModal('COMPARE_HISTORY', {
+      statusId: status.id,
+    }));
+  }
+
   render() {
     const { status, ancestorsIds, descendantsIds, intl } = this.props;
 
@@ -707,6 +722,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
               onToggleHidden={this.handleToggleHidden}
               showMedia={this.state.showMedia}
               onToggleMediaVisibility={this.handleToggleMediaVisibility}
+              onOpenCompareHistoryModal={this.handleOpenCompareHistoryModal}
             />
 
             <hr className='mb-2 dark:border-slate-600' />
@@ -719,6 +735,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
               onReblog={this.handleReblogClick}
               onQuote={this.handleQuoteClick}
               onDelete={this.handleDeleteClick}
+              onEdit={this.handleEditClick}
               onDirect={this.handleDirectClick}
               onChat={this.handleChatClick}
               onMention={this.handleMentionClick}

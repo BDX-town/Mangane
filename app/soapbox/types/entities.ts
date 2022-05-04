@@ -11,6 +11,7 @@ import {
   NotificationRecord,
   PollRecord,
   PollOptionRecord,
+  StatusEditRecord,
   StatusRecord,
 } from 'soapbox/normalizers';
 
@@ -27,6 +28,7 @@ type Mention = ReturnType<typeof MentionRecord>;
 type Notification = ReturnType<typeof NotificationRecord>;
 type Poll = ReturnType<typeof PollRecord>;
 type PollOption = ReturnType<typeof PollOptionRecord>;
+type StatusEdit = ReturnType<typeof StatusEditRecord>;
 
 interface Account extends ReturnType<typeof AccountRecord> {
   // HACK: we can't do a circular reference in the Record definition itself,
@@ -58,6 +60,7 @@ export {
   Poll,
   PollOption,
   Status,
+  StatusEdit,
 
   // Utility types
   APIEntity,

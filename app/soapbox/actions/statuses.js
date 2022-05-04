@@ -1,9 +1,10 @@
 import { isLoggedIn } from 'soapbox/utils/auth';
-import { getFeatures, parseVersion } from 'soapbox/utils/features';
+import { getFeatures } from 'soapbox/utils/features';
 import { shouldHaveCard } from 'soapbox/utils/status';
 
 import api, { getNextLink } from '../api';
 
+import { setComposeToStatus } from './compose';
 import { importFetchedStatus, importFetchedStatuses } from './importer';
 import { openModal } from './modals';
 import { deleteFromTimelines } from './timelines';
@@ -11,6 +12,10 @@ import { deleteFromTimelines } from './timelines';
 export const STATUS_CREATE_REQUEST = 'STATUS_CREATE_REQUEST';
 export const STATUS_CREATE_SUCCESS = 'STATUS_CREATE_SUCCESS';
 export const STATUS_CREATE_FAIL    = 'STATUS_CREATE_FAIL';
+
+export const STATUS_FETCH_SOURCE_REQUEST = 'STATUS_FETCH_SOURCE_REQUEST';
+export const STATUS_FETCH_SOURCE_SUCCESS = 'STATUS_FETCH_SOURCE_SUCCESS';
+export const STATUS_FETCH_SOURCE_FAIL    = 'STATUS_FETCH_SOURCE_FAIL';
 
 export const STATUS_FETCH_REQUEST = 'STATUS_FETCH_REQUEST';
 export const STATUS_FETCH_SUCCESS = 'STATUS_FETCH_SUCCESS';
@@ -35,17 +40,18 @@ export const STATUS_UNMUTE_FAIL    = 'STATUS_UNMUTE_FAIL';
 export const STATUS_REVEAL = 'STATUS_REVEAL';
 export const STATUS_HIDE   = 'STATUS_HIDE';
 
-export const REDRAFT = 'REDRAFT';
-
 const statusExists = (getState, statusId) => {
   return getState().getIn(['statuses', statusId], null) !== null;
 };
 
-export function createStatus(params, idempotencyKey) {
+export function createStatus(params, idempotencyKey, statusId) {
   return (dispatch, getState) => {
     dispatch({ type: STATUS_CREATE_REQUEST, params, idempotencyKey });
 
-    return api(getState).post('/api/v1/statuses', params, {
+    return api(getState).request({
+      url: statusId === null ? '/api/v1/statuses' : `/api/v1/statuses/${statusId}`,
+      method: statusId === null ? 'post' : 'put',
+      data: params,
       headers: { 'Idempotency-Key': idempotencyKey },
     }).then(({ data: status }) => {
       // The backend might still be processing the rich media attachment
@@ -81,6 +87,25 @@ export function createStatus(params, idempotencyKey) {
   };
 }
 
+export const editStatus = (id) => (dispatch, getState) => {
+  let status = getState().getIn(['statuses', id]);
+
+  if (status.get('poll')) {
+    status = status.set('poll', getState().getIn(['polls', status.get('poll')]));
+  }
+
+  dispatch({ type: STATUS_FETCH_SOURCE_REQUEST });
+
+  api(getState).get(`/api/v1/statuses/${id}/source`).then(response => {
+    dispatch({ type: STATUS_FETCH_SOURCE_SUCCESS });
+    dispatch(setComposeToStatus(status, response.data.text, response.data.spoiler_text));
+    dispatch(openModal('COMPOSE'));
+  }).catch(error => {
+    dispatch({ type: STATUS_FETCH_SOURCE_FAIL, error });
+
+  });
+};
+
 export function fetchStatus(id) {
   return (dispatch, getState) => {
     const skipLoading = statusExists(getState, id);
@@ -93,22 +118,6 @@ export function fetchStatus(id) {
       return status;
     }).catch(error => {
       dispatch({ type: STATUS_FETCH_FAIL, id, error, skipLoading, skipAlert: true });
-    });
-  };
-}
-
-export function redraft(status, raw_text, content_type) {
-  return (dispatch, getState) => {
-    const { instance } = getState();
-    const { explicitAddressing } = getFeatures(instance);
-
-    dispatch({
-      type: REDRAFT,
-      status,
-      raw_text,
-      explicitAddressing,
-      content_type,
-      v: parseVersion(instance.version),
     });
   };
 }
@@ -130,7 +139,7 @@ export function deleteStatus(id, routerHistory, withRedraft = false) {
       dispatch(deleteFromTimelines(id));
 
       if (withRedraft) {
-        dispatch(redraft(status, response.data.text, response.data.pleroma?.content_type));
+        dispatch(setComposeToStatus(status, response.data.text, response.data.spoiler_text, response.data.pleroma?.content_type));
         dispatch(openModal('COMPOSE'));
       }
     }).catch(error => {
@@ -138,6 +147,9 @@ export function deleteStatus(id, routerHistory, withRedraft = false) {
     });
   };
 }
+
+export const updateStatus = status => dispatch =>
+  dispatch(importFetchedStatus(status));
 
 export function fetchContext(id) {
   return (dispatch, getState) => {

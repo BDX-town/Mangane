@@ -5,7 +5,7 @@ import { defineMessages } from 'react-intl';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { isLoggedIn } from 'soapbox/utils/auth';
-import { getFeatures } from 'soapbox/utils/features';
+import { getFeatures, parseVersion } from 'soapbox/utils/features';
 import { formatBytes } from 'soapbox/utils/media';
 
 import api from '../api';
@@ -78,6 +78,8 @@ export const COMPOSE_SCHEDULE_REMOVE = 'COMPOSE_SCHEDULE_REMOVE';
 export const COMPOSE_ADD_TO_MENTIONS = 'COMPOSE_ADD_TO_MENTIONS';
 export const COMPOSE_REMOVE_FROM_MENTIONS = 'COMPOSE_REMOVE_FROM_MENTIONS';
 
+export const COMPOSE_SET_STATUS = 'COMPOSE_SET_STATUS';
+
 const messages = defineMessages({
   exceededImageSizeLimit: { id: 'upload_error.image_size_limit', defaultMessage: 'Image exceeds the current file size limit ({limit})' },
   exceededVideoSizeLimit: { id: 'upload_error.video_size_limit', defaultMessage: 'Video exceeds the current file size limit ({limit})' },
@@ -95,6 +97,23 @@ export const ensureComposeIsVisible = (getState, routerHistory) => {
     routerHistory.push('/posts/new');
   }
 };
+
+export function setComposeToStatus(status, rawText, spoilerText, contentType) {
+  return (dispatch, getState) => {
+    const { instance } = getState();
+    const { explicitAddressing } = getFeatures(instance);
+
+    dispatch({
+      type: COMPOSE_SET_STATUS,
+      status,
+      rawText,
+      explicitAddressing,
+      spoilerText,
+      contentType,
+      v: parseVersion(instance.version),
+    });
+  };
+}
 
 export function changeCompose(text) {
   return {
@@ -221,9 +240,10 @@ export function submitCompose(routerHistory, force = false) {
     if (!isLoggedIn(getState)) return;
     const state = getState();
 
-    const status = state.getIn(['compose', 'text'], '');
-    const media  = state.getIn(['compose', 'media_attachments']);
-    let to       = state.getIn(['compose', 'to'], ImmutableOrderedSet());
+    const status   = state.getIn(['compose', 'text'], '');
+    const media    = state.getIn(['compose', 'media_attachments']);
+    const statusId = state.getIn(['compose', 'id'], null);
+    let to         = state.getIn(['compose', 'to'], ImmutableOrderedSet());
 
     if (!validateSchedule(state)) {
       dispatch(snackbar.error(messages.scheduleError));
@@ -270,8 +290,8 @@ export function submitCompose(routerHistory, force = false) {
       to,
     };
 
-    dispatch(createStatus(params, idempotencyKey)).then(function(data) {
-      if (data.visibility === 'direct' && getState().getIn(['conversations', 'mounted']) <= 0 && routerHistory) {
+    dispatch(createStatus(params, idempotencyKey, statusId)).then(function(data) {
+      if (!statusId && data.visibility === 'direct' && getState().getIn(['conversations', 'mounted']) <= 0 && routerHistory) {
         routerHistory.push('/messages');
       }
       handleComposeSubmit(dispatch, getState, data, status);

@@ -9,7 +9,7 @@ import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
 import RelativeTimestamp from './relative_timestamp';
-import { Avatar, HStack, IconButton, Text } from './ui';
+import { Avatar, HStack, Icon, IconButton, Text } from './ui';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
@@ -58,6 +58,7 @@ interface IAccount {
   timestampUrl?: string,
   withDate?: boolean,
   withRelationship?: boolean,
+  showEdit?: boolean,
 }
 
 const Account = ({
@@ -76,6 +77,7 @@ const Account = ({
   timestampUrl,
   withDate = false,
   withRelationship = true,
+  showEdit = false,
 }: IAccount) => {
   const overflowRef = React.useRef<HTMLDivElement>(null);
   const actionRef = React.useRef<HTMLDivElement>(null);
@@ -208,6 +210,14 @@ const Account = ({
                   ) : (
                     <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' />
                   )}
+                </>
+              ) : null}
+
+              {showEdit ? (
+                <>
+                  <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+
+                  <Icon className='h-5 w-5 stroke-[1.35]' src={require('@tabler/icons/icons/pencil.svg')} />
                 </>
               ) : null}
             </HStack>

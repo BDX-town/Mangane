@@ -7,9 +7,15 @@ import ReplyIndicator from '../components/reply_indicator';
 const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();
 
-  const mapStateToProps = state => ({
-    status: getStatus(state, { id: state.getIn(['compose', 'in_reply_to']) }),
-  });
+  const mapStateToProps = state => {
+    const statusId = state.getIn(['compose', 'in_reply_to']);
+    const editing = !!state.getIn(['compose', 'id']);
+
+    return {
+      status: getStatus(state, { id: statusId }),
+      hideActions: editing,
+    };
+  };
 
   return mapStateToProps;
 };

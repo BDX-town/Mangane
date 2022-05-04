@@ -3,7 +3,6 @@ import { Map as ImmutableMap, fromJS } from 'immutable';
 import * as actions from 'soapbox/actions/compose';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';
 import { SETTING_CHANGE } from 'soapbox/actions/settings';
-import { REDRAFT } from 'soapbox/actions/statuses';
 import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
 import { normalizeStatus } from 'soapbox/normalizers/status';
 
@@ -39,10 +38,10 @@ describe('compose reducer', () => {
     expect(state.get('idempotencyKey').length === 36);
   });
 
-  describe('REDRAFT', () => {
+  describe('COMPOSE_SET_STATUS', () => {
     it('strips Pleroma integer attachments', () => {
       const action = {
-        type: REDRAFT,
+        type: actions.COMPOSE_SET_STATUS,
         status: normalizeStatus(fromJS(require('soapbox/__fixtures__/pleroma-status-deleted.json'))),
         v: { software: 'Pleroma' },
       };
@@ -53,7 +52,7 @@ describe('compose reducer', () => {
 
     it('leaves non-Pleroma integer attachments alone', () => {
       const action = {
-        type: REDRAFT,
+        type: actions.COMPOSE_SET_STATUS,
         status: normalizeStatus(fromJS(require('soapbox/__fixtures__/pleroma-status-deleted.json'))),
       };
 

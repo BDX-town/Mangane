@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Base from '../../../components/modal_root';
+import Base from 'soapbox/components/modal_root';
 import {
   MediaModal,
   VideoModal,
@@ -29,7 +29,9 @@ import {
   LandingPageModal,
   BirthdaysModal,
   AccountNoteModal,
-} from '../../../features/ui/util/async-components';
+  CompareHistoryModal,
+} from 'soapbox/features/ui/util/async-components';
+
 import BundleContainer from '../containers/bundle_container';
 
 import BundleModalError from './bundle_modal_error';
@@ -63,6 +65,7 @@ const MODAL_COMPONENTS = {
   'LANDING_PAGE': LandingPageModal,
   'BIRTHDAYS': BirthdaysModal,
   'ACCOUNT_NOTE': AccountNoteModal,
+  'COMPARE_HISTORY': CompareHistoryModal,
 };
 
 export default class ModalRoot extends React.PureComponent {

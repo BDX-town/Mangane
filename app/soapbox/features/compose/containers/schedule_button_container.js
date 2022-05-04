@@ -5,6 +5,7 @@ import ScheduleButton from '../components/schedule_button';
 
 const mapStateToProps = state => ({
   active: state.getIn(['compose', 'schedule']) ? true : false,
+  unavailable: !!state.getIn(['compose', 'id']),
 });
 
 const mapDispatchToProps = dispatch => ({

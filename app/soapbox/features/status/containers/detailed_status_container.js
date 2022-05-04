@@ -2,17 +2,14 @@ import React from 'react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
+import { blockAccount } from 'soapbox/actions/accounts';
+import { showAlertForError } from 'soapbox/actions/alerts';
 import { launchChat } from 'soapbox/actions/chats';
-import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
-import { getSettings } from 'soapbox/actions/settings';
-
-import { blockAccount } from '../../../actions/accounts';
-import { showAlertForError } from '../../../actions/alerts';
 import {
   replyCompose,
   mentionCompose,
   directCompose,
-} from '../../../actions/compose';
+} from 'soapbox/actions/compose';
 import {
   reblog,
   favourite,
@@ -22,18 +19,22 @@ import {
   unbookmark,
   pin,
   unpin,
-} from '../../../actions/interactions';
-import { openModal } from '../../../actions/modals';
-import { initMuteModal } from '../../../actions/mutes';
-import { initReport } from '../../../actions/reports';
+} from 'soapbox/actions/interactions';
+import { openModal } from 'soapbox/actions/modals';
+import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
+import { initMuteModal } from 'soapbox/actions/mutes';
+import { initReport } from 'soapbox/actions/reports';
+import { getSettings } from 'soapbox/actions/settings';
 import {
   muteStatus,
   unmuteStatus,
   deleteStatus,
   hideStatus,
   revealStatus,
-} from '../../../actions/statuses';
-import { makeGetStatus } from '../../../selectors';
+  editStatus,
+} from 'soapbox/actions/statuses';
+import { makeGetStatus } from 'soapbox/selectors';
+
 import DetailedStatus from '../components/detailed-status';
 
 const messages = defineMessages({
@@ -144,6 +145,10 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     });
   },
 
+  onEdit(status) {
+    dispatch(editStatus(status.get('id')));
+  },
+
   onDirect(account, router) {
     dispatch(directCompose(account, router));
   },
@@ -218,6 +223,12 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onDeleteStatus(status) {
     dispatch(deleteStatusModal(intl, status.get('id')));
+  },
+
+  onOpenCompareHistoryModal(status) {
+    dispatch(openModal('COMPARE_HISTORY', {
+      statusId: status.get('id'),
+    }));
   },
 
 });

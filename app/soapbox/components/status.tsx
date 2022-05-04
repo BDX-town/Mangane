@@ -72,6 +72,7 @@ interface IStatus extends RouteComponentProps {
   onReblog: (status: StatusEntity, e?: KeyboardEvent) => void,
   onQuote: (status: StatusEntity) => void,
   onDelete: (status: StatusEntity) => void,
+  onEdit: (status: StatusEntity) => void,
   onDirect: (status: StatusEntity) => void,
   onChat: (status: StatusEntity) => void,
   onMention: (account: StatusEntity['account'], history: History) => void,
@@ -630,6 +631,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
                   timestampUrl={statusUrl}
                   action={reblogElement}
                   hideActions={!reblogElement}
+                  showEdit={!!status.edited_at}
                 />
               </HStack>
             </div>

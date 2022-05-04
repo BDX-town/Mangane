@@ -25,6 +25,7 @@ import type { Features } from 'soapbox/utils/features';
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
   redraft: { id: 'status.redraft', defaultMessage: 'Delete & re-draft' },
+  edit: { id: 'status.edit', defaultMessage: 'Edit' },
   direct: { id: 'status.direct', defaultMessage: 'Direct message @{name}' },
   chat: { id: 'status.chat', defaultMessage: 'Chat with @{name}' },
   mention: { id: 'status.mention', defaultMessage: 'Mention @{name}' },
@@ -77,6 +78,7 @@ interface IStatusActionBar extends RouteComponentProps {
   onReblog: (status: Status, e: React.MouseEvent) => void,
   onQuote: (status: Status, history: History) => void,
   onDelete: (status: Status, history: History, redraft?: boolean) => void,
+  onEdit: (status: Status) => void,
   onDirect: (account: any, history: History) => void,
   onChat: (account: any, history: History) => void,
   onMention: (account: any, history: History) => void,
@@ -246,6 +248,10 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
   handleRedraftClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
     this.props.onDelete(this.props.status, this.props.history, true);
+  }
+
+  handleEditClick: React.EventHandler<React.MouseEvent> = () => {
+    this.props.onEdit(this.props.status);
   }
 
   handlePinClick: React.EventHandler<React.MouseEvent> = (e) => {
@@ -437,12 +443,20 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
         icon: require('@tabler/icons/icons/trash.svg'),
         destructive: true,
       });
-      menu.push({
-        text: intl.formatMessage(messages.redraft),
-        action: this.handleRedraftClick,
-        icon: require('@tabler/icons/icons/edit.svg'),
-        destructive: true,
-      });
+      if (features.editStatuses) {
+        menu.push({
+          text: intl.formatMessage(messages.edit),
+          action: this.handleEditClick,
+          icon: require('@tabler/icons/icons/edit.svg'),
+        });
+      } else {
+        menu.push({
+          text: intl.formatMessage(messages.redraft),
+          action: this.handleRedraftClick,
+          icon: require('@tabler/icons/icons/edit.svg'),
+          destructive: true,
+        });
+      }
     } else {
       menu.push({
         text: intl.formatMessage(messages.mention, { name: username }),

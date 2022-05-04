@@ -8,6 +8,7 @@ import PrivacyDropdown from '../components/privacy_dropdown';
 const mapStateToProps = state => ({
   isModalOpen: Boolean(state.get('modals').size && state.get('modals').last().modalType === 'ACTIONS'),
   value: state.getIn(['compose', 'privacy']),
+  unavailable: !!state.getIn(['compose', 'id']),
 });
 
 const mapDispatchToProps = dispatch => ({
