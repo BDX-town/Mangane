@@ -9,6 +9,8 @@ import { SelectDropdown } from 'soapbox/features/forms';
 import SettingToggle from 'soapbox/features/notifications/components/setting_toggle';
 import { useAppSelector } from 'soapbox/hooks';
 
+import ThemeToggle from '../ui/components/theme-toggle';
+
 const languages = {
   en: 'English',
   ar: 'العربية',
@@ -125,13 +127,13 @@ const Preferences = () => {
         >
           <SettingToggle settings={settings} settingPath={['home', 'shows', 'reply']} onChange={onToggleChange} />
         </ListItem>
-
-        {/* <ListItem label={<FormattedMessage id='home.column_settings.show_direct' defaultMessage='Show direct messages' />}>
-          <SettingToggle settings={settings} settingPath={['home', 'shows', 'direct']} onChange={onToggleChange} />
-        </ListItem> */}
       </List>
 
       <List>
+        <ListItem label={<FormattedMessage id='preferences.fields.theme' defaultMessage='Theme' />}>
+          <ThemeToggle />
+        </ListItem>
+
         <ListItem label={<FormattedMessage id='preferences.fields.language_label' defaultMessage='Language' />}>
           <SelectDropdown
             items={languages}
