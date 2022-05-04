@@ -7,8 +7,9 @@ import { Icon } from 'soapbox/components/ui';
 import { useSettings } from 'soapbox/hooks';
 
 const messages = defineMessages({
-  switchToLight: { id: 'tabs_bar.theme_toggle_light', defaultMessage: 'Switch to light theme' },
-  switchToDark: { id: 'tabs_bar.theme_toggle_dark', defaultMessage: 'Switch to dark theme' },
+  light: { id: 'theme_toggle.light', defaultMessage: 'Light' },
+  dark: { id: 'theme_toggle.dark', defaultMessage: 'Dark' },
+  system: { id: 'theme_toggle.system', defaultMessage: 'System' },
 });
 
 interface IThemeToggle {
@@ -19,8 +20,6 @@ const ThemeToggle = ({ showLabel }: IThemeToggle) => {
   const intl = useIntl();
   const dispatch = useDispatch();
   const themeMode = useSettings().get('themeMode');
-
-  const label = intl.formatMessage(themeMode === 'light' ? messages.switchToDark : messages.switchToLight);
 
   const onToggle = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(changeSetting(['themeMode'], event.target.value));
@@ -51,9 +50,9 @@ const ThemeToggle = ({ showLabel }: IThemeToggle) => {
           defaultValue={themeMode}
           className='focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-800 dark:border-gray-600 block w-full pl-8 pr-12 sm:text-sm border-gray-300 rounded-md'
         >
-          <option value='system'>System</option>
-          <option value='light'>Light</option>
-          <option value='dark'>Dark</option>
+          <option value='system'>{intl.formatMessage(messages.system)}</option>
+          <option value='light'>{intl.formatMessage(messages.light)}</option>
+          <option value='dark'>{intl.formatMessage(messages.dark)}</option>
         </select>
 
         <div className='absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none'>

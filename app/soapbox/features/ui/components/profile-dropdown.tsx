@@ -18,6 +18,7 @@ import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   add: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
+  theme: { id: 'profile_dropdown.theme', defaultMessage: 'Theme' },
   logout: { id: 'profile_dropdown.logout', defaultMessage: 'Log out @{acct}' },
 });
 
@@ -81,7 +82,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
     if (features.darkMode || settings.get('isDeveloper')) {
       menu.push({ text: null });
 
-      menu.push({ text: 'Theme', toggle: <ThemeToggle /> });
+      menu.push({ text: intl.formatMessage(messages.theme), toggle: <ThemeToggle /> });
     }
 
     menu.push({ text: null });
