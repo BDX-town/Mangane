@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { logOut, switchAccount } from 'soapbox/actions/auth';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
 import { Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
-import { useAppSelector, useFeatures, useSettings } from 'soapbox/hooks';
+import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
 import Account from '../../../components/account';
@@ -39,7 +39,6 @@ const getAccount = makeGetAccount();
 const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
   const dispatch = useDispatch();
   const features = useFeatures();
-  const settings = useSettings();
   const intl = useIntl();
 
   const authUsers = useAppSelector((state) => state.auth.get('users'));
@@ -79,12 +78,8 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
       }
     });
 
-    if (features.darkMode || settings.get('isDeveloper')) {
-      menu.push({ text: null });
-
-      menu.push({ text: intl.formatMessage(messages.theme), toggle: <ThemeToggle /> });
-    }
-
+    menu.push({ text: null });
+    menu.push({ text: intl.formatMessage(messages.theme), toggle: <ThemeToggle /> });
     menu.push({ text: null });
 
     menu.push({

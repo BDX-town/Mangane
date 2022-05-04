@@ -188,10 +188,6 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === PIXELFED,
     ]),
 
-    // FIXME: long-term this shouldn't be a feature,
-    // but for now we want it to be overrideable in the build
-    darkMode: true,
-
     /**
      * Legacy DMs timeline where messages are displayed chronologically without groupings.
      * @see GET /api/v1/timelines/direct
