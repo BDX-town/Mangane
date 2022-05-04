@@ -12,7 +12,7 @@ import DisplayName from 'soapbox/components/display_name';
 import Permalink from 'soapbox/components/permalink';
 import RelativeTimestamp from 'soapbox/components/relative_timestamp';
 import { Text } from 'soapbox/components/ui';
-import ActionButton from 'soapbox/features/ui/components/action_button';
+import ActionButton from 'soapbox/features/ui/components/action-button';
 import { makeGetAccount } from 'soapbox/selectors';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';

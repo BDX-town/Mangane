@@ -3,7 +3,7 @@ import React from 'react';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
 import Permalink from 'soapbox/components/permalink';
-import ActionButton from 'soapbox/features/ui/components/action_button';
+import ActionButton from 'soapbox/features/ui/components/action-button';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 

@@ -16,7 +16,7 @@ import Badge from 'soapbox/components/badge';
 import StillImage from 'soapbox/components/still_image';
 import { HStack, IconButton, Menu, MenuButton, MenuItem, MenuList, MenuLink, MenuDivider } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import ActionButton from 'soapbox/features/ui/components/action_button';
+import ActionButton from 'soapbox/features/ui/components/action-button';
 import {
   isLocal,
   isRemote,

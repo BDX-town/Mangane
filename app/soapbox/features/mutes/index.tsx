@@ -48,7 +48,7 @@ const Mutes: React.FC = () => {
         itemClassName='pb-4'
       >
         {accountIds.map((id: string) =>
-          <AccountContainer key={id} id={id} />,
+          <AccountContainer key={id} id={id} actionType='muting' />,
         )}
       </ScrollableList>
     </Column>

@@ -48,7 +48,7 @@ const Blocks: React.FC = () => {
         itemClassName='pb-4'
       >
         {accountIds.map((id: string) =>
-          <AccountContainer key={id} id={id} />,
+          <AccountContainer key={id} id={id} actionType='blocking' />,
         )}
       </ScrollableList>
     </Column>

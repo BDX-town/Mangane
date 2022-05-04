@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import ActionButton from 'soapbox/features/ui/components/action_button';
+import ActionButton from 'soapbox/features/ui/components/action-button';
 import { useAppSelector, useOnScreen } from 'soapbox/hooks';
 import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
@@ -46,6 +46,8 @@ interface IAccount {
   actionAlignment?: 'center' | 'top',
   actionIcon?: string,
   actionTitle?: string,
+  /** Override other actions for specificity like mute/unmute.  */
+  actionType?: 'muting' | 'blocking',
   avatarSize?: number,
   hidden?: boolean,
   hideActions?: boolean,
@@ -60,6 +62,7 @@ interface IAccount {
 
 const Account = ({
   account,
+  actionType,
   action,
   actionIcon,
   actionTitle,
@@ -111,7 +114,7 @@ const Account = ({
     }
 
     if (account.id !== me) {
-      return <ActionButton account={account} />;
+      return <ActionButton account={account} actionType={actionType} />;
     }
 
     return null;
