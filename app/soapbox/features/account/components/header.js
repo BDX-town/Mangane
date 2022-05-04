@@ -537,7 +537,7 @@ class Header extends ImmutablePureComponent {
         src={require('@tabler/icons/icons/upload.svg')}
         onClick={this.handleShare}
         title={intl.formatMessage(messages.share, { name: account.get('username') })}
-        className='text-primary-700 bg-primary-100 hover:bg-primary-200 p-2'
+        className='text-primary-700 bg-primary-100 dark:!bg-slate-700 dark:!text-white hover:bg-primary-200 p-2'
         iconClassName='w-5 h-5'
       />
     );
