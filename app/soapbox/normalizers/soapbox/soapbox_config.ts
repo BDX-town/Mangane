@@ -82,6 +82,7 @@ export const CryptoAddressRecord = ImmutableRecord({
 export const SoapboxConfigRecord = ImmutableRecord({
   appleAppId: null,
   logo: '',
+  logoDarkMode: null,
   banner: '',
   brandColor: '', // Empty
   accentColor: '',

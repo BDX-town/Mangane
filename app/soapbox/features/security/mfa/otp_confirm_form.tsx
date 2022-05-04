@@ -65,7 +65,7 @@ const OtpConfirmForm: React.FC = () => {
 
   return (
     <Stack space={4}>
-      <hr className='mt-4' />
+      <hr className='mt-4 dark:border-slate-700' />
 
       <Form onSubmit={handleSubmit}>
         <Stack>

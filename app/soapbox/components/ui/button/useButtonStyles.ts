@@ -21,7 +21,7 @@ const useButtonStyles = ({
       'border-transparent text-white bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 focus:ring-2 focus:ring-offset-2',
     secondary:
       'border-transparent text-primary-700 bg-primary-100 hover:bg-primary-200 focus:ring-primary-500 focus:ring-2 focus:ring-offset-2',
-    ghost: 'shadow-none border-gray-200 text-gray-700 bg-white focus:ring-primary-500 focus:ring-2 focus:ring-offset-2',
+    ghost: 'shadow-none border-gray-200 text-gray-700 bg-white dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 focus:ring-primary-500 focus:ring-2 focus:ring-offset-2',
     accent: 'border-transparent text-white bg-accent-500 hover:bg-accent-300 focus:ring-pink-500 focus:ring-2 focus:ring-offset-2',
     danger: 'border-transparent text-danger-700 bg-danger-100 hover:bg-danger-200 focus:ring-danger-500 focus:ring-2 focus:ring-offset-2',
     transparent: 'border-transparent text-gray-800 backdrop-blur-sm bg-white/75 hover:bg-white/80',

@@ -20,7 +20,6 @@ interface IEnableOtpForm {
 }
 
 const EnableOtpForm: React.FC<IEnableOtpForm> = ({ displayOtpForm, handleSetupProceedClick }) => {
-
   const dispatch = useAppDispatch();
   const intl = useIntl();
   const history = useHistory();
@@ -43,7 +42,7 @@ const EnableOtpForm: React.FC<IEnableOtpForm> = ({ displayOtpForm, handleSetupPr
           <FormattedMessage id='mfa.setup_warning' defaultMessage="Write these codes down or save them somewhere secure - otherwise you won't see them again. If you lose access to your 2FA app and recovery codes you'll be locked out of your account." />
         </Text>
 
-        <div className='bg-gray-100 dark:bg-slate-700 rounded-lg p-4'>
+        <div className='bg-gray-100 dark:bg-slate-900/50 rounded-lg p-4'>
           <Stack space={3}>
             <Text weight='medium' align='center'>
               <FormattedMessage id='mfa.setup_recoverycodes' defaultMessage='Recovery codes' />

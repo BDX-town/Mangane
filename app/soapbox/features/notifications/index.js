@@ -35,7 +35,7 @@ const Footer = ({ context }) => (
 );
 
 const Item = ({ context, ...rest }) => (
-  <div className='border-solid border-b border-gray-200 dark:border-gray-600' {...rest} />
+  <div className='border-solid border-b border-gray-200 dark:border-slate-700' {...rest} />
 );
 
 const getNotifications = createSelector([

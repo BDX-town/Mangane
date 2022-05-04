@@ -23,6 +23,7 @@ const Navbar = () => {
 
   // In demo mode, use the Soapbox logo
   const logo = settings.get('demo') ? require('images/soapbox-logo.svg') : soapboxConfig.logo;
+  const logoDarkMode = soapboxConfig.logoDarkMode;
 
   const onOpenSidebar = () => dispatch(openSidebar());
 
@@ -47,7 +48,11 @@ const Navbar = () => {
           >
             {logo ? (
               <Link key='logo' to='/' data-preview-title-id='column.home' className='flex-shrink-0 flex items-center'>
-                <img alt='Logo' src={logo} className='h-5 lg:h-6 w-auto cursor-pointer' />
+                <img alt='Logo' src={logo} className={classNames('h-5 lg:h-6 w-auto cursor-pointer', { 'dark:hidden': logoDarkMode })} />
+                {logoDarkMode && (
+                  <img alt='Logo' src={logoDarkMode} className='h-5 lg:h-6 w-auto cursor-pointer hidden dark:block' />
+                )}
+
                 <span className='hidden'><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
               </Link>
             ) : (
