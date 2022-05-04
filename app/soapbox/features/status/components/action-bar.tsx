@@ -522,49 +522,29 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
 
     const reblog_disabled = (status.get('visibility') === 'direct' || status.get('visibility') === 'private');
 
-    let reblogButton;
+    const reblogMenu: Menu = [{
+      text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog),
+      action: this.handleReblogClick,
+      icon: require('@tabler/icons/icons/repeat.svg'),
+    }, {
+      text: intl.formatMessage(messages.quotePost),
+      action: this.handleQuoteClick,
+      icon: require('@tabler/icons/icons/quote.svg'),
+    }];
 
-    if (me && features.quotePosts) {
-      const reblogMenu: Menu = [
-        {
-          text: intl.formatMessage(status.get('reblogged') ? messages.cancel_reblog_private : messages.reblog),
-          action: this.handleReblogClick,
-          icon: require('@tabler/icons/icons/repeat.svg'),
-        },
-        {
-          text: intl.formatMessage(messages.quotePost),
-          action: this.handleQuoteClick,
-          icon: require('@tabler/icons/icons/quote.svg'),
-        },
-      ];
-
-      reblogButton = (
-        <DropdownMenuContainer
-          items={reblogMenu}
-          disabled={!publicStatus}
-          active={status.get('reblogged')}
-          pressed={status.get('reblogged')}
-          title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
-          src={reblogIcon}
-          text={intl.formatMessage(messages.reblog)}
-          onShiftClick={this.handleReblogClick}
-        />
-      );
-    } else {
-      reblogButton = (
-        <IconButton
-          disabled={reblog_disabled}
-          className={classNames({
-            'text-gray-400 hover:text-gray-600': !status.get('reblogged'),
-            'text-success-600 hover:text-success-600': status.get('reblogged'),
-          })}
-          title={reblog_disabled ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
-          src={reblogIcon}
-          onClick={this.handleReblogClick}
-          text={intl.formatMessage(messages.reblog)}
-        />
-      );
-    }
+    const reblogButton = (
+      <IconButton
+        disabled={reblog_disabled}
+        className={classNames({
+          'text-gray-400 hover:text-gray-600': !status.reblogged,
+          'text-success-600 hover:text-success-600': status.reblogged,
+        })}
+        title={reblog_disabled ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
+        src={reblogIcon}
+        onClick={this.handleReblogClick}
+        text={intl.formatMessage(messages.reblog)}
+      />
+    );
 
     return (
       <HStack justifyContent='between'>
@@ -576,7 +556,17 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
           text={intl.formatMessage(messages.reply)}
         />
 
-        {reblogButton}
+        {(features.quotePosts && me) ? (
+          <DropdownMenuContainer
+            items={reblogMenu}
+            disabled={!publicStatus}
+            onShiftClick={this.handleReblogClick}
+          >
+            {reblogButton}
+          </DropdownMenuContainer>
+        ) : (
+          reblogButton
+        )}
 
         {features.emojiReacts ? (
           <EmojiButtonWrapper statusId={status.id}>

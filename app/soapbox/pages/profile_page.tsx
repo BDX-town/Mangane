@@ -27,23 +27,22 @@ interface IProfilePage {
   },
 }
 
+/** Page to display a user's profile. */
 const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
   const history = useHistory();
+  const username = params?.username || '';
 
-  const { accountId, account, accountUsername, realAccount } = useAppSelector(state => {
-    const username = params?.username || '';
+  const { accountId, account, realAccount } = useAppSelector(state => {
     const { accounts } = state;
     const accountFetchError = (((state.accounts.getIn([-1, 'username']) || '') as string).toLowerCase() === username.toLowerCase());
 
     let accountId: string | -1 | null = -1;
     let account = null;
-    let accountUsername = username;
     if (accountFetchError) {
       accountId = null;
     } else {
       account = findAccountByUsername(state, username);
       accountId = account ? account.id : -1;
-      accountUsername = account ? account.acct : '';
     }
 
     let realAccount;
@@ -57,7 +56,6 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
     return {
       account: typeof accountId === 'string' ? getAccount(state, accountId) : account,
       accountId,
-      accountUsername,
       realAccount,
     };
   });
@@ -66,24 +64,30 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
   const features = useFeatures();
   const { displayFqn } = useSoapboxConfig();
 
+  // Redirect from a user ID
   if (realAccount) {
     return <Redirect to={`/@${realAccount.acct}`} />;
+  }
+
+  // Fix case of username
+  if (account && account.acct !== username) {
+    return <Redirect to={`/@${account.acct}`} />;
   }
 
   const tabItems = [
     {
       text: <FormattedMessage id='account.posts' defaultMessage='Posts' />,
-      to: `/@${accountUsername}`,
+      to: `/@${username}`,
       name: 'profile',
     },
     {
       text: <FormattedMessage id='account.posts_with_replies' defaultMessage='Posts and replies' />,
-      to: `/@${accountUsername}/with_replies`,
+      to: `/@${username}/with_replies`,
       name: 'replies',
     },
     {
       text: <FormattedMessage id='account.media' defaultMessage='Media' />,
-      to: `/@${accountUsername}/media`,
+      to: `/@${username}/media`,
       name: 'media',
     },
   ];
@@ -100,14 +104,14 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
   }
 
   let activeItem;
-  const pathname = history.location.pathname.replace(`@${accountUsername}/`, '');
+  const pathname = history.location.pathname.replace(`@${username}/`, '');
   if (pathname.includes('with_replies')) {
     activeItem = 'replies';
   } else if (pathname.includes('media')) {
     activeItem = 'media';
   } else if (pathname.includes('favorites')) {
     activeItem = 'likes';
-  } else if (pathname === `/@${accountUsername}`) {
+  } else {
     activeItem = 'profile';
   }
 
@@ -117,13 +121,13 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
         <Column label={account ? `@${getAcct(account, displayFqn)}` : ''} withHeader={false}>
           <div className='space-y-4'>
             {/* @ts-ignore */}
-            <HeaderContainer accountId={accountId} username={accountUsername} />
+            <HeaderContainer accountId={accountId} username={username} />
 
             <BundleContainer fetchComponent={ProfileInfoPanel}>
-              {Component => <Component username={accountUsername} account={account} />}
+              {Component => <Component username={username} account={account} />}
             </BundleContainer>
 
-            {account && activeItem && (
+            {account && (
               <Tabs items={tabItems} activeItem={activeItem} />
             )}
 
