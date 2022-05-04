@@ -636,7 +636,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
           count={replyCount}
         />
 
-        {features.quotePosts && me ? (
+        {(features.quotePosts && me) ? (
           <DropdownMenuContainer
             items={reblogMenu}
             disabled={!publicStatus}
