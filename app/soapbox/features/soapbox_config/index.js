@@ -23,7 +23,7 @@ import {
   FileChooserLogo,
   Checkbox,
 } from 'soapbox/features/forms';
-import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
+import ThemeToggle from 'soapbox/features/ui/components/theme-toggle';
 import { isMobile } from 'soapbox/is_mobile';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 
