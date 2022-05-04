@@ -45,7 +45,7 @@ const icons: Record<NotificationType, string> = {
   mention: require('@tabler/icons/icons/at.svg'),
   favourite: require('@tabler/icons/icons/heart.svg'),
   reblog: require('@tabler/icons/icons/repeat.svg'),
-  status: require('@tabler/icons/icons/home.svg'),
+  status: require('@tabler/icons/icons/bell-ringing.svg'),
   poll: require('@tabler/icons/icons/chart-bar.svg'),
   move: require('@tabler/icons/icons/briefcase.svg'),
   'pleroma:chat_mention': require('@tabler/icons/icons/messages.svg'),
