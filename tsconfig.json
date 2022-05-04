@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "app/",
+    "outDir": "build/",
     "sourceMap": true,
     "strict": true,
     "module": "es2022",
