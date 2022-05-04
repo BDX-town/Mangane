@@ -33,7 +33,7 @@ export const defaultSettings = ImmutableMap({
   missingDescriptionModal: false,
   defaultPrivacy: 'public',
   defaultContentType: 'text/plain',
-  themeMode: 'light',
+  themeMode: 'system',
   locale: navigator.language.split(/[-_]/)[0] || 'en',
   showExplanationBox: true,
   explanationBox: true,

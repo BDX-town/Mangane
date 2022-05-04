@@ -7,15 +7,18 @@ import { Link } from 'react-router-dom';
 import { logOut, switchAccount } from 'soapbox/actions/auth';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
 import { Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector, useFeatures, useSettings } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
 import Account from '../../../components/account';
+
+import ThemeToggle from './theme-toggle';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   add: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
+  theme: { id: 'profile_dropdown.theme', defaultMessage: 'Theme' },
   logout: { id: 'profile_dropdown.logout', defaultMessage: 'Log out @{acct}' },
 });
 
@@ -24,9 +27,10 @@ interface IProfileDropdown {
 }
 
 type IMenuItem = {
-  text: string | React.ReactElement | null,
-  to?: string,
-  icon?: string,
+  text: string | React.ReactElement | null
+  to?: string
+  toggle?: JSX.Element
+  icon?: string
   action?: (event: React.MouseEvent) => void
 }
 
@@ -34,6 +38,8 @@ const getAccount = makeGetAccount();
 
 const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
   const dispatch = useDispatch();
+  const features = useFeatures();
+  const settings = useSettings();
   const intl = useIntl();
 
   const authUsers = useAppSelector((state) => state.auth.get('users'));
@@ -73,6 +79,12 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
       }
     });
 
+    if (features.darkMode || settings.get('isDeveloper')) {
+      menu.push({ text: null });
+
+      menu.push({ text: intl.formatMessage(messages.theme), toggle: <ThemeToggle /> });
+    }
+
     menu.push({ text: null });
 
     menu.push({
@@ -89,7 +101,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
     });
 
     return menu;
-  }, [account, authUsers]);
+  }, [account, authUsers, features]);
 
   React.useEffect(() => {
     fetchOwnAccountThrottled();
@@ -103,7 +115,15 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
 
       <MenuList>
         {menu.map((menuItem, idx) => {
-          if (!menuItem.text) {
+          if (menuItem.toggle) {
+            return (
+              <div className='flex flex-row items-center justify-between px-4 py-1 text-sm text-gray-700 dark:text-gray-400'>
+                <span>{menuItem.text}</span>
+
+                {menuItem.toggle}
+              </div>
+            );
+          } else if (!menuItem.text) {
             return <MenuDivider key={idx} />;
           } else {
             const Comp: any = menuItem.action ? MenuItem : MenuLink;
