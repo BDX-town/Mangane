@@ -14,7 +14,7 @@ import resizeImage from 'soapbox/utils/resize_image';
 import { Button, Column, Form, FormActions, FormGroup, Input, Textarea, HStack } from '../../components/ui';
 import Streamfield from '../../components/ui/streamfield/streamfield';
 
-import ProfilePreview from './components/profile_preview';
+import ProfilePreview from './components/profile-preview';
 
 import type { Account } from 'soapbox/types/entities';
 
@@ -377,7 +377,7 @@ const EditProfile: React.FC = () => {
           />
         </FormGroup>
 
-        <div className='grid grid-cols-2 gap-4'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
           <ProfilePreview account={previewAccount} />
 
           <div className='space-y-4'>
