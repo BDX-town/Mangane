@@ -179,7 +179,7 @@ const SoapboxConfig: React.FC = () => {
 
   return (
     <Column label={intl.formatMessage(messages.heading)}>
-      <Form onSubmit={handleSubmit} className='simple_form space-y-4'>
+      <Form onSubmit={handleSubmit}>
         <fieldset className='space-y-6' disabled={isLoading}>
           <SitePreview soapbox={soapbox} />
 
@@ -229,7 +229,7 @@ const SoapboxConfig: React.FC = () => {
             />
           </FormGroup>
 
-          <Stack space={2}>
+          <Stack space={2} className='simple_form'>
             <Checkbox
               name='verifiedCanEditName'
               label={intl.formatMessage(messages.verifiedCanEditNameLabel)}

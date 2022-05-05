@@ -38,13 +38,13 @@ const ColorWithPicker: React.FC<IColorWithPicker> = ({ buttonId, label, value, o
   };
 
   return (
-    <div className='label_input__color'>
+    <div>
       <label>{label}</label>
 
       <div
         ref={node}
         id={buttonId}
-        className='color-swatch'
+        className='w-8 h-8 rounded-md'
         role='presentation'
         style={{ background: value }}
         title={value}
