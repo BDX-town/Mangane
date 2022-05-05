@@ -140,6 +140,14 @@ class TabsBar extends React.PureComponent {
                   <button className='tabs-bar__sidebar-btn' onClick={onOpenSidebar} />
                   <ProfileDropdown account={account} size={34} />
                 </div>
+
+                <NavLink to='/search' className='tabs-bar__search'>
+                  <Icon
+                    src={require('@tabler/icons/icons/search.svg')}
+                    className={classNames({ 'svg-icon--active': location.pathname === '/search' })}
+                  />
+                </NavLink>
+
                 <button className='tabs-bar__button-compose button' onClick={onOpenCompose} aria-label={intl.formatMessage(messages.post)}>
                   <span>{intl.formatMessage(messages.post)}</span>
                 </button>

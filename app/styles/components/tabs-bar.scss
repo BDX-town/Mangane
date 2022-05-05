@@ -110,6 +110,28 @@
     }
   }
 
+  &__search {
+    display: none;
+    color: var(--foreground-color);
+    margin-left: 20px;
+
+    .svg-icon {
+      width: 24px;
+      height: 24px;
+      &--active svg{
+        fill: var(--foreground-color) !important;
+      }
+    }
+
+    @media screen and (max-width: 895px) {
+      display: block;
+    }
+
+    @media screen and (max-width: 450px) {
+      margin-left: auto;
+    }
+  }
+
   &__sidebar-btn {
     display: block;
     position: absolute;
