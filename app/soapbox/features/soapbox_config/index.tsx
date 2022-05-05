@@ -10,7 +10,7 @@ import HStack from 'soapbox/components/ui/hstack/hstack';
 import Stack from 'soapbox/components/ui/stack/stack';
 import Streamfield from 'soapbox/components/ui/streamfield/streamfield';
 import { Checkbox } from 'soapbox/features/forms';
-import ThemeToggle from 'soapbox/features/ui/components/theme-toggle';
+import ThemeSelector from 'soapbox/features/ui/components/theme-selector';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 
@@ -48,6 +48,7 @@ type ValueGetter<T = Element> = (e: React.ChangeEvent<T>) => any;
 type ColorValueGetter = (color: ColorResult, event: React.ChangeEvent<HTMLInputElement>) => any;
 type Template = ImmutableMap<string, any>;
 type ConfigPath = Array<string | number>;
+type ThemeChangeHandler = (theme: string) => void;
 
 const templates: Record<string, Template> = {
   promoPanelItem: ImmutableMap({ icon: '', text: '', url: '' }),
@@ -106,6 +107,12 @@ const SoapboxConfig: React.FC = () => {
   const handleChange = (path: ConfigPath, getValue: ValueGetter<any>): React.ChangeEventHandler => {
     return e => {
       setConfig(path, getValue(e));
+    };
+  };
+
+  const handleThemeChange = (path: ConfigPath): ThemeChangeHandler => {
+    return theme => {
+      setConfig(path, theme);
     };
   };
 
@@ -196,12 +203,10 @@ const SoapboxConfig: React.FC = () => {
               <div className='input with_label toggle'>
                 <div className='label_input'>
                   <label><FormattedMessage id='soapbox_config.fields.theme_label' defaultMessage='Default theme' /></label>
-                  <ThemeToggle />
-                  {/* <ThemeToggle
-                    onToggle={handleChange(['defaultSettings', 'themeMode'], value => value)}
-                    themeMode={soapbox.defaultSettings.get('themeMode')}
-                    intl={intl}
-                  /> */}
+                  <ThemeSelector
+                    value={soapbox.defaultSettings.get('themeMode')}
+                    onChange={handleThemeChange(['defaultSettings', 'themeMode'])}
+                  />
                 </div>
               </div>
             </Stack>
