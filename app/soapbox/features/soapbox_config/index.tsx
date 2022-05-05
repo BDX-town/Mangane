@@ -1,15 +1,16 @@
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import React, { useState, useEffect, useMemo } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
+import Toggle from 'react-toggle';
 
 import { updateConfig } from 'soapbox/actions/admin';
 import { uploadMedia } from 'soapbox/actions/media';
 import snackbar from 'soapbox/actions/snackbar';
+import List, { ListItem } from 'soapbox/components/list';
 import { Column, Form, FormActions, FormGroup, Input, Textarea, Button } from 'soapbox/components/ui';
 import HStack from 'soapbox/components/ui/hstack/hstack';
 import Stack from 'soapbox/components/ui/stack/stack';
 import Streamfield from 'soapbox/components/ui/streamfield/streamfield';
-import { Checkbox } from 'soapbox/features/forms';
 import ThemeSelector from 'soapbox/features/ui/components/theme-selector';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
@@ -237,50 +238,60 @@ const SoapboxConfig: React.FC = () => {
             />
           </FormGroup>
 
-          <Stack space={2} className='simple_form'>
-            <Checkbox
-              name='verifiedCanEditName'
-              label={intl.formatMessage(messages.verifiedCanEditNameLabel)}
-              checked={soapbox.verifiedCanEditName === true}
-              onChange={handleChange(['verifiedCanEditName'], (e) => e.target.checked)}
-            />
-            <Checkbox
-              name='displayFqn'
-              label={intl.formatMessage(messages.displayFqnLabel)}
-              checked={soapbox.displayFqn === true}
-              onChange={handleChange(['displayFqn'], (e) => e.target.checked)}
-            />
-            <Checkbox
-              name='greentext'
-              label={intl.formatMessage(messages.greentextLabel)}
-              checked={soapbox.greentext === true}
-              onChange={handleChange(['greentext'], (e) => e.target.checked)}
-            />
-            <Checkbox
-              name='authenticatedProfile'
+          <List>
+            <ListItem label={intl.formatMessage(messages.verifiedCanEditNameLabel)}>
+              <Toggle
+                checked={soapbox.verifiedCanEditName === true}
+                onChange={handleChange(['verifiedCanEditName'], (e) => e.target.checked)}
+              />
+            </ListItem>
+
+            <ListItem label={intl.formatMessage(messages.displayFqnLabel)}>
+              <Toggle
+                checked={soapbox.displayFqn === true}
+                onChange={handleChange(['displayFqn'], (e) => e.target.checked)}
+              />
+            </ListItem>
+
+
+            <ListItem label={intl.formatMessage(messages.greentextLabel)}>
+              <Toggle
+                checked={soapbox.greentext === true}
+                onChange={handleChange(['greentext'], (e) => e.target.checked)}
+              />
+            </ListItem>
+
+            <ListItem
               label={intl.formatMessage(messages.authenticatedProfileLabel)}
               hint={intl.formatMessage(messages.authenticatedProfileHint)}
-              checked={soapbox.authenticatedProfile === true}
-              onChange={handleChange(['authenticatedProfile'], (e) => e.target.checked)}
-            />
-            <Checkbox
-              name='singleUserMode'
+            >
+              <Toggle
+                checked={soapbox.authenticatedProfile === true}
+                onChange={handleChange(['authenticatedProfile'], (e) => e.target.checked)}
+              />
+            </ListItem>
+
+            <ListItem
               label={intl.formatMessage(messages.singleUserModeLabel)}
               hint={intl.formatMessage(messages.singleUserModeHint)}
-              checked={soapbox.singleUserMode === true}
-              onChange={handleChange(['singleUserMode'], (e) => e.target.checked)}
-            />
+            >
+              <Toggle
+                checked={soapbox.singleUserMode === true}
+                onChange={handleChange(['singleUserMode'], (e) => e.target.checked)}
+              />
+            </ListItem>
+
             {soapbox.get('singleUserMode') && (
-              <FormGroup labelText={intl.formatMessage(messages.singleUserModeProfileLabel)}>
+              <ListItem label={intl.formatMessage(messages.singleUserModeProfileLabel)}>
                 <Input
                   type='text'
                   placeholder={intl.formatMessage(messages.singleUserModeProfileHint)}
                   value={soapbox.singleUserModeProfile}
                   onChange={handleChange(['singleUserModeProfile'], (e) => e.target.value)}
                 />
-              </FormGroup>
+              </ListItem>
             )}
-          </Stack>
+          </List>
 
           <Streamfield
             label={<FormattedMessage id='soapbox_config.fields.promo_panel_fields_label' defaultMessage='Promo panel items' />}
