@@ -224,10 +224,10 @@ export default class StatusList extends ImmutablePureComponent {
         placeholderCount={20}
         ref={this.setRef}
         className={classNames('divide-y divide-solid divide-gray-200 dark:divide-slate-700', {
-          'sm:divide-none': divideType !== 'border',
+          'divide-none': divideType !== 'border',
         })}
         itemClassName={classNames({
-          'sm:pb-3': divideType !== 'border',
+          'pb-3': divideType !== 'border',
         })}
         {...other}
       >

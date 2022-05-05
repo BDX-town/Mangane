@@ -42,7 +42,7 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
 
   const renderChildren = () => {
     if (transparent) {
-      return <div className={classNames('bg-white dark:bg-slate-800 text-black dark:text-white sm:bg-transparent sm:dark:bg-transparent', className)}>{children}</div>;
+      return <div className={classNames('text-black dark:text-white', className)}>{children}</div>;
     }
 
     return (
