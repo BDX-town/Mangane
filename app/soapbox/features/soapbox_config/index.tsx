@@ -180,8 +180,8 @@ const SoapboxConfig: React.FC = () => {
 
   return (
     <Column label={intl.formatMessage(messages.heading)}>
-      <Form onSubmit={handleSubmit} className='simple_form'>
-        <fieldset disabled={isLoading}>
+      <Form onSubmit={handleSubmit} className='simple_form space-y-4'>
+        <fieldset className='space-y-4' disabled={isLoading}>
           <SitePreview soapbox={soapbox} />
           <FieldsGroup>
             <div className='fields-row file-picker'>
