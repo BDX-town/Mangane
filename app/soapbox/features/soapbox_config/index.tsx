@@ -5,12 +5,11 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { updateConfig } from 'soapbox/actions/admin';
 import { uploadMedia } from 'soapbox/actions/media';
 import snackbar from 'soapbox/actions/snackbar';
-import { Column, Form, FormActions, FormGroup, Input, Button } from 'soapbox/components/ui';
+import { Column, Form, FormActions, FormGroup, Input, Textarea, Button } from 'soapbox/components/ui';
 import HStack from 'soapbox/components/ui/hstack/hstack';
 import Stack from 'soapbox/components/ui/stack/stack';
 import Streamfield from 'soapbox/components/ui/streamfield/streamfield';
 import {
-  SimpleTextarea,
   FileChooserLogo,
   Checkbox,
 } from 'soapbox/features/forms';
@@ -320,14 +319,15 @@ const SoapboxConfig: React.FC = () => {
             expanded={jsonEditorExpanded}
             onToggle={toggleJSONEditor}
           >
-            <div className={jsonValid ? 'code-editor' : 'code-editor code-editor--invalid'}>
-              <SimpleTextarea
-                hint={intl.formatMessage(messages.rawJSONHint)}
+            <FormGroup hintText={intl.formatMessage(messages.rawJSONHint)}>
+              <Textarea
                 value={rawJSON}
                 onChange={handleEditJSON}
+                hasError={!jsonValid}
+                isCodeEditor
                 rows={12}
               />
-            </div>
+            </FormGroup>
           </Accordion>
         </fieldset>
         <FormActions>

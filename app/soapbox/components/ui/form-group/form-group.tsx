@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 interface IFormGroup {
   /** Input label message. */
-  labelText: React.ReactNode,
+  labelText?: React.ReactNode,
   /** Input hint message. */
   hintText?: React.ReactNode,
   /** Input errors. */
@@ -26,13 +26,15 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
 
   return (
     <div>
-      <label
-        htmlFor={formFieldId}
-        data-testid='form-group-label'
-        className='block text-sm font-medium text-gray-700 dark:text-gray-400'
-      >
-        {labelText}
-      </label>
+      {labelText && (
+        <label
+          htmlFor={formFieldId}
+          data-testid='form-group-label'
+          className='block text-sm font-medium text-gray-700 dark:text-gray-400'
+        >
+          {labelText}
+        </label>
+      )}
 
       <div className='mt-1 dark:text-white'>
         {firstChild}
@@ -47,11 +49,11 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
           </p>
         )}
 
-        {hintText ? (
+        {hintText && (
           <p data-testid='form-group-hint' className='mt-0.5 text-xs text-gray-400'>
             {hintText}
           </p>
-        ) : null}
+        )}
       </div>
     </div>
   );
