@@ -12,7 +12,7 @@ import { normalizeAccount } from 'soapbox/normalizers';
 import resizeImage from 'soapbox/utils/resize_image';
 
 import { Button, Column, Form, FormActions, FormGroup, Input, Textarea, HStack } from '../../components/ui';
-import Streamfield from '../../components/ui/streamfield/streamfield';
+import Streamfield, { StreamfieldComponent } from '../../components/ui/streamfield/streamfield';
 
 import ProfilePreview from './components/profile-preview';
 
@@ -147,12 +147,7 @@ const accountToCredentials = (account: Account): AccountCredentials => {
   };
 };
 
-interface IProfileField {
-  value: AccountCredentialsField,
-  onChange: (field: AccountCredentialsField) => void,
-}
-
-const ProfileField: React.FC<IProfileField> = ({ value, onChange }) => {
+const ProfileField: StreamfieldComponent<AccountCredentialsField> = ({ value, onChange }) => {
   const intl = useIntl();
 
   const handleChange = (key: string): React.ChangeEventHandler<HTMLInputElement> => {

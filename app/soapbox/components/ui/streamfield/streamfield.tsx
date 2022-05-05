@@ -12,6 +12,12 @@ const messages = defineMessages({
   remove: { id: 'streamfield.remove', defaultMessage: 'Remove' },
 });
 
+/** Type of the inner Streamfield input component. */
+export type StreamfieldComponent<T> = React.ComponentType<{
+  value: T,
+  onChange: (value: T) => void,
+}>;
+
 interface IStreamfield {
   /** Array of values for the streamfield. */
   values: any[],
@@ -26,7 +32,7 @@ interface IStreamfield {
   /** Callback when values are changed. */
   onChange: (values: any[]) => void,
   /** Input to render for each value. */
-  component: React.ComponentType<{ onChange: (value: any) => void, value: any }>,
+  component: StreamfieldComponent<any>,
   /** Maximum number of allowed inputs. */
   maxItems?: number,
 }
