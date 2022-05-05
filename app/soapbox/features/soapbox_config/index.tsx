@@ -24,6 +24,7 @@ import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 import Accordion from '../ui/components/accordion';
 
 import ColorWithPicker from './components/color-with-picker';
+import CryptoAddressInput from './components/crypto-address-input';
 import IconPicker from './components/icon-picker';
 import SitePreview from './components/site-preview';
 
@@ -39,9 +40,6 @@ const messages = defineMessages({
   promoItemURL: { id: 'soapbox_config.promo_panel.meta_fields.url_placeholder', defaultMessage: 'URL' },
   homeFooterItemLabel: { id: 'soapbox_config.home_footer.meta_fields.label_placeholder', defaultMessage: 'Label' },
   homeFooterItemURL: { id: 'soapbox_config.home_footer.meta_fields.url_placeholder', defaultMessage: 'URL' },
-  cryptoAdressItemTicker: { id: 'soapbox_config.crypto_address.meta_fields.ticker_placeholder', defaultMessage: 'Ticker' },
-  cryptoAdressItemAddress: { id: 'soapbox_config.crypto_address.meta_fields.address_placeholder', defaultMessage: 'Address' },
-  cryptoAdressItemNote: { id: 'soapbox_config.crypto_address.meta_fields.note_placeholder', defaultMessage: 'Note (optional)' },
   cryptoDonatePanelLimitLabel: { id: 'soapbox_config.crypto_donate_panel_limit.meta_fields.limit_placeholder', defaultMessage: 'Number of items to display in the crypto homepage widget' },
   customCssLabel: { id: 'soapbox_config.custom_css.meta_fields.url_placeholder', defaultMessage: 'URL' },
   rawJSONLabel: { id: 'soapbox_config.raw_json_label', defaultMessage: 'Advanced: Edit raw JSON data' },
@@ -67,42 +65,6 @@ const templates: Record<string, Template> = {
   promoPanelItem: ImmutableMap({ icon: '', text: '', url: '' }),
   footerItem: ImmutableMap({ title: '', url: '' }),
   cryptoAddress: ImmutableMap({ ticker: '', address: '', note: '' }),
-};
-
-const CryptoAddressInput: StreamfieldComponent<CryptoAddress> = ({ value, onChange }) => {
-  const intl = useIntl();
-
-  const handleChange = (key: 'ticker' | 'address' | 'note'): React.ChangeEventHandler<HTMLInputElement> => {
-    return e => {
-      onChange(value.set(key, e.currentTarget.value));
-    };
-  };
-
-  return (
-    <HStack space={2} grow>
-      <Input
-        type='text'
-        outerClassName='w-1/6 flex-grow'
-        value={value.ticker}
-        onChange={handleChange('ticker')}
-        placeholder={intl.formatMessage(messages.cryptoAdressItemTicker)}
-      />
-      <Input
-        type='text'
-        outerClassName='w-3/6 flex-grow'
-        value={value.address}
-        onChange={handleChange('address')}
-        placeholder={intl.formatMessage(messages.cryptoAdressItemAddress)}
-      />
-      <Input
-        type='text'
-        outerClassName='w-2/6 flex-grow'
-        value={value.note}
-        onChange={handleChange('note')}
-        placeholder={intl.formatMessage(messages.cryptoAdressItemNote)}
-      />
-    </HStack>
-  );
 };
 
 const SoapboxConfig: React.FC = () => {
