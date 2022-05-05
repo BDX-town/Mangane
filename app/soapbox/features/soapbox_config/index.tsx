@@ -6,7 +6,8 @@ import { updateConfig } from 'soapbox/actions/admin';
 import { uploadMedia } from 'soapbox/actions/media';
 import snackbar from 'soapbox/actions/snackbar';
 import Icon from 'soapbox/components/icon';
-import { Column } from 'soapbox/components/ui';
+import { Column, HStack, Input } from 'soapbox/components/ui';
+import Streamfield, { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
 import {
   SimpleForm,
   FieldsGroup,
@@ -27,6 +28,7 @@ import IconPicker from './components/icon-picker';
 import SitePreview from './components/site-preview';
 
 import type { ColorChangeHandler, ColorResult } from 'react-color';
+import type { CryptoAddress } from 'soapbox/types/soapbox';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
@@ -65,6 +67,42 @@ const templates: Record<string, Template> = {
   promoPanelItem: ImmutableMap({ icon: '', text: '', url: '' }),
   footerItem: ImmutableMap({ title: '', url: '' }),
   cryptoAddress: ImmutableMap({ ticker: '', address: '', note: '' }),
+};
+
+const CryptoAddressInput: StreamfieldComponent<CryptoAddress> = ({ value, onChange }) => {
+  const intl = useIntl();
+
+  const handleChange = (key: 'ticker' | 'address' | 'note'): React.ChangeEventHandler<HTMLInputElement> => {
+    return e => {
+      onChange(value.set(key, e.currentTarget.value));
+    };
+  };
+
+  return (
+    <HStack space={2} grow>
+      <Input
+        type='text'
+        outerClassName='w-1/6 flex-grow'
+        value={value.ticker}
+        onChange={handleChange('ticker')}
+        placeholder={intl.formatMessage(messages.cryptoAdressItemTicker)}
+      />
+      <Input
+        type='text'
+        outerClassName='w-3/6 flex-grow'
+        value={value.address}
+        onChange={handleChange('address')}
+        placeholder={intl.formatMessage(messages.cryptoAdressItemAddress)}
+      />
+      <Input
+        type='text'
+        outerClassName='w-2/6 flex-grow'
+        value={value.note}
+        onChange={handleChange('note')}
+        placeholder={intl.formatMessage(messages.cryptoAdressItemNote)}
+      />
+    </HStack>
+  );
 };
 
 const SoapboxConfig: React.FC = () => {
@@ -187,10 +225,18 @@ const SoapboxConfig: React.FC = () => {
     );
   };
 
-  const handleCryptoAdressItemChange = (index: number, key: string, field: any, getValue?: ValueGetter) => {
-    return handleItemChange(
-      ['cryptoAddresses', index], key, field, templates.cryptoAddress, getValue,
-    );
+  const handleCryptoAdressChange = (values: CryptoAddress[]) => {
+    setConfig(['cryptoAddresses'], ImmutableList(values));
+  };
+
+  const addCryptoAddress = () => {
+    const cryptoAddresses = data.get('cryptoAddresses');
+    setConfig(['cryptoAddresses'], cryptoAddresses.push(templates.cryptoAddress));
+  };
+
+  const removeCryptoAddress = (i: number) => {
+    const cryptoAddresses = data.get('cryptoAddresses');
+    setConfig(['cryptoAddresses'], cryptoAddresses.delete(i));
   };
 
   const handleEditJSON: React.ChangeEventHandler<HTMLTextAreaElement> = e => {
@@ -385,45 +431,17 @@ const SoapboxConfig: React.FC = () => {
               </div>
             </div>
           </FieldsGroup>
-          <FieldsGroup>
-            <div className='input with_block_label'>
-              <label><FormattedMessage id='soapbox_config.fields.crypto_addresses_label' defaultMessage='Cryptocurrency addresses' /></label>
-              <span className='hint'>
-                <FormattedMessage id='soapbox_config.hints.crypto_addresses' defaultMessage='Add cryptocurrency addresses so users of your site can donate to you. Order matters, and you must use lowercase ticker values.' />
-              </span>
-              {
-                soapbox.cryptoAddresses.map((address, i) => (
-                  <div className='row' key={i}>
-                    <TextInput
-                      label={intl.formatMessage(messages.cryptoAdressItemTicker)}
-                      placeholder={intl.formatMessage(messages.cryptoAdressItemTicker)}
-                      value={address.ticker}
-                      onChange={handleCryptoAdressItemChange(i, 'ticker', address)}
-                    />
-                    <TextInput
-                      label={intl.formatMessage(messages.cryptoAdressItemAddress)}
-                      placeholder={intl.formatMessage(messages.cryptoAdressItemAddress)}
-                      value={address.address}
-                      onChange={handleCryptoAdressItemChange(i, 'address', address)}
-                    />
-                    <TextInput
-                      label={intl.formatMessage(messages.cryptoAdressItemNote)}
-                      placeholder={intl.formatMessage(messages.cryptoAdressItemNote)}
-                      value={address.note}
-                      onChange={handleCryptoAdressItemChange(i, 'note', address)}
-                    />
-                    <Icon className='delete-field' src={require('@tabler/icons/icons/circle-x.svg')} onClick={handleDeleteItem(['cryptoAddresses', i])} />
-                  </div>
-                ))
-              }
-              <div className='actions add-row'>
-                <div role='presentation' className='btn button button-secondary' onClick={handleAddItem(['cryptoAddresses'], templates.cryptoAddress)}>
-                  <Icon src={require('@tabler/icons/icons/circle-plus.svg')} />
-                  <FormattedMessage id='soapbox_config.fields.crypto_address.add' defaultMessage='Add new crypto address' />
-                </div>
-              </div>
-            </div>
-          </FieldsGroup>
+
+          <Streamfield
+            label={<FormattedMessage id='soapbox_config.fields.crypto_addresses_label' defaultMessage='Cryptocurrency addresses' />}
+            hint={<FormattedMessage id='soapbox_config.hints.crypto_addresses' defaultMessage='Add cryptocurrency addresses so users of your site can donate to you. Order matters, and you must use lowercase ticker values.' />}
+            component={CryptoAddressInput}
+            values={soapbox.cryptoAddresses.toArray()}
+            onChange={handleCryptoAdressChange}
+            onAddItem={addCryptoAddress}
+            onRemoveItem={removeCryptoAddress}
+          />
+
           <FieldsGroup>
             <SimpleInput
               type='number'
