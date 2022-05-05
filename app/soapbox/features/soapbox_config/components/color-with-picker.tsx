@@ -10,12 +10,11 @@ import type { ColorChangeHandler } from 'react-color';
 
 interface IColorWithPicker {
   buttonId: string,
-  label: React.ReactNode,
   value: string,
   onChange: ColorChangeHandler,
 }
 
-const ColorWithPicker: React.FC<IColorWithPicker> = ({ buttonId, label, value, onChange }) => {
+const ColorWithPicker: React.FC<IColorWithPicker> = ({ buttonId, value, onChange }) => {
   const node = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
   const [placement, setPlacement] = useState<string | null>(null);
@@ -39,8 +38,6 @@ const ColorWithPicker: React.FC<IColorWithPicker> = ({ buttonId, label, value, o
 
   return (
     <div>
-      <label>{label}</label>
-
       <div
         ref={node}
         id={buttonId}

@@ -8,8 +8,6 @@ import { uploadMedia } from 'soapbox/actions/media';
 import snackbar from 'soapbox/actions/snackbar';
 import List, { ListItem } from 'soapbox/components/list';
 import { Column, Form, FormActions, FormGroup, Input, Textarea, Button } from 'soapbox/components/ui';
-import HStack from 'soapbox/components/ui/hstack/hstack';
-import Stack from 'soapbox/components/ui/stack/stack';
 import Streamfield from 'soapbox/components/ui/streamfield/streamfield';
 import ThemeSelector from 'soapbox/features/ui/components/theme-selector';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
@@ -187,47 +185,42 @@ const SoapboxConfig: React.FC = () => {
         <fieldset className='space-y-6' disabled={isLoading}>
           <SitePreview soapbox={soapbox} />
 
-          <HStack space={2}>
-            <Stack space={2} className='w-1/2'>
+          <FormGroup
+            labelText={<FormattedMessage id='soapbox_config.fields.logo_label' defaultMessage='Logo' />}
+            hintText={<FormattedMessage id='soapbox_config.hints.logo' defaultMessage='SVG. At most 2 MB. Will be displayed to 50px height, maintaining aspect ratio' />}
+          >
+            <input
+              type='file'
+              onChange={handleFileChange(['logo'])}
+              className='text-sm'
+              accept='image/svg,image/png'
+            />
+          </FormGroup>
+
+          <List>
+            <ListItem label={<FormattedMessage id='soapbox_config.fields.theme_label' defaultMessage='Default theme' />}>
+              <ThemeSelector
+                value={soapbox.defaultSettings.get('themeMode')}
+                onChange={handleThemeChange(['defaultSettings', 'themeMode'])}
+              />
+            </ListItem>
+
+            <ListItem label={<FormattedMessage id='soapbox_config.fields.brand_color_label' defaultMessage='Brand color' />}>
               <ColorWithPicker
-                buttonId='brand_color'
-                label={<FormattedMessage id='soapbox_config.fields.brand_color_label' defaultMessage='Brand color' />}
+                buttonId='brandColor'
                 value={soapbox.brandColor}
                 onChange={handleColorChange(['brandColor'], (color) => color.hex)}
               />
+            </ListItem>
 
+            <ListItem label={<FormattedMessage id='soapbox_config.fields.accent_color_label' defaultMessage='Accent color' />}>
               <ColorWithPicker
-                buttonId='accent_color'
-                label={<FormattedMessage id='soapbox_config.fields.accent_color_label' defaultMessage='Accent color' />}
+                buttonId='accentColor'
                 value={soapbox.accentColor}
                 onChange={handleColorChange(['accentColor'], (color) => color.hex)}
               />
-
-              <div className='input with_label toggle'>
-                <div className='label_input'>
-                  <label><FormattedMessage id='soapbox_config.fields.theme_label' defaultMessage='Default theme' /></label>
-                  <ThemeSelector
-                    value={soapbox.defaultSettings.get('themeMode')}
-                    onChange={handleThemeChange(['defaultSettings', 'themeMode'])}
-                  />
-                </div>
-              </div>
-            </Stack>
-
-            <Stack className='w-1/2'>
-              <FormGroup
-                labelText={<FormattedMessage id='soapbox_config.fields.logo_label' defaultMessage='Logo' />}
-                hintText={<FormattedMessage id='soapbox_config.hints.logo' defaultMessage='SVG. At most 2 MB. Will be displayed to 50px height, maintaining aspect ratio' />}
-              >
-                <input
-                  type='file'
-                  onChange={handleFileChange(['logo'])}
-                  className='text-sm'
-                  accept='image/svg,image/png'
-                />
-              </FormGroup>
-            </Stack>
-          </HStack>
+            </ListItem>
+          </List>
 
           <FormGroup labelText={intl.formatMessage(messages.copyrightFooterLabel)}>
             <Input
