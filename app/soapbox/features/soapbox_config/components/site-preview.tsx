@@ -33,15 +33,6 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
                 <div className='tabs-bar__split tabs-bar__split--left'>
                   <a className='tabs-bar__link--logo' href='#'>
                     <img alt='Logo' src={soapboxConfig.logo} />
-                    <span>Home</span>
-                  </a>
-                  <a className='tabs-bar__link' href='#'>
-                    <i role='img' className='fa fa-home' />
-                    <span>Home</span>
-                  </a>
-                  <a className='tabs-bar__link' href='#'>
-                    <i role='img' className='fa fa-bell' />
-                    <span>Notifications</span>
                   </a>
                 </div>
               </div>
