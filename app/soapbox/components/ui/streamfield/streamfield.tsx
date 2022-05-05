@@ -65,22 +65,24 @@ const Streamfield: React.FC<IStreamfield> = ({
         {hint && <Text size='xs' theme='muted'>{hint}</Text>}
       </Stack>
 
-      <Stack>
-        {values.map((value, i) => (
-          <HStack space={2} alignItems='center'>
-            <Component key={i} onChange={handleChange(i)} value={value} />
-            {onRemoveItem && (
-              <IconButton
-                iconClassName='w-4 h-4'
-                className='bg-transparent text-gray-400 hover:text-gray-600'
-                src={require('@tabler/icons/icons/x.svg')}
-                onClick={() => onRemoveItem(i)}
-                title={intl.formatMessage(messages.remove)}
-              />
-            )}
-          </HStack>
-        ))}
-      </Stack>
+      {(values.length > 0) && (
+        <Stack>
+          {values.map((value, i) => (
+            <HStack space={2} alignItems='center'>
+              <Component key={i} onChange={handleChange(i)} value={value} />
+              {onRemoveItem && (
+                <IconButton
+                  iconClassName='w-4 h-4'
+                  className='bg-transparent text-gray-400 hover:text-gray-600'
+                  src={require('@tabler/icons/icons/x.svg')}
+                  onClick={() => onRemoveItem(i)}
+                  title={intl.formatMessage(messages.remove)}
+                />
+              )}
+            </HStack>
+          ))}
+        </Stack>
+      )}
 
       {onAddItem && (
         <Button
