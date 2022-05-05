@@ -36,12 +36,14 @@ const PromoPanelInput: StreamfieldComponent<PromoPanelItem> = ({ value, onChange
 
       <Input
         type='text'
+        outerClassName='w-full flex-grow'
         placeholder={intl.formatMessage(messages.label)}
         value={value.text}
         onChange={handleChange('text')}
       />
       <Input
         type='text'
+        outerClassName='w-full flex-grow'
         placeholder={intl.formatMessage(messages.url)}
         value={value.url}
         onChange={handleChange('url')}

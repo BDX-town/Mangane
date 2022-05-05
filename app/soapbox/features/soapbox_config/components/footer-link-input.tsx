@@ -24,12 +24,14 @@ const PromoPanelInput: StreamfieldComponent<FooterItem> = ({ value, onChange }) 
     <HStack space={2} grow>
       <Input
         type='text'
+        outerClassName='w-full flex-grow'
         placeholder={intl.formatMessage(messages.label)}
         value={value.title}
         onChange={handleChange('title')}
       />
       <Input
         type='text'
+        outerClassName='w-full flex-grow'
         placeholder={intl.formatMessage(messages.url)}
         value={value.url}
         onChange={handleChange('url')}
