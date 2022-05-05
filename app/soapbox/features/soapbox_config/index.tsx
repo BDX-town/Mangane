@@ -9,10 +9,7 @@ import { Column, Form, FormActions, FormGroup, Input, Textarea, Button } from 's
 import HStack from 'soapbox/components/ui/hstack/hstack';
 import Stack from 'soapbox/components/ui/stack/stack';
 import Streamfield from 'soapbox/components/ui/streamfield/streamfield';
-import {
-  FileChooserLogo,
-  Checkbox,
-} from 'soapbox/features/forms';
+import { Checkbox } from 'soapbox/features/forms';
 import ThemeToggle from 'soapbox/features/ui/components/theme-toggle';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
@@ -210,12 +207,17 @@ const SoapboxConfig: React.FC = () => {
             </Stack>
 
             <Stack className='w-1/2'>
-              <FileChooserLogo
-                label={<FormattedMessage id='soapbox_config.fields.logo_label' defaultMessage='Logo' />}
-                name='logo'
-                hint={<FormattedMessage id='soapbox_config.hints.logo' defaultMessage='SVG. At most 2 MB. Will be displayed to 50px height, maintaining aspect ratio' />}
-                onChange={handleFileChange(['logo'])}
-              />
+              <FormGroup
+                labelText={<FormattedMessage id='soapbox_config.fields.logo_label' defaultMessage='Logo' />}
+                hintText={<FormattedMessage id='soapbox_config.hints.logo' defaultMessage='SVG. At most 2 MB. Will be displayed to 50px height, maintaining aspect ratio' />}
+              >
+                <input
+                  type='file'
+                  onChange={handleFileChange(['logo'])}
+                  className='text-sm'
+                  accept='image/svg,image/png'
+                />
+              </FormGroup>
             </Stack>
           </HStack>
 
@@ -330,6 +332,7 @@ const SoapboxConfig: React.FC = () => {
             </FormGroup>
           </Accordion>
         </fieldset>
+
         <FormActions>
           <Button type='submit'>
             <FormattedMessage id='soapbox_config.save' defaultMessage='Save' />
