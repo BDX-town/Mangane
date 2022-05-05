@@ -6,7 +6,7 @@ import { updateConfig } from 'soapbox/actions/admin';
 import { uploadMedia } from 'soapbox/actions/media';
 import snackbar from 'soapbox/actions/snackbar';
 import Icon from 'soapbox/components/icon';
-import { Column, Form, FormActions, Button, HStack, Input } from 'soapbox/components/ui';
+import { Column, Form, FormActions, Button } from 'soapbox/components/ui';
 import Streamfield, { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
 import {
   FieldsGroup,
@@ -24,19 +24,15 @@ import Accordion from '../ui/components/accordion';
 
 import ColorWithPicker from './components/color-with-picker';
 import CryptoAddressInput from './components/crypto-address-input';
-import IconPicker from './components/icon-picker';
+import PromoPanelInput from './components/promo-panel-input';
 import SitePreview from './components/site-preview';
 
 import type { ColorChangeHandler, ColorResult } from 'react-color';
-import type { CryptoAddress, PromoPanelItem } from 'soapbox/types/soapbox';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
   saved: { id: 'soapbox_config.saved', defaultMessage: 'Soapbox config saved!' },
   copyrightFooterLabel: { id: 'soapbox_config.copyright_footer.meta_fields.label_placeholder', defaultMessage: 'Copyright footer' },
-  promoItemIcon: { id: 'soapbox_config.promo_panel.meta_fields.icon_placeholder', defaultMessage: 'Icon' },
-  promoItemLabel: { id: 'soapbox_config.promo_panel.meta_fields.label_placeholder', defaultMessage: 'Label' },
-  promoItemURL: { id: 'soapbox_config.promo_panel.meta_fields.url_placeholder', defaultMessage: 'URL' },
   homeFooterItemLabel: { id: 'soapbox_config.home_footer.meta_fields.label_placeholder', defaultMessage: 'Label' },
   homeFooterItemURL: { id: 'soapbox_config.home_footer.meta_fields.url_placeholder', defaultMessage: 'URL' },
   cryptoDonatePanelLimitLabel: { id: 'soapbox_config.crypto_donate_panel_limit.meta_fields.limit_placeholder', defaultMessage: 'Number of items to display in the crypto homepage widget' },
@@ -64,42 +60,6 @@ const templates: Record<string, Template> = {
   promoPanelItem: ImmutableMap({ icon: '', text: '', url: '' }),
   footerItem: ImmutableMap({ title: '', url: '' }),
   cryptoAddress: ImmutableMap({ ticker: '', address: '', note: '' }),
-};
-
-const PromoPanelInput: StreamfieldComponent<PromoPanelItem> = ({ value, onChange }) => {
-  const intl = useIntl();
-
-  const handleIconChange = (icon: any) => {
-    onChange(value.set('icon', icon.id));
-  };
-
-  const handleChange = (key: 'text' | 'url'): React.ChangeEventHandler<HTMLInputElement> => {
-    return e => {
-      onChange(value.set(key, e.currentTarget.value));
-    };
-  };
-
-  return (
-    <HStack space={2} grow>
-      <IconPicker
-        value={value.icon}
-        onChange={handleIconChange}
-      />
-
-      <Input
-        type='text'
-        placeholder={intl.formatMessage(messages.promoItemLabel)}
-        value={value.text}
-        onChange={handleChange('text')}
-      />
-      <Input
-        type='text'
-        placeholder={intl.formatMessage(messages.promoItemURL)}
-        value={value.url}
-        onChange={handleChange('url')}
-      />
-    </HStack>
-  );
 };
 
 const SoapboxConfig: React.FC = () => {
