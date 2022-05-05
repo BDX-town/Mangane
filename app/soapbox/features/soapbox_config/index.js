@@ -27,7 +27,7 @@ import Accordion from '../ui/components/accordion';
 
 import ColorWithPicker from './components/color-with-picker';
 import IconPicker from './components/icon-picker';
-import SitePreview from './components/site_preview';
+import SitePreview from './components/site-preview';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },

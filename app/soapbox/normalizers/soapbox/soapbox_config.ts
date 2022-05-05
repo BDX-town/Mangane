@@ -89,7 +89,7 @@ export const SoapboxConfigRecord = ImmutableRecord({
   colors: ImmutableMap(),
   copyright: `♥${new Date().getFullYear()}. Copying is an act of love. Please copy and share.`,
   customCss: ImmutableList<string>(),
-  defaultSettings: ImmutableMap(),
+  defaultSettings: ImmutableMap<string, any>(),
   extensions: ImmutableMap(),
   greentext: false,
   promoPanel: PromoPanelRecord(),

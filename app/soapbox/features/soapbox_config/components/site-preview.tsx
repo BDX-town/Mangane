@@ -1,13 +1,19 @@
 import classNames from 'classnames';
-import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
+import React, { useMemo } from 'react';
 
 import { defaultSettings } from 'soapbox/actions/settings';
+import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
-export default function SitePreview({ soapbox }) {
+interface ISitePreview {
+  /** Raw Soapbox configuration. */
+  soapbox: any,
+}
 
-  const settings = defaultSettings.mergeDeep(soapbox.get('defaultSettings'));
+/** Renders a preview of the website's style with the configuration applied. */
+const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
+  const soapboxConfig = useMemo(() => normalizeSoapboxConfig(soapbox), [soapbox]);
+  const settings = defaultSettings.mergeDeep(soapboxConfig.defaultSettings);
 
   const bodyClass = classNames('site-preview', `theme-mode-${settings.get('themeMode')}`, {
     'no-reduce-motion': !settings.get('reduceMotion'),
@@ -18,7 +24,7 @@ export default function SitePreview({ soapbox }) {
 
   return (
     <div className={bodyClass}>
-      <style>{`.site-preview {${generateThemeCss(soapbox)}}`}</style>
+      <style>{`.site-preview {${generateThemeCss(soapboxConfig)}}`}</style>
       <div className='app-holder'>
         <div>
           <div className='ui'>
@@ -26,15 +32,15 @@ export default function SitePreview({ soapbox }) {
               <div className='tabs-bar__container'>
                 <div className='tabs-bar__split tabs-bar__split--left'>
                   <a className='tabs-bar__link--logo' href='#'>
-                    <img alt='Logo' src={soapbox.get('logo')} />
+                    <img alt='Logo' src={soapboxConfig.logo} />
                     <span>Home</span>
                   </a>
                   <a className='tabs-bar__link' href='#'>
-                    <i role='img' alt='home' className='fa fa-home' />
+                    <i role='img' className='fa fa-home' />
                     <span>Home</span>
                   </a>
                   <a className='tabs-bar__link' href='#'>
-                    <i role='img' alt='bell' className='fa fa-bell' />
+                    <i role='img' className='fa fa-bell' />
                     <span>Notifications</span>
                   </a>
                 </div>
@@ -49,8 +55,6 @@ export default function SitePreview({ soapbox }) {
     </div>
   );
 
-}
-
-SitePreview.propTypes = {
-  soapbox: ImmutablePropTypes.record.isRequired,
 };
+
+export default SitePreview;
