@@ -28,7 +28,7 @@ const PromoPanelInput: StreamfieldComponent<PromoPanelItem> = ({ value, onChange
   };
 
   return (
-    <HStack space={2} grow>
+    <HStack space={2} alignItems='center' grow>
       <IconPicker
         value={value.icon}
         onChange={handleIconChange}

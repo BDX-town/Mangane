@@ -542,28 +542,6 @@ code {
       }
     }
 
-    &__font_icon_picker {
-      font-size: 14px;
-
-      .font-icon-button {
-        padding: 9px;
-        border: 1px solid var(--highlight-text-color);
-        border-radius: 4px;
-        cursor: pointer;
-        outline: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 38px;
-        box-sizing: border-box;
-
-        .fa {
-          font-size: 18px;
-          color: var(--primary-text-color);
-        }
-      }
-    }
-
     &__wrapper {
       position: relative;
     }

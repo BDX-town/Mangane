@@ -215,8 +215,18 @@ class IconPickerDropdown extends React.PureComponent {
     const forkAwesomeIcons = require('../forkawesome.json');
 
     return (
-      <div className='font-icon-picker-dropdown' onKeyDown={this.handleKeyDown}>
-        <div ref={this.setTargetRef} className='font-icon-button' title={title} aria-label={title} aria-expanded={active} role='button' onClick={this.onToggle} onKeyDown={this.onToggle} tabIndex={0}>
+      <div onKeyDown={this.handleKeyDown}>
+        <div
+          ref={this.setTargetRef}
+          className='h-[38px] w-[38px] text-lg flex items-center justify-center cursor-pointer'
+          title={title}
+          aria-label={title}
+          aria-expanded={active}
+          role='button'
+          onClick={this.onToggle}
+          onKeyDown={this.onToggle}
+          tabIndex={0}
+        >
           <Icon id={value} />
         </div>
 
