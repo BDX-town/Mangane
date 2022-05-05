@@ -416,7 +416,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
       );
 
       reblogElementMobile = (
-        <div className='pt-4 px-4 sm:hidden truncate'>
+        <div className='pb-5 -mt-2 sm:hidden truncate'>
           <NavLink
             to={`/@${status.getIn(['account', 'acct'])}`}
             onClick={(event) => event.stopPropagation()}
@@ -610,7 +610,6 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
           role='link'
         >
           {prepend}
-          {reblogElementMobile}
 
           <div
             className={classNames({
@@ -622,6 +621,8 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
             })}
             data-id={status.id}
           >
+            {reblogElementMobile}
+
             <div className='mb-4'>
               <HStack justifyContent='between' alignItems='start'>
                 <AccountContainer

@@ -167,7 +167,7 @@
 }
 
 .thread {
-  @apply sm:bg-white sm:dark:bg-slate-800 p-4 sm:shadow-xl sm:p-6 sm:rounded-xl;
+  @apply bg-white dark:bg-slate-800 p-4 shadow-xl dark:shadow-inset sm:p-6 sm:rounded-xl;
 
   &__status {
     @apply relative pb-4;

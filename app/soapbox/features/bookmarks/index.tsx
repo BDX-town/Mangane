@@ -38,7 +38,9 @@ const Bookmarks: React.FC = () => {
 
   return (
     <Column transparent>
-      <SubNavigation message={intl.formatMessage(messages.heading)} />
+      <div className='px-4 pt-4 sm:p-0'>
+        <SubNavigation message={intl.formatMessage(messages.heading)} />
+      </div>
       <StatusList
         statusIds={statusIds}
         scrollKey={'bookmarked_statuses'}
