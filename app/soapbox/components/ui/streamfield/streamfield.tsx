@@ -22,9 +22,9 @@ interface IStreamfield {
   /** Array of values for the streamfield. */
   values: any[],
   /** Input label message. */
-  labelText?: React.ReactNode,
+  label?: React.ReactNode,
   /** Input hint message. */
-  hintText?: React.ReactNode,
+  hint?: React.ReactNode,
   /** Callback to add an item. */
   onAddItem?: () => void,
   /** Callback to remove an item by index. */
@@ -40,8 +40,8 @@ interface IStreamfield {
 /** List of inputs that can be added or removed. */
 const Streamfield: React.FC<IStreamfield> = ({
   values,
-  labelText,
-  hintText,
+  label,
+  hint,
   onAddItem,
   onRemoveItem,
   onChange,
@@ -61,8 +61,8 @@ const Streamfield: React.FC<IStreamfield> = ({
   return (
     <Stack space={4}>
       <Stack>
-        {labelText && <Text size='sm' weight='medium'>{labelText}</Text>}
-        {hintText && <Text size='xs' theme='muted'>{hintText}</Text>}
+        {label && <Text size='sm' weight='medium'>{label}</Text>}
+        {hint && <Text size='xs' theme='muted'>{hint}</Text>}
       </Stack>
 
       <Stack>

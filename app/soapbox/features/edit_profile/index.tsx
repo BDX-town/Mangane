@@ -452,8 +452,8 @@ const EditProfile: React.FC = () => {
 
         {features.profileFields && (
           <Streamfield
-            labelText={<FormattedMessage id='edit_profile.fields.meta_fields_label' defaultMessage='Profile fields' />}
-            hintText={<FormattedMessage id='edit_profile.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# custom field} other {# custom fields}} displayed on your profile.' values={{ count: maxFields }} />}
+            label={<FormattedMessage id='edit_profile.fields.meta_fields_label' defaultMessage='Profile fields' />}
+            hint={<FormattedMessage id='edit_profile.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# custom field} other {# custom fields}} displayed on your profile.' values={{ count: maxFields }} />}
             values={data.fields_attributes || []}
             onChange={handleFieldsChange}
             onAddItem={handleAddField}
