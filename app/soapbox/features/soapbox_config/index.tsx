@@ -7,7 +7,17 @@ import { updateConfig } from 'soapbox/actions/admin';
 import { uploadMedia } from 'soapbox/actions/media';
 import snackbar from 'soapbox/actions/snackbar';
 import List, { ListItem } from 'soapbox/components/list';
-import { Column, Form, FormActions, FormGroup, Input, Textarea, Button } from 'soapbox/components/ui';
+import {
+  Column,
+  CardHeader,
+  CardTitle,
+  Form,
+  FormActions,
+  FormGroup,
+  Input,
+  Textarea,
+  Button,
+} from 'soapbox/components/ui';
 import Streamfield from 'soapbox/components/ui/streamfield/streamfield';
 import ThemeSelector from 'soapbox/features/ui/components/theme-selector';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
@@ -197,6 +207,10 @@ const SoapboxConfig: React.FC = () => {
             />
           </FormGroup>
 
+          <CardHeader>
+            <CardTitle title={<FormattedMessage id='soapbox_config.headings.theme' defaultMessage='Theme' />} />
+          </CardHeader>
+
           <List>
             <ListItem label={<FormattedMessage id='soapbox_config.fields.theme_label' defaultMessage='Default theme' />}>
               <ThemeSelector
@@ -222,14 +236,9 @@ const SoapboxConfig: React.FC = () => {
             </ListItem>
           </List>
 
-          <FormGroup labelText={intl.formatMessage(messages.copyrightFooterLabel)}>
-            <Input
-              type='text'
-              placeholder={intl.formatMessage(messages.copyrightFooterLabel)}
-              value={soapbox.copyright}
-              onChange={handleChange(['copyright'], (e) => e.target.value)}
-            />
-          </FormGroup>
+          <CardHeader>
+            <CardTitle title={<FormattedMessage id='soapbox_config.headings.options' defaultMessage='Options' />} />
+          </CardHeader>
 
           <List>
             <ListItem label={intl.formatMessage(messages.verifiedCanEditNameLabel)}>
@@ -245,7 +254,6 @@ const SoapboxConfig: React.FC = () => {
                 onChange={handleChange(['displayFqn'], (e) => e.target.checked)}
               />
             </ListItem>
-
 
             <ListItem label={intl.formatMessage(messages.greentextLabel)}>
               <Toggle
@@ -286,6 +294,10 @@ const SoapboxConfig: React.FC = () => {
             )}
           </List>
 
+          <CardHeader>
+            <CardTitle title={<FormattedMessage id='soapbox_config.headings.navigation' defaultMessage='Navigation' />} />
+          </CardHeader>
+
           <Streamfield
             label={<FormattedMessage id='soapbox_config.fields.promo_panel_fields_label' defaultMessage='Promo panel items' />}
             hint={<FormattedMessage id='soapbox_config.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the right panel of the timelines page.' />}
@@ -305,6 +317,19 @@ const SoapboxConfig: React.FC = () => {
             onAddItem={addStreamItem(['navlinks', 'homeFooter'], templates.footerItem)}
             onRemoveItem={deleteStreamItem(['navlinks', 'homeFooter'])}
           />
+
+          <FormGroup labelText={intl.formatMessage(messages.copyrightFooterLabel)}>
+            <Input
+              type='text'
+              placeholder={intl.formatMessage(messages.copyrightFooterLabel)}
+              value={soapbox.copyright}
+              onChange={handleChange(['copyright'], (e) => e.target.value)}
+            />
+          </FormGroup>
+
+          <CardHeader>
+            <CardTitle title={<FormattedMessage id='soapbox_config.headings.cryptocurrency' defaultMessage='Cryptocurrency' />} />
+          </CardHeader>
 
           <Streamfield
             label={<FormattedMessage id='soapbox_config.fields.crypto_addresses_label' defaultMessage='Cryptocurrency addresses' />}
@@ -326,6 +351,10 @@ const SoapboxConfig: React.FC = () => {
               onChange={handleChange(['cryptoDonatePanel', 'limit'], (e) => Number(e.target.value))}
             />
           </FormGroup>
+
+          <CardHeader>
+            <CardTitle title={<FormattedMessage id='soapbox_config.headings.advanced' defaultMessage='Advanced' />} />
+          </CardHeader>
 
           <Accordion
             headline={intl.formatMessage(messages.rawJSONLabel)}
