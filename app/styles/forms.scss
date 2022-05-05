@@ -36,10 +36,6 @@ code {
 
 .simple_form {
   .input {
-    + .input {
-      margin-top: 20px;
-    }
-
     &.hidden {
       margin: 0;
     }

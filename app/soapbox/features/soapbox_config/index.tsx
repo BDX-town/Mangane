@@ -6,9 +6,10 @@ import { updateConfig } from 'soapbox/actions/admin';
 import { uploadMedia } from 'soapbox/actions/media';
 import snackbar from 'soapbox/actions/snackbar';
 import { Column, Form, FormActions, FormGroup, Input, Button } from 'soapbox/components/ui';
+import HStack from 'soapbox/components/ui/hstack/hstack';
+import Stack from 'soapbox/components/ui/stack/stack';
 import Streamfield from 'soapbox/components/ui/streamfield/streamfield';
 import {
-  FieldsGroup,
   SimpleTextarea,
   FileChooserLogo,
   Checkbox,
@@ -179,45 +180,45 @@ const SoapboxConfig: React.FC = () => {
   return (
     <Column label={intl.formatMessage(messages.heading)}>
       <Form onSubmit={handleSubmit} className='simple_form space-y-4'>
-        <fieldset className='space-y-4' disabled={isLoading}>
+        <fieldset className='space-y-6' disabled={isLoading}>
           <SitePreview soapbox={soapbox} />
-          <FieldsGroup>
-            <div className='fields-row file-picker'>
-              <div className='fields-row__column fields-row__column-6'>
-                <ColorWithPicker
-                  buttonId='brand_color'
-                  label={<FormattedMessage id='soapbox_config.fields.brand_color_label' defaultMessage='Brand color' />}
-                  value={soapbox.brandColor}
-                  onChange={handleColorChange(['brandColor'], (color) => color.hex)}
-                />
-                <ColorWithPicker
-                  buttonId='accent_color'
-                  label={<FormattedMessage id='soapbox_config.fields.accent_color_label' defaultMessage='Accent color' />}
-                  value={soapbox.accentColor}
-                  onChange={handleColorChange(['accentColor'], (color) => color.hex)}
-                />
-                <div className='input with_label toggle'>
-                  <div className='label_input'>
-                    <label><FormattedMessage id='soapbox_config.fields.theme_label' defaultMessage='Default theme' /></label>
-                    <ThemeToggle />
-                    {/* <ThemeToggle
-                      onToggle={handleChange(['defaultSettings', 'themeMode'], value => value)}
-                      themeMode={soapbox.defaultSettings.get('themeMode')}
-                      intl={intl}
-                    /> */}
-                  </div>
+
+          <HStack space={2}>
+            <Stack space={2} className='w-1/2'>
+              <ColorWithPicker
+                buttonId='brand_color'
+                label={<FormattedMessage id='soapbox_config.fields.brand_color_label' defaultMessage='Brand color' />}
+                value={soapbox.brandColor}
+                onChange={handleColorChange(['brandColor'], (color) => color.hex)}
+              />
+              <ColorWithPicker
+                buttonId='accent_color'
+                label={<FormattedMessage id='soapbox_config.fields.accent_color_label' defaultMessage='Accent color' />}
+                value={soapbox.accentColor}
+                onChange={handleColorChange(['accentColor'], (color) => color.hex)}
+              />
+              <div className='input with_label toggle'>
+                <div className='label_input'>
+                  <label><FormattedMessage id='soapbox_config.fields.theme_label' defaultMessage='Default theme' /></label>
+                  <ThemeToggle />
+                  {/* <ThemeToggle
+                    onToggle={handleChange(['defaultSettings', 'themeMode'], value => value)}
+                    themeMode={soapbox.defaultSettings.get('themeMode')}
+                    intl={intl}
+                  /> */}
                 </div>
               </div>
-              <div className='fields-row__column fields-group fields-row__column-6'>
-                <FileChooserLogo
-                  label={<FormattedMessage id='soapbox_config.fields.logo_label' defaultMessage='Logo' />}
-                  name='logo'
-                  hint={<FormattedMessage id='soapbox_config.hints.logo' defaultMessage='SVG. At most 2 MB. Will be displayed to 50px height, maintaining aspect ratio' />}
-                  onChange={handleFileChange(['logo'])}
-                />
-              </div>
-            </div>
-          </FieldsGroup>
+            </Stack>
+
+            <Stack className='w-1/2'>
+              <FileChooserLogo
+                label={<FormattedMessage id='soapbox_config.fields.logo_label' defaultMessage='Logo' />}
+                name='logo'
+                hint={<FormattedMessage id='soapbox_config.hints.logo' defaultMessage='SVG. At most 2 MB. Will be displayed to 50px height, maintaining aspect ratio' />}
+                onChange={handleFileChange(['logo'])}
+              />
+            </Stack>
+          </HStack>
 
           <FormGroup labelText={intl.formatMessage(messages.copyrightFooterLabel)}>
             <Input
@@ -228,7 +229,7 @@ const SoapboxConfig: React.FC = () => {
             />
           </FormGroup>
 
-          <FieldsGroup>
+          <Stack space={2}>
             <Checkbox
               name='verifiedCanEditName'
               label={intl.formatMessage(messages.verifiedCanEditNameLabel)}
@@ -271,7 +272,7 @@ const SoapboxConfig: React.FC = () => {
                 />
               </FormGroup>
             )}
-          </FieldsGroup>
+          </Stack>
 
           <Streamfield
             label={<FormattedMessage id='soapbox_config.fields.promo_panel_fields_label' defaultMessage='Promo panel items' />}

@@ -11,7 +11,9 @@ import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soap
 import { normalizeAccount } from 'soapbox/normalizers';
 import resizeImage from 'soapbox/utils/resize_image';
 
-import { Button, Column, Form, FormActions, FormGroup, Input, Textarea, HStack } from '../../components/ui';
+import { Button, Column, Form, FormActions, FormGroup, Input, Textarea } from '../../components/ui';
+import HStack from '../../components/ui/hstack/hstack';
+import Stack from '../../components/ui/stack/stack';
 import Streamfield, { StreamfieldComponent } from '../../components/ui/streamfield/streamfield';
 
 import ProfilePreview from './components/profile-preview';
@@ -394,7 +396,7 @@ const EditProfile: React.FC = () => {
 
         {/* HACK: wrap these checkboxes in a .simple_form container so they get styled (for now) */}
         {/* Need a either move, replace, or refactor these checkboxes. */}
-        <div className='simple_form'>
+        <Stack space={2} className='simple_form'>
           {features.followRequests && (
             <Checkbox
               label={<FormattedMessage id='edit_profile.fields.locked_label' defaultMessage='Lock account' />}
@@ -448,7 +450,7 @@ const EditProfile: React.FC = () => {
               onChange={handleCheckboxChange('accepts_email_list')}
             />
           )}
-        </div>
+        </Stack>
 
         {features.profileFields && (
           <Streamfield
