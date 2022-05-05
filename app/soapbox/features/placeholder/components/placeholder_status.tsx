@@ -14,7 +14,7 @@ const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ thread = false }) => 
   <div
     className={classNames({
       'status-placeholder bg-white dark:bg-slate-800': true,
-      'sm:shadow-xl dark:sm:shadow-inset sm:rounded-xl px-4 py-6 sm:p-6': !thread,
+      'shadow-xl dark:shadow-inset sm:rounded-xl px-4 py-6 sm:p-6': !thread,
     })}
   >
     <div className='w-full animate-pulse overflow-hidden'>
