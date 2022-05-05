@@ -3,7 +3,7 @@ import React from 'react';
 import IconPickerDropdown from './icon_picker_dropdown';
 
 interface IIconPicker {
-  label: React.ReactNode,
+  label?: React.ReactNode,
   value: string,
   onChange: React.ChangeEventHandler,
 }
