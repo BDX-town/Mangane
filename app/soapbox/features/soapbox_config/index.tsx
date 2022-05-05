@@ -6,10 +6,9 @@ import { updateConfig } from 'soapbox/actions/admin';
 import { uploadMedia } from 'soapbox/actions/media';
 import snackbar from 'soapbox/actions/snackbar';
 import Icon from 'soapbox/components/icon';
-import { Column, HStack, Input } from 'soapbox/components/ui';
+import { Column, Form, FormActions, Button, HStack, Input } from 'soapbox/components/ui';
 import Streamfield, { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
 import {
-  SimpleForm,
   FieldsGroup,
   TextInput,
   SimpleInput,
@@ -29,7 +28,7 @@ import IconPicker from './components/icon-picker';
 import SitePreview from './components/site-preview';
 
 import type { ColorChangeHandler, ColorResult } from 'react-color';
-import type { CryptoAddress } from 'soapbox/types/soapbox';
+import type { CryptoAddress, PromoPanelItem } from 'soapbox/types/soapbox';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
@@ -65,6 +64,43 @@ const templates: Record<string, Template> = {
   promoPanelItem: ImmutableMap({ icon: '', text: '', url: '' }),
   footerItem: ImmutableMap({ title: '', url: '' }),
   cryptoAddress: ImmutableMap({ ticker: '', address: '', note: '' }),
+};
+
+const PromoPanelInput: StreamfieldComponent<PromoPanelItem> = ({ value, onChange }) => {
+  const intl = useIntl();
+
+  const handleIconChange = (icon: any) => {
+    onChange(value.set('icon', icon.id));
+  };
+
+  const handleChange = (key: 'text' | 'url'): React.ChangeEventHandler<HTMLInputElement> => {
+    return e => {
+      onChange(value.set(key, e.currentTarget.value));
+    };
+  };
+
+  return (
+    <HStack space={2} grow>
+      <IconPicker
+        label={intl.formatMessage(messages.promoItemIcon)}
+        value={value.icon}
+        onChange={handleIconChange}
+      />
+
+      <Input
+        type='text'
+        placeholder={intl.formatMessage(messages.promoItemLabel)}
+        value={value.text}
+        onChange={handleChange('text')}
+      />
+      <Input
+        type='text'
+        placeholder={intl.formatMessage(messages.promoItemURL)}
+        value={value.url}
+        onChange={handleChange('url')}
+      />
+    </HStack>
+  );
 };
 
 const SoapboxConfig: React.FC = () => {
@@ -153,12 +189,12 @@ const SoapboxConfig: React.FC = () => {
     };
   };
 
-  const handleDeleteItem = (path: ConfigPath) => {
-    return () => {
-      const newData = data.deleteIn(path);
-      setData(newData);
-    };
+  const deleteItem = (path: ConfigPath) => {
+    const newData = data.deleteIn(path);
+    setData(newData);
   };
+
+  const handleDeleteItem = (path: ConfigPath) => () => deleteItem(path);
 
   const handleItemChange = (
     path: Array<string | number>,
@@ -175,30 +211,29 @@ const SoapboxConfig: React.FC = () => {
     );
   };
 
-  const handlePromoItemChange = (index: number, key: string, field: any, getValue?: ValueGetter) => {
-    return handleItemChange(
-      ['promoPanel', 'items', index], key, field, templates.promoPanelItem, getValue,
-    );
+  const handleStreamItemChange = (path: ConfigPath) => {
+    return (values: any[]) => {
+      setConfig(path, ImmutableList(values));
+    };
+  };
+
+  const addStreamItem = (path: ConfigPath, template: Template) => {
+    return () => {
+      const items = data.getIn(path);
+      setConfig(path, items.push(template));
+    };
+  };
+
+  const deleteStreamItem = (path: ConfigPath) => {
+    return (i: number) => {
+      deleteItem([...path, i]);
+    };
   };
 
   const handleHomeFooterItemChange = (index: number, key: string, field: any, getValue?: ValueGetter) => {
     return handleItemChange(
       ['navlinks', 'homeFooter', index], key, field, templates.footerItem, getValue,
     );
-  };
-
-  const handleCryptoAdressChange = (values: CryptoAddress[]) => {
-    setConfig(['cryptoAddresses'], ImmutableList(values));
-  };
-
-  const addCryptoAddress = () => {
-    const cryptoAddresses = data.get('cryptoAddresses');
-    setConfig(['cryptoAddresses'], cryptoAddresses.push(templates.cryptoAddress));
-  };
-
-  const removeCryptoAddress = (i: number) => {
-    const cryptoAddresses = data.get('cryptoAddresses');
-    setConfig(['cryptoAddresses'], cryptoAddresses.delete(i));
   };
 
   const handleEditJSON: React.ChangeEventHandler<HTMLTextAreaElement> = e => {
@@ -226,7 +261,7 @@ const SoapboxConfig: React.FC = () => {
 
   return (
     <Column label={intl.formatMessage(messages.heading)}>
-      <SimpleForm onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} className='simple_form'>
         <fieldset disabled={isLoading}>
           <SitePreview soapbox={soapbox} />
           <FieldsGroup>
@@ -318,48 +353,17 @@ const SoapboxConfig: React.FC = () => {
               />
             )}
           </FieldsGroup>
-          <FieldsGroup>
-            <div className='input with_block_label popup'>
-              <label><FormattedMessage id='soapbox_config.fields.promo_panel_fields_label' defaultMessage='Promo panel items' /></label>
-              <span className='hint'>
-                <FormattedMessage id='soapbox_config.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the right panel of the timelines page.' />
-              </span>
-              <span className='hint'>
-                <FormattedMessage id='soapbox_config.hints.promo_panel_icons' defaultMessage='{ link }' values={{ link: <a target='_blank' href='https://icons8.com/line-awesome'>{intl.formatMessage(messages.promoPanelIconsLink)}</a> }} />
-              </span>
-              {
-                soapbox.promoPanel.items.map((field, i) => (
-                  <div className='row' key={i}>
-                    <IconPicker
-                      label={intl.formatMessage(messages.promoItemIcon)}
-                      value={field.icon}
-                      // @ts-ignore
-                      onChange={handlePromoItemChange(i, 'icon', field, val => val.id)}
-                    />
-                    <TextInput
-                      label={intl.formatMessage(messages.promoItemLabel)}
-                      placeholder={intl.formatMessage(messages.promoItemLabel)}
-                      value={field.text}
-                      onChange={handlePromoItemChange(i, 'text', field)}
-                    />
-                    <TextInput
-                      label={intl.formatMessage(messages.promoItemURL)}
-                      placeholder={intl.formatMessage(messages.promoItemURL)}
-                      value={field.url}
-                      onChange={handlePromoItemChange(i, 'url', field)}
-                    />
-                    <Icon className='delete-field' src={require('@tabler/icons/icons/circle-x.svg')} onClick={handleDeleteItem(['promoPanel', 'items', i])} />
-                  </div>
-                ))
-              }
-              <div className='actions add-row'>
-                <div role='presentation' className='btn button button-secondary' onClick={handleAddItem(['promoPanel', 'items'], templates.promoPanelItem)}>
-                  <Icon src={require('@tabler/icons/icons/circle-plus.svg')} />
-                  <FormattedMessage id='soapbox_config.fields.promo_panel.add' defaultMessage='Add new Promo panel item' />
-                </div>
-              </div>
-            </div>
-          </FieldsGroup>
+
+          <Streamfield
+            label={<FormattedMessage id='soapbox_config.fields.promo_panel_fields_label' defaultMessage='Promo panel items' />}
+            hint={<FormattedMessage id='soapbox_config.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the right panel of the timelines page.' />}
+            component={PromoPanelInput}
+            values={soapbox.promoPanel.items.toArray()}
+            onChange={handleStreamItemChange(['promoPanel', 'items'])}
+            onAddItem={addStreamItem(['promoPanel', 'items'], templates.promoPanel)}
+            onRemoveItem={deleteStreamItem(['promoPanel', 'items'])}
+          />
+
           <FieldsGroup>
             <div className='input with_block_label'>
               <label><FormattedMessage id='soapbox_config.fields.home_footer_fields_label' defaultMessage='Home footer items' /></label>
@@ -399,9 +403,9 @@ const SoapboxConfig: React.FC = () => {
             hint={<FormattedMessage id='soapbox_config.hints.crypto_addresses' defaultMessage='Add cryptocurrency addresses so users of your site can donate to you. Order matters, and you must use lowercase ticker values.' />}
             component={CryptoAddressInput}
             values={soapbox.cryptoAddresses.toArray()}
-            onChange={handleCryptoAdressChange}
-            onAddItem={addCryptoAddress}
-            onRemoveItem={removeCryptoAddress}
+            onChange={handleStreamItemChange(['cryptoAddresses'])}
+            onAddItem={addStreamItem(['cryptoAddresses'], templates.cryptoAddress)}
+            onRemoveItem={deleteStreamItem(['cryptoAddresses'])}
           />
 
           <FieldsGroup>
@@ -431,12 +435,12 @@ const SoapboxConfig: React.FC = () => {
             </div>
           </Accordion>
         </fieldset>
-        <div className='actions'>
-          <button name='button' type='submit' className='btn button button-primary'>
+        <FormActions>
+          <Button type='submit'>
             <FormattedMessage id='soapbox_config.save' defaultMessage='Save' />
-          </button>
-        </div>
-      </SimpleForm>
+          </Button>
+        </FormActions>
+      </Form>
     </Column>
   );
 };
