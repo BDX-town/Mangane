@@ -11,7 +11,7 @@ const messages = defineMessages({
   hidePassword: { id: 'input.password.hide_password', defaultMessage: 'Hide password' },
 });
 
-interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxLength' | 'onChange' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required' | 'disabled' | 'onClick' | 'readOnly'> {
+interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxLength' | 'onChange' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required' | 'disabled' | 'onClick' | 'readOnly' | 'min' | 'pattern'> {
   /** Put the cursor into the input on mount. */
   autoFocus?: boolean,
   /** The initial text in the input. */
@@ -27,11 +27,11 @@ interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxL
   /** Text to display before a value is entered. */
   placeholder?: string,
   /** Text in the input. */
-  value?: string,
+  value?: string | number,
   /** Change event handler for the input. */
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
   /** HTML input type. */
-  type: 'text' | 'email' | 'tel' | 'password',
+  type: 'text' | 'number' | 'email' | 'tel' | 'password',
 }
 
 /** Form input element. */

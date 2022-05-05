@@ -5,12 +5,10 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { updateConfig } from 'soapbox/actions/admin';
 import { uploadMedia } from 'soapbox/actions/media';
 import snackbar from 'soapbox/actions/snackbar';
-import { Column, Form, FormActions, Button } from 'soapbox/components/ui';
+import { Column, Form, FormActions, FormGroup, Input, Button } from 'soapbox/components/ui';
 import Streamfield from 'soapbox/components/ui/streamfield/streamfield';
 import {
   FieldsGroup,
-  TextInput,
-  SimpleInput,
   SimpleTextarea,
   FileChooserLogo,
   Checkbox,
@@ -220,15 +218,16 @@ const SoapboxConfig: React.FC = () => {
               </div>
             </div>
           </FieldsGroup>
-          <FieldsGroup>
-            <TextInput
-              name='copyright'
-              label={intl.formatMessage(messages.copyrightFooterLabel)}
+
+          <FormGroup labelText={intl.formatMessage(messages.copyrightFooterLabel)}>
+            <Input
+              type='text'
               placeholder={intl.formatMessage(messages.copyrightFooterLabel)}
               value={soapbox.copyright}
               onChange={handleChange(['copyright'], (e) => e.target.value)}
             />
-          </FieldsGroup>
+          </FormGroup>
+
           <FieldsGroup>
             <Checkbox
               name='verifiedCanEditName'
@@ -263,13 +262,14 @@ const SoapboxConfig: React.FC = () => {
               onChange={handleChange(['singleUserMode'], (e) => e.target.checked)}
             />
             {soapbox.get('singleUserMode') && (
-              <TextInput
-                name='singleUserModeProfile'
-                label={intl.formatMessage(messages.singleUserModeProfileLabel)}
-                placeholder={intl.formatMessage(messages.singleUserModeProfileHint)}
-                value={soapbox.singleUserModeProfile}
-                onChange={handleChange(['singleUserModeProfile'], (e) => e.target.value)}
-              />
+              <FormGroup labelText={intl.formatMessage(messages.singleUserModeProfileLabel)}>
+                <Input
+                  type='text'
+                  placeholder={intl.formatMessage(messages.singleUserModeProfileHint)}
+                  value={soapbox.singleUserModeProfile}
+                  onChange={handleChange(['singleUserModeProfile'], (e) => e.target.value)}
+                />
+              </FormGroup>
             )}
           </FieldsGroup>
 
@@ -303,18 +303,17 @@ const SoapboxConfig: React.FC = () => {
             onRemoveItem={deleteStreamItem(['cryptoAddresses'])}
           />
 
-          <FieldsGroup>
-            <SimpleInput
+          <FormGroup labelText={intl.formatMessage(messages.cryptoDonatePanelLimitLabel)}>
+            <Input
               type='number'
               min={0}
               pattern='[0-9]+'
-              name='cryptoDonatePanelLimit'
-              label={intl.formatMessage(messages.cryptoDonatePanelLimitLabel)}
               placeholder={intl.formatMessage(messages.cryptoDonatePanelLimitLabel)}
               value={soapbox.cryptoDonatePanel.get('limit')}
               onChange={handleChange(['cryptoDonatePanel', 'limit'], (e) => Number(e.target.value))}
             />
-          </FieldsGroup>
+          </FormGroup>
+
           <Accordion
             headline={intl.formatMessage(messages.rawJSONLabel)}
             expanded={jsonEditorExpanded}
