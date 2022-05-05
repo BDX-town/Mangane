@@ -1,12 +1,9 @@
-import { supportsPassiveEvents } from 'detect-passive-events';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { SketchPicker } from 'react-color';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import Overlay from 'react-overlays/lib/Overlay';
 import { connect } from 'react-redux';
 
 import { updateConfig } from 'soapbox/actions/admin';
@@ -24,12 +21,12 @@ import {
   Checkbox,
 } from 'soapbox/features/forms';
 import ThemeToggle from 'soapbox/features/ui/components/theme-toggle';
-import { isMobile } from 'soapbox/is_mobile';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 
 import Accordion from '../ui/components/accordion';
 
-import IconPickerDropdown from './components/icon_picker_dropdown';
+import ColorWithPicker from './components/color-with-picker';
+import IconPicker from './components/icon-picker';
 import SitePreview from './components/site_preview';
 
 const messages = defineMessages({
@@ -59,8 +56,6 @@ const messages = defineMessages({
   singleUserModeProfileLabel: { id: 'soapbox_config.single_user_mode_profile_label', defaultMessage: 'Main user handle' },
   singleUserModeProfileHint: { id: 'soapbox_config.single_user_mode_profile_hint', defaultMessage: '@handle' },
 });
-
-const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
 const templates = {
   promoPanelItem: ImmutableMap({ icon: '', text: '', url: '' }),
@@ -457,124 +452,6 @@ class SoapboxConfig extends ImmutablePureComponent {
           </div>
         </SimpleForm>
       </Column>
-    );
-  }
-
-}
-
-class ColorPicker extends React.PureComponent {
-
-  static propTypes = {
-    style: PropTypes.object,
-    value: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onClose: PropTypes.func,
-  }
-
-  handleDocumentClick = e => {
-    if (this.node && !this.node.contains(e.target)) {
-      this.props.onClose();
-    }
-  }
-
-  componentDidMount() {
-    document.addEventListener('click', this.handleDocumentClick, false);
-    document.addEventListener('touchend', this.handleDocumentClick, listenerOptions);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('click', this.handleDocumentClick, false);
-    document.removeEventListener('touchend', this.handleDocumentClick, listenerOptions);
-  }
-
-  setRef = c => {
-    this.node = c;
-  }
-
-  render() {
-    const { style, value, onChange } = this.props;
-    const margin_left_picker = isMobile(window.innerWidth) ? '20px' : '12px';
-
-    return (
-      <div id='SketchPickerContainer' ref={this.setRef} style={{ ...style, marginLeft: margin_left_picker, position: 'absolute', zIndex: 1000 }}>
-        <SketchPicker color={value} disableAlpha onChange={onChange} />
-      </div>
-    );
-  }
-
-}
-
-class ColorWithPicker extends ImmutablePureComponent {
-
-  static propTypes = {
-    buttonId: PropTypes.string.isRequired,
-    label: PropTypes.node,
-    value: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-  }
-
-  onToggle = (e) => {
-    if (!e.key || e.key === 'Enter') {
-      if (this.state.active) {
-        this.onHidePicker();
-      } else {
-        this.onShowPicker(e);
-      }
-    }
-  }
-
-  state = {
-    active: false,
-    placement: null,
-  }
-
-  onHidePicker = () => {
-    this.setState({ active: false });
-  }
-
-  onShowPicker = ({ target }) => {
-    this.setState({ active: true });
-    this.setState({ placement: isMobile(window.innerWidth) ? 'bottom' : 'right' });
-  }
-
-  render() {
-    const { buttonId, label, value, onChange } = this.props;
-    const { active, placement } = this.state;
-
-    return (
-      <div className='label_input__color'>
-        <label>{label}</label>
-        <div id={buttonId} className='color-swatch' role='presentation' style={{ background: value }} title={value} value={value} onClick={this.onToggle} />
-        <Overlay show={active} placement={placement} target={this}>
-          <ColorPicker value={value} onChange={onChange} onClose={this.onHidePicker} />
-        </Overlay>
-      </div>
-    );
-  }
-
-}
-
-export class IconPicker extends ImmutablePureComponent {
-
-  static propTypes = {
-    icons: PropTypes.object,
-    label: PropTypes.node,
-    value: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
-  }
-
-  render() {
-    const { onChange, value, label } = this.props;
-
-    return (
-      <div className='input with_label font_icon_picker'>
-        <div className='label_input__font_icon_picker'>
-          {label && (<label>{label}</label>)}
-          <div className='label_input_wrapper'>
-            <IconPickerDropdown value={value} onPickEmoji={onChange} />
-          </div>
-        </div>
-      </div>
     );
   }
 
