@@ -5,9 +5,8 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { updateConfig } from 'soapbox/actions/admin';
 import { uploadMedia } from 'soapbox/actions/media';
 import snackbar from 'soapbox/actions/snackbar';
-import Icon from 'soapbox/components/icon';
 import { Column, Form, FormActions, Button } from 'soapbox/components/ui';
-import Streamfield, { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
+import Streamfield from 'soapbox/components/ui/streamfield/streamfield';
 import {
   FieldsGroup,
   TextInput,
@@ -24,6 +23,7 @@ import Accordion from '../ui/components/accordion';
 
 import ColorWithPicker from './components/color-with-picker';
 import CryptoAddressInput from './components/crypto-address-input';
+import FooterLinkInput from './components/footer-link-input';
 import PromoPanelInput from './components/promo-panel-input';
 import SitePreview from './components/site-preview';
 
@@ -33,8 +33,6 @@ const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
   saved: { id: 'soapbox_config.saved', defaultMessage: 'Soapbox config saved!' },
   copyrightFooterLabel: { id: 'soapbox_config.copyright_footer.meta_fields.label_placeholder', defaultMessage: 'Copyright footer' },
-  homeFooterItemLabel: { id: 'soapbox_config.home_footer.meta_fields.label_placeholder', defaultMessage: 'Label' },
-  homeFooterItemURL: { id: 'soapbox_config.home_footer.meta_fields.url_placeholder', defaultMessage: 'URL' },
   cryptoDonatePanelLimitLabel: { id: 'soapbox_config.crypto_donate_panel_limit.meta_fields.limit_placeholder', defaultMessage: 'Number of items to display in the crypto homepage widget' },
   customCssLabel: { id: 'soapbox_config.custom_css.meta_fields.url_placeholder', defaultMessage: 'URL' },
   rawJSONLabel: { id: 'soapbox_config.raw_json_label', defaultMessage: 'Advanced: Edit raw JSON data' },
@@ -137,39 +135,6 @@ const SoapboxConfig: React.FC = () => {
     };
   };
 
-  const handleAddItem = (path: ConfigPath, template: ImmutableMap<string, any>) => {
-    const value = (soapbox.getIn(path) || ImmutableList()) as ImmutableList<any>;
-
-    return () => {
-      setConfig(
-        path,
-        value.push(template),
-      );
-    };
-  };
-
-  const deleteItem = (path: ConfigPath) => {
-    const newData = data.deleteIn(path);
-    setData(newData);
-  };
-
-  const handleDeleteItem = (path: ConfigPath) => () => deleteItem(path);
-
-  const handleItemChange = (
-    path: Array<string | number>,
-    key: string,
-    field: ImmutableMap<string, any>,
-    template: Template,
-    getValue: ValueGetter<HTMLInputElement> = e => e.target.value,
-  ) => {
-    return handleChange(
-      path, (e) =>
-        template
-          .merge(field)
-          .set(key, getValue(e)),
-    );
-  };
-
   const handleStreamItemChange = (path: ConfigPath) => {
     return (values: any[]) => {
       setConfig(path, ImmutableList(values));
@@ -185,14 +150,9 @@ const SoapboxConfig: React.FC = () => {
 
   const deleteStreamItem = (path: ConfigPath) => {
     return (i: number) => {
-      deleteItem([...path, i]);
+      const newData = data.deleteIn([...path, i]);
+      setData(newData);
     };
-  };
-
-  const handleHomeFooterItemChange = (index: number, key: string, field: any, getValue?: ValueGetter) => {
-    return handleItemChange(
-      ['navlinks', 'homeFooter', index], key, field, templates.footerItem, getValue,
-    );
   };
 
   const handleEditJSON: React.ChangeEventHandler<HTMLTextAreaElement> = e => {
@@ -323,39 +283,15 @@ const SoapboxConfig: React.FC = () => {
             onRemoveItem={deleteStreamItem(['promoPanel', 'items'])}
           />
 
-          <FieldsGroup>
-            <div className='input with_block_label'>
-              <label><FormattedMessage id='soapbox_config.fields.home_footer_fields_label' defaultMessage='Home footer items' /></label>
-              <span className='hint'>
-                <FormattedMessage id='soapbox_config.hints.home_footer_fields' defaultMessage='You can have custom defined links displayed on the footer of your static pages' />
-              </span>
-              {
-                soapbox.navlinks.get('homeFooter')?.map((field, i) => (
-                  <div className='row' key={i}>
-                    <TextInput
-                      label={intl.formatMessage(messages.homeFooterItemLabel)}
-                      placeholder={intl.formatMessage(messages.homeFooterItemLabel)}
-                      value={field.title}
-                      onChange={handleHomeFooterItemChange(i, 'title', field)}
-                    />
-                    <TextInput
-                      label={intl.formatMessage(messages.homeFooterItemURL)}
-                      placeholder={intl.formatMessage(messages.homeFooterItemURL)}
-                      value={field.url}
-                      onChange={handleHomeFooterItemChange(i, 'url', field)}
-                    />
-                    <Icon className='delete-field' src={require('@tabler/icons/icons/circle-x.svg')} onClick={handleDeleteItem(['navlinks', 'homeFooter', i])} />
-                  </div>
-                ))
-              }
-              <div className='actions add-row'>
-                <div role='presentation' className='btn button button-secondary' onClick={handleAddItem(['navlinks', 'homeFooter'], templates.footerItem)}>
-                  <Icon src={require('@tabler/icons/icons/circle-plus.svg')} />
-                  <FormattedMessage id='soapbox_config.fields.home_footer.add' defaultMessage='Add new Home Footer Item' />
-                </div>
-              </div>
-            </div>
-          </FieldsGroup>
+          <Streamfield
+            label={<FormattedMessage id='soapbox_config.fields.home_footer_fields_label' defaultMessage='Home footer items' />}
+            hint={<FormattedMessage id='soapbox_config.hints.home_footer_fields' defaultMessage='You can have custom defined links displayed on the footer of your static pages' />}
+            component={FooterLinkInput}
+            values={soapbox.navlinks.get('homeFooter')?.toArray() || []}
+            onChange={handleStreamItemChange(['navlinks', 'homeFooter'])}
+            onAddItem={addStreamItem(['navlinks', 'homeFooter'], templates.footerItem)}
+            onRemoveItem={deleteStreamItem(['navlinks', 'homeFooter'])}
+          />
 
           <Streamfield
             label={<FormattedMessage id='soapbox_config.fields.crypto_addresses_label' defaultMessage='Cryptocurrency addresses' />}
