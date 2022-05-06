@@ -1,12 +1,16 @@
 import { Map as ImmutableMap } from 'immutable';
 import React, { useState, useEffect } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import { fetchCaptcha } from 'soapbox/actions/auth';
-import { TextInput } from 'soapbox/features/forms';
+import { Text, Input } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
 const noOp = () => {};
+
+const messages = defineMessages({
+  placeholder: { id: 'registration.captcha.placeholder', defaultMessage: 'Enter the pictured text' },
+});
 
 interface ICaptchaField {
   name?: string,
@@ -71,7 +75,9 @@ const CaptchaField: React.FC<ICaptchaField> = ({
   case 'native':
     return (
       <div>
-        <p>{<FormattedMessage id='registration.captcha.hint' defaultMessage='Click the image to get a new captcha' />}</p>
+        <Text>
+          <FormattedMessage id='registration.captcha.hint' defaultMessage='Click the image to get a new captcha' />
+        </Text>
 
         <NativeCaptchaField
           captcha={captcha}
@@ -96,21 +102,27 @@ interface INativeCaptchaField {
   value: string,
 }
 
-const NativeCaptchaField: React.FC<INativeCaptchaField> = ({ captcha, onChange, onClick, name, value }) => (
-  <div className='captcha' >
-    <img alt='captcha' src={captcha.get('url')} onClick={onClick} />
-    <TextInput
-      placeholder='Enter the pictured text'
-      name={name}
-      value={value}
-      autoComplete='off'
-      autoCorrect='off'
-      autoCapitalize='off'
-      onChange={onChange}
-      required
-    />
-  </div>
-);
+const NativeCaptchaField: React.FC<INativeCaptchaField> = ({ captcha, onChange, onClick, name, value }) => {
+  const intl = useIntl();
+
+  return (
+    <div className='captcha' >
+      <img alt='captcha' src={captcha.get('url')} onClick={onClick} />
+
+      <Input
+        type='text'
+        placeholder={intl.formatMessage(messages.placeholder)}
+        name={name}
+        value={value}
+        autoComplete='off'
+        autoCorrect='off'
+        autoCapitalize='off'
+        onChange={onChange}
+        required
+      />
+    </div>
+  );
+};
 
 export {
   CaptchaField as default,
