@@ -118,7 +118,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
           <div className='flex-shrink-0 flex justify-center'>
             <a href='/' className='inline-flex'>
               {logo ? (
-                <img className='h-12 w-12' src={logo} alt={siteTitle} />
+                <img className='h-12' src={logo} alt={siteTitle} />
               ) : (
                 <SvgIcon className='h-12 w-12' src={require('@tabler/icons/icons/home.svg')} alt={siteTitle} />
               )}
