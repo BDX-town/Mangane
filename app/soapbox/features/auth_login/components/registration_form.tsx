@@ -10,7 +10,7 @@ import { accountLookup } from 'soapbox/actions/accounts';
 import { register, verifyCredentials } from 'soapbox/actions/auth';
 import { openModal } from 'soapbox/actions/modals';
 import BirthdayInput from 'soapbox/components/birthday_input';
-import { Form, FormGroup, FormActions, Button, Input, Textarea } from 'soapbox/components/ui';
+import { Form, FormGroup, FormActions, Button, Input, Textarea, Text } from 'soapbox/components/ui';
 import CaptchaField from 'soapbox/features/auth_login/components/captcha';
 import { Checkbox } from 'soapbox/features/forms';
 import { useAppSelector, useAppDispatch, useSettings, useFeatures } from 'soapbox/hooks';
@@ -229,9 +229,9 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
     <Form onSubmit={onSubmit} data-testid='registrations-open'>
       <fieldset disabled={isLoading} className='space-y-3'>
         {usernameUnavailable && (
-          <div className='error'>
+          <Text size='sm' theme='danger'>
             <FormattedMessage id='registration.username_unavailable' defaultMessage='Username is already taken.' />
-          </div>
+          </Text>
         )}
 
         <FormGroup hintText={intl.formatMessage(messages.username_hint)}>
