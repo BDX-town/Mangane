@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Toggle from 'soapbox/components/toggle';
+import { Toggle } from 'soapbox/components/ui';
 
 import type { Map as ImmutableMap } from 'immutable';
 

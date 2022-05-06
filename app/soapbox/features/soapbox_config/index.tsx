@@ -6,7 +6,6 @@ import { updateConfig } from 'soapbox/actions/admin';
 import { uploadMedia } from 'soapbox/actions/media';
 import snackbar from 'soapbox/actions/snackbar';
 import List, { ListItem } from 'soapbox/components/list';
-import Toggle from 'soapbox/components/toggle';
 import {
   Column,
   CardHeader,
@@ -17,6 +16,7 @@ import {
   Input,
   Textarea,
   Button,
+  Toggle,
 } from 'soapbox/components/ui';
 import Streamfield from 'soapbox/components/ui/streamfield/streamfield';
 import ThemeSelector from 'soapbox/features/ui/components/theme-selector';

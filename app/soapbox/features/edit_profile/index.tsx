@@ -5,12 +5,11 @@ import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
 import List, { ListItem } from 'soapbox/components/list';
-import Toggle from 'soapbox/components/toggle';
 import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
 import resizeImage from 'soapbox/utils/resize_image';
 
-import { Button, Column, Form, FormActions, FormGroup, Input, Textarea, HStack } from '../../components/ui';
+import { Button, Column, Form, FormActions, FormGroup, Input, Textarea, HStack, Toggle } from '../../components/ui';
 import Streamfield, { StreamfieldComponent } from '../../components/ui/streamfield/streamfield';
 
 import ProfilePreview from './components/profile-preview';
