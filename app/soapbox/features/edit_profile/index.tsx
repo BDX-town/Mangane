@@ -391,8 +391,6 @@ const EditProfile: React.FC = () => {
           </div>
         </div>
 
-        {/* HACK: wrap these checkboxes in a .simple_form container so they get styled (for now) */}
-        {/* Need a either move, replace, or refactor these checkboxes. */}
         <List>
           {features.followRequests && (
             <ListItem
