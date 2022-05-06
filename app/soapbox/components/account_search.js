@@ -64,7 +64,7 @@ class AccountSearch extends React.PureComponent {
         <label>
           <span style={{ display: 'none' }}>{intl.formatMessage(messages.placeholder)}</span>
           <AutosuggestAccountInput
-            className='search__input'
+            className='rounded-full'
             placeholder={intl.formatMessage(messages.placeholder)}
             value={value}
             onChange={this.handleChange}
