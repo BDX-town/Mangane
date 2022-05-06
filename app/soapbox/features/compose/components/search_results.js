@@ -162,7 +162,7 @@ class SearchResults extends ImmutablePureComponent {
               placeholderComponent={placeholderComponent}
               placeholderCount={20}
               className={classNames({
-                'divide-gray-200 divide-solid divide-y': selectedFilter === 'statuses',
+                'divide-gray-200 dark:divide-slate-700 divide-solid divide-y': selectedFilter === 'statuses',
                 'space-y-4': selectedFilter === 'accounts',
               })}
             >

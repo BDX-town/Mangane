@@ -32,7 +32,7 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
       title={<img alt='Logo' src={logo} className='h-4 w-auto' />}
       onClose={() => onClose('LANDING_PAGE')}
     >
-      <div className='mt-4 divide-y divide-solid divide-gray-200'>
+      <div className='mt-4 divide-y divide-solid divide-gray-200 dark:divide-slate-700'>
         <div
           className={classNames('pt-6 grid gap-4', {
             'grid-cols-2': isOpen,
