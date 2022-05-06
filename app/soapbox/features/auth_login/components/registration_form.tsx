@@ -10,7 +10,7 @@ import { accountLookup } from 'soapbox/actions/accounts';
 import { register, verifyCredentials } from 'soapbox/actions/auth';
 import { openModal } from 'soapbox/actions/modals';
 import BirthdayInput from 'soapbox/components/birthday_input';
-import { Form, FormGroup, Input, Textarea } from 'soapbox/components/ui';
+import { Form, FormGroup, FormActions, Button, Input, Textarea } from 'soapbox/components/ui';
 import CaptchaField from 'soapbox/features/auth_login/components/captcha';
 import { Checkbox } from 'soapbox/features/forms';
 import { useAppSelector, useAppDispatch, useSettings, useFeatures } from 'soapbox/hooks';
@@ -228,120 +228,130 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
   return (
     <Form onSubmit={onSubmit} data-testid='registrations-open'>
       <fieldset disabled={isLoading} className='space-y-3'>
-        <div className='simple_form__overlay-area'>
-          <div className='fields-group'>
-            {usernameUnavailable && (
-              <div className='error'>
-                <FormattedMessage id='registration.username_unavailable' defaultMessage='Username is already taken.' />
-              </div>
-            )}
-            <FormGroup hintText={intl.formatMessage(messages.username_hint)}>
-              <Input
-                type='text'
-                name='username'
-                placeholder={intl.formatMessage(messages.username)}
-                autoComplete='off'
-                autoCorrect='off'
-                autoCapitalize='off'
-                pattern='^[a-zA-Z\d_-]+'
-                onChange={onUsernameChange}
-                value={params.get('username', '')}
-                hasError={usernameUnavailable}
-                required
-              />
-            </FormGroup>
-            <Input
-              type='email'
-              name='email'
-              placeholder={intl.formatMessage(messages.email)}
-              autoComplete='off'
-              autoCorrect='off'
-              autoCapitalize='off'
-              onChange={onInputChange}
-              value={params.get('email', '')}
-              required
-            />
-            {passwordMismatch && (
-              <div className='error'>
-                <FormattedMessage id='registration.password_mismatch' defaultMessage="Passwords don't match." />
-              </div>
-            )}
-            <Input
-              type='password'
-              name='password'
-              placeholder={intl.formatMessage(messages.password)}
-              autoComplete='off'
-              autoCorrect='off'
-              autoCapitalize='off'
-              onChange={onPasswordChange}
-              value={params.get('password', '')}
-              hasError={passwordMismatch === true}
-              required
-            />
-            <Input
-              type='password'
-              name='password_confirmation'
-              placeholder={intl.formatMessage(messages.confirm)}
-              autoComplete='off'
-              autoCorrect='off'
-              autoCapitalize='off'
-              onChange={onPasswordConfirmChange}
-              onBlur={onPasswordConfirmBlur}
-              value={passwordConfirmation}
-              hasError={passwordMismatch === true}
-              required
-            />
-            {birthdayRequired &&
-              <BirthdayInput
-                value={birthday}
-                onChange={onBirthdayChange}
-                required
-              />}
-            {needsApproval && (
-              <FormGroup
-                labelText={<FormattedMessage id='registration.reason' defaultMessage='Why do you want to join?' />}
-                hintText={<FormattedMessage id='registration.reason_hint' defaultMessage='This will help us review your application' />}
-              >
-                <Textarea
-                  name='reason'
-                  maxLength={500}
-                  onChange={onInputChange}
-                  value={params.get('reason', '')}
-                  required
-                />
-              </FormGroup>
-            )}
+        {usernameUnavailable && (
+          <div className='error'>
+            <FormattedMessage id='registration.username_unavailable' defaultMessage='Username is already taken.' />
           </div>
-          <CaptchaField
-            onFetch={onFetchCaptcha}
-            onFetchFail={onFetchCaptchaFail}
-            onChange={onInputChange}
-            onClick={onCaptchaClick}
-            idempotencyKey={captchaIdempotencyKey}
-            name='captcha_solution'
-            value={params.get('captcha_solution', '')}
+        )}
+
+        <FormGroup hintText={intl.formatMessage(messages.username_hint)}>
+          <Input
+            type='text'
+            name='username'
+            placeholder={intl.formatMessage(messages.username)}
+            autoComplete='off'
+            autoCorrect='off'
+            autoCapitalize='off'
+            pattern='^[a-zA-Z\d_-]+'
+            onChange={onUsernameChange}
+            value={params.get('username', '')}
+            hasError={usernameUnavailable}
+            required
           />
-          <div className='fields-group'>
-            <Checkbox
-              label={intl.formatMessage(messages.agreement, { tos: <Link to='/about/tos' target='_blank' key={0}>{intl.formatMessage(messages.tos)}</Link> })}
-              name='agreement'
-              onChange={onCheckboxChange}
-              checked={params.get('agreement', false)}
+        </FormGroup>
+
+        <Input
+          type='email'
+          name='email'
+          placeholder={intl.formatMessage(messages.email)}
+          autoComplete='off'
+          autoCorrect='off'
+          autoCapitalize='off'
+          onChange={onInputChange}
+          value={params.get('email', '')}
+          required
+        />
+
+        {passwordMismatch && (
+          <div className='error'>
+            <FormattedMessage id='registration.password_mismatch' defaultMessage="Passwords don't match." />
+          </div>
+        )}
+
+        <Input
+          type='password'
+          name='password'
+          placeholder={intl.formatMessage(messages.password)}
+          autoComplete='off'
+          autoCorrect='off'
+          autoCapitalize='off'
+          onChange={onPasswordChange}
+          value={params.get('password', '')}
+          hasError={passwordMismatch === true}
+          required
+        />
+
+        <Input
+          type='password'
+          name='password_confirmation'
+          placeholder={intl.formatMessage(messages.confirm)}
+          autoComplete='off'
+          autoCorrect='off'
+          autoCapitalize='off'
+          onChange={onPasswordConfirmChange}
+          onBlur={onPasswordConfirmBlur}
+          value={passwordConfirmation}
+          hasError={passwordMismatch === true}
+          required
+        />
+
+        {birthdayRequired && (
+          <BirthdayInput
+            value={birthday}
+            onChange={onBirthdayChange}
+            required
+          />
+        )}
+
+        {needsApproval && (
+          <FormGroup
+            labelText={<FormattedMessage id='registration.reason' defaultMessage='Why do you want to join?' />}
+            hintText={<FormattedMessage id='registration.reason_hint' defaultMessage='This will help us review your application' />}
+          >
+            <Textarea
+              name='reason'
+              maxLength={500}
+              onChange={onInputChange}
+              value={params.get('reason', '')}
               required
             />
-            {supportsEmailList && <Checkbox
+          </FormGroup>
+        )}
+
+        <CaptchaField
+          onFetch={onFetchCaptcha}
+          onFetchFail={onFetchCaptchaFail}
+          onChange={onInputChange}
+          onClick={onCaptchaClick}
+          idempotencyKey={captchaIdempotencyKey}
+          name='captcha_solution'
+          value={params.get('captcha_solution', '')}
+        />
+
+        <div className='simple_form space-y-3'>
+          <Checkbox
+            label={intl.formatMessage(messages.agreement, { tos: <Link to='/about/tos' target='_blank' key={0}>{intl.formatMessage(messages.tos)}</Link> })}
+            name='agreement'
+            onChange={onCheckboxChange}
+            checked={params.get('agreement', false)}
+            required
+          />
+
+          {supportsEmailList && (
+            <Checkbox
               label={intl.formatMessage(messages.newsletter)}
               name='accepts_email_list'
               onChange={onCheckboxChange}
               checked={params.get('accepts_email_list', false)}
-            />}
-          </div>
-          <div className='actions'>
-            <button name='button' type='submit' className='btn button button-primary'>
-              <FormattedMessage id='registration.sign_up' defaultMessage='Sign up' />
-            </button>
-          </div>
+            />
+          )}
         </div>
+
+        <FormActions>
+          <Button>
+            <FormattedMessage id='registration.sign_up' defaultMessage='Sign up' />
+          </Button>
+        </FormActions>
       </fieldset>
     </Form>
   );
