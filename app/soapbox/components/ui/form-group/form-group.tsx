@@ -10,7 +10,7 @@ interface IFormGroup {
   errors?: string[]
 }
 
-/** Input element with label and hint. */
+/** Input container with label. Renders the child. */
 const FormGroup: React.FC<IFormGroup> = (props) => {
   const { children, errors = [], labelText, hintText } = props;
   const formFieldId: string = useMemo(() => `field-${uuidv4()}`, []);
