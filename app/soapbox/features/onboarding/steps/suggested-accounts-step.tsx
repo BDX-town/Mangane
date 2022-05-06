@@ -21,7 +21,7 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
 
   const renderSuggestions = () => {
     return (
-      <div className='sm:pt-4 sm:pb-10 flex flex-col divide-y divide-solid divide-gray-200'>
+      <div className='sm:pt-4 sm:pb-10 flex flex-col divide-y divide-solid divide-gray-200 dark:divide-slate-700'>
         {suggestionsToRender.map((suggestion: ImmutableMap<string, any>) => (
           <div key={suggestion.get('account')} className='py-2'>
             <AccountContainer
