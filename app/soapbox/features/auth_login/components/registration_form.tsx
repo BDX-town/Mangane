@@ -10,15 +10,9 @@ import { accountLookup } from 'soapbox/actions/accounts';
 import { register, verifyCredentials } from 'soapbox/actions/auth';
 import { openModal } from 'soapbox/actions/modals';
 import BirthdayInput from 'soapbox/components/birthday_input';
-import ShowablePassword from 'soapbox/components/showable_password';
+import { Form, FormGroup, Input, Textarea } from 'soapbox/components/ui';
 import CaptchaField from 'soapbox/features/auth_login/components/captcha';
-import {
-  SimpleForm,
-  SimpleInput,
-  TextInput,
-  SimpleTextarea,
-  Checkbox,
-} from 'soapbox/features/forms';
+import { Checkbox } from 'soapbox/features/forms';
 import { useAppSelector, useAppDispatch, useSettings, useFeatures } from 'soapbox/hooks';
 
 const messages = defineMessages({
@@ -232,8 +226,8 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
   const isLoading = captchaLoading || submissionLoading;
 
   return (
-    <SimpleForm onSubmit={onSubmit} data-testid='registrations-open'>
-      <fieldset disabled={isLoading}>
+    <Form onSubmit={onSubmit} data-testid='registrations-open'>
+      <fieldset disabled={isLoading} className='space-y-3'>
         <div className='simple_form__overlay-area'>
           <div className='fields-group'>
             {usernameUnavailable && (
@@ -241,23 +235,25 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
                 <FormattedMessage id='registration.username_unavailable' defaultMessage='Username is already taken.' />
               </div>
             )}
-            <TextInput
-              placeholder={intl.formatMessage(messages.username)}
-              name='username'
-              hint={intl.formatMessage(messages.username_hint)}
-              autoComplete='off'
-              autoCorrect='off'
-              autoCapitalize='off'
-              pattern='^[a-zA-Z\d_-]+'
-              onChange={onUsernameChange}
-              value={params.get('username', '')}
-              error={usernameUnavailable}
-              required
-            />
-            <SimpleInput
-              placeholder={intl.formatMessage(messages.email)}
-              name='email'
+            <FormGroup hintText={intl.formatMessage(messages.username_hint)}>
+              <Input
+                type='text'
+                name='username'
+                placeholder={intl.formatMessage(messages.username)}
+                autoComplete='off'
+                autoCorrect='off'
+                autoCapitalize='off'
+                pattern='^[a-zA-Z\d_-]+'
+                onChange={onUsernameChange}
+                value={params.get('username', '')}
+                hasError={usernameUnavailable}
+                required
+              />
+            </FormGroup>
+            <Input
               type='email'
+              name='email'
+              placeholder={intl.formatMessage(messages.email)}
               autoComplete='off'
               autoCorrect='off'
               autoCapitalize='off'
@@ -270,27 +266,29 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
                 <FormattedMessage id='registration.password_mismatch' defaultMessage="Passwords don't match." />
               </div>
             )}
-            <ShowablePassword
-              placeholder={intl.formatMessage(messages.password)}
+            <Input
+              type='password'
               name='password'
+              placeholder={intl.formatMessage(messages.password)}
               autoComplete='off'
               autoCorrect='off'
               autoCapitalize='off'
               onChange={onPasswordChange}
               value={params.get('password', '')}
-              error={passwordMismatch === true}
+              hasError={passwordMismatch === true}
               required
             />
-            <ShowablePassword
-              placeholder={intl.formatMessage(messages.confirm)}
+            <Input
+              type='password'
               name='password_confirmation'
+              placeholder={intl.formatMessage(messages.confirm)}
               autoComplete='off'
               autoCorrect='off'
               autoCapitalize='off'
               onChange={onPasswordConfirmChange}
               onBlur={onPasswordConfirmBlur}
               value={passwordConfirmation}
-              error={passwordMismatch === true}
+              hasError={passwordMismatch === true}
               required
             />
             {birthdayRequired &&
@@ -299,16 +297,20 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
                 onChange={onBirthdayChange}
                 required
               />}
-            {instance.get('approval_required') &&
-              <SimpleTextarea
-                label={<FormattedMessage id='registration.reason' defaultMessage='Why do you want to join?' />}
-                hint={<FormattedMessage id='registration.reason_hint' defaultMessage='This will help us review your application' />}
-                name='reason'
-                maxLength={500}
-                onChange={onInputChange}
-                value={params.get('reason', '')}
-                required
-              />}
+            {needsApproval && (
+              <FormGroup
+                labelText={<FormattedMessage id='registration.reason' defaultMessage='Why do you want to join?' />}
+                hintText={<FormattedMessage id='registration.reason_hint' defaultMessage='This will help us review your application' />}
+              >
+                <Textarea
+                  name='reason'
+                  maxLength={500}
+                  onChange={onInputChange}
+                  value={params.get('reason', '')}
+                  required
+                />
+              </FormGroup>
+            )}
           </div>
           <CaptchaField
             onFetch={onFetchCaptcha}
@@ -341,7 +343,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
           </div>
         </div>
       </fieldset>
-    </SimpleForm>
+    </Form>
   );
 };
 
