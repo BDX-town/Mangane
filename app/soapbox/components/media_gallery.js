@@ -11,6 +11,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still_image';
+import { MIMETYPE_ICONS } from 'soapbox/features/compose/components/upload';
 import { truncateFilename } from 'soapbox/utils/media';
 
 import { isIOS } from '../is_mobile';
@@ -146,11 +147,18 @@ class Item extends React.PureComponent {
 
     if (attachment.get('type') === 'unknown') {
       const filename = truncateFilename(attachment.get('remote_url'), MAX_FILENAME_LENGTH);
+      const attachmentIcon = (
+        <Icon
+          className='h-16 w-16 text-gray-800 dark:text-gray-200'
+          src={MIMETYPE_ICONS[attachment.getIn(['pleroma', 'mime_type'])] || require('@tabler/icons/icons/paperclip.svg')}
+        />
+      );
+
       return (
         <div className={classNames('media-gallery__item', { standalone })} key={attachment.get('id')} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
           <a className='media-gallery__item-thumbnail' href={attachment.get('remote_url')} target='_blank' style={{ cursor: 'pointer' }}>
             <Blurhash hash={attachment.get('blurhash')} className='media-gallery__preview' />
-            <span className='media-gallery__item__icons'><Icon id='file' /></span>
+            <span className='media-gallery__item__icons'>{attachmentIcon}</span>
             <span className='media-gallery__filename__label'>{filename}</span>
           </a>
         </div>
