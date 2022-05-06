@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import Toggle from 'react-toggle';
+
+import Toggle from 'soapbox/components/toggle';
 
 export default class SettingToggle extends ImmutablePureComponent {
 
@@ -26,7 +27,6 @@ export default class SettingToggle extends ImmutablePureComponent {
         id={id}
         checked={settings.getIn(settingPath)}
         onChange={this.onChange}
-        icons={false}
         onKeyDown={this.onKeyDown}
       />
     );

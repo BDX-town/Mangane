@@ -1,12 +1,12 @@
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import React, { useState, useEffect, useMemo } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
-import Toggle from 'react-toggle';
 
 import { updateConfig } from 'soapbox/actions/admin';
 import { uploadMedia } from 'soapbox/actions/media';
 import snackbar from 'soapbox/actions/snackbar';
 import List, { ListItem } from 'soapbox/components/list';
+import Toggle from 'soapbox/components/toggle';
 import {
   Column,
   CardHeader,
