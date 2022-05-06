@@ -101,7 +101,7 @@ const Preferences = () => {
   //   dispatch(changeSetting(['defaultContentType'], event.target.value));
   // };
 
-  const onToggleChange = (key: string, checked: boolean) => {
+  const onToggleChange = (key: string[], checked: boolean) => {
     dispatch(changeSetting(key, checked, intl));
   };
 
