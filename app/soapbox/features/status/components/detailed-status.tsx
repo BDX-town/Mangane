@@ -129,7 +129,15 @@ class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedSt
         const video = firstAttachment;
         if (video.external_video_id && status.card?.html) {
           const { mediaWrapperWidth } = this.state;
-          const height = mediaWrapperWidth / Number(video.meta.getIn(['original', 'width'])) / Number(video.meta.getIn(['original', 'height']));
+
+          const getHeight = (): number => {
+            const width = Number(video.meta.getIn(['original', 'width']));
+            const height = Number(video.meta.getIn(['original', 'height']));
+            return Number(mediaWrapperWidth) / (width / height);
+          };
+
+          const height = getHeight();
+
           media = (
             <div className='status-card horizontal interactive status-card--video'>
               <div
