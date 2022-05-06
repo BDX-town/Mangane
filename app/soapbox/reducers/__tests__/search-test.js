@@ -1,8 +1,9 @@
-import { Map as ImmutableMap } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 import {
   SEARCH_CHANGE,
   SEARCH_CLEAR,
+  SEARCH_EXPAND_SUCCESS,
 } from 'soapbox/actions/search';
 
 import reducer from '../search';
@@ -47,6 +48,55 @@ describe('search reducer', () => {
         hidden: false,
         results: ImmutableMap(),
         filter: 'accounts',
+      });
+
+      expect(reducer(state, action)).toEqual(expected);
+    });
+  });
+
+  describe(SEARCH_EXPAND_SUCCESS, () => {
+    it('imports hashtags as maps', () => {
+      const state = ImmutableMap({
+        value: 'artist',
+        submitted: true,
+        submittedValue: 'artist',
+        hidden: false,
+        results: ImmutableMap({
+          hashtags: ImmutableList(),
+        }),
+        filter: 'hashtags',
+      });
+
+      const action = {
+        type: SEARCH_EXPAND_SUCCESS,
+        results: {
+          accounts: [],
+          statuses: [],
+          hashtags: [{
+            name: 'artist',
+            url: 'https://gleasonator.com/tags/artist',
+            history: [],
+          }],
+        },
+        searchTerm: 'artist',
+        searchType: 'hashtags',
+      };
+
+      const expected = ImmutableMap({
+        value: 'artist',
+        submitted: true,
+        submittedValue: 'artist',
+        hidden: false,
+        results: ImmutableMap({
+          hashtags: fromJS([{
+            name: 'artist',
+            url: 'https://gleasonator.com/tags/artist',
+            history: [],
+          }]),
+          hashtagsHasMore: false,
+          hashtagsLoaded: true,
+        }),
+        filter: 'hashtags',
       });
 
       expect(reducer(state, action)).toEqual(expected);

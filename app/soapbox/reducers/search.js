@@ -55,7 +55,15 @@ const paginateResults = (state, searchType, results, searchTerm) => {
     if (state.get('value') === searchTerm) {
       state.setIn(['results', `${searchType}HasMore`], results[searchType].length >= 20);
       state.setIn(['results', `${searchType}Loaded`], true);
-      state.updateIn(['results', searchType], items => items.concat(results[searchType].map(item => item.id)));
+      state.updateIn(['results', searchType], items => {
+        const data = results[searchType];
+        // Hashtags are a list of maps. Others are IDs.
+        if (searchType === 'hashtags') {
+          return items.concat(fromJS(data));
+        } else {
+          return items.concat(toIds(data));
+        }
+      });
     }
   });
 };
