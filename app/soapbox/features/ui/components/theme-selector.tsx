@@ -43,7 +43,7 @@ const ThemeSelector: React.FC<IThemeSelector> = ({ value, onChange }) => {
         </div>
 
         <select
-          onBlur={handleChange}
+          onChange={handleChange}
           defaultValue={value}
           className='focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-800 dark:border-gray-600 block w-full pl-8 pr-12 sm:text-sm border-gray-300 rounded-md'
         >
