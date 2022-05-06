@@ -13,38 +13,45 @@ import IconButton from 'soapbox/components/icon_button';
 
 import Motion from '../../ui/util/optional_motion';
 
-const MIMETYPE_ICONS = {
-  'application/x-freearc': 'file-archive-o',
-  'application/x-bzip': 'file-archive-o',
-  'application/x-bzip2': 'file-archive-o',
-  'application/gzip': 'file-archive-o',
-  'application/vnd.rar': 'file-archive-o',
-  'application/x-tar': 'file-archive-o',
-  'application/zip': 'file-archive-o',
-  'application/x-7z-compressed': 'file-archive-o',
-  'application/x-csh': 'file-code-o',
-  'application/html': 'file-code-o',
-  'text/javascript': 'file-code-o',
-  'application/json': 'file-code-o',
-  'application/ld+json': 'file-code-o',
-  'application/x-httpd-php': 'file-code-o',
-  'application/x-sh': 'file-code-o',
-  'application/xhtml+xml': 'file-code-o',
-  'application/xml': 'file-code-o',
-  'application/epub+zip': 'file-epub-o',
-  'application/vnd.oasis.opendocument.spreadsheet': 'file-excel-o',
-  'application/vnd.ms-excel': 'file-excel-o',
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'file-excel-o',
-  'application/pdf': 'file-pdf-o',
-  'application/vnd.oasis.opendocument.presentation': 'file-powerpoint-o',
-  'application/vnd.ms-powerpoint': 'file-powerpoint-o',
-  'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'file-powerpoint-o',
-  'text/plain': 'file-text-o',
-  'application/rtf': 'file-text-o',
-  'application/msword': 'file-word-o',
-  'application/x-abiword': 'file-word-o',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'file-word-o',
-  'application/vnd.oasis.opendocument.text': 'file-word-o',
+const bookIcon = require('@tabler/icons/icons/book.svg');
+const fileAnalyticsIcon = require('@tabler/icons/icons/file-analytics.svg');
+const fileCodeIcon = require('@tabler/icons/icons/file-code.svg');
+const fileTextIcon = require('@tabler/icons/icons/file-text.svg');
+const fileZipIcon = require('@tabler/icons/icons/file-zip.svg');
+const presentationIcon = require('@tabler/icons/icons/presentation.svg');
+
+export const MIMETYPE_ICONS = {
+  'application/x-freearc': fileZipIcon,
+  'application/x-bzip': fileZipIcon,
+  'application/x-bzip2': fileZipIcon,
+  'application/gzip': fileZipIcon,
+  'application/vnd.rar': fileZipIcon,
+  'application/x-tar': fileZipIcon,
+  'application/zip': fileZipIcon,
+  'application/x-7z-compressed': fileZipIcon,
+  'application/x-csh': fileCodeIcon,
+  'application/html': fileCodeIcon,
+  'text/javascript': fileCodeIcon,
+  'application/json': fileCodeIcon,
+  'application/ld+json': fileCodeIcon,
+  'application/x-httpd-php': fileCodeIcon,
+  'application/x-sh': fileCodeIcon,
+  'application/xhtml+xml': fileCodeIcon,
+  'application/xml': fileCodeIcon,
+  'application/epub+zip': bookIcon,
+  'application/vnd.oasis.opendocument.spreadsheet': fileAnalyticsIcon,
+  'application/vnd.ms-excel': fileAnalyticsIcon,
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': fileAnalyticsIcon,
+  'application/pdf': fileTextIcon,
+  'application/vnd.oasis.opendocument.presentation': presentationIcon,
+  'application/vnd.ms-powerpoint': presentationIcon,
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation': presentationIcon,
+  'text/plain': fileTextIcon,
+  'application/rtf': fileTextIcon,
+  'application/msword': fileTextIcon,
+  'application/x-abiword': fileTextIcon,
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': fileTextIcon,
+  'application/vnd.oasis.opendocument.text': fileTextIcon,
 };
 
 const messages = defineMessages({
@@ -137,7 +144,8 @@ class Upload extends ImmutablePureComponent {
     const mediaType = media.get('type');
     const uploadIcon = mediaType === 'unknown' && (
       <Icon
-        id={MIMETYPE_ICONS[media.getIn(['pleroma', 'mime_type'])] || 'paperclip'}
+        className='h-16 w-16 mx-auto my-12 text-gray-800 dark:text-gray-200'
+        src={MIMETYPE_ICONS[media.getIn(['pleroma', 'mime_type'])] || require('@tabler/icons/icons/paperclip.svg')}
       />
     );
 
