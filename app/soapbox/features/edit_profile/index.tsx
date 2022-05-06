@@ -1,19 +1,16 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
+import Toggle from 'react-toggle';
 
 import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
-import {
-  Checkbox,
-} from 'soapbox/features/forms';
+import List, { ListItem } from 'soapbox/components/list';
 import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
 import resizeImage from 'soapbox/utils/resize_image';
 
-import { Button, Column, Form, FormActions, FormGroup, Input, Textarea } from '../../components/ui';
-import HStack from '../../components/ui/hstack/hstack';
-import Stack from '../../components/ui/stack/stack';
+import { Button, Column, Form, FormActions, FormGroup, Input, Textarea, HStack } from '../../components/ui';
 import Streamfield, { StreamfieldComponent } from '../../components/ui/streamfield/streamfield';
 
 import ProfilePreview from './components/profile-preview';
@@ -396,61 +393,79 @@ const EditProfile: React.FC = () => {
 
         {/* HACK: wrap these checkboxes in a .simple_form container so they get styled (for now) */}
         {/* Need a either move, replace, or refactor these checkboxes. */}
-        <Stack space={2} className='simple_form'>
+        <List>
           {features.followRequests && (
-            <Checkbox
+            <ListItem
               label={<FormattedMessage id='edit_profile.fields.locked_label' defaultMessage='Lock account' />}
               hint={<FormattedMessage id='edit_profile.hints.locked' defaultMessage='Requires you to manually approve followers' />}
-              checked={data.locked}
-              onChange={handleCheckboxChange('locked')}
-            />
+            >
+              <Toggle
+                checked={data.locked}
+                onChange={handleCheckboxChange('locked')}
+              />
+            </ListItem>
           )}
 
           {features.hideNetwork && (
-            <Checkbox
+            <ListItem
               label={<FormattedMessage id='edit_profile.fields.hide_network_label' defaultMessage='Hide network' />}
               hint={<FormattedMessage id='edit_profile.hints.hide_network' defaultMessage='Who you follow and who follows you will not be shown on your profile' />}
-              checked={account ? hidesNetwork(account): false}
-              onChange={handleHideNetworkChange}
-            />
+            >
+              <Toggle
+                checked={account ? hidesNetwork(account): false}
+                onChange={handleHideNetworkChange}
+              />
+            </ListItem>
           )}
 
           {features.bots && (
-            <Checkbox
+            <ListItem
               label={<FormattedMessage id='edit_profile.fields.bot_label' defaultMessage='This is a bot account' />}
               hint={<FormattedMessage id='edit_profile.hints.bot' defaultMessage='This account mainly performs automated actions and might not be monitored' />}
-              checked={data.bot}
-              onChange={handleCheckboxChange('bot')}
-            />
+            >
+              <Toggle
+                checked={data.bot}
+                onChange={handleCheckboxChange('bot')}
+              />
+            </ListItem>
           )}
 
           {features.muteStrangers && (
-            <Checkbox
+            <ListItem
               label={<FormattedMessage id='edit_profile.fields.stranger_notifications_label' defaultMessage='Block notifications from strangers' />}
               hint={<FormattedMessage id='edit_profile.hints.stranger_notifications' defaultMessage='Only show notifications from people you follow' />}
-              checked={muteStrangers}
-              onChange={(e) => setMuteStrangers(e.target.checked)}
-            />
+            >
+              <Toggle
+                checked={muteStrangers}
+                onChange={(e) => setMuteStrangers(e.target.checked)}
+              />
+            </ListItem>
           )}
 
           {features.profileDirectory && (
-            <Checkbox
+            <ListItem
               label={<FormattedMessage id='edit_profile.fields.discoverable_label' defaultMessage='Allow account discovery' />}
               hint={<FormattedMessage id='edit_profile.hints.discoverable' defaultMessage='Display account in profile directory and allow indexing by external services' />}
-              checked={data.discoverable}
-              onChange={handleCheckboxChange('discoverable')}
-            />
+            >
+              <Toggle
+                checked={data.discoverable}
+                onChange={handleCheckboxChange('discoverable')}
+              />
+            </ListItem>
           )}
 
           {features.emailList && (
-            <Checkbox
+            <ListItem
               label={<FormattedMessage id='edit_profile.fields.accepts_email_list_label' defaultMessage='Subscribe to newsletter' />}
               hint={<FormattedMessage id='edit_profile.hints.accepts_email_list' defaultMessage='Opt-in to news and marketing updates.' />}
-              checked={data.accepts_email_list}
-              onChange={handleCheckboxChange('accepts_email_list')}
-            />
+            >
+              <Toggle
+                checked={data.accepts_email_list}
+                onChange={handleCheckboxChange('accepts_email_list')}
+              />
+            </ListItem>
           )}
-        </Stack>
+        </List>
 
         {features.profileFields && (
           <Streamfield
