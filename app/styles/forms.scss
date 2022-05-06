@@ -776,36 +776,6 @@ code {
   transform: translateY(7px);
 }
 
-.site-preview {
-  border-radius: 4px;
-  overflow: hidden;
-  height: 164px;
-  border: 1px solid;
-  margin-bottom: 40px;
-  background: var(--background-color);
-
-  * {
-    z-index: 0;
-  }
-
-  a {
-    cursor: default;
-  }
-
-  .ui {
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    height: 100%;
-  }
-
-  .page {
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-  }
-}
-
 .input.with_label.toggle .label_input {
   display: flex;
   font-size: 14px;
