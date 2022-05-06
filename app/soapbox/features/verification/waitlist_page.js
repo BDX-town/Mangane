@@ -17,8 +17,6 @@ const WaitlistPage = ({ account }) => {
 
   const logo = useSelector((state) => getSoapboxConfig(state).get('logo'));
 
-  const waitlistPosition = account.getIn(['source', 'unapproved_position']);
-
   const onClickLogOut = (event) => {
     event.preventDefault();
     dispatch(logOut(intl));
@@ -47,12 +45,13 @@ const WaitlistPage = ({ account }) => {
               <img src='/instance/images/waitlist.png' className='mx-auto w-32 h-32' alt='Waitlisted' />
 
               <Stack space={2}>
-                <Text size='3xl' align='center' theme='primary' weight='bold'>#{waitlistPosition.toLocaleString()}</Text>
-                <Text size='2xl' align='center' weight='bold'>You're on the Waitlist!</Text>
+                <Text size='2xl' align='center' weight='bold'>
+                  @{account.acct} has been created successfully!
+                </Text>
                 <Text size='lg' theme='muted' align='center' weight='medium'>
-                  Thanks for joining! Due to high demand, we have placed you on our
-                  waitlist. We love you, and you are not just another number to us! But your
-                  waitlist number is above <span role='img' aria-label='Smile'>🙂</span>
+                  Due to massive demand, we have placed you on our waitlist.
+                  We love you, and you're not just another number to us.
+                  We are working to get you on our platform. Stay tuned!
                 </Text>
               </Stack>
             </Stack>
