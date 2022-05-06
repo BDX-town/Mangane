@@ -14,8 +14,17 @@ interface IShowablePassword {
   label?: React.ReactNode,
   className?: string,
   hint?: React.ReactNode,
+  placeholder?: string,
   error?: boolean,
   onToggleVisibility?: () => void,
+  autoComplete?: string,
+  autoCorrect?: string,
+  autoCapitalize?: string,
+  name?: string,
+  required?: boolean,
+  onChange?: React.ChangeEventHandler<HTMLInputElement>,
+  onBlur?: React.ChangeEventHandler<HTMLInputElement>,
+  value?: string,
 }
 
 const ShowablePassword: React.FC<IShowablePassword> = (props) => {

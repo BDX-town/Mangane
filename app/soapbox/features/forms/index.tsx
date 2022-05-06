@@ -85,6 +85,10 @@ interface ISimpleInput {
   name?: string,
   placeholder?: string,
   value?: string | number,
+  autoComplete?: string,
+  autoCorrect?: string,
+  autoCapitalize?: string,
+  required?: boolean,
 }
 
 export const SimpleInput: React.FC<ISimpleInput> = (props) => {
@@ -104,6 +108,9 @@ interface ISimpleTextarea {
   value?: string,
   onChange?: React.ChangeEventHandler<HTMLTextAreaElement>,
   rows?: number,
+  name?: string,
+  maxLength?: number,
+  required?: boolean,
 }
 
 export const SimpleTextarea: React.FC<ISimpleTextarea> = (props) => {
@@ -161,6 +168,7 @@ interface ICheckbox {
   name?: string,
   checked?: boolean,
   onChange?: React.ChangeEventHandler<HTMLInputElement>,
+  required?: boolean,
 }
 
 export const Checkbox: React.FC<ICheckbox> = (props) => (
@@ -240,8 +248,15 @@ interface ITextInput {
   name?: string,
   onChange?: React.ChangeEventHandler,
   label?: React.ReactNode,
+  hint?: React.ReactNode,
   placeholder?: string,
   value?: string,
+  autoComplete?: string,
+  autoCorrect?: string,
+  autoCapitalize?: string,
+  pattern?: string,
+  error?: boolean,
+  required?: boolean,
 }
 
 export const TextInput: React.FC<ITextInput> = props => (
