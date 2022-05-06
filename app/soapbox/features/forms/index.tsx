@@ -79,6 +79,12 @@ interface ISimpleInput {
   hint?: React.ReactNode,
   error?: boolean,
   onChange?: React.ChangeEventHandler,
+  min?: number,
+  max?: number,
+  pattern?: string,
+  name?: string,
+  placeholder?: string,
+  value?: string | number,
 }
 
 export const SimpleInput: React.FC<ISimpleInput> = (props) => {
@@ -95,6 +101,9 @@ export const SimpleInput: React.FC<ISimpleInput> = (props) => {
 interface ISimpleTextarea {
   label?: React.ReactNode,
   hint?: React.ReactNode,
+  value?: string,
+  onChange?: React.ChangeEventHandler<HTMLTextAreaElement>,
+  rows?: number,
 }
 
 export const SimpleTextarea: React.FC<ISimpleTextarea> = (props) => {
@@ -149,6 +158,7 @@ export const FieldsGroup: React.FC = ({ children }) => (
 interface ICheckbox {
   label?: React.ReactNode,
   hint?: React.ReactNode,
+  name?: string,
   checked?: boolean,
   onChange?: React.ChangeEventHandler<HTMLInputElement>,
 }
@@ -227,8 +237,11 @@ export const SelectDropdown: React.FC<ISelectDropdown> = (props) => {
 };
 
 interface ITextInput {
+  name?: string,
   onChange?: React.ChangeEventHandler,
+  label?: React.ReactNode,
   placeholder?: string,
+  value?: string,
 }
 
 export const TextInput: React.FC<ITextInput> = props => (
@@ -243,7 +256,15 @@ FileChooser.defaultProps = {
   accept: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
 };
 
-export const FileChooserLogo: React.FC = props => (
+interface IFileChooserLogo {
+  label?: React.ReactNode,
+  hint?: React.ReactNode,
+  name?: string,
+  accept?: string[],
+  onChange: React.ChangeEventHandler<HTMLInputElement>,
+}
+
+export const FileChooserLogo: React.FC<IFileChooserLogo> = props => (
   <SimpleInput type='file' {...props} />
 );
 

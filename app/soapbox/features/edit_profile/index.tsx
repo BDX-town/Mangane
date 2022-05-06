@@ -11,8 +11,10 @@ import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soap
 import { normalizeAccount } from 'soapbox/normalizers';
 import resizeImage from 'soapbox/utils/resize_image';
 
-import { Button, Column, Form, FormActions, FormGroup, Input, Textarea, HStack } from '../../components/ui';
-import Streamfield from '../../components/ui/streamfield/streamfield';
+import { Button, Column, Form, FormActions, FormGroup, Input, Textarea } from '../../components/ui';
+import HStack from '../../components/ui/hstack/hstack';
+import Stack from '../../components/ui/stack/stack';
+import Streamfield, { StreamfieldComponent } from '../../components/ui/streamfield/streamfield';
 
 import ProfilePreview from './components/profile-preview';
 
@@ -147,12 +149,7 @@ const accountToCredentials = (account: Account): AccountCredentials => {
   };
 };
 
-interface IProfileField {
-  value: AccountCredentialsField,
-  onChange: (field: AccountCredentialsField) => void,
-}
-
-const ProfileField: React.FC<IProfileField> = ({ value, onChange }) => {
+const ProfileField: StreamfieldComponent<AccountCredentialsField> = ({ value, onChange }) => {
   const intl = useIntl();
 
   const handleChange = (key: string): React.ChangeEventHandler<HTMLInputElement> => {
@@ -399,7 +396,7 @@ const EditProfile: React.FC = () => {
 
         {/* HACK: wrap these checkboxes in a .simple_form container so they get styled (for now) */}
         {/* Need a either move, replace, or refactor these checkboxes. */}
-        <div className='simple_form'>
+        <Stack space={2} className='simple_form'>
           {features.followRequests && (
             <Checkbox
               label={<FormattedMessage id='edit_profile.fields.locked_label' defaultMessage='Lock account' />}
@@ -453,12 +450,12 @@ const EditProfile: React.FC = () => {
               onChange={handleCheckboxChange('accepts_email_list')}
             />
           )}
-        </div>
+        </Stack>
 
         {features.profileFields && (
           <Streamfield
-            labelText={<FormattedMessage id='edit_profile.fields.meta_fields_label' defaultMessage='Profile fields' />}
-            hintText={<FormattedMessage id='edit_profile.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# custom field} other {# custom fields}} displayed on your profile.' values={{ count: maxFields }} />}
+            label={<FormattedMessage id='edit_profile.fields.meta_fields_label' defaultMessage='Profile fields' />}
+            hint={<FormattedMessage id='edit_profile.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# custom field} other {# custom fields}} displayed on your profile.' values={{ count: maxFields }} />}
             values={data.fields_attributes || []}
             onChange={handleFieldsChange}
             onAddItem={handleAddField}

@@ -12,13 +12,19 @@ const messages = defineMessages({
   remove: { id: 'streamfield.remove', defaultMessage: 'Remove' },
 });
 
+/** Type of the inner Streamfield input component. */
+export type StreamfieldComponent<T> = React.ComponentType<{
+  value: T,
+  onChange: (value: T) => void,
+}>;
+
 interface IStreamfield {
   /** Array of values for the streamfield. */
   values: any[],
   /** Input label message. */
-  labelText?: React.ReactNode,
+  label?: React.ReactNode,
   /** Input hint message. */
-  hintText?: React.ReactNode,
+  hint?: React.ReactNode,
   /** Callback to add an item. */
   onAddItem?: () => void,
   /** Callback to remove an item by index. */
@@ -26,7 +32,7 @@ interface IStreamfield {
   /** Callback when values are changed. */
   onChange: (values: any[]) => void,
   /** Input to render for each value. */
-  component: React.ComponentType<{ onChange: (value: any) => void, value: any }>,
+  component: StreamfieldComponent<any>,
   /** Maximum number of allowed inputs. */
   maxItems?: number,
 }
@@ -34,8 +40,8 @@ interface IStreamfield {
 /** List of inputs that can be added or removed. */
 const Streamfield: React.FC<IStreamfield> = ({
   values,
-  labelText,
-  hintText,
+  label,
+  hint,
   onAddItem,
   onRemoveItem,
   onChange,
@@ -55,26 +61,28 @@ const Streamfield: React.FC<IStreamfield> = ({
   return (
     <Stack space={4}>
       <Stack>
-        {labelText && <Text size='sm' weight='medium'>{labelText}</Text>}
-        {hintText && <Text size='xs' theme='muted'>{hintText}</Text>}
+        {label && <Text size='sm' weight='medium'>{label}</Text>}
+        {hint && <Text size='xs' theme='muted'>{hint}</Text>}
       </Stack>
 
-      <Stack>
-        {values.map((value, i) => (
-          <HStack space={2} alignItems='center'>
-            <Component key={i} onChange={handleChange(i)} value={value} />
-            {onRemoveItem && (
-              <IconButton
-                iconClassName='w-4 h-4'
-                className='bg-transparent text-gray-400 hover:text-gray-600'
-                src={require('@tabler/icons/icons/x.svg')}
-                onClick={() => onRemoveItem(i)}
-                title={intl.formatMessage(messages.remove)}
-              />
-            )}
-          </HStack>
-        ))}
-      </Stack>
+      {(values.length > 0) && (
+        <Stack>
+          {values.map((value, i) => (
+            <HStack space={2} alignItems='center'>
+              <Component key={i} onChange={handleChange(i)} value={value} />
+              {onRemoveItem && (
+                <IconButton
+                  iconClassName='w-4 h-4'
+                  className='bg-transparent text-gray-400 hover:text-gray-600'
+                  src={require('@tabler/icons/icons/x.svg')}
+                  onClick={() => onRemoveItem(i)}
+                  title={intl.formatMessage(messages.remove)}
+                />
+              )}
+            </HStack>
+          ))}
+        </Stack>
+      )}
 
       {onAddItem && (
         <Button

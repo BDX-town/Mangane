@@ -176,7 +176,7 @@
 }
 
 .emoji-mart-emoji-native {
-  font-family: "Segoe UI Emoji", "Segoe UI Symbol", "Segoe UI", "Apple Color Emoji", "Twemoji Mozilla", "Noto Color Emoji", "Android Emoji";
+  font-family: "Segoe UI Emoji", "Segoe UI Symbol", "Segoe UI", "Apple Color Emoji", "Twemoji Mozilla", "Noto Color Emoji", "Android Emoji", sans-serif;
 }
 
 .emoji-mart-no-results {
@@ -258,5 +258,40 @@
 
   .emoji-mart-emoji {
     height: 22px;
+  }
+}
+
+.font-icon-picker {
+  .emoji-mart-search {
+    // Search doesn't work. Hide it for now.
+    display: none;
+    padding: 10px !important;
+  }
+
+  .emoji-mart-category-label > span {
+    padding: 9px 6px 5px;
+  }
+
+  .emoji-mart-scroll {
+    border-radius: 4px;
+  }
+
+  .emoji-mart-search-icon {
+    right: 18px;
+  }
+
+  .emoji-mart-bar {
+    display: none;
+  }
+
+  .fa {
+    font-size: 18px;
+    width: 22px;
+    height: 22px;
+    text-align: center;
+  }
+
+  .fa-hack {
+    margin: 0 auto;
   }
 }

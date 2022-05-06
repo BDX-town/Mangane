@@ -1,8 +1,14 @@
+import classNames from 'classnames';
 import React from 'react';
 
+interface IBackgroundShapes {
+  /** Whether the shapes should be absolute positioned or fixed. */
+  position?: 'fixed' | 'absolute',
+}
+
 /** Gradient that appears in the background of the UI. */
-const BackgroundShapes: React.FC = () => (
-  <div className='fixed top-0 inset-x-0 flex justify-center overflow-hidden pointer-events-none'>
+const BackgroundShapes: React.FC<IBackgroundShapes> = ({ position = 'fixed' }) => (
+  <div className={classNames(position, 'top-0 inset-x-0 flex justify-center overflow-hidden pointer-events-none')}>
     <div className='flex-none flex justify-center'>
       <svg width='1754' height='1336' xmlns='http://www.w3.org/2000/svg'>
         <defs>

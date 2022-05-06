@@ -89,7 +89,7 @@ export const SoapboxConfigRecord = ImmutableRecord({
   colors: ImmutableMap(),
   copyright: `♥${new Date().getFullYear()}. Copying is an act of love. Please copy and share.`,
   customCss: ImmutableList<string>(),
-  defaultSettings: ImmutableMap(),
+  defaultSettings: ImmutableMap<string, any>(),
   extensions: ImmutableMap(),
   greentext: false,
   promoPanel: PromoPanelRecord(),
@@ -171,6 +171,12 @@ const normalizePromoPanel = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap 
   return soapboxConfig.set('promoPanel', promoPanel.set('items', items));
 };
 
+const normalizeFooterLinks = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
+  const path = ['navlinks', 'homeFooter'];
+  const items = (soapboxConfig.getIn(path, ImmutableList()) as ImmutableList<any>).map(FooterItemRecord);
+  return soapboxConfig.setIn(path, items);
+};
+
 export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
   return SoapboxConfigRecord(
     ImmutableMap(fromJS(soapboxConfig)).withMutations(soapboxConfig => {
@@ -178,6 +184,7 @@ export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
       normalizeAccentColor(soapboxConfig);
       normalizeColors(soapboxConfig);
       normalizePromoPanel(soapboxConfig);
+      normalizeFooterLinks(soapboxConfig);
       maybeAddMissingColors(soapboxConfig);
       normalizeCryptoAddresses(soapboxConfig);
     }),

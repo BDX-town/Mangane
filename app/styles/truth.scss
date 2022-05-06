@@ -34,13 +34,6 @@
   background-color: var(--brand-color) !important;
 }
 
-body,
-.site-preview {
-  --accent-color_h: 345;
-  --accent-color_s: 100%;
-  --accent-color_l: 64%;
-}
-
 @media screen and (max-width: 450px) {
   .tabs-bar__link--logo {
     margin: 0 auto;
