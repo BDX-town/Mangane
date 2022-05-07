@@ -81,7 +81,7 @@ const LandingPage = () => {
               </Stack>
             </div>
           </div>
-          <div className='hidden lg:block sm:mt-24 lg:mt-0 lg:col-span-6 self-center'>
+          <div className='sm:mt-24 lg:mt-0 lg:col-span-6 self-center'>
             <Card size='xl' variant='rounded' className='sm:max-w-md sm:w-full sm:mx-auto'>
               <CardBody>
                 {renderBody()}
