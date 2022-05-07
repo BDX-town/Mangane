@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import LandingGradient from 'soapbox/components/landing-gradient';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { NotificationsContainer } from 'soapbox/features/ui/util/async-components';
 
@@ -23,7 +24,9 @@ const WaitlistPage = ({ account }) => {
   };
 
   return (
-    <div className='h-screen w-full bg-gradient-to-tr from-primary-50 dark:from-slate-700 via-white dark:via-slate-900 to-cyan-50 dark:to-cyan-900'>
+    <div>
+      <LandingGradient />
+
       <main className='relative flex flex-col h-screen max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
         <header className='relative flex justify-between h-16'>
           <div className='flex-1 flex items-stretch justify-center relative'>
