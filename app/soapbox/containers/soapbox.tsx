@@ -192,6 +192,7 @@ const SoapboxMount = () => {
                 <Route path='/verify' component={AuthLayout} />
                 <Route path='/reset-password' component={AuthLayout} />
                 <Route path='/edit-password' component={AuthLayout} />
+                <Route path='/invite/:token' component={AuthLayout} />
 
                 <Route path='/' component={UI} />
               </Switch>

@@ -1,19 +1,17 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { useParams } from 'react-router-dom';
 
 import RegistrationForm from 'soapbox/features/auth_login/components/registration_form';
 import { useAppSelector } from 'soapbox/hooks';
 
-interface IRegisterInvite {
-  /** URL params. */
-  params: {
-    /** Invite token from the URL. */
-    token: string,
-  },
+interface RegisterInviteParams {
+  token: string,
 }
 
 /** Page to register with an invitation. */
-const RegisterInvite: React.FC<IRegisterInvite> = ({ params }) => {
+const RegisterInvite: React.FC = () => {
+  const { token } = useParams<RegisterInviteParams>();
   const siteTitle = useAppSelector(state => state.instance.title);
 
   return (
@@ -34,7 +32,7 @@ const RegisterInvite: React.FC<IRegisterInvite> = ({ params }) => {
         </p>
       </div>
       <div className='register-invite__form'>
-        <RegistrationForm inviteToken={params.token} />
+        <RegistrationForm inviteToken={token} />
       </div>
     </div>
   );
