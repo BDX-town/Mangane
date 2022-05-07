@@ -35,7 +35,7 @@ class PublicLayout extends ImmutablePureComponent {
 
     return (
       <div className='h-full'>
-        <div className='fixed h-screen w-full bg-gradient-to-tr from-primary-50 dark:from-slate-700 via-white dark:via-slate-900 to-cyan-50 dark:to-cyan-900' />
+        <div className='fixed h-screen w-full bg-gradient-to-tr from-primary-50 dark:from-slate-700 via-white dark:via-slate-900 to-gradient-end/10 dark:to-slate-900' />
 
         <div className='flex flex-col h-screen'>
           <div className='flex-shrink-0'>
