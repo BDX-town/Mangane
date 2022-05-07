@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import { fetchCaptcha } from 'soapbox/actions/auth';
-import { Text, Input } from 'soapbox/components/ui';
+import { Stack, Text, Input } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
 const noOp = () => {};
@@ -106,8 +106,10 @@ const NativeCaptchaField: React.FC<INativeCaptchaField> = ({ captcha, onChange, 
   const intl = useIntl();
 
   return (
-    <div className='captcha' >
-      <img alt='captcha' src={captcha.get('url')} onClick={onClick} />
+    <Stack space={2}>
+      <div className='flex items-center justify-center bg-white w-full border border-solid border-gray-300 dark:border-gray-600 rounded-md'>
+        <img alt='captcha' src={captcha.get('url')} onClick={onClick} />
+      </div>
 
       <Input
         type='text'
@@ -120,7 +122,7 @@ const NativeCaptchaField: React.FC<INativeCaptchaField> = ({ captcha, onChange, 
         onChange={onChange}
         required
       />
-    </div>
+    </Stack>
   );
 };
 
