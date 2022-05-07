@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Map as ImmutableMap } from 'immutable';
 import { debounce } from 'lodash';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
@@ -155,7 +155,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
     return params.get('password', '') === passwordConfirmation;
   };
 
-  const usernameAvailable = debounce(username => {
+  const usernameAvailable = useCallback(debounce(username => {
     if (!supportsAccountLookup) return;
 
     const source = refreshCancelToken();
@@ -170,7 +170,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
         }
       });
 
-  }, 1000, { trailing: true });
+  }, 1000, { trailing: true }), []);
 
   const onSubmit: React.FormEventHandler = () => {
     if (!passwordsMatch()) {
@@ -348,7 +348,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
         </div>
 
         <FormActions>
-          <Button>
+          <Button type='submit'>
             <FormattedMessage id='registration.sign_up' defaultMessage='Sign up' />
           </Button>
         </FormActions>
