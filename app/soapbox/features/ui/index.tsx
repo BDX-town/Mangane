@@ -76,7 +76,6 @@ import {
   // GroupRemovedAccounts,
   // GroupCreate,
   // GroupEdit,
-  ExternalLogin,
   Settings,
   MediaDisplay,
   EditProfile,
@@ -173,7 +172,6 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
   // Ex: use /login instead of /auth, but redirect /auth to /login
   return (
     <Switch>
-      <WrappedRoute path='/login/external' page={EmptyPage} component={ExternalLogin} content={children} publicRoute exact />
       <WrappedRoute path='/email-confirmation' page={EmptyPage} component={EmailConfirmation} publicRoute exact />
       <WrappedRoute path='/logout' page={EmptyPage} component={LogoutPage} publicRoute exact />
 
