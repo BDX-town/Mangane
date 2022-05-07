@@ -37,8 +37,8 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick }) => {
   return (
     <Comp
       className={classNames({
-        'flex items-center justify-between px-3 py-2 first:rounded-t-lg last:rounded-b-lg bg-gradient-to-r from-gradient-purple/20 to-gradient-blue/20 dark:from-slate-900/25 dark:to-slate-900/50': true,
-        'cursor-pointer hover:from-gradient-purple/30 hover:to-gradient-blue/30 dark:hover:from-slate-900/40 dark:hover:to-slate-900/75': typeof onClick !== 'undefined',
+        'flex items-center justify-between px-3 py-2 first:rounded-t-lg last:rounded-b-lg bg-gradient-to-r from-gradient-purple/10 to-gradient-blue/10 dark:from-slate-900/25 dark:to-slate-900/50': true,
+        'cursor-pointer hover:from-gradient-purple/20 hover:to-gradient-blue/20 dark:hover:from-slate-900/40 dark:hover:to-slate-900/75': typeof onClick !== 'undefined',
       })}
       {...linkProps}
     >
