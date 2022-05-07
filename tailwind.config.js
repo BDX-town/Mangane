@@ -44,8 +44,6 @@ module.exports = {
         'gradient-purple': true,
         'gradient-blue': true,
         'sea-blue': true,
-        'bg-shape-1': true,
-        'bg-shape-2': true,
       }),
       animation: {
         'sonar-scale-4': 'sonar-scale-4 3s linear infinite',
