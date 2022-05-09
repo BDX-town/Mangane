@@ -1,6 +1,7 @@
 export { default as Avatar } from './avatar/avatar';
 export { default as Button } from './button/button';
 export { Card, CardBody, CardHeader, CardTitle } from './card/card';
+export { default as Checkbox } from './checkbox/checkbox';
 export { default as Column } from './column/column';
 export { default as Counter } from './counter/counter';
 export { default as Emoji } from './emoji/emoji';
