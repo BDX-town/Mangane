@@ -41,7 +41,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
   (props, ref) => {
     const intl = useIntl();
 
-    const { type = 'text', icon, className, outerClassName, ...filteredProps } = props;
+    const { type = 'text', icon, className, outerClassName, hasError, ...filteredProps } = props;
 
     const [revealed, setRevealed] = React.useState(false);
 
@@ -67,6 +67,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
             'dark:bg-slate-800 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500':
                 true,
             'pr-7': isPassword,
+            'text-red-600 border-red-600': hasError,
             'pl-8': typeof icon !== 'undefined',
           }, className)}
         />
