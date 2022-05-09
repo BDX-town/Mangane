@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import ReactSwipeableViews from 'react-swipeable-views';
 
 import { endOnboarding } from 'soapbox/actions/onboarding';
+import LandingGradient from 'soapbox/components/landing-gradient';
 import { HStack } from 'soapbox/components/ui';
 
 import AvatarSelectionStep from './steps/avatar-selection-step';
@@ -68,7 +69,7 @@ const OnboardingWizard = () => {
 
   return (
     <div data-testid='onboarding-wizard'>
-      <div className='fixed h-screen w-full bg-gradient-to-tr from-primary-50 dark:from-slate-700 via-white dark:via-slate-900 to-cyan-50 dark:to-cyan-900' />
+      <LandingGradient />
 
       <main className='h-screen flex flex-col overflow-x-hidden'>
         <div className='flex flex-col justify-center items-center h-full'>

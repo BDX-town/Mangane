@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 
+import LandingGradient from 'soapbox/components/landing-gradient';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { NotificationsContainer } from 'soapbox/features/ui/util/async-components';
@@ -20,7 +21,7 @@ const AuthLayout = () => {
 
   return (
     <div>
-      <div className='fixed h-screen w-full bg-gradient-to-tr from-primary-50 dark:from-slate-700 via-white dark:via-slate-900 to-cyan-50 dark:to-cyan-900' />
+      <LandingGradient />
 
       <main className='relative flex flex-col h-screen'>
         <header className='py-10 flex justify-center relative'>
