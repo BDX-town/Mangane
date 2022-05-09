@@ -34,7 +34,7 @@ const EmailSent = ({ handleSubmit }) => {
 
   return (
     <div className='sm:pt-10 mx-auto flex flex-col items-center justify-center'>
-      <Icon src={require('@tabler/icons/icons/send.svg')} className='text-primary-600 h-12 w-12 mb-5' />
+      <Icon src={require('@tabler/icons/icons/send.svg')} className='text-primary-600 dark:text-primary-400 h-12 w-12 mb-5' />
 
       <div className='space-y-1 text-center mb-4'>
         <Text weight='bold' size='3xl'>We sent you an email</Text>

@@ -123,7 +123,7 @@ const SidebarNavigation = () => {
       return (
         <SidebarNavigationLink
           to='/messages'
-          icon={require('icons/mail.svg')}
+          icon={require('@tabler/icons/icons/mail.svg')}
           text={<FormattedMessage id='navigation.direct_messages' defaultMessage='Messages' />}
         />
       );
@@ -158,7 +158,7 @@ const SidebarNavigation = () => {
 
             <SidebarNavigationLink
               to='/settings'
-              icon={require('icons/cog.svg')}
+              icon={require('@tabler/icons/icons/settings.svg')}
               text={<FormattedMessage id='tabs_bar.settings' defaultMessage='Settings' />}
             />
           </>

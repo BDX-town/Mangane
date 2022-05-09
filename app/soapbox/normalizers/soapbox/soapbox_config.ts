@@ -52,8 +52,6 @@ const DEFAULT_COLORS = ImmutableMap<string, any>({
     800: '#991b1b',
     900: '#7f1d1d',
   }),
-  'gradient-purple': '#b8a3f9',
-  'gradient-blue': '#9bd5ff',
   'sea-blue': '#2feecc',
 });
 
@@ -158,8 +156,8 @@ const maybeAddMissingColors = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMa
   const colors = soapboxConfig.get('colors');
 
   const missing = ImmutableMap({
-    'bg-shape-1': colors.getIn(['accent', '500']),
-    'bg-shape-2': colors.getIn(['primary', '500']),
+    'gradient-start': colors.getIn(['primary', '500']),
+    'gradient-end': colors.getIn(['accent', '500']),
   });
 
   return soapboxConfig.set('colors', missing.mergeDeep(colors));

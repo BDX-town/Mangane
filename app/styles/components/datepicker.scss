@@ -113,5 +113,5 @@
 .react-datepicker__month-text--keyboard-selected,
 .react-datepicker__quarter-text--keyboard-selected,
 .react-datepicker__year-text--keyboard-selected {
-  @apply bg-primary-50 hover:bg-primary-100 text-primary-600;
+  @apply bg-primary-50 hover:bg-primary-100 text-primary-600 dark:text-primary-400;
 }

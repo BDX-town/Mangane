@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormattedMessage } from'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { Button, Card, CardBody, Icon, Stack, Text } from 'soapbox/components/ui';
 
@@ -7,7 +7,7 @@ const CompletedStep = ({ onComplete }: { onComplete: () => void }) => (
   <Card variant='rounded' size='xl'>
     <CardBody>
       <Stack space={2}>
-        <Icon strokeWidth={1} src={require('@tabler/icons/icons/confetti.svg')} className='w-16 h-16 mx-auto text-primary-600' />
+        <Icon strokeWidth={1} src={require('@tabler/icons/icons/confetti.svg')} className='w-16 h-16 mx-auto text-primary-600 dark:text-primary-400' />
 
         <Text size='2xl' align='center' weight='bold'>
           <FormattedMessage id='onboarding.finished.title' defaultMessage='Onboarding complete' />
