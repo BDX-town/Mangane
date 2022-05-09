@@ -11,7 +11,7 @@ const messages = defineMessages({
   hidePassword: { id: 'input.password.hide_password', defaultMessage: 'Hide password' },
 });
 
-interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxLength' | 'onChange' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required' | 'disabled' | 'onClick' | 'readOnly' | 'min' | 'pattern'> {
+interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxLength' | 'onChange' | 'onBlur' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required' | 'disabled' | 'onClick' | 'readOnly' | 'min' | 'pattern'> {
   /** Put the cursor into the input on mount. */
   autoFocus?: boolean,
   /** The initial text in the input. */
@@ -32,6 +32,8 @@ interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxL
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
   /** HTML input type. */
   type: 'text' | 'number' | 'email' | 'tel' | 'password',
+  /** Whether to display the input in red. */
+  hasError?: boolean,
 }
 
 /** Form input element. */
@@ -39,7 +41,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
   (props, ref) => {
     const intl = useIntl();
 
-    const { type = 'text', icon, className, outerClassName, ...filteredProps } = props;
+    const { type = 'text', icon, className, outerClassName, hasError, ...filteredProps } = props;
 
     const [revealed, setRevealed] = React.useState(false);
 
@@ -65,6 +67,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
             'dark:bg-slate-800 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500':
                 true,
             'pr-7': isPassword,
+            'text-red-600 border-red-600': hasError,
             'pl-8': typeof icon !== 'undefined',
           }, className)}
         />
