@@ -15,12 +15,13 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
   const { children, errors = [], labelText, hintText } = props;
   const formFieldId: string = useMemo(() => `field-${uuidv4()}`, []);
   const inputChildren = React.Children.toArray(children);
+  const hasError = errors?.length > 0;
 
   let firstChild;
   if (React.isValidElement(inputChildren[0])) {
     firstChild = React.cloneElement(
       inputChildren[0],
-      { id: formFieldId },
+      { id: formFieldId, hasError },
     );
   }
 
@@ -40,7 +41,7 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
         {firstChild}
         {inputChildren.filter((_, i) => i !== 0)}
 
-        {errors?.length > 0 && (
+        {hasError && (
           <p
             data-testid='form-group-error'
             className='mt-0.5 text-xs text-danger-900 bg-danger-200 rounded-md inline-block px-2 py-1 relative form-error'
