@@ -76,7 +76,6 @@ import {
   // GroupRemovedAccounts,
   // GroupCreate,
   // GroupEdit,
-  ExternalLogin,
   Settings,
   MediaDisplay,
   EditProfile,
@@ -108,7 +107,6 @@ import {
   NotificationsContainer,
   ModalContainer,
   ProfileHoverCard,
-  RegisterInvite,
   Share,
   NewStatus,
   IntentionalError,
@@ -173,7 +171,6 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
   // Ex: use /login instead of /auth, but redirect /auth to /login
   return (
     <Switch>
-      <WrappedRoute path='/login/external' page={EmptyPage} component={ExternalLogin} content={children} publicRoute exact />
       <WrappedRoute path='/email-confirmation' page={EmptyPage} component={EmailConfirmation} publicRoute exact />
       <WrappedRoute path='/logout' page={EmptyPage} component={LogoutPage} publicRoute exact />
 
@@ -289,8 +286,6 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />
       <WrappedRoute path='/statuses/:statusId' exact component={Status} content={children} />
       {features.scheduledStatuses && <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />}
-
-      <WrappedRoute path='/invite/:token' page={DefaultPage} component={RegisterInvite} content={children} publicRoute />
 
       <WrappedRoute path='/settings/profile' page={DefaultPage} component={EditProfile} content={children} />
       <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} />

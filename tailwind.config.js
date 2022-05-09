@@ -41,11 +41,9 @@ module.exports = {
         success: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900],
         danger: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900],
         accent: [300, 500],
-        'gradient-purple': true,
-        'gradient-blue': true,
+        'gradient-start': true,
+        'gradient-end': true,
         'sea-blue': true,
-        'bg-shape-1': true,
-        'bg-shape-2': true,
       }),
       animation: {
         'sonar-scale-4': 'sonar-scale-4 3s linear infinite',

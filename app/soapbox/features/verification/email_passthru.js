@@ -31,7 +31,7 @@ const Success = () => {
 
   return (
     <Stack space={4} alignItems='center'>
-      <Icon src={require('@tabler/icons/icons/circle-check.svg')} className='text-primary-600 h-10 w-10' />
+      <Icon src={require('@tabler/icons/icons/circle-check.svg')} className='text-primary-600 dark:text-primary-400 h-10 w-10' />
       <Text size='3xl' weight='semibold' align='center'>
         {intl.formatMessage(messages.emailConfirmedHeading)}
       </Text>

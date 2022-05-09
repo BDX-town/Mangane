@@ -25,7 +25,7 @@ const useButtonStyles = ({
     accent: 'border-transparent text-white bg-accent-500 hover:bg-accent-300 focus:ring-pink-500 focus:ring-2 focus:ring-offset-2',
     danger: 'border-transparent text-danger-700 bg-danger-100 hover:bg-danger-200 focus:ring-danger-500 focus:ring-2 focus:ring-offset-2',
     transparent: 'border-transparent text-gray-800 backdrop-blur-sm bg-white/75 hover:bg-white/80',
-    link: 'border-transparent text-primary-600 hover:bg-gray-100 hover:text-primary-700',
+    link: 'border-transparent text-primary-600 dark:text-primary-400 hover:bg-gray-100 hover:text-primary-700 dark:hover:bg-slate-900/50',
   };
 
   const sizes = {
