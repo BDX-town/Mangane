@@ -20,44 +20,45 @@ const AuthLayout = () => {
   const siteTitle = useAppSelector(state => state.instance.title);
 
   return (
-    <div>
+    <div className='h-full'>
       <LandingGradient />
 
-      <main className='relative flex flex-col h-screen'>
-        <header className='py-10 flex justify-center relative'>
-          <Link to='/' className='cursor-pointer'>
-            {logo ? (
-              <img src={logo} alt={siteTitle} className='h-7' />
-            ) : (
-              <SvgIcon
-                className='w-7 h-7 dark:text-white'
-                alt={siteTitle}
-                src={require('@tabler/icons/icons/home.svg')}
-              />
-            )}
-          </Link>
-        </header>
+      <main className='relative min-h-full sm:flex sm:items-center sm:justify-center py-12'>
+        <div className='w-full sm:max-w-lg md:max-w-2xl space-y-8'>
+          <header className='flex justify-center relative'>
+            <Link to='/' className='cursor-pointer'>
+              {logo ? (
+                <img src={logo} alt={siteTitle} className='h-7' />
+              ) : (
+                <SvgIcon
+                  className='w-7 h-7 dark:text-white'
+                  alt={siteTitle}
+                  src={require('@tabler/icons/icons/home.svg')}
+                />
+              )}
+            </Link>
+          </header>
 
-        <div className='flex flex-col justify-center items-center'>
-          <div className='pb-10 sm:mx-auto w-full sm:max-w-lg md:max-w-2xl'>
-            <Card variant='rounded' size='xl'>
-              <CardBody>
-                <Switch>
-                  <Route exact path='/verify' component={Verification} />
-                  <Route exact path='/verify/email/:token' component={EmailPassthru} />
-                  <Route exact path='/login' component={LoginPage} />
-                  <Route exact path='/signup' component={RegistrationForm} />
-                  <Route exact path='/reset-password' component={PasswordReset} />
-                  <Route exact path='/edit-password' component={PasswordResetConfirm} />
+          <div className='flex flex-col justify-center items-center'>
+            <div className='sm:mx-auto w-full sm:max-w-lg md:max-w-2xl'>
+              <Card variant='rounded' size='xl'>
+                <CardBody>
+                  <Switch>
+                    <Route exact path='/verify' component={Verification} />
+                    <Route exact path='/verify/email/:token' component={EmailPassthru} />
+                    <Route exact path='/login' component={LoginPage} />
+                    <Route exact path='/signup' component={RegistrationForm} />
+                    <Route exact path='/reset-password' component={PasswordReset} />
+                    <Route exact path='/edit-password' component={PasswordResetConfirm} />
 
-                  <Redirect from='/auth/password/new' to='/reset-password' />
-                  <Redirect from='/auth/password/edit' to='/edit-password' />
-                </Switch>
-              </CardBody>
-            </Card>
+                    <Redirect from='/auth/password/new' to='/reset-password' />
+                    <Redirect from='/auth/password/edit' to='/edit-password' />
+                  </Switch>
+                </CardBody>
+              </Card>
+            </div>
           </div>
         </div>
-
       </main>
 
       <BundleContainer fetchComponent={NotificationsContainer}>
