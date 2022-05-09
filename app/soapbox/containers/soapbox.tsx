@@ -185,13 +185,14 @@ const SoapboxMount = () => {
                 <Route exact path='/about/:slug?' component={PublicLayout} />
                 <Route exact path='/beta/:slug?' component={PublicLayout} />
                 <Route exact path='/mobile/:slug?' component={PublicLayout} />
-                <Route exact path='/login' component={AuthLayout} />
+                <Route path='/login' component={AuthLayout} />
                 {(features.accountCreation && instance.registrations) && (
                   <Route exact path='/signup' component={AuthLayout} />
                 )}
                 <Route path='/verify' component={AuthLayout} />
                 <Route path='/reset-password' component={AuthLayout} />
                 <Route path='/edit-password' component={AuthLayout} />
+                <Route path='/invite/:token' component={AuthLayout} />
 
                 <Route path='/' component={UI} />
               </Switch>
