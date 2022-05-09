@@ -1,11 +1,12 @@
-import { fromJS } from 'immutable';
 import React from 'react';
+
+import { normalizeAccount } from 'soapbox/normalizers';
 
 import { render, screen } from '../../jest/test-helpers';
 import Avatar from '../avatar';
 
 describe('<Avatar />', () => {
-  const account = fromJS({
+  const account = normalizeAccount({
     username: 'alice',
     acct: 'alice',
     display_name: 'Alice',
