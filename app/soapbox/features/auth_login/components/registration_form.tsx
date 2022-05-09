@@ -18,8 +18,10 @@ import { useAppSelector, useAppDispatch, useSettings, useFeatures } from 'soapbo
 const messages = defineMessages({
   username: { id: 'registration.fields.username_placeholder', defaultMessage: 'Username' },
   username_hint: { id: 'registration.fields.username_hint', defaultMessage: 'Only letters, numbers, and underscores are allowed.' },
+  usernameUnavailable: { id: 'registration.username_unavailable', defaultMessage: 'Username is already taken.' },
   email: { id: 'registration.fields.email_placeholder', defaultMessage: 'E-Mail address' },
   password: { id: 'registration.fields.password_placeholder', defaultMessage: 'Password' },
+  passwordMismatch: { id: 'registration.password_mismatch', defaultMessage: "Passwords don't match." },
   confirm: { id: 'registration.fields.confirm_placeholder', defaultMessage: 'Password (again)' },
   agreement: { id: 'registration.agreement', defaultMessage: 'I agree to the {tos}.' },
   tos: { id: 'registration.tos', defaultMessage: 'Terms of Service' },
@@ -228,13 +230,10 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
   return (
     <Form onSubmit={onSubmit} data-testid='registrations-open'>
       <fieldset disabled={isLoading} className='space-y-3'>
-        {usernameUnavailable && (
-          <Text size='sm' theme='danger'>
-            <FormattedMessage id='registration.username_unavailable' defaultMessage='Username is already taken.' />
-          </Text>
-        )}
-
-        <FormGroup hintText={intl.formatMessage(messages.username_hint)}>
+        <FormGroup
+          hintText={intl.formatMessage(messages.username_hint)}
+          errors={usernameUnavailable ? [intl.formatMessage(messages.usernameUnavailable)] : undefined}
+        >
           <Input
             type='text'
             name='username'
@@ -262,12 +261,6 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
           required
         />
 
-        {passwordMismatch && (
-          <div className='error'>
-            <FormattedMessage id='registration.password_mismatch' defaultMessage="Passwords don't match." />
-          </div>
-        )}
-
         <Input
           type='password'
           name='password'
@@ -277,23 +270,25 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
           autoCapitalize='off'
           onChange={onPasswordChange}
           value={params.get('password', '')}
-          hasError={passwordMismatch === true}
           required
         />
 
-        <Input
-          type='password'
-          name='password_confirmation'
-          placeholder={intl.formatMessage(messages.confirm)}
-          autoComplete='off'
-          autoCorrect='off'
-          autoCapitalize='off'
-          onChange={onPasswordConfirmChange}
-          onBlur={onPasswordConfirmBlur}
-          value={passwordConfirmation}
-          hasError={passwordMismatch === true}
-          required
-        />
+        <FormGroup
+          errors={passwordMismatch ? [intl.formatMessage(messages.passwordMismatch)] : undefined}
+        >
+          <Input
+            type='password'
+            name='password_confirmation'
+            placeholder={intl.formatMessage(messages.confirm)}
+            autoComplete='off'
+            autoCorrect='off'
+            autoCapitalize='off'
+            onChange={onPasswordConfirmChange}
+            onBlur={onPasswordConfirmBlur}
+            value={passwordConfirmation}
+            required
+          />
+        </FormGroup>
 
         {birthdayRequired && (
           <BirthdayInput
