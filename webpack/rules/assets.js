@@ -66,7 +66,10 @@ module.exports = [{
 }, {
   test: /\.svg$/,
   type: 'asset/resource',
-  include: resolve('node_modules', '@tabler'),
+  include: [
+    resolve('node_modules', '@tabler'),
+    resolve('custom', 'modules', '@tabler'),
+  ],
   generator: {
     filename: 'packs/icons/[name]-[contenthash:8][ext]',
   },
