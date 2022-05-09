@@ -10,7 +10,7 @@ import { accountLookup } from 'soapbox/actions/accounts';
 import { register, verifyCredentials } from 'soapbox/actions/auth';
 import { openModal } from 'soapbox/actions/modals';
 import BirthdayInput from 'soapbox/components/birthday_input';
-import { Checkbox, Form, FormGroup, FormActions, Button, Input, Textarea, Text } from 'soapbox/components/ui';
+import { Checkbox, Form, FormGroup, FormActions, Button, Input, Textarea } from 'soapbox/components/ui';
 import CaptchaField from 'soapbox/features/auth_login/components/captcha';
 import { useAppSelector, useAppDispatch, useSettings, useFeatures } from 'soapbox/hooks';
 
@@ -20,7 +20,7 @@ const messages = defineMessages({
   usernameUnavailable: { id: 'registration.username_unavailable', defaultMessage: 'Username is already taken.' },
   email: { id: 'registration.fields.email_placeholder', defaultMessage: 'E-Mail address' },
   password: { id: 'registration.fields.password_placeholder', defaultMessage: 'Password' },
-  passwordMismatch: { id: 'registration.password_mismatch', defaultMessage: "Passwords don't match." },
+  passwordMismatch: { id: 'registration.password_mismatch', defaultMessage: 'Passwords don\'t match.' },
   confirm: { id: 'registration.fields.confirm_placeholder', defaultMessage: 'Password (again)' },
   agreement: { id: 'registration.agreement', defaultMessage: 'I agree to the {tos}.' },
   tos: { id: 'registration.tos', defaultMessage: 'Terms of Service' },
