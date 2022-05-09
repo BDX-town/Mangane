@@ -13,7 +13,7 @@ type Tags = 'abbr' | 'p' | 'span' | 'pre' | 'time' | 'h1' | 'h2' | 'h3' | 'h4' |
 const themes = {
   default: 'text-gray-900 dark:text-gray-100',
   danger: 'text-danger-600',
-  primary: 'text-primary-600',
+  primary: 'text-primary-600 dark:text-primary-400',
   muted: 'text-gray-500 dark:text-gray-400',
   subtle: 'text-gray-400 dark:text-gray-500',
   success: 'text-success-600',

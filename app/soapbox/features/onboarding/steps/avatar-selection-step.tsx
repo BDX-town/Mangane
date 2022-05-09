@@ -73,7 +73,7 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
     <Card variant='rounded' size='xl'>
       <CardBody>
         <div>
-          <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 border-solid -mx-4 sm:-mx-10'>
+          <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-slate-900/50 border-solid -mx-4 sm:-mx-10'>
             <Stack space={2}>
               <Text size='2xl' align='center' weight='bold'>
                 <FormattedMessage id='onboarding.avatar.title' defaultMessage='Choose a profile picture' />
@@ -102,7 +102,7 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
                   onClick={openFilePicker}
                   type='button'
                   className={classNames({
-                    'absolute bottom-3 right-2 p-1 bg-primary-600 rounded-full ring-2 ring-white hover:bg-primary-700': true,
+                    'absolute bottom-3 right-2 p-1 bg-primary-600 rounded-full ring-2 ring-white dark:ring-slate-800 hover:bg-primary-700': true,
                     'opacity-50 pointer-events-none': isSubmitting,
                   })}
                   disabled={isSubmitting}
