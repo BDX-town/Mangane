@@ -771,7 +771,7 @@
   }
 
   a {
-    @apply text-primary-600 no-underline hover:underline;
+    @apply text-primary-600 dark:text-primary-400 no-underline hover:underline;
   }
 }
 

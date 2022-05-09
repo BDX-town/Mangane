@@ -120,7 +120,7 @@ const ReasonStep = (_props: IReasonStep) => {
                       value={rule.id}
                       checked={isSelected}
                       readOnly
-                      className='h-4 w-4 cursor-pointer text-primary-600 border-gray-300 rounded focus:ring-primary-500'
+                      className='h-4 w-4 cursor-pointer text-primary-600 dark:text-primary-400 border-gray-300 rounded focus:ring-primary-500'
                     />
                   </button>
                 );

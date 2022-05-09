@@ -193,7 +193,7 @@
   }
 
   .button.button-secondary {
-    @apply h-auto py-1.5 px-2.5 text-primary-600 border-primary-600;
+    @apply h-auto py-1.5 px-2.5 text-primary-600 dark:text-primary-400 border-primary-600;
   }
 
   li {

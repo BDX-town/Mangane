@@ -204,7 +204,7 @@ const Notification: React.FC<INotificaton> = (props) => {
       return (
         <Icon
           src={icons[type]}
-          className='text-primary-600 flex-none'
+          className='text-primary-600 dark:text-primary-400 flex-none'
         />
       );
     } else {
