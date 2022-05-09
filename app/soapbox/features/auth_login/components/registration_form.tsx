@@ -10,9 +10,8 @@ import { accountLookup } from 'soapbox/actions/accounts';
 import { register, verifyCredentials } from 'soapbox/actions/auth';
 import { openModal } from 'soapbox/actions/modals';
 import BirthdayInput from 'soapbox/components/birthday_input';
-import { Form, FormGroup, FormActions, Button, Input, Textarea, Text } from 'soapbox/components/ui';
+import { Checkbox, Form, FormGroup, FormActions, Button, Input, Textarea, Text } from 'soapbox/components/ui';
 import CaptchaField from 'soapbox/features/auth_login/components/captcha';
-import { Checkbox } from 'soapbox/features/forms';
 import { useAppSelector, useAppDispatch, useSettings, useFeatures } from 'soapbox/hooks';
 
 const messages = defineMessages({
@@ -323,24 +322,26 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
           value={params.get('captcha_solution', '')}
         />
 
-        <div className='simple_form space-y-3'>
+        <FormGroup
+          labelText={intl.formatMessage(messages.agreement, { tos: <Link to='/about/tos' target='_blank' key={0}>{intl.formatMessage(messages.tos)}</Link> })}
+        >
           <Checkbox
-            label={intl.formatMessage(messages.agreement, { tos: <Link to='/about/tos' target='_blank' key={0}>{intl.formatMessage(messages.tos)}</Link> })}
             name='agreement'
             onChange={onCheckboxChange}
             checked={params.get('agreement', false)}
             required
           />
+        </FormGroup>
 
-          {supportsEmailList && (
+        {supportsEmailList && (
+          <FormGroup labelText={intl.formatMessage(messages.newsletter)}>
             <Checkbox
-              label={intl.formatMessage(messages.newsletter)}
               name='accepts_email_list'
               onChange={onCheckboxChange}
               checked={params.get('accepts_email_list', false)}
             />
-          )}
-        </div>
+          </FormGroup>
+        )}
 
         <FormActions>
           <Button type='submit'>
