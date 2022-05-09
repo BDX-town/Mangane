@@ -46,7 +46,7 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
             </label>
           )}
 
-          {errors?.length > 0 && (
+          {hasError && (
             <div>
               <p
                 data-testid='form-group-error'
