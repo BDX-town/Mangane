@@ -1,6 +1,6 @@
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
-import {  FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import Icon from '../../../components/icon';
@@ -286,10 +286,11 @@ const Notification: React.FC<INotificaton> = (props) => {
             <HStack alignItems='center' space={1.5}>
               {renderIcon()}
 
-              <div>
+              <div className='truncate'>
                 <Text
                   theme='muted'
                   size='sm'
+                  truncate
                 >
                   {message}
                 </Text>
