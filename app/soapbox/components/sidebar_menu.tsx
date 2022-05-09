@@ -32,6 +32,7 @@ const messages = defineMessages({
   soapboxConfig: { id: 'navigation_bar.soapbox_config', defaultMessage: 'Soapbox config' },
   importData: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
   accountMigration: { id: 'navigation_bar.account_migration', defaultMessage: 'Move account' },
+  accountAliases: { id: 'navigation_bar.account_aliases', defaultMessage: 'Account aliases' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
@@ -322,14 +323,21 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   />
                 )}
 
-                {(features.federating && features.accountMoving) && (
+                {features.federating && (features.accountMoving ? (
                   <SidebarLink
                     to='/settings/migration'
                     icon={require('@tabler/icons/icons/briefcase.svg')}
                     text={intl.formatMessage(messages.accountMigration)}
                     onClick={onClose}
                   />
-                )}
+                ) : features.accountAliasesAPI && (
+                  <SidebarLink
+                    to='/settings/aliases'
+                    icon={require('@tabler/icons/icons/briefcase.svg')}
+                    text={intl.formatMessage(messages.accountAliases)}
+                    onClick={onClose}
+                  />
+                ))}
 
                 <hr />
 
