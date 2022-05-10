@@ -4,7 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { Button } from 'soapbox/components/ui';
 import { Modal } from 'soapbox/components/ui';
-import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 
 const messages = defineMessages({
   download: { id: 'landing_page_modal.download', defaultMessage: 'Download' },
@@ -20,9 +20,11 @@ interface ILandingPageModal {
 const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
   const intl = useIntl();
 
-  const { logo } = useSoapboxConfig();
+  const soapboxConfig = useSoapboxConfig();
+  const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
+
+  const { logo } = soapboxConfig;
   const instance = useAppSelector((state) => state.instance);
-  const features = useFeatures();
 
   const isOpen   = instance.get('registrations', false) === true;
   const pepeOpen = useAppSelector(state => state.verification.getIn(['instance', 'registrations'], false) === true);
@@ -43,8 +45,8 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
             {intl.formatMessage(messages.login)}
           </Button>
 
-          {(isOpen || features.pepe && pepeOpen) && (
-            <Button to={features.pepe ? '/verify' : '/signup'} theme='primary' block>
+          {(isOpen || pepeEnabled && pepeOpen) && (
+            <Button to={pepeEnabled ? '/verify' : '/signup'} theme='primary' block>
               {intl.formatMessage(messages.register)}
             </Button>
           )}

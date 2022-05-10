@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
-import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 
 import { openModal } from '../../../actions/modals';
 import { Button, Form, HStack, IconButton, Input, Tooltip } from '../../../components/ui';
@@ -27,8 +27,10 @@ const Header = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const { logo } = useSoapboxConfig();
-  const features = useFeatures();
+  const soapboxConfig = useSoapboxConfig();
+  const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
+
+  const { logo } = soapboxConfig;
   const instance = useAppSelector((state) => state.instance);
   const isOpen   = instance.get('registrations', false) === true;
   const pepeOpen = useAppSelector(state => state.verification.getIn(['instance', 'registrations'], false) === true);
@@ -94,9 +96,9 @@ const Header = () => {
                   {intl.formatMessage(messages.login)}
                 </Button>
 
-                {(isOpen || features.pepe && pepeOpen) && (
+                {(isOpen || pepeEnabled && pepeOpen) && (
                   <Button
-                    to={features.pepe ? '/verify' : '/signup'}
+                    to={pepeEnabled ? '/verify' : '/signup'}
                     theme='primary'
                   >
                     {intl.formatMessage(messages.register)}

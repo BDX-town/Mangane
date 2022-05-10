@@ -10,7 +10,7 @@ import { ScrollContext } from 'react-router-scroll-4';
 
 import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
-import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
+import { loadSoapboxConfig, getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchVerificationConfig } from 'soapbox/actions/verification';
 import * as BuildConfig from 'soapbox/build_config';
 import Helmet from 'soapbox/components/helmet';
@@ -22,7 +22,6 @@ import WaitlistPage from 'soapbox/features/verification/waitlist_page';
 import { createGlobals } from 'soapbox/globals';
 import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures, useSoapboxConfig, useSettings } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
-import { getFeatures } from 'soapbox/utils/features';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
 import { checkOnboardingStatus } from '../actions/onboarding';
@@ -51,19 +50,16 @@ const loadInitial = () => {
     await dispatch(fetchMe());
     // Await for feature detection
     await dispatch(loadInstance());
-
-    const promises = [];
-
-    promises.push(dispatch(loadSoapboxConfig()));
+    // Await for configuration
+    await dispatch(loadSoapboxConfig());
 
     const state = getState();
-    const features = getFeatures(state.instance);
+    const soapboxConfig = getSoapboxConfig(state);
+    const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
 
-    if (features.pepe && !state.me) {
-      promises.push(dispatch(fetchVerificationConfig()));
+    if (pepeEnabled && !state.me) {
+      await dispatch(fetchVerificationConfig());
     }
-
-    await Promise.all(promises);
   };
 };
 
