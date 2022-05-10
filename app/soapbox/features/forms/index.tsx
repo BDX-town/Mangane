@@ -167,6 +167,7 @@ interface ICheckbox {
   hint?: React.ReactNode,
   name?: string,
   checked?: boolean,
+  disabled?: boolean,
   onChange?: React.ChangeEventHandler<HTMLInputElement>,
   required?: boolean,
 }
