@@ -343,7 +343,11 @@ export function PromoPanel() {
 }
 
 export function SignUpPanel() {
-  return import(/* webpackChunkName: "features/ui" */'../components/sign_up_panel');
+  return import(/* webpackChunkName: "features/ui" */'../components/panels/sign-up-panel');
+}
+
+export function CtaBanner() {
+  return import(/* webpackChunkName: "features/ui" */'../components/cta-banner');
 }
 
 export function FundingPanel() {

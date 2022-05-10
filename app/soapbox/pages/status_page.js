@@ -7,6 +7,7 @@ import {
   WhoToFollowPanel,
   TrendsPanel,
   SignUpPanel,
+  CtaBanner,
 } from 'soapbox/features/ui/util/async-components';
 // import GroupSidebarPanel from '../features/groups/sidebar_panel';
 import { getFeatures } from 'soapbox/utils/features';
@@ -35,6 +36,12 @@ class StatusPage extends ImmutablePureComponent {
       <>
         <Layout.Main>
           {children}
+
+          {!me && (
+            <BundleContainer fetchComponent={CtaBanner}>
+              {Component => <Component key='cta-banner' />}
+            </BundleContainer>
+          )}
         </Layout.Main>
 
         <Layout.Aside>

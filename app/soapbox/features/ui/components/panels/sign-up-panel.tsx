@@ -18,7 +18,7 @@ const SignUpPanel = () => {
           <FormattedMessage id='signup_panel.title' defaultMessage='New to {site_title}?' values={{ site_title: siteTitle }} />
         </Text>
 
-        <Text theme='muted'>
+        <Text theme='muted' size='sm'>
           <FormattedMessage id='signup_panel.subtitle' defaultMessage='Sign up now to discuss.' />
         </Text>
       </Stack>

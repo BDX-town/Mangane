@@ -10,6 +10,7 @@ import {
   FundingPanel,
   CryptoDonatePanel,
   BirthdayPanel,
+  CtaBanner,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useOwnAccount, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
@@ -56,6 +57,12 @@ const HomePage: React.FC = ({ children }) => {
         )}
 
         {children}
+
+        {!me && (
+          <BundleContainer fetchComponent={CtaBanner}>
+            {Component => <Component key='cta-banner' />}
+          </BundleContainer>
+        )}
       </Layout.Main>
 
       <Layout.Aside>

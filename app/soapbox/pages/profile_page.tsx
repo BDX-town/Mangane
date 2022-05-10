@@ -10,6 +10,7 @@ import {
   ProfileMediaPanel,
   ProfileFieldsPanel,
   SignUpPanel,
+  CtaBanner,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 import { findAccountByUsername } from 'soapbox/selectors';
@@ -134,6 +135,12 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
             {children}
           </div>
         </Column>
+
+        {!me && (
+          <BundleContainer fetchComponent={CtaBanner}>
+            {Component => <Component key='cta-banner' />}
+          </BundleContainer>
+        )}
       </Layout.Main>
 
       <Layout.Aside>
