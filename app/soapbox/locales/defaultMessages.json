@@ -6599,7 +6599,7 @@
         "id": "account.register"
       }
     ],
-    "path": "app/soapbox/features/ui/components/sign_up_panel.json"
+    "path": "app/soapbox/features/ui/components/panels/sign-up-panel.json"
   },
   {
     "descriptors": [
