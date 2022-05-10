@@ -13,13 +13,15 @@ import { federationRestrictionsDisclosed } from 'soapbox/utils/state';
 import { Layout } from '../components/ui';
 
 interface IRemoteInstancePage {
-  params: {
-    instance: string,
+  params?: {
+    instance?: string,
   },
 }
 
 /** Page for viewing a remote instance timeline. */
-const RemoteInstancePage: React.FC<IRemoteInstancePage> = ({ children, params: { instance: host } }) => {
+const RemoteInstancePage: React.FC<IRemoteInstancePage> = ({ children, params }) => {
+  const host = params?.instance;
+
   const account = useOwnAccount();
   const disclosed = useAppSelector(federationRestrictionsDisclosed);
 
