@@ -41,14 +41,12 @@ class PublicLayout extends ImmutablePureComponent {
           <div className='flex-shrink-0'>
             <Header />
 
-            <div className='public-layout__top'>
-              <div className='container'>
-                <Switch>
-                  <Route exact path='/' component={LandingPage} />
-                  <Route exact path='/about/:slug?' component={AboutPage} />
-                  <Route exact path='/mobile/:slug?' component={MobilePage} />
-                </Switch>
-              </div>
+            <div className='relative'>
+              <Switch>
+                <Route exact path='/' component={LandingPage} />
+                <Route exact path='/about/:slug?' component={AboutPage} />
+                <Route exact path='/mobile/:slug?' component={MobilePage} />
+              </Switch>
             </div>
           </div>
 

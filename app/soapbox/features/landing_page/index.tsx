@@ -68,13 +68,14 @@ const LandingPage = () => {
   return (
     <main className='mt-16 sm:mt-24' data-testid='homepage'>
       <div className='mx-auto max-w-7xl'>
-        <div className='lg:grid lg:grid-cols-12 lg:gap-8 py-12'>
+        <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 py-12'>
           <div className='px-4 sm:px-6 sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left lg:flex'>
             <div>
               <Stack space={3}>
                 <h1 className='text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-accent-500 via-primary-500 to-gradient-end sm:mt-5 sm:leading-none lg:mt-6 lg:text-6xl xl:text-7xl'>
                   {instance.title}
                 </h1>
+
                 <Text size='lg'>
                   {instance.description}
                 </Text>
