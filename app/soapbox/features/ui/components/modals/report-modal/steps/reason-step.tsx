@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
@@ -36,6 +36,9 @@ const ReasonStep = (_props: IReasonStep) => {
   const ruleIds = useAppSelector((state) => state.reports.getIn(['new', 'rule_ids']) as ImmutableSet<string>);
   const shouldRequireRule = rules.length > 0;
 
+  const selectedStatusIds = useAppSelector((state) => state.reports.getIn(['new', 'status_ids']) as ImmutableSet<string>);
+  const isReportingAccount = useMemo(() => selectedStatusIds.size === 0, []);
+
   const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     dispatch(changeReportComment(event.target.value));
   };
@@ -56,6 +59,16 @@ const ReasonStep = (_props: IReasonStep) => {
         setNearTop(false);
       }
     }
+  };
+
+  const filterRuleType = (rule: any) => {
+    const ruleTypeToFilter = isReportingAccount ? 'account' : 'content';
+
+    if (rule.rule_type) {
+      return rule.rule_type === ruleTypeToFilter;
+    }
+
+    return true;
   };
 
   useEffect(() => {
@@ -87,7 +100,7 @@ const ReasonStep = (_props: IReasonStep) => {
               onScroll={handleRulesScrolling}
               ref={rulesListRef}
             >
-              {rules.map((rule, idx) => {
+              {rules.filter(filterRuleType).map((rule, idx) => {
                 const isSelected = ruleIds.includes(String(rule.id));
 
                 return (

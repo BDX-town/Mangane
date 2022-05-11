@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { blockAccount } from 'soapbox/actions/accounts';
-import { submitReport, cancelReport, submitReportSuccess, submitReportFail } from 'soapbox/actions/reports';
+import { submitReport, submitReportSuccess, submitReportFail } from 'soapbox/actions/reports';
 import { expandAccountTimeline } from 'soapbox/actions/timelines';
 import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
 import StatusContent from 'soapbox/components/status_content';
@@ -87,6 +87,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
   const ruleIds = useAppSelector((state) => state.reports.getIn(['new', 'rule_ids']) as ImmutableSet<string>);
   const selectedStatusIds = useAppSelector((state) => state.reports.getIn(['new', 'status_ids']) as ImmutableSet<string>);
 
+  const isReportingAccount = useMemo(() => selectedStatusIds.size === 0, []);
   const shouldRequireRule = rules.length > 0;
 
   const [currentStep, setCurrentStep] = useState<Steps>(Steps.ONE);
@@ -99,11 +100,6 @@ const ReportModal = ({ onClose }: IReportModal) => {
     if (isBlocked && account) {
       dispatch(blockAccount(account.id));
     }
-  };
-
-  const handleClose = () => {
-    dispatch(cancelReport());
-    onClose();
   };
 
   const handleNextStep = () => {
@@ -152,8 +148,8 @@ const ReportModal = ({ onClose }: IReportModal) => {
       return false;
     }
 
-    return isSubmitting || (shouldRequireRule && ruleIds.isEmpty()) || selectedStatusIds.size === 0;
-  }, [currentStep, isSubmitting, shouldRequireRule, ruleIds, selectedStatusIds.size]);
+    return isSubmitting || (shouldRequireRule && ruleIds.isEmpty()) || (!isReportingAccount && selectedStatusIds.size === 0);
+  }, [currentStep, isSubmitting, shouldRequireRule, ruleIds, selectedStatusIds.size, isReportingAccount]);
 
   const calculateProgress = useCallback(() => {
     switch (currentStep) {
@@ -183,7 +179,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
   return (
     <Modal
       title={<FormattedMessage id='report.target' defaultMessage='Reporting {target}' values={{ target: <strong>@{account.acct}</strong> }} />}
-      onClose={handleClose}
+      onClose={onClose}
       cancelAction={currentStep === Steps.THREE ? undefined : onClose}
       confirmationAction={handleNextStep}
       confirmationText={confirmationText}
@@ -193,7 +189,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
       <Stack space={4}>
         <ProgressBar progress={calculateProgress()} />
 
-        {currentStep !== Steps.THREE && renderSelectedStatuses()}
+        {(currentStep !== Steps.THREE && !isReportingAccount) && renderSelectedStatuses()}
 
         <StepToRender account={account} />
       </Stack>
