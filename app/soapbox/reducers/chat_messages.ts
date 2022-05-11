@@ -37,7 +37,7 @@ const importLastMessages = (state: State, chats: APIEntities) =>
 const initialState: State = ImmutableMap();
 
 export default function chatMessages(state = initialState, action: AnyAction) {
-  switch(action.type) {
+  switch (action.type) {
   case CHAT_MESSAGE_SEND_REQUEST:
     return importMessage(state, fromJS({
       id: action.uuid, // Make fake message to get overriden later

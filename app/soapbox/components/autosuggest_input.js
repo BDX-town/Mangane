@@ -108,7 +108,7 @@ export default class AutosuggestInput extends ImmutablePureComponent {
       return;
     }
 
-    switch(e.key) {
+    switch (e.key) {
     case 'Escape':
       if (suggestions.size === 0 || suggestionsHidden) {
         document.querySelector('.ui').parentElement.focus();

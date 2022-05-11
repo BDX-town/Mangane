@@ -183,7 +183,7 @@ const importMarker = (state, marker) => {
 };
 
 export default function notifications(state = ReducerRecord(), action) {
-  switch(action.type) {
+  switch (action.type) {
   case NOTIFICATIONS_EXPAND_REQUEST:
     return state.set('isLoading', true);
   case NOTIFICATIONS_EXPAND_FAIL:

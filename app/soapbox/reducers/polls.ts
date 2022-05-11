@@ -30,7 +30,7 @@ const importPolls = (state: State, polls: Array<APIEntity>) => {
 const initialState: State = ImmutableMap();
 
 export default function polls(state: State = initialState, action: AnyAction): State {
-  switch(action.type) {
+  switch (action.type) {
   case POLLS_IMPORT:
     return importPolls(state, action.polls);
   default:

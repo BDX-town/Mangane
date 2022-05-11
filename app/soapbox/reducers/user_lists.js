@@ -82,7 +82,7 @@ const normalizeFollowRequest = (state, notification) => {
 };
 
 export default function userLists(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case FOLLOWERS_FETCH_SUCCESS:
     return normalizeList(state, 'followers', action.id, action.accounts, action.next);
   case FOLLOWERS_EXPAND_SUCCESS:

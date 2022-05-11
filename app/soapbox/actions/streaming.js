@@ -51,7 +51,7 @@ export function connectTimelineStream(timelineId, path, pollingRefresh = null, a
       },
 
       onReceive(data) {
-        switch(data.event) {
+        switch (data.event) {
         case 'update':
           dispatch(processTimelineUpdate(timelineId, JSON.parse(data.payload), accept));
           break;

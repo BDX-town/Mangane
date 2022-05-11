@@ -40,7 +40,7 @@ const deleteAlert = (state: State, alert: PlainAlert): State => {
 };
 
 export default function alerts(state: State = ImmutableList<Alert>(), action: AnyAction): State {
-  switch(action.type) {
+  switch (action.type) {
   case ALERT_SHOW:
     return importAlert(state, action);
   case ALERT_DISMISS:

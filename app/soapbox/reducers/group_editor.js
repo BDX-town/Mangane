@@ -22,7 +22,7 @@ const initialState = ImmutableMap({
 });
 
 export default function groupEditorReducer(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case GROUP_EDITOR_RESET:
     return initialState;
   case GROUP_EDITOR_SETUP:

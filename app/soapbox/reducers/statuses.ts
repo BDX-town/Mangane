@@ -194,7 +194,7 @@ const simulateFavourite = (
 const initialState: State = ImmutableMap();
 
 export default function statuses(state = initialState, action: AnyAction): State {
-  switch(action.type) {
+  switch (action.type) {
   case STATUS_IMPORT:
     return importStatus(state, action.status, action.expandSpoilers);
   case STATUSES_IMPORT:

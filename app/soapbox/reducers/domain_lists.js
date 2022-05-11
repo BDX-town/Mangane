@@ -13,7 +13,7 @@ const initialState = ImmutableMap({
 });
 
 export default function domainLists(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case DOMAIN_BLOCKS_FETCH_SUCCESS:
     return state.setIn(['blocks', 'items'], ImmutableOrderedSet(action.domains)).setIn(['blocks', 'next'], action.next);
   case DOMAIN_BLOCKS_EXPAND_SUCCESS:

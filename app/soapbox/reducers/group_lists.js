@@ -13,7 +13,7 @@ const normalizeList = (state, type, id, groups) => {
 };
 
 export default function groupLists(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case GROUPS_FETCH_SUCCESS:
     return normalizeList(state, action.tab, action.id, action.groups);
   default:

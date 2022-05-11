@@ -141,7 +141,7 @@ const deletePendingStatus = (state, { in_reply_to_id }, idempotencyKey) => {
 };
 
 export default function replies(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case ACCOUNT_BLOCK_SUCCESS:
   case ACCOUNT_MUTE_SUCCESS:
     return filterContexts(state, action.relationship, action.statuses);

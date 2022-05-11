@@ -17,7 +17,7 @@ const initialState = ImmutableMap({
 });
 
 export default function push_subscriptions(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case SET_SUBSCRIPTION:
     return state
       .set('subscription', new ImmutableMap({

@@ -20,7 +20,7 @@ const UploadArea: React.FC<IUploadArea> = ({ active, onClose }) => {
     const keyCode = e.keyCode;
 
     if (active) {
-      switch(keyCode) {
+      switch (keyCode) {
       case 27:
         e.preventDefault();
         e.stopPropagation();

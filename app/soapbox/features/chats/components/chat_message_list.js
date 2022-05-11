@@ -314,11 +314,11 @@ class ChatMessageList extends ImmutablePureComponent {
     return (
       <div className='chat-messages' ref={this.setRef}>
         {chatMessages.reduce((acc, curr, idx) => {
-          const lastMessage = chatMessages.get(idx-1);
+          const lastMessage = chatMessages.get(idx - 1);
 
           if (lastMessage) {
             const key = `${curr.get('id')}_divider`;
-            switch(timeChange(lastMessage, curr)) {
+            switch (timeChange(lastMessage, curr)) {
             case 'today':
               acc.push(this.renderDivider(key, intl.formatMessage(messages.today)));
               break;

@@ -38,7 +38,7 @@ const disableMfa = (state, method) => {
 };
 
 export default function security(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case FETCH_TOKENS_SUCCESS:
     return state.set('tokens', fromJS(action.tokens));
   case REVOKE_TOKEN_SUCCESS:

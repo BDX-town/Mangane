@@ -152,7 +152,7 @@ const logOut = (state: any = StateRecord()): ReturnType<typeof appReducer> => {
 };
 
 const rootReducer: typeof appReducer = (state, action) => {
-  switch(action.type) {
+  switch (action.type) {
   case AUTH_LOGGED_OUT:
     return appReducer(logOut(state), action);
   default:

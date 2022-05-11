@@ -95,25 +95,25 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
     const index = items.indexOf(document.activeElement as any);
     let element = null;
 
-    switch(e.key) {
+    switch (e.key) {
     case 'ArrowDown':
-      element = items[index+1] || items[0];
+      element = items[index + 1] || items[0];
       break;
     case 'ArrowUp':
-      element = items[index-1] || items[items.length-1];
+      element = items[index - 1] || items[items.length - 1];
       break;
     case 'Tab':
       if (e.shiftKey) {
-        element = items[index-1] || items[items.length-1];
+        element = items[index - 1] || items[items.length - 1];
       } else {
-        element = items[index+1] || items[0];
+        element = items[index + 1] || items[0];
       }
       break;
     case 'Home':
       element = items[0];
       break;
     case 'End':
-      element = items[items.length-1];
+      element = items[items.length - 1];
       break;
     case 'Escape':
       this.props.onClose();
@@ -312,7 +312,7 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
   }
 
   handleButtonKeyDown: React.EventHandler<React.KeyboardEvent> = (e) => {
-    switch(e.key) {
+    switch (e.key) {
     case ' ':
     case 'Enter':
       this.handleMouseDown(e);
@@ -321,7 +321,7 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
   }
 
   handleKeyPress: React.EventHandler<React.KeyboardEvent<HTMLButtonElement>> = (e) => {
-    switch(e.key) {
+    switch (e.key) {
     case ' ':
     case 'Enter':
       this.handleClick(e);

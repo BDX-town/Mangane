@@ -233,7 +233,7 @@ const timelineDisconnect = (state, timelineId) => {
 };
 
 const getTimelinesByVisibility = visibility => {
-  switch(visibility) {
+  switch (visibility) {
   case 'direct':
     return ['direct'];
   case 'public':
@@ -299,7 +299,7 @@ const handleExpandFail = (state, timelineId) => {
 };
 
 export default function timelines(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case STATUS_CREATE_REQUEST:
     if (action.params.scheduled_at) return state;
     return importPendingStatus(state, action.params, action.idempotencyKey);

@@ -9,7 +9,7 @@ import {
 const initialState = ImmutableMap();
 
 export default function identityProofsReducer(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case IDENTITY_PROOFS_ACCOUNT_FETCH_REQUEST:
     return state.set('isLoading', true);
   case IDENTITY_PROOFS_ACCOUNT_FETCH_FAIL:

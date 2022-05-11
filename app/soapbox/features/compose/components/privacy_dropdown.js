@@ -55,7 +55,7 @@ class PrivacyDropdownMenu extends React.PureComponent {
     });
     let element = null;
 
-    switch(e.key) {
+    switch (e.key) {
     case 'Escape':
       this.props.onClose();
       break;
@@ -211,7 +211,7 @@ class PrivacyDropdown extends React.PureComponent {
   }
 
   handleKeyDown = e => {
-    switch(e.key) {
+    switch (e.key) {
     case 'Escape':
       this.handleClose();
       break;
@@ -225,7 +225,7 @@ class PrivacyDropdown extends React.PureComponent {
   }
 
   handleButtonKeyDown = (e) => {
-    switch(e.key) {
+    switch (e.key) {
     case ' ':
     case 'Enter':
       this.handleMouseDown();

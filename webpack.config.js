@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const { NODE_ENV } = process.env;
 
-switch(NODE_ENV) {
+switch (NODE_ENV) {
 case 'development':
 case 'production':
 case 'test':

@@ -290,7 +290,7 @@ class Video extends React.PureComponent {
   handleKeyDown = e => {
     const frameTime = 1 / 25;
 
-    switch(e.key) {
+    switch (e.key) {
     case 'k':
       e.preventDefault();
       e.stopPropagation();
@@ -505,7 +505,7 @@ class Video extends React.PureComponent {
 
     if (inline && containerWidth) {
       width = containerWidth;
-      const minSize = containerWidth / (16/9);
+      const minSize = containerWidth / (16 / 9);
 
       if (isPanoramic(aspectRatio)) {
         height = Math.max(Math.floor(containerWidth / maximumAspectRatio), minSize);

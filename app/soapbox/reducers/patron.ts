@@ -39,7 +39,7 @@ const normalizePatronAccount = (state: State, account: Record<string, any>) => {
 };
 
 export default function patron(state = ReducerRecord(), action: AnyAction) {
-  switch(action.type) {
+  switch (action.type) {
   case PATRON_INSTANCE_FETCH_SUCCESS:
     return state.set('instance', PatronInstanceRecord(ImmutableMap(fromJS(action.instance))));
   case PATRON_ACCOUNT_FETCH_SUCCESS:

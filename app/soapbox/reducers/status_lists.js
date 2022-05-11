@@ -97,7 +97,7 @@ const removeOneFromList = (state, listType, status) => {
 };
 
 export default function statusLists(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case FAVOURITED_STATUSES_FETCH_REQUEST:
   case FAVOURITED_STATUSES_EXPAND_REQUEST:
     return setLoading(state, 'favourites', true);

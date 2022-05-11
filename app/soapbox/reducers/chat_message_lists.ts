@@ -51,7 +51,7 @@ const replaceMessage = (state: State, chatId: string, oldId: string, newId: stri
 };
 
 export default function chatMessageLists(state = initialState, action: AnyAction) {
-  switch(action.type) {
+  switch (action.type) {
   case CHAT_MESSAGE_SEND_REQUEST:
     return updateList(state, action.chatId, [action.uuid]);
   case CHATS_FETCH_SUCCESS:

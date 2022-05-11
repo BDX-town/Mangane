@@ -22,7 +22,7 @@ const deleteStatus = (state, id) => state.delete(id);
 const initialState = ImmutableMap();
 
 export default function scheduled_statuses(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case STATUS_IMPORT:
   case STATUS_CREATE_SUCCESS:
     return importStatus(state, action.status);

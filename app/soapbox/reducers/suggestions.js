@@ -49,7 +49,7 @@ const dismissAccounts = (state, accountIds) => {
 };
 
 export default function suggestionsReducer(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case SUGGESTIONS_FETCH_REQUEST:
   case SUGGESTIONS_V2_FETCH_REQUEST:
     return state.set('isLoading', true);

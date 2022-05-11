@@ -36,7 +36,7 @@ const updateFollowCounters = (state, counterUpdates) => {
 const initialState = ImmutableMap();
 
 export default function accountsCounters(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case ACCOUNT_IMPORT:
     return normalizeAccount(state, action.account);
   case ACCOUNTS_IMPORT:

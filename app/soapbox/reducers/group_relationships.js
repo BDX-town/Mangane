@@ -15,7 +15,7 @@ const normalizeRelationships = (state, relationships) => {
 const initialState = ImmutableMap();
 
 export default function group_relationships(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case GROUP_JOIN_SUCCESS:
   case GROUP_LEAVE_SUCCESS:
     return normalizeRelationship(state, action.relationship);

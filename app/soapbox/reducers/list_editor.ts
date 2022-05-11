@@ -46,7 +46,7 @@ const ReducerRecord = ImmutableRecord({
 type State = ReturnType<typeof ReducerRecord>;
 
 export default function listEditorReducer(state: State = ReducerRecord(), action: AnyAction) {
-  switch(action.type) {
+  switch (action.type) {
   case LIST_EDITOR_RESET:
     return ReducerRecord();
   case LIST_EDITOR_SETUP:

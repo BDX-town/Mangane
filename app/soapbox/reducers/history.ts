@@ -16,7 +16,7 @@ type State = ImmutableMap<string, ReturnType<typeof HistoryRecord>>;
 const initialState: State = ImmutableMap();
 
 export default function history(state: State = initialState, action: AnyAction) {
-  switch(action.type) {
+  switch (action.type) {
   case HISTORY_FETCH_REQUEST:
     return state.update(action.statusId, HistoryRecord(), history => history!.withMutations(map => {
       map.set('loading', true);

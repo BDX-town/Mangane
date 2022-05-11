@@ -30,7 +30,7 @@ const CaptchaField: React.FC<ICaptchaField> = ({
   onFetch = noOp,
   onFetchFail = noOp,
   onClick = noOp,
-  refreshInterval = 5*60*1000, // 5 minutes, Pleroma default
+  refreshInterval = 5 * 60 * 1000, // 5 minutes, Pleroma default
   idempotencyKey,
 }) => {
   const dispatch = useAppDispatch();
@@ -71,7 +71,7 @@ const CaptchaField: React.FC<ICaptchaField> = ({
     };
   }, [idempotencyKey]);
 
-  switch(captcha.get('type')) {
+  switch (captcha.get('type')) {
   case 'native':
     return (
       <div>

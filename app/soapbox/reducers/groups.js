@@ -20,7 +20,7 @@ const normalizeGroups = (state, groups) => {
 };
 
 export default function groups(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case GROUP_FETCH_SUCCESS:
   case GROUP_UPDATE_SUCCESS:
     return normalizeGroup(state, action.group);

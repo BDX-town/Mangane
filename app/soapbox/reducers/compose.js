@@ -283,7 +283,7 @@ const updateSetting = (state, path, value) => {
 };
 
 export default function compose(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case COMPOSE_MOUNT:
     return state.set('mounted', state.get('mounted') + 1);
   case COMPOSE_UNMOUNT:

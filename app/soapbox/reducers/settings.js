@@ -29,7 +29,7 @@ const importSettings = (state, account) => {
 };
 
 export default function settings(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case ME_FETCH_SUCCESS:
     return importSettings(state, action.me);
   case NOTIFICATIONS_FILTER_SET:

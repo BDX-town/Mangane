@@ -85,7 +85,7 @@ class Audio extends React.PureComponent {
 
   _setDimensions() {
     const width  = this.player.offsetWidth;
-    const height = this.props.fullscreen ? this.player.offsetHeight : (width / (16/9));
+    const height = this.props.fullscreen ? this.player.offsetHeight : (width / (16 / 9));
 
     if (this.props.cacheWidth) {
       this.props.cacheWidth(width);
@@ -412,7 +412,7 @@ class Audio extends React.PureComponent {
   }
 
   handleKeyDown = e => {
-    switch(e.key) {
+    switch (e.key) {
     case 'k':
       e.preventDefault();
       e.stopPropagation();

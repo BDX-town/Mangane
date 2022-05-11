@@ -12,7 +12,7 @@ const initialState = ImmutableMap({
 });
 
 export default function trendsReducer(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case TRENDS_FETCH_REQUEST:
     return state.set('isLoading', true);
   case TRENDS_FETCH_SUCCESS:

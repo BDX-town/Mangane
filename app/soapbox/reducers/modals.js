@@ -5,7 +5,7 @@ import { MODAL_OPEN, MODAL_CLOSE } from '../actions/modals';
 const initialState = ImmutableList();
 
 export default function modal(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case MODAL_OPEN:
     return state.push({ modalType: action.modalType, modalProps: action.modalProps });
   case MODAL_CLOSE:

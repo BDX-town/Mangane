@@ -132,7 +132,7 @@ class ChatBox extends ImmutablePureComponent {
 
   onUploadProgress = (e) => {
     const { loaded, total } = e;
-    this.setState({ uploadProgress: loaded/total });
+    this.setState({ uploadProgress: loaded / total });
   }
 
   handleFiles = (files) => {
@@ -193,7 +193,7 @@ class ChatBox extends ImmutablePureComponent {
       <div className='chat-box' onMouseOver={this.handleHover}>
         <ChatMessageList chatMessageIds={chatMessageIds} chatId={chatId} />
         {this.renderAttachment()}
-        <UploadProgress active={isUploading} progress={uploadProgress*100} />
+        <UploadProgress active={isUploading} progress={uploadProgress * 100} />
         <div className='chat-box__actions simple_form'>
           <div className='chat-box__send'>
             {this.renderActionButton()}

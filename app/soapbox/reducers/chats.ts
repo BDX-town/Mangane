@@ -55,7 +55,7 @@ const importChats = (state: State, chats: APIEntities, next?: string) =>
   });
 
 export default function chats(state: State = ReducerRecord(), action: AnyAction): State {
-  switch(action.type) {
+  switch (action.type) {
   case CHATS_FETCH_REQUEST:
   case CHATS_EXPAND_REQUEST:
     return state.set('isLoading', true);

@@ -20,7 +20,7 @@ const initialState = ImmutableMap({
 });
 
 export default function aliasesReducer(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case ALIASES_FETCH_SUCCESS:
     return state
       .setIn(['aliases', 'items'], action.value);

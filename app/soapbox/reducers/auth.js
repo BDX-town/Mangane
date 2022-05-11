@@ -282,7 +282,7 @@ const deleteForbiddenToken = (state, error, token) => {
 };
 
 const reducer = (state, action) => {
-  switch(action.type) {
+  switch (action.type) {
   case AUTH_APP_CREATED:
     return state.set('app', fromJS(action.app));
   case AUTH_APP_AUTHORIZED:

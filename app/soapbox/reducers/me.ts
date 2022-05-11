@@ -25,7 +25,7 @@ const handleForbidden = (state: Me, error: AxiosError) => {
 };
 
 export default function me(state: Me = initialState, action: AnyAction): Me {
-  switch(action.type) {
+  switch (action.type) {
   case ME_FETCH_SUCCESS:
   case ME_PATCH_SUCCESS:
     return action.me.id;

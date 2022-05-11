@@ -52,7 +52,7 @@ const importSoapboxConfig = (state, soapboxConfig, host) => {
 };
 
 export default function soapbox(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case PLEROMA_PRELOAD_IMPORT:
     return preloadImport(state, action);
   case SOAPBOX_CONFIG_REMEMBER_SUCCESS:

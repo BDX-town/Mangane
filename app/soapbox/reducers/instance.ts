@@ -111,7 +111,7 @@ const handleInstanceFetchFail = (state: typeof initialState, error: Record<strin
 };
 
 export default function instance(state = initialState, action: AnyAction) {
-  switch(action.type) {
+  switch (action.type) {
   case PLEROMA_PRELOAD_IMPORT:
     return preloadImport(state, action, '/api/v1/instance');
   case rememberInstance.fulfilled.type:

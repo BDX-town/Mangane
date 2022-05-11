@@ -93,7 +93,7 @@ const addTags = (
       );
 
       tags.forEach(tag => {
-        switch(tag) {
+        switch (tag) {
         case 'verified':
           state.setIn([id, 'verified'], true);
           break;
@@ -118,7 +118,7 @@ const removeTags = (
       );
 
       tags.forEach(tag => {
-        switch(tag) {
+        switch (tag) {
         case 'verified':
           state.setIn([id, 'verified'], false);
           break;
@@ -243,7 +243,7 @@ const setSuggested = (state: State, accountIds: Array<string>, isSuggested: bool
 };
 
 export default function accounts(state: State = initialState, action: AnyAction): State {
-  switch(action.type) {
+  switch (action.type) {
   case ACCOUNT_IMPORT:
     return fixAccount(state, action.account);
   case ACCOUNTS_IMPORT:

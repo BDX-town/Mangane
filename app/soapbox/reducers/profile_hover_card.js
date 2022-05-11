@@ -9,7 +9,7 @@ import {
 const initialState = ImmutableMap();
 
 export default function profileHoverCard(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case PROFILE_HOVER_CARD_OPEN:
     return ImmutableMap({
       ref: action.ref,

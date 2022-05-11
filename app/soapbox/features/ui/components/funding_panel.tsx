@@ -22,7 +22,7 @@ const moneyFormat = (amount: number): string => (
       currency: 'usd',
       notation: 'compact',
     })
-    .format(amount/100)
+    .format(amount / 100)
 );
 
 const FundingPanel: React.FC = () => {
@@ -59,7 +59,7 @@ const FundingPanel: React.FC = () => {
       <div className='funding-panel__ratio'>
         <Text>{ratioText}</Text>
       </div>
-      <ProgressBar progress={amount/goal} />
+      <ProgressBar progress={amount / goal} />
       <div className='funding-panel__description'>
         <Text>{goalText}</Text>
       </div>

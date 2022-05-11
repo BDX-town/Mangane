@@ -8,8 +8,8 @@ const truncateFilename = (url: string, maxLength: number) => {
   if (filename.length <= maxLength) return filename;
 
   return [
-    filename.substr(0, maxLength/2),
-    filename.substr(filename.length - maxLength/2),
+    filename.substr(0, maxLength / 2),
+    filename.substr(filename.length - maxLength / 2),
   ].join('…');
 };
 

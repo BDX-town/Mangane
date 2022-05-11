@@ -3,7 +3,7 @@
  * @module soapbox/utils/state
  */
 
-import { getSoapboxConfig } from'soapbox/actions/soapbox';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import * as BuildConfig from 'soapbox/build_config';
 import { isPrerendered } from 'soapbox/precheck';
 import { isURL } from 'soapbox/utils/auth';

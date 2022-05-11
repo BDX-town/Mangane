@@ -64,7 +64,7 @@ const importPleromaAccounts = (state, accounts) => {
 };
 
 const followStateToRelationship = followState => {
-  switch(followState) {
+  switch (followState) {
   case 'follow_pending':
     return { following: false, requested: true };
   case 'follow_accept':
@@ -84,7 +84,7 @@ const updateFollowRelationship = (state, id, followState) => {
 const initialState = ImmutableMap();
 
 export default function relationships(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case ACCOUNT_IMPORT:
     return importPleromaAccount(state, action.account);
   case ACCOUNTS_IMPORT:

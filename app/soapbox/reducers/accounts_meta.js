@@ -20,7 +20,7 @@ const importAccount = (state, account) => {
 };
 
 export default function accounts_meta(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case ME_FETCH_SUCCESS:
   case ME_PATCH_SUCCESS:
     return importAccount(state, fromJS(action.me));

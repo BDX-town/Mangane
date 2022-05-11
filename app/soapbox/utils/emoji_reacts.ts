@@ -70,17 +70,17 @@ export const oneEmojiPerAccount = (emojiReacts: ImmutableList<EmojiReact>, me: M
     .reverse();
 };
 
-export const filterEmoji = (emojiReacts: ImmutableList<EmojiReact>, allowedEmoji=ALLOWED_EMOJI): ImmutableList<EmojiReact> => (
+export const filterEmoji = (emojiReacts: ImmutableList<EmojiReact>, allowedEmoji = ALLOWED_EMOJI): ImmutableList<EmojiReact> => (
   emojiReacts.filter(emojiReact => (
     allowedEmoji.includes(emojiReact.get('name'))
   )));
 
-export const reduceEmoji = (emojiReacts: ImmutableList<EmojiReact>, favouritesCount: number, favourited: boolean, allowedEmoji=ALLOWED_EMOJI): ImmutableList<EmojiReact> => (
+export const reduceEmoji = (emojiReacts: ImmutableList<EmojiReact>, favouritesCount: number, favourited: boolean, allowedEmoji = ALLOWED_EMOJI): ImmutableList<EmojiReact> => (
   filterEmoji(sortEmoji(mergeEmoji(mergeEmojiFavourites(
     emojiReacts, favouritesCount, favourited,
   ))), allowedEmoji));
 
-export const getReactForStatus = (status: any, allowedEmoji=ALLOWED_EMOJI): string | undefined => {
+export const getReactForStatus = (status: any, allowedEmoji = ALLOWED_EMOJI): string | undefined => {
   const result = reduceEmoji(
     status.getIn(['pleroma', 'emoji_reactions'], ImmutableList()),
     status.get('favourites_count', 0),

@@ -26,7 +26,7 @@ const initialState = ImmutableMap({
 });
 
 export default function reports(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case REPORT_INIT:
     return state.withMutations(map => {
       map.setIn(['new', 'isSubmitting'], false);

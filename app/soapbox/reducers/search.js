@@ -77,7 +77,7 @@ const handleSubmitted = (state, value) => {
 };
 
 export default function search(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
   case SEARCH_CHANGE:
     return state.set('value', action.value);
   case SEARCH_CLEAR:
