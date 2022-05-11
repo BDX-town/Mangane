@@ -104,7 +104,7 @@ const Header = () => {
 
                 {(isOpen || pepeEnabled && pepeOpen) && (
                   <Button
-                    to={pepeEnabled ? '/verify' : '/signup'}
+                    to='/signup'
                     theme='primary'
                   >
                     {intl.formatMessage(messages.register)}

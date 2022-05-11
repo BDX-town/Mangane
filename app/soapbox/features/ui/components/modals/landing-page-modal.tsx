@@ -47,7 +47,7 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
           </Button>
 
           {(isOpen || pepeEnabled && pepeOpen) && (
-            <Button to={pepeEnabled ? '/verify' : '/signup'} theme='primary' block>
+            <Button to='/signup' theme='primary' block>
               {intl.formatMessage(messages.register)}
             </Button>
           )}
