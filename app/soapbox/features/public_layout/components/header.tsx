@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -27,10 +28,10 @@ const Header = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const { logo } = useSoapboxConfig();
+  const { logo, logoDarkMode } = useSoapboxConfig();
   const features = useFeatures();
   const instance = useAppSelector((state) => state.instance);
-  const isOpen   = instance.get('registrations', false) === true;
+  const isOpen = instance.get('registrations', false) === true;
   const pepeOpen = useAppSelector(state => state.verification.getIn(['instance', 'registrations'], false) === true);
 
   const [isLoading, setLoading] = React.useState(false);
@@ -76,7 +77,11 @@ const Header = () => {
               <Sonar />
             </div>
             <Link to='/' className='z-10'>
-              <img alt='Logo' src={logo} className='h-6 w-auto cursor-pointer' />
+              <img alt='Logo' src={logo} className={classNames('h-6 w-auto cursor-pointer', { 'dark:hidden': logoDarkMode })} />
+              {logoDarkMode && (
+                <img alt='Logo' src={logoDarkMode} className='h-6 w-auto cursor-pointer hidden dark:block' />
+              )}
+
               <span className='hidden'>{intl.formatMessage(messages.home)}</span>
             </Link>
           </div>

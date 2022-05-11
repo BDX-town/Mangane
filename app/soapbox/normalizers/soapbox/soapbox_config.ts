@@ -110,7 +110,6 @@ export const SoapboxConfigRecord = ImmutableRecord({
     limit: 1,
   }),
   aboutPages: ImmutableMap(),
-  betaPages: ImmutableMap(),
   mobilePages: ImmutableMap(),
   authenticatedProfile: true,
   singleUserMode: false,
