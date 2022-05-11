@@ -35,8 +35,7 @@ const SidebarNavigation = () => {
           to: '/follow_requests',
           text: <FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' />,
           icon: require('@tabler/icons/icons/user-plus.svg'),
-          // TODO: let menu items have a counter
-          // count: followRequestsCount,
+          count: followRequestsCount,
         });
       }
 
@@ -158,7 +157,7 @@ const SidebarNavigation = () => {
 
             <SidebarNavigationLink
               to='/notifications'
-              icon={require('icons/alert.svg')}
+              icon={require('@tabler/icons/icons/bell.svg')}
               count={notificationCount}
               text={<FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />}
             />
