@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import LandingPage from '..';
 import { rememberInstance } from '../../../actions/instance';
+import { SOAPBOX_CONFIG_REMEMBER_SUCCESS } from '../../../actions/soapbox';
 import { PEPE_FETCH_INSTANCE_SUCCESS } from '../../../actions/verification';
 import { render, screen, rootReducer, applyActions } from '../../../jest/test-helpers';
 
@@ -40,13 +41,16 @@ describe('<LandingPage />', () => {
     expect(screen.queryByTestId('registrations-pepe')).not.toBeInTheDocument();
   });
 
-  it('renders Pepe flow for an open Truth Social instance', () => {
+  it('renders Pepe flow if Pepe extension is enabled', () => {
 
     const state = applyActions(undefined, [{
-      type: rememberInstance.fulfilled.type,
-      payload: {
-        version: '3.4.1 (compatible; TruthSocial 1.0.0)',
-        registrations: false,
+      type: SOAPBOX_CONFIG_REMEMBER_SUCCESS,
+      soapboxConfig: {
+        extensions: {
+          pepe: {
+            enabled: true,
+          },
+        },
       },
     }, {
       type: PEPE_FETCH_INSTANCE_SUCCESS,
