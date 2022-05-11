@@ -56,21 +56,21 @@ const importChats = (state: State, chats: APIEntities, next?: string) =>
 
 export default function chats(state: State = ReducerRecord(), action: AnyAction): State {
   switch (action.type) {
-  case CHATS_FETCH_REQUEST:
-  case CHATS_EXPAND_REQUEST:
-    return state.set('isLoading', true);
-  case CHATS_FETCH_SUCCESS:
-  case CHATS_EXPAND_SUCCESS:
-    return importChats(state, action.chats, action.next);
-  case STREAMING_CHAT_UPDATE:
-    return importChats(state, [action.chat]);
-  case CHAT_FETCH_SUCCESS:
-    return importChats(state, [action.chat]);
-  case CHAT_READ_REQUEST:
-    return state.setIn([action.chatId, 'unread'], 0);
-  case CHAT_READ_SUCCESS:
-    return importChats(state, [action.chat]);
-  default:
-    return state;
+    case CHATS_FETCH_REQUEST:
+    case CHATS_EXPAND_REQUEST:
+      return state.set('isLoading', true);
+    case CHATS_FETCH_SUCCESS:
+    case CHATS_EXPAND_SUCCESS:
+      return importChats(state, action.chats, action.next);
+    case STREAMING_CHAT_UPDATE:
+      return importChats(state, [action.chat]);
+    case CHAT_FETCH_SUCCESS:
+      return importChats(state, [action.chat]);
+    case CHAT_READ_REQUEST:
+      return state.setIn([action.chatId, 'unread'], 0);
+    case CHAT_READ_SUCCESS:
+      return importChats(state, [action.chat]);
+    default:
+      return state;
   }
 }

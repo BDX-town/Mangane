@@ -108,42 +108,42 @@ const ReportModal = ({ onClose }: IReportModal) => {
 
   const handleNextStep = () => {
     switch (currentStep) {
-    case Steps.ONE:
-      setCurrentStep(Steps.TWO);
-      break;
-    case Steps.TWO:
-      handleSubmit();
-      break;
-    case Steps.THREE:
-      dispatch(submitReportSuccess());
-      onClose();
-      break;
-    default:
-      break;
+      case Steps.ONE:
+        setCurrentStep(Steps.TWO);
+        break;
+      case Steps.TWO:
+        handleSubmit();
+        break;
+      case Steps.THREE:
+        dispatch(submitReportSuccess());
+        onClose();
+        break;
+      default:
+        break;
     }
   };
 
   const renderSelectedStatuses = useCallback(() => {
     switch (selectedStatusIds.size) {
-    case 0:
-      return (
-        <div className='bg-gray-100 dark:bg-slate-700 p-4 rounded-lg flex items-center justify-center w-full'>
-          <Text theme='muted'>{intl.formatMessage(messages.blankslate)}</Text>
-        </div>
-      );
-    default:
-      return <SelectedStatus statusId={selectedStatusIds.first()} />;
+      case 0:
+        return (
+          <div className='bg-gray-100 dark:bg-slate-700 p-4 rounded-lg flex items-center justify-center w-full'>
+            <Text theme='muted'>{intl.formatMessage(messages.blankslate)}</Text>
+          </div>
+        );
+      default:
+        return <SelectedStatus statusId={selectedStatusIds.first()} />;
     }
   }, [selectedStatusIds.size]);
 
   const confirmationText = useMemo(() => {
     switch (currentStep) {
-    case Steps.TWO:
-      return intl.formatMessage(messages.submit);
-    case Steps.THREE:
-      return intl.formatMessage(messages.done);
-    default:
-      return intl.formatMessage(messages.next);
+      case Steps.TWO:
+        return intl.formatMessage(messages.submit);
+      case Steps.THREE:
+        return intl.formatMessage(messages.done);
+      default:
+        return intl.formatMessage(messages.next);
     }
   }, [currentStep]);
 
@@ -157,14 +157,14 @@ const ReportModal = ({ onClose }: IReportModal) => {
 
   const calculateProgress = useCallback(() => {
     switch (currentStep) {
-    case Steps.ONE:
-      return 0.33;
-    case Steps.TWO:
-      return 0.66;
-    case Steps.THREE:
-      return 1;
-    default:
-      return 0;
+      case Steps.ONE:
+        return 0.33;
+      case Steps.TWO:
+        return 0.66;
+      case Steps.THREE:
+        return 1;
+      default:
+        return 0;
     }
   }, [currentStep]);
 

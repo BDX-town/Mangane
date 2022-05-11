@@ -21,24 +21,24 @@ const initialState = ImmutableMap({
 
 export default function aliasesReducer(state = initialState, action) {
   switch (action.type) {
-  case ALIASES_FETCH_SUCCESS:
-    return state
-      .setIn(['aliases', 'items'], action.value);
-  case ALIASES_SUGGESTIONS_CHANGE:
-    return state
-      .setIn(['suggestions', 'value'], action.value)
-      .setIn(['suggestions', 'loaded'], false);
-  case ALIASES_SUGGESTIONS_READY:
-    return state
-      .setIn(['suggestions', 'items'], ImmutableList(action.accounts.map(item => item.id)))
-      .setIn(['suggestions', 'loaded'], true);
-  case ALIASES_SUGGESTIONS_CLEAR:
-    return state.update('suggestions', suggestions => suggestions.withMutations(map => {
-      map.set('items', ImmutableList());
-      map.set('value', '');
-      map.set('loaded', false);
-    }));
-  default:
-    return state;
+    case ALIASES_FETCH_SUCCESS:
+      return state
+        .setIn(['aliases', 'items'], action.value);
+    case ALIASES_SUGGESTIONS_CHANGE:
+      return state
+        .setIn(['suggestions', 'value'], action.value)
+        .setIn(['suggestions', 'loaded'], false);
+    case ALIASES_SUGGESTIONS_READY:
+      return state
+        .setIn(['suggestions', 'items'], ImmutableList(action.accounts.map(item => item.id)))
+        .setIn(['suggestions', 'loaded'], true);
+    case ALIASES_SUGGESTIONS_CLEAR:
+      return state.update('suggestions', suggestions => suggestions.withMutations(map => {
+        map.set('items', ImmutableList());
+        map.set('value', '');
+        map.set('loaded', false);
+      }));
+    default:
+      return state;
   }
 }

@@ -413,26 +413,26 @@ class Audio extends React.PureComponent {
 
   handleKeyDown = e => {
     switch (e.key) {
-    case 'k':
-      e.preventDefault();
-      e.stopPropagation();
-      this.togglePlay();
-      break;
-    case 'm':
-      e.preventDefault();
-      e.stopPropagation();
-      this.toggleMute();
-      break;
-    case 'j':
-      e.preventDefault();
-      e.stopPropagation();
-      this.seekBy(-10);
-      break;
-    case 'l':
-      e.preventDefault();
-      e.stopPropagation();
-      this.seekBy(10);
-      break;
+      case 'k':
+        e.preventDefault();
+        e.stopPropagation();
+        this.togglePlay();
+        break;
+      case 'm':
+        e.preventDefault();
+        e.stopPropagation();
+        this.toggleMute();
+        break;
+      case 'j':
+        e.preventDefault();
+        e.stopPropagation();
+        this.seekBy(-10);
+        break;
+      case 'l':
+        e.preventDefault();
+        e.stopPropagation();
+        this.seekBy(10);
+        break;
     }
   }
 

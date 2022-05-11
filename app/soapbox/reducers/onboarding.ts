@@ -12,11 +12,11 @@ const initialState: OnboardingState = {
 
 export default function onboarding(state: OnboardingState = initialState, action: OnboardingActions): OnboardingState {
   switch (action.type) {
-  case ONBOARDING_START:
-    return { ...state, needsOnboarding: true };
-  case ONBOARDING_END:
-    return { ...state, needsOnboarding: false };
-  default:
-    return state;
+    case ONBOARDING_START:
+      return { ...state, needsOnboarding: true };
+    case ONBOARDING_END:
+      return { ...state, needsOnboarding: false };
+    default:
+      return state;
   }
 }

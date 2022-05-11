@@ -319,12 +319,12 @@ class ChatMessageList extends ImmutablePureComponent {
           if (lastMessage) {
             const key = `${curr.get('id')}_divider`;
             switch (timeChange(lastMessage, curr)) {
-            case 'today':
-              acc.push(this.renderDivider(key, intl.formatMessage(messages.today)));
-              break;
-            case 'date':
-              acc.push(this.renderDivider(key, new Date(curr.get('created_at')).toDateString()));
-              break;
+              case 'today':
+                acc.push(this.renderDivider(key, intl.formatMessage(messages.today)));
+                break;
+              case 'date':
+                acc.push(this.renderDivider(key, new Date(curr.get('created_at')).toDateString()));
+                break;
             }
           }
 

@@ -115,24 +115,24 @@ const EmailPassThru = ({ match }) => {
 
           if (errorKey) {
             switch (errorKey) {
-            case 'token_expired':
-              message = intl.formatMessage({
-                id: 'email_passthru.fail.expired',
-                defaultMessage: 'Your email token has expired.',
-              });
-              setStatus(Statuses.TOKEN_EXPIRED);
-              break;
-            case 'token_not_found':
-              message = intl.formatMessage({
-                id: 'email_passthru.fail.not_found',
-                defaultMessage: 'Your email token is invalid.',
-              });
-              message = 'Your token is invalid';
-              setStatus(Statuses.TOKEN_NOT_FOUND);
-              break;
-            default:
-              setStatus(Statuses.GENERIC_FAIL);
-              break;
+              case 'token_expired':
+                message = intl.formatMessage({
+                  id: 'email_passthru.fail.expired',
+                  defaultMessage: 'Your email token has expired.',
+                });
+                setStatus(Statuses.TOKEN_EXPIRED);
+                break;
+              case 'token_not_found':
+                message = intl.formatMessage({
+                  id: 'email_passthru.fail.not_found',
+                  defaultMessage: 'Your email token is invalid.',
+                });
+                message = 'Your token is invalid';
+                setStatus(Statuses.TOKEN_NOT_FOUND);
+                break;
+              default:
+                setStatus(Statuses.GENERIC_FAIL);
+                break;
             }
           }
 
@@ -142,16 +142,16 @@ const EmailPassThru = ({ match }) => {
   }, [token]);
 
   switch (status) {
-  case Statuses.SUCCESS:
-    return <Success />;
-  case Statuses.TOKEN_EXPIRED:
-    return <TokenExpired />;
-  case Statuses.TOKEN_NOT_FOUND:
-    return <TokenNotFound />;
-  case Statuses.GENERIC_FAIL:
-    return <GenericFail />;
-  default:
-    return <Spinner />;
+    case Statuses.SUCCESS:
+      return <Success />;
+    case Statuses.TOKEN_EXPIRED:
+      return <TokenExpired />;
+    case Statuses.TOKEN_NOT_FOUND:
+      return <TokenNotFound />;
+    case Statuses.GENERIC_FAIL:
+      return <GenericFail />;
+    default:
+      return <Spinner />;
   }
 };
 

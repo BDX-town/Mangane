@@ -21,11 +21,11 @@ const importStatuses = (state, statuses) => {
 
 export default function trending_statuses(state = initialState, action) {
   switch (action.type) {
-  case TRENDING_STATUSES_FETCH_REQUEST:
-    return state.set('isLoading', true);
-  case TRENDING_STATUSES_FETCH_SUCCESS:
-    return importStatuses(state, action.statuses);
-  default:
-    return state;
+    case TRENDING_STATUSES_FETCH_REQUEST:
+      return state.set('isLoading', true);
+    case TRENDING_STATUSES_FETCH_SUCCESS:
+      return importStatuses(state, action.statuses);
+    default:
+      return state;
   }
 }

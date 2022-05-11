@@ -26,18 +26,18 @@ const handleForbidden = (state: Me, error: AxiosError) => {
 
 export default function me(state: Me = initialState, action: AnyAction): Me {
   switch (action.type) {
-  case ME_FETCH_SUCCESS:
-  case ME_PATCH_SUCCESS:
-    return action.me.id;
-  case VERIFY_CREDENTIALS_SUCCESS:
-  case AUTH_ACCOUNT_REMEMBER_SUCCESS:
-    return state || action.account.id;
-  case ME_FETCH_SKIP:
-  case AUTH_LOGGED_OUT:
-    return false;
-  case ME_FETCH_FAIL:
-    return handleForbidden(state, action.error);
-  default:
-    return state;
+    case ME_FETCH_SUCCESS:
+    case ME_PATCH_SUCCESS:
+      return action.me.id;
+    case VERIFY_CREDENTIALS_SUCCESS:
+    case AUTH_ACCOUNT_REMEMBER_SUCCESS:
+      return state || action.account.id;
+    case ME_FETCH_SKIP:
+    case AUTH_LOGGED_OUT:
+      return false;
+    case ME_FETCH_FAIL:
+      return handleForbidden(state, action.error);
+    default:
+      return state;
   }
 }

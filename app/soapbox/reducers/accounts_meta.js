@@ -21,13 +21,13 @@ const importAccount = (state, account) => {
 
 export default function accounts_meta(state = initialState, action) {
   switch (action.type) {
-  case ME_FETCH_SUCCESS:
-  case ME_PATCH_SUCCESS:
-    return importAccount(state, fromJS(action.me));
-  case VERIFY_CREDENTIALS_SUCCESS:
-  case AUTH_ACCOUNT_REMEMBER_SUCCESS:
-    return importAccount(state, fromJS(action.account));
-  default:
-    return state;
+    case ME_FETCH_SUCCESS:
+    case ME_PATCH_SUCCESS:
+      return importAccount(state, fromJS(action.me));
+    case VERIFY_CREDENTIALS_SUCCESS:
+    case AUTH_ACCOUNT_REMEMBER_SUCCESS:
+      return importAccount(state, fromJS(action.account));
+    default:
+      return state;
   }
 }

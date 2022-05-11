@@ -31,9 +31,9 @@ const initialState: State = ImmutableMap();
 
 export default function polls(state: State = initialState, action: AnyAction): State {
   switch (action.type) {
-  case POLLS_IMPORT:
-    return importPolls(state, action.polls);
-  default:
-    return state;
+    case POLLS_IMPORT:
+      return importPolls(state, action.polls);
+    default:
+      return state;
   }
 }

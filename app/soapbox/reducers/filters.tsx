@@ -17,9 +17,9 @@ const importFilters = (_state: State, filters: unknown): State => {
 
 export default function filters(state: State = ImmutableList<Filter>(), action: AnyAction): State {
   switch (action.type) {
-  case FILTERS_FETCH_SUCCESS:
-    return importFilters(state, action.filters);
-  default:
-    return state;
+    case FILTERS_FETCH_SUCCESS:
+      return importFilters(state, action.filters);
+    default:
+      return state;
   }
 }

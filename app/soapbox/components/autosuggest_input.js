@@ -109,46 +109,46 @@ export default class AutosuggestInput extends ImmutablePureComponent {
     }
 
     switch (e.key) {
-    case 'Escape':
-      if (suggestions.size === 0 || suggestionsHidden) {
-        document.querySelector('.ui').parentElement.focus();
-      } else {
-        e.preventDefault();
-        this.setState({ suggestionsHidden: true });
-      }
-
-      break;
-    case 'ArrowDown':
-      if (!suggestionsHidden && (suggestions.size > 0 || menu)) {
-        e.preventDefault();
-        this.setState({ selectedSuggestion: Math.min(selectedSuggestion + 1, lastIndex) });
-      }
-
-      break;
-    case 'ArrowUp':
-      if (!suggestionsHidden && (suggestions.size > 0 || menu)) {
-        e.preventDefault();
-        this.setState({ selectedSuggestion: Math.max(selectedSuggestion - 1, firstIndex) });
-      }
-
-      break;
-    case 'Enter':
-    case 'Tab':
-      // Select suggestion
-      if (!suggestionsHidden && selectedSuggestion > -1 && (suggestions.size > 0 || menu)) {
-        e.preventDefault();
-        e.stopPropagation();
-        this.setState({ selectedSuggestion: firstIndex });
-
-        if (selectedSuggestion < suggestions.size) {
-          this.props.onSuggestionSelected(this.state.tokenStart, this.state.lastToken, suggestions.get(selectedSuggestion));
+      case 'Escape':
+        if (suggestions.size === 0 || suggestionsHidden) {
+          document.querySelector('.ui').parentElement.focus();
         } else {
-          const item = menu[selectedSuggestion - suggestions.size];
-          this.handleMenuItemAction(item);
+          e.preventDefault();
+          this.setState({ suggestionsHidden: true });
         }
-      }
 
-      break;
+        break;
+      case 'ArrowDown':
+        if (!suggestionsHidden && (suggestions.size > 0 || menu)) {
+          e.preventDefault();
+          this.setState({ selectedSuggestion: Math.min(selectedSuggestion + 1, lastIndex) });
+        }
+
+        break;
+      case 'ArrowUp':
+        if (!suggestionsHidden && (suggestions.size > 0 || menu)) {
+          e.preventDefault();
+          this.setState({ selectedSuggestion: Math.max(selectedSuggestion - 1, firstIndex) });
+        }
+
+        break;
+      case 'Enter':
+      case 'Tab':
+      // Select suggestion
+        if (!suggestionsHidden && selectedSuggestion > -1 && (suggestions.size > 0 || menu)) {
+          e.preventDefault();
+          e.stopPropagation();
+          this.setState({ selectedSuggestion: firstIndex });
+
+          if (selectedSuggestion < suggestions.size) {
+            this.props.onSuggestionSelected(this.state.tokenStart, this.state.lastToken, suggestions.get(selectedSuggestion));
+          } else {
+            const item = menu[selectedSuggestion - suggestions.size];
+            this.handleMenuItemAction(item);
+          }
+        }
+
+        break;
     }
 
     if (e.defaultPrevented || !this.props.onKeyDown) {

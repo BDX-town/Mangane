@@ -13,16 +13,16 @@ const initialState = ImmutableMap({
 
 export default function trendsReducer(state = initialState, action) {
   switch (action.type) {
-  case TRENDS_FETCH_REQUEST:
-    return state.set('isLoading', true);
-  case TRENDS_FETCH_SUCCESS:
-    return state.withMutations(map => {
-      map.set('items', fromJS(action.tags.map((x => x))));
-      map.set('isLoading', false);
-    });
-  case TRENDS_FETCH_FAIL:
-    return state.set('isLoading', false);
-  default:
-    return state;
+    case TRENDS_FETCH_REQUEST:
+      return state.set('isLoading', true);
+    case TRENDS_FETCH_SUCCESS:
+      return state.withMutations(map => {
+        map.set('items', fromJS(action.tags.map((x => x))));
+        map.set('isLoading', false);
+      });
+    case TRENDS_FETCH_FAIL:
+      return state.set('isLoading', false);
+    default:
+      return state;
   }
 }

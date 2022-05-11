@@ -23,16 +23,16 @@ const initialState = ImmutableMap();
 
 export default function scheduled_statuses(state = initialState, action) {
   switch (action.type) {
-  case STATUS_IMPORT:
-  case STATUS_CREATE_SUCCESS:
-    return importStatus(state, action.status);
-  case STATUSES_IMPORT:
-  case SCHEDULED_STATUSES_FETCH_SUCCESS:
-    return importStatuses(state, action.statuses);
-  case SCHEDULED_STATUS_CANCEL_REQUEST:
-  case SCHEDULED_STATUS_CANCEL_SUCCESS:
-    return deleteStatus(state, action.id);
-  default:
-    return state;
+    case STATUS_IMPORT:
+    case STATUS_CREATE_SUCCESS:
+      return importStatus(state, action.status);
+    case STATUSES_IMPORT:
+    case SCHEDULED_STATUSES_FETCH_SUCCESS:
+      return importStatuses(state, action.statuses);
+    case SCHEDULED_STATUS_CANCEL_REQUEST:
+    case SCHEDULED_STATUS_CANCEL_SUCCESS:
+      return deleteStatus(state, action.id);
+    default:
+      return state;
   }
 }

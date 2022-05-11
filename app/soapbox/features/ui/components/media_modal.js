@@ -58,16 +58,16 @@ class MediaModal extends ImmutablePureComponent {
 
   handleKeyDown = (e) => {
     switch (e.key) {
-    case 'ArrowLeft':
-      this.handlePrevClick();
-      e.preventDefault();
-      e.stopPropagation();
-      break;
-    case 'ArrowRight':
-      this.handleNextClick();
-      e.preventDefault();
-      e.stopPropagation();
-      break;
+      case 'ArrowLeft':
+        this.handlePrevClick();
+        e.preventDefault();
+        e.stopPropagation();
+        break;
+      case 'ArrowRight':
+        this.handleNextClick();
+        e.preventDefault();
+        e.stopPropagation();
+        break;
     }
   }
 

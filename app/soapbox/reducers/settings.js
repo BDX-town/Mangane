@@ -30,21 +30,21 @@ const importSettings = (state, account) => {
 
 export default function settings(state = initialState, action) {
   switch (action.type) {
-  case ME_FETCH_SUCCESS:
-    return importSettings(state, action.me);
-  case NOTIFICATIONS_FILTER_SET:
-  case SEARCH_FILTER_SET:
-  case SETTING_CHANGE:
-    return state
-      .setIn(action.path, action.value)
-      .set('saved', false);
-  case EMOJI_USE:
-    return updateFrequentEmojis(state, action.emoji);
-  case SETTING_SAVE:
-    return state.set('saved', true);
-  case SETTINGS_UPDATE:
-    return fromJS(action.settings);
-  default:
-    return state;
+    case ME_FETCH_SUCCESS:
+      return importSettings(state, action.me);
+    case NOTIFICATIONS_FILTER_SET:
+    case SEARCH_FILTER_SET:
+    case SETTING_CHANGE:
+      return state
+        .setIn(action.path, action.value)
+        .set('saved', false);
+    case EMOJI_USE:
+      return updateFrequentEmojis(state, action.emoji);
+    case SETTING_SAVE:
+      return state.set('saved', true);
+    case SETTINGS_UPDATE:
+      return fromJS(action.settings);
+    default:
+      return state;
   }
 }

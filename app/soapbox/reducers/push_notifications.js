@@ -18,21 +18,21 @@ const initialState = ImmutableMap({
 
 export default function push_subscriptions(state = initialState, action) {
   switch (action.type) {
-  case SET_SUBSCRIPTION:
-    return state
-      .set('subscription', new ImmutableMap({
-        id: action.subscription.id,
-        endpoint: action.subscription.endpoint,
-      }))
-      .set('alerts', new ImmutableMap(action.subscription.alerts))
-      .set('isSubscribed', true);
-  case SET_BROWSER_SUPPORT:
-    return state.set('browserSupport', action.value);
-  case CLEAR_SUBSCRIPTION:
-    return initialState;
-  case SET_ALERTS:
-    return state.setIn(action.path, action.value);
-  default:
-    return state;
+    case SET_SUBSCRIPTION:
+      return state
+        .set('subscription', new ImmutableMap({
+          id: action.subscription.id,
+          endpoint: action.subscription.endpoint,
+        }))
+        .set('alerts', new ImmutableMap(action.subscription.alerts))
+        .set('isSubscribed', true);
+    case SET_BROWSER_SUPPORT:
+      return state.set('browserSupport', action.value);
+    case CLEAR_SUBSCRIPTION:
+      return initialState;
+    case SET_ALERTS:
+      return state.setIn(action.path, action.value);
+    default:
+      return state;
   }
 }

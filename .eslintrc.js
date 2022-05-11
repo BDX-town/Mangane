@@ -72,6 +72,7 @@ module.exports = {
     'dot-notation': 'error',
     eqeqeq: 'error',
     indent: ['error', 2, {
+      SwitchCase: 1, // https://stackoverflow.com/a/53055584/8811886
       ignoredNodes: ['TemplateLiteral'],
     }],
     'jsx-quotes': ['error', 'prefer-single'],

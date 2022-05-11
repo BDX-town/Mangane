@@ -21,11 +21,11 @@ const initialState: RulesState = {
 
 export default function rules(state: RulesState = initialState, action: RulesActions): RulesState {
   switch (action.type) {
-  case RULES_FETCH_REQUEST:
-    return { ...state, isLoading: true };
-  case RULES_FETCH_SUCCESS:
-    return { ...state, isLoading: false, items: action.payload };
-  default:
-    return state;
+    case RULES_FETCH_REQUEST:
+      return { ...state, isLoading: true };
+    case RULES_FETCH_SUCCESS:
+      return { ...state, isLoading: false, items: action.payload };
+    default:
+      return state;
   }
 }
