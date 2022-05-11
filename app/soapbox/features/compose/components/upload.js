@@ -158,7 +158,7 @@ class Upload extends ImmutablePureComponent {
               className={classNames('compose-form__upload-thumbnail',  `${mediaType}`)}
               style={{
                 transform: `scale(${scale})`,
-                backgroundImage: mediaType === 'image' ? `url(${media.get('preview_url')})`: null,
+                backgroundImage: mediaType === 'image' ? `url(${media.get('preview_url')})` : null,
                 backgroundPosition: `${x}% ${y}%` }}
             >
               <div className={classNames('compose-form__upload__actions', { active })}>

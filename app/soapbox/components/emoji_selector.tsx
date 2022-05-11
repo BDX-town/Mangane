@@ -68,22 +68,22 @@ class EmojiSelector extends ImmutablePureComponent<IEmojiSelector> {
     const { onUnfocus } = this.props;
 
     switch (e.key) {
-    case 'Tab':
-      e.preventDefault();
-      if (e.shiftKey) this._selectPreviousEmoji(i);
-      else this._selectNextEmoji(i);
-      break;
-    case 'Left':
-    case 'ArrowLeft':
-      this._selectPreviousEmoji(i);
-      break;
-    case 'Right':
-    case 'ArrowRight':
-      this._selectNextEmoji(i);
-      break;
-    case 'Escape':
-      onUnfocus();
-      break;
+      case 'Tab':
+        e.preventDefault();
+        if (e.shiftKey) this._selectPreviousEmoji(i);
+        else this._selectNextEmoji(i);
+        break;
+      case 'Left':
+      case 'ArrowLeft':
+        this._selectPreviousEmoji(i);
+        break;
+      case 'Right':
+      case 'ArrowRight':
+        this._selectNextEmoji(i);
+        break;
+      case 'Escape':
+        onUnfocus();
+        break;
     }
   }
 

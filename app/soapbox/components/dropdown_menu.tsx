@@ -95,29 +95,29 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
     const index = items.indexOf(document.activeElement as any);
     let element = null;
 
-    switch(e.key) {
-    case 'ArrowDown':
-      element = items[index+1] || items[0];
-      break;
-    case 'ArrowUp':
-      element = items[index-1] || items[items.length-1];
-      break;
-    case 'Tab':
-      if (e.shiftKey) {
-        element = items[index-1] || items[items.length-1];
-      } else {
-        element = items[index+1] || items[0];
-      }
-      break;
-    case 'Home':
-      element = items[0];
-      break;
-    case 'End':
-      element = items[items.length-1];
-      break;
-    case 'Escape':
-      this.props.onClose();
-      break;
+    switch (e.key) {
+      case 'ArrowDown':
+        element = items[index + 1] || items[0];
+        break;
+      case 'ArrowUp':
+        element = items[index - 1] || items[items.length - 1];
+        break;
+      case 'Tab':
+        if (e.shiftKey) {
+          element = items[index - 1] || items[items.length - 1];
+        } else {
+          element = items[index + 1] || items[0];
+        }
+        break;
+      case 'Home':
+        element = items[0];
+        break;
+      case 'End':
+        element = items[items.length - 1];
+        break;
+      case 'Escape':
+        this.props.onClose();
+        break;
     }
 
     if (element) {
@@ -312,22 +312,22 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
   }
 
   handleButtonKeyDown: React.EventHandler<React.KeyboardEvent> = (e) => {
-    switch(e.key) {
-    case ' ':
-    case 'Enter':
-      this.handleMouseDown(e);
-      break;
+    switch (e.key) {
+      case ' ':
+      case 'Enter':
+        this.handleMouseDown(e);
+        break;
     }
   }
 
   handleKeyPress: React.EventHandler<React.KeyboardEvent<HTMLButtonElement>> = (e) => {
-    switch(e.key) {
-    case ' ':
-    case 'Enter':
-      this.handleClick(e);
-      e.stopPropagation();
-      e.preventDefault();
-      break;
+    switch (e.key) {
+      case ' ':
+      case 'Enter':
+        this.handleClick(e);
+        e.stopPropagation();
+        e.preventDefault();
+        break;
     }
   }
 

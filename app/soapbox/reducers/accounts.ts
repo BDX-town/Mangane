@@ -93,13 +93,13 @@ const addTags = (
       );
 
       tags.forEach(tag => {
-        switch(tag) {
-        case 'verified':
-          state.setIn([id, 'verified'], true);
-          break;
-        case 'donor':
-          state.setIn([id, 'donor'], true);
-          break;
+        switch (tag) {
+          case 'verified':
+            state.setIn([id, 'verified'], true);
+            break;
+          case 'donor':
+            state.setIn([id, 'donor'], true);
+            break;
         }
       });
     });
@@ -118,13 +118,13 @@ const removeTags = (
       );
 
       tags.forEach(tag => {
-        switch(tag) {
-        case 'verified':
-          state.setIn([id, 'verified'], false);
-          break;
-        case 'donor':
-          state.setIn([id, 'donor'], false);
-          break;
+        switch (tag) {
+          case 'verified':
+            state.setIn([id, 'verified'], false);
+            break;
+          case 'donor':
+            state.setIn([id, 'donor'], false);
+            break;
         }
       });
     });
@@ -243,50 +243,50 @@ const setSuggested = (state: State, accountIds: Array<string>, isSuggested: bool
 };
 
 export default function accounts(state: State = initialState, action: AnyAction): State {
-  switch(action.type) {
-  case ACCOUNT_IMPORT:
-    return fixAccount(state, action.account);
-  case ACCOUNTS_IMPORT:
-    return normalizeAccounts(state, action.accounts);
-  case ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP:
-    return fixAccount(state, { id: -1, username: action.username });
-  case CHATS_FETCH_SUCCESS:
-  case CHATS_EXPAND_SUCCESS:
-    return importAccountsFromChats(state, action.chats);
-  case CHAT_FETCH_SUCCESS:
-  case STREAMING_CHAT_UPDATE:
-    return importAccountsFromChats(state, [action.chat]);
-  case ADMIN_USERS_TAG_REQUEST:
-  case ADMIN_USERS_TAG_SUCCESS:
-  case ADMIN_USERS_UNTAG_FAIL:
-    return addTags(state, action.accountIds, action.tags);
-  case ADMIN_USERS_UNTAG_REQUEST:
-  case ADMIN_USERS_UNTAG_SUCCESS:
-  case ADMIN_USERS_TAG_FAIL:
-    return removeTags(state, action.accountIds, action.tags);
-  case ADMIN_ADD_PERMISSION_GROUP_REQUEST:
-  case ADMIN_ADD_PERMISSION_GROUP_SUCCESS:
-  case ADMIN_REMOVE_PERMISSION_GROUP_FAIL:
-    return addPermission(state, action.accountIds, action.permissionGroup);
-  case ADMIN_REMOVE_PERMISSION_GROUP_REQUEST:
-  case ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS:
-  case ADMIN_ADD_PERMISSION_GROUP_FAIL:
-    return removePermission(state, action.accountIds, action.permissionGroup);
-  case ADMIN_USERS_DELETE_REQUEST:
-  case ADMIN_USERS_DEACTIVATE_REQUEST:
-    return setActive(state, action.accountIds, false);
-  case ADMIN_USERS_DELETE_FAIL:
-  case ADMIN_USERS_DEACTIVATE_FAIL:
-    return setActive(state, action.accountIds, true);
-  case ADMIN_USERS_FETCH_SUCCESS:
-    return importAdminUsers(state, action.users);
-  case ADMIN_USERS_SUGGEST_REQUEST:
-  case ADMIN_USERS_UNSUGGEST_FAIL:
-    return setSuggested(state, action.accountIds, true);
-  case ADMIN_USERS_UNSUGGEST_REQUEST:
-  case ADMIN_USERS_SUGGEST_FAIL:
-    return setSuggested(state, action.accountIds, false);
-  default:
-    return state;
+  switch (action.type) {
+    case ACCOUNT_IMPORT:
+      return fixAccount(state, action.account);
+    case ACCOUNTS_IMPORT:
+      return normalizeAccounts(state, action.accounts);
+    case ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP:
+      return fixAccount(state, { id: -1, username: action.username });
+    case CHATS_FETCH_SUCCESS:
+    case CHATS_EXPAND_SUCCESS:
+      return importAccountsFromChats(state, action.chats);
+    case CHAT_FETCH_SUCCESS:
+    case STREAMING_CHAT_UPDATE:
+      return importAccountsFromChats(state, [action.chat]);
+    case ADMIN_USERS_TAG_REQUEST:
+    case ADMIN_USERS_TAG_SUCCESS:
+    case ADMIN_USERS_UNTAG_FAIL:
+      return addTags(state, action.accountIds, action.tags);
+    case ADMIN_USERS_UNTAG_REQUEST:
+    case ADMIN_USERS_UNTAG_SUCCESS:
+    case ADMIN_USERS_TAG_FAIL:
+      return removeTags(state, action.accountIds, action.tags);
+    case ADMIN_ADD_PERMISSION_GROUP_REQUEST:
+    case ADMIN_ADD_PERMISSION_GROUP_SUCCESS:
+    case ADMIN_REMOVE_PERMISSION_GROUP_FAIL:
+      return addPermission(state, action.accountIds, action.permissionGroup);
+    case ADMIN_REMOVE_PERMISSION_GROUP_REQUEST:
+    case ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS:
+    case ADMIN_ADD_PERMISSION_GROUP_FAIL:
+      return removePermission(state, action.accountIds, action.permissionGroup);
+    case ADMIN_USERS_DELETE_REQUEST:
+    case ADMIN_USERS_DEACTIVATE_REQUEST:
+      return setActive(state, action.accountIds, false);
+    case ADMIN_USERS_DELETE_FAIL:
+    case ADMIN_USERS_DEACTIVATE_FAIL:
+      return setActive(state, action.accountIds, true);
+    case ADMIN_USERS_FETCH_SUCCESS:
+      return importAdminUsers(state, action.users);
+    case ADMIN_USERS_SUGGEST_REQUEST:
+    case ADMIN_USERS_UNSUGGEST_FAIL:
+      return setSuggested(state, action.accountIds, true);
+    case ADMIN_USERS_UNSUGGEST_REQUEST:
+    case ADMIN_USERS_SUGGEST_FAIL:
+      return setSuggested(state, action.accountIds, false);
+    default:
+      return state;
   }
 }

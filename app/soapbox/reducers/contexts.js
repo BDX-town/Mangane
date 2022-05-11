@@ -141,23 +141,23 @@ const deletePendingStatus = (state, { in_reply_to_id }, idempotencyKey) => {
 };
 
 export default function replies(state = initialState, action) {
-  switch(action.type) {
-  case ACCOUNT_BLOCK_SUCCESS:
-  case ACCOUNT_MUTE_SUCCESS:
-    return filterContexts(state, action.relationship, action.statuses);
-  case CONTEXT_FETCH_SUCCESS:
-    return normalizeContext(state, action.id, action.ancestors, action.descendants);
-  case TIMELINE_DELETE:
-    return deleteStatuses(state, [action.id]);
-  case STATUS_CREATE_REQUEST:
-    return importPendingStatus(state, action.params, action.idempotencyKey);
-  case STATUS_CREATE_SUCCESS:
-    return deletePendingStatus(state, action.status, action.idempotencyKey);
-  case STATUS_IMPORT:
-    return importStatus(state, action.status, action.idempotencyKey);
-  case STATUSES_IMPORT:
-    return importStatuses(state, action.statuses);
-  default:
-    return state;
+  switch (action.type) {
+    case ACCOUNT_BLOCK_SUCCESS:
+    case ACCOUNT_MUTE_SUCCESS:
+      return filterContexts(state, action.relationship, action.statuses);
+    case CONTEXT_FETCH_SUCCESS:
+      return normalizeContext(state, action.id, action.ancestors, action.descendants);
+    case TIMELINE_DELETE:
+      return deleteStatuses(state, [action.id]);
+    case STATUS_CREATE_REQUEST:
+      return importPendingStatus(state, action.params, action.idempotencyKey);
+    case STATUS_CREATE_SUCCESS:
+      return deletePendingStatus(state, action.status, action.idempotencyKey);
+    case STATUS_IMPORT:
+      return importStatus(state, action.status, action.idempotencyKey);
+    case STATUSES_IMPORT:
+      return importStatuses(state, action.statuses);
+    default:
+      return state;
   }
 }

@@ -290,42 +290,42 @@ class Video extends React.PureComponent {
   handleKeyDown = e => {
     const frameTime = 1 / 25;
 
-    switch(e.key) {
-    case 'k':
-      e.preventDefault();
-      e.stopPropagation();
-      this.togglePlay();
-      break;
-    case 'm':
-      e.preventDefault();
-      e.stopPropagation();
-      this.toggleMute();
-      break;
-    case 'f':
-      e.preventDefault();
-      e.stopPropagation();
-      this.toggleFullscreen();
-      break;
-    case 'j':
-      e.preventDefault();
-      e.stopPropagation();
-      this.seekBy(-10);
-      break;
-    case 'l':
-      e.preventDefault();
-      e.stopPropagation();
-      this.seekBy(10);
-      break;
-    case ',':
-      e.preventDefault();
-      e.stopPropagation();
-      this.seekBy(-frameTime);
-      break;
-    case '.':
-      e.preventDefault();
-      e.stopPropagation();
-      this.seekBy(frameTime);
-      break;
+    switch (e.key) {
+      case 'k':
+        e.preventDefault();
+        e.stopPropagation();
+        this.togglePlay();
+        break;
+      case 'm':
+        e.preventDefault();
+        e.stopPropagation();
+        this.toggleMute();
+        break;
+      case 'f':
+        e.preventDefault();
+        e.stopPropagation();
+        this.toggleFullscreen();
+        break;
+      case 'j':
+        e.preventDefault();
+        e.stopPropagation();
+        this.seekBy(-10);
+        break;
+      case 'l':
+        e.preventDefault();
+        e.stopPropagation();
+        this.seekBy(10);
+        break;
+      case ',':
+        e.preventDefault();
+        e.stopPropagation();
+        this.seekBy(-frameTime);
+        break;
+      case '.':
+        e.preventDefault();
+        e.stopPropagation();
+        this.seekBy(frameTime);
+        break;
     }
 
     // If we are in fullscreen mode, we don't want any hotkeys
@@ -505,7 +505,7 @@ class Video extends React.PureComponent {
 
     if (inline && containerWidth) {
       width = containerWidth;
-      const minSize = containerWidth / (16/9);
+      const minSize = containerWidth / (16 / 9);
 
       if (isPanoramic(aspectRatio)) {
         height = Math.max(Math.floor(containerWidth / maximumAspectRatio), minSize);

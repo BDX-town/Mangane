@@ -56,13 +56,13 @@ class FilterBar extends React.PureComponent {
     const index = items.indexOf(document.activeElement);
     let element = null;
 
-    switch(e.key) {
-    case 'ArrowRight':
-      element = items[index+1] || items[0];
-      break;
-    case 'ArrowLeft':
-      element = items[index-1] || items[items.length-1];
-      break;
+    switch (e.key) {
+      case 'ArrowRight':
+        element = items[index + 1] || items[0];
+        break;
+      case 'ArrowLeft':
+        element = items[index - 1] || items[items.length - 1];
+        break;
     }
 
     if (element) {

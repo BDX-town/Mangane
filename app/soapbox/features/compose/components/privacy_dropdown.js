@@ -55,32 +55,32 @@ class PrivacyDropdownMenu extends React.PureComponent {
     });
     let element = null;
 
-    switch(e.key) {
-    case 'Escape':
-      this.props.onClose();
-      break;
-    case 'Enter':
-      this.handleClick(e);
-      break;
-    case 'ArrowDown':
-      element = this.node.childNodes[index + 1] || this.node.firstChild;
-      break;
-    case 'ArrowUp':
-      element = this.node.childNodes[index - 1] || this.node.lastChild;
-      break;
-    case 'Tab':
-      if (e.shiftKey) {
-        element = this.node.childNodes[index - 1] || this.node.lastChild;
-      } else {
+    switch (e.key) {
+      case 'Escape':
+        this.props.onClose();
+        break;
+      case 'Enter':
+        this.handleClick(e);
+        break;
+      case 'ArrowDown':
         element = this.node.childNodes[index + 1] || this.node.firstChild;
-      }
-      break;
-    case 'Home':
-      element = this.node.firstChild;
-      break;
-    case 'End':
-      element = this.node.lastChild;
-      break;
+        break;
+      case 'ArrowUp':
+        element = this.node.childNodes[index - 1] || this.node.lastChild;
+        break;
+      case 'Tab':
+        if (e.shiftKey) {
+          element = this.node.childNodes[index - 1] || this.node.lastChild;
+        } else {
+          element = this.node.childNodes[index + 1] || this.node.firstChild;
+        }
+        break;
+      case 'Home':
+        element = this.node.firstChild;
+        break;
+      case 'End':
+        element = this.node.lastChild;
+        break;
     }
 
     if (element) {
@@ -211,10 +211,10 @@ class PrivacyDropdown extends React.PureComponent {
   }
 
   handleKeyDown = e => {
-    switch(e.key) {
-    case 'Escape':
-      this.handleClose();
-      break;
+    switch (e.key) {
+      case 'Escape':
+        this.handleClose();
+        break;
     }
   }
 
@@ -225,11 +225,11 @@ class PrivacyDropdown extends React.PureComponent {
   }
 
   handleButtonKeyDown = (e) => {
-    switch(e.key) {
-    case ' ':
-    case 'Enter':
-      this.handleMouseDown();
-      break;
+    switch (e.key) {
+      case ' ':
+      case 'Enter':
+        this.handleMouseDown();
+        break;
     }
   }
 

@@ -40,7 +40,7 @@ export default class Visualizer {
   getTickPoints(count) {
     const coords = [];
 
-    for(let i = 0; i < count; i++) {
+    for (let i = 0; i < count; i++) {
       const rad = Math.PI * 2 * i / count;
       coords.push({ x: Math.cos(rad), y: -Math.sin(rad) });
     }

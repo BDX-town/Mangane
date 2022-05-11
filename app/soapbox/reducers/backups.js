@@ -18,11 +18,11 @@ const importBackups = (state, backups) => {
 };
 
 export default function backups(state = initialState, action) {
-  switch(action.type) {
-  case BACKUPS_FETCH_SUCCESS:
-  case BACKUPS_CREATE_SUCCESS:
-    return importBackups(state, fromJS(action.backups));
-  default:
-    return state;
+  switch (action.type) {
+    case BACKUPS_FETCH_SUCCESS:
+    case BACKUPS_CREATE_SUCCESS:
+      return importBackups(state, fromJS(action.backups));
+    default:
+      return state;
   }
 }

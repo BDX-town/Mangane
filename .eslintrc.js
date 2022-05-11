@@ -65,11 +65,14 @@ module.exports = {
     ],
     'comma-style': ['warn', 'last'],
     'space-before-function-paren': ['error', 'never'],
+    'space-infix-ops': 'error',
     'space-in-parens': ['error', 'never'],
+    'keyword-spacing': 'error',
     'consistent-return': 'error',
     'dot-notation': 'error',
     eqeqeq: 'error',
     indent: ['error', 2, {
+      SwitchCase: 1, // https://stackoverflow.com/a/53055584/8811886
       ignoredNodes: ['TemplateLiteral'],
     }],
     'jsx-quotes': ['error', 'prefer-single'],

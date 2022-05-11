@@ -62,7 +62,7 @@ const cloneNotification = notification => {
   let k;
 
   // Object.assign() does not work with notifications
-  for(k in notification) {
+  for (k in notification) {
     clone[k] = notification[k];
   }
 

@@ -52,18 +52,18 @@ const importSoapboxConfig = (state, soapboxConfig, host) => {
 };
 
 export default function soapbox(state = initialState, action) {
-  switch(action.type) {
-  case PLEROMA_PRELOAD_IMPORT:
-    return preloadImport(state, action);
-  case SOAPBOX_CONFIG_REMEMBER_SUCCESS:
-    return fromJS(action.soapboxConfig);
-  case SOAPBOX_CONFIG_REQUEST_SUCCESS:
-    return importSoapboxConfig(state, fromJS(action.soapboxConfig), action.host);
-  case SOAPBOX_CONFIG_REQUEST_FAIL:
-    return fallbackState.mergeDeep(state);
-  case ADMIN_CONFIG_UPDATE_SUCCESS:
-    return updateFromAdmin(state, fromJS(action.configs));
-  default:
-    return state;
+  switch (action.type) {
+    case PLEROMA_PRELOAD_IMPORT:
+      return preloadImport(state, action);
+    case SOAPBOX_CONFIG_REMEMBER_SUCCESS:
+      return fromJS(action.soapboxConfig);
+    case SOAPBOX_CONFIG_REQUEST_SUCCESS:
+      return importSoapboxConfig(state, fromJS(action.soapboxConfig), action.host);
+    case SOAPBOX_CONFIG_REQUEST_FAIL:
+      return fallbackState.mergeDeep(state);
+    case ADMIN_CONFIG_UPDATE_SUCCESS:
+      return updateFromAdmin(state, fromJS(action.configs));
+    default:
+      return state;
   }
 }

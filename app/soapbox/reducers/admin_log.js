@@ -36,10 +36,10 @@ const importItems = (state, items, total) => {
 };
 
 export default function admin_log(state = ReducerRecord(), action) {
-  switch(action.type) {
-  case ADMIN_LOG_FETCH_SUCCESS:
-    return importItems(state, action.items, action.total);
-  default:
-    return state;
+  switch (action.type) {
+    case ADMIN_LOG_FETCH_SUCCESS:
+      return importItems(state, action.items, action.total);
+    default:
+      return state;
   }
 }

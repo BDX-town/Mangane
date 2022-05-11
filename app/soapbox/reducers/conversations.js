@@ -77,27 +77,27 @@ const expandNormalizedConversations = (state, conversations, next, isLoadingRece
 
 export default function conversations(state = initialState, action) {
   switch (action.type) {
-  case CONVERSATIONS_FETCH_REQUEST:
-    return state.set('isLoading', true);
-  case CONVERSATIONS_FETCH_FAIL:
-    return state.set('isLoading', false);
-  case CONVERSATIONS_FETCH_SUCCESS:
-    return expandNormalizedConversations(state, action.conversations, action.next, action.isLoadingRecent);
-  case CONVERSATIONS_UPDATE:
-    return updateConversation(state, action.conversation);
-  case CONVERSATIONS_MOUNT:
-    return state.update('mounted', count => count + 1);
-  case CONVERSATIONS_UNMOUNT:
-    return state.update('mounted', count => count - 1);
-  case CONVERSATIONS_READ:
-    return state.update('items', list => list.map(item => {
-      if (item.get('id') === action.id) {
-        return item.set('unread', false);
-      }
+    case CONVERSATIONS_FETCH_REQUEST:
+      return state.set('isLoading', true);
+    case CONVERSATIONS_FETCH_FAIL:
+      return state.set('isLoading', false);
+    case CONVERSATIONS_FETCH_SUCCESS:
+      return expandNormalizedConversations(state, action.conversations, action.next, action.isLoadingRecent);
+    case CONVERSATIONS_UPDATE:
+      return updateConversation(state, action.conversation);
+    case CONVERSATIONS_MOUNT:
+      return state.update('mounted', count => count + 1);
+    case CONVERSATIONS_UNMOUNT:
+      return state.update('mounted', count => count - 1);
+    case CONVERSATIONS_READ:
+      return state.update('items', list => list.map(item => {
+        if (item.get('id') === action.id) {
+          return item.set('unread', false);
+        }
 
-      return item;
-    }));
-  default:
-    return state;
+        return item;
+      }));
+    default:
+      return state;
   }
 }

@@ -233,13 +233,13 @@ const timelineDisconnect = (state, timelineId) => {
 };
 
 const getTimelinesByVisibility = visibility => {
-  switch(visibility) {
-  case 'direct':
-    return ['direct'];
-  case 'public':
-    return ['home', 'community', 'public'];
-  default:
-    return ['home'];
+  switch (visibility) {
+    case 'direct':
+      return ['direct'];
+    case 'public':
+      return ['home', 'community', 'public'];
+    default:
+      return ['home'];
   }
 };
 
@@ -299,43 +299,43 @@ const handleExpandFail = (state, timelineId) => {
 };
 
 export default function timelines(state = initialState, action) {
-  switch(action.type) {
-  case STATUS_CREATE_REQUEST:
-    if (action.params.scheduled_at) return state;
-    return importPendingStatus(state, action.params, action.idempotencyKey);
-  case STATUS_CREATE_SUCCESS:
-    if (action.status.scheduled_at) return state;
-    return importStatus(state, action.status, action.idempotencyKey);
-  case TIMELINE_EXPAND_REQUEST:
-    return setLoading(state, action.timeline, true);
-  case TIMELINE_EXPAND_FAIL:
-    return handleExpandFail(state, action.timeline);
-  case TIMELINE_EXPAND_SUCCESS:
-    return expandNormalizedTimeline(state, action.timeline, fromJS(action.statuses), action.next, action.partial, action.isLoadingRecent);
-  case TIMELINE_UPDATE:
-    return updateTimeline(state, action.timeline, action.statusId);
-  case TIMELINE_UPDATE_QUEUE:
-    return updateTimelineQueue(state, action.timeline, action.statusId);
-  case TIMELINE_DEQUEUE:
-    return timelineDequeue(state, action.timeline);
-  case TIMELINE_DELETE:
-    return deleteStatus(state, action.id, action.accountId, action.references, action.reblogOf);
-  case TIMELINE_CLEAR:
-    return clearTimeline(state, action.timeline);
-  case ACCOUNT_BLOCK_SUCCESS:
-  case ACCOUNT_MUTE_SUCCESS:
-    return filterTimelines(state, action.relationship, action.statuses);
-  case ACCOUNT_UNFOLLOW_SUCCESS:
-    return filterTimeline(state, 'home', action.relationship, action.statuses);
-  case TIMELINE_SCROLL_TOP:
-    return updateTop(state, action.timeline, action.top);
-  case TIMELINE_CONNECT:
-    return timelineConnect(state, action.timeline);
-  case TIMELINE_DISCONNECT:
-    return timelineDisconnect(state, action.timeline);
-  case GROUP_REMOVE_STATUS_SUCCESS:
-    return removeStatusFromGroup(state, action.groupId, action.id);
-  default:
-    return state;
+  switch (action.type) {
+    case STATUS_CREATE_REQUEST:
+      if (action.params.scheduled_at) return state;
+      return importPendingStatus(state, action.params, action.idempotencyKey);
+    case STATUS_CREATE_SUCCESS:
+      if (action.status.scheduled_at) return state;
+      return importStatus(state, action.status, action.idempotencyKey);
+    case TIMELINE_EXPAND_REQUEST:
+      return setLoading(state, action.timeline, true);
+    case TIMELINE_EXPAND_FAIL:
+      return handleExpandFail(state, action.timeline);
+    case TIMELINE_EXPAND_SUCCESS:
+      return expandNormalizedTimeline(state, action.timeline, fromJS(action.statuses), action.next, action.partial, action.isLoadingRecent);
+    case TIMELINE_UPDATE:
+      return updateTimeline(state, action.timeline, action.statusId);
+    case TIMELINE_UPDATE_QUEUE:
+      return updateTimelineQueue(state, action.timeline, action.statusId);
+    case TIMELINE_DEQUEUE:
+      return timelineDequeue(state, action.timeline);
+    case TIMELINE_DELETE:
+      return deleteStatus(state, action.id, action.accountId, action.references, action.reblogOf);
+    case TIMELINE_CLEAR:
+      return clearTimeline(state, action.timeline);
+    case ACCOUNT_BLOCK_SUCCESS:
+    case ACCOUNT_MUTE_SUCCESS:
+      return filterTimelines(state, action.relationship, action.statuses);
+    case ACCOUNT_UNFOLLOW_SUCCESS:
+      return filterTimeline(state, 'home', action.relationship, action.statuses);
+    case TIMELINE_SCROLL_TOP:
+      return updateTop(state, action.timeline, action.top);
+    case TIMELINE_CONNECT:
+      return timelineConnect(state, action.timeline);
+    case TIMELINE_DISCONNECT:
+      return timelineDisconnect(state, action.timeline);
+    case GROUP_REMOVE_STATUS_SUCCESS:
+      return removeStatusFromGroup(state, action.groupId, action.id);
+    default:
+      return state;
   }
 }

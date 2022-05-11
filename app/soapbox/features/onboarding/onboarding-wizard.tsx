@@ -46,12 +46,12 @@ const OnboardingWizard = () => {
 
   const handleKeyUp = ({ key }: KeyboardEvent): void => {
     switch (key) {
-    case 'ArrowLeft':
-      handlePreviousStep();
-      break;
-    case 'ArrowRight':
-      handleNextStep();
-      break;
+      case 'ArrowLeft':
+        handlePreviousStep();
+        break;
+      case 'ArrowRight':
+        handleNextStep();
+        break;
     }
   };
 

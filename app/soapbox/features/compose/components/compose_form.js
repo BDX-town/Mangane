@@ -229,8 +229,8 @@ class ComposeForm extends ImmutablePureComponent {
     const spoilerUpdated = this.props.spoiler !== prevProps.spoiler;
     if (spoilerUpdated) {
       switch (this.props.spoiler) {
-      case true: this.focusSpoilerInput(); break;
-      case false: this.focusTextarea(); break;
+        case true: this.focusSpoilerInput(); break;
+        case false: this.focusTextarea(); break;
       }
     }
   }

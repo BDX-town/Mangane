@@ -132,12 +132,12 @@ class Introduction extends React.PureComponent {
 
   handleKeyUp = ({ key }) => {
     switch (key) {
-    case 'ArrowLeft':
-      this.handlePrev();
-      break;
-    case 'ArrowRight':
-      this.handleNext();
-      break;
+      case 'ArrowLeft':
+        this.handlePrev();
+        break;
+      case 'ArrowRight':
+        this.handleNext();
+        break;
     }
   }
 

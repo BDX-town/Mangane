@@ -46,7 +46,7 @@ export const fetchInstance = createAsyncThunk<void, void, { state: RootState }>(
         dispatch(fetchNodeinfo());
       }
       return instance;
-    } catch(e) {
+    } catch (e) {
       return rejectWithValue(e);
     }
   },

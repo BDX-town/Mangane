@@ -214,46 +214,46 @@ const Notification: React.FC<INotificaton> = (props) => {
 
   const renderContent = () => {
     switch (type) {
-    case 'follow':
-    case 'follow_request':
-      return account && typeof account === 'object' ? (
-        <AccountContainer
-          id={account.id}
-          hidden={hidden}
-          avatarSize={48}
-        />
-      ) : null;
-    case 'move':
-      return account && typeof account === 'object' && notification.target && typeof notification.target === 'object' ? (
-        <AccountContainer
-          id={notification.target.id}
-          hidden={hidden}
-          avatarSize={48}
-        />
-      ) : null;
-    case 'favourite':
-    case 'mention':
-    case 'reblog':
-    case 'status':
-    case 'poll':
-    case 'pleroma:emoji_reaction':
-      return status && typeof status === 'object' ? (
-        <StatusContainer
+      case 'follow':
+      case 'follow_request':
+        return account && typeof account === 'object' ? (
+          <AccountContainer
+            id={account.id}
+            hidden={hidden}
+            avatarSize={48}
+          />
+        ) : null;
+      case 'move':
+        return account && typeof account === 'object' && notification.target && typeof notification.target === 'object' ? (
+          <AccountContainer
+            id={notification.target.id}
+            hidden={hidden}
+            avatarSize={48}
+          />
+        ) : null;
+      case 'favourite':
+      case 'mention':
+      case 'reblog':
+      case 'status':
+      case 'poll':
+      case 'pleroma:emoji_reaction':
+        return status && typeof status === 'object' ? (
+          <StatusContainer
           // @ts-ignore
-          id={status.id}
-          withDismiss
-          hidden={hidden}
-          onMoveDown={handleMoveDown}
-          onMoveUp={handleMoveUp}
-          contextType='notifications'
-          getScrollPosition={props.getScrollPosition}
-          updateScrollBottom={props.updateScrollBottom}
-          cachedMediaWidth={props.cachedMediaWidth}
-          cacheMediaWidth={props.cacheMediaWidth}
-        />
-      ) : null;
-    default:
-      return null;
+            id={status.id}
+            withDismiss
+            hidden={hidden}
+            onMoveDown={handleMoveDown}
+            onMoveUp={handleMoveUp}
+            contextType='notifications'
+            getScrollPosition={props.getScrollPosition}
+            updateScrollBottom={props.updateScrollBottom}
+            cachedMediaWidth={props.cachedMediaWidth}
+            cacheMediaWidth={props.cacheMediaWidth}
+          />
+        ) : null;
+      default:
+        return null;
     }
   };
 

@@ -143,7 +143,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                 <Link to='/' onClick={onClose}>
                   {logo ? (
                     <img alt='Logo' src={logo} className='h-5 w-auto cursor-pointer' />
-                  ):  (
+                  ) :  (
                     <Icon
                       alt='Logo'
                       src={require('@tabler/icons/icons/home.svg')}
