@@ -4,7 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { Button } from 'soapbox/components/ui';
 import { Modal } from 'soapbox/components/ui';
-import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
 const messages = defineMessages({
   download: { id: 'landing_page_modal.download', defaultMessage: 'Download' },
@@ -25,8 +25,9 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
 
   const { logo } = soapboxConfig;
   const instance = useAppSelector((state) => state.instance);
+  const features = useFeatures();
 
-  const isOpen   = instance.get('registrations', false) === true;
+  const isOpen   = features.accountCreation && instance.registrations;
   const pepeOpen = useAppSelector(state => state.verification.getIn(['instance', 'registrations'], false) === true);
 
   return (

@@ -3,11 +3,12 @@ import { FormattedMessage } from 'react-intl';
 
 import VerificationBadge from 'soapbox/components/verification_badge';
 import RegistrationForm from 'soapbox/features/auth_login/components/registration_form';
-import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
 import { Button, Card, CardBody, Stack, Text } from '../../components/ui';
 
 const LandingPage = () => {
+  const features = useFeatures();
   const soapboxConfig = useSoapboxConfig();
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
 
@@ -28,7 +29,7 @@ const LandingPage = () => {
           <FormattedMessage
             id='registration.closed_message'
             defaultMessage='{instance} is not accepting new members.'
-            values={{ instance: instance.get('title') }}
+            values={{ instance: instance.title }}
           />
         </Text>
       </Stack>
@@ -60,7 +61,7 @@ const LandingPage = () => {
   const renderBody = () => {
     if (pepeEnabled && pepeOpen) {
       return renderPepe();
-    } else if (instance.registrations) {
+    } else if (features.accountCreation && instance.registrations) {
       return renderOpen();
     } else {
       return renderClosed();

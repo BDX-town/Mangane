@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
-import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
 import { openModal } from '../../../actions/modals';
 import { Button, Form, HStack, IconButton, Input, Tooltip } from '../../../components/ui';
@@ -31,8 +31,9 @@ const Header = () => {
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
 
   const { logo } = soapboxConfig;
+  const features = useFeatures();
   const instance = useAppSelector((state) => state.instance);
-  const isOpen   = instance.get('registrations', false) === true;
+  const isOpen   = features.accountCreation && instance.registrations;
   const pepeOpen = useAppSelector(state => state.verification.getIn(['instance', 'registrations'], false) === true);
 
   const [isLoading, setLoading] = React.useState(false);
