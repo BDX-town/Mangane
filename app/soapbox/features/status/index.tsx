@@ -19,7 +19,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import SubNavigation from 'soapbox/components/sub_navigation';
-import { Column } from 'soapbox/components/ui';
+import { Column, Stack } from 'soapbox/components/ui';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 
@@ -60,6 +60,7 @@ import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from
 
 import ActionBar from './components/action-bar';
 import DetailedStatus from './components/detailed-status';
+import ThreadLoginCta from './components/thread-login-cta';
 import ThreadStatus from './components/thread-status';
 
 import type { AxiosError } from 'axios';
@@ -72,6 +73,7 @@ import type {
   Attachment as AttachmentEntity,
   Status as StatusEntity,
 } from 'soapbox/types/entities';
+import type { Me } from 'soapbox/types/soapbox';
 
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: '@{username}\'s Post' },
@@ -181,6 +183,7 @@ interface IStatus extends RouteComponentProps, IntlComponentProps {
   allowedEmoji: ImmutableList<string>,
   onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void,
   onOpenVideo: (video: AttachmentEntity, time: number) => void,
+  me: Me,
 }
 
 interface IStatusState {
@@ -669,7 +672,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   }
 
   render() {
-    const { status, ancestorsIds, descendantsIds, intl } = this.props;
+    const { me, status, ancestorsIds, descendantsIds, intl } = this.props;
 
     const hasAncestors = ancestorsIds && ancestorsIds.size > 0;
     const hasDescendants = descendantsIds && descendantsIds.size > 0;
@@ -782,16 +785,20 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
           <SubNavigation message={intl.formatMessage(titleMessage, { username })} />
         </div>
 
-        <div ref={this.setRef} className='thread'>
-          <ScrollableList
-            onRefresh={this.handleRefresh}
-            hasMore={!!this.state.next}
-            onLoadMore={this.handleLoadMore}
-            placeholderComponent={() => <PlaceholderStatus thread />}
-          >
-            {children}
-          </ScrollableList>
-        </div>
+        <Stack space={2}>
+          <div ref={this.setRef} className='thread'>
+            <ScrollableList
+              onRefresh={this.handleRefresh}
+              hasMore={!!this.state.next}
+              onLoadMore={this.handleLoadMore}
+              placeholderComponent={() => <PlaceholderStatus thread />}
+            >
+              {children}
+            </ScrollableList>
+          </div>
+
+          {!me && <ThreadLoginCta />}
+        </Stack>
       </Column>
     );
   }
