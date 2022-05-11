@@ -157,7 +157,7 @@ const SidebarNavigation = () => {
 
             <SidebarNavigationLink
               to='/notifications'
-              icon={require('icons/alert.svg')}
+              icon={require('@tabler/icons/icons/bell.svg')}
               count={notificationCount}
               text={<FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />}
             />
