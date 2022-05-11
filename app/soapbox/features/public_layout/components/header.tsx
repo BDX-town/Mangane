@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -30,7 +31,7 @@ const Header = () => {
   const soapboxConfig = useSoapboxConfig();
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
 
-  const { logo } = soapboxConfig;
+  const { logo, logoDarkMode } = soapboxConfig;
   const features = useFeatures();
   const instance = useAppSelector((state) => state.instance);
   const isOpen   = features.accountCreation && instance.registrations;
@@ -79,7 +80,11 @@ const Header = () => {
               <Sonar />
             </div>
             <Link to='/' className='z-10'>
-              <img alt='Logo' src={logo} className='h-6 w-auto cursor-pointer' />
+              <img alt='Logo' src={logo} className={classNames('h-6 w-auto cursor-pointer', { 'dark:hidden': logoDarkMode })} />
+              {logoDarkMode && (
+                <img alt='Logo' src={logoDarkMode} className='h-6 w-auto cursor-pointer hidden dark:block' />
+              )}
+
               <span className='hidden'>{intl.formatMessage(messages.home)}</span>
             </Link>
           </div>

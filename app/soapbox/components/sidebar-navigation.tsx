@@ -13,6 +13,7 @@ import SidebarNavigationLink from './sidebar-navigation-link';
 
 import type { Menu } from 'soapbox/components/dropdown_menu';
 
+/** Desktop sidebar with links to different views in the app. */
 const SidebarNavigation = () => {
   const instance = useAppSelector((state) => state.instance);
   const settings = useAppSelector((state) => getSettings(state));
@@ -139,6 +140,12 @@ const SidebarNavigation = () => {
           to='/'
           icon={require('icons/feed.svg')}
           text={<FormattedMessage id='tabs_bar.home' defaultMessage='Home' />}
+        />
+
+        <SidebarNavigationLink
+          to='/search'
+          icon={require('@tabler/icons/icons/search.svg')}
+          text={<FormattedMessage id='tabs_bar.search' defaultMessage='Search' />}
         />
 
         {account && (
