@@ -28,10 +28,13 @@ const Header = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const { logo, logoDarkMode } = useSoapboxConfig();
+  const soapboxConfig = useSoapboxConfig();
+  const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
+
+  const { logo, logoDarkMode } = soapboxConfig;
   const features = useFeatures();
   const instance = useAppSelector((state) => state.instance);
-  const isOpen = instance.get('registrations', false) === true;
+  const isOpen   = features.accountCreation && instance.registrations;
   const pepeOpen = useAppSelector(state => state.verification.getIn(['instance', 'registrations'], false) === true);
 
   const [isLoading, setLoading] = React.useState(false);
@@ -99,9 +102,9 @@ const Header = () => {
                   {intl.formatMessage(messages.login)}
                 </Button>
 
-                {(isOpen || features.pepe && pepeOpen) && (
+                {(isOpen || pepeEnabled && pepeOpen) && (
                   <Button
-                    to={features.pepe ? '/verify' : '/signup'}
+                    to={pepeEnabled ? '/verify' : '/signup'}
                     theme='primary'
                   >
                     {intl.formatMessage(messages.register)}

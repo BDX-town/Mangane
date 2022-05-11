@@ -347,9 +347,6 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     paginatedContext: v.software === TRUTHSOCIAL,
 
-    /** Truth Social account registration API. */
-    pepe: v.software === TRUTHSOCIAL,
-
     /**
      * Can add polls to statuses.
      * @see POST /api/v1/statuses

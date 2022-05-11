@@ -20,11 +20,14 @@ interface ILandingPageModal {
 const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
   const intl = useIntl();
 
-  const { logo } = useSoapboxConfig();
+  const soapboxConfig = useSoapboxConfig();
+  const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
+
+  const { logo } = soapboxConfig;
   const instance = useAppSelector((state) => state.instance);
   const features = useFeatures();
 
-  const isOpen   = instance.get('registrations', false) === true;
+  const isOpen   = features.accountCreation && instance.registrations;
   const pepeOpen = useAppSelector(state => state.verification.getIn(['instance', 'registrations'], false) === true);
 
   return (
@@ -43,8 +46,8 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
             {intl.formatMessage(messages.login)}
           </Button>
 
-          {(isOpen || features.pepe && pepeOpen) && (
-            <Button to={features.pepe ? '/verify' : '/signup'} theme='primary' block>
+          {(isOpen || pepeEnabled && pepeOpen) && (
+            <Button to={pepeEnabled ? '/verify' : '/signup'} theme='primary' block>
               {intl.formatMessage(messages.register)}
             </Button>
           )}

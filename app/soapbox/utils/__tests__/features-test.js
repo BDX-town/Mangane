@@ -148,22 +148,4 @@ describe('getFeatures', () => {
       expect(features.focalPoint).toBe(false);
     });
   });
-
-  describe('pepe', () => {
-    it('is true for Truth Social', () => {
-      const instance = InstanceRecord({
-        version: '3.4.1 (compatible; TruthSocial 1.0.0)',
-      });
-      const features = getFeatures(instance);
-      expect(features.pepe).toBe(true);
-    });
-
-    it('is false for Pleroma', () => {
-      const instance = InstanceRecord({
-        version: '2.7.2 (compatible; Pleroma 2.3.0)',
-      });
-      const features = getFeatures(instance);
-      expect(features.pepe).toBe(false);
-    });
-  });
 });
