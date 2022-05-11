@@ -35,8 +35,7 @@ const SidebarNavigation = () => {
           to: '/follow_requests',
           text: <FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' />,
           icon: require('@tabler/icons/icons/user-plus.svg'),
-          // TODO: let menu items have a counter
-          // count: followRequestsCount,
+          count: followRequestsCount,
         });
       }
 
