@@ -102,7 +102,7 @@ class UnauthorizedModal extends ImmutablePureComponent {
   onRegister = (e) => {
     e.preventDefault();
 
-    this.props.history.push('/');
+    this.props.history.push('/signup');
     this.onClickClose();
   }
 
