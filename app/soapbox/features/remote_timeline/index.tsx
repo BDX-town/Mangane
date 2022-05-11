@@ -44,6 +44,14 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
     }
   };
 
+  const handleCloseClick: React.MouseEventHandler = () => {
+    history.push('/timeline/fediverse');
+  };
+
+  const handleLoadMore = (maxId: string) => {
+    dispatch(expandRemoteTimeline(instance, { maxId, onlyMedia }));
+  };
+
   useEffect(() => {
     disconnect();
     dispatch(expandRemoteTimeline(instance, { onlyMedia, maxId: undefined }));
@@ -54,14 +62,6 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
       stream.current = null;
     };
   }, [onlyMedia]);
-
-  const handleCloseClick: React.MouseEventHandler = () => {
-    history.push('/timeline/fediverse');
-  };
-
-  const handleLoadMore = (maxId: string) => {
-    dispatch(expandRemoteTimeline(instance, { maxId, onlyMedia }));
-  };
 
   return (
     <Column label={intl.formatMessage(messages.title)} heading={instance} transparent>
