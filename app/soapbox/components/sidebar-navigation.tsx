@@ -137,7 +137,7 @@ const SidebarNavigation = () => {
       <div className='flex flex-col space-y-2'>
         <SidebarNavigationLink
           to='/'
-          icon={require('icons/feed.svg')}
+          icon={require('@tabler/icons/icons/home.svg')}
           text={<FormattedMessage id='tabs_bar.home' defaultMessage='Home' />}
         />
 
@@ -151,7 +151,7 @@ const SidebarNavigation = () => {
           <>
             <SidebarNavigationLink
               to={`/@${account.acct}`}
-              icon={require('icons/user.svg')}
+              icon={require('@tabler/icons/icons/user.svg')}
               text={<FormattedMessage id='tabs_bar.profile' defaultMessage='Profile' />}
             />
 
