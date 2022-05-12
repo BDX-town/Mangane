@@ -21,6 +21,7 @@ module.exports = {
 
   plugins: [
     'react',
+    'jsdoc',
     'jsx-a11y',
     'import',
     'promise',
@@ -269,6 +270,24 @@ module.exports = {
         'no-undef': 'off', // https://stackoverflow.com/a/69155899
       },
       parser: '@typescript-eslint/parser',
+    },
+    {
+      // Only enforce JSDoc comments on UI components for now.
+      // https://www.npmjs.com/package/eslint-plugin-jsdoc
+      files: ['app/soapbox/components/ui/**/*'],
+      rules: {
+        'jsdoc/require-jsdoc': ['error', {
+          publicOnly: true,
+          require: {
+            ArrowFunctionExpression: true,
+            ClassDeclaration: true,
+            ClassExpression: true,
+            FunctionDeclaration: true,
+            FunctionExpression: true,
+            MethodDefinition: true,
+          },
+        }],
+      },
     },
   ],
 };
