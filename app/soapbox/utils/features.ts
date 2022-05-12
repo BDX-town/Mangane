@@ -451,6 +451,13 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Ability to manage account sessions.
+     * @see GET /api/oauth_tokens.json
+     * @see DELETE /api/oauth_tokens/:id
+     */
+    sessionsAPI: v.software === PLEROMA,
+
+    /**
      * Can store client settings in the database.
      * @see PATCH /api/v1/accounts/update_credentials
      */

@@ -8,10 +8,19 @@ import { useDispatch } from 'react-redux';
 import { Switch, useHistory } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 
+import { fetchFollowRequests } from 'soapbox/actions/accounts';
+import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin';
 import { fetchChats } from 'soapbox/actions/chats';
+import { uploadCompose, resetCompose } from 'soapbox/actions/compose';
 import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
+import { fetchFilters } from 'soapbox/actions/filters';
 import { fetchMarker } from 'soapbox/actions/markers';
+import { openModal } from 'soapbox/actions/modals';
+import { expandNotifications } from 'soapbox/actions/notifications';
 import { register as registerPushNotifications } from 'soapbox/actions/push_notifications';
+import { fetchScheduledStatuses } from 'soapbox/actions/scheduled_statuses';
+import { connectUserStream } from 'soapbox/actions/streaming';
+import { expandHomeTimeline } from 'soapbox/actions/timelines';
 import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb_navigation';
@@ -29,16 +38,6 @@ import StatusPage from 'soapbox/pages/status_page';
 import { getAccessToken } from 'soapbox/utils/auth';
 import { getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
-
-import { fetchFollowRequests } from '../../actions/accounts';
-import { fetchReports, fetchUsers, fetchConfig } from '../../actions/admin';
-import { uploadCompose, resetCompose } from '../../actions/compose';
-import { fetchFilters } from '../../actions/filters';
-import { openModal } from '../../actions/modals';
-import { expandNotifications } from '../../actions/notifications';
-import { fetchScheduledStatuses } from '../../actions/scheduled_statuses';
-import { connectUserStream } from '../../actions/streaming';
-import { expandHomeTimeline } from '../../actions/timelines';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
 
 import BackgroundShapes from './components/background_shapes';
@@ -115,12 +114,13 @@ import {
   SettingsStore,
   TestTimeline,
   LogoutPage,
+  AuthTokenList,
 } from './util/async-components';
 import { WrappedRoute } from './util/react_router_helpers';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
-import '../../components/status';
+import 'soapbox/components/status';
 
 const isMobile = (width: number): boolean => width <= 1190;
 
@@ -297,6 +297,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/settings/account' page={DefaultPage} component={DeleteAccount} content={children} />
       <WrappedRoute path='/settings/media_display' page={DefaultPage} component={MediaDisplay} content={children} />
       <WrappedRoute path='/settings/mfa' page={DefaultPage} component={MfaForm} exact />
+      <WrappedRoute path='/settings/tokens' page={DefaultPage} component={AuthTokenList} content={children} />
       <WrappedRoute path='/settings' page={DefaultPage} component={Settings} content={children} />
       {/* <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} /> */}
       <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
