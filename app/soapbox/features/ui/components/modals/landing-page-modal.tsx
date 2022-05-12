@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+import SiteLogo from 'soapbox/components/site-logo';
 import { Button } from 'soapbox/components/ui';
 import { Modal } from 'soapbox/components/ui';
 import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
@@ -23,7 +24,6 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
   const soapboxConfig = useSoapboxConfig();
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
 
-  const { logo } = soapboxConfig;
   const instance = useAppSelector((state) => state.instance);
   const features = useFeatures();
 
@@ -32,7 +32,7 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
 
   return (
     <Modal
-      title={<img alt='Logo' src={logo} className='h-4 w-auto' />}
+      title={<SiteLogo alt='Logo' className='h-4 w-auto' />}
       onClose={() => onClose('LANDING_PAGE')}
     >
       <div className='mt-4 divide-y divide-solid divide-gray-200 dark:divide-slate-700'>
