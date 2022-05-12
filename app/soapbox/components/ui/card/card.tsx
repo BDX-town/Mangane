@@ -47,7 +47,10 @@ interface ICardHeader {
   onBackClick?: (event: React.MouseEvent) => void
 }
 
-/** Typically holds a CardTitle. */
+/**
+ * Card header container with back button.
+ * Typically holds a CardTitle.
+ */
 const CardHeader: React.FC<ICardHeader> = ({ children, backHref, onBackClick }): JSX.Element => {
   const intl = useIntl();
 

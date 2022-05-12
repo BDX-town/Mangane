@@ -20,7 +20,7 @@ interface IModal {
   /** Whether the confirmation button is disabled. */
   confirmationDisabled?: boolean,
   /** Confirmation button text. */
-  confirmationText?: string,
+  confirmationText?: React.ReactNode,
   /** Confirmation button theme. */
   confirmationTheme?: 'danger',
   /** Callback when the modal is closed. */
@@ -28,7 +28,7 @@ interface IModal {
   /** Callback when the secondary action is chosen. */
   secondaryAction?: () => void,
   /** Secondary button text. */
-  secondaryText?: string,
+  secondaryText?: React.ReactNode,
   /** Don't focus the "confirm" button on mount. */
   skipFocus?: boolean,
   /** Title text for the modal. */

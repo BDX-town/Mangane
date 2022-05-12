@@ -85,6 +85,7 @@ const SoapboxMount = () => {
   const systemTheme = useSystemTheme();
   const userTheme = settings.get('themeMode');
   const darkMode = userTheme === 'dark' || (userTheme === 'system' && systemTheme === 'dark');
+  const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
 
   const themeCss = generateThemeCss(soapboxConfig);
 
@@ -160,20 +161,38 @@ const SoapboxMount = () => {
               <Switch>
                 <Redirect from='/v1/verify_email/:token' to='/verify/email/:token' />
 
-                {waitlisted && <Route render={(props) => <WaitlistPage {...props} account={account} />} />}
+                {/* Redirect signup route depending on Pepe enablement. */}
+                {/* We should prefer using /signup in components. */}
+                {pepeEnabled ? (
+                  <Redirect from='/signup' to='/verify' />
+                ) : (
+                  <Redirect from='/verify' to='/signup' />
+                )}
+
+                {waitlisted && (
+                  <Route render={(props) => <WaitlistPage {...props} account={account} />} />
+                )}
 
                 {!me && (singleUserMode
                   ? <Redirect exact from='/' to={`/${singleUserMode}`} />
                   : <Route exact path='/' component={PublicLayout} />)}
 
-                {!me && <Route exact path='/' component={PublicLayout} />}
+                {!me && (
+                  <Route exact path='/' component={PublicLayout} />
+                )}
+
                 <Route exact path='/about/:slug?' component={PublicLayout} />
                 <Route exact path='/mobile/:slug?' component={PublicLayout} />
                 <Route path='/login' component={AuthLayout} />
+
                 {(features.accountCreation && instance.registrations) && (
                   <Route exact path='/signup' component={AuthLayout} />
                 )}
-                <Route path='/verify' component={AuthLayout} />
+
+                {pepeEnabled && (
+                  <Route path='/verify' component={AuthLayout} />
+                )}
+
                 <Route path='/reset-password' component={AuthLayout} />
                 <Route path='/edit-password' component={AuthLayout} />
                 <Route path='/invite/:token' component={AuthLayout} />

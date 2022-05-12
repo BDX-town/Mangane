@@ -70,7 +70,7 @@ const Navbar = () => {
                 </Button>
 
                 {!singleUserMode && (
-                  <Button theme='primary' to='/' size='sm'>
+                  <Button theme='primary' to='/signup' size='sm'>
                     <FormattedMessage id='account.register' defaultMessage='Sign up' />
                   </Button>
                 )}

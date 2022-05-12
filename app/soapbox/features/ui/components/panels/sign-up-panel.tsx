@@ -23,7 +23,7 @@ const SignUpPanel = () => {
         </Text>
       </Stack>
 
-      <Button theme='primary' block to='/'>
+      <Button theme='primary' block to='/signup'>
         <FormattedMessage id='account.register' defaultMessage='Sign up' />
       </Button>
     </Stack>
