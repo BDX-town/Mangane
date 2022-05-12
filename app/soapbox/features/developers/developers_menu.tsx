@@ -48,7 +48,7 @@ const Developers = () => {
         </Link>
 
         <Link to='/developers/timeline' className='bg-gray-200 dark:bg-gray-600 p-4 rounded flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 transition-transform'>
-          <SvgIcon src={require('icons/feed.svg')} className='dark:text-gray-100' />
+          <SvgIcon src={require('@tabler/icons/icons/home.svg')} className='dark:text-gray-100' />
 
           <Text>
             <FormattedMessage id='developers.navigation.test_timeline_label' defaultMessage='Test timeline' />

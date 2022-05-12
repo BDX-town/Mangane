@@ -43,7 +43,7 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
   return (
     <div className='thumb-navigation'>
       <ThumbNavigationLink
-        src={require('icons/feed.svg')}
+        src={require('@tabler/icons/icons/home.svg')}
         text={<FormattedMessage id='navigation.home' defaultMessage='Home' />}
         to='/'
         exact
