@@ -245,7 +245,10 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /** Whether the accounts who favourited or emoji-reacted to a status can be viewed through the API. */
-    exposableReactions: features.includes('exposable_reactions'),
+    exposableReactions: any([
+      v.software === MASTODON,
+      features.includes('exposable_reactions'),
+    ]),
 
     /** Whether the instance federates. */
     federating: federation.get('enabled', true) === true, // Assume true unless explicitly false
