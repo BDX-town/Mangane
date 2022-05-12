@@ -10,6 +10,7 @@ type IButtonStyles = {
   size: ButtonSizes
 }
 
+/** Provides class names for the <Button> component. */
 const useButtonStyles = ({
   theme,
   block,
