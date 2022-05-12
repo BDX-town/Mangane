@@ -337,7 +337,7 @@ class MediaGallery extends React.PureComponent {
     const aspectRatio = media.getIn([0, 'meta', 'original', 'aspect']);
 
     const getHeight = () => {
-      if (!aspectRatio) return width*9/16;
+      if (!aspectRatio) return width * 9 / 16;
       if (isPanoramic(aspectRatio)) return Math.floor(width / maximumAspectRatio);
       if (isPortrait(aspectRatio))  return Math.floor(width / minimumAspectRatio);
       return Math.floor(width / aspectRatio);

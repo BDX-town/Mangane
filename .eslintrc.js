@@ -21,6 +21,7 @@ module.exports = {
 
   plugins: [
     'react',
+    'jsdoc',
     'jsx-a11y',
     'import',
     'promise',
@@ -65,11 +66,14 @@ module.exports = {
     ],
     'comma-style': ['warn', 'last'],
     'space-before-function-paren': ['error', 'never'],
+    'space-infix-ops': 'error',
     'space-in-parens': ['error', 'never'],
+    'keyword-spacing': 'error',
     'consistent-return': 'error',
     'dot-notation': 'error',
     eqeqeq: 'error',
     indent: ['error', 2, {
+      SwitchCase: 1, // https://stackoverflow.com/a/53055584/8811886
       ignoredNodes: ['TemplateLiteral'],
     }],
     'jsx-quotes': ['error', 'prefer-single'],
@@ -266,6 +270,24 @@ module.exports = {
         'no-undef': 'off', // https://stackoverflow.com/a/69155899
       },
       parser: '@typescript-eslint/parser',
+    },
+    {
+      // Only enforce JSDoc comments on UI components for now.
+      // https://www.npmjs.com/package/eslint-plugin-jsdoc
+      files: ['app/soapbox/components/ui/**/*'],
+      rules: {
+        'jsdoc/require-jsdoc': ['error', {
+          publicOnly: true,
+          require: {
+            ArrowFunctionExpression: true,
+            ClassDeclaration: true,
+            ClassExpression: true,
+            FunctionDeclaration: true,
+            FunctionExpression: true,
+            MethodDefinition: true,
+          },
+        }],
+      },
     },
   ],
 };

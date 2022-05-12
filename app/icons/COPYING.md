@@ -1,8 +1,6 @@
 # Custom icons
 
-- dashboard-filled.svg - Modified from Tabler icons, MIT  
 - fediverse.svg - Modified from Wikipedia, CC0  
-- home-squared.svg - Modified from Tabler icons, MIT  
 - pen-plus.svg - Modified from Tabler icons, MIT  
 - verified.svg - Created by Alex Gleason. CC0
 

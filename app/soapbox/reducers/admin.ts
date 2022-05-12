@@ -137,12 +137,12 @@ function handleReportDiffs(state: State, reports: APIReport[]) {
   // hence the need for a new function.
   return state.withMutations(state => {
     reports.forEach(report => {
-      switch(report.state) {
-      case 'open':
-        state.update('openReports', orderedSet => orderedSet.add(report.id));
-        break;
-      default:
-        state.update('openReports', orderedSet => orderedSet.delete(report.id));
+      switch (report.state) {
+        case 'open':
+          state.update('openReports', orderedSet => orderedSet.add(report.id));
+          break;
+        default:
+          state.update('openReports', orderedSet => orderedSet.delete(report.id));
       }
     });
   });
@@ -159,25 +159,25 @@ const importConfigs = (state: State, configs: any): State => {
 };
 
 export default function admin(state: State = ReducerRecord(), action: AnyAction): State {
-  switch(action.type) {
-  case ADMIN_CONFIG_FETCH_SUCCESS:
-  case ADMIN_CONFIG_UPDATE_SUCCESS:
-    return importConfigs(state, action.configs);
-  case ADMIN_REPORTS_FETCH_SUCCESS:
-    return importReports(state, action.reports);
-  case ADMIN_REPORTS_PATCH_REQUEST:
-  case ADMIN_REPORTS_PATCH_SUCCESS:
-    return handleReportDiffs(state, action.reports);
-  case ADMIN_USERS_FETCH_SUCCESS:
-    return importUsers(state, action.users, action.filters, action.page);
-  case ADMIN_USERS_DELETE_REQUEST:
-  case ADMIN_USERS_DELETE_SUCCESS:
-    return deleteUsers(state, action.accountIds);
-  case ADMIN_USERS_APPROVE_REQUEST:
-    return state.update('awaitingApproval', set => set.subtract(action.accountIds));
-  case ADMIN_USERS_APPROVE_SUCCESS:
-    return approveUsers(state, action.users);
-  default:
-    return state;
+  switch (action.type) {
+    case ADMIN_CONFIG_FETCH_SUCCESS:
+    case ADMIN_CONFIG_UPDATE_SUCCESS:
+      return importConfigs(state, action.configs);
+    case ADMIN_REPORTS_FETCH_SUCCESS:
+      return importReports(state, action.reports);
+    case ADMIN_REPORTS_PATCH_REQUEST:
+    case ADMIN_REPORTS_PATCH_SUCCESS:
+      return handleReportDiffs(state, action.reports);
+    case ADMIN_USERS_FETCH_SUCCESS:
+      return importUsers(state, action.users, action.filters, action.page);
+    case ADMIN_USERS_DELETE_REQUEST:
+    case ADMIN_USERS_DELETE_SUCCESS:
+      return deleteUsers(state, action.accountIds);
+    case ADMIN_USERS_APPROVE_REQUEST:
+      return state.update('awaitingApproval', set => set.subtract(action.accountIds));
+    case ADMIN_USERS_APPROVE_SUCCESS:
+      return approveUsers(state, action.users);
+    default:
+      return state;
   }
 }

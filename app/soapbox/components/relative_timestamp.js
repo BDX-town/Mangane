@@ -54,16 +54,16 @@ const selectUnits = delta => {
 
 const getUnitDelay = units => {
   switch (units) {
-  case 'second':
-    return SECOND;
-  case 'minute':
-    return MINUTE;
-  case 'hour':
-    return HOUR;
-  case 'day':
-    return DAY;
-  default:
-    return MAX_DELAY;
+    case 'second':
+      return SECOND;
+    case 'minute':
+      return MINUTE;
+    case 'hour':
+      return HOUR;
+    case 'day':
+      return DAY;
+    default:
+      return MAX_DELAY;
   }
 };
 

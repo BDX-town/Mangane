@@ -9,9 +9,10 @@ import { fetchOwnAccounts } from 'soapbox/actions/auth';
 import { getSettings } from 'soapbox/actions/settings';
 import { closeSidebar } from 'soapbox/actions/sidebar';
 import Account from 'soapbox/components/account';
+import SiteLogo from 'soapbox/components/site-logo';
 import { Stack } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile_stats';
-import { useAppSelector, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
+import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount, makeGetOtherAccounts } from 'soapbox/selectors';
 import { getBaseURL } from 'soapbox/utils/accounts';
 
@@ -66,7 +67,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const intl = useIntl();
   const dispatch = useDispatch();
 
-  const { logo } = useSoapboxConfig();
   const features = useFeatures();
   const getAccount = makeGetAccount();
   const instance = useAppSelector((state) => state.instance);
@@ -141,15 +141,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
             <Stack space={4}>
               <HStack alignItems='center' justifyContent='between'>
                 <Link to='/' onClick={onClose}>
-                  {logo ? (
-                    <img alt='Logo' src={logo} className='h-5 w-auto cursor-pointer' />
-                  ):  (
-                    <Icon
-                      alt='Logo'
-                      src={require('@tabler/icons/icons/home.svg')}
-                      className='h-6 w-6 text-gray-400 hover:text-gray-600 dark:text-gray-200 cursor-pointer'
-                    />
-                  )}
+                  <SiteLogo alt='Logo' className='h-5 w-auto cursor-pointer' />
                 </Link>
 
                 <IconButton

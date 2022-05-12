@@ -111,22 +111,22 @@ const handleInstanceFetchFail = (state: typeof initialState, error: Record<strin
 };
 
 export default function instance(state = initialState, action: AnyAction) {
-  switch(action.type) {
-  case PLEROMA_PRELOAD_IMPORT:
-    return preloadImport(state, action, '/api/v1/instance');
-  case rememberInstance.fulfilled.type:
-    return importInstance(state, ImmutableMap(fromJS(action.payload)));
-  case fetchInstance.fulfilled.type:
-    persistInstance(action.payload);
-    return importInstance(state, ImmutableMap(fromJS(action.payload)));
-  case fetchInstance.rejected.type:
-    return handleInstanceFetchFail(state, action.error);
-  case fetchNodeinfo.fulfilled.type:
-    return importNodeinfo(state, ImmutableMap(fromJS(action.payload)));
-  case ADMIN_CONFIG_UPDATE_REQUEST:
-  case ADMIN_CONFIG_UPDATE_SUCCESS:
-    return importConfigs(state, ImmutableList(fromJS(action.configs)));
-  default:
-    return state;
+  switch (action.type) {
+    case PLEROMA_PRELOAD_IMPORT:
+      return preloadImport(state, action, '/api/v1/instance');
+    case rememberInstance.fulfilled.type:
+      return importInstance(state, ImmutableMap(fromJS(action.payload)));
+    case fetchInstance.fulfilled.type:
+      persistInstance(action.payload);
+      return importInstance(state, ImmutableMap(fromJS(action.payload)));
+    case fetchInstance.rejected.type:
+      return handleInstanceFetchFail(state, action.error);
+    case fetchNodeinfo.fulfilled.type:
+      return importNodeinfo(state, ImmutableMap(fromJS(action.payload)));
+    case ADMIN_CONFIG_UPDATE_REQUEST:
+    case ADMIN_CONFIG_UPDATE_SUCCESS:
+      return importConfigs(state, ImmutableList(fromJS(action.configs)));
+    default:
+      return state;
   }
 }

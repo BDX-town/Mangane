@@ -20,7 +20,7 @@ import PublicLayout from 'soapbox/features/public_layout';
 import NotificationsContainer from 'soapbox/features/ui/containers/notifications_container';
 import WaitlistPage from 'soapbox/features/verification/waitlist_page';
 import { createGlobals } from 'soapbox/globals';
-import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures, useSoapboxConfig, useSettings } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures, useSoapboxConfig, useSettings, useSystemTheme } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
@@ -82,17 +82,12 @@ const SoapboxMount = () => {
   const [localeLoading, setLocaleLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const colorSchemeQueryList = window.matchMedia('(prefers-color-scheme: dark)');
-  const [isSystemDarkMode, setSystemDarkMode] = useState(colorSchemeQueryList.matches);
+  const systemTheme = useSystemTheme();
   const userTheme = settings.get('themeMode');
-  const darkMode = userTheme === 'dark' || (userTheme === 'system' && isSystemDarkMode);
+  const darkMode = userTheme === 'dark' || (userTheme === 'system' && systemTheme === 'dark');
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
 
   const themeCss = generateThemeCss(soapboxConfig);
-
-  const handleSystemModeChange = (event: MediaQueryListEvent) => {
-    setSystemDarkMode(event.matches);
-  };
 
   // Load the user's locale
   useEffect(() => {
@@ -109,12 +104,6 @@ const SoapboxMount = () => {
     }).catch(() => {
       setIsLoaded(true);
     });
-  }, []);
-
-  useEffect(() => {
-    colorSchemeQueryList.addEventListener('change', handleSystemModeChange);
-
-    return () => colorSchemeQueryList.removeEventListener('change', handleSystemModeChange);
   }, []);
 
   // @ts-ignore: I don't actually know what these should be, lol

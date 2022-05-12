@@ -11,12 +11,12 @@ const initialState: State = {
 };
 
 export default function sidebar(state: State = initialState, action: AnyAction): State {
-  switch(action.type) {
-  case SIDEBAR_OPEN:
-    return { sidebarOpen: true };
-  case SIDEBAR_CLOSE:
-    return { sidebarOpen: false };
-  default:
-    return state;
+  switch (action.type) {
+    case SIDEBAR_OPEN:
+      return { sidebarOpen: true };
+    case SIDEBAR_CLOSE:
+      return { sidebarOpen: false };
+    default:
+      return state;
   }
 }

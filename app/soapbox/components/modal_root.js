@@ -208,7 +208,12 @@ class ModalRoot extends React.PureComponent {
         })}
         style={{ opacity: revealed ? 1 : 0 }}
       >
-        <div role='presentation' id='modal-overlay' className='fixed inset-0 bg-gray-600 bg-opacity-90' onClick={this.handleOnClose} />
+        <div
+          role='presentation'
+          id='modal-overlay'
+          className='fixed inset-0 bg-gray-600 bg-opacity-90'
+          onClick={this.handleOnClose}
+        />
 
         <div
           role='dialog'

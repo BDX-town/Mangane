@@ -183,44 +183,44 @@ const importMarker = (state, marker) => {
 };
 
 export default function notifications(state = ReducerRecord(), action) {
-  switch(action.type) {
-  case NOTIFICATIONS_EXPAND_REQUEST:
-    return state.set('isLoading', true);
-  case NOTIFICATIONS_EXPAND_FAIL:
-    return state.set('isLoading', false);
-  case NOTIFICATIONS_FILTER_SET:
-    return state.delete('items').set('hasMore', true);
-  case NOTIFICATIONS_SCROLL_TOP:
-    return updateTop(state, action.top);
-  case NOTIFICATIONS_UPDATE:
-    return importNotification(state, action.notification);
-  case NOTIFICATIONS_UPDATE_QUEUE:
-    return updateNotificationsQueue(state, action.notification, action.intlMessages, action.intlLocale);
-  case NOTIFICATIONS_DEQUEUE:
-    return state.withMutations(mutable => {
-      mutable.delete('queuedNotifications');
-      mutable.set('totalQueuedNotificationsCount', 0);
-    });
-  case NOTIFICATIONS_EXPAND_SUCCESS:
-    return expandNormalizedNotifications(state, action.notifications, action.next);
-  case ACCOUNT_BLOCK_SUCCESS:
-    return filterNotifications(state, action.relationship);
-  case ACCOUNT_MUTE_SUCCESS:
-    return action.relationship.muting_notifications ? filterNotifications(state, action.relationship) : state;
-  case FOLLOW_REQUEST_AUTHORIZE_SUCCESS:
-  case FOLLOW_REQUEST_REJECT_SUCCESS:
-    return filterNotificationIds(state, [action.id], 'follow_request');
-  case NOTIFICATIONS_CLEAR:
-    return state.delete('items').set('hasMore', false);
-  case NOTIFICATIONS_MARK_READ_REQUEST:
-    return state.set('lastRead', action.lastRead);
-  case MARKER_FETCH_SUCCESS:
-  case MARKER_SAVE_REQUEST:
-  case MARKER_SAVE_SUCCESS:
-    return importMarker(state, fromJS(action.marker));
-  case TIMELINE_DELETE:
-    return deleteByStatus(state, action.id);
-  default:
-    return state;
+  switch (action.type) {
+    case NOTIFICATIONS_EXPAND_REQUEST:
+      return state.set('isLoading', true);
+    case NOTIFICATIONS_EXPAND_FAIL:
+      return state.set('isLoading', false);
+    case NOTIFICATIONS_FILTER_SET:
+      return state.delete('items').set('hasMore', true);
+    case NOTIFICATIONS_SCROLL_TOP:
+      return updateTop(state, action.top);
+    case NOTIFICATIONS_UPDATE:
+      return importNotification(state, action.notification);
+    case NOTIFICATIONS_UPDATE_QUEUE:
+      return updateNotificationsQueue(state, action.notification, action.intlMessages, action.intlLocale);
+    case NOTIFICATIONS_DEQUEUE:
+      return state.withMutations(mutable => {
+        mutable.delete('queuedNotifications');
+        mutable.set('totalQueuedNotificationsCount', 0);
+      });
+    case NOTIFICATIONS_EXPAND_SUCCESS:
+      return expandNormalizedNotifications(state, action.notifications, action.next);
+    case ACCOUNT_BLOCK_SUCCESS:
+      return filterNotifications(state, action.relationship);
+    case ACCOUNT_MUTE_SUCCESS:
+      return action.relationship.muting_notifications ? filterNotifications(state, action.relationship) : state;
+    case FOLLOW_REQUEST_AUTHORIZE_SUCCESS:
+    case FOLLOW_REQUEST_REJECT_SUCCESS:
+      return filterNotificationIds(state, [action.id], 'follow_request');
+    case NOTIFICATIONS_CLEAR:
+      return state.delete('items').set('hasMore', false);
+    case NOTIFICATIONS_MARK_READ_REQUEST:
+      return state.set('lastRead', action.lastRead);
+    case MARKER_FETCH_SUCCESS:
+    case MARKER_SAVE_REQUEST:
+    case MARKER_SAVE_SUCCESS:
+      return importMarker(state, fromJS(action.marker));
+    case TIMELINE_DELETE:
+      return deleteByStatus(state, action.id);
+    default:
+      return state;
   }
 }

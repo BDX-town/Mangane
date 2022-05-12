@@ -20,14 +20,14 @@ const ThemeSelector: React.FC<IThemeSelector> = ({ value, onChange }) => {
 
   const themeIconSrc = useMemo(() => {
     switch (value) {
-    case 'system':
-      return require('@tabler/icons/icons/device-desktop.svg');
-    case 'light':
-      return require('@tabler/icons/icons/sun.svg');
-    case 'dark':
-      return require('@tabler/icons/icons/moon.svg');
-    default:
-      return null;
+      case 'system':
+        return require('@tabler/icons/icons/device-desktop.svg');
+      case 'light':
+        return require('@tabler/icons/icons/sun.svg');
+      case 'dark':
+        return require('@tabler/icons/icons/moon.svg');
+      default:
+        return null;
     }
   }, [value]);
 

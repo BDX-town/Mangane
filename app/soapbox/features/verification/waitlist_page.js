@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import LandingGradient from 'soapbox/components/landing-gradient';
+import SiteLogo from 'soapbox/components/site-logo';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { NotificationsContainer } from 'soapbox/features/ui/util/async-components';
 
@@ -15,8 +15,6 @@ import { Button, Stack, Text } from '../../components/ui';
 const WaitlistPage = ({ account }) => {
   const dispatch = useDispatch();
   const intl = useIntl();
-
-  const logo = useSelector((state) => getSoapboxConfig(state).get('logo'));
 
   const onClickLogOut = (event) => {
     event.preventDefault();
@@ -31,7 +29,7 @@ const WaitlistPage = ({ account }) => {
         <header className='relative flex justify-between h-16'>
           <div className='flex-1 flex items-stretch justify-center relative'>
             <Link to='/' className='cursor-pointer flex-shrink-0 flex items-center'>
-              <img alt='Logo' src={logo} className='h-7' />
+              <SiteLogo alt='Logo' className='h-7' />
             </Link>
 
             <div className='absolute inset-y-0 right-0 flex items-center pr-2 space-x-3'>

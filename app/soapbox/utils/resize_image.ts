@@ -15,33 +15,33 @@ const _browser_quirks: BrowserCanvasQuirks = {};
 // and https://github.com/blueimp/JavaScript-Load-Image/commit/1e4df707821a0afcc11ea0720ee403b8759f3881
 const dropOrientationIfNeeded = (orientation: number) => new Promise<number>(resolve => {
   switch (_browser_quirks['image-orientation-automatic']) {
-  case true:
-    resolve(1);
-    break;
-  case false:
-    resolve(orientation);
-    break;
-  default:
+    case true:
+      resolve(1);
+      break;
+    case false:
+      resolve(orientation);
+      break;
+    default:
     // black 2x1 JPEG, with the following meta information set:
     // - EXIF Orientation: 6 (Rotated 90° CCW)
-    const testImageURL =
+      const testImageURL =
       'data:image/jpeg;base64,/9j/4QAiRXhpZgAATU0AKgAAAAgAAQESAAMAAAABAAYAAAA' +
       'AAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBA' +
       'QEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE' +
       'BAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/AABEIAAEAAgMBEQACEQEDEQH/x' +
       'ABKAAEAAAAAAAAAAAAAAAAAAAALEAEAAAAAAAAAAAAAAAAAAAAAAQEAAAAAAAAAAAAAAAA' +
       'AAAAAEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwA/8H//2Q==';
-    const img = new Image();
-    img.onload = () => {
-      const automatic = (img.width === 1 && img.height === 2);
-      _browser_quirks['image-orientation-automatic'] = automatic;
-      resolve(automatic ? 1 : orientation);
-    };
-    img.onerror = () => {
-      _browser_quirks['image-orientation-automatic'] = false;
-      resolve(orientation);
-    };
-    img.src = testImageURL;
+      const img = new Image();
+      img.onload = () => {
+        const automatic = (img.width === 1 && img.height === 2);
+        _browser_quirks['image-orientation-automatic'] = automatic;
+        resolve(automatic ? 1 : orientation);
+      };
+      img.onerror = () => {
+        _browser_quirks['image-orientation-automatic'] = false;
+        resolve(orientation);
+      };
+      img.src = testImageURL;
   }
 });
 
@@ -171,13 +171,13 @@ const processImage = (
   }
 
   switch (orientation) {
-  case 2: context.transform(-1, 0, 0, 1, width, 0); break;
-  case 3: context.transform(-1, 0, 0, -1, width, height); break;
-  case 4: context.transform(1, 0, 0, -1, 0, height); break;
-  case 5: context.transform(0, 1, 1, 0, 0, 0); break;
-  case 6: context.transform(0, 1, -1, 0, height, 0); break;
-  case 7: context.transform(0, -1, -1, 0, height, width); break;
-  case 8: context.transform(0, -1, 1, 0, 0, width); break;
+    case 2: context.transform(-1, 0, 0, 1, width, 0); break;
+    case 3: context.transform(-1, 0, 0, -1, width, height); break;
+    case 4: context.transform(1, 0, 0, -1, 0, height); break;
+    case 5: context.transform(0, 1, 1, 0, 0, 0); break;
+    case 6: context.transform(0, 1, -1, 0, height, 0); break;
+    case 7: context.transform(0, -1, -1, 0, height, width); break;
+    case 8: context.transform(0, -1, 1, 0, 0, width); break;
   }
 
   context.drawImage(img, 0, 0, width, height);

@@ -26,42 +26,42 @@ module.exports = (api) => {
   };
 
   switch (env) {
-  case 'production':
-    config.plugins.push(...[
-      'lodash',
-      [
-        'transform-react-remove-prop-types',
-        {
-          mode: 'remove',
-          removeImport: true,
-          additionalLibraries: [
-            'react-immutable-proptypes',
-          ],
-        },
-      ],
-      '@babel/transform-react-inline-elements',
-      [
-        '@babel/transform-runtime',
-        {
-          helpers: true,
-          regenerator: false,
-          useESModules: true,
-        },
-      ],
-    ]);
-    break;
-  case 'development':
-    config.plugins.push(...[
-      '@babel/transform-react-jsx-source',
-      '@babel/transform-react-jsx-self',
-    ]);
-    break;
-  case 'test':
-    config.plugins.push(...[
-      'transform-require-context',
-    ]);
-    envOptions.modules = 'commonjs';
-    break;
+    case 'production':
+      config.plugins.push(...[
+        'lodash',
+        [
+          'transform-react-remove-prop-types',
+          {
+            mode: 'remove',
+            removeImport: true,
+            additionalLibraries: [
+              'react-immutable-proptypes',
+            ],
+          },
+        ],
+        '@babel/transform-react-inline-elements',
+        [
+          '@babel/transform-runtime',
+          {
+            helpers: true,
+            regenerator: false,
+            useESModules: true,
+          },
+        ],
+      ]);
+      break;
+    case 'development':
+      config.plugins.push(...[
+        '@babel/transform-react-jsx-source',
+        '@babel/transform-react-jsx-self',
+      ]);
+      break;
+    case 'test':
+      config.plugins.push(...[
+        'transform-require-context',
+      ]);
+      envOptions.modules = 'commonjs';
+      break;
   }
 
   return config;

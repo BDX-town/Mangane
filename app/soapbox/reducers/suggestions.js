@@ -49,25 +49,25 @@ const dismissAccounts = (state, accountIds) => {
 };
 
 export default function suggestionsReducer(state = initialState, action) {
-  switch(action.type) {
-  case SUGGESTIONS_FETCH_REQUEST:
-  case SUGGESTIONS_V2_FETCH_REQUEST:
-    return state.set('isLoading', true);
-  case SUGGESTIONS_FETCH_SUCCESS:
-    return importAccounts(state, action.accounts);
-  case SUGGESTIONS_V2_FETCH_SUCCESS:
-    return importSuggestions(state, action.suggestions);
-  case SUGGESTIONS_FETCH_FAIL:
-  case SUGGESTIONS_V2_FETCH_FAIL:
-    return state.set('isLoading', false);
-  case SUGGESTIONS_DISMISS:
-    return dismissAccount(state, action.id);
-  case ACCOUNT_BLOCK_SUCCESS:
-  case ACCOUNT_MUTE_SUCCESS:
-    return dismissAccount(state, action.relationship.id);
-  case DOMAIN_BLOCK_SUCCESS:
-    return dismissAccounts(state, action.accounts);
-  default:
-    return state;
+  switch (action.type) {
+    case SUGGESTIONS_FETCH_REQUEST:
+    case SUGGESTIONS_V2_FETCH_REQUEST:
+      return state.set('isLoading', true);
+    case SUGGESTIONS_FETCH_SUCCESS:
+      return importAccounts(state, action.accounts);
+    case SUGGESTIONS_V2_FETCH_SUCCESS:
+      return importSuggestions(state, action.suggestions);
+    case SUGGESTIONS_FETCH_FAIL:
+    case SUGGESTIONS_V2_FETCH_FAIL:
+      return state.set('isLoading', false);
+    case SUGGESTIONS_DISMISS:
+      return dismissAccount(state, action.id);
+    case ACCOUNT_BLOCK_SUCCESS:
+    case ACCOUNT_MUTE_SUCCESS:
+      return dismissAccount(state, action.relationship.id);
+    case DOMAIN_BLOCK_SUCCESS:
+      return dismissAccounts(state, action.accounts);
+    default:
+      return state;
   }
 }

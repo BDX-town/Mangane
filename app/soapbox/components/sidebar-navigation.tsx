@@ -35,8 +35,7 @@ const SidebarNavigation = () => {
           to: '/follow_requests',
           text: <FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' />,
           icon: require('@tabler/icons/icons/user-plus.svg'),
-          // TODO: let menu items have a counter
-          // count: followRequestsCount,
+          count: followRequestsCount,
         });
       }
 
@@ -138,7 +137,7 @@ const SidebarNavigation = () => {
       <div className='flex flex-col space-y-2'>
         <SidebarNavigationLink
           to='/'
-          icon={require('icons/feed.svg')}
+          icon={require('@tabler/icons/icons/home.svg')}
           text={<FormattedMessage id='tabs_bar.home' defaultMessage='Home' />}
         />
 
@@ -152,13 +151,13 @@ const SidebarNavigation = () => {
           <>
             <SidebarNavigationLink
               to={`/@${account.acct}`}
-              icon={require('icons/user.svg')}
+              icon={require('@tabler/icons/icons/user.svg')}
               text={<FormattedMessage id='tabs_bar.profile' defaultMessage='Profile' />}
             />
 
             <SidebarNavigationLink
               to='/notifications'
-              icon={require('icons/alert.svg')}
+              icon={require('@tabler/icons/icons/bell.svg')}
               count={notificationCount}
               text={<FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />}
             />

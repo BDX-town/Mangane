@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Helmet as ReactHelmet } from'react-helmet';
+import { Helmet as ReactHelmet } from 'react-helmet';
 
 import { useAppSelector, useSettings } from 'soapbox/hooks';
 import FaviconService from 'soapbox/utils/favicon_service';

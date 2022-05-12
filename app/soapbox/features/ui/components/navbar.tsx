@@ -4,9 +4,10 @@ import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { Avatar, Button, Icon } from 'soapbox/components/ui';
+import SiteLogo from 'soapbox/components/site-logo';
+import { Avatar, Button } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
-import { useOwnAccount, useSoapboxConfig, useSettings } from 'soapbox/hooks';
+import { useOwnAccount, useSoapboxConfig } from 'soapbox/hooks';
 
 import { openSidebar } from '../../../actions/sidebar';
 
@@ -17,13 +18,8 @@ const Navbar = () => {
   const node = React.useRef(null);
 
   const account = useOwnAccount();
-  const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
   const singleUserMode = soapboxConfig.get('singleUserMode');
-
-  // In demo mode, use the Soapbox logo
-  const logo = settings.get('demo') ? require('images/soapbox-logo.svg') : soapboxConfig.logo;
-  const logoDarkMode = soapboxConfig.logoDarkMode;
 
   const onOpenSidebar = () => dispatch(openSidebar());
 
@@ -46,21 +42,10 @@ const Navbar = () => {
               'justify-start': !account,
             })}
           >
-            {logo ? (
-              <Link key='logo' to='/' data-preview-title-id='column.home' className='flex-shrink-0 flex items-center'>
-                <img alt='Logo' src={logo} className={classNames('h-5 lg:h-6 w-auto cursor-pointer', { 'dark:hidden': logoDarkMode })} />
-                {logoDarkMode && (
-                  <img alt='Logo' src={logoDarkMode} className='h-5 lg:h-6 w-auto cursor-pointer hidden dark:block' />
-                )}
-
-                <span className='hidden'><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
-              </Link>
-            ) : (
-              <Link key='logo' to='/' data-preview-title-id='column.home' className='flex-shrink-0 flex items-center'>
-                <Icon alt='Logo' src={require('@tabler/icons/icons/home.svg')} className='h-5 lg:h-6 w-auto text-primary-700' />
-                <span className='hidden'><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
-              </Link>
-            )}
+            <Link key='logo' to='/' data-preview-title-id='column.home' className='flex-shrink-0 flex items-center'>
+              <SiteLogo alt='Logo' className='h-5 lg:h-6 w-auto cursor-pointer' />
+              <span className='hidden'><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
+            </Link>
 
             {account && (
               <div className='flex-1 hidden lg:flex justify-center px-2 lg:ml-6 lg:justify-start items-center'>

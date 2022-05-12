@@ -30,7 +30,7 @@ const CaptchaField: React.FC<ICaptchaField> = ({
   onFetch = noOp,
   onFetchFail = noOp,
   onClick = noOp,
-  refreshInterval = 5*60*1000, // 5 minutes, Pleroma default
+  refreshInterval = 5 * 60 * 1000, // 5 minutes, Pleroma default
   idempotencyKey,
 }) => {
   const dispatch = useAppDispatch();
@@ -71,26 +71,26 @@ const CaptchaField: React.FC<ICaptchaField> = ({
     };
   }, [idempotencyKey]);
 
-  switch(captcha.get('type')) {
-  case 'native':
-    return (
-      <div>
-        <Text>
-          <FormattedMessage id='registration.captcha.hint' defaultMessage='Click the image to get a new captcha' />
-        </Text>
+  switch (captcha.get('type')) {
+    case 'native':
+      return (
+        <div>
+          <Text>
+            <FormattedMessage id='registration.captcha.hint' defaultMessage='Click the image to get a new captcha' />
+          </Text>
 
-        <NativeCaptchaField
-          captcha={captcha}
-          onChange={onChange}
-          onClick={onClick}
-          name={name}
-          value={value}
-        />
-      </div>
-    );
-  case 'none':
-  default:
-    return null;
+          <NativeCaptchaField
+            captcha={captcha}
+            onChange={onChange}
+            onClick={onClick}
+            name={name}
+            value={value}
+          />
+        </div>
+      );
+    case 'none':
+    default:
+      return null;
   }
 };
 

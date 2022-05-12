@@ -85,17 +85,17 @@ export const findAccountByUsername = (state: RootState, username: string) => {
 
 const toServerSideType = (columnType: string): string => {
   switch (columnType) {
-  case 'home':
-  case 'notifications':
-  case 'public':
-  case 'thread':
-    return columnType;
-  default:
-    if (columnType.indexOf('list:') > -1) {
-      return 'home';
-    } else {
-      return 'public'; // community, account, hashtag
-    }
+    case 'home':
+    case 'notifications':
+    case 'public':
+    case 'thread':
+      return columnType;
+    default:
+      if (columnType.indexOf('list:') > -1) {
+        return 'home';
+      } else {
+        return 'public'; // community, account, hashtag
+      }
   }
 };
 

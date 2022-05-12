@@ -77,29 +77,29 @@ const handleSubmitted = (state, value) => {
 };
 
 export default function search(state = initialState, action) {
-  switch(action.type) {
-  case SEARCH_CHANGE:
-    return state.set('value', action.value);
-  case SEARCH_CLEAR:
-    return initialState;
-  case SEARCH_SHOW:
-    return state.set('hidden', false);
-  case COMPOSE_REPLY:
-  case COMPOSE_MENTION:
-  case COMPOSE_DIRECT:
-  case COMPOSE_QUOTE:
-    return state.set('hidden', true);
-  case SEARCH_FETCH_REQUEST:
-    return handleSubmitted(state, action.value);
-  case SEARCH_FETCH_SUCCESS:
-    return importResults(state, action.results, action.searchTerm, action.searchType);
-  case SEARCH_FILTER_SET:
-    return state.set('filter', action.value);
-  case SEARCH_EXPAND_REQUEST:
-    return state.setIn(['results', `${action.searchType}Loaded`], false);
-  case SEARCH_EXPAND_SUCCESS:
-    return paginateResults(state, action.searchType, action.results, action.searchTerm);
-  default:
-    return state;
+  switch (action.type) {
+    case SEARCH_CHANGE:
+      return state.set('value', action.value);
+    case SEARCH_CLEAR:
+      return initialState;
+    case SEARCH_SHOW:
+      return state.set('hidden', false);
+    case COMPOSE_REPLY:
+    case COMPOSE_MENTION:
+    case COMPOSE_DIRECT:
+    case COMPOSE_QUOTE:
+      return state.set('hidden', true);
+    case SEARCH_FETCH_REQUEST:
+      return handleSubmitted(state, action.value);
+    case SEARCH_FETCH_SUCCESS:
+      return importResults(state, action.results, action.searchTerm, action.searchType);
+    case SEARCH_FILTER_SET:
+      return state.set('filter', action.value);
+    case SEARCH_EXPAND_REQUEST:
+      return state.setIn(['results', `${action.searchType}Loaded`], false);
+    case SEARCH_EXPAND_SUCCESS:
+      return paginateResults(state, action.searchType, action.results, action.searchTerm);
+    default:
+      return state;
   }
 }
