@@ -420,7 +420,10 @@ const getInstanceFeatures = (instance: Instance) => {
      * Ability to post statuses in Markdown, BBCode, and HTML.
      * @see POST /api/v1/statuses
      */
-    richText: v.software === PLEROMA,
+    richText: any([
+      v.software === MASTODON && v.build === 'glitch',
+      v.software === PLEROMA,
+    ]),
 
     /**
      * Can schedule statuses to be posted at a later time.
