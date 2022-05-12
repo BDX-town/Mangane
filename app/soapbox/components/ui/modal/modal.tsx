@@ -73,7 +73,7 @@ const Modal: React.FC<IModal> = ({
                 src={require('@tabler/icons/icons/x.svg')}
                 title={intl.formatMessage(messages.close)}
                 onClick={onClose}
-                className='text-gray-500 hover:text-gray-700'
+                className='text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200'
               />
             )}
           </div>
