@@ -2,6 +2,14 @@
   @apply p-4 font-sans text-xs text-gray-900 border border-solid border-gray-200 rounded-lg;
 }
 
+.react-datepicker__input-container > input {
+  @apply dark:bg-slate-800 dark:text-white block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500;
+
+  &.has-error {
+    @apply text-red-600 border-red-600;
+  }
+}
+
 .react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::before,
 .react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::after {
   @apply border-b-white;

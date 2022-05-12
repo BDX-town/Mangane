@@ -6,11 +6,11 @@ import React from 'react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
+import { setSchedule, removeSchedule } from 'soapbox/actions/compose';
 import IconButton from 'soapbox/components/icon_button';
+import { HStack, Stack, Text } from 'soapbox/components/ui';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { DatePicker } from 'soapbox/features/ui/util/async-components';
-
-import { setSchedule, removeSchedule } from '../../../actions/compose';
 
 const messages = defineMessages({
   schedule: { id: 'schedule.post_time', defaultMessage: 'Post Date/Time' },
@@ -99,11 +99,11 @@ class ScheduleForm extends React.Component {
     const { intl, scheduledAt } = this.props;
 
     return (
-      <div className={classNames('datepicker', { 'datepicker--error': !this.isFiveMinutesFromNow(scheduledAt) })}>
-        <div className='datepicker__hint'>
+      <Stack>
+        <Text style='muted'>
           <FormattedMessage id='datepicker.hint' defaultMessage='Scheduled to post at…' />
-        </div>
-        <div className='datepicker__input'>
+        </Text>
+        <HStack className='mb-2' space={2} alignItems='center'>
           <BundleContainer fetchComponent={DatePicker}>
             {Component => (<Component
               selected={scheduledAt}
@@ -116,13 +116,20 @@ class ScheduleForm extends React.Component {
               filterDate={this.isCurrentOrFutureDate}
               filterTime={this.isFiveMinutesFromNow}
               ref={this.setRef}
+              className={classNames({
+                'has-error': !this.isFiveMinutesFromNow(scheduledAt),
+              })}
             />)}
           </BundleContainer>
-          <div className='datepicker__cancel'>
-            <IconButton title={intl.formatMessage(messages.remove)} src={require('@tabler/icons/icons/x.svg')} onClick={this.handleRemove} />
-          </div>
-        </div>
-      </div>
+          <IconButton
+            iconClassName='w-4 h-4'
+            className='bg-transparent text-gray-400 hover:text-gray-600'
+            src={require('@tabler/icons/icons/x.svg')}
+            onClick={this.handleRemove}
+            title={intl.formatMessage(messages.remove)}
+          />
+        </HStack>
+      </Stack>
     );
   }
 
