@@ -497,3 +497,7 @@ export function DatePicker() {
 export function CompareHistoryModal() {
   return import(/*webpackChunkName: "modals/compare_history_modal" */'../components/compare_history_modal');
 }
+
+export function AuthTokenList() {
+  return import(/* webpackChunkName: "features/auth_token_list" */'../../auth_token_list');
+}

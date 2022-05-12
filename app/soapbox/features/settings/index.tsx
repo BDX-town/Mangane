@@ -4,10 +4,11 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { fetchMfa } from 'soapbox/actions/mfa';
+import List, { ListItem } from 'soapbox/components/list';
+import { Button, Card, CardBody, CardHeader, CardTitle, Column } from 'soapbox/components/ui';
 import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
+import { getFeatures } from 'soapbox/utils/features';
 
-import List, { ListItem } from '../../components/list';
-import { Button, Card, CardBody, CardHeader, CardTitle, Column } from '../../components/ui';
 import Preferences from '../preferences';
 
 const messages = defineMessages({
@@ -19,6 +20,7 @@ const messages = defineMessages({
   changeEmail: { id: 'settings.change_email', defaultMessage: 'Change Email' },
   changePassword: { id: 'settings.change_password', defaultMessage: 'Change Password' },
   configureMfa: { id: 'settings.configure_mfa', defaultMessage: 'Configure MFA' },
+  sessions: { id: 'settings.sessions', defaultMessage: 'Active sessions' },
   deleteAccount: { id: 'settings.delete_account', defaultMessage: 'Delete Account' },
 });
 
@@ -29,11 +31,13 @@ const Settings = () => {
   const intl = useIntl();
 
   const mfa = useAppSelector((state) => state.security.get('mfa'));
+  const features = useAppSelector((state) => getFeatures(state.instance));
   const account = useOwnAccount();
 
   const navigateToChangeEmail = React.useCallback(() => history.push('/settings/email'), [history]);
   const navigateToChangePassword = React.useCallback(() => history.push('/settings/password'), [history]);
   const navigateToMfa = React.useCallback(() => history.push('/settings/mfa'), [history]);
+  const navigateToSessions = React.useCallback(() => history.push('/settings/tokens'), [history]);
   const navigateToEditProfile = React.useCallback(() => history.push('/settings/profile'), [history]);
 
   const isMfaEnabled = mfa.getIn(['settings', 'totp']);
@@ -74,6 +78,9 @@ const Settings = () => {
                 intl.formatMessage({ id: 'mfa.enabled', defaultMessage: 'Enabled' }) :
                 intl.formatMessage({ id: 'mfa.disabled', defaultMessage: 'Disabled' })}
             </ListItem>
+            {features.sessionsAPI && (
+              <ListItem label={intl.formatMessage(messages.sessions)} onClick={navigateToSessions} />
+            )}
           </List>
         </CardBody>
 

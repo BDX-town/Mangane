@@ -43,8 +43,6 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
 
           const poll = typeof version.poll !== 'string' && version.poll;
 
-          console.log(version.toJS());
-
           return (
             <div className='flex flex-col py-2 first:pt-0 last:pb-0'>
               {version.spoiler_text?.length > 0 && (

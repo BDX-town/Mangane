@@ -704,31 +704,6 @@ code {
   }
 }
 
-.authtokens {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-gap: 20px;
-}
-
-.authtoken {
-  &__app-name {
-    font-size: 16px;
-    font-weight: bold;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  &__valid-until {
-    font-size: 14px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  &__revoke {
-    margin-top: 10px;
-  }
-}
-
 .file-picker img {
   max-width: 100px;
   max-height: 100px;
