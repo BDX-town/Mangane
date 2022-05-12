@@ -5,13 +5,19 @@ import { NavLink } from 'react-router-dom';
 import { Icon, Text, Counter } from './ui';
 
 interface ISidebarNavigationLink {
+  /** Notification count, if any. */
   count?: number,
+  /** URL to an SVG icon. */
   icon: string,
-  text: string | React.ReactElement,
+  /** Link label. */
+  text: React.ReactElement,
+  /** Route to an internal page. */
   to?: string,
+  /** Callback when the link is clicked. */
   onClick?: React.EventHandler<React.MouseEvent>,
 }
 
+/** Desktop sidebar navigation link. */
 const SidebarNavigationLink = React.forwardRef((props: ISidebarNavigationLink, ref: React.ForwardedRef<HTMLAnchorElement>): JSX.Element => {
   const { icon, text, to = '', count, onClick } = props;
   const isActive = location.pathname === to;
