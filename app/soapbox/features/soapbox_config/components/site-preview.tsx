@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { defaultSettings } from 'soapbox/actions/settings';
 import BackgroundShapes from 'soapbox/features/ui/components/background_shapes';
+import { useSystemTheme } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
@@ -17,7 +18,10 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
   const soapboxConfig = useMemo(() => normalizeSoapboxConfig(soapbox), [soapbox]);
   const settings = defaultSettings.mergeDeep(soapboxConfig.defaultSettings);
 
-  const dark = settings.get('themeMode') === 'dark';
+  const userTheme = settings.get('themeMode');
+  const systemTheme = useSystemTheme();
+
+  const dark = userTheme === 'dark' || (userTheme === 'system' && systemTheme === 'dark');
 
   const bodyClass = classNames(
     'site-preview',
