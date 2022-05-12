@@ -8,7 +8,7 @@ import { dismissAlert } from '../../../actions/alerts';
 import { getAlerts } from '../../../selectors';
 
 const CustomNotificationStack = (props) => (
-  <div role='assertive' data-testid='toast' className='z-1000 fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start'>
+  <div role='assertive' data-testid='toast' className='z-1000 fixed inset-0 flex items-end px-4 py-6 pointer-events-none pt-16 lg:pt-20 sm:items-start'>
     <NotificationStack {...props} />
   </div>
 );
