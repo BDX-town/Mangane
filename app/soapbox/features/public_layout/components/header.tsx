@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -6,6 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
+import SiteLogo from 'soapbox/components/site-logo';
 import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
 import { openModal } from '../../../actions/modals';
@@ -31,7 +31,6 @@ const Header = () => {
   const soapboxConfig = useSoapboxConfig();
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
 
-  const { logo, logoDarkMode } = soapboxConfig;
   const features = useFeatures();
   const instance = useAppSelector((state) => state.instance);
   const isOpen   = features.accountCreation && instance.registrations;
@@ -80,11 +79,7 @@ const Header = () => {
               <Sonar />
             </div>
             <Link to='/' className='z-10'>
-              <img alt='Logo' src={logo} className={classNames('h-6 w-auto cursor-pointer', { 'dark:hidden': logoDarkMode })} />
-              {logoDarkMode && (
-                <img alt='Logo' src={logoDarkMode} className='h-6 w-auto cursor-pointer hidden dark:block' />
-              )}
-
+              <SiteLogo alt='Logo' className='h-6 w-auto cursor-pointer' />
               <span className='hidden'>{intl.formatMessage(messages.home)}</span>
             </Link>
           </div>

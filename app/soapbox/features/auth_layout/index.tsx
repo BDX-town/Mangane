@@ -2,10 +2,10 @@ import React from 'react';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 
 import LandingGradient from 'soapbox/components/landing-gradient';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
+import SiteLogo from 'soapbox/components/site-logo';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { NotificationsContainer } from 'soapbox/features/ui/util/async-components';
-import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector } from 'soapbox/hooks';
 
 import { Card, CardBody } from '../../components/ui';
 import LoginPage from '../auth_login/components/login_page';
@@ -18,7 +18,6 @@ import Verification from '../verification';
 import EmailPassthru from '../verification/email_passthru';
 
 const AuthLayout = () => {
-  const { logo } = useSoapboxConfig();
   const siteTitle = useAppSelector(state => state.instance.title);
 
   return (
@@ -29,15 +28,7 @@ const AuthLayout = () => {
         <div className='w-full sm:max-w-lg md:max-w-2xl space-y-8'>
           <header className='flex justify-center relative'>
             <Link to='/' className='cursor-pointer'>
-              {logo ? (
-                <img src={logo} alt={siteTitle} className='h-7' />
-              ) : (
-                <SvgIcon
-                  className='w-7 h-7 dark:text-white'
-                  alt={siteTitle}
-                  src={require('@tabler/icons/icons/home.svg')}
-                />
-              )}
+              <SiteLogo alt={siteTitle} className='h-7' />
             </Link>
           </header>
 
