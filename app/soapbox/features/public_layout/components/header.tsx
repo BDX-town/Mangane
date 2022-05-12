@@ -1,5 +1,5 @@
 import React from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
@@ -30,10 +30,11 @@ const Header = () => {
 
   const soapboxConfig = useSoapboxConfig();
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
+  const { links } = soapboxConfig;
 
   const features = useFeatures();
   const instance = useAppSelector((state) => state.instance);
-  const isOpen   = features.accountCreation && instance.registrations;
+  const isOpen = features.accountCreation && instance.registrations;
   const pepeOpen = useAppSelector(state => state.verification.getIn(['instance', 'registrations'], false) === true);
 
   const [isLoading, setLoading] = React.useState(false);
@@ -92,6 +93,18 @@ const Header = () => {
             />
 
             <div className='hidden md:flex items-center space-x-6'>
+              <HStack space={6} alignItems='center'>
+                {links.get('help') && (
+                  <a
+                    href={links.get('help')}
+                    target='_blank'
+                    className='text-sm font-medium text-gray-500 hover:text-gray-900'
+                  >
+                    <FormattedMessage id='landing_page_modal.helpCenter' defaultMessage='Help Center' />
+                  </a>
+                )}
+              </HStack>
+
               <HStack space={2} className='xl:hidden'>
                 <Button to='/login' theme='secondary'>
                   {intl.formatMessage(messages.login)}
