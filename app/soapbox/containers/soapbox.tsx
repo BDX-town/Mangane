@@ -165,7 +165,7 @@ const SoapboxMount = () => {
                 {/* We should prefer using /signup in components. */}
                 {pepeEnabled ? (
                   <Redirect from='/signup' to='/verify' />
-                ): (
+                ) : (
                   <Redirect from='/verify' to='/signup' />
                 )}
 
