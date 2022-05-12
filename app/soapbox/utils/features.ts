@@ -51,6 +51,12 @@ export const TRUTHSOCIAL = 'TruthSocial';
  */
 export const SOAPBOX = 'soapbox';
 
+/**
+ * glitch-soc, fork of Mastodon with a number of experimental features.
+ * @see {@link https://glitch-soc.github.io/docs/}
+ */
+export const GLITCH = 'glitch';
+
 /** Parse features for the given instance */
 const getInstanceFeatures = (instance: Instance) => {
   const v = parseVersion(instance.version);
@@ -421,7 +427,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/statuses
      */
     richText: any([
-      v.software === MASTODON && v.build === 'glitch',
+      v.software === MASTODON && v.build === GLITCH,
       v.software === PLEROMA,
     ]),
 
