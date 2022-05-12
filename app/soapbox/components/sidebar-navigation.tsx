@@ -57,9 +57,10 @@ const SidebarNavigation = () => {
 
       if (instance.invites_enabled) {
         menu.push({
-          to: `${baseURL}/invites`,
+          href: `${baseURL}/invites`,
           icon: require('@tabler/icons/icons/mailbox.svg'),
           text: <FormattedMessage id='navigation.invites' defaultMessage='Invites' />,
+          newTab: true,
         });
       }
 

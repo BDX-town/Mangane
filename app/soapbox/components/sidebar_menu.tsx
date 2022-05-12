@@ -42,14 +42,15 @@ const messages = defineMessages({
 });
 
 interface ISidebarLink {
-  to: string,
+  href?: string,
+  to?: string,
   icon: string,
   text: string | JSX.Element,
   onClick: React.EventHandler<React.MouseEvent>,
 }
 
-const SidebarLink: React.FC<ISidebarLink> = ({ to, icon, text, onClick }) => (
-  <NavLink className='group py-1 rounded-md' to={to} onClick={onClick}>
+const SidebarLink: React.FC<ISidebarLink> = ({ href, to, icon, text, onClick }) => {
+  const body = (
     <HStack space={2} alignItems='center'>
       <div className='bg-primary-50 dark:bg-slate-700 relative rounded inline-flex p-2'>
         <Icon src={icon} className='text-primary-600 h-5 w-5' />
@@ -57,8 +58,22 @@ const SidebarLink: React.FC<ISidebarLink> = ({ to, icon, text, onClick }) => (
 
       <Text tag='span' weight='medium' theme='muted' className='group-hover:text-gray-800 dark:group-hover:text-gray-200'>{text}</Text>
     </HStack>
-  </NavLink>
-);
+  );
+
+  if (to) {
+    return (
+      <NavLink className='group py-1 rounded-md' to={to} onClick={onClick}>
+        {body}
+      </NavLink>
+    );
+  }
+
+  return (
+    <a className='group py-1 rounded-md' href={href} target='_blank' onClick={onClick}>
+      {body}
+    </a>
+  );
+};
 
 const getOtherAccounts = makeGetOtherAccounts();
 
@@ -228,7 +243,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
                 {instance.invites_enabled && (
                   <SidebarLink
-                    to={`${baseURL}/invites`}
+                    href={`${baseURL}/invites`}
                     icon={require('@tabler/icons/icons/mailbox.svg')}
                     text={intl.formatMessage(messages.invites)}
                     onClick={onClose}
