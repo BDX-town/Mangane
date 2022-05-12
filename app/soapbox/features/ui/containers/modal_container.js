@@ -21,14 +21,14 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch) => ({
   onClose(type) {
     switch (type) {
-    case 'COMPOSE':
-      dispatch(cancelReplyCompose());
-      break;
-    case 'REPORT':
-      dispatch(cancelReport());
-      break;
-    default:
-      break;
+      case 'COMPOSE':
+        dispatch(cancelReplyCompose());
+        break;
+      case 'REPORT':
+        dispatch(cancelReport());
+        break;
+      default:
+        break;
     }
 
     dispatch(closeModal(type));
