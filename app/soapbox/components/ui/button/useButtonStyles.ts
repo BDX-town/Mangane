@@ -19,7 +19,7 @@ const useButtonStyles = ({
 }: IButtonStyles) => {
   const themes = {
     primary:
-      'border-transparent text-white bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 focus:ring-2 focus:ring-offset-2',
+      'border-primary-600 text-white bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 focus:ring-2 focus:ring-offset-2',
     secondary:
       'border-transparent text-primary-700 bg-primary-100 hover:bg-primary-200 focus:ring-primary-500 focus:ring-2 focus:ring-offset-2',
     ghost: 'shadow-none border-gray-200 text-gray-700 bg-white dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 focus:ring-primary-500 focus:ring-2 focus:ring-offset-2',
