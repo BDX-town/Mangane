@@ -11,11 +11,12 @@ interface IThreadStatus {
   focusedStatusId: string,
 }
 
+/** Status with reply-connector in threads. */
 const ThreadStatus: React.FC<IThreadStatus> = (props): JSX.Element => {
   const { id, focusedStatusId } = props;
 
-  const replyToId = useAppSelector(state => state.contexts.getIn(['inReplyTos', id]));
-  const replyCount = useAppSelector(state => state.contexts.getIn(['replies', id], ImmutableOrderedSet()).size);
+  const replyToId = useAppSelector(state => state.contexts.inReplyTos.get(id));
+  const replyCount = useAppSelector(state => state.contexts.replies.get(id, ImmutableOrderedSet()).size);
   const isLoaded = useAppSelector(state => Boolean(state.statuses.get(id)));
 
   const renderConnector = (): JSX.Element | null => {

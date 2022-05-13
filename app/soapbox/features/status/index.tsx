@@ -97,11 +97,11 @@ const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();
 
   const getAncestorsIds = createSelector([
-    (_: RootState, statusId: string) => statusId,
-    (state: RootState) => state.contexts.get('inReplyTos'),
+    (_: RootState, statusId: string | undefined) => statusId,
+    (state: RootState) => state.contexts.inReplyTos,
   ], (statusId, inReplyTos) => {
-    let ancestorsIds = ImmutableOrderedSet();
-    let id = statusId;
+    let ancestorsIds = ImmutableOrderedSet<string>();
+    let id: string | undefined = statusId;
 
     while (id && !ancestorsIds.includes(id)) {
       ancestorsIds = ImmutableOrderedSet([id]).union(ancestorsIds);
@@ -113,13 +113,15 @@ const makeMapStateToProps = () => {
 
   const getDescendantsIds = createSelector([
     (_: RootState, statusId: string) => statusId,
-    (state: RootState) => state.contexts.get('replies'),
+    (state: RootState) => state.contexts.replies,
   ], (statusId, contextReplies) => {
     let descendantsIds = ImmutableOrderedSet();
     const ids = [statusId];
 
     while (ids.length > 0) {
-      const id      = ids.shift();
+      const id = ids.shift();
+      if (!id) break;
+
       const replies = contextReplies.get(id);
 
       if (descendantsIds.includes(id)) {
@@ -147,7 +149,7 @@ const makeMapStateToProps = () => {
 
     if (status) {
       const statusId = status.id;
-      ancestorsIds = getAncestorsIds(state, state.contexts.getIn(['inReplyTos', statusId]));
+      ancestorsIds = getAncestorsIds(state, state.contexts.inReplyTos.get(statusId));
       descendantsIds = getDescendantsIds(state, statusId);
       ancestorsIds = ancestorsIds.delete(statusId).subtract(descendantsIds);
       descendantsIds = descendantsIds.delete(statusId).subtract(ancestorsIds);
