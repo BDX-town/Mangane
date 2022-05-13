@@ -40,9 +40,7 @@ describe('contexts reducer', () => {
       expect(result.inReplyTos.get('C')).toBe('C-tombstone');
       expect(result.replies.get('A').toArray()).toEqual(['C-tombstone']);
     });
-  });
 
-  describe(CONTEXT_FETCH_SUCCESS, () => {
     it('inserts a tombstone connecting an orphaned descendant (with null in_reply_to_id)', () => {
       const status = { id: 'A', in_reply_to_id: null };
 
@@ -62,6 +60,32 @@ describe('contexts reducer', () => {
       const result = applyActions(undefined, actions, reducer);
       expect(result.inReplyTos.get('C')).toBe('C-tombstone');
       expect(result.replies.get('A').toArray()).toEqual(['C-tombstone']);
+    });
+
+    it('doesn\'t explode when it encounters a loop', () => {
+      const status = { id: 'A', in_reply_to_id: null };
+
+      const context = {
+        id: 'A',
+        ancestors: [],
+        descendants: [
+          { id: 'C', in_reply_to_id: 'E' },
+          { id: 'D', in_reply_to_id: 'C' },
+          { id: 'E', in_reply_to_id: 'D' },
+          { id: 'F', in_reply_to_id: 'F' },
+        ],
+      };
+
+      const actions = [
+        { type: STATUS_IMPORT, status },
+        { type: CONTEXT_FETCH_SUCCESS, ...context },
+      ];
+
+      const result = applyActions(undefined, actions, reducer);
+
+      // These checks are superficial. We just don't want a stack overflow!
+      expect(result.inReplyTos.get('C')).toBe('C-tombstone');
+      expect(result.replies.get('A').toArray()).toEqual(['C-tombstone', 'F-tombstone']);
     });
   });
 
