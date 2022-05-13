@@ -45,7 +45,7 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
     onClose('UNAUTHORIZED');
   };
 
-  const onClickProceed: React.MouseEventHandler = e => {
+  const onSubmit: React.FormEventHandler = e => {
     e.preventDefault();
 
     dispatch(remoteInteraction(apId, account))
@@ -101,7 +101,7 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
         secondaryText={<FormattedMessage id='account.register' defaultMessage='Sign up' />}
       >
         <div className='remote-interaction-modal__content'>
-          <form className='simple_form remote-interaction-modal__fields'>
+          <form className='simple_form remote-interaction-modal__fields' onSubmit={onSubmit}>
             <input
               type='text'
               placeholder={intl.formatMessage(messages.accountPlaceholder)}
@@ -112,7 +112,7 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
               onChange={onAccountChange}
               required
             />
-            <Button theme='primary' onClick={onClickProceed}>{button}</Button>
+            <Button type='submit' theme='primary'>{button}</Button>
           </form>
           <div className='remote-interaction-modal__divider'>
             <Text align='center'>
