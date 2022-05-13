@@ -6,8 +6,10 @@ import {
 
 import context1 from 'soapbox/__fixtures__/context_1.json';
 import context2 from 'soapbox/__fixtures__/context_2.json';
+import { STATUSES_IMPORT } from 'soapbox/actions/importer';
 import { CONTEXT_FETCH_SUCCESS } from 'soapbox/actions/statuses';
 import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
+import { applyActions } from 'soapbox/jest/test-helpers';
 
 import reducer, { ReducerRecord } from '../contexts';
 
@@ -21,9 +23,27 @@ describe('contexts reducer', () => {
 
   it('should support rendering a complete tree', () => {
     // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/422
-    let result;
-    result = reducer(result, { type: CONTEXT_FETCH_SUCCESS, id: '9zIH8WYwtnUx4yDzUm', ancestors: context1.ancestors, descendants: context1.descendants });
-    result = reducer(result, { type: CONTEXT_FETCH_SUCCESS, id: '9zIH7PUdhK3Ircg4hM', ancestors: context2.ancestors, descendants: context2.descendants });
+    const actions = [{
+      type: STATUSES_IMPORT,
+      statuses: [
+        ...context1.ancestors,
+        ...context1.descendants,
+        ...context2.ancestors,
+        ...context2.descendants,
+      ],
+    }, {
+      type: CONTEXT_FETCH_SUCCESS,
+      id: '9zIH8WYwtnUx4yDzUm',
+      ancestors: context1.ancestors,
+      descendants: context1.descendants,
+    }, {
+      type: CONTEXT_FETCH_SUCCESS,
+      id: '9zIH7PUdhK3Ircg4hM',
+      ancestors: context2.ancestors,
+      descendants: context2.descendants,
+    }];
+
+    const result = applyActions(undefined, actions, reducer);
 
     expect(result).toEqual(ReducerRecord({
       inReplyTos: ImmutableMap({
