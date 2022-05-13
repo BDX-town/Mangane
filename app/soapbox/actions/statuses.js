@@ -216,10 +216,10 @@ export function fetchStatusWithContext(id) {
     const features = getFeatures(getState().instance);
 
     if (features.paginatedContext) {
+      await dispatch(fetchStatus(id));
       const responses = await Promise.all([
         dispatch(fetchAncestors(id)),
         dispatch(fetchDescendants(id)),
-        dispatch(fetchStatus(id)),
       ]);
 
       dispatch({
