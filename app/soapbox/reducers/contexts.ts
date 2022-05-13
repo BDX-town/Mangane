@@ -58,31 +58,8 @@ const importStatuses = (state: State, statuses: ContextStatus[]): State => {
   });
 };
 
-const isReplyTo = (
-  state: State,
-  childId: string | undefined,
-  parentId: string,
-  initialId: string | null = null,
-): boolean => {
-  if (!childId) return false;
-
-  // Prevent cycles
-  if (childId === initialId) return false;
-  initialId = initialId || childId;
-
-  if (childId === parentId) {
-    return true;
-  } else {
-    const nextId = state.inReplyTos.get(childId);
-    return isReplyTo(state, nextId, parentId, initialId);
-  }
-};
-
 /** Insert a fake status ID connecting descendant to ancestor. */
 const insertTombstone = (state: State, ancestorId: string, descendantId: string): State => {
-  // Prevent infinite loop if the API returns a bogus response
-  if (isReplyTo(state, ancestorId, descendantId)) return state;
-
   const tombstoneId = `${descendantId}-tombstone`;
   return state.withMutations(state => {
     importStatus(state, { id: tombstoneId, in_reply_to_id: ancestorId });
