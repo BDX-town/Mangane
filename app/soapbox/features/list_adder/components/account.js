@@ -5,7 +5,7 @@ import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
 import Avatar from '../../../components/avatar';
-import DisplayName from '../../../components/display_name';
+import DisplayName from '../../../components/display-name';
 import { makeGetAccount } from '../../../selectors';
 
 const makeMapStateToProps = () => {

@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { fetchAccount } from 'soapbox/actions/accounts';
 import { addToMentions, removeFromMentions } from 'soapbox/actions/compose';
 import Avatar from 'soapbox/components/avatar';
-import DisplayName from 'soapbox/components/display_name';
+import DisplayName from 'soapbox/components/display-name';
 import IconButton from 'soapbox/components/icon_button';
 import { makeGetAccount } from 'soapbox/selectors';
 

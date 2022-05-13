@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { NavLink } from 'react-router-dom';
 
 import AvatarOverlay from 'soapbox/components/avatar_overlay';
-import DisplayName from 'soapbox/components/display_name';
+import DisplayName from 'soapbox/components/display-name';
 import Icon from 'soapbox/components/icon';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';

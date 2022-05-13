@@ -5,7 +5,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 
 import Avatar from 'soapbox/components/avatar';
-import DisplayName from 'soapbox/components/display_name';
+import DisplayName from 'soapbox/components/display-name';
 import IconButton from 'soapbox/components/icon_button';
 import Permalink from 'soapbox/components/permalink';
 
