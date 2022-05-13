@@ -67,15 +67,41 @@ const insertTombstone = (state, ancestorId, descendantId) => {
   });
 };
 
-const importBranch = (state, statuses, rootId) => {
+/** Find the highest level status from this statusId. */
+const getRootNode = (state, statusId, initialId = statusId) => {
+  const parent = state.getIn(['inReplyTos', statusId]);
+
+  if (!parent) {
+    return statusId;
+  } else if (parent === initialId) {
+    // Prevent cycles
+    return parent;
+  } else {
+    return getRootNode(state, parent, initialId);
+  }
+};
+
+/** Route fromId to toId by inserting tombstones. */
+const connectNodes = (state, fromId, toId) => {
+  const root = getRootNode(state, fromId);
+
+  if (root !== toId) {
+    return insertTombstone(state, toId, fromId);
+  } else {
+    return state;
+  }
+};
+
+const importBranch = (state, statuses, statusId) => {
   return state.withMutations(state => {
     statuses.forEach((status, i) => {
-      const lastId = rootId && i === 0 ? rootId : (statuses[i - 1] || {}).id;
+      const prevId = statusId && i === 0 ? statusId : (statuses[i - 1] || {}).id;
 
       if (status.in_reply_to_id) {
         importStatus(state, status);
-      } else if (lastId) {
-        insertTombstone(state, lastId, status.id);
+        connectNodes(state, status.id, statusId);
+      } else if (prevId) {
+        insertTombstone(state, prevId, status.id);
       }
     });
   });

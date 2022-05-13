@@ -654,10 +654,11 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   }
 
   handleLoadMore = () => {
+    const { status } = this.props;
     const { next } = this.state;
 
     if (next) {
-      this.props.dispatch(fetchNext(next)).then(({ next }) => {
+      this.props.dispatch(fetchNext(status.id, next)).then(({ next }) => {
         this.setState({ next });
       }).catch(() => {});
     }
