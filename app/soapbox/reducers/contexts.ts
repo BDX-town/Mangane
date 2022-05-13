@@ -106,9 +106,10 @@ const getRootNode = (state: State, statusId: string, initialId = statusId): stri
 
 /** Route fromId to toId by inserting tombstones. */
 const connectNodes = (state: State, fromId: string, toId: string): State => {
-  const root = getRootNode(state, fromId);
+  const fromRoot = getRootNode(state, fromId);
+  const toRoot   = getRootNode(state, toId);
 
-  if (root !== toId) {
+  if (fromRoot !== toRoot) {
     return insertTombstone(state, toId, fromId);
   } else {
     return state;
