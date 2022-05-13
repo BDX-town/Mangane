@@ -76,24 +76,27 @@ const Header = () => {
       <nav className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8' aria-label='Header'>
         <div className='w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none'>
           <div className='flex items-center sm:justify-center relative w-36'>
-            <div className='hidden sm:block absolute z-0 -top-24 -left-6'>
+            <div className='hidden md:block absolute z-0 -top-24 -left-6'>
               <Sonar />
             </div>
-            <Link to='/' className='z-10'>
-              <SiteLogo alt='Logo' className='h-6 w-auto cursor-pointer' />
-              <span className='hidden'>{intl.formatMessage(messages.home)}</span>
-            </Link>
-          </div>
-          <div className='ml-10 flex space-x-6 items-center relative z-10'>
+
             <IconButton
               title='Open Menu'
               src={require('@tabler/icons/icons/menu-2.svg')}
               onClick={open}
-              className='md:hidden bg-transparent text-gray-400 hover:text-gray-600'
+              className='md:hidden mr-4 bg-transparent text-gray-400 hover:text-gray-600'
             />
 
-            <div className='hidden md:flex items-center space-x-6'>
-              <HStack space={6} alignItems='center'>
+            <Link to='/' className='z-10'>
+              <SiteLogo alt='Logo' className='h-6 w-auto cursor-pointer' />
+              <span className='hidden'>{intl.formatMessage(messages.home)}</span>
+            </Link>
+
+          </div>
+
+          <div className='ml-10 flex space-x-6 items-center relative z-10'>
+            <HStack alignItems='center'>
+              <HStack space={6} alignItems='center' className='hidden md:flex md:mr-6'>
                 {links.get('help') && (
                   <a
                     href={links.get('help')}
@@ -119,7 +122,7 @@ const Header = () => {
                   </Button>
                 )}
               </HStack>
-            </div>
+            </HStack>
 
             <Form className='hidden xl:flex space-x-2 items-center' onSubmit={handleSubmit}>
               <Input
