@@ -64,7 +64,7 @@ class StatusReplyMentions extends ImmutablePureComponent {
           id='reply_mentions.reply'
           defaultMessage='Replying to {accounts}{more}'
           values={{
-            accounts: to.slice(0, 2).map(account => (<>
+            accounts: to.slice(0, 2).map((account) => (<>
               <HoverRefWrapper accountId={account.get('id')} inline>
                 <Link to={`/@${account.get('acct')}`} className='reply-mentions__account'>@{account.get('username')}</Link>
               </HoverRefWrapper>

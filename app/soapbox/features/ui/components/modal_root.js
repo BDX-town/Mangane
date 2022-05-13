@@ -30,6 +30,7 @@ import {
   BirthdaysModal,
   AccountNoteModal,
   CompareHistoryModal,
+  FamiliarFollowersModal,
 } from 'soapbox/features/ui/util/async-components';
 
 import BundleContainer from '../containers/bundle_container';
@@ -66,6 +67,7 @@ const MODAL_COMPONENTS = {
   'BIRTHDAYS': BirthdaysModal,
   'ACCOUNT_NOTE': AccountNoteModal,
   'COMPARE_HISTORY': CompareHistoryModal,
+  'FAMILIAR_FOLLOWERS': FamiliarFollowersModal,
 };
 
 export default class ModalRoot extends React.PureComponent {

@@ -501,3 +501,7 @@ export function CompareHistoryModal() {
 export function AuthTokenList() {
   return import(/* webpackChunkName: "features/auth_token_list" */'../../auth_token_list');
 }
+
+export function FamiliarFollowersModal() {
+  return import(/*webpackChunkName: "modals/familiar_followers_modal" */'../components/familiar_followers_modal');
+}

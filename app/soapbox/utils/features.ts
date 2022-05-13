@@ -256,6 +256,12 @@ const getInstanceFeatures = (instance: Instance) => {
       features.includes('exposable_reactions'),
     ]),
 
+    /**
+     * Can see accounts' followers you know
+     * @see GET /api/v1/accounts/familiar_followers
+     */
+    familiarFollowers: v.software === MASTODON && gte(v.version, '3.5.0'),
+
     /** Whether the instance federates. */
     federating: federation.get('enabled', true) === true, // Assume true unless explicitly false
 
