@@ -9,11 +9,11 @@ import context2 from 'soapbox/__fixtures__/context_2.json';
 import { CONTEXT_FETCH_SUCCESS } from 'soapbox/actions/statuses';
 import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
 
-import reducer from '../contexts';
+import reducer, { ReducerRecord } from '../contexts';
 
 describe('contexts reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap({
+    expect(reducer(undefined, {})).toEqual(ReducerRecord({
       inReplyTos: ImmutableMap(),
       replies: ImmutableMap(),
     }));
@@ -25,7 +25,7 @@ describe('contexts reducer', () => {
     result = reducer(result, { type: CONTEXT_FETCH_SUCCESS, id: '9zIH8WYwtnUx4yDzUm', ancestors: context1.ancestors, descendants: context1.descendants });
     result = reducer(result, { type: CONTEXT_FETCH_SUCCESS, id: '9zIH7PUdhK3Ircg4hM', ancestors: context2.ancestors, descendants: context2.descendants });
 
-    expect(result).toEqual(ImmutableMap({
+    expect(result).toEqual(ReducerRecord({
       inReplyTos: ImmutableMap({
         '9zIH7PUdhK3Ircg4hM': '9zIH6kDXA10YqhMKqO',
         '9zIH7mMGgc1RmJwDLM': '9zIH6kDXA10YqhMKqO',
@@ -60,22 +60,22 @@ describe('contexts reducer', () => {
     it('deletes the status', () => {
       const action = { type: TIMELINE_DELETE, id: 'B' };
 
-      const state = fromJS({
-        inReplyTos: {
+      const state = ReducerRecord({
+        inReplyTos: fromJS({
           B: 'A',
           C: 'B',
-        },
-        replies: {
+        }),
+        replies: fromJS({
           A: ImmutableOrderedSet(['B']),
           B: ImmutableOrderedSet(['C']),
-        },
+        }),
       });
 
-      const expected = fromJS({
-        inReplyTos: {},
-        replies: {
+      const expected = ReducerRecord({
+        inReplyTos: fromJS({}),
+        replies: fromJS({
           A: ImmutableOrderedSet(),
-        },
+        }),
       });
 
       expect(reducer(state, action)).toEqual(expected);

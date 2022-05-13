@@ -20,7 +20,7 @@ import { TIMELINE_DELETE } from '../actions/timelines';
 import type { ReducerStatus } from './statuses';
 import type { AnyAction } from 'redux';
 
-const ReducerRecord = ImmutableRecord({
+export const ReducerRecord = ImmutableRecord({
   inReplyTos: ImmutableMap<string, string>(),
   replies: ImmutableMap<string, ImmutableOrderedSet<string>>(),
 });
