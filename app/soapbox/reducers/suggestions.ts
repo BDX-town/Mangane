@@ -1,4 +1,8 @@
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import {
+  Map as ImmutableMap,
+  List as ImmutableList,
+  Record as ImmutableRecord,
+} from 'immutable';
 
 import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts';
 import { DOMAIN_BLOCK_SUCCESS } from 'soapbox/actions/domain_blocks';
@@ -13,42 +17,64 @@ import {
   SUGGESTIONS_V2_FETCH_FAIL,
 } from '../actions/suggestions';
 
-const initialState = ImmutableMap({
-  items: ImmutableList(),
+import type { AnyAction } from 'redux';
+
+type SuggestionSource = 'past_interactions' | 'staff' | 'global';
+
+type ReducerSuggestion = {
+  source: SuggestionSource,
+  account: string,
+}
+
+type SuggestionAccount = {
+  id: string,
+}
+
+type Suggestion = {
+  source: SuggestionSource,
+  account: SuggestionAccount,
+}
+
+const ReducerRecord = ImmutableRecord({
+  items: ImmutableList<ImmutableMap<string, any>>(),
   isLoading: false,
 });
 
-// Convert a v1 account into a v2 suggestion
-const accountToSuggestion = account => {
+type State = ReturnType<typeof ReducerRecord>;
+
+/** Convert a v1 account into a v2 suggestion. */
+const accountToSuggestion = (account: SuggestionAccount): ReducerSuggestion => {
   return {
     source: 'past_interactions',
     account: account.id,
   };
 };
 
-const importAccounts = (state, accounts) => {
+/** Import plain accounts into the reducer (legacy). */
+const importAccounts = (state: State, accounts: SuggestionAccount[]): State => {
   return state.withMutations(state => {
-    state.set('items', fromJS(accounts.map(accountToSuggestion)));
+    state.set('items', ImmutableList(accounts.map(account => ImmutableMap(accountToSuggestion(account)))));
     state.set('isLoading', false);
   });
 };
 
-const importSuggestions = (state, suggestions) => {
+/** Import full suggestion objects. */
+const importSuggestions = (state: State, suggestions: Suggestion[]): State => {
   return state.withMutations(state => {
-    state.set('items', fromJS(suggestions.map(x => ({ ...x, account: x.account.id }))));
+    state.set('items', ImmutableList(suggestions.map(x => ImmutableMap({ ...x, account: x.account.id }))));
     state.set('isLoading', false);
   });
 };
 
-const dismissAccount = (state, accountId) => {
+const dismissAccount = (state: State, accountId: string): State => {
   return state.update('items', items => items.filterNot(item => item.get('account') === accountId));
 };
 
-const dismissAccounts = (state, accountIds) => {
+const dismissAccounts = (state: State, accountIds: string[]): State => {
   return state.update('items', items => items.filterNot(item => accountIds.includes(item.get('account'))));
 };
 
-export default function suggestionsReducer(state = initialState, action) {
+export default function suggestionsReducer(state = ReducerRecord(), action: AnyAction) {
   switch (action.type) {
     case SUGGESTIONS_FETCH_REQUEST:
     case SUGGESTIONS_V2_FETCH_REQUEST:

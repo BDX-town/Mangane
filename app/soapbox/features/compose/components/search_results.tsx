@@ -3,19 +3,23 @@ import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { expandSearch, setFilter } from 'soapbox/actions/search';
 import { fetchTrendingStatuses } from 'soapbox/actions/trending_statuses';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder_account';
 import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder_hashtag';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
 import Hashtag from '../../../components/hashtag';
 import { Tabs } from '../../../components/ui';
 import AccountContainer from '../../../containers/account_container';
 import StatusContainer from '../../../containers/status_container';
 
-import type { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import type {
+  Map as ImmutableMap,
+  List as ImmutableList,
+} from 'immutable';
 
 const messages = defineMessages({
   accounts: { id: 'search_results.accounts', defaultMessage: 'People' },
@@ -38,22 +42,20 @@ interface ISearchResults {
 }
 
 /** Displays search results depending on the active tab. */
-const SearchResults: React.FC<ISearchResults> = ({
-  value,
-  results,
-  submitted,
-  expandSearch,
-  selectedFilter,
-  selectFilter,
-  suggestions,
-  trendingStatuses,
-  trends,
-}) => {
+const SearchResults: React.FC<ISearchResults> = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const handleLoadMore = () => expandSearch(selectedFilter);
-  const handleSelectFilter = (newActiveFilter: SearchFilter) => selectFilter(newActiveFilter);
+  const value = useAppSelector(state => state.search.get('submittedValue'));
+  const results = useAppSelector(state => state.search.get('results'));
+  const suggestions = useAppSelector(state => state.suggestions.items);
+  const trendingStatuses = useAppSelector(state => state.trending_statuses.items);
+  const trends = useAppSelector(state => state.trends.items);
+  const submitted = useAppSelector(state => state.search.get('submitted'));
+  const selectedFilter = useAppSelector(state => state.search.get('filter'));
+
+  const handleLoadMore = () => dispatch(expandSearch(selectedFilter));
+  const handleSelectFilter = (newActiveFilter: SearchFilter) => dispatch(setFilter(newActiveFilter));
 
   useEffect(() => {
     dispatch(fetchTrendingStatuses());
