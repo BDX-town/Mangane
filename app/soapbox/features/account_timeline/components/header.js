@@ -13,7 +13,6 @@ class Header extends ImmutablePureComponent {
 
   static propTypes = {
     account: ImmutablePropTypes.record,
-    identity_proofs: ImmutablePropTypes.list,
     onFollow: PropTypes.func.isRequired,
     onBlock: PropTypes.func.isRequired,
     onMention: PropTypes.func.isRequired,
@@ -143,7 +142,7 @@ class Header extends ImmutablePureComponent {
   }
 
   render() {
-    const { account, identity_proofs } = this.props;
+    const { account } = this.props;
     const moved = (account) ? account.get('moved') : false;
 
     return (
@@ -152,7 +151,6 @@ class Header extends ImmutablePureComponent {
 
         <InnerHeader
           account={account}
-          identity_proofs={identity_proofs}
           onFollow={this.handleFollow}
           onBlock={this.handleBlock}
           onMention={this.handleMention}

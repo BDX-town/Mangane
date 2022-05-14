@@ -86,7 +86,6 @@ class Header extends ImmutablePureComponent {
   static propTypes = {
     account: ImmutablePropTypes.record,
     meaccount: ImmutablePropTypes.record,
-    identity_props: ImmutablePropTypes.list,
     intl: PropTypes.object.isRequired,
     username: PropTypes.string,
     features: PropTypes.object,
