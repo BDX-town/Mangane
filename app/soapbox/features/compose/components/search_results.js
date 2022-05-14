@@ -6,7 +6,6 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
 import { defineMessages, injectIntl } from 'react-intl';
 
-import Pullable from 'soapbox/components/pullable';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder_account';
 import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder_hashtag';
@@ -151,24 +150,22 @@ class SearchResults extends ImmutablePureComponent {
         {this.renderFilterBar()}
 
         {noResultsMessage || (
-          <Pullable>
-            <ScrollableList
-              key={selectedFilter}
-              scrollKey={`${selectedFilter}:${value}`}
-              isLoading={submitted && !loaded}
-              showLoading={submitted && !loaded && results.isEmpty()}
-              hasMore={hasMore}
-              onLoadMore={this.handleLoadMore}
-              placeholderComponent={placeholderComponent}
-              placeholderCount={20}
-              className={classNames({
-                'divide-gray-200 dark:divide-slate-700 divide-solid divide-y': selectedFilter === 'statuses',
-                'space-y-4': selectedFilter === 'accounts',
-              })}
-            >
-              {searchResults}
-            </ScrollableList>
-          </Pullable>
+          <ScrollableList
+            key={selectedFilter}
+            scrollKey={`${selectedFilter}:${value}`}
+            isLoading={submitted && !loaded}
+            showLoading={submitted && !loaded && results.isEmpty()}
+            hasMore={hasMore}
+            onLoadMore={this.handleLoadMore}
+            placeholderComponent={placeholderComponent}
+            placeholderCount={20}
+            className={classNames({
+              'divide-gray-200 dark:divide-slate-700 divide-solid divide-y': selectedFilter === 'statuses',
+            })}
+            itemClassName={classNames({ 'pb-4': selectedFilter === 'accounts' })}
+          >
+            {searchResults}
+          </ScrollableList>
         )}
       </>
     );
