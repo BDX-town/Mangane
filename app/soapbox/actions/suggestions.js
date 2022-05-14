@@ -8,13 +8,13 @@ import { importFetchedAccounts } from './importer';
 
 export const SUGGESTIONS_FETCH_REQUEST = 'SUGGESTIONS_FETCH_REQUEST';
 export const SUGGESTIONS_FETCH_SUCCESS = 'SUGGESTIONS_FETCH_SUCCESS';
-export const SUGGESTIONS_FETCH_FAIL    = 'SUGGESTIONS_FETCH_FAIL';
+export const SUGGESTIONS_FETCH_FAIL = 'SUGGESTIONS_FETCH_FAIL';
 
 export const SUGGESTIONS_DISMISS = 'SUGGESTIONS_DISMISS';
 
 export const SUGGESTIONS_V2_FETCH_REQUEST = 'SUGGESTIONS_V2_FETCH_REQUEST';
 export const SUGGESTIONS_V2_FETCH_SUCCESS = 'SUGGESTIONS_V2_FETCH_SUCCESS';
-export const SUGGESTIONS_V2_FETCH_FAIL    = 'SUGGESTIONS_V2_FETCH_FAIL';
+export const SUGGESTIONS_V2_FETCH_FAIL = 'SUGGESTIONS_V2_FETCH_FAIL';
 
 export function fetchSuggestionsV1(params = {}) {
   return (dispatch, getState) => {
@@ -48,8 +48,11 @@ export function fetchSuggestionsV2(params = {}) {
 export function fetchSuggestions(params = { limit: 50 }) {
   return (dispatch, getState) => {
     const state = getState();
+    const me = state.get('me');
     const instance = state.get('instance');
     const features = getFeatures(instance);
+
+    if (!me) return;
 
     if (features.suggestionsV2) {
       dispatch(fetchSuggestionsV2(params))
@@ -57,14 +60,14 @@ export function fetchSuggestions(params = { limit: 50 }) {
           const accountIds = suggestions.map(({ account }) => account.id);
           dispatch(fetchRelationships(accountIds));
         })
-        .catch(() => {});
+        .catch(() => { });
     } else if (features.suggestions) {
       dispatch(fetchSuggestionsV1(params))
         .then(accounts => {
           const accountIds = accounts.map(({ id }) => id);
           dispatch(fetchRelationships(accountIds));
         })
-        .catch(() => {});
+        .catch(() => { });
     } else {
       // Do nothing
     }
