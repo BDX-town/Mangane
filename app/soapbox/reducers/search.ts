@@ -25,7 +25,7 @@ import {
 
 import type { AnyAction } from 'redux';
 
-const ReducerRecord = ImmutableRecord({
+export const ReducerRecord = ImmutableRecord({
   value: '',
   submitted: false,
   submittedValue: '',
