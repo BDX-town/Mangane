@@ -16,10 +16,7 @@ import { Tabs } from '../../../components/ui';
 import AccountContainer from '../../../containers/account_container';
 import StatusContainer from '../../../containers/status_container';
 
-import type {
-  Map as ImmutableMap,
-  List as ImmutableList,
-} from 'immutable';
+import type { Map as ImmutableMap } from 'immutable';
 
 const messages = defineMessages({
   accounts: { id: 'search_results.accounts', defaultMessage: 'People' },
