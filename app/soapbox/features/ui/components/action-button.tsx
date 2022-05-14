@@ -105,10 +105,9 @@ const ActionButton = ({ account, actionType, small }: iActionButton) => {
     );
   };
 
-  const empty = <></>;
-
-  if (!me) {
-    // Remote follow
+  /** Render a remote follow button, depending on features. */
+  const renderRemoteFollow = (): JSX.Element | null => {
+    // Remote follow through the API.
     if (features.remoteInteractionsAPI) {
       return (
         <Button
@@ -117,18 +116,36 @@ const ActionButton = ({ account, actionType, small }: iActionButton) => {
           text={intl.formatMessage(messages.follow)}
         />
       );
+    // Pleroma's classic remote follow form.
+    } else if (features.pleromaRemoteFollow) {
+      return (
+        <form method='POST' action='/main/ostatus'>
+          <input type='hidden' name='nickname' value={account.acct} />
+          <input type='hidden' name='profile' value='' />
+          <Button text={intl.formatMessage(messages.remote_follow)} type='submit' />
+        </form>
+      );
     }
 
-    return (
-      <form method='POST' action='/main/ostatus'>
-        <input type='hidden' name='nickname' value={account.get('acct')} />
-        <input type='hidden' name='profile' value='' />
-        <Button text={intl.formatMessage(messages.remote_follow)} type='submit' />
-      </form>
-    );
+    return null;
+  };
+
+  /** Render remote follow if federating, otherwise hide the button. */
+  const renderLoggedOut = (): JSX.Element | null => {
+    if (features.federating) {
+      return renderRemoteFollow();
+    }
+
+    return null;
+  };
+
+  const empty = <></>;
+
+  if (!me) {
+    return renderLoggedOut();
   }
 
-  if (me !== account.get('id')) {
+  if (me !== account.id) {
     const isFollowing = account.getIn(['relationship', 'following']);
     const blockedBy = account.getIn(['relationship', 'blocked_by']) as boolean;
 
