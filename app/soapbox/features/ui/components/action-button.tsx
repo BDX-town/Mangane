@@ -31,11 +31,19 @@ const messages = defineMessages({
 });
 
 interface IActionButton {
+  /** Target account for the action. */
   account: AccountEntity
+  /** Type of action to prioritize, eg on Blocks and Mutes pages. */
   actionType?: 'muting' | 'blocking'
+  /** Displays shorter text on the "Awaiting approval" button. */
   small?: boolean
 }
 
+/**
+ * Circumstantial action button (usually "Follow") to display on accounts.
+ * May say "Unblock" or something else, depending on the relationship and
+ * `actionType` prop.
+ */
 const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) => {
   const dispatch = useDispatch();
   const features = useFeatures();
@@ -75,6 +83,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
     }));
   };
 
+  /** Handles actionType='muting' */
   const mutingAction = () => {
     const isMuted = account.getIn(['relationship', 'muting']);
     const messageKey = isMuted ? messages.unmute : messages.mute;
@@ -90,6 +99,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
     );
   };
 
+  /** Handles actionType='blocking' */
   const blockingAction = () => {
     const isBlocked = account.getIn(['relationship', 'blocking']);
     const messageKey = isBlocked ? messages.unblock : messages.block;
@@ -106,7 +116,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
   };
 
   /** Render a remote follow button, depending on features. */
-  const renderRemoteFollow = (): JSX.Element | null => {
+  const renderRemoteFollow = () => {
     // Remote follow through the API.
     if (features.remoteInteractionsAPI) {
       return (
@@ -131,7 +141,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
   };
 
   /** Render remote follow if federating, otherwise hide the button. */
-  const renderLoggedOut = (): JSX.Element | null => {
+  const renderLoggedOut = () => {
     if (features.federating) {
       return renderRemoteFollow();
     }
