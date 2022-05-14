@@ -30,13 +30,13 @@ const messages = defineMessages({
   unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
 });
 
-interface iActionButton {
+interface IActionButton {
   account: AccountEntity
   actionType?: 'muting' | 'blocking'
   small?: boolean
 }
 
-const ActionButton = ({ account, actionType, small }: iActionButton) => {
+const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) => {
   const dispatch = useDispatch();
   const features = useFeatures();
   const intl = useIntl();
@@ -45,40 +45,40 @@ const ActionButton = ({ account, actionType, small }: iActionButton) => {
 
   const handleFollow = () => {
     if (account.getIn(['relationship', 'following']) || account.getIn(['relationship', 'requested'])) {
-      dispatch(unfollowAccount(account.get('id')));
+      dispatch(unfollowAccount(account.id));
     } else {
-      dispatch(followAccount(account.get('id')));
+      dispatch(followAccount(account.id));
     }
   };
 
   const handleBlock = () => {
     if (account.getIn(['relationship', 'blocking'])) {
-      dispatch(unblockAccount(account.get('id')));
+      dispatch(unblockAccount(account.id));
     } else {
-      dispatch(blockAccount(account.get('id')));
+      dispatch(blockAccount(account.id));
     }
   };
 
   const handleMute = () => {
     if (account.getIn(['relationship', 'muting'])) {
-      dispatch(unmuteAccount(account.get('id')));
+      dispatch(unmuteAccount(account.id));
     } else {
-      dispatch(muteAccount(account.get('id')));
+      dispatch(muteAccount(account.id));
     }
   };
 
   const handleRemoteFollow = () => {
     dispatch(openModal('UNAUTHORIZED', {
       action: 'FOLLOW',
-      account: account.get('id'),
-      ap_id: account.get('url'),
+      account: account.id,
+      ap_id: account.url,
     }));
   };
 
   const mutingAction = () => {
     const isMuted = account.getIn(['relationship', 'muting']);
     const messageKey = isMuted ? messages.unmute : messages.mute;
-    const text = intl.formatMessage(messageKey, { name: account.get('username') });
+    const text = intl.formatMessage(messageKey, { name: account.username });
 
     return (
       <Button
@@ -93,7 +93,7 @@ const ActionButton = ({ account, actionType, small }: iActionButton) => {
   const blockingAction = () => {
     const isBlocked = account.getIn(['relationship', 'blocking']);
     const messageKey = isBlocked ? messages.unblock : messages.block;
-    const text = intl.formatMessage(messageKey, { name: account.get('username') });
+    const text = intl.formatMessage(messageKey, { name: account.username });
 
     return (
       <Button
@@ -157,7 +157,7 @@ const ActionButton = ({ account, actionType, small }: iActionButton) => {
       }
     }
 
-    if (!account.get('relationship')) {
+    if (account.relationship.isEmpty()) {
       // Wait until the relationship is loaded
       return empty;
     } else if (account.getIn(['relationship', 'requested'])) {
@@ -193,7 +193,7 @@ const ActionButton = ({ account, actionType, small }: iActionButton) => {
         <Button
           theme='danger'
           size='sm'
-          text={intl.formatMessage(messages.unblock, { name: account.get('username') })}
+          text={intl.formatMessage(messages.unblock, { name: account.username })}
           onClick={handleBlock}
         />
       );
