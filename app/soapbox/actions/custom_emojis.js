@@ -6,6 +6,9 @@ export const CUSTOM_EMOJIS_FETCH_FAIL = 'CUSTOM_EMOJIS_FETCH_FAIL';
 
 export function fetchCustomEmojis() {
   return (dispatch, getState) => {
+    const me = getState().get('me');
+    if (!me) return;
+
     dispatch(fetchCustomEmojisRequest());
 
     api(getState).get('/api/v1/custom_emojis').then(response => {
