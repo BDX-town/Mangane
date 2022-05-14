@@ -29,20 +29,8 @@ const messages = defineMessages({
 
 type SearchFilter = 'accounts' | 'statuses' | 'hashtags';
 
-interface ISearchResults {
-  value: string,
-  results: ImmutableMap<string, any>,
-  submitted: boolean,
-  expandSearch: (filter: SearchFilter) => void,
-  selectedFilter: SearchFilter,
-  selectFilter: (filter: SearchFilter) => void,
-  suggestions: ImmutableList<any>,
-  trendingStatuses: ImmutableList<any>,
-  trends: ImmutableList<any>,
-}
-
 /** Displays search results depending on the active tab. */
-const SearchResults: React.FC<ISearchResults> = () => {
+const SearchResults: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
