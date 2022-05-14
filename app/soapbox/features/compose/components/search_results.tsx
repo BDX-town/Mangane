@@ -46,13 +46,13 @@ const SearchResults: React.FC<ISearchResults> = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const value = useAppSelector(state => state.search.get('submittedValue'));
-  const results = useAppSelector(state => state.search.get('results'));
+  const value = useAppSelector(state => state.search.submittedValue);
+  const results = useAppSelector(state => state.search.results);
   const suggestions = useAppSelector(state => state.suggestions.items);
   const trendingStatuses = useAppSelector(state => state.trending_statuses.items);
   const trends = useAppSelector(state => state.trends.items);
-  const submitted = useAppSelector(state => state.search.get('submitted'));
-  const selectedFilter = useAppSelector(state => state.search.get('filter'));
+  const submitted = useAppSelector(state => state.search.submitted);
+  const selectedFilter = useAppSelector(state => state.search.filter);
 
   const handleLoadMore = () => dispatch(expandSearch(selectedFilter));
   const handleSelectFilter = (newActiveFilter: SearchFilter) => dispatch(setFilter(newActiveFilter));

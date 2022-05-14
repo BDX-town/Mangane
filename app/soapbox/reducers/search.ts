@@ -1,4 +1,10 @@
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+import {
+  Map as ImmutableMap,
+  Record as ImmutableRecord,
+  List as ImmutableList,
+  OrderedSet as ImmutableOrderedSet,
+  fromJS,
+} from 'immutable';
 
 import {
   COMPOSE_MENTION,
@@ -17,26 +23,39 @@ import {
   SEARCH_EXPAND_SUCCESS,
 } from '../actions/search';
 
-const initialState = ImmutableMap({
+import type { AnyAction } from 'redux';
+
+const ReducerRecord = ImmutableRecord({
   value: '',
   submitted: false,
   submittedValue: '',
   hidden: false,
-  results: ImmutableMap(),
+  results: ImmutableMap<string, any>(),
   filter: 'accounts',
 });
 
-const toIds = items => {
+type State = ReturnType<typeof ReducerRecord>;
+
+type IdEntity = { id: string };
+type SearchType = 'accounts' | 'statuses' | 'hashtags';
+
+type Results = {
+  accounts: IdEntity[],
+  statuses: IdEntity[],
+  hashtags: Record<string, any>[],
+}
+
+const toIds = (items: IdEntity[]) => {
   return ImmutableOrderedSet(items.map(item => item.id));
 };
 
-const importResults = (state, results, searchTerm, searchType) => {
+const importResults = (state: State, results: Results, searchTerm: string, searchType: SearchType): State => {
   return state.withMutations(state => {
     if (state.get('value') === searchTerm && state.get('filter') === searchType) {
       state.set('results', ImmutableMap({
         accounts: toIds(results.accounts),
         statuses: toIds(results.statuses),
-        hashtags: fromJS(results.hashtags), // it's a list of maps
+        hashtags: ImmutableList(results.hashtags.map(ImmutableMap)), // it's a list of maps
         accountsHasMore: results.accounts.length >= 20,
         statusesHasMore: results.statuses.length >= 20,
         hashtagsHasMore: results.hashtags.length >= 20,
@@ -50,17 +69,19 @@ const importResults = (state, results, searchTerm, searchType) => {
   });
 };
 
-const paginateResults = (state, searchType, results, searchTerm) => {
+const paginateResults = (state: State, searchType: SearchType, results: Results, searchTerm: string): State => {
   return state.withMutations(state => {
-    if (state.get('value') === searchTerm) {
+    if (state.value === searchTerm) {
       state.setIn(['results', `${searchType}HasMore`], results[searchType].length >= 20);
       state.setIn(['results', `${searchType}Loaded`], true);
       state.updateIn(['results', searchType], items => {
         const data = results[searchType];
         // Hashtags are a list of maps. Others are IDs.
         if (searchType === 'hashtags') {
+          // @ts-ignore
           return items.concat(fromJS(data));
         } else {
+          // @ts-ignore
           return items.concat(toIds(data));
         }
       });
@@ -68,7 +89,7 @@ const paginateResults = (state, searchType, results, searchTerm) => {
   });
 };
 
-const handleSubmitted = (state, value) => {
+const handleSubmitted = (state: State, value: string): State => {
   return state.withMutations(state => {
     state.set('results', ImmutableMap());
     state.set('submitted', true);
@@ -76,12 +97,12 @@ const handleSubmitted = (state, value) => {
   });
 };
 
-export default function search(state = initialState, action) {
+export default function search(state = ReducerRecord(), action: AnyAction) {
   switch (action.type) {
     case SEARCH_CHANGE:
       return state.set('value', action.value);
     case SEARCH_CLEAR:
-      return initialState;
+      return ReducerRecord();
     case SEARCH_SHOW:
       return state.set('hidden', false);
     case COMPOSE_REPLY:
