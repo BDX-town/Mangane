@@ -149,8 +149,6 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
     return null;
   };
 
-  const empty = <></>;
-
   if (!me) {
     return renderLoggedOut();
   }
@@ -169,7 +167,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
 
     if (account.relationship.isEmpty()) {
       // Wait until the relationship is loaded
-      return empty;
+      return null;
     } else if (account.getIn(['relationship', 'requested'])) {
       // Awaiting acceptance
       return (
@@ -220,7 +218,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
     );
   }
 
-  return empty;
+  return null;
 };
 
 export default ActionButton;
