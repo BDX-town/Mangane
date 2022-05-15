@@ -42,7 +42,7 @@ const Reports: React.FC = () => {
       scrollKey='admin-reports'
       emptyMessage={intl.formatMessage(messages.emptyMessage)}
     >
-      {reports.map(report => <Report report={report} key={report.get('id')} />)}
+      {reports.map(report => report && <Report report={report} key={report?.id} />)}
     </ScrollableList>
   );
 };

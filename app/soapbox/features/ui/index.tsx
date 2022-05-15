@@ -455,7 +455,7 @@ const UI: React.FC = ({ children }) => {
     }
 
     if (account.staff) {
-      dispatch(fetchReports({ state: 'open' }));
+      dispatch(fetchReports({ resolved: false }));
       dispatch(fetchUsers(['local', 'need_approval']));
     }
 

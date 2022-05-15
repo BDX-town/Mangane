@@ -26,6 +26,7 @@ const UnapprovedAccount: React.FC<IUnapprovedAccount> = ({ accountId }) => {
   const dispatch = useAppDispatch();
 
   const account = useAppSelector(state => getAccount(state, accountId));
+  const adminAccount = useAppSelector(state => state.admin.users.get(accountId));
 
   if (!account) return null;
 
@@ -45,12 +46,11 @@ const UnapprovedAccount: React.FC<IUnapprovedAccount> = ({ accountId }) => {
     }));
   };
 
-
   return (
     <div className='unapproved-account'>
       <div className='unapproved-account__bio'>
         <div className='unapproved-account__nickname'>@{account.get('acct')}</div>
-        <blockquote className='md'>{account.pleroma.getIn(['admin', 'registration_reason'], '') as string}</blockquote>
+        <blockquote className='md'>{adminAccount?.invite_request || ''}</blockquote>
       </div>
       <div className='unapproved-account__actions'>
         <IconButton src={require('@tabler/icons/icons/check.svg')} onClick={handleApprove} />
