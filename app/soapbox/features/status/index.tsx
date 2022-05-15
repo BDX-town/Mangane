@@ -65,6 +65,7 @@ import ThreadStatus from './components/thread-status';
 
 import type { AxiosError } from 'axios';
 import type { History } from 'history';
+import type { VirtuosoHandle } from 'react-virtuoso';
 import type { AnyAction } from 'redux';
 import type { ThunkDispatch } from 'redux-thunk';
 import type { RootState } from 'soapbox/store';
@@ -210,6 +211,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
   node: HTMLDivElement | null = null;
   status: HTMLDivElement | null = null;
+  scroller: VirtuosoHandle | null = null;
   _scrolledIntoView: boolean = false;
 
   fetchData = async() => {
@@ -615,11 +617,10 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   }
 
   componentDidUpdate(prevProps: IStatus, prevState: IStatusState) {
-    const { params, status, displayMedia } = this.props;
-    const { ancestorsIds } = prevProps;
+    const { params, status, displayMedia, ancestorsIds } = this.props;
+    const { isLoaded } = this.state;
 
     if (params.statusId !== prevProps.params.statusId) {
-      this._scrolledIntoView = false;
       this.fetchData();
     }
 
@@ -627,17 +628,11 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
       this.setState({ showMedia: defaultMediaVisibility(status, displayMedia), loadedStatusId: status.id });
     }
 
-    if (this._scrolledIntoView) {
-      return;
-    }
-
-    if (prevProps.status && ancestorsIds && ancestorsIds.size > 0 && this.node) {
-      const element = this.node.querySelector('.detailed-status');
-
-      window.requestAnimationFrame(() => {
-        element?.scrollIntoView(true);
+    if (params.statusId !== prevProps.params.statusId || status?.id !== prevProps.status?.id || ancestorsIds.size > prevProps.ancestorsIds.size || isLoaded !== prevState.isLoaded) {
+      this.scroller?.scrollToIndex({
+        index: this.props.ancestorsIds.size,
+        offset: -80,
       });
-      this._scrolledIntoView = true;
     }
   }
 
@@ -669,6 +664,10 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     dispatch(openModal('COMPARE_HISTORY', {
       statusId: status.id,
     }));
+  }
+
+  setScrollerRef = (c: VirtuosoHandle) => {
+    this.scroller = c;
   }
 
   render() {
@@ -788,10 +787,12 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         <Stack space={2}>
           <div ref={this.setRef} className='thread'>
             <ScrollableList
+              ref={this.setScrollerRef}
               onRefresh={this.handleRefresh}
               hasMore={!!this.state.next}
               onLoadMore={this.handleLoadMore}
               placeholderComponent={() => <PlaceholderStatus thread />}
+              initialTopMostItemIndex={ancestorsIds.size}
             >
               {children}
             </ScrollableList>
