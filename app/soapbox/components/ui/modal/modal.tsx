@@ -15,6 +15,10 @@ interface IModal {
   cancelAction?: () => void,
   /** Cancel button text. */
   cancelText?: string,
+  /** URL to an SVG icon for the close button. */
+  closeIcon?: string,
+  /** Position of the close button. */
+  closePosition?: 'left' | 'right',
   /** Callback when the modal is confirmed. */
   confirmationAction?: () => void,
   /** Whether the confirmation button is disabled. */
@@ -40,6 +44,8 @@ const Modal: React.FC<IModal> = ({
   cancelAction,
   cancelText,
   children,
+  closeIcon = require('@tabler/icons/icons/x.svg'),
+  closePosition = 'right',
   confirmationAction,
   confirmationDisabled,
   confirmationText,
@@ -63,14 +69,18 @@ const Modal: React.FC<IModal> = ({
     <div data-testid='modal' className='block w-full max-w-xl p-6 mx-auto overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-slate-800 text-black dark:text-white shadow-xl rounded-2xl pointer-events-auto'>
       <div className='sm:flex sm:items-start w-full justify-between'>
         <div className='w-full'>
-          <div className='w-full flex flex-row justify-between items-center'>
-            <h3 className='text-lg leading-6 font-medium text-gray-900 dark:text-white'>
+          <div
+            className={classNames('w-full flex items-center gap-2', {
+              'flex-row-reverse': closePosition === 'left',
+            })}
+          >
+            <h3 className='flex-grow text-lg leading-6 font-medium text-gray-900 dark:text-white'>
               {title}
             </h3>
 
             {onClose && (
               <IconButton
-                src={require('@tabler/icons/icons/x.svg')}
+                src={closeIcon}
                 title={intl.formatMessage(messages.close)}
                 onClick={onClose}
                 className='text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200'

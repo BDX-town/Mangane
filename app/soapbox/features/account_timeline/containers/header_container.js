@@ -1,4 +1,3 @@
-import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
@@ -64,7 +63,6 @@ const makeMapStateToProps = () => {
 
   const mapStateToProps = (state, { accountId }) => ({
     account: getAccount(state, accountId),
-    identity_proofs: state.getIn(['identity_proofs', accountId], ImmutableList()),
   });
 
   return mapStateToProps;
