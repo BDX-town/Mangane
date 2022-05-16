@@ -607,8 +607,8 @@ class Header extends ImmutablePureComponent {
               </a>
             </div>
 
-            <div className='mt-6 flex flex-grow sm:pb-1'>
-              <div className='mt-10 ml-auto flex justify-stretch flex-row space-y-0 space-x-2'>
+            <div className='mt-6 flex justify-end w-full sm:pb-1'>
+              <div className='mt-10 flex flex-row space-y-0 space-x-2'>
                 {me && (
                   <Menu>
                     <MenuButton
