@@ -86,7 +86,7 @@ export function changePassword(oldPassword, newPassword, confirmation) {
 export function resetPassword(usernameOrEmail) {
   return (dispatch, getState) => {
     const state = getState();
-    const v = parseVersion(state.instance);
+    const v = parseVersion(state.instance.version);
 
     dispatch({ type: RESET_PASSWORD_REQUEST });
 
