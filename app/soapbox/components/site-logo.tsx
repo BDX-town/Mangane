@@ -1,9 +1,15 @@
+import classNames from 'classnames';
 import React from 'react';
 
 import { useSoapboxConfig, useSettings, useSystemTheme } from 'soapbox/hooks';
 
+interface ISiteLogo extends React.ComponentProps<'img'> {
+  /** Extra class names for the <img> element. */
+  className?: string,
+}
+
 /** Display the most appropriate site logo based on the theme and configuration. */
-const SiteLogo: React.FC<React.ComponentProps<'img'>> = (props) => {
+const SiteLogo: React.FC<ISiteLogo> = ({ className, ...rest }) => {
   const { logo, logoDarkMode } = useSoapboxConfig();
   const settings = useSettings();
 
@@ -28,7 +34,11 @@ const SiteLogo: React.FC<React.ComponentProps<'img'>> = (props) => {
 
   return (
     // eslint-disable-next-line jsx-a11y/alt-text
-    <img src={getSrc()} {...props} />
+    <img
+      className={classNames('object-contain', className)}
+      src={getSrc()}
+      {...rest}
+    />
   );
 };
 
