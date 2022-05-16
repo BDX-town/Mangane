@@ -86,13 +86,14 @@ const WrappedRoute: React.FC<IWrappedRoute> = ({
     </>
   );
 
-  const renderLoading   = () => renderWithLayout(<ColumnLoading />);
+  const renderLoading = () => renderWithLayout(<ColumnLoading />);
   const renderForbidden = () => renderWithLayout(<ColumnForbidden />);
-  const renderError     = (props: any) => renderWithLayout(<BundleColumnError {...props} />);
+  const renderError = (props: any) => renderWithLayout(<BundleColumnError {...props} />);
 
   const loginRedirect = () => {
     const actualUrl = encodeURIComponent(`${history.location.pathname}${history.location.search}`);
-    return <Redirect to={`/login?redirect_uri=${actualUrl}`} />;
+    localStorage.setItem('soapbox:redirect_uri', actualUrl);
+    return <Redirect to='/login' />;
   };
 
   const authorized = [
