@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { Icon, Text, Counter } from './ui';
+import { Icon, Text } from './ui';
 
 interface ISidebarNavigationLink {
   count?: number,
@@ -15,7 +15,6 @@ interface ISidebarNavigationLink {
 const SidebarNavigationLink = React.forwardRef((props: ISidebarNavigationLink, ref: React.ForwardedRef<HTMLAnchorElement>): JSX.Element => {
   const { icon, text, to = '', count, onClick } = props;
   const isActive = location.pathname === to;
-  const withCounter = typeof count !== 'undefined';
 
   const handleClick: React.EventHandler<React.MouseEvent> = (e) => {
     if (onClick) {
@@ -38,14 +37,9 @@ const SidebarNavigationLink = React.forwardRef((props: ISidebarNavigationLink, r
       })}
     >
       <span className='relative'>
-        {withCounter && count > 0 ? (
-          <span className='absolute -top-2 -right-2'>
-            <Counter count={count} />
-          </span>
-        ) : null}
-
         <Icon
           src={icon}
+          count={count}
           className={classNames({
             'h-5 w-5 dark:group-hover:text-primary-500': true,
             'dark:text-primary-500': isActive,
