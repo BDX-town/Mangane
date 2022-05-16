@@ -41,7 +41,7 @@ const SidebarNavigationLink = React.forwardRef((props: ISidebarNavigationLink, r
           src={icon}
           count={count}
           className={classNames({
-            'h-5 w-5 dark:group-hover:text-primary-500': true,
+            'h-6 w-6 dark:group-hover:text-primary-500': true,
             'dark:text-primary-500': isActive,
           })}
         />
