@@ -4,78 +4,111 @@ import {
   fromJS,
 } from 'immutable';
 
-import context1 from 'soapbox/__fixtures__/context_1.json';
-import context2 from 'soapbox/__fixtures__/context_2.json';
+import { STATUS_IMPORT } from 'soapbox/actions/importer';
 import { CONTEXT_FETCH_SUCCESS } from 'soapbox/actions/statuses';
 import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
+import { applyActions } from 'soapbox/jest/test-helpers';
 
-import reducer from '../contexts';
+import reducer, { ReducerRecord } from '../contexts';
 
 describe('contexts reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap({
+    expect(reducer(undefined, {})).toEqual(ReducerRecord({
       inReplyTos: ImmutableMap(),
       replies: ImmutableMap(),
     }));
   });
 
-  it('should support rendering a complete tree', () => {
-    // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/422
-    let result;
-    result = reducer(result, { type: CONTEXT_FETCH_SUCCESS, id: '9zIH8WYwtnUx4yDzUm', ancestors: context1.ancestors, descendants: context1.descendants });
-    result = reducer(result, { type: CONTEXT_FETCH_SUCCESS, id: '9zIH7PUdhK3Ircg4hM', ancestors: context2.ancestors, descendants: context2.descendants });
+  describe(CONTEXT_FETCH_SUCCESS, () => {
+    it('inserts a tombstone connecting an orphaned descendant', () => {
+      const status = { id: 'A', in_reply_to_id: null };
 
-    expect(result).toEqual(ImmutableMap({
-      inReplyTos: ImmutableMap({
-        '9zIH7PUdhK3Ircg4hM': '9zIH6kDXA10YqhMKqO',
-        '9zIH7mMGgc1RmJwDLM': '9zIH6kDXA10YqhMKqO',
-        '9zIH9GTCDWEFSRt2um': '9zIH7PUdhK3Ircg4hM',
-        '9zIH9fhaP9atiJoOJc': '9zIH8WYwtnUx4yDzUm',
-        '9zIH8WYwtnUx4yDzUm': '9zIH7PUdhK3Ircg4hM',
-        '9zIH8WYwtnUx4yDzUm-tombstone': '9zIH7mMGgc1RmJwDLM',
-      }),
-      replies: ImmutableMap({
-        '9zIH6kDXA10YqhMKqO': ImmutableOrderedSet([
-          '9zIH7PUdhK3Ircg4hM',
-          '9zIH7mMGgc1RmJwDLM',
-        ]),
-        '9zIH7PUdhK3Ircg4hM': ImmutableOrderedSet([
-          '9zIH8WYwtnUx4yDzUm',
-          '9zIH9GTCDWEFSRt2um',
-        ]),
-        '9zIH8WYwtnUx4yDzUm': ImmutableOrderedSet([
-          '9zIH9fhaP9atiJoOJc',
-        ]),
-        '9zIH8WYwtnUx4yDzUm-tombstone': ImmutableOrderedSet([
-          '9zIH8WYwtnUx4yDzUm',
-        ]),
-        '9zIH7mMGgc1RmJwDLM': ImmutableOrderedSet([
-          '9zIH8WYwtnUx4yDzUm-tombstone',
-        ]),
-      }),
-    }));
+      const context = {
+        id: 'A',
+        ancestors: [],
+        descendants: [
+          { id: 'C', in_reply_to_id: 'B' },
+        ],
+      };
+
+      const actions = [
+        { type: STATUS_IMPORT, status },
+        { type: CONTEXT_FETCH_SUCCESS, ...context },
+      ];
+
+      const result = applyActions(undefined, actions, reducer);
+      expect(result.inReplyTos.get('C')).toBe('C-tombstone');
+      expect(result.replies.get('A').toArray()).toEqual(['C-tombstone']);
+    });
+
+    it('inserts a tombstone connecting an orphaned descendant (with null in_reply_to_id)', () => {
+      const status = { id: 'A', in_reply_to_id: null };
+
+      const context = {
+        id: 'A',
+        ancestors: [],
+        descendants: [
+          { id: 'C', in_reply_to_id: null },
+        ],
+      };
+
+      const actions = [
+        { type: STATUS_IMPORT, status },
+        { type: CONTEXT_FETCH_SUCCESS, ...context },
+      ];
+
+      const result = applyActions(undefined, actions, reducer);
+      expect(result.inReplyTos.get('C')).toBe('C-tombstone');
+      expect(result.replies.get('A').toArray()).toEqual(['C-tombstone']);
+    });
+
+    it('doesn\'t explode when it encounters a loop', () => {
+      const status = { id: 'A', in_reply_to_id: null };
+
+      const context = {
+        id: 'A',
+        ancestors: [],
+        descendants: [
+          { id: 'C', in_reply_to_id: 'E' },
+          { id: 'D', in_reply_to_id: 'C' },
+          { id: 'E', in_reply_to_id: 'D' },
+          { id: 'F', in_reply_to_id: 'F' },
+        ],
+      };
+
+      const actions = [
+        { type: STATUS_IMPORT, status },
+        { type: CONTEXT_FETCH_SUCCESS, ...context },
+      ];
+
+      const result = applyActions(undefined, actions, reducer);
+
+      // These checks are superficial. We just don't want a stack overflow!
+      expect(result.inReplyTos.get('C')).toBe('C-tombstone');
+      expect(result.replies.get('A').toArray()).toEqual(['C-tombstone', 'F-tombstone']);
+    });
   });
 
   describe(TIMELINE_DELETE, () => {
     it('deletes the status', () => {
       const action = { type: TIMELINE_DELETE, id: 'B' };
 
-      const state = fromJS({
-        inReplyTos: {
+      const state = ReducerRecord({
+        inReplyTos: fromJS({
           B: 'A',
           C: 'B',
-        },
-        replies: {
+        }),
+        replies: fromJS({
           A: ImmutableOrderedSet(['B']),
           B: ImmutableOrderedSet(['C']),
-        },
+        }),
       });
 
-      const expected = fromJS({
-        inReplyTos: {},
-        replies: {
+      const expected = ReducerRecord({
+        inReplyTos: fromJS({}),
+        replies: fromJS({
           A: ImmutableOrderedSet(),
-        },
+        }),
       });
 
       expect(reducer(state, action)).toEqual(expected);

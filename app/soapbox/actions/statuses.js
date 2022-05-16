@@ -179,10 +179,18 @@ export function fetchContext(id) {
   };
 }
 
-export function fetchNext(next) {
+export function fetchNext(statusId, next) {
   return async(dispatch, getState) => {
     const response = await api(getState).get(next);
     dispatch(importFetchedStatuses(response.data));
+
+    dispatch({
+      type: CONTEXT_FETCH_SUCCESS,
+      id: statusId,
+      ancestors: [],
+      descendants: response.data,
+    });
+
     return { next: getNextLink(response) };
   };
 }
@@ -208,11 +216,19 @@ export function fetchStatusWithContext(id) {
     const features = getFeatures(getState().instance);
 
     if (features.paginatedContext) {
+      await dispatch(fetchStatus(id));
       const responses = await Promise.all([
         dispatch(fetchAncestors(id)),
         dispatch(fetchDescendants(id)),
-        dispatch(fetchStatus(id)),
       ]);
+
+      dispatch({
+        type: CONTEXT_FETCH_SUCCESS,
+        id,
+        ancestors: responses[0].data,
+        descendants: responses[1].data,
+      });
+
       const next = getNextLink(responses[1]);
       return { next };
     } else {

@@ -18,7 +18,7 @@ const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 let rootState = rootReducer(undefined, {} as Action);
 
-// Apply actions to the state, one at a time
+/** Apply actions to the state, one at a time. */
 const applyActions = (state: any, actions: any, reducer: any) => {
   return actions.reduce((state: any, action: any) => reducer(state, action), state);
 };
