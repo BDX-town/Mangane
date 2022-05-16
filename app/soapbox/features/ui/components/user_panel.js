@@ -86,19 +86,6 @@ class UserPanel extends ImmutablePureComponent {
           </Stack>
 
           <HStack alignItems='center' space={3}>
-            {account.get('statuses_count') >= 0 && (
-              <Link to={`/@${account.get('acct')}`} title={intl.formatNumber(account.get('statuses_count'))}>
-                <HStack alignItems='center' space={1}>
-                  <Text theme='primary' weight='bold' size='sm'>
-                    {shortNumberFormat(account.get('statuses_count'))}
-                  </Text>
-                  <Text weight='bold' size='sm'>
-                    <FormattedMessage className='user-panel-stats-item__label' id='account.posts' defaultMessage='Posts' />
-                  </Text>
-                </HStack>
-              </Link>
-            )}
-
             {account.get('followers_count') >= 0 && (
               <Link to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
                 <HStack alignItems='center' space={1}>
