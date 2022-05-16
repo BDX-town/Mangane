@@ -11,6 +11,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import { createAccount } from 'soapbox/actions/verification';
 import { removeStoredVerification } from 'soapbox/actions/verification';
 import { useAppSelector } from 'soapbox/hooks';
+import { getRedirectUrl } from 'soapbox/utils/redirect';
 
 import { Button, Form, FormGroup, Input } from '../../components/ui';
 
@@ -81,7 +82,8 @@ const Registration = () => {
   }, []);
 
   if (shouldRedirect) {
-    return <Redirect to='/' />;
+    const redirectUri = getRedirectUrl();
+    return <Redirect to={redirectUri} />;
   }
 
   return (

@@ -22,6 +22,7 @@ import WaitlistPage from 'soapbox/features/verification/waitlist_page';
 import { createGlobals } from 'soapbox/globals';
 import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures, useSoapboxConfig, useSettings, useSystemTheme } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
+import { useCachedLocationHandler } from 'soapbox/utils/redirect';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
 import { checkOnboardingStatus } from '../actions/onboarding';
@@ -64,6 +65,7 @@ const loadInitial = () => {
 };
 
 const SoapboxMount = () => {
+  useCachedLocationHandler();
   const dispatch = useAppDispatch();
 
   const me = useAppSelector(state => state.me);

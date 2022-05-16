@@ -37,6 +37,7 @@ import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
 import StatusPage from 'soapbox/pages/status_page';
 import { getAccessToken } from 'soapbox/utils/auth';
 import { getVapidKey } from 'soapbox/utils/auth';
+import { cacheCurrentUrl } from 'soapbox/utils/redirect';
 import { isStandalone } from 'soapbox/utils/state';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
 
@@ -278,7 +279,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/@:username/following' publicRoute={!authenticatedProfile} component={Following} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/media' publicRoute={!authenticatedProfile} component={AccountGallery} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/tagged/:tag' exact component={AccountTimeline} page={ProfilePage} content={children} />
-      <WrappedRoute path='/@:username/favorites' component={FavouritedStatuses} page={ProfilePage} content={children}  />
+      <WrappedRoute path='/@:username/favorites' component={FavouritedStatuses} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/pins' component={PinnedStatuses} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact page={StatusPage} component={Status} content={children} />
       <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
@@ -330,6 +331,7 @@ const UI: React.FC = ({ children }) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useDispatch();
+  const { guestExperience } = useSoapboxConfig();
 
   const [draggingOver, setDraggingOver] = useState<boolean>(false);
   const [mobile, setMobile] = useState<boolean>(isMobile(window.innerWidth));
@@ -479,7 +481,7 @@ const UI: React.FC = ({ children }) => {
     document.addEventListener('drop', handleDrop, false);
     document.addEventListener('dragleave', handleDragLeave, false);
 
-    if ('serviceWorker' in  navigator) {
+    if ('serviceWorker' in navigator) {
       navigator.serviceWorker.addEventListener('message', handleServiceWorkerPostMessage);
     }
 
@@ -607,6 +609,11 @@ const UI: React.FC = ({ children }) => {
 
   // Wait for login to succeed or fail
   if (me === null) return null;
+
+  if (!me && !guestExperience) {
+    cacheCurrentUrl(history.location);
+    return <Redirect to='/login' />;
+  }
 
   type HotkeyHandlers = { [key: string]: (keyEvent?: KeyboardEvent) => void };
 

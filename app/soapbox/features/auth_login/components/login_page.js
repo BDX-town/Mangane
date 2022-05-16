@@ -7,6 +7,7 @@ import { Redirect } from 'react-router-dom';
 import { logIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { closeModal } from 'soapbox/actions/modals';
+import { getRedirectUrl } from 'soapbox/utils/redirect';
 import { isStandalone } from 'soapbox/utils/state';
 
 import LoginForm from './login_form';
@@ -78,7 +79,10 @@ class LoginPage extends ImmutablePureComponent {
 
     if (standalone) return <Redirect to='/login/external' />;
 
-    if (shouldRedirect) return <Redirect to='/' />;
+    if (shouldRedirect) {
+      const redirectUri = getRedirectUrl();
+      return <Redirect to={redirectUri} />;
+    }
 
     if (mfa_auth_needed) return <OtpAuthForm mfa_token={mfa_token} />;
 
