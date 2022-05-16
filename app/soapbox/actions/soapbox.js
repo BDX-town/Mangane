@@ -64,8 +64,9 @@ export function fetchSoapboxConfig(host) {
       return dispatch(fetchFrontendConfigurations()).then(data => {
         if (data.soapbox_fe) {
           dispatch(importSoapboxConfig(data.soapbox_fe, host));
+          return data.soapbox_fe;
         } else {
-          dispatch(fetchSoapboxJson(host));
+          return dispatch(fetchSoapboxJson(host));
         }
       });
     } else {
@@ -79,7 +80,7 @@ export function loadSoapboxConfig() {
   return (dispatch, getState) => {
     const host = getHost(getState());
 
-    return dispatch(rememberSoapboxConfig(host)).finally(() => {
+    return dispatch(rememberSoapboxConfig(host)).then(() => {
       return dispatch(fetchSoapboxConfig(host));
     });
   };
@@ -87,9 +88,10 @@ export function loadSoapboxConfig() {
 
 export function fetchSoapboxJson(host) {
   return (dispatch, getState) => {
-    staticClient.get('/instance/soapbox.json').then(({ data }) => {
+    return staticClient.get('/instance/soapbox.json').then(({ data }) => {
       if (!isObject(data)) throw 'soapbox.json failed';
       dispatch(importSoapboxConfig(data, host));
+      return data;
     }).catch(error => {
       dispatch(soapboxConfigFail(error, host));
     });
