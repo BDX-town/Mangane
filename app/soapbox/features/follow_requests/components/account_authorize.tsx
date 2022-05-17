@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import { authorizeFollowRequest, rejectFollowRequest } from 'soapbox/actions/accounts';
 import Avatar from 'soapbox/components/avatar';
-import DisplayName from 'soapbox/components/display_name';
+import DisplayName from 'soapbox/components/display-name';
 import IconButton from 'soapbox/components/icon_button';
 import Permalink from 'soapbox/components/permalink';
 import { useAppSelector } from 'soapbox/hooks';

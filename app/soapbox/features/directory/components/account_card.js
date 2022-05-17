@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 import { getSettings } from 'soapbox/actions/settings';
 import Avatar from 'soapbox/components/avatar';
-import DisplayName from 'soapbox/components/display_name';
+import DisplayName from 'soapbox/components/display-name';
 import Permalink from 'soapbox/components/permalink';
 import RelativeTimestamp from 'soapbox/components/relative_timestamp';
 import { Text } from 'soapbox/components/ui';

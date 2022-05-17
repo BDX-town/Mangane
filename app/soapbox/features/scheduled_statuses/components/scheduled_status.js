@@ -6,7 +6,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import Avatar from 'soapbox/components/avatar';
-import DisplayName from 'soapbox/components/display_name';
+import DisplayName from 'soapbox/components/display-name';
 import RelativeTimestamp from 'soapbox/components/relative_timestamp';
 import StatusContent from 'soapbox/components/status_content';
 import StatusReplyMentions from 'soapbox/components/status_reply_mentions';

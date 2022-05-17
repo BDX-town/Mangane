@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import { removeFromListEditor, addToListEditor } from '../../../actions/lists';
 import Avatar from '../../../components/avatar';
-import DisplayName from '../../../components/display_name';
+import DisplayName from '../../../components/display-name';
 import IconButton from '../../../components/icon_button';
 import { makeGetAccount } from '../../../selectors';
 
