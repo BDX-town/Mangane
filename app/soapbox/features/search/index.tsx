@@ -3,7 +3,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { Column } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
-import SearchResults from 'soapbox/features/compose/components/search_results';
+import SearchResultsContainer from 'soapbox/features/compose/containers/search_results_container';
 
 const messages = defineMessages({
   heading: { id: 'column.search', defaultMessage: 'Search' },
@@ -16,7 +16,7 @@ const SearchPage = () => {
     <Column label={intl.formatMessage(messages.heading)}>
       <div className='space-y-4'>
         <Search autoFocus autoSubmit />
-        <SearchResults />
+        <SearchResultsContainer />
       </div>
     </Column>
   );
