@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { fetchMfa } from 'soapbox/actions/mfa';
 import List, { ListItem } from 'soapbox/components/list';
-import { Button, Card, CardBody, CardHeader, CardTitle, Column } from 'soapbox/components/ui';
+import { Card, CardBody, CardHeader, CardTitle, Column } from 'soapbox/components/ui';
 import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
 
@@ -22,6 +22,7 @@ const messages = defineMessages({
   configureMfa: { id: 'settings.configure_mfa', defaultMessage: 'Configure MFA' },
   sessions: { id: 'settings.sessions', defaultMessage: 'Active sessions' },
   deleteAccount: { id: 'settings.delete_account', defaultMessage: 'Delete Account' },
+  other: { id: 'settings.other', defaultMessage: 'Other options' },
 });
 
 /** User settings page. */
@@ -34,15 +35,16 @@ const Settings = () => {
   const features = useAppSelector((state) => getFeatures(state.instance));
   const account = useOwnAccount();
 
-  const navigateToChangeEmail = React.useCallback(() => history.push('/settings/email'), [history]);
-  const navigateToChangePassword = React.useCallback(() => history.push('/settings/password'), [history]);
-  const navigateToMfa = React.useCallback(() => history.push('/settings/mfa'), [history]);
-  const navigateToSessions = React.useCallback(() => history.push('/settings/tokens'), [history]);
-  const navigateToEditProfile = React.useCallback(() => history.push('/settings/profile'), [history]);
+  const navigateToChangeEmail = () => history.push('/settings/email');
+  const navigateToChangePassword = () => history.push('/settings/password');
+  const navigateToMfa = () => history.push('/settings/mfa');
+  const navigateToSessions = () => history.push('/settings/tokens');
+  const navigateToEditProfile = () => history.push('/settings/profile');
+  const navigateToDeleteAccount = () => history.push('/settings/account');
 
   const isMfaEnabled = mfa.getIn(['settings', 'totp']);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(fetchMfa());
   }, [dispatch]);
 
@@ -92,12 +94,14 @@ const Settings = () => {
           <Preferences />
         </CardBody>
 
+        <CardHeader>
+          <CardTitle title={intl.formatMessage(messages.other)} />
+        </CardHeader>
+
         <CardBody>
-          <div className='mt-4 w-full flex justify-center'>
-            <Button theme='danger' to='/settings/account'>
-              {intl.formatMessage(messages.deleteAccount)}
-            </Button>
-          </div>
+          <List>
+            <ListItem label={intl.formatMessage(messages.deleteAccount)} onClick={navigateToDeleteAccount} />
+          </List>
         </CardBody>
       </Card>
     </Column>
