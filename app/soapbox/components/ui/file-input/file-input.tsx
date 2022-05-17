@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 
-interface IFileInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'required' | 'disabled' | 'name'> { }
+interface IFileInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'required' | 'disabled' | 'name' | 'accept'> { }
 
 const FileInput = forwardRef<HTMLInputElement, IFileInput>((props, ref) => {
   return (
