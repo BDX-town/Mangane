@@ -6,11 +6,11 @@ import {
   SEARCH_EXPAND_SUCCESS,
 } from 'soapbox/actions/search';
 
-import reducer, { ReducerRecord } from '../search';
+import reducer from '../search';
 
 describe('search reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ReducerRecord({
+    expect(reducer(undefined, {})).toEqual(ImmutableMap({
       value: '',
       submitted: false,
       submittedValue: '',
@@ -22,7 +22,7 @@ describe('search reducer', () => {
 
   describe('SEARCH_CHANGE', () => {
     it('sets the value', () => {
-      const state = ReducerRecord({ value: 'hell' });
+      const state = ImmutableMap({ value: 'hell' });
       const action = { type: SEARCH_CHANGE, value: 'hello' };
       expect(reducer(state, action).get('value')).toEqual('hello');
     });
@@ -30,7 +30,7 @@ describe('search reducer', () => {
 
   describe('SEARCH_CLEAR', () => {
     it('resets the state', () => {
-      const state = ReducerRecord({
+      const state = ImmutableMap({
         value: 'hello world',
         submitted: true,
         submittedValue: 'hello world',
@@ -41,7 +41,7 @@ describe('search reducer', () => {
 
       const action = { type: SEARCH_CLEAR };
 
-      const expected = ReducerRecord({
+      const expected = ImmutableMap({
         value: '',
         submitted: false,
         submittedValue: '',
@@ -56,7 +56,7 @@ describe('search reducer', () => {
 
   describe(SEARCH_EXPAND_SUCCESS, () => {
     it('imports hashtags as maps', () => {
-      const state = ReducerRecord({
+      const state = ImmutableMap({
         value: 'artist',
         submitted: true,
         submittedValue: 'artist',
@@ -82,7 +82,7 @@ describe('search reducer', () => {
         searchType: 'hashtags',
       };
 
-      const expected = ReducerRecord({
+      const expected = ImmutableMap({
         value: 'artist',
         submitted: true,
         submittedValue: 'artist',
