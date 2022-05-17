@@ -59,6 +59,28 @@ describe('compose reducer', () => {
       const result = reducer(undefined, action);
       expect(result.getIn(['media_attachments', 0, 'id'])).toEqual('508107650');
     });
+
+    it('sets the id when editing a post', () => {
+      const action = {
+        withRedraft: false,
+        type: actions.COMPOSE_SET_STATUS,
+        status: normalizeStatus(fromJS(require('soapbox/__fixtures__/pleroma-status-deleted.json'))),
+      };
+
+      const result = reducer(undefined, action);
+      expect(result.get('id')).toEqual('AHU2RrX0wdcwzCYjFQ');
+    });
+
+    it('does not set the id when redrafting a post', () => {
+      const action = {
+        withRedraft: true,
+        type: actions.COMPOSE_SET_STATUS,
+        status: normalizeStatus(fromJS(require('soapbox/__fixtures__/pleroma-status-deleted.json'))),
+      };
+
+      const result = reducer(undefined, action);
+      expect(result.get('id')).toEqual(null);
+    });
   });
 
   it('uses \'public\' scope as default', () => {
