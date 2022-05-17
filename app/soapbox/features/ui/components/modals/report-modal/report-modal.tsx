@@ -6,7 +6,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { blockAccount } from 'soapbox/actions/accounts';
 import { submitReport, submitReportSuccess, submitReportFail } from 'soapbox/actions/reports';
 import { expandAccountTimeline } from 'soapbox/actions/timelines';
-import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
+import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import StatusContent from 'soapbox/components/status_content';
 import { Modal, ProgressBar, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
@@ -61,7 +61,6 @@ const SelectedStatus = ({ statusId }: { statusId: string }) => {
 
       {status.get('media_attachments').size > 0 && (
         <AttachmentThumbs
-          compact
           media={status.get('media_attachments')}
           sensitive={status.get('sensitive')}
         />

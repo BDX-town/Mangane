@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
 
 import { fetchHistory } from 'soapbox/actions/history';
-import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
+import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import { HStack, Modal, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
@@ -75,10 +75,7 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
               )}
 
               {version.media_attachments.size > 0 && (
-                <AttachmentThumbs
-                  compact
-                  media={version.media_attachments}
-                />
+                <AttachmentThumbs media={version.media_attachments} />
               )}
 
               <Text align='right' tag='span' theme='muted' size='sm'>
