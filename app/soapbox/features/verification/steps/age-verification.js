@@ -49,7 +49,10 @@ const AgeVerification = () => {
         snackbar.error(
           intl.formatMessage({
             id: 'age_verification.fail',
-            defaultMessage: `You must be ${ageMinimum} years old or older.`,
+            defaultMessage: 'You must be {ageMinimum, plural, one {# year} other {# years}} old or older.',
+            values: {
+              ageMinimum,
+            },
           }),
         ),
       );
