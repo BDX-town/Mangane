@@ -17,7 +17,7 @@ stages:
   - build
   - deploy
 
-install_dependencies:
+install-dependencies:
   stage: install
   script:
     - yarn install --ignore-scripts
