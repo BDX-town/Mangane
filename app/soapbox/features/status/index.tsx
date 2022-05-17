@@ -715,7 +715,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         <HotKeys handlers={handlers}>
           <div
             ref={this.setStatusRef}
-            className={classNames('detailed-status__wrapper')}
+            className='detailed-status__wrapper focusable'
             tabIndex={0}
             // FIXME: no "reblogged by" text is added for the screen reader
             aria-label={textForScreenReader(intl, status)}

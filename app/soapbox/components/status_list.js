@@ -77,18 +77,18 @@ export default class StatusList extends ImmutablePureComponent {
     this.props.onLoadMore(loadMoreID);
   }, 300, { leading: true })
 
-  _selectChild(index, align_top) {
-    const container = this.node.node;
-    const element = container.querySelector(`article:nth-of-type(${index + 1}) .focusable`);
+  _selectChild(index) {
+    this.node.scrollIntoView({
+      index,
+      behavior: 'smooth',
+      done: () => {
+        const element = document.querySelector(`#status-list [data-index="${index}"] .focusable`);
 
-    if (element) {
-      if (align_top && container.scrollTop > element.offsetTop) {
-        element.scrollIntoView(true);
-      } else if (!align_top && container.scrollTop + container.clientHeight < element.offsetTop + element.offsetHeight) {
-        element.scrollIntoView(false);
-      }
-      element.focus();
-    }
+        if (element) {
+          element.focus();
+        }
+      },
+    });
   }
 
   handleDequeueTimeline = () => {
@@ -216,6 +216,7 @@ export default class StatusList extends ImmutablePureComponent {
         message={messages.queue}
       />,
       <ScrollableList
+        id='status-list'
         key='scrollable-list'
         isLoading={isLoading}
         showLoading={isLoading && statusIds.size === 0}

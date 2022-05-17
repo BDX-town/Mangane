@@ -111,32 +111,37 @@ class Notifications extends React.PureComponent {
     this.props.dispatch(scrollTopNotifications(false));
   }, 100);
 
+  setRef = c => {
+    this.node = c;
+  }
+
   setColumnRef = c => {
     this.column = c;
   }
 
   handleMoveUp = id => {
     const elementIndex = this.props.notifications.findIndex(item => item !== null && item.get('id') === id) - 1;
-    this._selectChild(elementIndex, true);
+    this._selectChild(elementIndex);
   }
 
   handleMoveDown = id => {
     const elementIndex = this.props.notifications.findIndex(item => item !== null && item.get('id') === id) + 1;
-    this._selectChild(elementIndex, false);
+    this._selectChild(elementIndex);
   }
 
-  _selectChild(index, align_top) {
-    const container = this.column;
-    const element = container.querySelector(`article:nth-of-type(${index + 1}) .focusable`);
+  _selectChild(index) {
+    this.node.scrollIntoView({
+      index,
+      behavior: 'smooth',
+      done: () => {
+        const container = this.column;
+        const element = container.querySelector(`[data-index="${index}"] .focusable`);
 
-    if (element) {
-      if (align_top && container.scrollTop > element.offsetTop) {
-        element.scrollIntoView(true);
-      } else if (!align_top && container.scrollTop + container.clientHeight < element.offsetTop + element.offsetHeight) {
-        element.scrollIntoView(false);
-      }
-      element.focus();
-    }
+        if (element) {
+          element.focus();
+        }
+      },
+    });
   }
 
   handleDequeueNotifications = () => {
@@ -161,6 +166,7 @@ class Notifications extends React.PureComponent {
     const scrollContainer  = (
       <PullToRefresh onRefresh={this.handleRefresh}>
         <Virtuoso
+          ref={this.setRef}
           useWindowScroll
           data={showLoading ? Array(20).fill() : notifications.toArray()}
           startReached={this.handleScrollToTop}
