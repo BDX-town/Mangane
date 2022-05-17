@@ -8,17 +8,22 @@ cache:
     files:
       - yarn.lock
   paths:
-    - node_modules
+    - node_modules/
 
 stages:
+  - install
   - lint
   - test
   - build
   - deploy
 
-before_script:
-  - env
-  - yarn
+install_dependencies:
+  stage: install
+  script:
+    - yarn install --ignore-scripts
+  artifacts:
+    paths:
+      - node_modules/
 
 lint-js:
   stage: lint
