@@ -57,6 +57,10 @@ export const ACCOUNT_UNPIN_REQUEST = 'ACCOUNT_UNPIN_REQUEST';
 export const ACCOUNT_UNPIN_SUCCESS = 'ACCOUNT_UNPIN_SUCCESS';
 export const ACCOUNT_UNPIN_FAIL    = 'ACCOUNT_UNPIN_FAIL';
 
+export const ACCOUNT_REMOVE_FROM_FOLLOWERS_REQUEST = 'ACCOUNT_REMOVE_FROM_FOLLOWERS_REQUEST';
+export const ACCOUNT_REMOVE_FROM_FOLLOWERS_SUCCESS = 'ACCOUNT_REMOVE_FROM_FOLLOWERS_SUCCESS';
+export const ACCOUNT_REMOVE_FROM_FOLLOWERS_FAIL    = 'ACCOUNT_REMOVE_FROM_FOLLOWERS_FAIL';
+
 export const PINNED_ACCOUNTS_FETCH_REQUEST = 'PINNED_ACCOUNTS_FETCH_REQUEST';
 export const PINNED_ACCOUNTS_FETCH_SUCCESS = 'PINNED_ACCOUNTS_FETCH_SUCCESS';
 export const PINNED_ACCOUNTS_FETCH_FAIL = 'PINNED_ACCOUNTS_FETCH_FAIL';
@@ -516,6 +520,42 @@ export function unsubscribeAccountSuccess(relationship) {
 export function unsubscribeAccountFail(error) {
   return {
     type: ACCOUNT_UNSUBSCRIBE_FAIL,
+    error,
+  };
+}
+
+
+export function removeFromFollowers(id) {
+  return (dispatch, getState) => {
+    if (!isLoggedIn(getState)) return;
+
+    dispatch(muteAccountRequest(id));
+
+    api(getState).post(`/api/v1/accounts/${id}/remove_from_followers`).then(response => {
+      dispatch(removeFromFollowersSuccess(response.data));
+    }).catch(error => {
+      dispatch(removeFromFollowersFail(id, error));
+    });
+  };
+}
+
+export function removeFromFollowersRequest(id) {
+  return {
+    type: ACCOUNT_REMOVE_FROM_FOLLOWERS_REQUEST,
+    id,
+  };
+}
+
+export function removeFromFollowersSuccess(relationship) {
+  return {
+    type: ACCOUNT_REMOVE_FROM_FOLLOWERS_SUCCESS,
+    relationship,
+  };
+}
+
+export function removeFromFollowersFail(error) {
+  return {
+    type: ACCOUNT_REMOVE_FROM_FOLLOWERS_FAIL,
     error,
   };
 }
