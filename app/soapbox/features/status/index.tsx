@@ -19,6 +19,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import SubNavigation from 'soapbox/components/sub_navigation';
+import Tombstone from 'soapbox/components/tombstone';
 import { Column, Stack } from 'soapbox/components/ui';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
@@ -560,8 +561,8 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
   renderTombstone(id: string) {
     return (
-      <div className='tombstone' key={id}>
-        <p><FormattedMessage id='statuses.tombstone' defaultMessage='One or more posts is unavailable.' /></p>
+      <div className='pb-4'>
+        <Tombstone key={id} />
       </div>
     );
   }
