@@ -1,12 +1,12 @@
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { Record as ImmutableRecord } from 'immutable';
 
 import reducer from '../trends';
 
 describe('trends reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap({
-      items: ImmutableList(),
-      isLoading: false,
-    }));
+    const result = reducer(undefined, {});
+    expect(ImmutableRecord.isRecord(result)).toBe(true);
+    expect(result.items.isEmpty()).toBe(true);
+    expect(result.isLoading).toBe(false);
   });
 });

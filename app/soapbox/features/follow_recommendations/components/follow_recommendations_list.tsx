@@ -31,8 +31,8 @@ const FollowRecommendationsList: React.FC = () => {
 
   return (
     <div className='column-list'>
-      {suggestions.size > 0 ? suggestions.map((suggestion: { account: string }) => (
-        <Account key={suggestion.account} id={suggestion.account} />
+      {suggestions.size > 0 ? suggestions.map(suggestion => (
+        <Account key={suggestion.get('account')} id={suggestion.get('account')} />
       )) : (
         <div className='column-list__empty-message'>
           <FormattedMessage id='empty_column.follow_recommendations' defaultMessage='Looks like no suggestions could be generated for you. You can try using search to look for people you might know or explore trending hashtags.' />

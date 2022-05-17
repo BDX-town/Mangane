@@ -1,4 +1,7 @@
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import {
+  Record as ImmutableRecord,
+  fromJS,
+} from 'immutable';
 
 import { SUGGESTIONS_DISMISS } from 'soapbox/actions/suggestions';
 
@@ -6,10 +9,10 @@ import reducer from '../suggestions';
 
 describe('suggestions reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap({
-      items: ImmutableList(),
-      isLoading: false,
-    }));
+    const result = reducer(undefined, {});
+    expect(ImmutableRecord.isRecord(result)).toBe(true);
+    expect(result.items.isEmpty()).toBe(true);
+    expect(result.isLoading).toBe(false);
   });
 
   describe('SUGGESTIONS_DISMISS', () => {
