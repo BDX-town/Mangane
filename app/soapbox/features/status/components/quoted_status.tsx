@@ -5,7 +5,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 
-import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
+import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import { Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 
@@ -143,7 +143,6 @@ class QuotedStatus extends ImmutablePureComponent<IQuotedStatus> {
 
         {status.media_attachments.size > 0 && (
           <AttachmentThumbs
-            compact
             media={status.media_attachments}
             sensitive={status.sensitive}
           />

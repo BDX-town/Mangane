@@ -4,7 +4,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 
-import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
+import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
 import RelativeTimestamp from 'soapbox/components/relative_timestamp';
@@ -74,7 +74,6 @@ class ScheduledStatus extends ImmutablePureComponent {
 
             {status.get('media_attachments').size > 0 && (
               <AttachmentThumbs
-                compact
                 media={status.get('media_attachments')}
                 sensitive={status.get('sensitive')}
               />

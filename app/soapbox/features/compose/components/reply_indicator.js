@@ -3,7 +3,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
+import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import { Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 
@@ -28,7 +28,7 @@ export default class ReplyIndicator extends ImmutablePureComponent {
       return null;
     }
 
-    const style   = {
+    const style = {
       direction: isRtl(status.get('search_index')) ? 'rtl' : 'ltr',
     };
 
@@ -59,7 +59,6 @@ export default class ReplyIndicator extends ImmutablePureComponent {
 
         {status.get('media_attachments').size > 0 && (
           <AttachmentThumbs
-            compact
             media={status.get('media_attachments')}
             sensitive={status.get('sensitive')}
           />
