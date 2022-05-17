@@ -10,6 +10,19 @@ const messages = defineMessages({
   confirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
 });
 
+type Widths = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'
+
+const widths = {
+  xs: 'max-w-xs',
+  sm: 'max-w-sm',
+  md: 'max-w-base',
+  lg: 'max-w-lg',
+  xl: 'max-w-xl',
+  '2xl': 'max-w-2xl',
+  '3xl': 'max-w-3xl',
+  '4xl': 'max-w-4xl',
+};
+
 interface IModal {
   /** Callback when the modal is cancelled. */
   cancelAction?: () => void,
@@ -37,6 +50,7 @@ interface IModal {
   skipFocus?: boolean,
   /** Title text for the modal. */
   title: string | React.ReactNode,
+  width?: Widths,
 }
 
 /** Displays a modal dialog box. */
@@ -55,6 +69,7 @@ const Modal: React.FC<IModal> = ({
   secondaryText,
   skipFocus = false,
   title,
+  width = 'xl',
 }) => {
   const intl = useIntl();
   const buttonRef = React.useRef<HTMLButtonElement>(null);
@@ -66,7 +81,7 @@ const Modal: React.FC<IModal> = ({
   }, [skipFocus, buttonRef]);
 
   return (
-    <div data-testid='modal' className='block w-full max-w-xl p-6 mx-auto overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-slate-800 text-black dark:text-white shadow-xl rounded-2xl pointer-events-auto'>
+    <div data-testid='modal' className={classNames('block w-full p-6 mx-auto overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-slate-800 text-black dark:text-white shadow-xl rounded-2xl pointer-events-auto', widths[width])}>
       <div className='sm:flex sm:items-start w-full justify-between'>
         <div className='w-full'>
           <div
