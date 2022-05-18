@@ -6,7 +6,7 @@ import Text from '../text/text';
 
 import './spinner.css';
 
-interface ILoadingIndicator {
+interface ISpinner {
   /** Width and height of the spinner in pixels. */
   size?: number,
   /** Whether to display "Loading..." beneath the spinner. */
@@ -14,7 +14,7 @@ interface ILoadingIndicator {
 }
 
 /** Spinning loading placeholder. */
-const LoadingIndicator = ({ size = 30, withText = true }: ILoadingIndicator) => (
+const Spinner = ({ size = 30, withText = true }: ISpinner) => (
   <Stack space={2} justifyContent='center' alignItems='center'>
     <div className='spinner' style={{ width: size, height: size }}>
       {Array.from(Array(12).keys()).map(i => (
@@ -30,4 +30,4 @@ const LoadingIndicator = ({ size = 30, withText = true }: ILoadingIndicator) => 
   </Stack>
 );
 
-export default LoadingIndicator;
+export default Spinner;
