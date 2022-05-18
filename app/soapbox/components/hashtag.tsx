@@ -42,7 +42,7 @@ const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {
       </Stack>
 
       {hashtag.get('history') && (
-        <div className='w-[40px]'>
+        <div className='w-[40px]' data-testid='sparklines'>
           <Sparklines
             width={40}
             height={28}
