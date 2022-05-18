@@ -324,6 +324,20 @@ function requestPhoneVerification(phone) {
 }
 
 /**
+ * Send the user's phone number to Pepe to re-request confirmation
+ * @param {string} phone
+ * @returns {promise}
+ */
+function reRequestPhoneVerification(phone) {
+  return (dispatch, getState) => {
+    dispatch({ type: SET_LOADING });
+
+    return api(getState).post('/api/v1/pepe/reverify_sms/request', { phone })
+      .finally(() => dispatch({ type: SET_LOADING, value: false }));
+  };
+}
+
+/**
  * Confirm the user's phone number with Pepe
  * @param {string} code
  * @returns {promise}
@@ -341,6 +355,20 @@ function confirmPhoneVerification(code) {
         finishChallenge(ChallengeTypes.SMS);
         dispatchNextChallenge(dispatch);
       })
+      .finally(() => dispatch({ type: SET_LOADING, value: false }));
+  };
+}
+
+/**
+ * Re-Confirm the user's phone number with Pepe
+ * @param {string} code
+ * @returns {promise}
+ */
+function reConfirmPhoneVerification(code) {
+  return (dispatch, getState) => {
+    dispatch({ type: SET_LOADING });
+
+    return api(getState).post('/api/v1/pepe/reverify_sms/confirm', { code })
       .finally(() => dispatch({ type: SET_LOADING, value: false }));
   };
 }
@@ -404,6 +432,8 @@ export {
   requestEmailVerification,
   checkEmailVerification,
   postEmailVerification,
+  reConfirmPhoneVerification,
   requestPhoneVerification,
+  reRequestPhoneVerification,
   verifyAge,
 };

@@ -501,3 +501,7 @@ export function CompareHistoryModal() {
 export function AuthTokenList() {
   return import(/* webpackChunkName: "features/auth_token_list" */'../../auth_token_list');
 }
+
+export function VerifySmsModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/verify-sms-modal');
+}

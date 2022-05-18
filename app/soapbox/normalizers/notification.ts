@@ -21,7 +21,8 @@ export type NotificationType =
   | 'status'
   | 'move'
   | 'pleroma:chat_mention'
-  | 'pleroma:emoji_reaction';
+  | 'pleroma:emoji_reaction'
+  | 'user_approved';
 
 // https://docs.joinmastodon.org/entities/notification/
 export const NotificationRecord = ImmutableRecord({
