@@ -149,7 +149,6 @@ export function favourite(status) {
     dispatch(favouriteRequest(status));
 
     api(getState).post(`/api/v1/statuses/${status.get('id')}/favourite`).then(function(response) {
-      dispatch(importFetchedStatus(response.data));
       dispatch(favouriteSuccess(status));
     }).catch(function(error) {
       dispatch(favouriteFail(status, error));
