@@ -846,6 +846,7 @@
   "privacy.unlisted.short": "Niewidoczny",
   "profile_dropdown.add_account": "Dodaj istniejące konto",
   "profile_dropdown.logout": "Wyloguj @{acct}",
+  "profile_dropdown.switch_account": "Przełącz konta",
   "profile_dropdown.theme": "Motyw",
   "profile_fields_panel.title": "Pola profilu",
   "public.column_settings.title": "Ustawienia osi czasu Fediwersum",
