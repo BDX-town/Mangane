@@ -33,7 +33,7 @@ interface IModal {
   /** Position of the close button. */
   closePosition?: 'left' | 'right',
   /** Callback when the modal is confirmed. */
-  confirmationAction?: () => void,
+  confirmationAction?: (event?: React.MouseEvent<HTMLButtonElement>) => void,
   /** Whether the confirmation button is disabled. */
   confirmationDisabled?: boolean,
   /** Confirmation button text. */
@@ -43,9 +43,10 @@ interface IModal {
   /** Callback when the modal is closed. */
   onClose?: () => void,
   /** Callback when the secondary action is chosen. */
-  secondaryAction?: () => void,
+  secondaryAction?: (event?: React.MouseEvent<HTMLButtonElement>) => void,
   /** Secondary button text. */
   secondaryText?: React.ReactNode,
+  secondaryDisabled?: boolean,
   /** Don't focus the "confirm" button on mount. */
   skipFocus?: boolean,
   /** Title text for the modal. */
@@ -66,6 +67,7 @@ const Modal: React.FC<IModal> = ({
   confirmationTheme,
   onClose,
   secondaryAction,
+  secondaryDisabled = false,
   secondaryText,
   skipFocus = false,
   title,
@@ -128,6 +130,7 @@ const Modal: React.FC<IModal> = ({
               <Button
                 theme='secondary'
                 onClick={secondaryAction}
+                disabled={secondaryDisabled}
               >
                 {secondaryText}
               </Button>

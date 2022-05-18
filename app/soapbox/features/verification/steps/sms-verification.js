@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useIntl } from 'react-intl';
 import OtpInput from 'react-otp-input';
-import {  useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { confirmPhoneVerification, requestPhoneVerification } from 'soapbox/actions/verification';
@@ -167,4 +167,4 @@ const SmsVerification = () => {
 };
 
 
-export default SmsVerification;
+export { SmsVerification as default, validPhoneNumberRegex };
