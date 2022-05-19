@@ -48,7 +48,7 @@ store.dispatch(checkOnboardingStatus() as any);
 /** Load initial data from the backend */
 const loadInitial = () => {
   // @ts-ignore
-  return async(dispatch, getState) => {
+  return async (dispatch, getState) => {
     // Await for authenticated fetch
     await dispatch(fetchMe());
     // Await for feature detection
