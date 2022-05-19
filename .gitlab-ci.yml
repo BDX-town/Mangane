@@ -92,6 +92,14 @@ docs-deploy:
 #     - yarn
 #     - yarn build
 
+review:
+  stage: deploy
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    url: https://$CI_COMMIT_REF_SLUG.git.soapbox.pub
+  script:
+    - npx -y surge static $CI_COMMIT_REF_SLUG.git.soapbox.pub
+
 pages:
   stage: deploy
   before_script: []
