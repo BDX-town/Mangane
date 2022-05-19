@@ -1,8 +1,10 @@
 import { Map as ImmutableMap } from 'immutable';
+import debounce from 'lodash/debounce';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
+import ScrollableList from 'soapbox/components/scrollable_list';
 import { Button, Card, CardBody, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import { useAppSelector } from 'soapbox/hooks';
@@ -13,24 +15,42 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
   const dispatch = useDispatch();
 
   const suggestions = useAppSelector((state) => state.suggestions.get('items'));
-  const suggestionsToRender = suggestions.slice(0, 5);
+  const hasMore = useAppSelector((state) => !!state.suggestions.get('next'));
+  const isLoading = useAppSelector((state) => state.suggestions.get('isLoading'));
+
+  const handleLoadMore = debounce(() => {
+    if (isLoading) {
+      return null;
+    }
+
+    return dispatch(fetchSuggestions());
+  }, 300);
 
   React.useEffect(() => {
-    dispatch(fetchSuggestions());
+    dispatch(fetchSuggestions({ limit: 20 }));
   }, []);
 
   const renderSuggestions = () => {
     return (
-      <div className='sm:pt-4 sm:pb-10 flex flex-col divide-y divide-solid divide-gray-200 dark:divide-slate-700'>
-        {suggestionsToRender.map((suggestion: ImmutableMap<string, any>) => (
-          <div key={suggestion.get('account')} className='py-2'>
-            <AccountContainer
-              // @ts-ignore: TS thinks `id` is passed to <Account>, but it isn't
-              id={suggestion.get('account')}
-              showProfileHoverCard={false}
-            />
-          </div>
-        ))}
+      <div className='sm:pt-4 sm:pb-10 flex flex-col'>
+        <ScrollableList
+          isLoading={isLoading}
+          scrollKey='suggestions'
+          onLoadMore={handleLoadMore}
+          hasMore={hasMore}
+          useWindowScroll={false}
+          style={{ height: 320 }}
+        >
+          {suggestions.map((suggestion: ImmutableMap<string, any>) => (
+            <div key={suggestion.get('account')} className='py-2'>
+              <AccountContainer
+                // @ts-ignore: TS thinks `id` is passed to <Account>, but it isn't
+                id={suggestion.get('account')}
+                showProfileHoverCard={false}
+              />
+            </div>
+          ))}
+        </ScrollableList>
       </div>
     );
   };
@@ -46,7 +66,7 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
   };
 
   const renderBody = () => {
-    if (suggestionsToRender.isEmpty()) {
+    if (suggestions.isEmpty()) {
       return renderEmpty();
     } else {
       return renderSuggestions();

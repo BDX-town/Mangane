@@ -8,6 +8,7 @@ describe('suggestions reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(ImmutableMap({
       items: ImmutableList(),
+      next: null,
       isLoading: false,
     }));
   });

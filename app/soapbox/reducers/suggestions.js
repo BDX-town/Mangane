@@ -15,6 +15,7 @@ import {
 
 const initialState = ImmutableMap({
   items: ImmutableList(),
+  next: null,
   isLoading: false,
 });
 
@@ -33,10 +34,11 @@ const importAccounts = (state, accounts) => {
   });
 };
 
-const importSuggestions = (state, suggestions) => {
+const importSuggestions = (state, suggestions, next) => {
   return state.withMutations(state => {
-    state.set('items', fromJS(suggestions.map(x => ({ ...x, account: x.account.id }))));
+    state.update('items', items => items.concat(fromJS(suggestions.map(x => ({ ...x, account: x.account.id })))));
     state.set('isLoading', false);
+    state.set('next', next);
   });
 };
 
@@ -56,7 +58,7 @@ export default function suggestionsReducer(state = initialState, action) {
     case SUGGESTIONS_FETCH_SUCCESS:
       return importAccounts(state, action.accounts);
     case SUGGESTIONS_V2_FETCH_SUCCESS:
-      return importSuggestions(state, action.suggestions);
+      return importSuggestions(state, action.suggestions, action.next);
     case SUGGESTIONS_FETCH_FAIL:
     case SUGGESTIONS_V2_FETCH_FAIL:
       return state.set('isLoading', false);
