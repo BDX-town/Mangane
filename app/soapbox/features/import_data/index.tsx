@@ -1,14 +1,12 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { defineMessages, injectIntl } from 'react-intl';
-import { connect } from 'react-redux';
+import { defineMessages, useIntl } from 'react-intl';
 
 import {
   importFollows,
   importBlocks,
   importMutes,
 } from 'soapbox/actions/import_data';
+import { useAppSelector } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
 
 import Column from '../ui/components/column';
@@ -38,29 +36,17 @@ const muteMessages = defineMessages({
   submit: { id: 'import_data.actions.import_mutes', defaultMessage: 'Import mutes' },
 });
 
-const mapStateToProps = state => ({
-  features: getFeatures(state.get('instance')),
-});
+const ImportData = () => {
+  const intl = useIntl();
+  const features = getFeatures(useAppSelector((state) => state.instance));
 
-export default @connect(mapStateToProps)
-@injectIntl
-class ImportData extends ImmutablePureComponent {
+  return (
+    <Column icon='cloud-upload-alt' label={intl.formatMessage(messages.heading)}>
+      <CSVImporter action={importFollows} messages={followMessages} />
+      <CSVImporter action={importBlocks} messages={blockMessages} />
+      {features.importMutes && <CSVImporter action={importMutes} messages={muteMessages} />}
+    </Column>
+  );
+};
 
-  static propTypes = {
-    intl: PropTypes.object.isRequired,
-    features: PropTypes.object,
-  };
-
-  render() {
-    const { intl, features } = this.props;
-
-    return (
-      <Column icon='cloud-upload-alt' label={intl.formatMessage(messages.heading)}>
-        <CSVImporter action={importFollows} messages={followMessages} />
-        <CSVImporter action={importBlocks} messages={blockMessages} />
-        {features.importMutes && <CSVImporter action={importMutes} messages={muteMessages} />}
-      </Column>
-    );
-  }
-
-}
+export default ImportData;
