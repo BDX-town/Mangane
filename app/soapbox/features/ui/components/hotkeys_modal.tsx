@@ -158,10 +158,12 @@ const HotkeysModal: React.FC<IHotkeysModal> = ({ onClose }) => {
               <TableCell><Hotkey>g</Hotkey> + <Hotkey>m</Hotkey></TableCell>
               <TableCell><FormattedMessage id='keyboard_shortcuts.muted' defaultMessage='to open muted users list' /></TableCell>
             </tr>
-            <tr>
-              <TableCell><Hotkey>g</Hotkey> + <Hotkey>r</Hotkey></TableCell>
-              <TableCell><FormattedMessage id='keyboard_shortcuts.requests' defaultMessage='to open follow requests list' /></TableCell>
-            </tr>
+            {features.followRequests && (
+              <tr>
+                <TableCell><Hotkey>g</Hotkey> + <Hotkey>r</Hotkey></TableCell>
+                <TableCell><FormattedMessage id='keyboard_shortcuts.requests' defaultMessage='to open follow requests list' /></TableCell>
+              </tr>
+            )}
             <tr>
               <TableCell><Hotkey>?</Hotkey></TableCell>
               <TableCell><FormattedMessage id='keyboard_shortcuts.legend' defaultMessage='to display this legend' /></TableCell>
