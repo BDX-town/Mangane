@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle } from 'react-virtuoso';
 
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
@@ -62,10 +62,15 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   placeholderComponent: Placeholder,
   placeholderCount = 0,
   initialTopMostItemIndex = 0,
-  scrollerRef,
 }, ref) => {
   const settings = useSettings();
   const autoloadMore = settings.get('autoloadMore');
+
+  // Preserve scroll position
+  const scrollPositionKey = `soapbox:scrollPosition:${location.pathname}`;
+  const scrollPosition = Number(sessionStorage.getItem(scrollPositionKey));
+  const initialScrollTop = useRef(scrollPosition);
+  const scroller = useRef<Window | HTMLElement | null>(null);
 
   /** Normalized children */
   const elements = Array.from(children || []);
@@ -84,6 +89,15 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   } else if (hasMore && (autoloadMore || isLoading)) {
     data.push(<Spinner />);
   }
+
+  useEffect(() => {
+    sessionStorage.removeItem(scrollPositionKey);
+
+    // On unmount, save the scroll position.
+    return () => {
+      sessionStorage.setItem(scrollPositionKey, String(document.documentElement.scrollTop));
+    };
+  }, []);
 
   /* Render an empty state instead of the scrollable list */
   const renderEmpty = (): JSX.Element => {
@@ -130,6 +144,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
     <Virtuoso
       ref={ref}
       useWindowScroll
+      initialScrollTop={initialScrollTop.current}
       className={className}
       data={data}
       startReached={onScrollToTop}
@@ -149,7 +164,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
         Item,
         Footer: loadMore,
       }}
-      scrollerRef={scrollerRef}
+      scrollerRef={c => scroller.current = c}
     />
   );
 
