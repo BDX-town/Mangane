@@ -43,7 +43,7 @@ const CSVImporter: React.FC<ICSVImporter> = ({ messages, action }) => {
   };
 
   return (
-    <Form onSubmit={handleSubmit} disabled={isLoading}>
+    <Form onSubmit={handleSubmit}>
       <Text size='xl' weight='bold' tag='label'>{intl.formatMessage(messages.input_label)}</Text>
       <FormGroup
         hintText={<Text theme='muted'>{intl.formatMessage(messages.input_hint)}</Text>}

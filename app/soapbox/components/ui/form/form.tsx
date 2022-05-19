@@ -5,8 +5,6 @@ interface IForm {
   onSubmit?: (event: React.FormEvent) => void,
   /** Class name override for the <form> element. */
   className?: string,
-  /** Prevent the form from being submitted. */
-  disabled?: boolean,
 }
 
 /** Form element with custom styles. */
