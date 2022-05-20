@@ -10,9 +10,8 @@ import { openModal } from 'soapbox/actions/modals';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import { Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
-import { getFeatures } from 'soapbox/utils/features';
 
 import type { Account } from 'soapbox/types/entities';
 
@@ -25,7 +24,7 @@ interface IProfileFamiliarFollowers {
 const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account }) => {
   const dispatch = useDispatch();
   const me = useAppSelector((state) => state.me);
-  const features = useAppSelector((state) => getFeatures(state.instance));
+  const features = useFeatures();
   const familiarFollowerIds: ImmutableOrderedSet<string> = useAppSelector(state => state.user_lists.getIn(['familiar_followers', account.id], ImmutableOrderedSet()));
   const familiarFollowers: ImmutableOrderedSet<Account | null> = useAppSelector(state => familiarFollowerIds.slice(0, 2).map(accountId => getAccount(state, accountId)));
 
