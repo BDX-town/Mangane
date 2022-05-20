@@ -244,7 +244,9 @@ function checkEmailAvailability(email) {
 
     return api(getState).get(`/api/v1/pepe/account/exists?email=${email}`, {
       headers: { Authorization: `Bearer ${token}` },
-    }).finally(() => dispatch({ type: SET_LOADING, value: false }));
+    })
+      .catch(() => {})
+      .then(() => dispatch({ type: SET_LOADING, value: false }));
   };
 }
 
