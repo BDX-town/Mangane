@@ -161,7 +161,9 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                 <Stack>
                   <button type='button' onClick={handleSwitcherClick} className='py-1'>
                     <HStack alignItems='center' justifyContent='between'>
-                      <Text tag='span' size='sm' weight='medium'>Switch accounts</Text>
+                      <Text tag='span' size='sm' weight='medium'>
+                        <FormattedMessage id='profile_dropdown.switch_account' defaultMessage='Switch accounts' />
+                      </Text>
 
                       <Icon
                         src={require('@tabler/icons/icons/chevron-down.svg')}

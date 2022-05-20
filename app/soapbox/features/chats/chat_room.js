@@ -77,7 +77,6 @@ class ChatRoom extends ImmutablePureComponent {
     return (
       <Column label={`@${getAcct(account, displayFqn)}`}>
         {/* <div className='chatroom__back'>
-          <ColumnBackButton />
           <Link to={`/@${account.get('acct')}`} className='chatroom__header'>
             <Avatar account={account} size={18} />
             <div className='chatroom__title'>

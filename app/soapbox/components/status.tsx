@@ -14,7 +14,7 @@ import Card from '../features/status/components/card';
 import Bundle from '../features/ui/components/bundle';
 import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
 
-import AttachmentThumbs from './attachment_thumbs';
+import AttachmentThumbs from './attachment-thumbs';
 import StatusActionBar from './status_action_bar';
 import StatusContent from './status_content';
 import StatusReplyMentions from './status_reply_mentions';
@@ -160,7 +160,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
   // Compensate height changes
   componentDidUpdate(_prevProps: IStatus, _prevState: IStatusState, snapshot?: ScrollPosition): void {
-    const doShowCard: boolean  = Boolean(!this.props.muted && !this.props.hidden && this.props.status && this.props.status.card);
+    const doShowCard: boolean = Boolean(!this.props.muted && !this.props.hidden && this.props.status && this.props.status.card);
 
     if (doShowCard && !this.didShowCard) {
       this.didShowCard = true;

@@ -48,6 +48,7 @@ const messages = defineMessages({
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   endorse: { id: 'account.endorse', defaultMessage: 'Feature on profile' },
   unendorse: { id: 'account.unendorse', defaultMessage: 'Don\'t feature on profile' },
+  removeFromFollowers: { id: 'account.remove_from_followers', defaultMessage: 'Remove this follower' },
   admin_account: { id: 'status.admin_account', defaultMessage: 'Open moderation interface for @{name}' },
   add_or_remove_from_list: { id: 'account.add_or_remove_from_list', defaultMessage: 'Add or Remove from lists' },
   deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate @{name}' },
@@ -280,6 +281,14 @@ class Header extends ImmutablePureComponent {
           text: intl.formatMessage(messages.add_or_remove_from_list),
           action: this.props.onAddToList,
           icon: require('@tabler/icons/icons/list.svg'),
+        });
+      }
+
+      if (features.removeFromFollowers && account.getIn(['relationship', 'followed_by'])) {
+        menu.push({
+          text: intl.formatMessage(messages.removeFromFollowers),
+          action: this.props.onRemoveFromFollowers,
+          icon: require('@tabler/icons/icons/user-x.svg'),
         });
       }
 

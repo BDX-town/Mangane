@@ -43,6 +43,8 @@ interface IScrollableList extends VirtuosoProps<any, any> {
   className?: string,
   itemClassName?: string,
   id?: string,
+  style?: React.CSSProperties,
+  useWindowScroll?: boolean
 }
 
 /** Legacy ScrollableList with Virtuoso for backwards-compatibility */
@@ -65,6 +67,8 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   placeholderCount = 0,
   initialTopMostItemIndex = 0,
   scrollerRef,
+  style = {},
+  useWindowScroll = true,
 }, ref) => {
   const settings = useSettings();
   const autoloadMore = settings.get('autoloadMore');
@@ -131,8 +135,8 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   const renderFeed = (): JSX.Element => (
     <Virtuoso
       ref={ref}
-      useWindowScroll
       id={id}
+      useWindowScroll={useWindowScroll}
       className={className}
       data={data}
       startReached={onScrollToTop}
@@ -140,6 +144,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
       isScrolling={isScrolling => isScrolling && onScroll && onScroll()}
       itemContent={renderItem}
       initialTopMostItemIndex={showLoading ? 0 : initialTopMostItemIndex}
+      style={style}
       context={{
         listClassName: className,
         itemClassName,

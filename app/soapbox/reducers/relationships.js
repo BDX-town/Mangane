@@ -19,6 +19,7 @@ import {
   ACCOUNT_UNSUBSCRIBE_SUCCESS,
   ACCOUNT_PIN_SUCCESS,
   ACCOUNT_UNPIN_SUCCESS,
+  ACCOUNT_REMOVE_FROM_FOLLOWERS_SUCCESS,
   RELATIONSHIPS_FETCH_SUCCESS,
 } from '../actions/accounts';
 import {
@@ -108,6 +109,7 @@ export default function relationships(state = initialState, action) {
     case ACCOUNT_PIN_SUCCESS:
     case ACCOUNT_UNPIN_SUCCESS:
     case ACCOUNT_NOTE_SUBMIT_SUCCESS:
+    case ACCOUNT_REMOVE_FROM_FOLLOWERS_SUCCESS:
       return normalizeRelationship(state, action.relationship);
     case RELATIONSHIPS_FETCH_SUCCESS:
       return normalizeRelationships(state, action.relationships);

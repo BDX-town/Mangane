@@ -1,15 +1,11 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { defineMessages, injectIntl } from 'react-intl';
-import { connect } from 'react-redux';
+import { defineMessages, useIntl } from 'react-intl';
 
 import {
   exportFollows,
   exportBlocks,
   exportMutes,
 } from 'soapbox/actions/export_data';
-import { getFeatures } from 'soapbox/utils/features';
 
 import Column from '../ui/components/column';
 
@@ -38,29 +34,16 @@ const muteMessages = defineMessages({
   submit: { id: 'export_data.actions.export_mutes', defaultMessage: 'Export mutes' },
 });
 
-const mapStateToProps = state => ({
-  features: getFeatures(state.get('instance')),
-});
+const ExportData = () => {
+  const intl = useIntl();
 
-export default @connect(mapStateToProps)
-@injectIntl
-class ExportData extends ImmutablePureComponent {
+  return (
+    <Column icon='cloud-download-alt' label={intl.formatMessage(messages.heading)}>
+      <CSVExporter action={exportFollows} messages={followMessages} />
+      <CSVExporter action={exportBlocks} messages={blockMessages} />
+      <CSVExporter action={exportMutes} messages={muteMessages} />
+    </Column>
+  );
+};
 
-  static propTypes = {
-    intl: PropTypes.object.isRequired,
-    features: PropTypes.object,
-  };
-
-  render() {
-    const { intl } = this.props;
-
-    return (
-      <Column icon='cloud-download-alt' label={intl.formatMessage(messages.heading)}>
-        <CSVExporter action={exportFollows} messages={followMessages} />
-        <CSVExporter action={exportBlocks} messages={blockMessages} />
-        <CSVExporter action={exportMutes} messages={muteMessages} />
-      </Column>
-    );
-  }
-
-}
+export default ExportData;

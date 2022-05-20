@@ -2,10 +2,10 @@ import classNames from 'classnames';
 import { History } from 'history';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { defineMessages, injectIntl, FormattedMessage, IntlShape } from 'react-intl';
+import { defineMessages, injectIntl, FormattedMessage, IntlShape, FormattedList } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 
-import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
+import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import { Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 
@@ -67,10 +67,9 @@ class QuotedStatus extends ImmutablePureComponent<IQuotedStatus> {
           <div className='reply-mentions'>
             <FormattedMessage
               id='reply_mentions.reply'
-              defaultMessage='Replying to {accounts}{more}'
+              defaultMessage='Replying to {accounts}'
               values={{
                 accounts: `@${account.username}`,
-                more: false,
               }}
             />
           </div>
@@ -84,14 +83,21 @@ class QuotedStatus extends ImmutablePureComponent<IQuotedStatus> {
       }
     }
 
+    const accounts = to.slice(0, 2).map(account => <>@{account.username}</>).toArray();
+
+    if (to.size > 2) {
+      accounts.push(
+        <FormattedMessage id='reply_mentions.more' defaultMessage='{count} more' values={{ count: to.size - 2 }} />,
+      );
+    }
+
     return (
       <div className='reply-mentions'>
         <FormattedMessage
           id='reply_mentions.reply'
-          defaultMessage='Replying to {accounts}{more}'
+          defaultMessage='Replying to {accounts}'
           values={{
-            accounts: to.slice(0, 2).map(account => `@${account.username} `),
-            more: to.size > 2 && <FormattedMessage id='reply_mentions.more' defaultMessage='and {count} more' values={{ count: to.size - 2 }} />,
+            accounts: <FormattedList type='conjunction' value={accounts} />,
           }}
         />
       </div>
@@ -143,7 +149,6 @@ class QuotedStatus extends ImmutablePureComponent<IQuotedStatus> {
 
         {status.media_attachments.size > 0 && (
           <AttachmentThumbs
-            compact
             media={status.media_attachments}
             sensitive={status.sensitive}
           />

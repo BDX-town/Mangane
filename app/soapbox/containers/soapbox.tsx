@@ -14,10 +14,12 @@ import { loadSoapboxConfig, getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchVerificationConfig } from 'soapbox/actions/verification';
 import * as BuildConfig from 'soapbox/build_config';
 import Helmet from 'soapbox/components/helmet';
+import { Spinner } from 'soapbox/components/ui';
 import AuthLayout from 'soapbox/features/auth_layout';
 import OnboardingWizard from 'soapbox/features/onboarding/onboarding-wizard';
 import PublicLayout from 'soapbox/features/public_layout';
 import NotificationsContainer from 'soapbox/features/ui/containers/notifications_container';
+import { ModalContainer } from 'soapbox/features/ui/util/async-components';
 import WaitlistPage from 'soapbox/features/verification/waitlist_page';
 import { createGlobals } from 'soapbox/globals';
 import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures, useSoapboxConfig, useSettings, useSystemTheme } from 'soapbox/hooks';
@@ -29,6 +31,7 @@ import { checkOnboardingStatus } from '../actions/onboarding';
 import { preload } from '../actions/preload';
 import ErrorBoundary from '../components/error_boundary';
 import UI from '../features/ui';
+import BundleContainer from '../features/ui/containers/bundle_container';
 import { store } from '../store';
 
 /** Ensure the given locale exists in our codebase */
@@ -96,7 +99,7 @@ const SoapboxMount = () => {
     MESSAGES[locale]().then(messages => {
       setMessages(messages);
       setLocaleLoading(false);
-    }).catch(() => {});
+    }).catch(() => { });
   }, [locale]);
 
   // Load initial data from the API
@@ -113,10 +116,25 @@ const SoapboxMount = () => {
     return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
   };
 
-  if (me === null) return null;
-  if (me && !account) return null;
-  if (!isLoaded) return null;
-  if (localeLoading) return null;
+  /** Whether to display a loading indicator. */
+  const showLoading = [
+    me === null,
+    me && !account,
+    !isLoaded,
+    localeLoading,
+  ].some(Boolean);
+
+  if (showLoading) {
+    return (
+      <div className='p-4 h-screen w-screen flex items-center justify-center'>
+        <Helmet>
+          {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
+        </Helmet>
+
+        <Spinner size={40} withText={false} />
+      </div>
+    );
+  }
 
   const waitlisted = account && !account.source.get('approved', true);
 
@@ -172,7 +190,13 @@ const SoapboxMount = () => {
                 )}
 
                 {waitlisted && (
-                  <Route render={(props) => <WaitlistPage {...props} account={account} />} />
+                  <>
+                    <Route render={(props) => <WaitlistPage {...props} account={account} />} />
+
+                    <BundleContainer fetchComponent={ModalContainer}>
+                      {Component => <Component />}
+                    </BundleContainer>
+                  </>
                 )}
 
                 {!me && (singleUserMode

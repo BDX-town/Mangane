@@ -24,7 +24,7 @@ const VerificationBadge: React.FC<IVerificationBadge> = ({ className }) => {
   const Element = icon.endsWith('.svg') ? Icon : 'img';
 
   return (
-    <span className='verified-icon'>
+    <span className='verified-icon' data-testid='verified-badge'>
       <Element className={classNames('w-4 text-accent-500', className)} src={icon} alt={intl.formatMessage(messages.verified)} />
     </span>
   );
