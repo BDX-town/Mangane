@@ -7,8 +7,6 @@ import { Link } from 'react-router-dom';
 import { openModal } from 'soapbox/actions/modals';
 import LandingGradient from 'soapbox/components/landing-gradient';
 import SiteLogo from 'soapbox/components/site-logo';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
-import { NotificationsContainer } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
 
 import { logOut } from '../../actions/auth';
@@ -74,10 +72,6 @@ const WaitlistPage = ({ account }) => {
           </div>
         </div>
       </main>
-
-      <BundleContainer fetchComponent={NotificationsContainer}>
-        {(Component) => <Component />}
-      </BundleContainer>
     </div>
   );
 };

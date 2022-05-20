@@ -104,8 +104,6 @@ import {
   Directory,
   SidebarMenu,
   UploadArea,
-  NotificationsContainer,
-  ModalContainer,
   ProfileHoverCard,
   Share,
   NewStatus,
@@ -669,14 +667,6 @@ const UI: React.FC = ({ children }) => {
           </Layout>
 
           {me && floatingActionButton}
-
-          <BundleContainer fetchComponent={NotificationsContainer}>
-            {Component => <Component />}
-          </BundleContainer>
-
-          <BundleContainer fetchComponent={ModalContainer}>
-            {Component => <Component />}
-          </BundleContainer>
 
           <BundleContainer fetchComponent={UploadArea}>
             {Component => <Component active={draggingOver} onClose={closeUploadModal} />}
