@@ -22,8 +22,8 @@ import {
   ModalContainer,
   NotificationsContainer,
   OnboardingWizard,
+  WaitlistPage,
 } from 'soapbox/features/ui/util/async-components';
-import WaitlistPage from 'soapbox/features/verification/waitlist_page';
 import { createGlobals } from 'soapbox/globals';
 import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures, useSoapboxConfig, useSettings, useSystemTheme } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
@@ -166,7 +166,12 @@ const SoapboxMount = () => {
       )}
 
       {waitlisted && (
-        <Route render={(props) => <WaitlistPage {...props} account={account} />} />
+        <Route render={(props) => (
+          <BundleContainer fetchComponent={WaitlistPage} loading={LoadingScreen}>
+            {(Component) => <Component {...props} account={account} />}
+          </BundleContainer>
+        )}
+        />
       )}
 
       {!me && (singleUserMode

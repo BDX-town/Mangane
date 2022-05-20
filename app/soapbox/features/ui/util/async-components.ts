@@ -498,6 +498,10 @@ export function OnboardingWizard() {
   return import(/* webpackChunkName: "features/onboarding" */'../../onboarding/onboarding-wizard');
 }
 
+export function WaitlistPage() {
+  return import(/* webpackChunkName: "features/verification" */'../../verification/waitlist_page');
+}
+
 export function CompareHistoryModal() {
   return import(/*webpackChunkName: "modals/compare_history_modal" */'../components/compare_history_modal');
 }
