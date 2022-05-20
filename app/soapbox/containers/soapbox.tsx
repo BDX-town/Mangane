@@ -67,6 +67,7 @@ const loadInitial = () => {
   };
 };
 
+/** Highest level node with the Redux store. */
 const SoapboxMount = () => {
   useCachedLocationHandler();
   const dispatch = useAppDispatch();
@@ -233,6 +234,7 @@ const SoapboxMount = () => {
   );
 };
 
+/** The root React node of the application. */
 const Soapbox = () => {
   return (
     <Provider store={store}>
