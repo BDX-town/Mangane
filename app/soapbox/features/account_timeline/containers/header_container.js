@@ -13,6 +13,7 @@ import {
   unpinAccount,
   subscribeAccount,
   unsubscribeAccount,
+  removeFromFollowers,
 } from 'soapbox/actions/accounts';
 import {
   verifyUser,
@@ -56,6 +57,7 @@ const messages = defineMessages({
   demotedToUser: { id: 'admin.users.actions.demote_to_user_message', defaultMessage: '@{acct} was demoted to a regular user' },
   userSuggested: { id: 'admin.users.user_suggested_message', defaultMessage: '@{acct} was suggested' },
   userUnsuggested: { id: 'admin.users.user_unsuggested_message', defaultMessage: '@{acct} was unsuggested' },
+  removeFromFollowersConfirm: { id: 'confirmations.remove_from_followers.confirm', defaultMessage: 'Remove' },
 });
 
 const makeMapStateToProps = () => {
@@ -268,6 +270,21 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onShowNote(account) {
     dispatch(initAccountNoteModal(account));
+  },
+
+  onRemoveFromFollowers(account) {
+    dispatch((_, getState) => {
+      const unfollowModal = getSettings(getState()).get('unfollowModal');
+      if (unfollowModal) {
+        dispatch(openModal('CONFIRM', {
+          message: <FormattedMessage id='confirmations.remove_from_followers.message' defaultMessage='Are you sure you want to remove {name} from your followers?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
+          confirm: intl.formatMessage(messages.removeFromFollowersConfirm),
+          onConfirm: () => dispatch(removeFromFollowers(account.get('id'))),
+        }));
+      } else {
+        dispatch(removeFromFollowers(account.get('id')));
+      }
+    });
   },
 });
 

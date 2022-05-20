@@ -426,6 +426,15 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     remoteInteractionsAPI: v.software === PLEROMA && gte(v.version, '2.4.50'),
 
+    /**
+     * Ability to remove an account from your followers.
+     * @see POST /api/v1/accounts/:id/remove_from_followers
+     */
+    removeFromFollowers: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
+      v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
+    ]),
+
     reportMultipleStatuses: any([
       v.software === MASTODON,
       v.software === PLEROMA,

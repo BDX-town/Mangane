@@ -1,8 +1,9 @@
+import { List as ImmutableList } from 'immutable';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedList, FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -42,7 +43,7 @@ class StatusReplyMentions extends ImmutablePureComponent {
       return null;
     }
 
-    const to = status.get('mentions', []);
+    const to = status.get('mentions', ImmutableList());
 
     // The post is a reply, but it has no mentions.
     // Rare, but it can happen.
@@ -58,23 +59,27 @@ class StatusReplyMentions extends ImmutablePureComponent {
     }
 
     // The typical case with a reply-to and a list of mentions.
+    const accounts = to.slice(0, 2).map(account => (
+      <HoverRefWrapper accountId={account.get('id')} inline>
+        <Link to={`/@${account.get('acct')}`} className='reply-mentions__account'>@{account.get('username')}</Link>
+      </HoverRefWrapper>
+    )).toArray();
+
+    if (to.size > 2) {
+      accounts.push(
+        <span className='hover:underline cursor-pointer' role='presentation' onClick={this.handleOpenMentionsModal}>
+          <FormattedMessage id='reply_mentions.more' defaultMessage='{count} more' values={{ count: to.size - 2 }} />
+        </span>,
+      );
+    }
+
     return (
       <div className='reply-mentions'>
         <FormattedMessage
           id='reply_mentions.reply'
-          defaultMessage='Replying to {accounts}{more}'
+          defaultMessage='Replying to {accounts}'
           values={{
-            accounts: to.slice(0, 2).map((account) => (<>
-              <HoverRefWrapper accountId={account.get('id')} inline>
-                <Link to={`/@${account.get('acct')}`} className='reply-mentions__account'>@{account.get('username')}</Link>
-              </HoverRefWrapper>
-              {' '}
-            </>)),
-            more: to.size > 2 && (
-              <span className='hover:underline cursor-pointer' role='presentation' onClick={this.handleOpenMentionsModal}>
-                <FormattedMessage id='reply_mentions.more' defaultMessage='and {count} more' values={{ count: to.size - 2 }} />
-              </span>
-            ),
+            accounts: <FormattedList type='conjunction' value={accounts} />,
           }}
         />
       </div>

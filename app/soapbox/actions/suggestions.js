@@ -1,7 +1,7 @@
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
 
-import api from '../api';
+import api, { getLinks } from '../api';
 
 import { fetchRelationships } from './accounts';
 import { importFetchedAccounts } from './importer';
@@ -32,11 +32,17 @@ export function fetchSuggestionsV1(params = {}) {
 
 export function fetchSuggestionsV2(params = {}) {
   return (dispatch, getState) => {
+    const next = getState().getIn(['suggestions', 'next']);
+
     dispatch({ type: SUGGESTIONS_V2_FETCH_REQUEST, skipLoading: true });
-    return api(getState).get('/api/v2/suggestions', { params }).then(({ data: suggestions }) => {
+
+    return api(getState).get(next ? next.uri : '/api/v2/suggestions', next ? {} : { params }).then((response) => {
+      const suggestions = response.data;
       const accounts = suggestions.map(({ account }) => account);
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
+
       dispatch(importFetchedAccounts(accounts));
-      dispatch({ type: SUGGESTIONS_V2_FETCH_SUCCESS, suggestions, skipLoading: true });
+      dispatch({ type: SUGGESTIONS_V2_FETCH_SUCCESS, suggestions, next, skipLoading: true });
       return suggestions;
     }).catch(error => {
       dispatch({ type: SUGGESTIONS_V2_FETCH_FAIL, error, skipLoading: true, skipAlert: true });

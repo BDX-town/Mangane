@@ -14,6 +14,7 @@ import { loadSoapboxConfig, getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchVerificationConfig } from 'soapbox/actions/verification';
 import * as BuildConfig from 'soapbox/build_config';
 import Helmet from 'soapbox/components/helmet';
+import { Spinner } from 'soapbox/components/ui';
 import AuthLayout from 'soapbox/features/auth_layout';
 import OnboardingWizard from 'soapbox/features/onboarding/onboarding-wizard';
 import PublicLayout from 'soapbox/features/public_layout';
@@ -115,10 +116,25 @@ const SoapboxMount = () => {
     return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
   };
 
-  if (me === null) return null;
-  if (me && !account) return null;
-  if (!isLoaded) return null;
-  if (localeLoading) return null;
+  /** Whether to display a loading indicator. */
+  const showLoading = [
+    me === null,
+    me && !account,
+    !isLoaded,
+    localeLoading,
+  ].some(Boolean);
+
+  if (showLoading) {
+    return (
+      <div className='p-4 h-screen w-screen flex items-center justify-center'>
+        <Helmet>
+          {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
+        </Helmet>
+
+        <Spinner size={40} withText={false} />
+      </div>
+    );
+  }
 
   const waitlisted = account && !account.source.get('approved', true);
 

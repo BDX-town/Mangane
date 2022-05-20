@@ -561,7 +561,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
   renderTombstone(id: string) {
     return (
-      <div className='pb-4'>
+      <div className='py-4 pb-8'>
         <Tombstone key={id} />
       </div>
     );
