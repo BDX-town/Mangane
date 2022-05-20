@@ -80,7 +80,9 @@ const SoapboxMount = () => {
 
   const locale = validLocale(settings.get('locale')) ? settings.get('locale') : 'en';
 
+  const waitlisted = account && !account.source.get('approved', true);
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
+  const showOnboarding = account && !waitlisted && needsOnboarding;
   const singleUserMode = soapboxConfig.singleUserMode && soapboxConfig.singleUserModeProfile;
 
   const [messages, setMessages] = useState<Record<string, string>>({});
@@ -136,8 +138,6 @@ const SoapboxMount = () => {
     );
   }
 
-  const waitlisted = account && !account.source.get('approved', true);
-
   const bodyClass = classNames('bg-white dark:bg-slate-900 text-base h-full', {
     'no-reduce-motion': !settings.get('reduceMotion'),
     'underline-links': settings.get('underlineLinks'),
@@ -145,7 +145,7 @@ const SoapboxMount = () => {
     'demetricator': settings.get('demetricator'),
   });
 
-  if (account && !waitlisted && needsOnboarding) {
+  if (showOnboarding) {
     return (
       <IntlProvider locale={locale} messages={messages}>
         <Helmet>
