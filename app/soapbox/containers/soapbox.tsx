@@ -14,7 +14,7 @@ import { loadSoapboxConfig, getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchVerificationConfig } from 'soapbox/actions/verification';
 import * as BuildConfig from 'soapbox/build_config';
 import Helmet from 'soapbox/components/helmet';
-import { Spinner } from 'soapbox/components/ui';
+import LoadingScreen from 'soapbox/components/loading-screen';
 import AuthLayout from 'soapbox/features/auth_layout';
 import OnboardingWizard from 'soapbox/features/onboarding/onboarding-wizard';
 import PublicLayout from 'soapbox/features/public_layout';
@@ -126,13 +126,13 @@ const SoapboxMount = () => {
 
   if (showLoading) {
     return (
-      <div className='p-4 h-screen w-screen flex items-center justify-center'>
+      <>
         <Helmet>
           {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
         </Helmet>
 
-        <Spinner size={40} withText={false} />
-      </div>
+        <LoadingScreen />
+      </>
     );
   }
 
