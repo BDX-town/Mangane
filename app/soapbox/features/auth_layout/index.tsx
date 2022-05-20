@@ -4,8 +4,6 @@ import { Link, Redirect, Route, Switch, useHistory } from 'react-router-dom';
 
 import LandingGradient from 'soapbox/components/landing-gradient';
 import SiteLogo from 'soapbox/components/site-logo';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
-import { NotificationsContainer } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
 import { Button, Card, CardBody } from '../../components/ui';
@@ -86,10 +84,6 @@ const AuthLayout = () => {
           </div>
         </div>
       </main>
-
-      <BundleContainer fetchComponent={NotificationsContainer}>
-        {(Component) => <Component />}
-      </BundleContainer>
     </div>
   );
 };

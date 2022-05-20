@@ -2,11 +2,6 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import LandingGradient from 'soapbox/components/landing-gradient';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
-import {
-  NotificationsContainer,
-  ModalContainer,
-} from 'soapbox/features/ui/util/async-components';
 import { useAppSelector } from 'soapbox/hooks';
 import { isStandalone } from 'soapbox/utils/state';
 
@@ -42,14 +37,6 @@ const PublicLayout = () => {
         </div>
 
         <Footer />
-
-        <BundleContainer fetchComponent={NotificationsContainer}>
-          {(Component) => <Component />}
-        </BundleContainer>
-
-        <BundleContainer fetchComponent={ModalContainer}>
-          {(Component) => <Component />}
-        </BundleContainer>
       </div>
     </div>
   );
