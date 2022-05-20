@@ -691,8 +691,6 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
   ]
     ```
 
-- `identity_proofs`
-
 - `lists`
 
     Sample:

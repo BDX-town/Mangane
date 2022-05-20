@@ -98,7 +98,7 @@ export const editStatus = (id) => (dispatch, getState) => {
 
   api(getState).get(`/api/v1/statuses/${id}/source`).then(response => {
     dispatch({ type: STATUS_FETCH_SOURCE_SUCCESS });
-    dispatch(setComposeToStatus(status, response.data.text, response.data.spoiler_text));
+    dispatch(setComposeToStatus(status, response.data.text, response.data.spoiler_text, false));
     dispatch(openModal('COMPOSE'));
   }).catch(error => {
     dispatch({ type: STATUS_FETCH_SOURCE_FAIL, error });
@@ -139,7 +139,7 @@ export function deleteStatus(id, routerHistory, withRedraft = false) {
       dispatch(deleteFromTimelines(id));
 
       if (withRedraft) {
-        dispatch(setComposeToStatus(status, response.data.text, response.data.spoiler_text, response.data.pleroma?.content_type));
+        dispatch(setComposeToStatus(status, response.data.text, response.data.spoiler_text, response.data.pleroma?.content_type, withRedraft));
         dispatch(openModal('COMPOSE'));
       }
     }).catch(error => {
@@ -179,10 +179,18 @@ export function fetchContext(id) {
   };
 }
 
-export function fetchNext(next) {
+export function fetchNext(statusId, next) {
   return async(dispatch, getState) => {
     const response = await api(getState).get(next);
     dispatch(importFetchedStatuses(response.data));
+
+    dispatch({
+      type: CONTEXT_FETCH_SUCCESS,
+      id: statusId,
+      ancestors: [],
+      descendants: response.data,
+    });
+
     return { next: getNextLink(response) };
   };
 }
@@ -208,11 +216,19 @@ export function fetchStatusWithContext(id) {
     const features = getFeatures(getState().instance);
 
     if (features.paginatedContext) {
+      await dispatch(fetchStatus(id));
       const responses = await Promise.all([
         dispatch(fetchAncestors(id)),
         dispatch(fetchDescendants(id)),
-        dispatch(fetchStatus(id)),
       ]);
+
+      dispatch({
+        type: CONTEXT_FETCH_SUCCESS,
+        id,
+        ancestors: responses[0].data,
+        descendants: responses[1].data,
+      });
+
       const next = getNextLink(responses[1]);
       return { next };
     } else {

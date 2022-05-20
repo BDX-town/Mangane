@@ -10,13 +10,30 @@ const messages = defineMessages({
   confirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
 });
 
+type Widths = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'
+
+const widths = {
+  xs: 'max-w-xs',
+  sm: 'max-w-sm',
+  md: 'max-w-base',
+  lg: 'max-w-lg',
+  xl: 'max-w-xl',
+  '2xl': 'max-w-2xl',
+  '3xl': 'max-w-3xl',
+  '4xl': 'max-w-4xl',
+};
+
 interface IModal {
   /** Callback when the modal is cancelled. */
   cancelAction?: () => void,
   /** Cancel button text. */
   cancelText?: string,
+  /** URL to an SVG icon for the close button. */
+  closeIcon?: string,
+  /** Position of the close button. */
+  closePosition?: 'left' | 'right',
   /** Callback when the modal is confirmed. */
-  confirmationAction?: () => void,
+  confirmationAction?: (event?: React.MouseEvent<HTMLButtonElement>) => void,
   /** Whether the confirmation button is disabled. */
   confirmationDisabled?: boolean,
   /** Confirmation button text. */
@@ -26,13 +43,15 @@ interface IModal {
   /** Callback when the modal is closed. */
   onClose?: () => void,
   /** Callback when the secondary action is chosen. */
-  secondaryAction?: () => void,
+  secondaryAction?: (event?: React.MouseEvent<HTMLButtonElement>) => void,
   /** Secondary button text. */
   secondaryText?: React.ReactNode,
+  secondaryDisabled?: boolean,
   /** Don't focus the "confirm" button on mount. */
   skipFocus?: boolean,
   /** Title text for the modal. */
   title: string | React.ReactNode,
+  width?: Widths,
 }
 
 /** Displays a modal dialog box. */
@@ -40,15 +59,19 @@ const Modal: React.FC<IModal> = ({
   cancelAction,
   cancelText,
   children,
+  closeIcon = require('@tabler/icons/icons/x.svg'),
+  closePosition = 'right',
   confirmationAction,
   confirmationDisabled,
   confirmationText,
   confirmationTheme,
   onClose,
   secondaryAction,
+  secondaryDisabled = false,
   secondaryText,
   skipFocus = false,
   title,
+  width = 'xl',
 }) => {
   const intl = useIntl();
   const buttonRef = React.useRef<HTMLButtonElement>(null);
@@ -60,17 +83,21 @@ const Modal: React.FC<IModal> = ({
   }, [skipFocus, buttonRef]);
 
   return (
-    <div data-testid='modal' className='block w-full max-w-xl p-6 mx-auto overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-slate-800 text-black dark:text-white shadow-xl rounded-2xl pointer-events-auto'>
+    <div data-testid='modal' className={classNames('block w-full p-6 mx-auto overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-slate-800 text-black dark:text-white shadow-xl rounded-2xl pointer-events-auto', widths[width])}>
       <div className='sm:flex sm:items-start w-full justify-between'>
         <div className='w-full'>
-          <div className='w-full flex flex-row justify-between items-center'>
-            <h3 className='text-lg leading-6 font-medium text-gray-900 dark:text-white'>
+          <div
+            className={classNames('w-full flex items-center gap-2', {
+              'flex-row-reverse': closePosition === 'left',
+            })}
+          >
+            <h3 className='flex-grow text-lg leading-6 font-medium text-gray-900 dark:text-white'>
               {title}
             </h3>
 
             {onClose && (
               <IconButton
-                src={require('@tabler/icons/icons/x.svg')}
+                src={closeIcon}
                 title={intl.formatMessage(messages.close)}
                 onClick={onClose}
                 className='text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200'
@@ -103,6 +130,7 @@ const Modal: React.FC<IModal> = ({
               <Button
                 theme='secondary'
                 onClick={secondaryAction}
+                disabled={secondaryDisabled}
               >
                 {secondaryText}
               </Button>

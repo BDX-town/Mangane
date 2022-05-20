@@ -86,7 +86,6 @@ class Header extends ImmutablePureComponent {
   static propTypes = {
     account: ImmutablePropTypes.record,
     meaccount: ImmutablePropTypes.record,
-    identity_props: ImmutablePropTypes.list,
     intl: PropTypes.object.isRequired,
     username: PropTypes.string,
     features: PropTypes.object,
@@ -608,8 +607,8 @@ class Header extends ImmutablePureComponent {
               </a>
             </div>
 
-            <div className='mt-6 sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1'>
-              <div className='mt-10 flex justify-stretch flex-row space-y-0 space-x-2'>
+            <div className='mt-6 flex justify-end w-full sm:pb-1'>
+              <div className='mt-10 flex flex-row space-y-0 space-x-2'>
                 {me && (
                   <Menu>
                     <MenuButton

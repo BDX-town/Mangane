@@ -14,6 +14,7 @@ import {
   FormActions,
   FormGroup,
   Input,
+  FileInput,
   Textarea,
   Button,
   Toggle,
@@ -199,10 +200,8 @@ const SoapboxConfig: React.FC = () => {
             labelText={<FormattedMessage id='soapbox_config.fields.logo_label' defaultMessage='Logo' />}
             hintText={<FormattedMessage id='soapbox_config.hints.logo' defaultMessage='SVG. At most 2 MB. Will be displayed to 50px height, maintaining aspect ratio' />}
           >
-            <input
-              type='file'
+            <FileInput
               onChange={handleFileChange(['logo'])}
-              className='text-sm'
               accept='image/svg,image/png'
             />
           </FormGroup>

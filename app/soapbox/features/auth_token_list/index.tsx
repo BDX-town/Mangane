@@ -55,7 +55,7 @@ const AuthToken: React.FC<IAuthToken> = ({ token }) => {
 const AuthTokenList: React.FC = () =>{
   const dispatch = useAppDispatch();
   const intl = useIntl();
-  const tokens = useAppSelector(state => state.security.get('tokens'));
+  const tokens = useAppSelector(state => state.security.get('tokens').reverse());
 
   useEffect(() => {
     dispatch(fetchOAuthTokens());

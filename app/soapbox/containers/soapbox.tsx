@@ -18,16 +18,19 @@ import AuthLayout from 'soapbox/features/auth_layout';
 import OnboardingWizard from 'soapbox/features/onboarding/onboarding-wizard';
 import PublicLayout from 'soapbox/features/public_layout';
 import NotificationsContainer from 'soapbox/features/ui/containers/notifications_container';
+import { ModalContainer } from 'soapbox/features/ui/util/async-components';
 import WaitlistPage from 'soapbox/features/verification/waitlist_page';
 import { createGlobals } from 'soapbox/globals';
 import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures, useSoapboxConfig, useSettings, useSystemTheme } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
+import { useCachedLocationHandler } from 'soapbox/utils/redirect';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
 import { checkOnboardingStatus } from '../actions/onboarding';
 import { preload } from '../actions/preload';
 import ErrorBoundary from '../components/error_boundary';
 import UI from '../features/ui';
+import BundleContainer from '../features/ui/containers/bundle_container';
 import { store } from '../store';
 
 /** Ensure the given locale exists in our codebase */
@@ -64,6 +67,7 @@ const loadInitial = () => {
 };
 
 const SoapboxMount = () => {
+  useCachedLocationHandler();
   const dispatch = useAppDispatch();
 
   const me = useAppSelector(state => state.me);
@@ -94,7 +98,7 @@ const SoapboxMount = () => {
     MESSAGES[locale]().then(messages => {
       setMessages(messages);
       setLocaleLoading(false);
-    }).catch(() => {});
+    }).catch(() => { });
   }, [locale]);
 
   // Load initial data from the API
@@ -170,7 +174,13 @@ const SoapboxMount = () => {
                 )}
 
                 {waitlisted && (
-                  <Route render={(props) => <WaitlistPage {...props} account={account} />} />
+                  <>
+                    <Route render={(props) => <WaitlistPage {...props} account={account} />} />
+
+                    <BundleContainer fetchComponent={ModalContainer}>
+                      {Component => <Component />}
+                    </BundleContainer>
+                  </>
                 )}
 
                 {!me && (singleUserMode

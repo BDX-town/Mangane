@@ -8,17 +8,22 @@ cache:
     files:
       - yarn.lock
   paths:
-    - node_modules
+    - node_modules/
 
 stages:
+  - install
   - lint
   - test
   - build
   - deploy
 
-before_script:
-  - env
-  - yarn
+install-dependencies:
+  stage: install
+  script:
+    - yarn install --ignore-scripts
+  artifacts:
+    paths:
+      - node_modules/
 
 lint-js:
   stage: lint
@@ -86,6 +91,14 @@ docs-deploy:
 #   before_script:
 #     - yarn
 #     - yarn build
+
+review:
+  stage: deploy
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    url: https://$CI_COMMIT_REF_SLUG.git.soapbox.pub
+  script:
+    - npx -y surge static $CI_COMMIT_REF_SLUG.git.soapbox.pub
 
 pages:
   stage: deploy

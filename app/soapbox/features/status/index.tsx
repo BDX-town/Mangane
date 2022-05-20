@@ -19,6 +19,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import SubNavigation from 'soapbox/components/sub_navigation';
+import Tombstone from 'soapbox/components/tombstone';
 import { Column, Stack } from 'soapbox/components/ui';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
@@ -65,6 +66,7 @@ import ThreadStatus from './components/thread-status';
 
 import type { AxiosError } from 'axios';
 import type { History } from 'history';
+import type { VirtuosoHandle } from 'react-virtuoso';
 import type { AnyAction } from 'redux';
 import type { ThunkDispatch } from 'redux-thunk';
 import type { RootState } from 'soapbox/store';
@@ -97,11 +99,11 @@ const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();
 
   const getAncestorsIds = createSelector([
-    (_: RootState, statusId: string) => statusId,
-    (state: RootState) => state.contexts.get('inReplyTos'),
+    (_: RootState, statusId: string | undefined) => statusId,
+    (state: RootState) => state.contexts.inReplyTos,
   ], (statusId, inReplyTos) => {
-    let ancestorsIds = ImmutableOrderedSet();
-    let id = statusId;
+    let ancestorsIds = ImmutableOrderedSet<string>();
+    let id: string | undefined = statusId;
 
     while (id && !ancestorsIds.includes(id)) {
       ancestorsIds = ImmutableOrderedSet([id]).union(ancestorsIds);
@@ -113,13 +115,15 @@ const makeMapStateToProps = () => {
 
   const getDescendantsIds = createSelector([
     (_: RootState, statusId: string) => statusId,
-    (state: RootState) => state.contexts.get('replies'),
+    (state: RootState) => state.contexts.replies,
   ], (statusId, contextReplies) => {
     let descendantsIds = ImmutableOrderedSet();
     const ids = [statusId];
 
     while (ids.length > 0) {
-      const id      = ids.shift();
+      const id = ids.shift();
+      if (!id) break;
+
       const replies = contextReplies.get(id);
 
       if (descendantsIds.includes(id)) {
@@ -147,7 +151,7 @@ const makeMapStateToProps = () => {
 
     if (status) {
       const statusId = status.id;
-      ancestorsIds = getAncestorsIds(state, state.contexts.getIn(['inReplyTos', statusId]));
+      ancestorsIds = getAncestorsIds(state, state.contexts.inReplyTos.get(statusId));
       descendantsIds = getDescendantsIds(state, statusId);
       ancestorsIds = ancestorsIds.delete(statusId).subtract(descendantsIds);
       descendantsIds = descendantsIds.delete(statusId).subtract(ancestorsIds);
@@ -210,6 +214,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
   node: HTMLDivElement | null = null;
   status: HTMLDivElement | null = null;
+  scroller: VirtuosoHandle | null = null;
   _scrolledIntoView: boolean = false;
 
   fetchData = async() => {
@@ -556,8 +561,8 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
   renderTombstone(id: string) {
     return (
-      <div className='tombstone' key={id}>
-        <p><FormattedMessage id='statuses.tombstone' defaultMessage='One or more posts is unavailable.' /></p>
+      <div className='pb-4'>
+        <Tombstone key={id} />
       </div>
     );
   }
@@ -615,11 +620,10 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   }
 
   componentDidUpdate(prevProps: IStatus, prevState: IStatusState) {
-    const { params, status, displayMedia } = this.props;
-    const { ancestorsIds } = prevProps;
+    const { params, status, displayMedia, ancestorsIds } = this.props;
+    const { isLoaded } = this.state;
 
     if (params.statusId !== prevProps.params.statusId) {
-      this._scrolledIntoView = false;
       this.fetchData();
     }
 
@@ -627,17 +631,11 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
       this.setState({ showMedia: defaultMediaVisibility(status, displayMedia), loadedStatusId: status.id });
     }
 
-    if (this._scrolledIntoView) {
-      return;
-    }
-
-    if (prevProps.status && ancestorsIds && ancestorsIds.size > 0 && this.node) {
-      const element = this.node.querySelector('.detailed-status');
-
-      window.requestAnimationFrame(() => {
-        element?.scrollIntoView(true);
+    if (params.statusId !== prevProps.params.statusId || status?.id !== prevProps.status?.id || ancestorsIds.size > prevProps.ancestorsIds.size || isLoaded !== prevState.isLoaded) {
+      this.scroller?.scrollToIndex({
+        index: this.props.ancestorsIds.size,
+        offset: -80,
       });
-      this._scrolledIntoView = true;
     }
   }
 
@@ -654,10 +652,11 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   }
 
   handleLoadMore = () => {
+    const { status } = this.props;
     const { next } = this.state;
 
     if (next) {
-      this.props.dispatch(fetchNext(next)).then(({ next }) => {
+      this.props.dispatch(fetchNext(status.id, next)).then(({ next }) => {
         this.setState({ next });
       }).catch(() => {});
     }
@@ -669,6 +668,10 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     dispatch(openModal('COMPARE_HISTORY', {
       statusId: status.id,
     }));
+  }
+
+  setScrollerRef = (c: VirtuosoHandle) => {
+    this.scroller = c;
   }
 
   render() {
@@ -788,10 +791,12 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         <Stack space={2}>
           <div ref={this.setRef} className='thread'>
             <ScrollableList
+              ref={this.setScrollerRef}
               onRefresh={this.handleRefresh}
               hasMore={!!this.state.next}
               onLoadMore={this.handleLoadMore}
               placeholderComponent={() => <PlaceholderStatus thread />}
+              initialTopMostItemIndex={ancestorsIds.size}
             >
               {children}
             </ScrollableList>

@@ -30,6 +30,7 @@ import {
   BirthdaysModal,
   AccountNoteModal,
   CompareHistoryModal,
+  VerifySmsModal,
   FamiliarFollowersModal,
 } from 'soapbox/features/ui/util/async-components';
 
@@ -67,6 +68,7 @@ const MODAL_COMPONENTS = {
   'BIRTHDAYS': BirthdaysModal,
   'ACCOUNT_NOTE': AccountNoteModal,
   'COMPARE_HISTORY': CompareHistoryModal,
+  'VERIFY_SMS': VerifySmsModal,
   'FAMILIAR_FOLLOWERS': FamiliarFollowersModal,
 };
 

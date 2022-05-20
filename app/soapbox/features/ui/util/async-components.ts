@@ -403,7 +403,7 @@ export function ModalContainer() {
 }
 
 export function ProfileHoverCard() {
-  return import(/* webpackChunkName: "features/ui" */'soapbox/components/profile_hover_card');
+  return import(/* webpackChunkName: "features/ui" */'soapbox/components/profile-hover-card');
 }
 
 export function CryptoDonate() {
@@ -500,6 +500,10 @@ export function CompareHistoryModal() {
 
 export function AuthTokenList() {
   return import(/* webpackChunkName: "features/auth_token_list" */'../../auth_token_list');
+}
+
+export function VerifySmsModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/verify-sms-modal');
 }
 
 export function FamiliarFollowersModal() {

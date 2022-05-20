@@ -3,6 +3,8 @@ import { HotKeys } from 'react-hotkeys';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
+import { useAppSelector } from 'soapbox/hooks';
+
 import Icon from '../../../components/icon';
 import Permalink from '../../../components/permalink';
 import { HStack, Text, Emoji } from '../../../components/ui';
@@ -50,6 +52,7 @@ const icons: Record<NotificationType, string> = {
   move: require('@tabler/icons/icons/briefcase.svg'),
   'pleroma:chat_mention': require('@tabler/icons/icons/messages.svg'),
   'pleroma:emoji_reaction': require('@tabler/icons/icons/mood-happy.svg'),
+  user_approved: require('@tabler/icons/icons/user-plus.svg'),
 };
 
 const messages: Record<NotificationType, { id: string, defaultMessage: string }> = {
@@ -93,16 +96,20 @@ const messages: Record<NotificationType, { id: string, defaultMessage: string }>
     id: 'notification.pleroma:emoji_reaction',
     defaultMessage: '{name} reacted to your post',
   },
+  user_approved: {
+    id: 'notification.user_approved',
+    defaultMessage: 'Welcome to {instance}!',
+  },
 };
 
-const buildMessage = (type: NotificationType, account: Account, targetName?: string): JSX.Element => {
+const buildMessage = (type: NotificationType, account: Account, targetName: string, instanceTitle: string): JSX.Element => {
   const link = buildLink(account);
 
   return (
     <FormattedMessageFixed
       id={messages[type].id}
       defaultMessage={messages[type].defaultMessage}
-      values={{ name: link, targetName }}
+      values={{ name: link, targetName, instance: instanceTitle }}
     />
   );
 };
@@ -128,6 +135,7 @@ const Notification: React.FC<INotificaton> = (props) => {
 
   const history = useHistory();
   const intl = useIntl();
+  const instance = useAppSelector((state) => state.instance);
 
   const type = notification.type;
   const { account, status } = notification;
@@ -216,6 +224,7 @@ const Notification: React.FC<INotificaton> = (props) => {
     switch (type) {
       case 'follow':
       case 'follow_request':
+      case 'user_approved':
         return account && typeof account === 'object' ? (
           <AccountContainer
             id={account.id}
@@ -239,7 +248,7 @@ const Notification: React.FC<INotificaton> = (props) => {
       case 'pleroma:emoji_reaction':
         return status && typeof status === 'object' ? (
           <StatusContainer
-          // @ts-ignore
+            // @ts-ignore
             id={status.id}
             withDismiss
             hidden={hidden}
@@ -259,7 +268,7 @@ const Notification: React.FC<INotificaton> = (props) => {
 
   const targetName = notification.target && typeof notification.target === 'object' ? notification.target.acct : '';
 
-  const message: React.ReactNode = type && account && typeof account === 'object' ? buildMessage(type, account, targetName) : null;
+  const message: React.ReactNode = type && account && typeof account === 'object' ? buildMessage(type, account, targetName, instance.title) : null;
 
   return (
     <HotKeys handlers={getHandlers()} data-testid='notification'>

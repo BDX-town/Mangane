@@ -14,7 +14,7 @@ import AutosuggestEmoji from './autosuggest_emoji';
 const textAtCursorMatchesToken = (str, caretPosition) => {
   let word;
 
-  const left  = str.slice(0, caretPosition).search(/\S+$/);
+  const left = str.slice(0, caretPosition).search(/\S+$/);
   const right = str.slice(caretPosition).search(/\s/);
 
   if (right < 0) {
@@ -69,7 +69,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
   };
 
   onChange = (e) => {
-    const [ tokenStart, token ] = textAtCursorMatchesToken(e.target.value, e.target.selectionStart);
+    const [tokenStart, token] = textAtCursorMatchesToken(e.target.value, e.target.selectionStart);
 
     if (token !== null && this.state.lastToken !== token) {
       this.setState({ lastToken: token, selectedSuggestion: 0, tokenStart });
@@ -123,7 +123,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
         break;
       case 'Enter':
       case 'Tab':
-      // Select suggestion
+        // Select suggestion
         if (this.state.lastToken !== null && suggestions.size > 0 && !suggestionsHidden) {
           e.preventDefault();
           e.stopPropagation();
@@ -200,13 +200,13 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
 
     if (typeof suggestion === 'object') {
       inner = <AutosuggestEmoji emoji={suggestion} />;
-      key   = suggestion.id;
+      key = suggestion.id;
     } else if (suggestion[0] === '#') {
       inner = suggestion;
-      key   = suggestion;
+      key = suggestion;
     } else {
       inner = <AutosuggestAccount id={suggestion} />;
-      key   = suggestion;
+      key = suggestion;
     }
 
     return (
@@ -257,7 +257,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
 
             <Textarea
               ref={this.setTextarea}
-              className={classNames('transition-[min-height] motion-reduce:transition-none dark:bg-slate-800 px-0 border-0 text-gray-800 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 resize-none w-full focus:shadow-none focus:border-0 focus:ring-0', {
+              className={classNames('transition-[min-height] motion-reduce:transition-none dark:bg-slate-800 px-0 mt-1 border-0 text-gray-800 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 resize-none w-full focus:shadow-none focus:border-0 focus:ring-0', {
                 'min-h-[40px]': condensed,
                 'min-h-[100px]': !condensed,
               })}

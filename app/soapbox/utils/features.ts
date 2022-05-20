@@ -363,6 +363,12 @@ const getInstanceFeatures = (instance: Instance) => {
     paginatedContext: v.software === TRUTHSOCIAL,
 
     /**
+     * Displays a form to follow a user when logged out.
+     * @see POST /main/ostatus
+     */
+    pleromaRemoteFollow: v.software === PLEROMA,
+
+    /**
      * Can add polls to statuses.
      * @see POST /api/v1/statuses
      */

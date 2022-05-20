@@ -1,5 +1,5 @@
 import React from 'react';
-import { Virtuoso, Components } from 'react-virtuoso';
+import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle } from 'react-virtuoso';
 
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { useSettings } from 'soapbox/hooks';
@@ -25,7 +25,7 @@ const List: Components<Context>['List'] = React.forwardRef((props, ref) => {
   return <div ref={ref} className={context?.listClassName} {...rest} />;
 });
 
-interface IScrollableList {
+interface IScrollableList extends VirtuosoProps<any, any> {
   scrollKey?: string,
   onLoadMore?: () => void,
   isLoading?: boolean,
@@ -45,7 +45,7 @@ interface IScrollableList {
 }
 
 /** Legacy ScrollableList with Virtuoso for backwards-compatibility */
-const ScrollableList: React.FC<IScrollableList> = ({
+const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   prepend = null,
   alwaysPrepend,
   children,
@@ -61,7 +61,9 @@ const ScrollableList: React.FC<IScrollableList> = ({
   hasMore,
   placeholderComponent: Placeholder,
   placeholderCount = 0,
-}) => {
+  initialTopMostItemIndex = 0,
+  scrollerRef,
+}, ref) => {
   const settings = useSettings();
   const autoloadMore = settings.get('autoloadMore');
 
@@ -126,6 +128,7 @@ const ScrollableList: React.FC<IScrollableList> = ({
   /** Render the actual Virtuoso list */
   const renderFeed = (): JSX.Element => (
     <Virtuoso
+      ref={ref}
       useWindowScroll
       className={className}
       data={data}
@@ -133,6 +136,7 @@ const ScrollableList: React.FC<IScrollableList> = ({
       endReached={handleEndReached}
       isScrolling={isScrolling => isScrolling && onScroll && onScroll()}
       itemContent={renderItem}
+      initialTopMostItemIndex={showLoading ? 0 : initialTopMostItemIndex}
       context={{
         listClassName: className,
         itemClassName,
@@ -145,6 +149,7 @@ const ScrollableList: React.FC<IScrollableList> = ({
         Item,
         Footer: loadMore,
       }}
+      scrollerRef={scrollerRef}
     />
   );
 
@@ -162,6 +167,6 @@ const ScrollableList: React.FC<IScrollableList> = ({
       {renderBody()}
     </PullToRefresh>
   );
-};
+});
 
 export default ScrollableList;

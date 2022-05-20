@@ -29,7 +29,7 @@ const ProfilePreview: React.FC<IProfilePreview> = ({ account }) => {
             <StillImage alt='' className='h-12 w-12 rounded-full' src={account.avatar} />
           </div>
 
-          {!account.verified && <div className='absolute -top-1.5 -right-1.5'><VerificationBadge /></div>}
+          {account.verified && <div className='absolute -top-1.5 -right-1.5'><VerificationBadge /></div>}
         </div>
 
         <Stack className='truncate'>

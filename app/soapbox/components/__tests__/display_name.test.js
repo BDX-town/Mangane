@@ -3,7 +3,7 @@ import React from 'react';
 import { normalizeAccount } from 'soapbox/normalizers';
 
 import { render, screen } from '../../jest/test-helpers';
-import DisplayName from '../display_name';
+import DisplayName from '../display-name';
 
 describe('<DisplayName />', () => {
   it('renders display name + account name', () => {

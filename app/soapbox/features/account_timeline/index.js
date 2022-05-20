@@ -13,7 +13,6 @@ import { makeGetStatusIds, findAccountByUsername } from 'soapbox/selectors';
 import { getFeatures } from 'soapbox/utils/features';
 
 import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
-import { fetchAccountIdentityProofs } from '../../actions/identity_proofs';
 import { fetchPatronAccount } from '../../actions/patron';
 import { expandAccountFeaturedTimeline, expandAccountTimeline } from '../../actions/timelines';
 import StatusList from '../../components/status_list';
@@ -84,11 +83,10 @@ class AccountTimeline extends ImmutablePureComponent {
   };
 
   componentDidMount() {
-    const { params: { username }, accountId, accountApId, withReplies, me, patronEnabled } = this.props;
+    const { params: { username }, accountId, accountApId, withReplies, patronEnabled } = this.props;
 
     if (accountId && accountId !== -1) {
       this.props.dispatch(fetchAccount(accountId));
-      if (me) this.props.dispatch(fetchAccountIdentityProofs(accountId));
 
       if (!withReplies) {
         this.props.dispatch(expandAccountFeaturedTimeline(accountId));
@@ -105,11 +103,10 @@ class AccountTimeline extends ImmutablePureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { params: { username }, me, accountId, withReplies, accountApId, patronEnabled } = this.props;
+    const { params: { username }, accountId, withReplies, accountApId, patronEnabled } = this.props;
 
     if (accountId && (accountId !== -1) && (accountId !== prevProps.accountId) || withReplies !== prevProps.withReplies) {
       this.props.dispatch(fetchAccount(accountId));
-      if (me) this.props.dispatch(fetchAccountIdentityProofs(accountId));
 
       if (!withReplies) {
         this.props.dispatch(expandAccountFeaturedTimeline(accountId));

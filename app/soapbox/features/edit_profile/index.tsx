@@ -9,7 +9,7 @@ import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soap
 import { normalizeAccount } from 'soapbox/normalizers';
 import resizeImage from 'soapbox/utils/resize_image';
 
-import { Button, Column, Form, FormActions, FormGroup, Input, Textarea, HStack, Toggle } from '../../components/ui';
+import { Button, Column, Form, FormActions, FormGroup, Input, Textarea, HStack, Toggle, FileInput } from '../../components/ui';
 import Streamfield, { StreamfieldComponent } from '../../components/ui/streamfield/streamfield';
 
 import ProfilePreview from './components/profile-preview';
@@ -179,8 +179,8 @@ const EditProfile: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const account   = useOwnAccount();
-  const features  = useFeatures();
+  const account = useOwnAccount();
+  const features = useFeatures();
   const maxFields = useAppSelector(state => state.instance.pleroma.getIn(['metadata', 'fields_limits', 'max_fields'], 4) as number);
 
   const [isLoading, setLoading] = useState(false);
@@ -378,14 +378,14 @@ const EditProfile: React.FC = () => {
               labelText={<FormattedMessage id='edit_profile.fields.header_label' defaultMessage='Choose Background Picture' />}
               hintText={<FormattedMessage id='edit_profile.hints.header' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '1920x1080px' }} />}
             >
-              <input type='file' onChange={handleFileChange('header', 1920 * 1080)} className='text-sm' />
+              <FileInput onChange={handleFileChange('header', 1920 * 1080)} />
             </FormGroup>
 
             <FormGroup
               labelText={<FormattedMessage id='edit_profile.fields.avatar_label' defaultMessage='Choose Profile Picture' />}
               hintText={<FormattedMessage id='edit_profile.hints.avatar' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '400x400px' }} />}
             >
-              <input type='file' onChange={handleFileChange('avatar', 400 * 400)} className='text-sm' />
+              <FileInput onChange={handleFileChange('avatar', 400 * 400)} />
             </FormGroup>
           </div>
         </div>

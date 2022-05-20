@@ -29,7 +29,6 @@ import group_lists from './group_lists';
 import group_relationships from './group_relationships';
 import groups from './groups';
 import history from './history';
-import identity_proofs from './identity_proofs';
 import instance from './instance';
 import listAdder from './list_adder';
 import listEditor from './list_editor';
@@ -86,7 +85,6 @@ const reducers = {
   search,
   notifications,
   custom_emojis,
-  identity_proofs,
   lists,
   listEditor,
   listAdder,

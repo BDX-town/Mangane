@@ -30,13 +30,21 @@ const messages = defineMessages({
   unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
 });
 
-interface iActionButton {
+interface IActionButton {
+  /** Target account for the action. */
   account: AccountEntity
+  /** Type of action to prioritize, eg on Blocks and Mutes pages. */
   actionType?: 'muting' | 'blocking'
+  /** Displays shorter text on the "Awaiting approval" button. */
   small?: boolean
 }
 
-const ActionButton = ({ account, actionType, small }: iActionButton) => {
+/**
+ * Circumstantial action button (usually "Follow") to display on accounts.
+ * May say "Unblock" or something else, depending on the relationship and
+ * `actionType` prop.
+ */
+const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) => {
   const dispatch = useDispatch();
   const features = useFeatures();
   const intl = useIntl();
@@ -45,40 +53,41 @@ const ActionButton = ({ account, actionType, small }: iActionButton) => {
 
   const handleFollow = () => {
     if (account.getIn(['relationship', 'following']) || account.getIn(['relationship', 'requested'])) {
-      dispatch(unfollowAccount(account.get('id')));
+      dispatch(unfollowAccount(account.id));
     } else {
-      dispatch(followAccount(account.get('id')));
+      dispatch(followAccount(account.id));
     }
   };
 
   const handleBlock = () => {
     if (account.getIn(['relationship', 'blocking'])) {
-      dispatch(unblockAccount(account.get('id')));
+      dispatch(unblockAccount(account.id));
     } else {
-      dispatch(blockAccount(account.get('id')));
+      dispatch(blockAccount(account.id));
     }
   };
 
   const handleMute = () => {
     if (account.getIn(['relationship', 'muting'])) {
-      dispatch(unmuteAccount(account.get('id')));
+      dispatch(unmuteAccount(account.id));
     } else {
-      dispatch(muteAccount(account.get('id')));
+      dispatch(muteAccount(account.id));
     }
   };
 
   const handleRemoteFollow = () => {
     dispatch(openModal('UNAUTHORIZED', {
       action: 'FOLLOW',
-      account: account.get('id'),
-      ap_id: account.get('url'),
+      account: account.id,
+      ap_id: account.url,
     }));
   };
 
+  /** Handles actionType='muting' */
   const mutingAction = () => {
     const isMuted = account.getIn(['relationship', 'muting']);
     const messageKey = isMuted ? messages.unmute : messages.mute;
-    const text = intl.formatMessage(messageKey, { name: account.get('username') });
+    const text = intl.formatMessage(messageKey, { name: account.username });
 
     return (
       <Button
@@ -90,10 +99,11 @@ const ActionButton = ({ account, actionType, small }: iActionButton) => {
     );
   };
 
+  /** Handles actionType='blocking' */
   const blockingAction = () => {
     const isBlocked = account.getIn(['relationship', 'blocking']);
     const messageKey = isBlocked ? messages.unblock : messages.block;
-    const text = intl.formatMessage(messageKey, { name: account.get('username') });
+    const text = intl.formatMessage(messageKey, { name: account.username });
 
     return (
       <Button
@@ -105,10 +115,9 @@ const ActionButton = ({ account, actionType, small }: iActionButton) => {
     );
   };
 
-  const empty = <></>;
-
-  if (!me) {
-    // Remote follow
+  /** Render a remote follow button, depending on features. */
+  const renderRemoteFollow = () => {
+    // Remote follow through the API.
     if (features.remoteInteractionsAPI) {
       return (
         <Button
@@ -117,18 +126,34 @@ const ActionButton = ({ account, actionType, small }: iActionButton) => {
           text={intl.formatMessage(messages.follow)}
         />
       );
+    // Pleroma's classic remote follow form.
+    } else if (features.pleromaRemoteFollow) {
+      return (
+        <form method='POST' action='/main/ostatus'>
+          <input type='hidden' name='nickname' value={account.acct} />
+          <input type='hidden' name='profile' value='' />
+          <Button text={intl.formatMessage(messages.remote_follow)} type='submit' />
+        </form>
+      );
     }
 
-    return (
-      <form method='POST' action='/main/ostatus'>
-        <input type='hidden' name='nickname' value={account.get('acct')} />
-        <input type='hidden' name='profile' value='' />
-        <Button text={intl.formatMessage(messages.remote_follow)} type='submit' />
-      </form>
-    );
+    return null;
+  };
+
+  /** Render remote follow if federating, otherwise hide the button. */
+  const renderLoggedOut = () => {
+    if (features.federating) {
+      return renderRemoteFollow();
+    }
+
+    return null;
+  };
+
+  if (!me) {
+    return renderLoggedOut();
   }
 
-  if (me !== account.get('id')) {
+  if (me !== account.id) {
     const isFollowing = account.getIn(['relationship', 'following']);
     const blockedBy = account.getIn(['relationship', 'blocked_by']) as boolean;
 
@@ -140,9 +165,9 @@ const ActionButton = ({ account, actionType, small }: iActionButton) => {
       }
     }
 
-    if (!account.get('relationship')) {
+    if (account.relationship.isEmpty()) {
       // Wait until the relationship is loaded
-      return empty;
+      return null;
     } else if (account.getIn(['relationship', 'requested'])) {
       // Awaiting acceptance
       return (
@@ -176,7 +201,7 @@ const ActionButton = ({ account, actionType, small }: iActionButton) => {
         <Button
           theme='danger'
           size='sm'
-          text={intl.formatMessage(messages.unblock, { name: account.get('username') })}
+          text={intl.formatMessage(messages.unblock, { name: account.username })}
           onClick={handleBlock}
         />
       );
@@ -193,7 +218,7 @@ const ActionButton = ({ account, actionType, small }: iActionButton) => {
     );
   }
 
-  return empty;
+  return null;
 };
 
 export default ActionButton;

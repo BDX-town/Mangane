@@ -150,16 +150,18 @@ const SidebarNavigation = () => {
         {account && (
           <>
             <SidebarNavigationLink
-              to={`/@${account.acct}`}
-              icon={require('@tabler/icons/icons/user.svg')}
-              text={<FormattedMessage id='tabs_bar.profile' defaultMessage='Profile' />}
-            />
-
-            <SidebarNavigationLink
               to='/notifications'
               icon={require('@tabler/icons/icons/bell.svg')}
               count={notificationCount}
               text={<FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />}
+            />
+
+            {renderMessagesLink()}
+
+            <SidebarNavigationLink
+              to={`/@${account.acct}`}
+              icon={require('@tabler/icons/icons/user.svg')}
+              text={<FormattedMessage id='tabs_bar.profile' defaultMessage='Profile' />}
             />
 
             <SidebarNavigationLink
@@ -169,8 +171,6 @@ const SidebarNavigation = () => {
             />
           </>
         )}
-
-        {account && renderMessagesLink()}
 
         {menu.length > 0 && (
           <DropdownMenu items={menu}>

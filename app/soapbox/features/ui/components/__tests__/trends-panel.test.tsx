@@ -10,13 +10,19 @@ describe('<TrendsPanel />', () => {
       trends: ImmutableMap({
         items: fromJS([{
           name: 'hashtag 1',
-          history: [{ accounts: [] }],
+          history: [{
+            day: '1652745600',
+            uses: '294',
+            accounts: '180',
+          }],
         }]),
       }),
     };
 
     render(<TrendsPanel limit={1} />, null, store);
     expect(screen.getByTestId('hashtag')).toHaveTextContent(/hashtag 1/i);
+    expect(screen.getByTestId('hashtag')).toHaveTextContent(/180 people talking/i);
+    expect(screen.getByTestId('sparklines')).toBeInTheDocument();
   });
 
   it('renders multiple trends', () => {
