@@ -859,8 +859,6 @@
   "reply_indicator.cancel": "取消",
   "reply_mentions.account.add": "Add to mentions",
   "reply_mentions.account.remove": "Remove from mentions",
-  "reply_mentions.more": "and {count} more",
-  "reply_mentions.reply": "Replying to {accounts}{more}",
   "reply_mentions.reply_empty": "Replying to post",
   "report.block": "屏蔽帐号 {target}",
   "report.block_hint": "你是否也要屏蔽这个帐号呢？",

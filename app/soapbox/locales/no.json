@@ -859,8 +859,6 @@
   "reply_indicator.cancel": "Avbryt",
   "reply_mentions.account.add": "Add to mentions",
   "reply_mentions.account.remove": "Remove from mentions",
-  "reply_mentions.more": "and {count} more",
-  "reply_mentions.reply": "Replying to {accounts}{more}",
   "reply_mentions.reply_empty": "Replying to post",
   "report.block": "Block {target}",
   "report.block_hint": "Do you also want to block this account?",
