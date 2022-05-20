@@ -282,13 +282,11 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   }
 
   handleHotkeyMoveUp = (e?: KeyboardEvent): void => {
-    // FIXME: what's going on here?
-    // this.props.onMoveUp(this.props.status.id, e?.target?.getAttribute('data-featured'));
+    this.props.onMoveUp(this.props.status.id, this.props.featured);
   }
 
   handleHotkeyMoveDown = (e?: KeyboardEvent): void => {
-    // FIXME: what's going on here?
-    // this.props.onMoveDown(this.props.status.id, e?.target?.getAttribute('data-featured'));
+    this.props.onMoveDown(this.props.status.id, this.props.featured);
   }
 
   handleHotkeyToggleHidden = (): void => {
@@ -601,7 +599,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     return (
       <HotKeys handlers={handlers} data-testid='status'>
         <div
-          className='status cursor-pointer'
+          className={classNames('status cursor-pointer', { focusable: this.props.focusable })}
           tabIndex={this.props.focusable && !this.props.muted ? 0 : undefined}
           data-featured={featured ? 'true' : null}
           aria-label={textForScreenReader(intl, status, rebloggedByText)}

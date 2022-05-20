@@ -20,26 +20,26 @@ export default class ConversationsList extends ImmutablePureComponent {
 
   handleMoveUp = id => {
     const elementIndex = this.getCurrentIndex(id) - 1;
-    this._selectChild(elementIndex, true);
+    this._selectChild(elementIndex);
   }
 
   handleMoveDown = id => {
     const elementIndex = this.getCurrentIndex(id) + 1;
-    this._selectChild(elementIndex, false);
+    this._selectChild(elementIndex);
   }
 
-  _selectChild(index, align_top) {
-    const container = this.node.node;
-    const element = container.querySelector(`article:nth-of-type(${index + 1}) .focusable`);
+  _selectChild(index) {
+    this.node.scrollIntoView({
+      index,
+      behavior: 'smooth',
+      done: () => {
+        const element = document.querySelector(`#direct-list [data-index="${index}"] .focusable`);
 
-    if (element) {
-      if (align_top && container.scrollTop > element.offsetTop) {
-        element.scrollIntoView(true);
-      } else if (!align_top && container.scrollTop + container.clientHeight < element.offsetTop + element.offsetHeight) {
-        element.scrollIntoView(false);
-      }
-      element.focus();
-    }
+        if (element) {
+          element.focus();
+        }
+      },
+    });
   }
 
   setRef = c => {
@@ -58,7 +58,9 @@ export default class ConversationsList extends ImmutablePureComponent {
       <ScrollableList
         {...other}
         onLoadMore={onLoadMore && this.handleLoadOlder}
-        scrollKey='direct' ref={this.setRef}
+        id='direct-list'
+        scrollKey='direct'
+        ref={this.setRef}
         isLoading={isLoading}
         showLoading={isLoading && conversations.size === 0}
       >
