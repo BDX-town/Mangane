@@ -505,3 +505,7 @@ export function AuthTokenList() {
 export function VerifySmsModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/modals/verify-sms-modal');
 }
+
+export function FamiliarFollowersModal() {
+  return import(/*webpackChunkName: "modals/familiar_followers_modal" */'../components/familiar_followers_modal');
+}

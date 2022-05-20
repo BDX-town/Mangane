@@ -28,6 +28,9 @@ import {
   DIRECTORY_EXPAND_FAIL,
 } from '../actions/directory';
 import {
+  FAMILIAR_FOLLOWERS_FETCH_SUCCESS,
+} from '../actions/familiar_followers';
+import {
   GROUP_MEMBERS_FETCH_SUCCESS,
   GROUP_MEMBERS_EXPAND_SUCCESS,
   GROUP_REMOVED_ACCOUNTS_FETCH_SUCCESS,
@@ -60,6 +63,7 @@ const initialState = ImmutableMap({
   groups_removed_accounts: ImmutableMap(),
   pinned: ImmutableMap(),
   birthday_reminders: ImmutableMap(),
+  familiar_followers: ImmutableMap(),
 });
 
 const normalizeList = (state, type, id, accounts, next) => {
@@ -138,6 +142,8 @@ export default function userLists(state = initialState, action) {
       return normalizeList(state, 'pinned', action.id, action.accounts, action.next);
     case BIRTHDAY_REMINDERS_FETCH_SUCCESS:
       return state.setIn(['birthday_reminders', action.id], ImmutableOrderedSet(action.accounts.map(item => item.id)));
+    case FAMILIAR_FOLLOWERS_FETCH_SUCCESS:
+      return state.setIn(['familiar_followers', action.id], ImmutableOrderedSet(action.accounts.map(item => item.id)));
     default:
       return state;
   }
