@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle } from 'react-virtuoso';
+import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle, ListRange } from 'react-virtuoso';
 
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { useSettings } from 'soapbox/hooks';
@@ -66,10 +66,10 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   const settings = useSettings();
   const autoloadMore = settings.get('autoloadMore');
 
-  // Preserve scroll position
-  const scrollPositionKey = `soapbox:scrollPosition:${location.pathname}`;
-  const scrollPosition = Number(sessionStorage.getItem(scrollPositionKey));
-  const initialScrollTop = useRef(scrollPosition);
+  // Preserve scroll index
+  const scrollIndexKey = `soapbox:scrollIndex:${location.pathname}`;
+  const scrollIndex = Number(sessionStorage.getItem(scrollIndexKey));
+  const initialIndex = useRef(scrollIndex);
   const scroller = useRef<Window | HTMLElement | null>(null);
 
   /** Normalized children */
@@ -91,12 +91,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   }
 
   useEffect(() => {
-    sessionStorage.removeItem(scrollPositionKey);
-
-    // On unmount, save the scroll position.
-    return () => {
-      sessionStorage.setItem(scrollPositionKey, String(document.documentElement.scrollTop));
-    };
+    sessionStorage.removeItem(scrollIndexKey);
   }, []);
 
   /* Render an empty state instead of the scrollable list */
@@ -139,19 +134,23 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
     }
   };
 
+  const handleRangeChanged = (range: ListRange) => {
+    sessionStorage.setItem(scrollIndexKey, String(range.startIndex));
+  };
+
   /** Render the actual Virtuoso list */
   const renderFeed = (): JSX.Element => (
     <Virtuoso
       ref={ref}
       useWindowScroll
-      initialScrollTop={initialScrollTop.current}
       className={className}
       data={data}
       startReached={onScrollToTop}
       endReached={handleEndReached}
       isScrolling={isScrolling => isScrolling && onScroll && onScroll()}
       itemContent={renderItem}
-      initialTopMostItemIndex={showLoading ? 0 : initialTopMostItemIndex}
+      initialTopMostItemIndex={showLoading ? 0 : initialTopMostItemIndex || initialIndex.current}
+      rangeChanged={handleRangeChanged}
       context={{
         listClassName: className,
         itemClassName,
