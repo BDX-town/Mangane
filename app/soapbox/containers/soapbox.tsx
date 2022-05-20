@@ -127,18 +127,6 @@ const SoapboxMount = () => {
     localeLoading,
   ].some(Boolean);
 
-  if (showLoading) {
-    return (
-      <>
-        <Helmet>
-          {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
-        </Helmet>
-
-        <LoadingScreen />
-      </>
-    );
-  }
-
   const bodyClass = classNames('bg-white dark:bg-slate-900 text-base h-full', {
     'no-reduce-motion': !settings.get('reduceMotion'),
     'underline-links': settings.get('underlineLinks'),
@@ -146,88 +134,105 @@ const SoapboxMount = () => {
     'demetricator': settings.get('demetricator'),
   });
 
-  if (showOnboarding) {
-    return (
-      <IntlProvider locale={locale} messages={messages}>
-        <Helmet>
-          <html lang={locale} className={classNames({ dark: darkMode })} />
-          <body className={bodyClass} />
-          {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
-          <meta name='theme-color' content={soapboxConfig.brandColor} />
-        </Helmet>
+  const helmet = (
+    <Helmet>
+      <html lang={locale} className={classNames('h-full', { dark: darkMode })} />
+      <body className={bodyClass} />
+      {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
+      <meta name='theme-color' content={soapboxConfig.brandColor} />
+    </Helmet>
+  );
 
-        <ErrorBoundary>
-          <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
-            <OnboardingWizard />
-            <NotificationsContainer />
-          </BrowserRouter>
-        </ErrorBoundary>
-      </IntlProvider>
-    );
+  /** Render loading screen. */
+  const renderLoading = () => (
+    <>
+      {helmet}
+      <LoadingScreen />
+    </>
+  );
+
+  /** Render the onboarding flow. */
+  const renderOnboarding = () => (
+    <>
+      <OnboardingWizard />
+      <NotificationsContainer />
+    </>
+  );
+
+  /** Render the auth layout or UI. */
+  const renderSwitch = () => (
+    <Switch>
+      <Redirect from='/v1/verify_email/:token' to='/verify/email/:token' />
+
+      {/* Redirect signup route depending on Pepe enablement. */}
+      {/* We should prefer using /signup in components. */}
+      {pepeEnabled ? (
+        <Redirect from='/signup' to='/verify' />
+      ) : (
+        <Redirect from='/verify' to='/signup' />
+      )}
+
+      {waitlisted && (
+        <>
+          <Route render={(props) => <WaitlistPage {...props} account={account} />} />
+
+          <BundleContainer fetchComponent={ModalContainer}>
+            {Component => <Component />}
+          </BundleContainer>
+        </>
+      )}
+
+      {!me && (singleUserMode
+        ? <Redirect exact from='/' to={`/${singleUserMode}`} />
+        : <Route exact path='/' component={PublicLayout} />)}
+
+      {!me && (
+        <Route exact path='/' component={PublicLayout} />
+      )}
+
+      <Route exact path='/about/:slug?' component={PublicLayout} />
+      <Route exact path='/mobile/:slug?' component={PublicLayout} />
+      <Route path='/login' component={AuthLayout} />
+
+      {(features.accountCreation && instance.registrations) && (
+        <Route exact path='/signup' component={AuthLayout} />
+      )}
+
+      {pepeEnabled && (
+        <Route path='/verify' component={AuthLayout} />
+      )}
+
+      <Route path='/reset-password' component={AuthLayout} />
+      <Route path='/edit-password' component={AuthLayout} />
+      <Route path='/invite/:token' component={AuthLayout} />
+
+      <Route path='/' component={UI} />
+    </Switch>
+  );
+
+  /** Render the onboarding flow or UI. */
+  const renderBody = () => {
+    if (showOnboarding) {
+      return renderOnboarding();
+    } else {
+      return renderSwitch();
+    }
+  };
+
+  // intl is part of loading.
+  // It's important nothing in here depends on intl.
+  if (showLoading) {
+    return renderLoading();
   }
 
   return (
     <IntlProvider locale={locale} messages={messages}>
-      <Helmet>
-        <html lang={locale} className={classNames('h-full', { dark: darkMode })} />
-        <body className={bodyClass} />
-        {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
-        <meta name='theme-color' content={soapboxConfig.brandColor} />
-      </Helmet>
-
+      {helmet}
       <ErrorBoundary>
         <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
-          <>
-            <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
-              <Switch>
-                <Redirect from='/v1/verify_email/:token' to='/verify/email/:token' />
-
-                {/* Redirect signup route depending on Pepe enablement. */}
-                {/* We should prefer using /signup in components. */}
-                {pepeEnabled ? (
-                  <Redirect from='/signup' to='/verify' />
-                ) : (
-                  <Redirect from='/verify' to='/signup' />
-                )}
-
-                {waitlisted && (
-                  <>
-                    <Route render={(props) => <WaitlistPage {...props} account={account} />} />
-
-                    <BundleContainer fetchComponent={ModalContainer}>
-                      {Component => <Component />}
-                    </BundleContainer>
-                  </>
-                )}
-
-                {!me && (singleUserMode
-                  ? <Redirect exact from='/' to={`/${singleUserMode}`} />
-                  : <Route exact path='/' component={PublicLayout} />)}
-
-                {!me && (
-                  <Route exact path='/' component={PublicLayout} />
-                )}
-
-                <Route exact path='/about/:slug?' component={PublicLayout} />
-                <Route exact path='/mobile/:slug?' component={PublicLayout} />
-                <Route path='/login' component={AuthLayout} />
-
-                {(features.accountCreation && instance.registrations) && (
-                  <Route exact path='/signup' component={AuthLayout} />
-                )}
-
-                {pepeEnabled && (
-                  <Route path='/verify' component={AuthLayout} />
-                )}
-
-                <Route path='/reset-password' component={AuthLayout} />
-                <Route path='/edit-password' component={AuthLayout} />
-                <Route path='/invite/:token' component={AuthLayout} />
-
-                <Route path='/' component={UI} />
-              </Switch>
-            </ScrollContext>
-          </>
+          <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
+            {renderBody()}
+          </ScrollContext>
         </BrowserRouter>
       </ErrorBoundary>
     </IntlProvider>
