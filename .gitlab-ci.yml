@@ -59,6 +59,15 @@ jest:
       - "package.json"
       - "yarn.lock"
 
+nginx-test:
+  stage: test
+  image: nginx:latest
+  before_script: cp installation/mastodon.conf /etc/nginx/conf.d/default.conf
+  script: nginx -t
+  only:
+    changes:
+      - "installation/mastodon.conf"
+
 build-production:
   stage: build
   script: yarn build
