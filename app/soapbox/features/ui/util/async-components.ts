@@ -494,6 +494,10 @@ export function DatePicker() {
   return import(/* webpackChunkName: "date_picker" */'../../birthdays/date_picker');
 }
 
+export function OnboardingWizard() {
+  return import(/* webpackChunkName: "features/onboarding" */'../../onboarding/onboarding-wizard');
+}
+
 export function CompareHistoryModal() {
   return import(/*webpackChunkName: "modals/compare_history_modal" */'../components/compare_history_modal');
 }

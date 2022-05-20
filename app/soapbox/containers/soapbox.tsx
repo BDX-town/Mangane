@@ -16,10 +16,13 @@ import * as BuildConfig from 'soapbox/build_config';
 import Helmet from 'soapbox/components/helmet';
 import LoadingScreen from 'soapbox/components/loading-screen';
 import AuthLayout from 'soapbox/features/auth_layout';
-import OnboardingWizard from 'soapbox/features/onboarding/onboarding-wizard';
 import PublicLayout from 'soapbox/features/public_layout';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
-import { ModalContainer, NotificationsContainer } from 'soapbox/features/ui/util/async-components';
+import {
+  ModalContainer,
+  NotificationsContainer,
+  OnboardingWizard,
+} from 'soapbox/features/ui/util/async-components';
 import WaitlistPage from 'soapbox/features/verification/waitlist_page';
 import { createGlobals } from 'soapbox/globals';
 import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures, useSoapboxConfig, useSettings, useSystemTheme } from 'soapbox/hooks';
@@ -142,20 +145,11 @@ const SoapboxMount = () => {
     </Helmet>
   );
 
-  /** Render loading screen. */
-  const renderLoading = () => (
-    <>
-      {helmet}
-      <LoadingScreen />
-    </>
-  );
-
   /** Render the onboarding flow. */
   const renderOnboarding = () => (
-    <>
-      <OnboardingWizard />
-      <NotificationsContainer />
-    </>
+    <BundleContainer fetchComponent={OnboardingWizard} loading={LoadingScreen}>
+      {(Component) => <Component />}
+    </BundleContainer>
   );
 
   /** Render the auth layout or UI. */
@@ -215,7 +209,12 @@ const SoapboxMount = () => {
   // intl is part of loading.
   // It's important nothing in here depends on intl.
   if (showLoading) {
-    return renderLoading();
+    return (
+      <>
+        {helmet}
+        <LoadingScreen />
+      </>
+    );
   }
 
   return (
@@ -224,15 +223,17 @@ const SoapboxMount = () => {
       <ErrorBoundary>
         <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
           <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
-            {renderBody()}
+            <>
+              {renderBody()}
 
-            <BundleContainer fetchComponent={NotificationsContainer}>
-              {(Component) => <Component />}
-            </BundleContainer>
+              <BundleContainer fetchComponent={NotificationsContainer}>
+                {(Component) => <Component />}
+              </BundleContainer>
 
-            <BundleContainer fetchComponent={ModalContainer}>
-              {Component => <Component />}
-            </BundleContainer>
+              <BundleContainer fetchComponent={ModalContainer}>
+                {Component => <Component />}
+              </BundleContainer>
+            </>
           </ScrollContext>
         </BrowserRouter>
       </ErrorBoundary>

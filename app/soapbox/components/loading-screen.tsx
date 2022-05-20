@@ -6,7 +6,7 @@ import { Spinner } from 'soapbox/components/ui';
 /** Fullscreen loading indicator. */
 const LoadingScreen: React.FC = () => {
   return (
-    <div className='fixed h-screen w-screen bg-white dark:bg-slate-900'>
+    <div className='fixed h-screen w-screen'>
       <LandingGradient />
 
       <div className='fixed h-screen w-screen flex items-center justify-center z-10'>
