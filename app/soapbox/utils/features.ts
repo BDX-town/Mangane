@@ -323,6 +323,20 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Can perform moderation actions with account and reports.
+     * @see {@link https://docs.joinmastodon.org/methods/admin/}
+     * @see GET /api/v1/admin/reports
+     * @see POST /api/v1/admin/reports/:report_id/resolve
+     * @see POST /api/v1/admin/reports/:report_id/reopen
+     * @see POST /api/v1/admin/accounts/:account_id/action
+     * @see POST /api/v1/admin/accounts/:account_id/approve
+     */
+    mastodonAdminApi: any([
+      v.software === MASTODON && gte(v.compatVersion, '2.9.1'),
+      v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
+    ]),
+
+    /**
      * Can upload media attachments to statuses.
      * @see POST /api/v1/media
      * @see POST /api/v1/statuses

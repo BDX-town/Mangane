@@ -1,4 +1,6 @@
 export { AccountRecord, FieldRecord, normalizeAccount } from './account';
+export { AdminAccountRecord, normalizeAdminAccount } from './admin_account';
+export { AdminReportRecord, normalizeAdminReport } from './admin_report';
 export { AttachmentRecord, normalizeAttachment } from './attachment';
 export { CardRecord, normalizeCard } from './card';
 export { ChatRecord, normalizeChat } from './chat';

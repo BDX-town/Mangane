@@ -10,8 +10,7 @@ import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch } from 'soapbox/hooks';
 
-import type { Map as ImmutableMap } from 'immutable';
-import type { Status, Attachment } from 'soapbox/types/entities';
+import type { AdminReport, Attachment, Status } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   viewStatus: { id: 'admin.reports.actions.view_status', defaultMessage: 'View post' },
@@ -20,7 +19,7 @@ const messages = defineMessages({
 
 interface IReportStatus {
   status: Status,
-  report?: ImmutableMap<string, any>,
+  report?: AdminReport,
 }
 
 const ReportStatus: React.FC<IReportStatus> = ({ status }) => {

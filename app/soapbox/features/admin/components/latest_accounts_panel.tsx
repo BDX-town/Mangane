@@ -32,8 +32,8 @@ const LatestAccountsPanel: React.FC<ILatestAccountsPanel> = ({ limit = 5 }) => {
 
   useEffect(() => {
     dispatch(fetchUsers(['local', 'active'], 1, null, limit))
-      .then((value) => {
-        setTotal((value as { count: number }).count);
+      .then((value: { count: number }) => {
+        setTotal(value.count);
       })
       .catch(() => {});
   }, []);

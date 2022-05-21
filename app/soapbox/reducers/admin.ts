@@ -19,15 +19,18 @@ import {
   ADMIN_USERS_DELETE_SUCCESS,
   ADMIN_USERS_APPROVE_REQUEST,
   ADMIN_USERS_APPROVE_SUCCESS,
-} from '../actions/admin';
+} from 'soapbox/actions/admin';
+import { normalizeAdminReport, normalizeAdminAccount } from 'soapbox/normalizers';
+import { APIEntity } from 'soapbox/types/entities';
+import { normalizeId } from 'soapbox/utils/normalizers';
 
 import type { AnyAction } from 'redux';
 import type { Config } from 'soapbox/utils/config_db';
 
 const ReducerRecord = ImmutableRecord({
-  reports: ImmutableMap<string, any>(),
+  reports: ImmutableMap<string, ReducerAdminReport>(),
   openReports: ImmutableOrderedSet<string>(),
-  users: ImmutableMap<string, any>(),
+  users: ImmutableMap<string, ReducerAdminAccount>(),
   latestUsers: ImmutableOrderedSet<string>(),
   awaitingApproval: ImmutableOrderedSet<string>(),
   configs: ImmutableList<Config>(),
@@ -35,6 +38,21 @@ const ReducerRecord = ImmutableRecord({
 });
 
 type State = ReturnType<typeof ReducerRecord>;
+
+type AdminAccountRecord = ReturnType<typeof normalizeAdminAccount>;
+type AdminReportRecord = ReturnType<typeof normalizeAdminReport>;
+
+export interface ReducerAdminAccount extends AdminAccountRecord {
+  account: string | null,
+}
+
+export interface ReducerAdminReport extends AdminReportRecord {
+  account: string | null,
+  target_account: string | null,
+  action_taken_by_account: string | null,
+  assigned_account: string | null,
+  statuses: ImmutableList<string | null>,
+}
 
 // Umm... based?
 // https://itnext.io/typescript-extract-unpack-a-type-from-a-generic-baca7af14e51
@@ -46,7 +64,6 @@ type InnerState = InnerRecord<State>;
 type FilterConditionally<Source, Condition> = Pick<Source, {[K in keyof Source]: Source[K] extends Condition ? K : never}[keyof Source]>;
 
 type SetKeys = keyof FilterConditionally<InnerState, ImmutableOrderedSet<string>>;
-
 type APIReport = { id: string, state: string, statuses: any[] };
 type APIUser = { id: string, email: string, nickname: string, registration_reason: string };
 
@@ -84,12 +101,17 @@ const maybeImportLatest = (state: State, users: APIUser[], filters: Filter[], pa
   }
 };
 
-const importUser = (state: State, user: APIUser): State => (
-  state.setIn(['users', user.id], ImmutableMap({
-    email: user.email,
-    registration_reason: user.registration_reason,
-  }))
-);
+const minifyUser = (user: AdminAccountRecord): ReducerAdminAccount => {
+  return user.mergeWith((o, n) => n || o, {
+    account: normalizeId(user.getIn(['account', 'id'])),
+  }) as ReducerAdminAccount;
+};
+
+const fixUser = (user: APIEntity): ReducerAdminAccount => {
+  return normalizeAdminAccount(user).withMutations(user => {
+    minifyUser(user);
+  }) as ReducerAdminAccount;
+};
 
 function importUsers(state: State, users: APIUser[], filters: Filter[], page: number): State {
   return state.withMutations(state => {
@@ -97,7 +119,8 @@ function importUsers(state: State, users: APIUser[], filters: Filter[], page: nu
     maybeImportLatest(state, users, filters, page);
 
     users.forEach(user => {
-      importUser(state, user);
+      const normalizedUser = fixUser(user);
+      state.setIn(['users', user.id], normalizedUser);
     });
   });
 }
@@ -114,20 +137,38 @@ function deleteUsers(state: State, accountIds: string[]): State {
 function approveUsers(state: State, users: APIUser[]): State {
   return state.withMutations(state => {
     users.forEach(user => {
-      state.update('awaitingApproval', orderedSet => orderedSet.delete(user.nickname));
-      state.setIn(['users', user.nickname], fromJS(user));
+      const normalizedUser = fixUser(user);
+      state.update('awaitingApproval', orderedSet => orderedSet.delete(user.id));
+      state.setIn(['users', user.id], normalizedUser);
     });
   });
 }
 
-function importReports(state: State, reports: APIReport[]): State {
+const minifyReport = (report: AdminReportRecord): ReducerAdminReport => {
+  return report.mergeWith((o, n) => n || o, {
+    account: normalizeId(report.getIn(['account', 'id'])),
+    target_account: normalizeId(report.getIn(['target_account', 'id'])),
+    action_taken_by_account: normalizeId(report.getIn(['action_taken_by_account', 'id'])),
+    assigned_account: normalizeId(report.getIn(['assigned_account', 'id'])),
+
+    statuses: report.get('statuses').map((status: any) => normalizeId(status.get('id'))),
+  }) as ReducerAdminReport;
+};
+
+const fixReport = (report: APIEntity): ReducerAdminReport => {
+  return normalizeAdminReport(report).withMutations(report => {
+    minifyReport(report);
+  }) as ReducerAdminReport;
+};
+
+function importReports(state: State, reports: APIEntity[]): State {
   return state.withMutations(state => {
     reports.forEach(report => {
-      report.statuses = report.statuses.map(status => status.id);
-      if (report.state === 'open') {
+      const normalizedReport = fixReport(report);
+      if (!normalizedReport.action_taken) {
         state.update('openReports', orderedSet => orderedSet.add(report.id));
       }
-      state.setIn(['reports', report.id], fromJS(report));
+      state.setIn(['reports', report.id], normalizedReport);
     });
   });
 }
