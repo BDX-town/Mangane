@@ -172,6 +172,7 @@ class Notifications extends React.PureComponent {
 
     const scrollContainer = (
       <ScrollableList
+        ref={this.setRef}
         scrollKey='notifications'
         isLoading={isLoading}
         showLoading={isLoading && notifications.size === 0}
