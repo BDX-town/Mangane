@@ -100,36 +100,27 @@ export function updateConfig(configs) {
   };
 }
 
-export function fetchReports(params = {}) {
+function fetchMastodonReports(params) {
   return (dispatch, getState) => {
-    const state = getState();
-
-    const instance = state.get('instance');
-    const features = getFeatures(instance);
-
-    dispatch({ type: ADMIN_REPORTS_FETCH_REQUEST, params });
-
-    if (features.mastodonAdminApi) {
-      return api(getState)
-        .get('/api/v1/admin/reports', { params })
-        .then(({ data: reports }) => {
-          reports.forEach(report => {
-            dispatch(importFetchedAccount(report.account?.account));
-            dispatch(importFetchedAccount(report.target_account?.account));
-            dispatch(importFetchedStatuses(report.statuses));
-          });
-          dispatch({ type: ADMIN_REPORTS_FETCH_SUCCESS, reports, params });
-        }).catch(error => {
-          dispatch({ type: ADMIN_REPORTS_FETCH_FAIL, error, params });
-        });
-    }
-
-    const { resolved } = params;
-
     return api(getState)
-      .get('/api/pleroma/admin/reports', { params: {
-        state: resolved === false ? 'open' : (resolved ? 'resolved' : null),
-      } })
+      .get('/api/v1/admin/reports', { params })
+      .then(({ data: reports }) => {
+        reports.forEach(report => {
+          dispatch(importFetchedAccount(report.account?.account));
+          dispatch(importFetchedAccount(report.target_account?.account));
+          dispatch(importFetchedStatuses(report.statuses));
+        });
+        dispatch({ type: ADMIN_REPORTS_FETCH_SUCCESS, reports, params });
+      }).catch(error => {
+        dispatch({ type: ADMIN_REPORTS_FETCH_FAIL, error, params });
+      });
+  };
+}
+
+function fetchPleromaReports(params) {
+  return (dispatch, getState) => {
+    return api(getState)
+      .get('/api/pleroma/admin/reports', { params })
       .then(({ data: { reports } }) => {
         reports.forEach(report => {
           dispatch(importFetchedAccount(report.account));
@@ -143,28 +134,42 @@ export function fetchReports(params = {}) {
   };
 }
 
-function patchReports(ids, state) {
+export function fetchReports(params = {}) {
   return (dispatch, getState) => {
     const state = getState();
 
     const instance = state.get('instance');
     const features = getFeatures(instance);
 
-    const reports = ids.map(id => ({ id, state }));
-
-    dispatch({ type: ADMIN_REPORTS_PATCH_REQUEST, reports });
+    dispatch({ type: ADMIN_REPORTS_FETCH_REQUEST, params });
 
     if (features.mastodonAdminApi) {
-      return Promise.all(ids.map(id => api(getState)
-        .post(`/api/v1/admin/reports/${id}/${state === 'resolved' ? 'reopen' : 'resolve'}`)
-        .then(({ data }) => {
-          dispatch({ type: ADMIN_REPORTS_PATCH_SUCCESS, reports });
-        }).catch(error => {
-          dispatch({ type: ADMIN_REPORTS_PATCH_FAIL, error, reports });
-        }),
-      ));
-    }
+      return dispatch(fetchMastodonReports(params));
+    } else {
+      const { resolved } = params;
 
+      return dispatch(fetchPleromaReports({
+        state: resolved === false ? 'open' : (resolved ? 'resolved' : null),
+      }));
+    }
+  };
+}
+
+function patchMastodonReports(reports) {
+  return (dispatch, getState) => {
+    return Promise.all(reports.map(({ id, state }) => api(getState)
+      .post(`/api/v1/admin/reports/${id}/${state === 'resolved' ? 'reopen' : 'resolve'}`)
+      .then(() => {
+        dispatch({ type: ADMIN_REPORTS_PATCH_SUCCESS, reports });
+      }).catch(error => {
+        dispatch({ type: ADMIN_REPORTS_PATCH_FAIL, error, reports });
+      }),
+    ));
+  };
+}
+
+function patchPleromaReports(reports) {
+  return (dispatch, getState) => {
     return api(getState)
       .patch('/api/pleroma/admin/reports', { reports })
       .then(() => {
@@ -174,46 +179,61 @@ function patchReports(ids, state) {
       });
   };
 }
-export function closeReports(ids) {
-  return patchReports(ids, 'closed');
-}
 
-export function fetchUsers(filters = [], page = 1, query, pageSize = 50, next) {
+function patchReports(ids, reportState) {
   return (dispatch, getState) => {
     const state = getState();
 
     const instance = state.get('instance');
     const features = getFeatures(instance);
 
-    dispatch({ type: ADMIN_USERS_FETCH_REQUEST, filters, page, pageSize });
+    const reports = ids.map(id => ({ id, state: reportState }));
+
+    dispatch({ type: ADMIN_REPORTS_PATCH_REQUEST, reports });
 
     if (features.mastodonAdminApi) {
-      const params = {
-        username: query,
-      };
-
-      if (filters.includes('local')) params.local = true;
-      if (filters.includes('active')) params.active = true;
-      if (filters.includes('need_approval')) params.pending = true;
-
-      return api(getState)
-        .get(next || '/api/v1/admin/accounts', { params })
-        .then(({ data: accounts, ...response }) => {
-          const next = getLinks(response).refs.find(link => link.rel === 'next');
-
-          const count = next
-            ? page * pageSize + 1
-            : (page - 1) * pageSize + accounts.length;
-
-          dispatch(importFetchedAccounts(accounts.map(({ account }) => account)));
-          dispatch(fetchRelationships(accounts.map(account => account.id)));
-          dispatch({ type: ADMIN_USERS_FETCH_SUCCESS, users: accounts, count, pageSize, filters, page, next: next?.uri || false });
-          return { users: accounts, count, pageSize, next: next?.uri || false };
-        }).catch(error => {
-          dispatch({ type: ADMIN_USERS_FETCH_FAIL, error, filters, page, pageSize });
-        });
+      return dispatch(patchMastodonReports(reports));
+    } else {
+      return dispatch(patchPleromaReports(reports));
     }
+  };
+}
 
+export function closeReports(ids) {
+  return patchReports(ids, 'closed');
+}
+
+function fetchMastodonUsers(filters, page, query, pageSize, next) {
+  return (dispatch, getState) => {
+    const params = {
+      username: query,
+    };
+
+    if (filters.includes('local')) params.local = true;
+    if (filters.includes('active')) params.active = true;
+    if (filters.includes('need_approval')) params.pending = true;
+
+    return api(getState)
+      .get(next || '/api/v1/admin/accounts', { params })
+      .then(({ data: accounts, ...response }) => {
+        const next = getLinks(response).refs.find(link => link.rel === 'next');
+
+        const count = next
+          ? page * pageSize + 1
+          : (page - 1) * pageSize + accounts.length;
+
+        dispatch(importFetchedAccounts(accounts.map(({ account }) => account)));
+        dispatch(fetchRelationships(accounts.map(account => account.id)));
+        dispatch({ type: ADMIN_USERS_FETCH_SUCCESS, users: accounts, count, pageSize, filters, page, next: next?.uri || false });
+        return { users: accounts, count, pageSize, next: next?.uri || false };
+      }).catch(error => {
+        dispatch({ type: ADMIN_USERS_FETCH_FAIL, error, filters, page, pageSize });
+      });
+  };
+}
+
+function fetchPleromaUsers(filters, page, query, pageSize) {
+  return (dispatch, getState) => {
     const params = { filters: filters.join(), page, page_size: pageSize };
     if (query) params.query = query;
 
@@ -229,6 +249,53 @@ export function fetchUsers(filters = [], page = 1, query, pageSize = 50, next) {
   };
 }
 
+export function fetchUsers(filters = [], page = 1, query, pageSize = 50, next) {
+  return (dispatch, getState) => {
+    const state = getState();
+
+    const instance = state.get('instance');
+    const features = getFeatures(instance);
+
+    dispatch({ type: ADMIN_USERS_FETCH_REQUEST, filters, page, pageSize });
+
+    if (features.mastodonAdminApi) {
+      return dispatch(fetchMastodonUsers(filters, page, query, pageSize, next));
+    } else {
+      return dispatch(fetchPleromaUsers(filters, page, query, pageSize));
+    }
+  };
+}
+
+function deactivateMastodonUsers(accountIds, reportId) {
+  return (dispatch, getState) => {
+    return Promise.all(accountIds.map(accountId => {
+      api(getState)
+        .post(`/api/v1/admin/accounts/${accountId}/action`, {
+          type: 'disable',
+          report_id: reportId,
+        })
+        .then(() => {
+          dispatch({ type: ADMIN_USERS_DEACTIVATE_SUCCESS, accountIds: [accountId] });
+        }).catch(error => {
+          dispatch({ type: ADMIN_USERS_DEACTIVATE_FAIL, error, accountIds: [accountId] });
+        });
+    }));
+  };
+}
+
+function deactivatePleromaUsers(accountIds) {
+  return (dispatch, getState) => {
+    const nicknames = nicknamesFromIds(getState, accountIds);
+    return api(getState)
+      .patch('/api/pleroma/admin/users/deactivate', { nicknames })
+      .then(({ data: { users } }) => {
+        dispatch({ type: ADMIN_USERS_DEACTIVATE_SUCCESS, users, accountIds });
+      }).catch(error => {
+        dispatch({ type: ADMIN_USERS_DEACTIVATE_FAIL, error, accountIds });
+      });
+  };
+}
+
 export function deactivateUsers(accountIds, reportId) {
   return (dispatch, getState) => {
     const state = getState();
@@ -239,28 +306,10 @@ export function deactivateUsers(accountIds, reportId) {
     dispatch({ type: ADMIN_USERS_DEACTIVATE_REQUEST, accountIds });
 
     if (features.mastodonAdminApi) {
-      return Promise.all(accountIds.map(accountId => {
-        api(getState)
-          .post(`/api/v1/admin/accounts/${accountId}/action`, {
-            type: 'disable',
-            report_id: reportId,
-          })
-          .then(() => {
-            dispatch({ type: ADMIN_USERS_DEACTIVATE_SUCCESS, accountIds: [accountId] });
-          }).catch(error => {
-            dispatch({ type: ADMIN_USERS_DEACTIVATE_FAIL, error, accountIds: [accountId] });
-          });
-      }));
+      return dispatch(deactivateMastodonUsers(accountIds, reportId));
+    } else {
+      return dispatch(deactivatePleromaUsers(accountIds));
     }
-
-    const nicknames = nicknamesFromIds(getState, accountIds);
-    return api(getState)
-      .patch('/api/pleroma/admin/users/deactivate', { nicknames })
-      .then(({ data: { users } }) => {
-        dispatch({ type: ADMIN_USERS_DEACTIVATE_SUCCESS, users, accountIds });
-      }).catch(error => {
-        dispatch({ type: ADMIN_USERS_DEACTIVATE_FAIL, error, accountIds });
-      });
   };
 }
 
@@ -278,6 +327,33 @@ export function deleteUsers(accountIds) {
   };
 }
 
+function approveMastodonUsers(accountIds) {
+  return (dispatch, getState) => {
+    return Promise.all(accountIds.map(accountId => {
+      api(getState)
+        .post(`/api/v1/admin/accounts/${accountId}/approve`)
+        .then(({ data: user }) => {
+          dispatch({ type: ADMIN_USERS_APPROVE_SUCCESS, users: [user], accountIds: [accountId] });
+        }).catch(error => {
+          dispatch({ type: ADMIN_USERS_APPROVE_FAIL, error, accountIds: [accountId] });
+        });
+    }));
+  };
+}
+
+function approvePleromaUsers(accountIds) {
+  return (dispatch, getState) => {
+    const nicknames = nicknamesFromIds(getState, accountIds);
+    return api(getState)
+      .patch('/api/pleroma/admin/users/approve', { nicknames })
+      .then(({ data: { users } }) => {
+        dispatch({ type: ADMIN_USERS_APPROVE_SUCCESS, users, accountIds });
+      }).catch(error => {
+        dispatch({ type: ADMIN_USERS_APPROVE_FAIL, error, accountIds });
+      });
+  };
+}
+
 export function approveUsers(accountIds) {
   return (dispatch, getState) => {
     const state = getState();
@@ -288,25 +364,10 @@ export function approveUsers(accountIds) {
     dispatch({ type: ADMIN_USERS_APPROVE_REQUEST, accountIds });
 
     if (features.mastodonAdminApi) {
-      return Promise.all(accountIds.map(accountId => {
-        api(getState)
-          .post(`/api/v1/admin/accounts/${accountId}/approve`)
-          .then(({ data: user }) => {
-            dispatch({ type: ADMIN_USERS_APPROVE_SUCCESS, users: [user], accountIds: [accountId] });
-          }).catch(error => {
-            dispatch({ type: ADMIN_USERS_APPROVE_FAIL, error, accountIds: [accountId] });
-          });
-      }));
+      return dispatch(approveMastodonUsers(accountIds));
+    } else {
+      return dispatch(approvePleromaUsers(accountIds));
     }
-
-    const nicknames = nicknamesFromIds(getState, accountIds);
-    return api(getState)
-      .patch('/api/pleroma/admin/users/approve', { nicknames })
-      .then(({ data: { users } }) => {
-        dispatch({ type: ADMIN_USERS_APPROVE_SUCCESS, users, accountIds });
-      }).catch(error => {
-        dispatch({ type: ADMIN_USERS_APPROVE_FAIL, error, accountIds });
-      });
   };
 }
 
