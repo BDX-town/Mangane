@@ -10,7 +10,10 @@ const LoadingScreen: React.FC = () => {
       <LandingGradient />
 
       <div className='fixed h-screen w-screen flex items-center justify-center z-10'>
-        <Spinner size={40} withText={false} />
+        {/* Bump up spinner vertically to counteract optical illusion. */}
+        <div className='-translate-y-3/4'>
+          <Spinner size={40} withText={false} />
+        </div>
       </div>
     </div>
   );
