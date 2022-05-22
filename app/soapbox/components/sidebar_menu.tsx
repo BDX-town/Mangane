@@ -13,7 +13,6 @@ import { Stack } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile_stats';
 import { useAppSelector, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount, makeGetOtherAccounts } from 'soapbox/selectors';
-import { getBaseURL } from 'soapbox/utils/accounts';
 
 import { HStack, Icon, IconButton, Text } from './ui';
 
@@ -90,8 +89,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const otherAccounts: ImmutableList<AccountEntity> = useAppSelector((state) => getOtherAccounts(state));
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
   const settings = useAppSelector((state) => getSettings(state));
-
-  const baseURL = account ? getBaseURL(account) : '';
 
   const closeButtonRef = React.useRef(null);
 
@@ -237,15 +234,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     to='/lists'
                     icon={require('@tabler/icons/icons/list.svg')}
                     text={intl.formatMessage(messages.lists)}
-                    onClick={onClose}
-                  />
-                )}
-
-                {instance.invites_enabled && (
-                  <SidebarLink
-                    href={`${baseURL}/invites`}
-                    icon={require('@tabler/icons/icons/mailbox.svg')}
-                    text={intl.formatMessage(messages.invites)}
                     onClick={onClose}
                   />
                 )}
