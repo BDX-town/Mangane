@@ -207,9 +207,12 @@ export function rememberAuthAccount(accountUrl) {
 
 export function loadCredentials(token, accountUrl) {
   return (dispatch, getState) => {
-    return dispatch(rememberAuthAccount(accountUrl)).finally(() => {
-      return dispatch(verifyCredentials(token, accountUrl));
-    });
+    return dispatch(rememberAuthAccount(accountUrl))
+      .then(account => account)
+      .then(() => {
+        dispatch(verifyCredentials(token, accountUrl));
+      })
+      .catch(error => dispatch(verifyCredentials(token, accountUrl)));
   };
 }
 
