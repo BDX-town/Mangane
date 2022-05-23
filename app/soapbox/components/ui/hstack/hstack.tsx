@@ -4,6 +4,8 @@ import React from 'react';
 const justifyContentOptions = {
   between: 'justify-between',
   center: 'justify-center',
+  start: 'justify-start',
+  end: 'justify-end',
 };
 
 const alignItemsOptions = {
@@ -29,7 +31,7 @@ interface IHStack {
   /** Extra class names on the <div> element. */
   className?: string,
   /** Horizontal alignment of children. */
-  justifyContent?: 'between' | 'center',
+  justifyContent?: 'between' | 'center' | 'start' | 'end',
   /** Size of the gap between elements. */
   space?: 0.5 | 1 | 1.5 | 2 | 3 | 4 | 6,
   /** Whether to let the flexbox grow. */
