@@ -1,6 +1,7 @@
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { defineMessages, IntlShape, MessageDescriptor } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { useAppSelector } from 'soapbox/hooks';
@@ -23,11 +24,6 @@ const notificationForScreenReader = (intl: ReturnType<typeof useIntl>, message: 
 
   return output.join(', ');
 };
-
-// Workaround for dynamic messages (https://github.com/formatjs/babel-plugin-react-intl/issues/119#issuecomment-326202499)
-function FormattedMessageFixed(props: any) {
-  return <FormattedMessage {...props} />;
-}
 
 const buildLink = (account: Account): JSX.Element => (
   <bdi>
@@ -55,7 +51,7 @@ const icons: Record<NotificationType, string> = {
   user_approved: require('@tabler/icons/icons/user-plus.svg'),
 };
 
-const messages: Record<NotificationType, { id: string, defaultMessage: string }> = {
+const messages: Record<string | number | symbol, MessageDescriptor> = defineMessages({
   follow: {
     id: 'notification.follow',
     defaultMessage: '{name} followed you',
@@ -100,18 +96,22 @@ const messages: Record<NotificationType, { id: string, defaultMessage: string }>
     id: 'notification.user_approved',
     defaultMessage: 'Welcome to {instance}!',
   },
-};
+});
 
-const buildMessage = (type: NotificationType, account: Account, targetName: string, instanceTitle: string): JSX.Element => {
+const buildMessage = (
+  intl: IntlShape,
+  type: NotificationType,
+  account: Account,
+  targetName: string,
+  instanceTitle: string,
+): React.ReactNode => {
   const link = buildLink(account);
 
-  return (
-    <FormattedMessageFixed
-      id={messages[type].id}
-      defaultMessage={messages[type].defaultMessage}
-      values={{ name: link, targetName, instance: instanceTitle }}
-    />
-  );
+  return intl.formatMessage(messages[type], {
+    name: link,
+    targetName,
+    instance: instanceTitle,
+  });
 };
 
 interface INotificaton {
@@ -268,7 +268,7 @@ const Notification: React.FC<INotificaton> = (props) => {
 
   const targetName = notification.target && typeof notification.target === 'object' ? notification.target.acct : '';
 
-  const message: React.ReactNode = type && account && typeof account === 'object' ? buildMessage(type, account, targetName, instance.title) : null;
+  const message: React.ReactNode = type && account && typeof account === 'object' ? buildMessage(intl, type, account, targetName, instance.title) : null;
 
   return (
     <HotKeys handlers={getHandlers()} data-testid='notification'>
