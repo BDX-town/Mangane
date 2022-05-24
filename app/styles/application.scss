@@ -104,6 +104,8 @@
   }
 
   .d-screen {
+    height: 100vh; // Backwards compatibility
+    /* stylelint-disable-next-line unit-no-unknown */
     height: 100dvh;
   }
 }
