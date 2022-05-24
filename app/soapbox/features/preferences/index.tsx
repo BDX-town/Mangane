@@ -8,6 +8,7 @@ import { Form } from 'soapbox/components/ui';
 import { SelectDropdown } from 'soapbox/features/forms';
 import SettingToggle from 'soapbox/features/notifications/components/setting_toggle';
 import { useAppSelector } from 'soapbox/hooks';
+import { getFeatures } from 'soapbox/utils/features';
 
 import ThemeToggle from '../ui/components/theme-toggle';
 
@@ -80,26 +81,23 @@ const messages = defineMessages({
   display_media_default: { id: 'preferences.fields.display_media.default', defaultMessage: 'Hide media marked as sensitive' },
   display_media_hide_all: { id: 'preferences.fields.display_media.hide_all', defaultMessage: 'Always hide media' },
   display_media_show_all: { id: 'preferences.fields.display_media.show_all', defaultMessage: 'Always show media' },
+  privacy_public: { id: 'preferences.options.privacy_public', defaultMessage: 'Public' },
+  privacy_unlisted: { id: 'preferences.options.privacy_unlisted', defaultMessage: 'Unlisted' },
+  privacy_followers_only: { id: 'preferences.options.privacy_followers_only', defaultMessage: 'Followers-only' },
+  content_type_plaintext: { id: 'preferences.options.content_type_plaintext', defaultMessage: 'Plain text' },
+  content_type_markdown: { id: 'preferences.options.content_type_markdown', defaultMessage: 'Markdown' },
 });
 
 const Preferences = () => {
   const intl = useIntl();
   const dispatch = useDispatch();
 
-  // const features = useAppSelector((state) => getFeatures(state.get('instance')));
+  const features = useAppSelector((state) => getFeatures(state.instance));
   const settings = useAppSelector((state) => getSettings(state));
 
   const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>, path: string[]) => {
     dispatch(changeSetting(path, event.target.value, intl));
   };
-
-  // const onDefaultPrivacyChange = (e) => {
-  //   dispatch(changeSetting(['defaultPrivacy'], e.target.value));
-  // }
-
-  // const onDefaultContentTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   dispatch(changeSetting(['defaultContentType'], event.target.value));
-  // };
 
   const onToggleChange = (key: string[], checked: boolean) => {
     dispatch(changeSetting(key, checked, intl));
@@ -109,6 +107,17 @@ const Preferences = () => {
     default: intl.formatMessage(messages.display_media_default),
     hide_all: intl.formatMessage(messages.display_media_hide_all),
     show_all: intl.formatMessage(messages.display_media_show_all),
+  }), []);
+
+  const defaultPrivacyOptions = React.useMemo(() => ({
+    public: intl.formatMessage(messages.privacy_public),
+    unlisted: intl.formatMessage(messages.privacy_unlisted),
+    private: intl.formatMessage(messages.privacy_followers_only),
+  }), []);
+
+  const defaultContentTypeOptions = React.useMemo(() => ({
+    'text/plain': intl.formatMessage(messages.content_type_plaintext),
+    'text/markdown': intl.formatMessage(messages.content_type_markdown),
   }), []);
 
   return (
@@ -149,6 +158,22 @@ const Preferences = () => {
             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['displayMedia'])}
           />
         </ListItem>
+
+        {features.privacyScopes && <ListItem label={<FormattedMessage id='preferences.fields.privacy_label' defaultMessage='Default post privacy' />}>
+          <SelectDropdown
+            items={defaultPrivacyOptions}
+            defaultValue={settings.get('defaultPrivacy') as string | undefined}
+            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['defaultPrivacy'])}
+          />
+        </ListItem>}
+
+        {features.richText && <ListItem label={<FormattedMessage id='preferences.fields.content_type_label' defaultMessage='Default post format' />}>
+          <SelectDropdown
+            items={defaultContentTypeOptions}
+            defaultValue={settings.get('defaultContentType') as string | undefined}
+            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['defaultContentType'])}
+          />
+        </ListItem>}
       </List>
 
       {/* <FieldsGroup>
@@ -211,10 +236,9 @@ const Preferences = () => {
           <SettingToggle settings={settings} settingPath={['deleteModal']} onChange={onToggleChange} />
         </ListItem>
 
-        {/* <SettingsCheckbox
-            label={<FormattedMessage id='preferences.fields.missing_description_modal_label' defaultMessage='Show confirmation dialog before sending a post without media descriptions' />}
-            path={['missingDescriptionModal']}
-          /> */}
+        {/* <ListItem label={<FormattedMessage id='preferences.fields.missing_description_modal_label' defaultMessage='Show confirmation dialog before sending a post without media descriptions' />}>
+          <SettingToggle settings={settings} settingPath={['missingDescriptionModal']} onChange={onToggleChange} />
+        </ListItem> */}
       </List>
 
       <List>
