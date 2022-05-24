@@ -287,7 +287,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
 
       <WrappedRoute path='/settings/profile' page={DefaultPage} component={EditProfile} content={children} />
       <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} />
-      <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />
+      {features.importData && <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />}
       {features.accountAliasesAPI && <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />}
       {features.accountMoving && <WrappedRoute path='/settings/migration' page={DefaultPage} component={Migration} content={children} />}
       <WrappedRoute path='/settings/email' page={DefaultPage} component={EditEmail} content={children} />

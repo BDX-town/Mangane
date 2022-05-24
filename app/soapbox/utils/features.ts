@@ -307,10 +307,12 @@ const getInstanceFeatures = (instance: Instance) => {
     importAPI: v.software === PLEROMA,
 
     /**
-     * Pleroma import mutes API.
+     * Pleroma import endpoints.
+     * @see POST /api/pleroma/follow_import
+     * @see POST /api/pleroma/blocks_import
      * @see POST /api/pleroma/mutes_import
      */
-    importMutes: v.software === PLEROMA && gte(v.version, '2.2.0'),
+    importData: v.software === PLEROMA && gte(v.version, '2.2.0'),
 
     /**
      * Can create, view, and manage lists.
