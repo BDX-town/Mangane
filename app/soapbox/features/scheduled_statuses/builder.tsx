@@ -3,11 +3,13 @@ import { Map as ImmutableMap } from 'immutable';
 import { normalizeStatus } from 'soapbox/normalizers/status';
 import { calculateStatus } from 'soapbox/reducers/statuses';
 import { makeGetAccount } from 'soapbox/selectors';
+import { RootState } from 'soapbox/store';
 
-export const buildStatus = (state, scheduledStatus) => {
+export const buildStatus = (state: RootState, scheduledStatus: ImmutableMap<string, any>) => {
   const getAccount = makeGetAccount();
 
-  const me = state.get('me');
+  const me = state.me as string;
+
   const params = scheduledStatus.get('params');
   const account = getAccount(state, me);
 

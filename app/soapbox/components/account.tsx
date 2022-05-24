@@ -56,6 +56,7 @@ interface IAccount {
   showProfileHoverCard?: boolean,
   timestamp?: string | Date,
   timestampUrl?: string,
+  futureTimestamp?: boolean,
   withDate?: boolean,
   withRelationship?: boolean,
   showEdit?: boolean,
@@ -75,6 +76,7 @@ const Account = ({
   showProfileHoverCard = true,
   timestamp,
   timestampUrl,
+  futureTimestamp = false,
   withDate = false,
   withRelationship = true,
   showEdit = false,
@@ -205,10 +207,10 @@ const Account = ({
 
                   {timestampUrl ? (
                     <Link to={timestampUrl} className='hover:underline'>
-                      <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' />
+                      <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
                     </Link>
                   ) : (
-                    <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' />
+                    <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
                   )}
                 </>
               ) : null}
