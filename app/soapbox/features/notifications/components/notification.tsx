@@ -1,6 +1,6 @@
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
-import { defineMessages, IntlShape, MessageDescriptor } from 'react-intl';
+import { defineMessages, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
 import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -102,13 +102,27 @@ const buildMessage = (
   intl: IntlShape,
   type: NotificationType,
   account: Account,
+  totalCount: number | null,
   targetName: string,
   instanceTitle: string,
 ): React.ReactNode => {
   const link = buildLink(account);
+  const name = intl.formatMessage({
+    id: 'notification.name',
+    defaultMessage: '{link}{others}',
+  }, {
+    link,
+    others: totalCount && totalCount > 0 ? (
+      <FormattedMessage
+        id='notification.others'
+        defaultMessage=' + {count} {count, plural, one {other} other {others}}'
+        values={{ count: totalCount - 1 }}
+      />
+    ) : '',
+  });
 
   return intl.formatMessage(messages[type], {
-    name: link,
+    name,
     targetName,
     instance: instanceTitle,
   });
@@ -268,7 +282,7 @@ const Notification: React.FC<INotificaton> = (props) => {
 
   const targetName = notification.target && typeof notification.target === 'object' ? notification.target.acct : '';
 
-  const message: React.ReactNode = type && account && typeof account === 'object' ? buildMessage(intl, type, account, targetName, instance.title) : null;
+  const message: React.ReactNode = type && account && typeof account === 'object' ? buildMessage(intl, type, account, notification.total_count, targetName, instance.title) : null;
 
   return (
     <HotKeys handlers={getHandlers()} data-testid='notification'>
@@ -300,6 +314,7 @@ const Notification: React.FC<INotificaton> = (props) => {
                   theme='muted'
                   size='sm'
                   truncate
+                  data-testid='message'
                 >
                   {message}
                 </Text>

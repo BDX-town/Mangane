@@ -34,6 +34,7 @@ export const NotificationRecord = ImmutableRecord({
   status: null as EmbeddedEntity<Status>,
   target: null as EmbeddedEntity<Account>, // move
   type: '' as NotificationType | '',
+  total_count: null as number | null, // grouped notifications
 });
 
 export const normalizeNotification = (notification: Record<string, any>) => {

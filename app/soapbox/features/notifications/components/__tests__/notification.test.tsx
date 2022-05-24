@@ -28,6 +28,31 @@ describe('<Notification />', () => {
 
     expect(screen.getByTestId('notification')).toBeInTheDocument();
     expect(screen.getByTestId('account')).toContainHTML('neko@rdrama.cc');
+    expect(screen.getByTestId('message')).toHaveTextContent('Nekobit followed you');
+  });
+
+  describe('grouped notifications', () => {
+    it('renders a grouped follow notification for more than 2', async() => {
+      const { notification, state } = normalize(require('soapbox/__fixtures__/notification-follow.json'));
+      const groupedNotification = { ...notification.toJS(), total_count: 5 };
+
+      render(<Notification notification={groupedNotification} />, undefined, state);
+
+      expect(screen.getByTestId('notification')).toBeInTheDocument();
+      expect(screen.getByTestId('account')).toContainHTML('neko@rdrama.cc');
+      expect(screen.getByTestId('message')).toHaveTextContent('Nekobit + 4 others followed you');
+    });
+
+    it('renders a grouped follow notification for 1', async() => {
+      const { notification, state } = normalize(require('soapbox/__fixtures__/notification-follow.json'));
+      const groupedNotification = { ...notification.toJS(), total_count: 2 };
+
+      render(<Notification notification={groupedNotification} />, undefined, state);
+
+      expect(screen.getByTestId('notification')).toBeInTheDocument();
+      expect(screen.getByTestId('account')).toContainHTML('neko@rdrama.cc');
+      expect(screen.getByTestId('message')).toHaveTextContent('Nekobit + 1 other followed you');
+    });
   });
 
   it('renders a favourite notification', async() => {
