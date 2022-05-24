@@ -208,9 +208,9 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
   handleEmojiPick = (data) => {
-    const { text }     = this.props;
-    const position     = this.autosuggestTextarea.textarea.selectionStart;
-    const needsSpace   = data.custom && position > 0 && !allowedAroundShortCode.includes(text[position - 1]);
+    const { text }   = this.props;
+    const position   = this.autosuggestTextarea.textarea.selectionStart;
+    const needsSpace = data.custom && position > 0 && !allowedAroundShortCode.includes(text[position - 1]);
 
     this.props.onPickEmoji(position, data, needsSpace);
   }

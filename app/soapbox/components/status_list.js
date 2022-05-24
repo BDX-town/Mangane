@@ -102,7 +102,7 @@ export default class StatusList extends ImmutablePureComponent {
   }
 
   renderLoadGap(index) {
-    const { statusIds, onLoadMore, isLoading }  = this.props;
+    const { statusIds, onLoadMore, isLoading } = this.props;
 
     return (
       <LoadGap
@@ -115,7 +115,7 @@ export default class StatusList extends ImmutablePureComponent {
   }
 
   renderStatus(statusId) {
-    const { timelineId, withGroupAdmin, group }  = this.props;
+    const { timelineId, withGroupAdmin, group } = this.props;
 
     return (
       <StatusContainer
@@ -148,7 +148,7 @@ export default class StatusList extends ImmutablePureComponent {
   }
 
   renderFeaturedStatuses() {
-    const { featuredStatusIds, timelineId }  = this.props;
+    const { featuredStatusIds, timelineId } = this.props;
     if (!featuredStatusIds) return null;
 
     return featuredStatusIds.map(statusId => (
@@ -164,7 +164,7 @@ export default class StatusList extends ImmutablePureComponent {
   }
 
   renderStatuses() {
-    const { statusIds, isLoading }  = this.props;
+    const { statusIds, isLoading } = this.props;
 
     if (isLoading || statusIds.size > 0) {
       return statusIds.map((statusId, index) => {
@@ -193,7 +193,7 @@ export default class StatusList extends ImmutablePureComponent {
   }
 
   render() {
-    const { statusIds, divideType, featuredStatusIds, onLoadMore, timelineId, totalQueuedItemsCount, isLoading, isPartial, withGroupAdmin, group, ...other }  = this.props;
+    const { statusIds, divideType, featuredStatusIds, onLoadMore, timelineId, totalQueuedItemsCount, isLoading, isPartial, withGroupAdmin, group, ...other } = this.props;
 
     if (isPartial) {
       return (

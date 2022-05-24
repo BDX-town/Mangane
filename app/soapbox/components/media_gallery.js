@@ -614,12 +614,12 @@ class MediaGallery extends React.PureComponent {
                   <div className='space-y-1'>
                     <Text weight='semibold'>{warning}</Text>
                     <Text size='sm'>
-                      {intl.formatMessage({ id: 'status.sensitive_warning.subtitle', defaultMessage: 'This content may not be suitable for all audiences.' })}
+                      <FormattedMessage id='status.sensitive_warning.subtitle' defaultMessage='This content may not be suitable for all audiences.' />
                     </Text>
                   </div>
 
                   <Button type='button' theme='primary' size='sm' icon={require('@tabler/icons/icons/eye.svg')}>
-                    {intl.formatMessage({ id: 'status.sensitive_warning.action', defaultMessage: 'Show content' })}
+                    <FormattedMessage id='status.sensitive_warning.action' defaultMessage='Show content' />
                   </Button>
                 </div>
               </button>

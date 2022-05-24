@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { usePopper } from 'react-popper';
 import { useHistory } from 'react-router-dom';
 
@@ -64,7 +64,6 @@ interface IProfileHoverCard {
 export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const intl = useIntl();
 
   const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
 
@@ -130,7 +129,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
             <div className='absolute top-2 left-2'>
               <Badge
                 slug='opaque'
-                title={intl.formatMessage({ id: 'account.follows_you', defaultMessage: 'Follows you' })}
+                title={<FormattedMessage id='account.follows_you' defaultMessage='Follows you' />}
               />
             </div>
           )}

@@ -86,7 +86,7 @@ class Directory extends React.PureComponent {
 
   render() {
     const { isLoading, accountIds, intl, title, features } = this.props;
-    const { order, local }  = this.getParams(this.props, this.state);
+    const { order, local } = this.getParams(this.props, this.state);
 
     return (
       <Column icon='address-book-o' label={intl.formatMessage(messages.title)}>

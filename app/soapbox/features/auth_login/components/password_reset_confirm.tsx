@@ -1,13 +1,16 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
-import { FormattedMessage, injectIntl, useIntl } from 'react-intl';
-import { connect } from 'react-redux';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
 import { resetPasswordConfirm } from 'soapbox/actions/security';
 import { Button, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
 
 const token = new URLSearchParams(window.location.search).get('reset_password_token');
+
+const messages = defineMessages({
+  resetPasswordFail: { id: 'reset_password.fail', defaultMessage: 'Expired token, please try again.' },
+});
 
 const Statuses = {
   IDLE: 'IDLE',
@@ -16,12 +19,9 @@ const Statuses = {
   FAIL: 'FAIL',
 };
 
-const mapDispatchToProps = dispatch => ({
-  resetPasswordConfirm: (password, token) => dispatch(resetPasswordConfirm(password, token)),
-});
-
-const PasswordResetConfirm = ({ resetPasswordConfirm }) => {
+const PasswordResetConfirm = () => {
   const intl = useIntl();
+  const dispatch = useAppDispatch();
 
   const [password, setPassword] = React.useState('');
   const [status, setStatus] = React.useState(Statuses.IDLE);
@@ -32,10 +32,10 @@ const PasswordResetConfirm = ({ resetPasswordConfirm }) => {
     event.preventDefault();
 
     setStatus(Statuses.LOADING);
-    resetPasswordConfirm(password, token)
+    dispatch(resetPasswordConfirm(password, token))
       .then(() => setStatus(Statuses.SUCCESS))
       .catch(() => setStatus(Statuses.FAIL));
-  }, [resetPasswordConfirm, password]);
+  }, [password]);
 
   const onChange = React.useCallback((event) => {
     setPassword(event.target.value);
@@ -43,7 +43,7 @@ const PasswordResetConfirm = ({ resetPasswordConfirm }) => {
 
   const renderErrors = () => {
     if (status === Statuses.FAIL) {
-      return [intl.formatMessage({ id: 'reset_password.fail', defaultMessage: 'Expired token, please try again.' })];
+      return [intl.formatMessage(messages.resetPasswordFail)];
     }
 
     return [];
@@ -84,8 +84,4 @@ const PasswordResetConfirm = ({ resetPasswordConfirm }) => {
   );
 };
 
-PasswordResetConfirm.propTypes = {
-  resetPasswordConfirm: PropTypes.func,
-};
-
-export default injectIntl(connect(null, mapDispatchToProps)(PasswordResetConfirm));
+export default PasswordResetConfirm;

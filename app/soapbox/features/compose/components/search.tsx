@@ -6,16 +6,15 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import AutosuggestAccountInput from 'soapbox/components/autosuggest_account_input';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import { useAppSelector } from 'soapbox/hooks';
-
 import {
   changeSearch,
   clearSearch,
   submitSearch,
   showSearch,
-} from '../../../actions/search';
+} from 'soapbox/actions/search';
+import AutosuggestAccountInput from 'soapbox/components/autosuggest_account_input';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
+import { useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
   placeholder: { id: 'search.placeholder', defaultMessage: 'Search' },

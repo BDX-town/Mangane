@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { defineMessages, injectIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -457,7 +457,7 @@ class Header extends ImmutablePureComponent {
   }
 
   makeInfo() {
-    const { account, intl, me } = this.props;
+    const { account, me } = this.props;
 
     const info = [];
 
@@ -468,7 +468,7 @@ class Header extends ImmutablePureComponent {
         <Badge
           key='followed_by'
           slug='opaque'
-          title={intl.formatMessage({ id: 'account.follows_you', defaultMessage: 'Follows you' })}
+          title={<FormattedMessage id='account.follows_you' defaultMessage='Follows you' />}
         />,
       );
     } else if (me !== account.get('id') && account.getIn(['relationship', 'blocking'])) {
@@ -476,7 +476,7 @@ class Header extends ImmutablePureComponent {
         <Badge
           key='blocked'
           slug='opaque'
-          title={intl.formatMessage({ id: 'account.blocked', defaultMessage: 'Blocked' })}
+          title={<FormattedMessage  id='account.blocked' defaultMessage='Blocked' />}
         />,
       );
     }
@@ -486,7 +486,7 @@ class Header extends ImmutablePureComponent {
         <Badge
           key='muted'
           slug='opaque'
-          title={intl.formatMessage({ id: 'account.muted', defaultMessage: 'Muted' })}
+          title={<FormattedMessage id='account.muted' defaultMessage='Muted' />}
         />,
       );
     } else if (me !== account.get('id') && account.getIn(['relationship', 'domain_blocking'])) {
@@ -494,7 +494,7 @@ class Header extends ImmutablePureComponent {
         <Badge
           key='domain_blocked'
           slug='opaque'
-          title={intl.formatMessage({ id: 'account.domain_blocked', defaultMessage: 'Domain hidden' })}
+          title={<FormattedMessage id='account.domain_blocked' defaultMessage='Domain hidden' />}
         />,
       );
     }

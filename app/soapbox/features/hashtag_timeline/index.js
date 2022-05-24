@@ -31,11 +31,11 @@ class HashtagTimeline extends React.PureComponent {
     // TODO: wtf is all this?
     // It exists in Mastodon's codebase, but undocumented
     if (this.additionalFor('any')) {
-      title.push(' ', <FormattedMessage key='any' id='hashtag.column_header.tag_mode.any'  values={{ additional: this.additionalFor('any') }} defaultMessage='or {additional}' />);
+      title.push(' ', <FormattedMessage key='any' id='hashtag.column_header.tag_mode.any' values={{ additional: this.additionalFor('any') }} defaultMessage='or {additional}' />);
     }
 
     if (this.additionalFor('all')) {
-      title.push(' ', <FormattedMessage key='all' id='hashtag.column_header.tag_mode.all'  values={{ additional: this.additionalFor('all') }} defaultMessage='and {additional}' />);
+      title.push(' ', <FormattedMessage key='all' id='hashtag.column_header.tag_mode.all' values={{ additional: this.additionalFor('all') }} defaultMessage='and {additional}' />);
     }
 
     if (this.additionalFor('none')) {
