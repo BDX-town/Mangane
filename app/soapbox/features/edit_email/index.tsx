@@ -1,16 +1,17 @@
 import * as React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { changeEmail } from 'soapbox/actions/security';
 import snackbar from 'soapbox/actions/snackbar';
-
-import { Button, Card, CardBody, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input } from '../../components/ui';
+import { Button, Card, CardBody, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
 
 const messages = defineMessages({
+  header: { id: 'edit_email.header', defaultMessage: 'Change Email' },
   updateEmailSuccess: { id: 'security.update_email.success', defaultMessage: 'Email successfully updated.' },
   updateEmailFail: { id: 'security.update_email.fail', defaultMessage: 'Update email failed.' },
   emailFieldLabel: { id: 'security.fields.email.label', defaultMessage: 'Email address' },
+  emailFieldPlaceholder: { id: 'edit_email.placeholder', defaultMessage: 'me@example.com' },
   passwordFieldLabel: { id: 'security.fields.password.label', defaultMessage: 'Password' },
   submit: { id: 'security.submit', defaultMessage: 'Save changes' },
   cancel: { id: 'common.cancel', defaultMessage: 'Cancel' },
@@ -20,7 +21,7 @@ const initialState = { email: '', password: '' };
 
 const EditEmail = () => {
   const intl = useIntl();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [state, setState] = React.useState(initialState);
   const [isLoading, setLoading] = React.useState(false);
@@ -48,14 +49,14 @@ const EditEmail = () => {
 
   return (
     <Column
-      label={intl.formatMessage({ id: 'edit_email.header', defaultMessage: 'Change Email' })}
+      label={intl.formatMessage(messages.header)}
       transparent
       withHeader={false}
     >
       <Card variant='rounded'>
         <CardHeader backHref='/settings'>
           <CardTitle
-            title={intl.formatMessage({ id: 'edit_email.header', defaultMessage: 'Change Email' })}
+            title={intl.formatMessage(messages.header)}
           />
         </CardHeader>
 
@@ -63,9 +64,10 @@ const EditEmail = () => {
           <Form onSubmit={handleSubmit}>
             <FormGroup labelText={intl.formatMessage(messages.emailFieldLabel)}>
               <Input
-                placeholder={intl.formatMessage({ id: 'edit_email.placeholder', defaultMessage: 'me@example.com' })}
+                type='text'
+                placeholder={intl.formatMessage(messages.emailFieldPlaceholder)}
                 name='email'
-                autocomplete='off'
+                autoComplete='off'
                 onChange={handleInputChange}
                 value={email}
               />

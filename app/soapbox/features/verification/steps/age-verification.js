@@ -1,13 +1,19 @@
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import DatePicker from 'react-datepicker';
-import { useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { verifyAge } from 'soapbox/actions/verification';
+import { Button, Form, FormGroup, Text } from 'soapbox/components/ui';
 
-import { Button, Form, FormGroup, Text } from '../../../components/ui';
+const messages = defineMessages({
+  fail: {
+    id: 'age_verification.fail',
+    defaultMessage: 'You must be {ageMinimum, plural, one {# year} other {# years}} old or older.',
+  },
+});
 
 function meetsAgeMinimum(birthday, ageMinimum) {
   const month = birthday.getUTCMonth();
@@ -46,15 +52,9 @@ const AgeVerification = () => {
       dispatch(verifyAge(birthday));
     } else {
       dispatch(
-        snackbar.error(
-          intl.formatMessage({
-            id: 'age_verification.fail',
-            defaultMessage: 'You must be {ageMinimum, plural, one {# year} other {# years}} old or older.',
-            values: {
-              ageMinimum,
-            },
-          }),
-        ),
+        snackbar.error(intl.formatMessage(messages.fail, {
+          ageMinimum,
+        })),
       );
     }
   }, [date, ageMinimum]);
@@ -63,7 +63,7 @@ const AgeVerification = () => {
     <div>
       <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 border-solid -mx-4 sm:-mx-10'>
         <h1 className='text-center font-bold text-2xl'>
-          {intl.formatMessage({ id: 'age_verification.header', defaultMessage: 'Enter your birth date' })}
+          <FormattedMessage id='age_verification.header' defaultMessage='Enter your birth date' />
         </h1>
       </div>
 

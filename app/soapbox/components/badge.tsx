@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 
 interface IBadge {
-  title: string,
+  title: React.ReactNode,
   slug: 'patron' | 'donor' | 'admin' | 'moderator' | 'bot' | 'opaque',
 }
 

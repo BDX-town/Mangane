@@ -1,14 +1,12 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
-import { useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
+import { defineMessages, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
+import { confirmChangedEmail } from 'soapbox/actions/security';
 import snackbar from 'soapbox/actions/snackbar';
 import { Spinner } from 'soapbox/components/ui';
-
-import { confirmChangedEmail } from '../../actions/security';
-import { buildErrorMessage } from '../../utils/errors';
+import { useAppDispatch } from 'soapbox/hooks';
+import { buildErrorMessage } from 'soapbox/utils/errors';
 
 const Statuses = {
   IDLE: 'IDLE',
@@ -16,11 +14,15 @@ const Statuses = {
   FAIL: 'FAIL',
 };
 
+const messages = defineMessages({
+  success: { id: 'email_confirmation.success', defaultMessage: 'Your email has been confirmed!' },
+});
+
 const token = new URLSearchParams(window.location.search).get('confirmation_token');
 
 const EmailConfirmation = () => {
   const intl = useIntl();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [status, setStatus] = React.useState(Statuses.IDLE);
 
@@ -32,10 +34,7 @@ const EmailConfirmation = () => {
 
           dispatch(
             snackbar.success(
-              intl.formatMessage({
-                id: 'email_confirmation.success',
-                defaultMessage: 'Your email has been confirmed!',
-              }),
+              intl.formatMessage(messages.success),
             ),
           );
         })
@@ -43,14 +42,15 @@ const EmailConfirmation = () => {
           setStatus(Statuses.FAIL);
 
           if (error.response.data.error) {
-            const defaultMessage = buildErrorMessage(error.response.data.error);
+            const message = buildErrorMessage(error.response.data.error);
 
             dispatch(
               snackbar.error(
-                intl.formatMessage({
-                  id: 'email_confirmation.fail',
-                  defaultMessage,
-                }),
+                message,
+                // intl.formatMessage({
+                //   id: 'email_confirmation.fail',
+                //   defaultMessage,
+                // }),
               ),
             );
           }
@@ -65,10 +65,6 @@ const EmailConfirmation = () => {
   return (
     <Spinner />
   );
-};
-
-EmailConfirmation.propTypes = {
-  history: PropTypes.object,
 };
 
 export default EmailConfirmation;

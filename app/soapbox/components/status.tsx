@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
+import { injectIntl, FormattedMessage, IntlShape, defineMessages } from 'react-intl';
 import { NavLink, withRouter, RouteComponentProps } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
@@ -30,6 +30,10 @@ import type {
 
 // Defined in components/scrollable_list
 export type ScrollPosition = { height: number, top: number };
+
+const messages = defineMessages({
+  reblogged_by: { id: 'status.reblogged_by', defaultMessage: '{name} reposted' },
+});
 
 export const textForScreenReader = (intl: IntlShape, status: StatusEntity, rebloggedByText?: string): string => {
   const { account } = status;
@@ -437,12 +441,10 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         </div>
       );
 
-      rebloggedByText = intl.formatMessage({
-        id: 'status.reblogged_by',
-        defaultMessage: '{name} reposted',
-      }, {
-        name: String(status.getIn(['account', 'acct'])),
-      });
+      rebloggedByText = intl.formatMessage(
+        messages.reblogged_by,
+        { name: String(status.getIn(['account', 'acct'])) },
+      );
 
       // @ts-ignore what the FUCK
       account = status.account;

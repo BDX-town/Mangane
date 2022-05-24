@@ -80,7 +80,7 @@ const CardHeader: React.FC<ICardHeader> = ({ children, backHref, onBackClick }):
 };
 
 interface ICardTitle {
-  title: string | React.ReactNode
+  title: React.ReactNode
 }
 
 /** A card's title. */
