@@ -14,7 +14,7 @@ const messages = defineMessages({
 
 interface IAccordion {
   headline: React.ReactNode,
-  children?: string | React.ReactNode,
+  children?: React.ReactNode,
   menu?: Menu,
   expanded?: boolean,
   onToggle?: (value: boolean) => void,
