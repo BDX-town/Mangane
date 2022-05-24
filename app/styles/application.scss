@@ -102,6 +102,10 @@
   .shadow-inset {
     box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%);
   }
+
+  .d-screen {
+    height: 100dvh;
+  }
 }
 
 @import 'forms';
