@@ -1,8 +1,8 @@
 import { defineMessages } from 'react-intl';
 
-import api, { getLinks } from '../api';
-
-import snackbar from './snackbar';
+import snackbar from 'soapbox/actions/snackbar';
+import api, { getLinks } from 'soapbox/api';
+import { normalizeAccount } from 'soapbox/normalizers';
 
 import type { SnackbarAction } from './snackbar';
 import type { AxiosResponse } from 'axios';
@@ -60,7 +60,7 @@ const listAccounts = (getState: () => RootState) => async(apiResponse: AxiosResp
     Array.prototype.push.apply(followings, apiResponse.data);
   }
 
-  accounts = followings.map((account: { fqn: string }) => account.fqn);
+  accounts = followings.map((account: any) => normalizeAccount(account).fqn);
   return Array.from(new Set(accounts));
 };
 
