@@ -11,22 +11,16 @@ cache:
     - node_modules/
 
 stages:
-  - install
-  - lint
+  - deps
   - test
-  - build
   - deploy
 
-install-dependencies:
-  stage: install
-  script:
-    - yarn install --ignore-scripts
-  artifacts:
-    paths:
-      - node_modules/
+deps:
+  stage: deps
+  script: yarn install --ignore-scripts
 
 lint-js:
-  stage: lint
+  stage: test
   script: yarn lint:js
   only:
     changes:
@@ -38,7 +32,7 @@ lint-js:
       - ".eslintrc.js"
 
 lint-sass:
-  stage: lint
+  stage: test
   script: yarn lint:sass
   only:
     changes:
@@ -69,13 +63,13 @@ nginx-test:
       - "installation/mastodon.conf"
 
 build-production:
-  stage: build
+  stage: test
   script: yarn build
   variables:
     NODE_ENV: production
   artifacts:
     paths:
-    - static
+     - static
 
 docs-deploy:
   stage: deploy
@@ -108,6 +102,7 @@ review:
     url: https://$CI_COMMIT_REF_SLUG.git.soapbox.pub
   script:
     - npx -y surge static $CI_COMMIT_REF_SLUG.git.soapbox.pub
+  allow_failure: true
 
 pages:
   stage: deploy
