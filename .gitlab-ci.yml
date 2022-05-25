@@ -12,7 +12,6 @@ cache:
 
 stages:
   - install
-  - lint
   - test
   - build
   - deploy
@@ -26,7 +25,7 @@ install-dependencies:
       - node_modules/
 
 lint-js:
-  stage: lint
+  stage: test
   script: yarn lint:js
   only:
     changes:
@@ -38,7 +37,7 @@ lint-js:
       - ".eslintrc.js"
 
 lint-sass:
-  stage: lint
+  stage: test
   script: yarn lint:sass
   only:
     changes:
