@@ -13,7 +13,6 @@ cache:
 stages:
   - deps
   - test
-  - build
   - deploy
 
 deps:
@@ -64,13 +63,13 @@ nginx-test:
       - "installation/mastodon.conf"
 
 build-production:
-  stage: build
+  stage: test
   script: yarn build
   variables:
     NODE_ENV: production
   artifacts:
     paths:
-    - static
+     - static
 
 docs-deploy:
   stage: deploy
