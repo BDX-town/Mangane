@@ -102,6 +102,7 @@ review:
     url: https://$CI_COMMIT_REF_SLUG.git.soapbox.pub
   script:
     - npx -y surge static $CI_COMMIT_REF_SLUG.git.soapbox.pub
+  allow_failure: true
 
 pages:
   stage: deploy
