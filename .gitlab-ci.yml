@@ -11,18 +11,14 @@ cache:
     - node_modules/
 
 stages:
-  - install
+  - deps
   - test
   - build
   - deploy
 
-install-dependencies:
-  stage: install
-  script:
-    - yarn install --ignore-scripts
-  artifacts:
-    paths:
-      - node_modules/
+deps:
+  stage: deps
+  script: yarn install --ignore-scripts
 
 lint-js:
   stage: test
