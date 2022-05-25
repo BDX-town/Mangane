@@ -18,6 +18,9 @@ stages:
 deps:
   stage: deps
   script: yarn install --ignore-scripts
+  only:
+    changes:
+      - yarn.lock
 
 lint-js:
   stage: test
@@ -49,6 +52,7 @@ jest:
       - "**/*.json"
       - "app/soapbox/**/*"
       - "webpack/**/*"
+      - "custom/**/*"
       - "jest.config.js"
       - "package.json"
       - "yarn.lock"
