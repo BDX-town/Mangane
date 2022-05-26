@@ -10,12 +10,15 @@ import type {
   Status as StatusEntity,
 } from 'soapbox/types/entities';
 
+/** Limit before we start grouping device notifications into a single notification. */
 const MAX_NOTIFICATIONS = 5;
+/** Tag for the grouped notification. */
 const GROUP_TAG = 'tag';
 
 // https://www.devextent.com/create-service-worker-typescript/
 declare const self: ServiceWorkerGlobalScope;
 
+/** Soapbox notification data from push event. */
 interface NotificationData {
   access_token?: string,
   preferred_locale: string,
@@ -26,11 +29,13 @@ interface NotificationData {
   count?: number,
 }
 
+/** ServiceWorker Notification options with extra fields. */
 interface ExtendedNotificationOptions extends NotificationOptions {
   title: string,
   data: NotificationData,
 }
 
+/** Partial clone of ServiceWorker Notification with mutability. */
 interface ClonedNotification {
   body?: string,
   image?: string,
@@ -40,15 +45,20 @@ interface ClonedNotification {
   tag?: string,
 }
 
+/** Status entitiy from the API (kind of). */
+// HACK
 interface APIStatus extends Omit<StatusEntity, 'media_attachments'> {
   media_attachments: { preview_url: string }[],
 }
 
+/** Notification entity from the API (kind of). */
+// HACK
 interface APINotification extends Omit<NotificationEntity, 'account' | 'status'> {
   account: AccountEntity,
   status?: APIStatus,
 }
 
+/** Show the actual push notification on the device. */
 const notify = (options: ExtendedNotificationOptions): Promise<void> =>
   self.registration.getNotifications().then(notifications => {
     if (notifications.length >= MAX_NOTIFICATIONS) { // Reached the maximum number of notifications, proceed with grouping
@@ -80,6 +90,7 @@ const notify = (options: ExtendedNotificationOptions): Promise<void> =>
     return self.registration.showNotification(options.title, options);
   });
 
+/** Perform an API request to the backend. */
 const fetchFromApi = (path: string, method: string, accessToken: string): Promise<APINotification> => {
   const url = (new URL(path, self.location.href)).href;
 
@@ -100,6 +111,7 @@ const fetchFromApi = (path: string, method: string, accessToken: string): Promis
   }).then(res => res.json());
 };
 
+/** Create a mutable object that loosely matches the Notification. */
 const cloneNotification = (notification: Notification): ClonedNotification => {
   const clone: any = {};
   let k: string;
@@ -112,12 +124,15 @@ const cloneNotification = (notification: Notification): ClonedNotification => {
   return clone as ClonedNotification;
 };
 
+/** Get translated message for the user's locale. */
 const formatMessage = (messageId: string, locale: string, values = {}): string =>
   (new IntlMessageFormat(locales[locale][messageId], locale)).format(values) as string;
 
+/** Strip HTML for display in a native notification. */
 const htmlToPlainText = (html: string): string =>
   unescape(html.replace(/<br\s*\/?>/g, '\n').replace(/<\/p><[^>]*>/g, '\n\n').replace(/<[^>]*>/g, ''));
 
+/** ServiceWorker `push` event callback. */
 const handlePush = (event: PushEvent) => {
   const { access_token, notification_id, preferred_locale, title, body, icon } = event.data?.json();
 
@@ -162,24 +177,28 @@ const handlePush = (event: PushEvent) => {
   );
 };
 
+/** Native action to open a status on the device. */
 const actionExpand = (preferred_locale: string) => ({
   action: 'expand',
   icon: `/${require('../../images/web-push/web-push-icon_expand.png')}`,
   title: formatMessage('status.show_more', preferred_locale),
 });
 
+/** Native action to repost status. */
 const actionReblog = (preferred_locale: string) => ({
   action: 'reblog',
   icon: `/${require('../../images/web-push/web-push-icon_reblog.png')}`,
   title: formatMessage('status.reblog', preferred_locale),
 });
 
+/** Native action to like status. */
 const actionFavourite = (preferred_locale: string) => ({
   action: 'favourite',
   icon: `/${require('../../images/web-push/web-push-icon_favourite.png')}`,
   title: formatMessage('status.favourite', preferred_locale),
 });
 
+/** Get the active tab if possible, or any open tab. */
 const findBestClient = (clients: readonly WindowClient[]): WindowClient => {
   const focusedClient = clients.find(client => client.focused);
   const visibleClient = clients.find(client => client.visibilityState === 'visible');
@@ -197,6 +216,7 @@ const expandNotification = (notification: Notification) => {
   return self.registration.showNotification(newNotification.title, newNotification);
 };
 
+/** Update the native notification, but delete the action (because it was performed). */
 const removeActionFromNotification = (notification: Notification, action: string) => {
   const newNotification = cloneNotification(notification);
 
@@ -205,6 +225,7 @@ const removeActionFromNotification = (notification: Notification, action: string
   return self.registration.showNotification(newNotification.title, newNotification);
 };
 
+/** Open a URL on the device. */
 const openUrl = (url: string) =>
   self.clients.matchAll({ type: 'window' }).then(clientList => {
     if (clientList.length === 0) {
@@ -215,6 +236,7 @@ const openUrl = (url: string) =>
     }
   });
 
+/** Callback when a native notification is clicked/touched on the device. */
 const handleNotificationClick = (event: NotificationEvent) => {
   const reactToNotificationClick = new Promise((resolve, reject) => {
     if (event.action) {
@@ -238,5 +260,6 @@ const handleNotificationClick = (event: NotificationEvent) => {
   event.waitUntil(reactToNotificationClick);
 };
 
+// ServiceWorker event listeners
 self.addEventListener('push', handlePush);
 self.addEventListener('notificationclick', handleNotificationClick);
