@@ -206,6 +206,7 @@ const findBestClient = (clients: readonly WindowClient[]): WindowClient => {
   return focusedClient || visibleClient || clients[0];
 };
 
+/** Update a notification with CW to display the full status.  */
 const expandNotification = (notification: Notification) => {
   const newNotification = cloneNotification(notification);
 
