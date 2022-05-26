@@ -4,18 +4,60 @@ import { unescape } from 'lodash';
 
 import locales from './web_push_locales';
 
+import type {
+  Account as AccountEntity,
+  Notification as NotificationEntity,
+  Status as StatusEntity,
+} from 'soapbox/types/entities';
+
 const MAX_NOTIFICATIONS = 5;
 const GROUP_TAG = 'tag';
 
-const notify = options =>
+// https://www.devextent.com/create-service-worker-typescript/
+declare const self: ServiceWorkerGlobalScope;
+
+interface NotificationData {
+  access_token?: string,
+  preferred_locale: string,
+  hiddenBody?: string,
+  hiddenImage?: string,
+  id?: string,
+  url: string,
+  count?: number,
+}
+
+interface ExtendedNotificationOptions extends NotificationOptions {
+  title: string,
+  data: NotificationData,
+}
+
+interface ClonedNotification {
+  body?: string,
+  image?: string,
+  actions?: NotificationAction[],
+  data: NotificationData,
+  title: string,
+  tag?: string,
+}
+
+interface APIStatus extends Omit<StatusEntity, 'media_attachments'> {
+  media_attachments: { preview_url: string }[],
+}
+
+interface APINotification extends Omit<NotificationEntity, 'account' | 'status'> {
+  account: AccountEntity,
+  status?: APIStatus,
+}
+
+const notify = (options: ExtendedNotificationOptions): Promise<void> =>
   self.registration.getNotifications().then(notifications => {
     if (notifications.length >= MAX_NOTIFICATIONS) { // Reached the maximum number of notifications, proceed with grouping
-      const group = {
+      const group: ClonedNotification = {
         title: formatMessage('notifications.group', options.data.preferred_locale, { count: notifications.length + 1 }),
-        body: notifications.sort((n1, n2) => n1.timestamp < n2.timestamp).map(notification => notification.title).join('\n'),
+        body: notifications.map(notification => notification.title).join('\n'),
         tag: GROUP_TAG,
         data: {
-          url: (new URL('/notifications', self.location)).href,
+          url: (new URL('/notifications', self.location.href)).href,
           count: notifications.length + 1,
           preferred_locale: options.data.preferred_locale,
         },
@@ -26,10 +68,11 @@ const notify = options =>
       return self.registration.showNotification(group.title, group);
     } else if (notifications.length === 1 && notifications[0].tag === GROUP_TAG) { // Already grouped, proceed with appending the notification to the group
       const group = cloneNotification(notifications[0]);
+      const count = (group.data.count || 0) + 1;
 
-      group.title = formatMessage('notifications.group', options.data.preferred_locale, { count: group.data.count + 1 });
+      group.title = formatMessage('notifications.group', options.data.preferred_locale, { count });
       group.body  = `${options.title}\n${group.body}`;
-      group.data  = { ...group.data, count: group.data.count + 1 };
+      group.data  = { ...group.data, count };
 
       return self.registration.showNotification(group.title, group);
     }
@@ -37,8 +80,8 @@ const notify = options =>
     return self.registration.showNotification(options.title, options);
   });
 
-const fetchFromApi = (path, method, accessToken) => {
-  const url = (new URL(path, self.location)).href;
+const fetchFromApi = (path: string, method: string, accessToken: string): Promise<APINotification> => {
+  const url = (new URL(path, self.location.href)).href;
 
   return fetch(url, {
     headers: {
@@ -52,50 +95,50 @@ const fetchFromApi = (path, method, accessToken) => {
     if (res.ok) {
       return res;
     } else {
-      throw new Error(res.status);
+      throw new Error(String(res.status));
     }
   }).then(res => res.json());
 };
 
-const cloneNotification = notification => {
-  const clone = {};
-  let k;
+const cloneNotification = (notification: Notification): ClonedNotification => {
+  const clone: any = {};
+  let k: string;
 
   // Object.assign() does not work with notifications
   for (k in notification) {
-    clone[k] = notification[k];
+    clone[k] = (notification as any)[k];
   }
 
-  return clone;
+  return clone as ClonedNotification;
 };
 
-const formatMessage = (messageId, locale, values = {}) =>
-  (new IntlMessageFormat(locales[locale][messageId], locale)).format(values);
+const formatMessage = (messageId: string, locale: string, values = {}): string =>
+  (new IntlMessageFormat(locales[locale][messageId], locale)).format(values) as string;
 
-const htmlToPlainText = html =>
+const htmlToPlainText = (html: string): string =>
   unescape(html.replace(/<br\s*\/?>/g, '\n').replace(/<\/p><[^>]*>/g, '\n\n').replace(/<[^>]*>/g, ''));
 
-const handlePush = (event) => {
-  const { access_token, notification_id, preferred_locale, title, body, icon } = event.data.json();
+const handlePush = (event: PushEvent) => {
+  const { access_token, notification_id, preferred_locale, title, body, icon } = event.data?.json();
 
   // Placeholder until more information can be loaded
   event.waitUntil(
     fetchFromApi(`/api/v1/notifications/${notification_id}`, 'get', access_token).then(notification => {
-      const options = {};
+      const options: ExtendedNotificationOptions = {
+        title: formatMessage(`notification.${notification.type}`, preferred_locale, { name: notification.account.display_name.length > 0 ? notification.account.display_name : notification.account.username }),
+        body:      notification.status && htmlToPlainText(notification.status.content),
+        icon:      notification.account.avatar_static,
+        timestamp: notification.created_at && Number(new Date(notification.created_at)),
+        tag:       notification.id,
+        image:     notification.status?.media_attachments[0]?.preview_url,
+        data:      { access_token, preferred_locale, id: notification.status ? notification.status.id : notification.account.id, url: notification.status ? `/@${notification.account.username}/posts/${notification.status.id}` : `/@${notification.account.username}` },
+      };
 
-      options.title     = formatMessage(`notification.${notification.type}`, preferred_locale, { name: notification.account.display_name.length > 0 ? notification.account.display_name : notification.account.username });
-      options.body      = notification.status && htmlToPlainText(notification.status.content);
-      options.icon      = notification.account.avatar_static;
-      options.timestamp = notification.created_at && new Date(notification.created_at);
-      options.tag       = notification.id;
-      options.image     = notification.status && notification.status.media_attachments.length > 0 && notification.status.media_attachments[0].preview_url || undefined;
-      options.data      = { access_token, preferred_locale, id: notification.status ? notification.status.id : notification.account.id, url: notification.status ? `/@${notification.account.username}/posts/${notification.status.id}` : `/@${notification.account.username}` };
+      if (notification.status?.spoiler_text || notification.status?.sensitive) {
+        options.data.hiddenBody  = htmlToPlainText(notification.status?.content);
+        options.data.hiddenImage = notification.status?.media_attachments[0]?.preview_url;
 
-      if (notification.status?.spoiler_text || notification.status.sensitive) {
-        options.data.hiddenBody  = htmlToPlainText(notification.status.content);
-        options.data.hiddenImage = notification.status.media_attachments.length > 0 && notification.status.media_attachments[0].preview_url;
-
-        if (notification.status.spoiler_text) {
+        if (notification.status?.spoiler_text) {
           options.body    = notification.status.spoiler_text;
         }
 
@@ -112,39 +155,39 @@ const handlePush = (event) => {
         body,
         icon,
         tag: notification_id,
-        timestamp: new Date(),
+        timestamp: Number(new Date()),
         data: { access_token, preferred_locale, url: '/notifications' },
       });
     }),
   );
 };
 
-const actionExpand = preferred_locale => ({
+const actionExpand = (preferred_locale: string) => ({
   action: 'expand',
   icon: `/${require('../../images/web-push/web-push-icon_expand.png')}`,
   title: formatMessage('status.show_more', preferred_locale),
 });
 
-const actionReblog = preferred_locale => ({
+const actionReblog = (preferred_locale: string) => ({
   action: 'reblog',
   icon: `/${require('../../images/web-push/web-push-icon_reblog.png')}`,
   title: formatMessage('status.reblog', preferred_locale),
 });
 
-const actionFavourite = preferred_locale => ({
+const actionFavourite = (preferred_locale: string) => ({
   action: 'favourite',
   icon: `/${require('../../images/web-push/web-push-icon_favourite.png')}`,
   title: formatMessage('status.favourite', preferred_locale),
 });
 
-const findBestClient = clients => {
+const findBestClient = (clients: readonly WindowClient[]): WindowClient => {
   const focusedClient = clients.find(client => client.focused);
   const visibleClient = clients.find(client => client.visibilityState === 'visible');
 
   return focusedClient || visibleClient || clients[0];
 };
 
-const expandNotification = notification => {
+const expandNotification = (notification: Notification) => {
   const newNotification = cloneNotification(notification);
 
   newNotification.body    = newNotification.data.hiddenBody;
@@ -154,25 +197,25 @@ const expandNotification = notification => {
   return self.registration.showNotification(newNotification.title, newNotification);
 };
 
-const removeActionFromNotification = (notification, action) => {
+const removeActionFromNotification = (notification: Notification, action: string) => {
   const newNotification = cloneNotification(notification);
 
-  newNotification.actions = newNotification.actions.filter(item => item.action !== action);
+  newNotification.actions = newNotification.actions?.filter(item => item.action !== action);
 
   return self.registration.showNotification(newNotification.title, newNotification);
 };
 
-const openUrl = url =>
+const openUrl = (url: string) =>
   self.clients.matchAll({ type: 'window' }).then(clientList => {
     if (clientList.length === 0) {
       return self.clients.openWindow(url);
     } else {
       const client = findBestClient(clientList);
-      return client.navigate(url).then(client => client.focus());
+      return client.navigate(url).then(client => client?.focus());
     }
   });
 
-const handleNotificationClick = (event) => {
+const handleNotificationClick = (event: NotificationEvent) => {
   const reactToNotificationClick = new Promise((resolve, reject) => {
     if (event.action) {
       if (event.action === 'expand') {
