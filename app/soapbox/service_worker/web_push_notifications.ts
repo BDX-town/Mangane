@@ -21,28 +21,28 @@ declare const self: ServiceWorkerGlobalScope;
 /** Soapbox notification data from push event. */
 interface NotificationData {
   access_token?: string,
-  preferred_locale: string,
+  count?: number,
   hiddenBody?: string,
   hiddenImage?: string,
   id?: string,
+  preferred_locale: string,
   url: string,
-  count?: number,
 }
 
 /** ServiceWorker Notification options with extra fields. */
 interface ExtendedNotificationOptions extends NotificationOptions {
-  title: string,
   data: NotificationData,
+  title: string,
 }
 
 /** Partial clone of ServiceWorker Notification with mutability. */
 interface ClonedNotification {
-  body?: string,
-  image?: string,
   actions?: NotificationAction[],
+  body?: string,
   data: NotificationData,
-  title: string,
+  image?: string,
   tag?: string,
+  title: string,
 }
 
 /** Status entitiy from the API (kind of). */
