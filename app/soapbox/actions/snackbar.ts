@@ -2,7 +2,7 @@ import { ALERT_SHOW } from './alerts';
 
 import type { MessageDescriptor } from 'react-intl';
 
-type SnackbarActionSeverity = 'info' | 'success' | 'error'
+export type SnackbarActionSeverity = 'info' | 'success' | 'error'
 
 type SnackbarMessage = string | MessageDescriptor
 
