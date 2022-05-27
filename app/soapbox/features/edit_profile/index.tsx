@@ -4,6 +4,7 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
+import BirthdayInput from 'soapbox/components/birthday_input';
 import List, { ListItem } from 'soapbox/components/list';
 import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
@@ -242,6 +243,10 @@ const EditProfile: React.FC = () => {
     };
   };
 
+  const handleBirthdayChange = (date: string) => {
+    updateData('birthday', date);
+  };
+
   const handleHideNetworkChange: React.ChangeEventHandler<HTMLInputElement> = e => {
     const hide = e.target.checked;
 
@@ -325,10 +330,9 @@ const EditProfile: React.FC = () => {
           <FormGroup
             labelText={<FormattedMessage id='edit_profile.fields.birthday_label' defaultMessage='Birthday' />}
           >
-            <Input
-              type='text'
+            <BirthdayInput
               value={data.birthday}
-              onChange={handleTextChange('birthday')}
+              onChange={handleBirthdayChange}
             />
           </FormGroup>
         )}
