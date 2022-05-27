@@ -56,6 +56,12 @@ jest:
       - "jest.config.js"
       - "package.json"
       - "yarn.lock"
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: .coverage/cobertura-coverage.xml
 
 nginx-test:
   stage: test
