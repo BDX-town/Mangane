@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
-import { initAccountNoteModal } from 'soapbox/actions/account_notes';
+import { initAccountNoteModal } from 'soapbox/actions/account-notes';
 import {
   followAccount,
   unfollowAccount,
