@@ -46,6 +46,7 @@ lint-sass:
 jest:
   stage: test
   script: yarn test:coverage
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   only:
     changes:
       - "**/*.js"
