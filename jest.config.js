@@ -27,7 +27,7 @@ module.exports = {
     '!app/soapbox/jest/test-helpers.ts',
   ],
   'coverageDirectory': '<rootDir>/.coverage/',
-  'coverageReporters': ['html', 'text', 'text-summary', 'cobertura'],
+  'coverageReporters': ['cobertura'],
   'moduleDirectories': [
     '<rootDir>/node_modules',
     '<rootDir>/app',
