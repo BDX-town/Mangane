@@ -127,7 +127,7 @@ class QuotedStatus extends ImmutablePureComponent<IQuotedStatus> {
       <Stack
         space={2}
         className={classNames('mt-3 p-4 rounded-lg border border-solid border-gray-100 dark:border-slate-700 cursor-pointer', {
-          'hover:bg-gray-100 dark:hover:bg-slate-700': !compose,
+          'hover:bg-gray-50 dark:hover:bg-slate-700': !compose,
         })}
         onClick={this.handleExpandClick}
       >
