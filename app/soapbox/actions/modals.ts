@@ -11,7 +11,7 @@ export function openModal(type: string, props?: any) {
 }
 
 /** Close the modal */
-export function closeModal(type: string) {
+export function closeModal(type?: string) {
   return {
     type: MODAL_CLOSE,
     modalType: type,

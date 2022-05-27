@@ -3,7 +3,7 @@ import { get } from 'lodash';
 
 import { STREAMING_FOLLOW_RELATIONSHIPS_UPDATE } from 'soapbox/actions/streaming';
 
-import { ACCOUNT_NOTE_SUBMIT_SUCCESS } from '../actions/account_notes';
+import { ACCOUNT_NOTE_SUBMIT_SUCCESS } from '../actions/account-notes';
 import {
   ACCOUNT_FOLLOW_SUCCESS,
   ACCOUNT_FOLLOW_REQUEST,
