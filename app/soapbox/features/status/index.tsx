@@ -496,15 +496,15 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     const { status, ancestorsIds, descendantsIds } = this.props;
 
     if (id === status.id) {
-      this._selectChild(ancestorsIds.size - 1, true);
+      this._selectChild(ancestorsIds.size - 1);
     } else {
       let index = ImmutableList(ancestorsIds).indexOf(id);
 
       if (index === -1) {
         index = ImmutableList(descendantsIds).indexOf(id);
-        this._selectChild(ancestorsIds.size + index, true);
+        this._selectChild(ancestorsIds.size + index);
       } else {
-        this._selectChild(index - 1, true);
+        this._selectChild(index - 1);
       }
     }
   }
@@ -513,15 +513,15 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     const { status, ancestorsIds, descendantsIds } = this.props;
 
     if (id === status.id) {
-      this._selectChild(ancestorsIds.size + 1, false);
+      this._selectChild(ancestorsIds.size + 1);
     } else {
       let index = ImmutableList(ancestorsIds).indexOf(id);
 
       if (index === -1) {
         index = ImmutableList(descendantsIds).indexOf(id);
-        this._selectChild(ancestorsIds.size + index + 2, false);
+        this._selectChild(ancestorsIds.size + index + 2);
       } else {
-        this._selectChild(index + 1, false);
+        this._selectChild(index + 1);
       }
     }
   }
@@ -544,19 +544,18 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     firstEmoji?.focus();
   };
 
-  _selectChild(index: number, align_top: boolean) {
-    const container = this.node;
-    if (!container) return;
-    const element = container.querySelectorAll('.focusable')[index] as HTMLButtonElement;
+  _selectChild(index: number) {
+    this.scroller?.scrollIntoView({
+      index,
+      behavior: 'smooth',
+      done: () => {
+        const element = document.querySelector<HTMLDivElement>(`#thread [data-index="${index}"] .focusable`);
 
-    if (element) {
-      if (align_top && container.scrollTop > element.offsetTop) {
-        element.scrollIntoView(true);
-      } else if (!align_top && container.scrollTop + container.clientHeight < element.offsetTop + element.offsetHeight) {
-        element.scrollIntoView(false);
-      }
-      element.focus();
-    }
+        if (element) {
+          element.focus();
+        }
+      },
+    });
   }
 
   renderTombstone(id: string) {
@@ -791,6 +790,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         <Stack space={2}>
           <div ref={this.setRef} className='thread'>
             <ScrollableList
+              id='thread'
               ref={this.setScrollerRef}
               onRefresh={this.handleRefresh}
               hasMore={!!this.state.next}
