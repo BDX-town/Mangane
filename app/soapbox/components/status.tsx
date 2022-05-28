@@ -6,18 +6,17 @@ import { injectIntl, FormattedMessage, IntlShape, defineMessages } from 'react-i
 import { NavLink, withRouter, RouteComponentProps } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
+import AccountContainer from 'soapbox/containers/account_container';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
+import Card from 'soapbox/features/status/components/card';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
-
-import AccountContainer from '../containers/account_container';
-import Card from '../features/status/components/card';
-import Bundle from '../features/ui/components/bundle';
-import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
+import Bundle from 'soapbox/features/ui/components/bundle';
+import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components';
 
 import AttachmentThumbs from './attachment-thumbs';
+import StatusReplyMentions from './status-reply-mentions';
 import StatusActionBar from './status_action_bar';
 import StatusContent from './status_content';
-import StatusReplyMentions from './status_reply_mentions';
 import { HStack, Text } from './ui';
 
 import type { History } from 'history';

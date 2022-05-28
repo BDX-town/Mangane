@@ -1,6 +1,5 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { FormattedList, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';

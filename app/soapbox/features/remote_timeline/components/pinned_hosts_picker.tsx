@@ -1,9 +1,8 @@
 'use strict';
 
-import classNames from 'classnames';
 import React from 'react';
-import { Link } from 'react-router-dom';
 
+import { Button, HStack } from 'soapbox/components/ui';
 import { useSettings } from 'soapbox/hooks';
 
 interface IPinnedHostsPicker {
@@ -18,13 +17,18 @@ const PinnedHostsPicker: React.FC<IPinnedHostsPicker> = ({ host: activeHost }) =
   if (!pinnedHosts || pinnedHosts.isEmpty()) return null;
 
   return (
-    <div className='pinned-hosts-picker'>
+    <HStack className='mb-4' space={2}>
       {pinnedHosts.map((host: any) => (
-        <div className={classNames('pinned-host', { 'active': host === activeHost })} key={host}>
-          <Link to={`/timeline/${host}`}>{host}</Link>
-        </div>
+        <Button
+          key={host}
+          to={`/timeline/${host}`}
+          size='sm'
+          theme={host === activeHost ? 'accent' : 'secondary'}
+        >
+          {host}
+        </Button>
       ))}
-    </div>
+    </HStack>
   );
 };
 

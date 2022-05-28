@@ -582,7 +582,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   }
 
   renderPendingStatus(id: string) {
-    const { status } = this.props;
+    // const { status } = this.props;
     const idempotencyKey = id.replace(/^末pending-/, '');
 
     return (
@@ -590,10 +590,10 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         className='thread__status'
         key={id}
         idempotencyKey={idempotencyKey}
-        focusedStatusId={status.id}
-        onMoveUp={this.handleMoveUp}
-        onMoveDown={this.handleMoveDown}
-        contextType='thread'
+        // focusedStatusId={status.id}
+        // onMoveUp={this.handleMoveUp}
+        // onMoveDown={this.handleMoveDown}
+        // contextType='thread'
       />
     );
   }

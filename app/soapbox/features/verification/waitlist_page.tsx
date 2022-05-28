@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -12,15 +11,15 @@ import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
 import { logOut } from '../../actions/auth';
 import { Button, Stack, Text } from '../../components/ui';
 
-const WaitlistPage = ({ account }) => {
+const WaitlistPage = (/* { account } */) => {
   const dispatch = useDispatch();
   const intl = useIntl();
   const title = useAppSelector((state) => state.instance.title);
 
   const me = useOwnAccount();
-  const isSmsVerified = me.getIn(['source', 'sms_verified']);
+  const isSmsVerified = me?.source.get('sms_verified');
 
-  const onClickLogOut = (event) => {
+  const onClickLogOut: React.MouseEventHandler = (event) => {
     event.preventDefault();
     dispatch(logOut(intl));
   };
@@ -74,10 +73,6 @@ const WaitlistPage = ({ account }) => {
       </main>
     </div>
   );
-};
-
-WaitlistPage.propTypes = {
-  account: PropTypes.object,
 };
 
 export default WaitlistPage;

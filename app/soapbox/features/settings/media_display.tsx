@@ -1,16 +1,11 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { getSettings, changeSettingImmediate } from 'soapbox/actions/settings';
-import {
-  SimpleForm,
-  SelectDropdown,
-} from 'soapbox/features/forms';
-import { useAppSelector } from 'soapbox/hooks';
-
-import List, { ListItem } from '../../components/list';
-import { Card, CardBody, CardHeader, CardTitle } from '../../components/ui';
+import List, { ListItem } from 'soapbox/components/list';
+import { Card, CardBody, CardHeader, CardTitle } from 'soapbox/components/ui';
+import { SimpleForm, SelectDropdown } from 'soapbox/features/forms';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
   mediaDisplay: { id: 'preferences.fields.media_display_label', defaultMessage: 'Media display' },
@@ -20,7 +15,7 @@ const messages = defineMessages({
 });
 
 const MediaDisplay = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const settings = useAppSelector((state) => getSettings(state));
@@ -31,7 +26,7 @@ const MediaDisplay = () => {
     show_all: intl.formatMessage(messages.display_media_show_all),
   };
 
-  const onSelectChange = path => {
+  const onSelectChange: (path: string[]) => React.ChangeEventHandler<HTMLSelectElement> = path => {
     return e => {
       dispatch(changeSettingImmediate(path, e.target.value));
     };
@@ -49,7 +44,7 @@ const MediaDisplay = () => {
             <ListItem label={intl.formatMessage(messages.mediaDisplay)}>
               <SelectDropdown
                 items={displayMediaOptions}
-                defaultValue={settings.get('displayMedia')}
+                defaultValue={settings.get('displayMedia') as string}
                 onChange={onSelectChange(['displayMedia'])}
               />
             </ListItem>

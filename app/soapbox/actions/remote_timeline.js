@@ -10,7 +10,7 @@ export function pinHost(host) {
     const state = getState();
     const pinnedHosts = getPinnedHosts(state);
 
-    return dispatch(changeSetting(['remote_timeline', 'pinnedHosts'], pinnedHosts.add(host)));
+    return dispatch(changeSetting(['remote_timeline', 'pinnedHosts'], pinnedHosts.push(host)));
   };
 }
 
@@ -19,6 +19,6 @@ export function unpinHost(host) {
     const state = getState();
     const pinnedHosts = getPinnedHosts(state);
 
-    return dispatch(changeSetting(['remote_timeline', 'pinnedHosts'], pinnedHosts.delete(host)));
+    return dispatch(changeSetting(['remote_timeline', 'pinnedHosts'], pinnedHosts.filter((value) => value !== host)));
   };
 }

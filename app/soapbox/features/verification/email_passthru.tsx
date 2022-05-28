@@ -1,7 +1,8 @@
-import PropTypes from 'prop-types';
+import { AxiosError } from 'axios';
 import * as React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { confirmEmailVerification } from 'soapbox/actions/verification';
@@ -91,8 +92,8 @@ const TokenExpired = () => {
   );
 };
 
-const EmailPassThru = ({ match }) => {
-  const { token } = match.params;
+const EmailPassThru = () => {
+  const { token } = useParams<{ token: string }>();
 
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -106,7 +107,7 @@ const EmailPassThru = ({ match }) => {
           setStatus(Statuses.SUCCESS);
           dispatch(snackbar.success(intl.formatMessage({ id: 'email_passthru.success', defaultMessage: 'Your email has been verified!' })));
         })
-        .catch((error) => {
+        .catch((error: AxiosError<any>) => {
           const errorKey = error?.response?.data?.error;
           let message = intl.formatMessage({
             id: 'email_passthru.fail.generic',
@@ -153,10 +154,6 @@ const EmailPassThru = ({ match }) => {
     default:
       return <Spinner />;
   }
-};
-
-EmailPassThru.propTypes = {
-  match: PropTypes.object,
 };
 
 export default EmailPassThru;

@@ -1,6 +1,5 @@
 import { debounce } from 'lodash';
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchScheduledStatuses, expandScheduledStatuses } from 'soapbox/actions/scheduled_statuses';

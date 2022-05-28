@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import AutosuggestInput from 'soapbox/components/autosuggest_input';
 import Icon from 'soapbox/components/icon';
 import IconButton from 'soapbox/components/icon_button';
+import { HStack } from 'soapbox/components/ui';
 
 const messages = defineMessages({
   option_placeholder: { id: 'compose_form.poll.option_placeholder', defaultMessage: 'Choice {number}' },
@@ -177,7 +178,7 @@ class PollForm extends ImmutablePureComponent {
           ))}
         </ul>
 
-        <div className='poll__footer'>
+        <HStack className='text-black dark:text-white' space={2}>
           {options.size < maxOptions && (
             <button className='button button-secondary' onClick={this.handleAddOption}><Icon src={require('@tabler/icons/icons/plus.svg')} /> <FormattedMessage {...messages.add_option} /></button>
           )}
@@ -191,7 +192,7 @@ class PollForm extends ImmutablePureComponent {
             <option value={259200}>{intl.formatMessage(messages.days, { number: 3 })}</option>
             <option value={604800}>{intl.formatMessage(messages.days, { number: 7 })}</option>
           </select>
-        </div>
+        </HStack>
       </div>
     );
   }
