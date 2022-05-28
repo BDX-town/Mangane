@@ -49,7 +49,6 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
       })}
       >
         <SiteLogo alt='Logo' className='h-5 lg:h-6 w-auto self-center px-2' theme={dark ? 'dark' : 'light'} />
-        {/* <img alt='Logo' className='h-5 lg:h-6 self-center px-2' src={soapboxConfig.logo} /> */}
       </div>
     </div>
   );
