@@ -133,10 +133,6 @@
     line-height: 18px;
   }
 
-  &__footer {
-    @apply pt-1.5 pb-[5px] text-black dark:text-white;
-  }
-
   &__link {
     display: inline;
     background: transparent;
@@ -178,18 +174,6 @@
 
   ul {
     padding: 10px;
-  }
-
-  .poll__footer {
-    border-top: 1px solid var(--foreground-color);
-    padding: 10px;
-    margin: -5px 0 0 -5px;
-
-    button,
-    select {
-      flex: 1 1 50%;
-      margin: 5px 0 0 5px;
-    }
   }
 
   .button.button-secondary {

@@ -47,7 +47,7 @@
     @apply focus-within:ring-primary-500 focus-within:ring-2;
 
     a {
-      @apply flex px-4 py-2.5 text-sm text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 focus:bg-gray-100 focus:hover:bg-slate-800 cursor-pointer;
+      @apply flex px-4 py-2.5 text-sm text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 focus:bg-gray-100 dark:focus:bg-slate-800 cursor-pointer;
 
       > .svg-icon:first-child {
         @apply h-5 w-5 mr-2.5 transition-none;

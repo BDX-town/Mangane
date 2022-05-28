@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { defaultSettings } from 'soapbox/actions/settings';
+import SiteLogo from 'soapbox/components/site-logo';
 import BackgroundShapes from 'soapbox/features/ui/components/background_shapes';
 import { useSystemTheme } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
@@ -47,7 +48,8 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
         'bg-slate-800': dark,
       })}
       >
-        <img alt='Logo' className='h-5 lg:h-6 self-center px-2' src={soapboxConfig.logo} />
+        <SiteLogo alt='Logo' className='h-5 lg:h-6 w-auto self-center px-2' theme={dark ? 'dark' : 'light'} />
+        {/* <img alt='Logo' className='h-5 lg:h-6 self-center px-2' src={soapboxConfig.logo} /> */}
       </div>
     </div>
   );

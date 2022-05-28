@@ -802,23 +802,6 @@
   }
 }
 
-.timeline-filter-message {
-  display: flex;
-  align-items: center;
-  background-color: var(--brand-color--faint);
-  color: var(--primary-text-color);
-  padding: 15px 20px;
-
-  .icon-button {
-    margin: 2px 8px 2px 0;
-
-    .svg-icon {
-      height: 20px;
-      width: 20px;
-    }
-  }
-}
-
 .column--better {
   .column__top {
     display: flex;

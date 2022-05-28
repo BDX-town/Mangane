@@ -5,13 +5,13 @@ import { FormattedMessage, injectIntl, WrappedComponentProps as IntlProps } from
 import { FormattedDate } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
+import MediaGallery from 'soapbox/components/media_gallery';
+import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
+import StatusContent from 'soapbox/components/status_content';
+import { HStack, Text } from 'soapbox/components/ui';
+import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
 
-import MediaGallery from '../../../components/media_gallery';
-import StatusContent from '../../../components/status_content';
-import StatusReplyMentions from '../../../components/status_reply_mentions';
-import { HStack, Text } from '../../../components/ui';
-import AccountContainer from '../../../containers/account_container';
 import Audio from '../../audio';
 import scheduleIdleTask from '../../ui/util/schedule_idle_task';
 import Video from '../../video';
