@@ -104,25 +104,20 @@
   }
 
   .audio-toggle .react-toggle-thumb {
-    height: 14px;
-    width: 14px;
-    border: 1px solid var(--brand-color--med);
+    @apply w-3.5 h-3.5 border border-solid border-primary-400;
   }
 
   .audio-toggle .react-toggle {
-    height: 16px;
-    top: 4px;
+    @apply top-1;
   }
 
   .audio-toggle .react-toggle-track {
-    height: 16px;
-    width: 34px;
-    background-color: var(--accent-color);
+    @apply h-4 w-8 bg-accent-500;
   }
 
   .audio-toggle .react-toggle-track-check {
-    left: 2px;
-    bottom: 5px;
+    left: 4px;
+    bottom: 0;
   }
 
   .react-toggle--checked .react-toggle-thumb {
@@ -130,8 +125,8 @@
   }
 
   .audio-toggle .react-toggle-track-x {
-    right: 8px;
-    bottom: 5px;
+    right: 5px;
+    bottom: 0;
   }
 
   .fa {
