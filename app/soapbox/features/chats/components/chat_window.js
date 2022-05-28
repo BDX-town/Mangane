@@ -13,9 +13,9 @@ import {
 import Avatar from 'soapbox/components/avatar';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import IconButton from 'soapbox/components/icon_button';
+import { Counter } from 'soapbox/components/ui';
 import { makeGetChat } from 'soapbox/selectors';
 import { getAcct } from 'soapbox/utils/accounts';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { displayFqn } from 'soapbox/utils/state';
 
 import ChatBox from './chat_box';
@@ -98,9 +98,9 @@ class ChatWindow extends ImmutablePureComponent {
     const unreadCount = chat.get('unread');
 
     const unreadIcon = (
-      <i className='icon-with-badge__badge'>
-        {shortNumberFormat(unreadCount)}
-      </i>
+      <div className='mr-2 flex-none'>
+        <Counter count={unreadCount} />
+      </div>
     );
 
     const avatar = (
