@@ -1,13 +1,10 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { defineMessages, injectIntl } from 'react-intl';
-import { connect } from 'react-redux';
+import React, { useMemo } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 
 import IconButton from 'soapbox/components/icon_button';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { DatePicker } from 'soapbox/features/ui/util/async-components';
-import { getFeatures } from 'soapbox/utils/features';
+import { useAppSelector, useFeatures } from 'soapbox/hooks';
 
 const messages = defineMessages({
   birthdayPlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birthday' },
@@ -17,29 +14,37 @@ const messages = defineMessages({
   nextYear: { id: 'datepicker.next_year', defaultMessage: 'Next year' },
 });
 
-const mapStateToProps = state => {
-  const features = getFeatures(state.get('instance'));
+interface IBirthdayInput {
+  value?: string,
+  onChange: (value: string) => void,
+  required?: boolean,
+}
 
-  return {
-    supportsBirthdays: features.birthdays,
-    minAge: state.getIn(['instance', 'pleroma', 'metadata', 'birthday_min_age']),
-  };
-};
+const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) => {
+  const intl = useIntl();
+  const features = useFeatures();
 
-export default @connect(mapStateToProps)
-@injectIntl
-class BirthdayInput extends ImmutablePureComponent {
+  const supportsBirthdays = features.birthdays;
+  const minAge = useAppSelector((state) => state.instance.getIn(['pleroma', 'metadata', 'birthday_min_age'])) as number;
 
-  static propTypes = {
-    hint: PropTypes.node,
-    required: PropTypes.bool,
-    supportsBirthdays: PropTypes.bool,
-    minAge: PropTypes.number,
-    onChange: PropTypes.func.isRequired,
-    value: PropTypes.instanceOf(Date),
-  };
+  const maxDate = useMemo(() => {
+    if (!supportsBirthdays) return null;
 
-  renderHeader = ({
+    let maxDate = new Date();
+    maxDate = new Date(maxDate.getTime() - minAge * 1000 * 60 * 60 * 24 + maxDate.getTimezoneOffset() * 1000 * 60);
+    return maxDate;
+  }, [minAge]);
+
+  const selected = useMemo(() => {
+    if (!supportsBirthdays || !value) return null;
+
+    const date = new Date(value);
+    return new Date(date.getTime() + (date.getTimezoneOffset() * 60000));
+  }, [value]);
+
+  if (!supportsBirthdays) return null;
+
+  const renderCustomHeader = ({
     decreaseMonth,
     increaseMonth,
     prevMonthButtonDisabled,
@@ -49,12 +54,20 @@ class BirthdayInput extends ImmutablePureComponent {
     prevYearButtonDisabled,
     nextYearButtonDisabled,
     date,
+  }: {
+    decreaseMonth(): void,
+    increaseMonth(): void,
+    prevMonthButtonDisabled: boolean,
+    nextMonthButtonDisabled: boolean,
+    decreaseYear(): void,
+    increaseYear(): void,
+    prevYearButtonDisabled: boolean,
+    nextYearButtonDisabled: boolean,
+    date: Date,
   }) => {
-    const { intl } = this.props;
-
     return (
-      <div className='datepicker__header'>
-        <div className='datepicker__months'>
+      <div className='flex flex-col gap-2'>
+        <div className='flex items-center justify-between'>
           <IconButton
             className='datepicker__button'
             src={require('@tabler/icons/icons/chevron-left.svg')}
@@ -73,7 +86,7 @@ class BirthdayInput extends ImmutablePureComponent {
             title={intl.formatMessage(messages.nextMonth)}
           />
         </div>
-        <div className='datepicker__years'>
+        <div className='flex items-center justify-between'>
           <IconButton
             className='datepicker__button'
             src={require('@tabler/icons/icons/chevron-left.svg')}
@@ -94,39 +107,26 @@ class BirthdayInput extends ImmutablePureComponent {
         </div>
       </div>
     );
-  }
+  };
 
-  render() {
-    const { intl, value, onChange, supportsBirthdays, hint, required, minAge } = this.props;
+  const handleChange = (date: Date) => onChange(new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0, 10));
 
-    if (!supportsBirthdays) return null;
+  return (
+    <div className='mt-1 relative rounded-md shadow-sm'>
+      <BundleContainer fetchComponent={DatePicker}>
+        {Component => (<Component
+          selected={selected}
+          wrapperClassName='react-datepicker-wrapper'
+          onChange={handleChange}
+          placeholderText={intl.formatMessage(messages.birthdayPlaceholder)}
+          minDate={new Date('1900-01-01')}
+          maxDate={maxDate}
+          required={required}
+          renderCustomHeader={renderCustomHeader}
+        />)}
+      </BundleContainer>
+    </div>
+  );
+};
 
-    let maxDate = new Date();
-    maxDate = new Date(maxDate.getTime() - minAge * 1000 * 60 * 60 * 24 + maxDate.getTimezoneOffset() * 1000 * 60);
-
-    return (
-      <div className='datepicker'>
-        {hint && (
-          <div className='datepicker__hint'>
-            {hint}
-          </div>
-        )}
-        <div className='datepicker__input'>
-          <BundleContainer fetchComponent={DatePicker}>
-            {Component => (<Component
-              selected={value}
-              wrapperClassName='react-datepicker-wrapper'
-              onChange={onChange}
-              placeholderText={intl.formatMessage(messages.birthdayPlaceholder)}
-              minDate={new Date('1900-01-01')}
-              maxDate={maxDate}
-              required={required}
-              renderCustomHeader={this.renderHeader}
-            />)}
-          </BundleContainer>
-        </div>
-      </div>
-    );
-  }
-
-}
+export default BirthdayInput;

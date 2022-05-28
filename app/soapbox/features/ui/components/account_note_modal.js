@@ -3,7 +3,7 @@ import React from 'react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
-import { changeAccountNoteComment, submitAccountNote } from 'soapbox/actions/account_notes';
+import { changeAccountNoteComment, submitAccountNote } from 'soapbox/actions/account-notes';
 import { closeModal } from 'soapbox/actions/modals';
 import { Modal, Text } from 'soapbox/components/ui';
 import { makeGetAccount } from 'soapbox/selectors';

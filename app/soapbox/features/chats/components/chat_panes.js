@@ -12,8 +12,8 @@ import { createSelector } from 'reselect';
 import { openChat, launchChat, toggleMainWindow } from 'soapbox/actions/chats';
 import { getSettings } from 'soapbox/actions/settings';
 import AccountSearch from 'soapbox/components/account_search';
+import { Counter } from 'soapbox/components/ui';
 import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 import ChatList from './chat_list';
 import ChatWindow from './chat_window';
@@ -83,7 +83,11 @@ class ChatPanes extends ImmutablePureComponent {
     const mainWindowPane = (
       <div className={`pane pane--main pane--${mainWindowState}`}>
         <div className='pane__header'>
-          {unreadCount > 0 && <i className='icon-with-badge__badge'>{shortNumberFormat(unreadCount)}</i>}
+          {unreadCount > 0 && (
+            <div className='mr-2 flex-none'>
+              <Counter count={unreadCount} />
+            </div>
+          )}
           <button className='pane__title' onClick={this.handleMainWindowToggle}>
             <FormattedMessage id='chat_panels.main_window.title' defaultMessage='Chats' />
           </button>
