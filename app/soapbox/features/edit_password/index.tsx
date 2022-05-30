@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { changePassword } from 'soapbox/actions/security';
 import snackbar from 'soapbox/actions/snackbar';
-
-import { Button, Card, CardBody, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input } from '../../components/ui';
+import { Button, Card, CardBody, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
 
 const messages = defineMessages({
   updatePasswordSuccess: { id: 'security.update_password.success', defaultMessage: 'Password successfully updated.' },
@@ -22,7 +21,7 @@ const initialState = { currentPassword: '', newPassword: '', newPasswordConfirma
 
 const EditPassword = () => {
   const intl = useIntl();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [state, setState] = React.useState(initialState);
   const [isLoading, setLoading] = React.useState(false);

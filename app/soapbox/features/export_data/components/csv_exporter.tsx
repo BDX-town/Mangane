@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 
 import { Button, Form, FormActions, Text } from 'soapbox/components/ui';
