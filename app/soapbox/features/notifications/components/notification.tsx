@@ -4,13 +4,12 @@ import { defineMessages, FormattedMessage, IntlShape, MessageDescriptor } from '
 import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
+import Icon from 'soapbox/components/icon';
+import Permalink from 'soapbox/components/permalink';
+import { HStack, Text, Emoji } from 'soapbox/components/ui';
+import AccountContainer from 'soapbox/containers/account_container';
+import StatusContainer from 'soapbox/containers/status_container';
 import { useAppSelector } from 'soapbox/hooks';
-
-import Icon from '../../../components/icon';
-import Permalink from '../../../components/permalink';
-import { HStack, Text, Emoji } from '../../../components/ui';
-import AccountContainer from '../../../containers/account_container';
-import StatusContainer from '../../../containers/status_container';
 
 import type { History } from 'history';
 import type { ScrollPosition } from 'soapbox/components/status';

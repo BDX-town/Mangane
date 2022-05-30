@@ -3,11 +3,10 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
+import { fetchTrends } from 'soapbox/actions/trends';
+import Hashtag from 'soapbox/components/hashtag';
 import { Widget } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
-
-import { fetchTrends } from '../../../actions/trends';
-import Hashtag from '../../../components/hashtag';
 
 interface ITrendsPanel {
   limit: number

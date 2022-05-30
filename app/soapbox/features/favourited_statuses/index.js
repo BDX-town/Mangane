@@ -6,14 +6,14 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
+import { fetchAccount, fetchAccountByUsername } from 'soapbox/actions/accounts';
+import { fetchFavouritedStatuses, expandFavouritedStatuses, fetchAccountFavouritedStatuses, expandAccountFavouritedStatuses } from 'soapbox/actions/favourites';
 import MissingIndicator from 'soapbox/components/missing_indicator';
+import StatusList from 'soapbox/components/status_list';
 import { Spinner } from 'soapbox/components/ui';
 import { findAccountByUsername } from 'soapbox/selectors';
 import { getFeatures } from 'soapbox/utils/features';
 
-import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
-import { fetchFavouritedStatuses, expandFavouritedStatuses, fetchAccountFavouritedStatuses, expandAccountFavouritedStatuses } from '../../actions/favourites';
-import StatusList from '../../components/status_list';
 import Column from '../ui/components/column';
 
 const messages = defineMessages({

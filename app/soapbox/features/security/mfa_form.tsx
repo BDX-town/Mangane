@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
+import { fetchMfa } from 'soapbox/actions/mfa';
+import { Card, CardBody, CardHeader, CardTitle, Column } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
-
-import { fetchMfa } from '../../actions/mfa';
-import { Card, CardBody, CardHeader, CardTitle, Column } from '../../components/ui';
 
 import DisableOtpForm from './mfa/disable_otp_form';
 import EnableOtpForm from './mfa/enable_otp_form';

@@ -6,20 +6,20 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
-import MissingIndicator from 'soapbox/components/missing_indicator';
-import { Spinner } from 'soapbox/components/ui';
-import { findAccountByUsername } from 'soapbox/selectors';
-import { getFollowDifference } from 'soapbox/utils/accounts';
-import { getFeatures } from 'soapbox/utils/features';
-
 import {
   fetchAccount,
   fetchFollowing,
   expandFollowing,
   fetchAccountByUsername,
-} from '../../actions/accounts';
-import ScrollableList from '../../components/scrollable_list';
-import AccountContainer from '../../containers/account_container';
+} from 'soapbox/actions/accounts';
+import MissingIndicator from 'soapbox/components/missing_indicator';
+import ScrollableList from 'soapbox/components/scrollable_list';
+import { Spinner } from 'soapbox/components/ui';
+import AccountContainer from 'soapbox/containers/account_container';
+import { findAccountByUsername } from 'soapbox/selectors';
+import { getFollowDifference } from 'soapbox/utils/accounts';
+import { getFeatures } from 'soapbox/utils/features';
+
 import Column from '../ui/components/column';
 
 const messages = defineMessages({

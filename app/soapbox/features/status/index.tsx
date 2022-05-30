@@ -8,30 +8,15 @@ import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
+import { blockAccount } from 'soapbox/actions/accounts';
 import { launchChat } from 'soapbox/actions/chats';
-import {
-  deactivateUserModal,
-  deleteUserModal,
-  deleteStatusModal,
-  toggleStatusSensitivityModal,
-} from 'soapbox/actions/moderation';
-import { getSettings } from 'soapbox/actions/settings';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import ScrollableList from 'soapbox/components/scrollable_list';
-import SubNavigation from 'soapbox/components/sub_navigation';
-import Tombstone from 'soapbox/components/tombstone';
-import { Column, Stack } from 'soapbox/components/ui';
-import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
-import PendingStatus from 'soapbox/features/ui/components/pending_status';
-
-import { blockAccount } from '../../actions/accounts';
 import {
   replyCompose,
   mentionCompose,
   directCompose,
   quoteCompose,
-} from '../../actions/compose';
-import { simpleEmojiReact } from '../../actions/emoji_reacts';
+} from 'soapbox/actions/compose';
+import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
 import {
   favourite,
   unfavourite,
@@ -41,10 +26,18 @@ import {
   unbookmark,
   pin,
   unpin,
-} from '../../actions/interactions';
-import { openModal } from '../../actions/modals';
-import { initMuteModal } from '../../actions/mutes';
-import { initReport } from '../../actions/reports';
+} from 'soapbox/actions/interactions';
+import { openModal } from 'soapbox/actions/modals';
+import {
+  deactivateUserModal,
+  deleteUserModal,
+  deleteStatusModal,
+  toggleStatusSensitivityModal,
+} from 'soapbox/actions/moderation';
+import { initMuteModal } from 'soapbox/actions/mutes';
+import { initReport } from 'soapbox/actions/reports';
+import { getSettings } from 'soapbox/actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import {
   muteStatus,
   unmuteStatus,
@@ -52,11 +45,18 @@ import {
   hideStatus,
   revealStatus,
   editStatus,
-} from '../../actions/statuses';
-import { fetchStatusWithContext, fetchNext } from '../../actions/statuses';
-import MissingIndicator from '../../components/missing_indicator';
-import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
-import { makeGetStatus } from '../../selectors';
+} from 'soapbox/actions/statuses';
+import { fetchStatusWithContext, fetchNext } from 'soapbox/actions/statuses';
+import MissingIndicator from 'soapbox/components/missing_indicator';
+import ScrollableList from 'soapbox/components/scrollable_list';
+import { textForScreenReader, defaultMediaVisibility } from 'soapbox/components/status';
+import SubNavigation from 'soapbox/components/sub_navigation';
+import Tombstone from 'soapbox/components/tombstone';
+import { Column, Stack } from 'soapbox/components/ui';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
+import PendingStatus from 'soapbox/features/ui/components/pending_status';
+import { makeGetStatus } from 'soapbox/selectors';
+
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
 
 import ActionBar from './components/action-bar';

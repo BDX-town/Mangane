@@ -5,10 +5,9 @@ import { FormattedNumber } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
+import { HStack, IconButton, Text, Emoji } from 'soapbox/components/ui';
 import { useAppSelector, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
 import { reduceEmoji } from 'soapbox/utils/emoji_reacts';
-
-import { HStack, IconButton, Text, Emoji } from '../../../components/ui';
 
 import type { Status } from 'soapbox/types/entities';
 

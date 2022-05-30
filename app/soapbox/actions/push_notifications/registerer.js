@@ -1,8 +1,7 @@
 import { createPushSubsription, updatePushSubscription } from 'soapbox/actions/push_subscriptions';
+import { pushNotificationsSetting } from 'soapbox/settings';
 import { getVapidKey } from 'soapbox/utils/auth';
-
-import { pushNotificationsSetting } from '../../settings';
-import { decode as decodeBase64 } from '../../utils/base64';
+import { decode as decodeBase64 } from 'soapbox/utils/base64';
 
 import { setBrowserSupport, setSubscription, clearSubscription } from './setter';
 

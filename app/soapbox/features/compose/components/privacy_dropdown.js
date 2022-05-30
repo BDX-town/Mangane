@@ -7,8 +7,8 @@ import spring from 'react-motion/lib/spring';
 import Overlay from 'react-overlays/lib/Overlay';
 
 import Icon from 'soapbox/components/icon';
+import { IconButton } from 'soapbox/components/ui';
 
-import { IconButton } from '../../../components/ui';
 import Motion from '../../ui/util/optional_motion';
 
 const messages = defineMessages({

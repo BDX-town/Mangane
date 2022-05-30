@@ -3,13 +3,12 @@ import { useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { logOut } from 'soapbox/actions/auth';
 import { openModal } from 'soapbox/actions/modals';
 import LandingGradient from 'soapbox/components/landing-gradient';
 import SiteLogo from 'soapbox/components/site-logo';
+import { Button, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
-
-import { logOut } from '../../actions/auth';
-import { Button, Stack, Text } from '../../components/ui';
 
 const WaitlistPage = (/* { account } */) => {
   const dispatch = useDispatch();

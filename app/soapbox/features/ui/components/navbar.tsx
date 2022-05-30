@@ -7,12 +7,11 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
+import { openSidebar } from 'soapbox/actions/sidebar';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Avatar, Button, Form, IconButton, Input, Tooltip } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
 import { useOwnAccount, useSoapboxConfig } from 'soapbox/hooks';
-
-import { openSidebar } from '../../../actions/sidebar';
 
 import ProfileDropdown from './profile-dropdown';
 
