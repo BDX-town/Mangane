@@ -181,7 +181,7 @@ class PrivacyDropdown extends React.PureComponent {
     ];
   }
 
-  handleToggle = ({ target }) => {
+  handleToggle = (e) => {
     if (this.props.isUserTouching()) {
       if (this.state.open) {
         this.props.onModalClose();
@@ -192,13 +192,14 @@ class PrivacyDropdown extends React.PureComponent {
         });
       }
     } else {
-      const { top } = target.getBoundingClientRect();
+      const { top } = e.target.getBoundingClientRect();
       if (this.state.open && this.activeElement) {
         this.activeElement.focus();
       }
       this.setState({ placement: top * 2 < innerHeight ? 'bottom' : 'top' });
       this.setState({ open: !this.state.open });
     }
+    e.stopPropagation();
   }
 
   handleModalActionClick = (e) => {
