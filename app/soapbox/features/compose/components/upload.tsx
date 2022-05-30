@@ -130,8 +130,8 @@ const Upload: React.FC<IUpload> = (props) => {
   const description = dirtyDescription || (dirtyDescription !== '' && props.media.get('description')) || '';
   const focusX = props.media.getIn(['meta', 'focus', 'x']) as number | undefined;
   const focusY = props.media.getIn(['meta', 'focus', 'y']) as number | undefined;
-  const x = focusX ? ((focusX /  2) + .5) * 100 : 0;
-  const y = focusY ? ((focusY / -2) + .5) * 100 : 0;
+  const x = focusX ? ((focusX /  2) + .5) * 100 : undefined;
+  const y = focusY ? ((focusY / -2) + .5) * 100 : undefined;
   const mediaType = props.media.get('type');
   const mimeType = props.media.getIn(['pleroma', 'mime_type']) as string | undefined;
 
@@ -152,7 +152,7 @@ const Upload: React.FC<IUpload> = (props) => {
             style={{
               transform: `scale(${scale})`,
               backgroundImage: mediaType === 'image' ? `url(${props.media.get('preview_url')})` : undefined,
-              backgroundPosition: `${x}% ${y}%` }}
+              backgroundPosition: typeof x === 'number' && typeof y === 'number' ? `${x}% ${y}%` : undefined }}
           >
             <div className={classNames('compose-form__upload__actions', { active })}>
               <IconButton
