@@ -1,6 +1,5 @@
 import { OrderedSet as ImmutableOrderedSet, is } from 'immutable';
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 

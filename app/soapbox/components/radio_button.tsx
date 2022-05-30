@@ -6,7 +6,7 @@ interface IRadioButton {
   checked?: boolean,
   name: string,
   onChange: React.ChangeEventHandler<HTMLInputElement>,
-  label: JSX.Element,
+  label: React.ReactNode,
 }
 
 const RadioButton: React.FC<IRadioButton> = ({ name, value, checked, onChange, label }) => (

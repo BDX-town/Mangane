@@ -282,7 +282,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
 
       <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />
-      <WrappedRoute path='/statuses/:statusId' exact component={Status} content={children} />
+      <WrappedRoute path='/statuses/:statusId' exact page={StatusPage} component={Status} content={children} />
       {features.scheduledStatuses && <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />}
 
       <WrappedRoute path='/settings/profile' page={DefaultPage} component={EditProfile} content={children} />
