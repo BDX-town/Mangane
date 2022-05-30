@@ -156,6 +156,7 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
   unavailable,
 }) => {
   const intl = useIntl();
+  const node = useRef<HTMLDivElement>(null);
   const activeElement = useRef<HTMLElement | null>(null);
 
   const [open, setOpen] = useState(false);
@@ -235,7 +236,7 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
   const valueOption = options.find(item => item.value === value);
 
   return (
-    <div className={classNames('privacy-dropdown', placement, { active: open })} onKeyDown={handleKeyDown}>
+    <div className={classNames('privacy-dropdown', placement, { active: open })} onKeyDown={handleKeyDown} ref={node}>
       <div className={classNames('privacy-dropdown__value', { active: valueOption && options.indexOf(valueOption) === 0 })}>
         <IconButton
           className='text-gray-400 hover:text-gray-600'
@@ -247,7 +248,7 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
         />
       </div>
 
-      <Overlay show={open} placement={placement} target={this}>
+      <Overlay show={open} placement={placement} target={node.current}>
         <PrivacyDropdownMenu
           items={options}
           value={value}
