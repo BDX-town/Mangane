@@ -4,11 +4,11 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { getSettings } from 'soapbox/actions/settings';
+import { connectCommunityStream } from 'soapbox/actions/streaming';
+import { expandCommunityTimeline } from 'soapbox/actions/timelines';
 import SubNavigation from 'soapbox/components/sub_navigation';
+import { Column } from 'soapbox/components/ui';
 
-import { connectCommunityStream } from '../../actions/streaming';
-import { expandCommunityTimeline } from '../../actions/timelines';
-import { Column } from '../../components/ui';
 import StatusListContainer from '../ui/containers/status_list_container';
 
 import ColumnSettings from './containers/column_settings_container';

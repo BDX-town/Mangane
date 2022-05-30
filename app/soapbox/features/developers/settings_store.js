@@ -8,9 +8,8 @@ import { connect } from 'react-redux';
 import { showAlertForError } from 'soapbox/actions/alerts';
 import { patchMe } from 'soapbox/actions/me';
 import { FE_NAME, SETTINGS_UPDATE } from 'soapbox/actions/settings';
+import { Button, Form, FormActions, FormGroup, Textarea } from 'soapbox/components/ui';
 import Column from 'soapbox/features/ui/components/column';
-
-import { Button, Form, FormActions, FormGroup, Textarea } from '../../components/ui';
 
 const isJSONValid = text => {
   try {

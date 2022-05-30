@@ -8,11 +8,10 @@ import { connect } from 'react-redux';
 
 import { createApp } from 'soapbox/actions/apps';
 import { obtainOAuthToken } from 'soapbox/actions/oauth';
+import { Button, Form, FormActions, FormGroup, Input, Stack, Text, Textarea } from 'soapbox/components/ui';
 import Column from 'soapbox/features/ui/components/column';
 import { getBaseURL } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
-
-import { Button, Form, FormActions, FormGroup, Input, Stack, Text, Textarea } from '../../../components/ui';
 
 const messages = defineMessages({
   heading: { id: 'column.app_create', defaultMessage: 'Create app' },

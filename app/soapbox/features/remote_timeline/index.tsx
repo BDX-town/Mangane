@@ -2,13 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
+import { connectRemoteStream } from 'soapbox/actions/streaming';
+import { expandRemoteTimeline } from 'soapbox/actions/timelines';
 import IconButton from 'soapbox/components/icon_button';
 import { HStack, Text } from 'soapbox/components/ui';
 import Column from 'soapbox/features/ui/components/column';
 import { useAppDispatch, useSettings } from 'soapbox/hooks';
 
-import { connectRemoteStream } from '../../actions/streaming';
-import { expandRemoteTimeline } from '../../actions/timelines';
 import StatusListContainer from '../ui/containers/status_list_container';
 
 import PinnedHostsPicker from './components/pinned_hosts_picker';

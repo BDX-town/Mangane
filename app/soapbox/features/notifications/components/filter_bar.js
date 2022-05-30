@@ -3,8 +3,7 @@ import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
-
-import { Tabs } from '../../../components/ui';
+import { Tabs } from 'soapbox/components/ui';
 
 const messages = defineMessages({
   all: { id: 'notifications.filter.all', defaultMessage: 'All' },

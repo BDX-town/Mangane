@@ -8,8 +8,7 @@ import { Link } from 'react-router-dom';
 
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-
-import { Text } from '../../../components/ui';
+import { Text } from 'soapbox/components/ui';
 
 const mapStateToProps = (state, props) => {
   const soapboxConfig = getSoapboxConfig(state);

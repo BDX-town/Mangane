@@ -1,20 +1,20 @@
 import { connect } from 'react-redux';
 
-import { getSettings } from 'soapbox/actions/settings';
-
-import { mentionCompose } from '../../../actions/compose';
+import { mentionCompose } from 'soapbox/actions/compose';
 import {
   reblog,
   favourite,
   unreblog,
   unfavourite,
-} from '../../../actions/interactions';
-import { openModal } from '../../../actions/modals';
+} from 'soapbox/actions/interactions';
+import { openModal } from 'soapbox/actions/modals';
+import { getSettings } from 'soapbox/actions/settings';
 import {
   hideStatus,
   revealStatus,
-} from '../../../actions/statuses';
-import { makeGetNotification } from '../../../selectors';
+} from 'soapbox/actions/statuses';
+import { makeGetNotification } from 'soapbox/selectors';
+
 import Notification from '../components/notification';
 
 const makeMapStateToProps = () => {

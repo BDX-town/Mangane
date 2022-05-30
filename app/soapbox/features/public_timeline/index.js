@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { changeSetting, getSettings } from 'soapbox/actions/settings';
+import { connectPublicStream } from 'soapbox/actions/streaming';
+import { expandPublicTimeline } from 'soapbox/actions/timelines';
 import SubNavigation from 'soapbox/components/sub_navigation';
+import { Column } from 'soapbox/components/ui';
 import Accordion from 'soapbox/features/ui/components/accordion';
 
-import { connectPublicStream } from '../../actions/streaming';
-import { expandPublicTimeline } from '../../actions/timelines';
-import { Column } from '../../components/ui';
 import PinnedHostsPicker from '../remote_timeline/components/pinned_hosts_picker';
 import StatusListContainer from '../ui/containers/status_list_container';
 
