@@ -5,11 +5,10 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
+import { openModal } from 'soapbox/actions/modals';
 import SiteLogo from 'soapbox/components/site-logo';
+import { Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
 import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
-
-import { openModal } from '../../../actions/modals';
-import { Button, Form, HStack, IconButton, Input, Tooltip } from '../../../components/ui';
 
 import Sonar from './sonar';
 

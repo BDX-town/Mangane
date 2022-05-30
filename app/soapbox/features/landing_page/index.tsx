@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { Button, Card, CardBody, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import RegistrationForm from 'soapbox/features/auth_login/components/registration_form';
 import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
-
-import { Button, Card, CardBody, Stack, Text } from '../../components/ui';
 
 const LandingPage = () => {
   const features = useFeatures();

@@ -6,17 +6,16 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
+import { fetchAccount, fetchAccountByUsername } from 'soapbox/actions/accounts';
+import { fetchPatronAccount } from 'soapbox/actions/patron';
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { expandAccountFeaturedTimeline, expandAccountTimeline } from 'soapbox/actions/timelines';
 import MissingIndicator from 'soapbox/components/missing_indicator';
+import StatusList from 'soapbox/components/status_list';
+import { Card, CardBody, Spinner, Text } from 'soapbox/components/ui';
 import { makeGetStatusIds, findAccountByUsername } from 'soapbox/selectors';
 import { getFeatures } from 'soapbox/utils/features';
-
-import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
-import { fetchPatronAccount } from '../../actions/patron';
-import { expandAccountFeaturedTimeline, expandAccountTimeline } from '../../actions/timelines';
-import StatusList from '../../components/status_list';
-import { Card, CardBody, Spinner, Text } from '../../components/ui';
 
 const makeMapStateToProps = () => {
   const getStatusIds = makeGetStatusIds();

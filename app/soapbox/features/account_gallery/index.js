@@ -10,14 +10,13 @@ import {
   fetchAccountByUsername,
 } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
+import { expandAccountMediaTimeline } from 'soapbox/actions/timelines';
 import LoadMore from 'soapbox/components/load_more';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import { Column } from 'soapbox/components/ui';
 import { Spinner } from 'soapbox/components/ui';
 import { getAccountGallery, findAccountByUsername } from 'soapbox/selectors';
 import { getFeatures } from 'soapbox/utils/features';
-
-import { expandAccountMediaTimeline } from '../../actions/timelines';
 
 import MediaItem from './components/media_item';
 

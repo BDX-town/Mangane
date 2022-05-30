@@ -8,12 +8,12 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { Link, withRouter } from 'react-router-dom';
 import { length } from 'stringz';
 
+import AutosuggestInput from 'soapbox/components/autosuggest_input';
+import AutosuggestTextarea from 'soapbox/components/autosuggest_textarea';
 import Icon from 'soapbox/components/icon';
+import { Button } from 'soapbox/components/ui';
+import { isMobile } from 'soapbox/is_mobile';
 
-import AutosuggestInput from '../../../components/autosuggest_input';
-import AutosuggestTextarea from '../../../components/autosuggest_textarea';
-import { Button } from '../../../components/ui';
-import { isMobile } from '../../../is_mobile';
 import ReplyMentions from '../components/reply_mentions';
 import UploadForm from '../components/upload_form';
 import Warning from '../components/warning';

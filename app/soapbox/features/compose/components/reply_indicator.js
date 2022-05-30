@@ -6,8 +6,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import { Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
-
-import { isRtl } from '../../../rtl';
+import { isRtl } from 'soapbox/rtl';
 
 export default class ReplyIndicator extends ImmutablePureComponent {
 

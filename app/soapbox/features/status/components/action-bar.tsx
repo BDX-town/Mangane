@@ -4,14 +4,13 @@ import { defineMessages, injectIntl, WrappedComponentProps as IntlComponentProps
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import { openModal } from 'soapbox/actions/modals';
 import EmojiButtonWrapper from 'soapbox/components/emoji-button-wrapper';
+import { HStack, IconButton } from 'soapbox/components/ui';
+import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { isUserTouching } from 'soapbox/is_mobile';
 import { getReactForStatus } from 'soapbox/utils/emoji_reacts';
 import { getFeatures } from 'soapbox/utils/features';
-
-import { openModal } from '../../../actions/modals';
-import { HStack, IconButton } from '../../../components/ui';
-import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 
 import type { History } from 'history';
 import type { List as ImmutableList } from 'immutable';

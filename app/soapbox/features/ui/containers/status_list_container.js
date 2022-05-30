@@ -3,10 +3,9 @@ import { debounce } from 'lodash';
 import { connect } from 'react-redux';
 
 import { dequeueTimeline } from 'soapbox/actions/timelines';
+import { scrollTopTimeline } from 'soapbox/actions/timelines';
+import StatusList from 'soapbox/components/status_list';
 import { makeGetStatusIds } from 'soapbox/selectors';
-
-import { scrollTopTimeline } from '../../../actions/timelines';
-import StatusList from '../../../components/status_list';
 
 const makeMapStateToProps = () => {
   const getStatusIds = makeGetStatusIds();

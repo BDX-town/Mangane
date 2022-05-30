@@ -4,11 +4,11 @@ import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
+import { expandAccountMediaTimeline } from 'soapbox/actions/timelines';
 import { Spinner, Widget } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 import { getAccountGallery } from 'soapbox/selectors';
 
-import { expandAccountMediaTimeline } from '../../../actions/timelines';
 import MediaItem from '../../account_gallery/components/media_item';
 
 import type { Account, Attachment } from 'soapbox/types/entities';

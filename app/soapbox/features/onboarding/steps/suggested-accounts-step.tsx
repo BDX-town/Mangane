@@ -4,12 +4,11 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
+import { fetchSuggestions } from 'soapbox/actions/suggestions';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { Button, Card, CardBody, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import { useAppSelector } from 'soapbox/hooks';
-
-import { fetchSuggestions } from '../../../actions/suggestions';
 
 const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
   const dispatch = useDispatch();

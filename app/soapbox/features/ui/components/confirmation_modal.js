@@ -2,9 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
 
+import { Modal } from 'soapbox/components/ui';
 import { SimpleForm, FieldsGroup, Checkbox } from 'soapbox/features/forms';
-
-import { Modal } from '../../../components/ui';
 
 export default @injectIntl
 class ConfirmationModal extends React.PureComponent {

@@ -8,17 +8,16 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { getSettings } from 'soapbox/actions/settings';
-import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
-
 import {
   expandNotifications,
   scrollTopNotifications,
   dequeueNotifications,
-} from '../../actions/notifications';
-import ScrollableList from '../../components/scrollable_list';
-import TimelineQueueButtonHeader from  '../../components/timeline_queue_button_header';
-import { Column } from '../../components/ui';
+} from 'soapbox/actions/notifications';
+import { getSettings } from 'soapbox/actions/settings';
+import ScrollableList from 'soapbox/components/scrollable_list';
+import TimelineQueueButtonHeader from  'soapbox/components/timeline_queue_button_header';
+import { Column } from 'soapbox/components/ui';
+import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
 
 import FilterBarContainer from './containers/filter_bar_container';
 import NotificationContainer from './containers/notification_container';
