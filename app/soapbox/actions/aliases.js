@@ -93,7 +93,7 @@ export const changeAliasesSuggestions = value => ({
   value,
 });
 
-export const addToAliases = (intl, account) => (dispatch, getState) => {
+export const addToAliases = (account) => (dispatch, getState) => {
   if (!isLoggedIn(getState)) return;
   const state = getState();
 
@@ -108,7 +108,7 @@ export const addToAliases = (intl, account) => (dispatch, getState) => {
 
     api(getState).patch('/api/v1/accounts/update_credentials', { also_known_as: [...alsoKnownAs, account.getIn(['pleroma', 'ap_id'])] })
       .then((response => {
-        dispatch(snackbar.success(intl.formatMessage(messages.createSuccess)));
+        dispatch(snackbar.success(messages.createSuccess));
         dispatch(addToAliasesSuccess);
         dispatch(patchMeSuccess(response.data));
       }))
@@ -123,7 +123,7 @@ export const addToAliases = (intl, account) => (dispatch, getState) => {
     alias: account.get('acct'),
   })
     .then(response => {
-      dispatch(snackbar.success(intl.formatMessage(messages.createSuccess)));
+      dispatch(snackbar.success(messages.createSuccess));
       dispatch(addToAliasesSuccess);
       dispatch(fetchAliases);
     })
@@ -143,7 +143,7 @@ export const addToAliasesFail = error => ({
   error,
 });
 
-export const removeFromAliases = (intl, account) => (dispatch, getState) => {
+export const removeFromAliases = (account) => (dispatch, getState) => {
   if (!isLoggedIn(getState)) return;
   const state = getState();
 
@@ -158,7 +158,7 @@ export const removeFromAliases = (intl, account) => (dispatch, getState) => {
 
     api(getState).patch('/api/v1/accounts/update_credentials', { also_known_as: alsoKnownAs.filter(id => id !== account) })
       .then(response => {
-        dispatch(snackbar.success(intl.formatMessage(messages.removeSuccess)));
+        dispatch(snackbar.success(messages.removeSuccess));
         dispatch(removeFromAliasesSuccess);
         dispatch(patchMeSuccess(response.data));
       })
@@ -175,7 +175,7 @@ export const removeFromAliases = (intl, account) => (dispatch, getState) => {
     },
   })
     .then(response => {
-      dispatch(snackbar.success(intl.formatMessage(messages.removeSuccess)));
+      dispatch(snackbar.success(messages.removeSuccess));
       dispatch(removeFromAliasesSuccess);
       dispatch(fetchAliases);
     })
