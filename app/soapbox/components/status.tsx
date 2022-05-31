@@ -110,7 +110,6 @@ interface IStatusState {
   showMedia: boolean,
   statusId?: string,
   emojiSelectorFocused: boolean,
-  mediaWrapperWidth?: number,
 }
 
 class Status extends ImmutablePureComponent<IStatus, IStatusState> {
@@ -223,26 +222,6 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     this.props.onToggleHidden(this._properStatus());
   };
 
-  renderLoadingMediaGallery(): JSX.Element {
-    return <div className='media_gallery' style={{ height: '285px' }} />;
-  }
-
-  renderLoadingVideoPlayer(): JSX.Element {
-    return <div className='media-spoiler-video' style={{ height: '285px' }} />;
-  }
-
-  renderLoadingAudioPlayer(): JSX.Element {
-    return <div className='media-spoiler-audio' style={{ height: '285px' }} />;
-  }
-
-  handleOpenVideo = (media: ImmutableMap<string, any>, startTime: number): void => {
-    this.props.onOpenVideo(media, startTime);
-  }
-
-  handleOpenAudio = (media: ImmutableMap<string, any>, startTime: number): void => {
-    this.props.onOpenAudio(media, startTime);
-  }
-
   handleHotkeyOpenMedia = (e?: KeyboardEvent): void => {
     const { onOpenMedia, onOpenVideo } = this.props;
     const status = this._properStatus();
@@ -334,12 +313,6 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
   handleRef = (c: HTMLDivElement): void => {
     this.node = c;
-  }
-
-  setRef = (c: HTMLDivElement): void => {
-    if (c) {
-      this.setState({ mediaWrapperWidth: c.offsetWidth });
-    }
   }
 
   render() {
