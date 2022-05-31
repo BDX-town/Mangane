@@ -7,13 +7,8 @@ import { NavLink, withRouter, RouteComponentProps } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
 import AccountContainer from 'soapbox/containers/account_container';
-import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
-import Card from 'soapbox/features/status/components/card';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
-import Bundle from 'soapbox/features/ui/components/bundle';
-import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components';
 
-import AttachmentThumbs from './attachment-thumbs';
 import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
 import StatusActionBar from './status_action_bar';
