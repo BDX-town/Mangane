@@ -34,21 +34,15 @@ interface IDetailedStatus extends IntlProps {
 
 interface IDetailedStatusState {
   height: number | null,
-  mediaWrapperWidth: number,
 }
 
 class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedStatusState> {
 
   state = {
     height: null,
-    mediaWrapperWidth: NaN,
   };
 
   node: HTMLDivElement | null = null;
-
-  handleOpenVideo = (media: ImmutableList<AttachmentEntity>, startTime: number) => {
-    this.props.onOpenVideo(media, startTime);
-  }
 
   handleExpandedToggle = () => {
     this.props.onToggleHidden(this.props.status);
@@ -71,10 +65,6 @@ class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedSt
   setRef: React.RefCallback<HTMLDivElement> = c => {
     this.node = c;
     this._measureHeight();
-
-    if (c) {
-      this.setState({ mediaWrapperWidth: c.offsetWidth });
-    }
   }
 
   componentDidUpdate(prevProps: IDetailedStatus, prevState: IDetailedStatusState) {
