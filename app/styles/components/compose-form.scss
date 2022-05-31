@@ -53,37 +53,6 @@
     }
   }
 
-  &__autosuggest-wrapper {
-    position: relative;
-  }
-
-  .spoiler-input {
-    height: 0;
-    transform-origin: bottom;
-    opacity: 0;
-
-    &.spoiler-input--visible {
-      height: 36px;
-      margin-bottom: 11px;
-      opacity: 1;
-    }
-  }
-
-  .spoiler-input__input { border-radius: 4px; }
-
-  &.condensed {
-    .autosuggest-textarea__textarea {
-      min-height: 46px;
-      border-radius: 5px;
-    }
-
-    .compose-form__buttons-wrapper {
-      height: 0;
-      padding: 0;
-      overflow: hidden;
-    }
-  }
-
   &__modifiers {
     color: var(--primary-text-color);
     font-family: inherit;
@@ -208,75 +177,6 @@
     }
   } // end .compose-form .compose-form__modifiers
 
-  &__buttons-wrapper {
-    padding: 10px;
-    background: var(--background-color);
-    display: flex;
-    justify-content: space-between;
-    flex: 0 0 auto;
-    border-radius: 0 0 5px 5px;
-
-    .compose-form__buttons {
-      display: flex;
-
-      > div {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .compose-form__sensitive-button {
-        display: none;
-
-        &.compose-form__sensitive-button--visible {
-          display: block;
-        }
-      }
-
-      .svg-icon {
-        width: 24px;
-        height: 24px;
-
-        svg {
-          stroke-width: 1.5px;
-        }
-      }
-
-      .privacy-dropdown__value {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-    }
-
-    .icon-button {
-      box-sizing: content-box;
-      padding: 0 3px;
-      opacity: 0.5;
-      transition: 0.2s;
-
-      &.active,
-      &:hover {
-        opacity: 1;
-      }
-    }
-
-    .character-counter {
-      display: block;
-      cursor: default;
-      font-family: var(--font-sans-serif), sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--primary-text-color--faint);
-      &.character-counter--over { color: $warning-red; }
-    }
-
-    .character-counter,
-    .visual-character-counter {
-      margin-right: 10px;
-    }
-  }
-
   &__publish {
     display: flex;
     justify-content: flex-end;
@@ -295,15 +195,6 @@
     margin-left: auto;
   }
 } // end .compose-form
-
-// Icon tweaks
-.compose-form__spoiler-button-icon {
-  transform: translateY(2px);
-}
-
-.compose-form__markdown-button-icon {
-  transform: translateY(1px);
-}
 
 .privacy-dropdown__dropdown {
   @apply absolute bg-white dark:bg-slate-900 z-[1000] rounded-md shadow-lg ml-10 text-sm;

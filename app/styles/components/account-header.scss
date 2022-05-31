@@ -1,315 +1,40 @@
-.account__header {
-  &.inactive {
-    opacity: 0.5;
+.account__header__subscribe {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  right: max(10px, env(safe-area-inset-right));
+  z-index: 1;
 
-    .account__header__image,
-    .account__avatar {
-      filter: grayscale(100%);
-    }
-  }
+  .subscription-button {
+    color: var(--primary-text-color);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-color);
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 4px;
+    border-radius: 4px;
+    opacity: 0.7;
 
-  &__info {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    left: max(10px, env(safe-area-inset-left));
-    z-index: 1;
-  }
-
-  &__subscribe {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    right: max(10px, env(safe-area-inset-right));
-    z-index: 1;
-
-    .subscription-button {
-      color: var(--primary-text-color);
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: var(--background-color);
-      text-transform: uppercase;
-      font-size: 13px;
-      font-weight: 500;
-      padding: 4px;
-      border-radius: 4px;
-      opacity: 0.7;
-
-      &:active,
-      &:focus,
-      &:hover {
-        opacity: 1;
-      }
-
-      &:not(.button-active) i.fa {
-        margin: 0;
-      }
-
-      .svg-icon {
-        width: 20px;
-        height: 20px;
-      }
-    }
-  }
-
-  &__image {
-    overflow: hidden;
-    height: 350px;
-    position: relative;
-    background: var(--accent-color--faint);
-
-    @media screen and (max-width: 895px) {
-      height: 225px;
+    &:active,
+    &:focus,
+    &:hover {
+      opacity: 1;
     }
 
-    @media screen and (max-width: 560px) {
-      height: 150px;
-    }
-
-    &--none {
-      height: 125px;
-    }
-
-    img {
-      object-fit: cover;
-      display: block;
-      width: 100%;
-      height: 100%;
+    &:not(.button-active) i.fa {
       margin: 0;
     }
 
-    .still-image {
-      height: 100%;
-    }
-
-    .still-image--play-on-hover::before {
-      content: 'GIF';
-      position: absolute;
-      color: var(--primary-text-color);
-      background: var(--foreground-color);
-      top: 6px;
-      left: 6px;
-      padding: 2px 6px;
-      border-radius: 2px;
-      font-size: 11px;
-      font-weight: 600;
-      pointer-events: none;
-      opacity: 0.9;
-      transition: opacity 0.1s ease;
-      line-height: 18px;
-    }
-  }
-
-  &__bar {
-    display: block;
-    min-height: 74px;
-    width: 100%;
-    position: relative;
-    background: var(--foreground-color);
-
-    @media (min-width: 896px) {
-      height: 74px;
-    }
-  }
-
-  &__avatar {
-    display: block;
-    position: absolute;
-    left: 0;
-    top: -90px;
-    border-radius: 50%;
-    height: 200px;
-    width: 200px;
-    background-color: var(--foreground-color);
-
-    // NOTE - patch fix for avatar size. Wrapper may not be needed when I do polish up on the page
-    .account__avatar {
-      width: 200px;
-      height: 200px;
-      background-size: 200px 200px;
-    }
-
-    .still-image--play-on-hover::before {
-      content: 'GIF';
-      position: absolute;
-      color: var(--primary-text-color);
-      background: var(--foreground-color);
-      bottom: 15%;
-      left: 15%;
-      padding: 1px 4px;
-      border-radius: 2px;
-      font-size: 8px;
-      font-weight: 600;
-      pointer-events: none;
-      opacity: 0.9;
-      transition: opacity 0.1s ease;
-      line-height: 13px;
-    }
-
-    @media screen and (max-width: 895px) {
-      top: -45px;
-      left: 20px;
-      left: max(20px + env(safe-area-inset-left));
-      height: 90px;
-      width: 90px;
-
-      .account__avatar {
-        width: 90px;
-        height: 90px;
-        background-size: 90px 90px;
-      }
-    }
-  }
-
-  &__extra {
-    display: flex;
-    flex-direction: row;
-    height: 100%;
-    margin: 0 auto;
-    padding-left: 310px;
-    width: 100%;
-    max-width: 1200px;
-    box-sizing: border-box;
-    position: relative;
-
-    @media (min-width: 896px) and (max-width: 1190px) {
-      max-width: 900px;
-      padding-left: 300px;
-    }
-
-    @media screen and (max-width: 895px) {
-      max-width: 900px;
-      padding-top: 10px;
-      padding-left: 10px;
-      padding-left: max(10px, env(safe-area-inset-left));
-      padding-right: 10px;
-      padding-right: max(10px, env(safe-area-inset-right));
-      flex-direction: column-reverse;
-      min-height: 50px;
-    }
-
-    &__buttons {
-      display: flex;
-      align-items: center;
-      margin-left: auto;
-
-      .icon-button {
-        border: 1px solid var(--primary-text-color--faint);
-        border-radius: 999px;
-        box-sizing: content-box;
-        padding: 7px;
-        opacity: 0.6;
-
-        &:hover,
-        &:focus {
-          opacity: 1;
-        }
-
-        .svg-icon {
-          width: 20px;
-          height: 20px;
-
-          svg {
-            &.feather {
-              // Feather icons are a little larger
-              transform: scale(0.9);
-            }
-          }
-        }
-      }
-
-      .button,
-      .icon-button {
-        margin-left: 10px;
-      }
-
-      .button-active {
-        border-color: #008000;
-        background: #008000;
-        color: #fff;
-      }
-    }
-
-    &__links {
-      display: flex;
-      font-size: 14px;
-      color: var(--primary-text-color--faint);
-
-      @media screen and (max-width: 895px) {
-        justify-content: center;
-        flex-wrap: wrap;
-        display: none;
-      }
-
-      a {
-        display: inline-block;
-        text-decoration: none;
-        padding: 16px 22px;
-        text-align: center;
-        @media screen and (max-width: 1190px) { padding: 16px; }
-
-        > span {
-          display: block;
-
-          &:first-of-type {
-            color: var(--primary-text-color);
-            font-size: 20px;
-            font-weight: 800;
-            line-height: 24px;
-            @media screen and (max-width: 895px) {
-              font-size: 16px;
-              line-height: 20px;
-            }
-          }
-
-          &:last-of-type {
-            color: var(--primary-text-color--faint);
-            font-size: 12px;
-            line-height: 14px;
-            padding-top: 2px;
-          }
-        }
-
-        &:hover,
-        &:focus,
-        &.active {
-          border-bottom: 2px solid var(--primary-text-color);
-        }
-        &.score { border-bottom: 0 !important; }
-      }
-    }
-  } // end .account__header__extra
-
-  @media screen and (max-width: 895px) {
-    .account-mobile-container {
-      display: block;
-      margin-top: 10px;
-      position: relative;
-      padding: 10px 10px 0;
-      &--nonuser { padding: 10px 10px 15px; }
-    }
-
-    .account-mobile-container.deactivated {
-      margin-top: 50px;
+    .svg-icon {
+      width: 20px;
+      height: 20px;
     }
   }
 }
-
-.account__header.deactivated {
-  .still-image img,
-  .still-image canvas {
-    display: none;
-  }
-
-  .account__header__extra__links,
-  .account__header__extra__buttons {
-    display: none;
-  }
-}
-
-// end .account__header
 
 .account__header__content {
   color: var(--primary-text-color--faint);
