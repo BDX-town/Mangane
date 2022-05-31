@@ -39,7 +39,7 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, pla
   const node = useRef<HTMLDivElement>(null);
   const focusedItem = useRef<HTMLDivElement>(null);
 
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState<boolean>(false);
 
   const handleDocumentClick = (e: MouseEvent | TouchEvent) => {
     if (node.current && !node.current.contains(e.target as HTMLElement)) {
@@ -49,9 +49,7 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, pla
 
   const handleKeyDown: React.KeyboardEventHandler = e => {
     const value = e.currentTarget.getAttribute('data-index');
-    const index = items.findIndex(item => {
-      return (item.value === value);
-    });
+    const index = items.findIndex(item => item.value === value);
     let element = null;
 
     switch (e.key) {
