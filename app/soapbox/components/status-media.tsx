@@ -21,7 +21,7 @@ interface IStatusMedia {
   /** Whether or not the media is concealed behind a NSFW banner. */
   showMedia?: boolean,
   /** Callback when visibility is toggled (eg clicked through NSFW). */
-  onToggleVisibility: () => void,
+  onToggleVisibility?: () => void,
 }
 
 /** Render media attachments for a status. */
@@ -30,7 +30,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
   muted = false,
   onClick,
   showMedia = true,
-  onToggleVisibility,
+  onToggleVisibility = () => {},
 }) => {
   const dispatch = useAppDispatch();
   const [mediaWrapperWidth, setMediaWrapperWidth] = useState<number | undefined>(undefined);

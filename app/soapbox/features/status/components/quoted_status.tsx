@@ -6,6 +6,7 @@ import { defineMessages, injectIntl, FormattedMessage, IntlShape, FormattedList 
 import { withRouter } from 'react-router-dom';
 
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
+import StatusMedia from 'soapbox/components/status-media';
 import { Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 
@@ -48,6 +49,25 @@ class QuotedStatus extends ImmutablePureComponent<IQuotedStatus> {
     if (this.props.onCancel) {
       this.props.onCancel();
     }
+  }
+
+  renderMedia = () => {
+    const { status } = this.props;
+    if (!status) return null;
+    const { size } = status.media_attachments;
+
+    if (size > 1) {
+      return (
+        <AttachmentThumbs
+          media={status.media_attachments}
+          sensitive={status.sensitive}
+        />
+      );
+    }
+
+    return (
+      <StatusMedia status={status} />
+    );
   }
 
   renderReplyMentions = () => {
@@ -147,12 +167,7 @@ class QuotedStatus extends ImmutablePureComponent<IQuotedStatus> {
           dangerouslySetInnerHTML={{ __html: status.contentHtml }}
         />
 
-        {status.media_attachments.size > 0 && (
-          <AttachmentThumbs
-            media={status.media_attachments}
-            sensitive={status.sensitive}
-          />
-        )}
+        {this.renderMedia()}
       </Stack>
     );
 
