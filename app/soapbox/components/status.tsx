@@ -14,6 +14,7 @@ import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components';
 
 import AttachmentThumbs from './attachment-thumbs';
+import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
 import StatusActionBar from './status_action_bar';
 import StatusContent from './status_content';
@@ -342,7 +343,6 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   }
 
   render() {
-    let media = null;
     const poll = null;
     let prepend, rebloggedByText, reblogElement, reblogElementMobile;
 
@@ -450,120 +450,6 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
       status = status.reblog;
     }
 
-    const size = status.media_attachments.size;
-    const firstAttachment = status.media_attachments.first();
-
-    if (size > 0 && firstAttachment) {
-      if (this.props.muted) {
-        media = (
-          <AttachmentThumbs
-            media={status.media_attachments}
-            onClick={this.handleClick}
-            sensitive={status.sensitive}
-          />
-        );
-      } else if (size === 1 && firstAttachment.type === 'video') {
-        const video = firstAttachment;
-
-        if (video.external_video_id && status.card) {
-          const { mediaWrapperWidth } = this.state;
-
-          const getHeight = (): number => {
-            const width = Number(video.meta.getIn(['original', 'width']));
-            const height = Number(video.meta.getIn(['original', 'height']));
-            return Number(mediaWrapperWidth) / (width / height);
-          };
-
-          const height = getHeight();
-
-          media = (
-            <div className='status-card horizontal compact interactive status-card--video'>
-              <div
-                ref={this.setRef}
-                className='status-card__image status-card-video'
-                style={height ? { height } : undefined}
-                dangerouslySetInnerHTML={{ __html: status.card.html }}
-              />
-            </div>
-          );
-        } else {
-          media = (
-            <Bundle fetchComponent={Video} loading={this.renderLoadingVideoPlayer} >
-              {(Component: any) => (
-                <Component
-                  preview={video.preview_url}
-                  blurhash={video.blurhash}
-                  src={video.url}
-                  alt={video.description}
-                  aspectRatio={video.meta.getIn(['original', 'aspect'])}
-                  width={this.props.cachedMediaWidth}
-                  height={285}
-                  inline
-                  sensitive={status.sensitive}
-                  onOpenVideo={this.handleOpenVideo}
-                  cacheWidth={this.props.cacheMediaWidth}
-                  visible={this.state.showMedia}
-                  onToggleVisibility={this.handleToggleMediaVisibility}
-                />
-              )}
-            </Bundle>
-          );
-        }
-      } else if (size === 1 && firstAttachment.type === 'audio') {
-        const attachment = firstAttachment;
-
-        media = (
-          <Bundle fetchComponent={Audio} loading={this.renderLoadingAudioPlayer} >
-            {(Component: any) => (
-              <Component
-                src={attachment.url}
-                alt={attachment.description}
-                poster={attachment.preview_url !== attachment.url ? attachment.preview_url : status.getIn(['account', 'avatar_static'])}
-                backgroundColor={attachment.meta.getIn(['colors', 'background'])}
-                foregroundColor={attachment.meta.getIn(['colors', 'foreground'])}
-                accentColor={attachment.meta.getIn(['colors', 'accent'])}
-                duration={attachment.meta.getIn(['original', 'duration'], 0)}
-                width={this.props.cachedMediaWidth}
-                height={263}
-                cacheWidth={this.props.cacheMediaWidth}
-              />
-            )}
-          </Bundle>
-        );
-      } else {
-        media = (
-          <Bundle fetchComponent={MediaGallery} loading={this.renderLoadingMediaGallery}>
-            {(Component: any) => (
-              <Component
-                media={status.media_attachments}
-                sensitive={status.sensitive}
-                height={285}
-                onOpenMedia={this.props.onOpenMedia}
-                cacheWidth={this.props.cacheMediaWidth}
-                defaultWidth={this.props.cachedMediaWidth}
-                visible={this.state.showMedia}
-                onToggleVisibility={this.handleToggleMediaVisibility}
-              />
-            )}
-          </Bundle>
-        );
-      }
-    } else if (status.spoiler_text.length === 0 && !status.quote && status.card) {
-      media = (
-        <Card
-          onOpenMedia={this.props.onOpenMedia}
-          card={status.card}
-          compact
-          cacheWidth={this.props.cacheMediaWidth}
-          defaultWidth={this.props.cachedMediaWidth}
-        />
-      );
-    } else if (status.expectsCard) {
-      media = (
-        <PlaceholderCard />
-      );
-    }
-
     let quote;
 
     if (status.quote) {
@@ -653,7 +539,14 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
                 collapsable
               />
 
-              {media}
+              <StatusMedia
+                status={status}
+                muted={this.props.muted}
+                onClick={this.handleClick}
+                showMedia={this.state.showMedia}
+                onToggleVisibility={this.handleToggleMediaVisibility}
+              />
+
               {poll}
               {quote}
 
