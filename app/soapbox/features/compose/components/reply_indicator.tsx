@@ -18,7 +18,6 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ status, hideActions, onCanc
     onCancel();
   };
 
-
   if (!status) {
     return null;
   }
