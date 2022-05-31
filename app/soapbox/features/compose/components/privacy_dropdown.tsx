@@ -108,7 +108,7 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, pla
       document.removeEventListener('click', handleDocumentClick, false);
       document.removeEventListener('touchend', handleDocumentClick);
     };
-  });
+  }, []);
 
   return (
     <Motion defaultStyle={{ opacity: 0, scaleX: 0.85, scaleY: 0.75 }} style={{ opacity: spring(1, { damping: 35, stiffness: 400 }), scaleX: spring(1, { damping: 35, stiffness: 400 }), scaleY: spring(1, { damping: 35, stiffness: 400 }) }}>
