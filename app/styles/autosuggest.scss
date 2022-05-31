@@ -1,10 +1,7 @@
-.autosuggest-textarea,
-.autosuggest-input,
-.spoiler-input {
+.autosuggest-input {
   position: relative;
 }
 
-.autosuggest-textarea__textarea,
 .autosuggest-input input,
 .react-datepicker__input-container input {
   // display: block;
@@ -29,59 +26,6 @@
   // }
 }
 
-.autosuggest-textarea__textarea {
-  min-height: 100px;
-  // border-radius: 5px 5px 0 0;
-  // padding-bottom: 0;
-  // padding-right: 10px + 22px;
-  // resize: none;
-  // scrollbar-color: initial;
-  // transition: 0.2s;
-
-  // &::-webkit-scrollbar {
-  //   all: unset;
-  // }
-
-  // @media screen and (max-width: 600px) {
-  //   max-height: 100px !important; // prevent auto-resize textarea
-  //   resize: vertical;
-  // }
-}
-
-.autosuggest-textarea__suggestions-wrapper {
-  position: relative;
-  height: 0;
-}
-
-.autosuggest-textarea__suggestions {
-  box-sizing: border-box;
-  display: none;
-  position: absolute;
-  top: 100%;
-  width: 100%;
-  z-index: 501; /* Above TimelineQueueHeader */
-  box-shadow: 4px 4px 6px rgba($base-shadow-color, 0.4);
-  background: var(--background-color);
-  border-radius: 0 0 4px 4px;
-  font-size: 14px;
-  padding: 6px;
-  &.autosuggest-textarea__suggestions--visible { display: block; }
-}
-
-.autosuggest-textarea__suggestions__item {
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 4px;
-
-  &:hover,
-  &:focus,
-  &:active,
-  &.selected {
-    background: var(--brand-color--med);
-  }
-}
-
-.autosuggest-account,
 .autosuggest-emoji {
   display: flex;
   flex-direction: row;
@@ -91,34 +35,9 @@
   font-size: 14px;
 }
 
-.autosuggest-account-icon,
 .autosuggest-emoji img {
   display: block;
   margin-right: 8px;
   width: 16px;
   height: 16px;
-}
-
-.autosuggest-account .display-name__account {
-  color: var(--primary-text-color--faint);
-}
-
-.autosuggest-input__action {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-radius: 4px;
-  font-weight: bold;
-  text-decoration: none;
-  color: var(--primary-text-color--faint);
-
-  &:hover,
-  &.selected {
-    background-color: var(--brand-color--med);
-  }
-
-  .svg-icon {
-    margin-right: 8px;
-    transform: translateY(-1px);
-  }
 }

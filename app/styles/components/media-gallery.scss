@@ -152,13 +152,6 @@
   top: 0;
 }
 
-.media-gallery__item-thumbnail-label {
-  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-  clip: rect(1px, 1px, 1px, 1px);
-  overflow: hidden;
-  position: absolute;
-}
-
 .media-gallery__gifv__label,
 .media-gallery__filename__label,
 .media-gallery__file-extension__label {

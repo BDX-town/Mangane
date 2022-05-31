@@ -13,11 +13,6 @@ body.rtl {
     margin-left: 5px;
   }
 
-  .compose-form .compose-form__buttons-wrapper .character-counter__wrapper {
-    margin-right: 0;
-    margin-left: 4px;
-  }
-
   .search__input {
     padding-right: 10px;
     padding-left: 30px;
@@ -49,23 +44,9 @@ body.rtl {
     float: right;
   }
 
-  .column-header__back-button {
-    padding-left: 5px;
-    padding-right: 0;
-  }
-
-  .column-header__setting-arrows {
-    float: left;
-  }
-
   .setting-toggle__label {
     margin-left: 0;
     margin-right: 8px;
-  }
-
-  .status__avatar {
-    left: auto;
-    right: 10px;
   }
 
   .status {
@@ -73,55 +54,9 @@ body.rtl {
     padding-right: 68px;
   }
 
-  .status__info .status__display-name {
-    padding-left: 25px;
-    padding-right: 0;
-  }
-
-  .status__prepend {
-    margin-left: 0;
-    margin-right: 68px;
-  }
-
-  .status__prepend-icon-wrapper {
-    left: auto;
-    right: -26px;
-  }
-
   .account__avatar-overlay-overlay {
     right: auto;
     left: 0;
-  }
-
-  .column-back-button--slim-button {
-    right: auto;
-    left: 0;
-  }
-
-  .status__relative-time {
-    float: left;
-  }
-
-  .status__action-bar {
-    &__counter {
-      margin-right: 0;
-      margin-left: 11px;
-
-      .status__action-bar-button {
-        margin-right: 0;
-        margin-left: 4px;
-      }
-    }
-  }
-
-  .status__action-bar-button {
-    float: right;
-    margin-right: 0;
-    margin-left: 18px;
-  }
-
-  .status__action-bar-dropdown {
-    float: right;
   }
 
   .privacy-dropdown__dropdown {
@@ -144,12 +79,6 @@ body.rtl {
     float: right;
   }
 
-  .detailed-status__favorites,
-  .detailed-status__reblogs {
-    margin-left: 0;
-    margin-right: 6px;
-  }
-
   .fa-ul {
     margin-left: 0;
     margin-left: 2.14285714em;
@@ -160,20 +89,9 @@ body.rtl {
     right: -2.14285714em;
   }
 
-  .simple_form .check_boxes .checkbox label {
-    padding-left: 0;
-    padding-right: 25px;
-  }
-
   .simple_form .input.with_label.boolean label.checkbox {
     padding-left: 25px;
     padding-right: 0;
-  }
-
-  .simple_form .check_boxes .checkbox input[type="checkbox"],
-  .simple_form .input.boolean input[type="checkbox"] {
-    left: auto;
-    right: 0;
   }
 
   .simple_form .input.radio_buttons .radio {
@@ -184,11 +102,6 @@ body.rtl {
   .simple_form .input.radio_buttons .radio > label {
     padding-right: 28px;
     padding-left: 0;
-  }
-
-  .simple_form .input-with-append .input input {
-    padding-left: 142px;
-    padding-right: 0;
   }
 
   .simple_form .input.boolean label.checkbox {
@@ -202,17 +115,6 @@ body.rtl {
     padding-right: 28px;
   }
 
-  .simple_form .label_input__append {
-    right: auto;
-    left: 3px;
-
-    &::after {
-      right: auto;
-      left: 0;
-      background-image: linear-gradient(to left, hsla(var(--background-color_hsl), 0), var(--background-color));
-    }
-  }
-
   // .simple_form select {
   //   background: var(--background-color) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14.933 18.467' height='19.698' width='15.929'><path d='M3.467 14.967l-3.393-3.5H14.86l-3.392 3.5c-1.866 1.925-3.666 3.5-4 3.5-.335 0-2.135-1.575-4-3.5zm.266-11.234L7.467 0 11.2 3.733l3.733 3.734H0l3.733-3.734z' fill='#{hex-color(var(--brand-color--med))}'/></svg>") no-repeat left 8px center / auto 16px;
   // }
@@ -220,11 +122,6 @@ body.rtl {
   .table th,
   .table td {
     text-align: right;
-  }
-
-  .filters .filter-subset {
-    margin-right: 0;
-    margin-left: 45px;
   }
 
   @media screen and (min-width: 631px) {
@@ -253,11 +150,6 @@ body.rtl {
         margin-right: 0;
       }
     }
-
-    .public-account-header__tabs {
-      margin-left: 0;
-      margin-right: 20px;
-    }
   }
 
   .card__bar .display-name {
@@ -272,16 +164,6 @@ body.rtl {
 
   .fa-chevron-right::before {
     content: "\F053";
-  }
-
-  .column-back-button__icon {
-    margin-right: 0;
-    margin-left: 5px;
-  }
-
-  .column-header__setting-arrows .column-header__setting-btn:last-child {
-    padding-left: 0;
-    padding-right: 10px;
   }
 
   .simple_form .input.radio_buttons .radio > label input {

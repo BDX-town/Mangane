@@ -90,34 +90,6 @@
       display: none;
     }
 
-    // Witch emblem
-    .getting-started__footer::before {
-      content: '';
-      display: block;
-      background-image: url('../images/halloween/halloween-emblem.svg');
-      background-size: contain;
-      background-position: left;
-      background-repeat: no-repeat;
-      width: 100%;
-      height: 100px;
-      margin-bottom: 20px;
-    }
-
-    // Color fixes
-    // Elements directly over the BG need static colors that don't change
-    // regardless of the theme-mode
-    .getting-started__footer {
-      color: #fff;
-
-      a {
-        color: hsla(0, 0%, 100%, 0.4);
-      }
-
-      p {
-        color: hsla(0, 0%, 100%, 0.8);
-      }
-    }
-
     .profile-info-panel {
       color: #fff;
 
@@ -157,10 +129,6 @@
     &::before {
       background-color: var(--brand-color);
     }
-  }
-
-  .primary-navigation__wrapper .primary-navigation hr {
-    background: rgba(255, 255, 255, 0.5);
   }
 }
 

@@ -63,31 +63,3 @@
     outline: 0 !important;
   }
 }
-
-@mixin search-popout {
-  @include font-size(12);
-  @include line-height(14);
-  @include font-weight(normal);
-  background: var(--background-color);
-  border-radius: 6px;
-  padding: 8px 10px 17px;
-  margin: 4px 0 0;
-  color: var(--primary-text-color--faint);
-  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
-
-  h4 {
-    @include font-size(14);
-    @include line-height(16);
-    @include font-weight(bold);
-    color: var(--primary-text-color);
-  }
-
-  ul {
-    margin: 6px 0;
-
-    li {
-      margin: 0 0 2px;
-      em { color: var(--brand-color); }
-    }
-  }
-}

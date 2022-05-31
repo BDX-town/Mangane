@@ -296,7 +296,6 @@ export default class AutosuggestInput extends ImmutablePureComponent {
           'absolute top-full w-full z-50 shadow bg-white dark:bg-slate-800 rounded-lg py-1': true,
           hidden: !visible,
           block: visible,
-          'autosuggest-textarea__suggestions--visible': visible,
         })}
         >
           <div className='space-y-0.5'>

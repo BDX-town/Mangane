@@ -291,29 +291,6 @@ code {
     width: auto;
   }
 
-  .check_boxes {
-    .checkbox {
-      label {
-        font-family: inherit;
-        font-size: 14px;
-        color: var(--primary-text-color);
-        display: inline-block;
-        width: auto;
-        position: relative;
-        padding-top: 5px;
-        padding-left: 25px;
-        flex: 1 1 auto;
-      }
-
-      input[type=checkbox] {
-        position: absolute;
-        left: 0;
-        top: 5px;
-        margin: 0;
-      }
-    }
-  }
-
   fieldset[disabled] {
     input[type=text],
     input[type=number],
