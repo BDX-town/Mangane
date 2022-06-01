@@ -31,7 +31,15 @@ function main() {
 
     if (BuildConfig.NODE_ENV === 'production') {
       // avoid offline in dev mode because it's harder to debug
-      OfflinePluginRuntime.install();
+      // https://github.com/NekR/offline-plugin/pull/201#issuecomment-285133572
+      OfflinePluginRuntime.install({
+        onUpdateReady: function() {
+          OfflinePluginRuntime.applyUpdate();
+        },
+        onUpdated: function() {
+          window.location.reload();
+        },
+      });
     }
     perf.stop('main()');
   });
