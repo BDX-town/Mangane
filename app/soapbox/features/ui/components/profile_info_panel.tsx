@@ -9,6 +9,7 @@ import VerificationBadge from 'soapbox/components/verification_badge';
 import { useSoapboxConfig } from 'soapbox/hooks';
 import { isLocal } from 'soapbox/utils/accounts';
 
+import ProfileFamiliarFollowers from './profile_familiar_followers';
 import ProfileStats from './profile_stats';
 
 import type { Account } from 'soapbox/types/entities';
@@ -222,6 +223,8 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
 
           {renderBirthday()}
         </div>
+
+        <ProfileFamiliarFollowers account={account} />
       </Stack>
     </div>
   );

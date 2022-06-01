@@ -6,8 +6,6 @@ import {
   importBlocks,
   importMutes,
 } from 'soapbox/actions/import_data';
-import { useAppSelector } from 'soapbox/hooks';
-import { getFeatures } from 'soapbox/utils/features';
 
 import Column from '../ui/components/column';
 
@@ -38,13 +36,12 @@ const muteMessages = defineMessages({
 
 const ImportData = () => {
   const intl = useIntl();
-  const features = getFeatures(useAppSelector((state) => state.instance));
 
   return (
     <Column icon='cloud-upload-alt' label={intl.formatMessage(messages.heading)}>
       <CSVImporter action={importFollows} messages={followMessages} />
       <CSVImporter action={importBlocks} messages={blockMessages} />
-      {features.importMutes && <CSVImporter action={importMutes} messages={muteMessages} />}
+      <CSVImporter action={importMutes} messages={muteMessages} />
     </Column>
   );
 };

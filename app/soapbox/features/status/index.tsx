@@ -8,30 +8,15 @@ import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
+import { blockAccount } from 'soapbox/actions/accounts';
 import { launchChat } from 'soapbox/actions/chats';
-import {
-  deactivateUserModal,
-  deleteUserModal,
-  deleteStatusModal,
-  toggleStatusSensitivityModal,
-} from 'soapbox/actions/moderation';
-import { getSettings } from 'soapbox/actions/settings';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import ScrollableList from 'soapbox/components/scrollable_list';
-import SubNavigation from 'soapbox/components/sub_navigation';
-import Tombstone from 'soapbox/components/tombstone';
-import { Column, Stack } from 'soapbox/components/ui';
-import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
-import PendingStatus from 'soapbox/features/ui/components/pending_status';
-
-import { blockAccount } from '../../actions/accounts';
 import {
   replyCompose,
   mentionCompose,
   directCompose,
   quoteCompose,
-} from '../../actions/compose';
-import { simpleEmojiReact } from '../../actions/emoji_reacts';
+} from 'soapbox/actions/compose';
+import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
 import {
   favourite,
   unfavourite,
@@ -41,10 +26,18 @@ import {
   unbookmark,
   pin,
   unpin,
-} from '../../actions/interactions';
-import { openModal } from '../../actions/modals';
-import { initMuteModal } from '../../actions/mutes';
-import { initReport } from '../../actions/reports';
+} from 'soapbox/actions/interactions';
+import { openModal } from 'soapbox/actions/modals';
+import {
+  deactivateUserModal,
+  deleteUserModal,
+  deleteStatusModal,
+  toggleStatusSensitivityModal,
+} from 'soapbox/actions/moderation';
+import { initMuteModal } from 'soapbox/actions/mutes';
+import { initReport } from 'soapbox/actions/reports';
+import { getSettings } from 'soapbox/actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import {
   muteStatus,
   unmuteStatus,
@@ -52,11 +45,18 @@ import {
   hideStatus,
   revealStatus,
   editStatus,
-} from '../../actions/statuses';
-import { fetchStatusWithContext, fetchNext } from '../../actions/statuses';
-import MissingIndicator from '../../components/missing_indicator';
-import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
-import { makeGetStatus } from '../../selectors';
+} from 'soapbox/actions/statuses';
+import { fetchStatusWithContext, fetchNext } from 'soapbox/actions/statuses';
+import MissingIndicator from 'soapbox/components/missing_indicator';
+import ScrollableList from 'soapbox/components/scrollable_list';
+import { textForScreenReader, defaultMediaVisibility } from 'soapbox/components/status';
+import SubNavigation from 'soapbox/components/sub_navigation';
+import Tombstone from 'soapbox/components/tombstone';
+import { Column, Stack } from 'soapbox/components/ui';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
+import PendingStatus from 'soapbox/features/ui/components/pending_status';
+import { makeGetStatus } from 'soapbox/selectors';
+
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
 
 import ActionBar from './components/action-bar';
@@ -496,15 +496,15 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     const { status, ancestorsIds, descendantsIds } = this.props;
 
     if (id === status.id) {
-      this._selectChild(ancestorsIds.size - 1, true);
+      this._selectChild(ancestorsIds.size - 1);
     } else {
       let index = ImmutableList(ancestorsIds).indexOf(id);
 
       if (index === -1) {
         index = ImmutableList(descendantsIds).indexOf(id);
-        this._selectChild(ancestorsIds.size + index, true);
+        this._selectChild(ancestorsIds.size + index);
       } else {
-        this._selectChild(index - 1, true);
+        this._selectChild(index - 1);
       }
     }
   }
@@ -513,15 +513,15 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     const { status, ancestorsIds, descendantsIds } = this.props;
 
     if (id === status.id) {
-      this._selectChild(ancestorsIds.size + 1, false);
+      this._selectChild(ancestorsIds.size + 1);
     } else {
       let index = ImmutableList(ancestorsIds).indexOf(id);
 
       if (index === -1) {
         index = ImmutableList(descendantsIds).indexOf(id);
-        this._selectChild(ancestorsIds.size + index + 2, false);
+        this._selectChild(ancestorsIds.size + index + 2);
       } else {
-        this._selectChild(index + 1, false);
+        this._selectChild(index + 1);
       }
     }
   }
@@ -544,19 +544,18 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     firstEmoji?.focus();
   };
 
-  _selectChild(index: number, align_top: boolean) {
-    const container = this.node;
-    if (!container) return;
-    const element = container.querySelectorAll('.focusable')[index] as HTMLButtonElement;
+  _selectChild(index: number) {
+    this.scroller?.scrollIntoView({
+      index,
+      behavior: 'smooth',
+      done: () => {
+        const element = document.querySelector<HTMLDivElement>(`#thread [data-index="${index}"] .focusable`);
 
-    if (element) {
-      if (align_top && container.scrollTop > element.offsetTop) {
-        element.scrollIntoView(true);
-      } else if (!align_top && container.scrollTop + container.clientHeight < element.offsetTop + element.offsetHeight) {
-        element.scrollIntoView(false);
-      }
-      element.focus();
-    }
+        if (element) {
+          element.focus();
+        }
+      },
+    });
   }
 
   renderTombstone(id: string) {
@@ -583,7 +582,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   }
 
   renderPendingStatus(id: string) {
-    const { status } = this.props;
+    // const { status } = this.props;
     const idempotencyKey = id.replace(/^末pending-/, '');
 
     return (
@@ -591,10 +590,10 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         className='thread__status'
         key={id}
         idempotencyKey={idempotencyKey}
-        focusedStatusId={status.id}
-        onMoveUp={this.handleMoveUp}
-        onMoveDown={this.handleMoveDown}
-        contextType='thread'
+        // focusedStatusId={status.id}
+        // onMoveUp={this.handleMoveUp}
+        // onMoveDown={this.handleMoveDown}
+        // contextType='thread'
       />
     );
   }
@@ -715,7 +714,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         <HotKeys handlers={handlers}>
           <div
             ref={this.setStatusRef}
-            className={classNames('detailed-status__wrapper')}
+            className='detailed-status__wrapper focusable'
             tabIndex={0}
             // FIXME: no "reblogged by" text is added for the screen reader
             aria-label={textForScreenReader(intl, status)}
@@ -791,6 +790,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         <Stack space={2}>
           <div ref={this.setRef} className='thread'>
             <ScrollableList
+              id='thread'
               ref={this.setScrollerRef}
               onRefresh={this.handleRefresh}
               hasMore={!!this.state.next}

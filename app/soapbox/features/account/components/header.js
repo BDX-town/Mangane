@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { defineMessages, injectIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -48,6 +48,7 @@ const messages = defineMessages({
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   endorse: { id: 'account.endorse', defaultMessage: 'Feature on profile' },
   unendorse: { id: 'account.unendorse', defaultMessage: 'Don\'t feature on profile' },
+  removeFromFollowers: { id: 'account.remove_from_followers', defaultMessage: 'Remove this follower' },
   admin_account: { id: 'status.admin_account', defaultMessage: 'Open moderation interface for @{name}' },
   add_or_remove_from_list: { id: 'account.add_or_remove_from_list', defaultMessage: 'Add or Remove from lists' },
   deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate @{name}' },
@@ -283,6 +284,14 @@ class Header extends ImmutablePureComponent {
         });
       }
 
+      if (features.removeFromFollowers && account.getIn(['relationship', 'followed_by'])) {
+        menu.push({
+          text: intl.formatMessage(messages.removeFromFollowers),
+          action: this.props.onRemoveFromFollowers,
+          icon: require('@tabler/icons/icons/user-x.svg'),
+        });
+      }
+
       if (account.getIn(['relationship', 'muting'])) {
         menu.push({
           text: intl.formatMessage(messages.unmute, { name: account.get('username') }),
@@ -448,7 +457,7 @@ class Header extends ImmutablePureComponent {
   }
 
   makeInfo() {
-    const { account, intl, me } = this.props;
+    const { account, me } = this.props;
 
     const info = [];
 
@@ -459,7 +468,7 @@ class Header extends ImmutablePureComponent {
         <Badge
           key='followed_by'
           slug='opaque'
-          title={intl.formatMessage({ id: 'account.follows_you', defaultMessage: 'Follows you' })}
+          title={<FormattedMessage id='account.follows_you' defaultMessage='Follows you' />}
         />,
       );
     } else if (me !== account.get('id') && account.getIn(['relationship', 'blocking'])) {
@@ -467,7 +476,7 @@ class Header extends ImmutablePureComponent {
         <Badge
           key='blocked'
           slug='opaque'
-          title={intl.formatMessage({ id: 'account.blocked', defaultMessage: 'Blocked' })}
+          title={<FormattedMessage  id='account.blocked' defaultMessage='Blocked' />}
         />,
       );
     }
@@ -477,7 +486,7 @@ class Header extends ImmutablePureComponent {
         <Badge
           key='muted'
           slug='opaque'
-          title={intl.formatMessage({ id: 'account.muted', defaultMessage: 'Muted' })}
+          title={<FormattedMessage id='account.muted' defaultMessage='Muted' />}
         />,
       );
     } else if (me !== account.get('id') && account.getIn(['relationship', 'domain_blocking'])) {
@@ -485,7 +494,7 @@ class Header extends ImmutablePureComponent {
         <Badge
           key='domain_blocked'
           slug='opaque'
-          title={intl.formatMessage({ id: 'account.domain_blocked', defaultMessage: 'Domain hidden' })}
+          title={<FormattedMessage id='account.domain_blocked' defaultMessage='Domain hidden' />}
         />,
       );
     }

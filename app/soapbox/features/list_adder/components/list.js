@@ -5,10 +5,9 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
+import { removeFromListAdder, addToListAdder } from 'soapbox/actions/lists';
 import Icon from 'soapbox/components/icon';
-
-import { removeFromListAdder, addToListAdder } from '../../../actions/lists';
-import IconButton from '../../../components/icon_button';
+import IconButton from 'soapbox/components/icon_button';
 
 const messages = defineMessages({
   remove: { id: 'lists.account.remove', defaultMessage: 'Remove from list' },

@@ -8,6 +8,8 @@ import { STATUS_IMPORT } from 'soapbox/actions/importer';
 import {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_FAIL,
+  STATUS_DELETE_REQUEST,
+  STATUS_DELETE_FAIL,
 } from 'soapbox/actions/statuses';
 
 import reducer from '../statuses';
@@ -177,6 +179,58 @@ Promoting free speech, even for people and ideas you dislike`;
       const action = {
         type: STATUS_CREATE_FAIL,
         params: { in_reply_to_id: '123' },
+      };
+
+      const result = reducer(state, action).getIn(['123', 'replies_count']);
+      expect(result).toEqual(4);
+    });
+  });
+
+  describe('STATUS_DELETE_REQUEST', () => {
+    it('decrements the replies_count of its parent', () => {
+      const state = fromJS({ '123': { replies_count: 4 } });
+
+      const action = {
+        type: STATUS_DELETE_REQUEST,
+        params: { in_reply_to_id: '123' },
+      };
+
+      const result = reducer(state, action).getIn(['123', 'replies_count']);
+      expect(result).toEqual(3);
+    });
+
+    it('gracefully does nothing if no parent', () => {
+      const state = fromJS({ '123': { replies_count: 4 } });
+
+      const action = {
+        type: STATUS_DELETE_REQUEST,
+        params: { id: '1' },
+      };
+
+      const result = reducer(state, action).getIn(['123', 'replies_count']);
+      expect(result).toEqual(4);
+    });
+  });
+
+  describe('STATUS_DELETE_FAIL', () => {
+    it('decrements the replies_count of its parent', () => {
+      const state = fromJS({ '123': { replies_count: 4 } });
+
+      const action = {
+        type: STATUS_DELETE_FAIL,
+        params: { in_reply_to_id: '123' },
+      };
+
+      const result = reducer(state, action).getIn(['123', 'replies_count']);
+      expect(result).toEqual(5);
+    });
+
+    it('gracefully does nothing if no parent', () => {
+      const state = fromJS({ '123': { replies_count: 4 } });
+
+      const action = {
+        type: STATUS_DELETE_FAIL,
+        params: { id: '1' },
       };
 
       const result = reducer(state, action).getIn(['123', 'replies_count']);

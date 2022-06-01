@@ -26,7 +26,7 @@ const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account }) => {
   };
 
   return (
-    <button className='w-4 h-4 flex-none' onClick={handleClick}>
+    <button className='w-4 h-4 flex-none focus:ring-primary-500 focus:ring-2 focus:ring-offset-2' onClick={handleClick}>
       <img src={account.favicon} alt='' title={account.domain} className='w-full max-h-full' />
     </button>
   );
@@ -56,6 +56,7 @@ interface IAccount {
   showProfileHoverCard?: boolean,
   timestamp?: string | Date,
   timestampUrl?: string,
+  futureTimestamp?: boolean,
   withDate?: boolean,
   withRelationship?: boolean,
   showEdit?: boolean,
@@ -75,6 +76,7 @@ const Account = ({
   showProfileHoverCard = true,
   timestamp,
   timestampUrl,
+  futureTimestamp = false,
   withDate = false,
   withRelationship = true,
   showEdit = false,
@@ -205,10 +207,10 @@ const Account = ({
 
                   {timestampUrl ? (
                     <Link to={timestampUrl} className='hover:underline'>
-                      <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' />
+                      <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
                     </Link>
                   ) : (
-                    <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' />
+                    <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
                   )}
                 </>
               ) : null}

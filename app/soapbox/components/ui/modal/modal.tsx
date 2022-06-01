@@ -50,7 +50,7 @@ interface IModal {
   /** Don't focus the "confirm" button on mount. */
   skipFocus?: boolean,
   /** Title text for the modal. */
-  title: string | React.ReactNode,
+  title: React.ReactNode,
   width?: Widths,
 }
 

@@ -8,6 +8,7 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
 import Icon from 'soapbox/components/icon';
+import { Text } from 'soapbox/components/ui';
 
 const hasRestrictions = remoteInstance => {
   return remoteInstance
@@ -49,77 +50,57 @@ class InstanceRestrictions extends ImmutablePureComponent {
 
     if (followers_only) {
       items.push((
-        <div className='federation-restriction' key='followers_only'>
-          <div className='federation-restriction__icon'>
-            <Icon src={require('@tabler/icons/icons/lock.svg')} />
-          </div>
-          <div className='federation-restriction__message'>
-            <FormattedMessage
-              id='federation_restriction.followers_only'
-              defaultMessage='Hidden except to followers'
-            />
-          </div>
-        </div>
+        <Text key='followers_only'>
+          <Icon className='mr-2' src={require('@tabler/icons/icons/lock.svg')} />
+          <FormattedMessage
+            id='federation_restriction.followers_only'
+            defaultMessage='Hidden except to followers'
+          />
+        </Text>
       ));
     } else if (federated_timeline_removal) {
       items.push((
-        <div className='federation-restriction' key='federated_timeline_removal'>
-          <div className='federation-restriction__icon'>
-            <Icon src={require('@tabler/icons/icons/lock-open.svg')} />
-          </div>
-          <div className='federation-restriction__message'>
-            <FormattedMessage
-              id='federation_restriction.federated_timeline_removal'
-              defaultMessage='Fediverse timeline removal'
-            />
-          </div>
-        </div>
+        <Text key='federated_timeline_removal'>
+          <Icon className='mr-2' src={require('@tabler/icons/icons/lock-open.svg')} />
+          <FormattedMessage
+            id='federation_restriction.federated_timeline_removal'
+            defaultMessage='Fediverse timeline removal'
+          />
+        </Text>
       ));
     }
 
     if (fullMediaRemoval) {
       items.push((
-        <div className='federation-restriction' key='full_media_removal'>
-          <div className='federation-restriction__icon'>
-            <Icon src={require('@tabler/icons/icons/photo-off.svg')} />
-          </div>
-          <div className='federation-restriction__message'>
-            <FormattedMessage
-              id='federation_restriction.full_media_removal'
-              defaultMessage='Full media removal'
-            />
-          </div>
-        </div>
+        <Text key='full_media_removal'>
+          <Icon className='mr-2' src={require('@tabler/icons/icons/photo-off.svg')} />
+          <FormattedMessage
+            id='federation_restriction.full_media_removal'
+            defaultMessage='Full media removal'
+          />
+        </Text>
       ));
     } else if (partialMediaRemoval) {
       items.push((
-        <div className='federation-restriction' key='partial_media_removal'>
-          <div className='federation-restriction__icon'>
-            <Icon src={require('@tabler/icons/icons/photo-off.svg')} />
-          </div>
-          <div className='federation-restriction__message'>
-            <FormattedMessage
-              id='federation_restriction.partial_media_removal'
-              defaultMessage='Partial media removal'
-            />
-          </div>
-        </div>
+        <Text key='partial_media_removal'>
+          <Icon className='mr-2' src={require('@tabler/icons/icons/photo-off.svg')} />
+          <FormattedMessage
+            id='federation_restriction.partial_media_removal'
+            defaultMessage='Partial media removal'
+          />
+        </Text>
       ));
     }
 
     if (!fullMediaRemoval && media_nsfw) {
       items.push((
-        <div className='federation-restriction' key='media_nsfw'>
-          <div className='federation-restriction__icon'>
-            <Icon id='eye-slash' />
-          </div>
-          <div className='federation-restriction__message'>
-            <FormattedMessage
-              id='federation_restriction.media_nsfw'
-              defaultMessage='Attachments marked NSFW'
-            />
-          </div>
-        </div>
+        <Text key='media_nsfw'>
+          <Icon className='mr-2' id='eye-slash' />
+          <FormattedMessage
+            id='federation_restriction.media_nsfw'
+            defaultMessage='Attachments marked NSFW'
+          />
+        </Text>
       ));
     }
 
@@ -135,38 +116,38 @@ class InstanceRestrictions extends ImmutablePureComponent {
 
     if (remoteInstance.getIn(['federation', 'reject']) === true) {
       return (
-        <div className='instance-restrictions__message'>
-          <Icon id='times' />
+        <Text>
+          <Icon className='mr-2' id='times' />
           <FormattedMessage
             id='remote_instance.federation_panel.restricted_message'
             defaultMessage='{siteTitle} blocks all activities from {host}.'
             values={{ host, siteTitle }}
           />
-        </div>
+        </Text>
       );
     } else if (hasRestrictions(remoteInstance)) {
       return [
         (
-          <div className='instance-restrictions__message'>
+          <Text>
             <FormattedMessage
               id='remote_instance.federation_panel.some_restrictions_message'
               defaultMessage='{siteTitle} has placed some restrictions on {host}.'
               values={{ host, siteTitle }}
             />
-          </div>
+          </Text>
         ),
         this.renderRestrictions(),
       ];
     } else {
       return (
-        <div className='instance-restrictions__message'>
-          <Icon id='check' />
+        <Text>
+          <Icon className='mr-2' id='check' />
           <FormattedMessage
             id='remote_instance.federation_panel.no_restrictions_message'
             defaultMessage='{siteTitle} has placed no restrictions on {host}.'
             values={{ host, siteTitle }}
           />
-        </div>
+        </Text>
       );
     }
   }

@@ -44,8 +44,10 @@
   }
 
   &__item {
+    @apply focus-within:ring-primary-500 focus-within:ring-2;
+
     a {
-      @apply flex px-4 py-2.5 text-sm text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 cursor-pointer;
+      @apply flex px-4 py-2.5 text-sm text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 focus:bg-gray-100 dark:focus:bg-slate-800 cursor-pointer;
 
       > .svg-icon:first-child {
         @apply h-5 w-5 mr-2.5 transition-none;
@@ -66,70 +68,3 @@
   }
 }
 // end .dropdown-menu
-
-// NOTE - not sure what this relates to — but it doesn't involve the navbar dropdown
-
-.dropdown {
-  display: inline-block;
-}
-
-.dropdown__content {
-  display: none;
-  position: absolute;
-}
-
-.dropdown--active .dropdown__content {
-  display: block;
-  line-height: 18px;
-  max-width: 311px;
-  right: 0;
-  text-align: left;
-  z-index: 9999;
-
-  & > ul {
-    list-style: none;
-    background: var(--background-color);
-    padding: 4px 0;
-    border-radius: 4px;
-    box-shadow: 0 0 15px rgba($base-shadow-color, 0.4);
-    min-width: 140px;
-    position: relative;
-  }
-
-  &.dropdown__right {
-    right: 0;
-  }
-
-  &.dropdown__left {
-    & > ul {
-      left: -98px;
-    }
-  }
-
-  & > ul > li > a {
-    font-size: 13px;
-    line-height: 18px;
-    display: block;
-    padding: 4px 14px;
-    box-sizing: border-box;
-    text-decoration: none;
-    background: var(--background-color);
-    color: var(--primary-text-color);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-    &:focus {
-      outline: 0;
-    }
-
-    &:hover {
-      background: var(--brand-color);
-      color: var(--primary-text-color--faint);
-    }
-  }
-}
-
-.dropdown__icon {
-  vertical-align: middle;
-}

@@ -63,7 +63,7 @@ const CardHeader: React.FC<ICardHeader> = ({ children, backHref, onBackClick }):
     const backAttributes = backHref ? { to: backHref } : { onClick: onBackClick };
 
     return (
-      <Comp {...backAttributes} className='mr-2 text-gray-900 dark:text-gray-100' aria-label={intl.formatMessage(messages.back)}>
+      <Comp {...backAttributes} className='mr-2 text-gray-900 dark:text-gray-100 focus:ring-primary-500 focus:ring-2' aria-label={intl.formatMessage(messages.back)}>
         <SvgIcon src={require('@tabler/icons/icons/arrow-left.svg')} className='h-6 w-6' />
         <span className='sr-only' data-testid='back-button'>{intl.formatMessage(messages.back)}</span>
       </Comp>
@@ -80,7 +80,7 @@ const CardHeader: React.FC<ICardHeader> = ({ children, backHref, onBackClick }):
 };
 
 interface ICardTitle {
-  title: string | React.ReactNode
+  title: React.ReactNode
 }
 
 /** A card's title. */

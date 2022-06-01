@@ -22,11 +22,11 @@ const BirthdaysModal = ({ onClose }: IBirthdaysModal) => {
   if (!accountIds) {
     body = <Spinner />;
   } else {
-    const emptyMessage = <FormattedMessage id='status.reblogs.empty' defaultMessage='No one has reposted this post yet. When someone does, they will show up here.' />;
+    const emptyMessage = <FormattedMessage id='birthdays_modal.empty' defaultMessage='None of your friends have birthday today.' />;
 
     body = (
       <ScrollableList
-        scrollKey='reblogs'
+        scrollKey='birthdays'
         emptyMessage={emptyMessage}
         itemClassName='pb-3'
       >

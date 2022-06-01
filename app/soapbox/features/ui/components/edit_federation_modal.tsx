@@ -1,17 +1,18 @@
 import { Map as ImmutableMap } from 'immutable';
 import React, { useState, useEffect } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import Toggle from 'react-toggle';
 
 import { updateMrf } from 'soapbox/actions/mrf';
 import snackbar from 'soapbox/actions/snackbar';
-import { SimpleForm, Checkbox } from 'soapbox/features/forms';
+import { HStack, Modal, Stack, Text } from 'soapbox/components/ui';
+import { SimpleForm } from 'soapbox/features/forms';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetRemoteInstance } from 'soapbox/selectors';
 
 const getRemoteInstance = makeGetRemoteInstance();
 
 const messages = defineMessages({
-  reject: { id: 'edit_federation.reject', defaultMessage: 'Reject all activities' },
   mediaRemoval: { id: 'edit_federation.media_removal', defaultMessage: 'Strip media' },
   forceNsfw: { id: 'edit_federation.force_nsfw', defaultMessage: 'Force attachments to be marked sensitive' },
   unlisted: { id: 'edit_federation.unlisted', defaultMessage: 'Force posts unlisted' },
@@ -54,7 +55,7 @@ const EditFederationModal: React.FC<IEditFederationModal> = ({ host, onClose }) 
     setData(newData);
   };
 
-  const handleSubmit: React.FormEventHandler = () => {
+  const handleSubmit = () => {
     dispatch(updateMrf(host, data))
       .then(() => dispatch(snackbar.success(intl.formatMessage(messages.success, { host }))))
       .catch(() => {});
@@ -75,47 +76,81 @@ const EditFederationModal: React.FC<IEditFederationModal> = ({ host, onClose }) 
   const fullMediaRemoval = avatar_removal && banner_removal && media_removal;
 
   return (
-    <div className='modal-root__modal edit-federation-modal'>
-      <div>
-        <div className='edit-federation-modal__title'>
-          {host}
-        </div>
-        <SimpleForm onSubmit={handleSubmit}>
-          <Checkbox
-            label={intl.formatMessage(messages.reject)}
-            checked={reject}
-            onChange={handleDataChange('reject')}
-          />
-          <Checkbox
-            label={intl.formatMessage(messages.mediaRemoval)}
-            disabled={reject}
-            checked={fullMediaRemoval}
-            onChange={handleMediaRemoval}
-          />
-          <Checkbox
-            label={intl.formatMessage(messages.forceNsfw)}
-            disabled={reject || media_removal}
-            checked={media_nsfw}
-            onChange={handleDataChange('media_nsfw')}
-          />
-          <Checkbox
-            label={intl.formatMessage(messages.followersOnly)}
-            disabled={reject}
-            checked={followers_only}
-            onChange={handleDataChange('followers_only')}
-          />
-          <Checkbox
-            label={intl.formatMessage(messages.unlisted)}
-            disabled={reject || followers_only}
-            checked={federated_timeline_removal}
-            onChange={handleDataChange('federated_timeline_removal')}
-          />
-          <button type='submit' className='edit-federation-modal__submit'>
-            {intl.formatMessage(messages.save)}
-          </button>
-        </SimpleForm>
-      </div>
-    </div>
+    <Modal
+      onClose={onClose}
+      title={host}
+      confirmationAction={handleSubmit}
+      confirmationText={intl.formatMessage(messages.save)}
+    >
+      <SimpleForm onSubmit={handleSubmit}>
+        <Stack space={2}>
+          <HStack space={2} alignItems='center'>
+            <Toggle
+              checked={reject}
+              onChange={handleDataChange('reject')}
+              icons={false}
+              id='reject'
+            />
+
+            <Text theme='muted' tag='label' size='sm' htmlFor='reject'>
+              <FormattedMessage id='edit_federation.reject' defaultMessage='Reject all activities' />
+            </Text>
+          </HStack>
+          <HStack space={2} alignItems='center'>
+            <Toggle
+              checked={fullMediaRemoval}
+              onChange={handleMediaRemoval}
+              icons={false}
+              id='media_removal'
+              disabled={reject}
+            />
+
+            <Text theme='muted' tag='label' size='sm' htmlFor='media_removal'>
+              <FormattedMessage id='edit_federation.media_removal' defaultMessage='Strip media' />
+            </Text>
+          </HStack>
+          <HStack space={2} alignItems='center'>
+            <Toggle
+              checked={media_nsfw}
+              onChange={handleDataChange('media_nsfw')}
+              icons={false}
+              id='media_nsfw'
+              disabled={reject || media_removal}
+            />
+
+            <Text theme='muted' tag='label' size='sm' htmlFor='media_nsfw'>
+              <FormattedMessage id='edit_federation.force_nsfw' defaultMessage='Force attachments to be marked sensitive' />
+            </Text>
+          </HStack>
+          <HStack space={2} alignItems='center'>
+            <Toggle
+              checked={followers_only}
+              onChange={handleDataChange('followers_only')}
+              icons={false}
+              id='followers_only'
+              disabled={reject}
+            />
+
+            <Text theme='muted' tag='label' size='sm' htmlFor='followers_only'>
+              <FormattedMessage id='edit_federation.followers_only' defaultMessage='Hide posts except to followers' />
+            </Text>
+          </HStack>
+          <HStack space={2} alignItems='center'>
+            <Toggle
+              checked={federated_timeline_removal}
+              onChange={handleDataChange('federated_timeline_removal')}
+              icons={false}
+              id='federated_timeline_removal'
+              disabled={reject || followers_only}
+            />
+
+            <Text theme='muted' tag='label' size='sm' htmlFor='federated_timeline_removal'>
+              <FormattedMessage id='edit_federation.unlisted' defaultMessage='Force posts unlisted' />
+            </Text>
+          </HStack>
+        </Stack>
+      </SimpleForm>
+    </Modal>
   );
 };
 

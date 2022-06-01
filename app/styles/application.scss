@@ -13,7 +13,6 @@
 @import 'fonts';
 @import 'reset';
 @import 'basics';
-@import 'containers';
 @import 'footer';
 @import 'accounts';
 @import 'boost';
@@ -36,16 +35,13 @@
 // COMPONENTS
 @import 'components/buttons';
 @import 'components/inputs';
-@import 'components/tabs-bar';
 @import 'components/dropdown-menu';
 @import 'components/modal';
 @import 'components/account-header';
-@import 'components/user-panel';
 @import 'components/compose-form';
 @import 'components/sidebar-menu';
 @import 'components/emoji-reacts';
 @import 'components/status';
-@import 'components/reply-indicator';
 @import 'components/reply-mentions';
 @import 'components/detailed-status';
 @import 'components/list-forms';
@@ -55,23 +51,17 @@
 @import 'components/columns';
 @import 'components/search';
 @import 'components/react-toggle';
-@import 'components/getting-started';
-@import 'components/promo-panel';
 @import 'components/still-image';
-@import 'components/theme-toggle';
 @import 'components/trends';
 @import 'components/wtf-panel';
 @import 'components/profile-media-panel';
 @import 'components/profile-info-panel';
 @import 'components/setting-toggle';
 @import 'components/spoiler-button';
-@import 'components/media-spoiler';
-@import 'components/error-boundary';
 @import 'components/video-player';
 @import 'components/audio-player';
 @import 'components/profile_hover_card';
 @import 'components/filters';
-@import 'components/mfa_form';
 @import 'components/snackbar';
 @import 'components/accordion';
 @import 'components/server-info';
@@ -82,9 +72,6 @@
 @import 'components/federation-restrictions';
 @import 'components/aliases';
 @import 'components/icon';
-@import 'components/profile-stats';
-@import 'components/progress-circle';
-@import 'components/register-invite';
 @import 'components/radio-button';
 @import 'components/directory';
 
@@ -101,6 +88,12 @@
 @layer utilities {
   .shadow-inset {
     box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%);
+  }
+
+  .d-screen {
+    height: 100vh; // Backwards compatibility
+    /* stylelint-disable-next-line unit-no-unknown */
+    height: 100dvh;
   }
 }
 

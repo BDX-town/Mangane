@@ -7,9 +7,7 @@ import Toggle from 'react-toggle';
 import { muteAccount } from 'soapbox/actions/accounts';
 import { closeModal } from 'soapbox/actions/modals';
 import { toggleHideNotifications } from 'soapbox/actions/mutes';
-import { Modal, HStack, Stack } from 'soapbox/components/ui';
-
-import { Text } from '../../../components/ui';
+import { Modal, HStack, Stack, Text } from 'soapbox/components/ui';
 
 const mapStateToProps = state => {
   return {

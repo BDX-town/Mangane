@@ -2,22 +2,17 @@ import classNames from 'classnames';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
+import { injectIntl, FormattedMessage, IntlShape, defineMessages } from 'react-intl';
 import { NavLink, withRouter, RouteComponentProps } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
-import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
+import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
 
-import AccountContainer from '../containers/account_container';
-import Card from '../features/status/components/card';
-import Bundle from '../features/ui/components/bundle';
-import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
-
-import AttachmentThumbs from './attachment-thumbs';
+import StatusMedia from './status-media';
+import StatusReplyMentions from './status-reply-mentions';
 import StatusActionBar from './status_action_bar';
 import StatusContent from './status_content';
-import StatusReplyMentions from './status_reply_mentions';
 import { HStack, Text } from './ui';
 
 import type { History } from 'history';
@@ -30,6 +25,10 @@ import type {
 
 // Defined in components/scrollable_list
 export type ScrollPosition = { height: number, top: number };
+
+const messages = defineMessages({
+  reblogged_by: { id: 'status.reblogged_by', defaultMessage: '{name} reposted' },
+});
 
 export const textForScreenReader = (intl: IntlShape, status: StatusEntity, rebloggedByText?: string): string => {
   const { account } = status;
@@ -106,7 +105,6 @@ interface IStatusState {
   showMedia: boolean,
   statusId?: string,
   emojiSelectorFocused: boolean,
-  mediaWrapperWidth?: number,
 }
 
 class Status extends ImmutablePureComponent<IStatus, IStatusState> {
@@ -219,26 +217,6 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     this.props.onToggleHidden(this._properStatus());
   };
 
-  renderLoadingMediaGallery(): JSX.Element {
-    return <div className='media_gallery' style={{ height: '285px' }} />;
-  }
-
-  renderLoadingVideoPlayer(): JSX.Element {
-    return <div className='media-spoiler-video' style={{ height: '285px' }} />;
-  }
-
-  renderLoadingAudioPlayer(): JSX.Element {
-    return <div className='media-spoiler-audio' style={{ height: '285px' }} />;
-  }
-
-  handleOpenVideo = (media: ImmutableMap<string, any>, startTime: number): void => {
-    this.props.onOpenVideo(media, startTime);
-  }
-
-  handleOpenAudio = (media: ImmutableMap<string, any>, startTime: number): void => {
-    this.props.onOpenAudio(media, startTime);
-  }
-
   handleHotkeyOpenMedia = (e?: KeyboardEvent): void => {
     const { onOpenMedia, onOpenVideo } = this.props;
     const status = this._properStatus();
@@ -282,13 +260,11 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   }
 
   handleHotkeyMoveUp = (e?: KeyboardEvent): void => {
-    // FIXME: what's going on here?
-    // this.props.onMoveUp(this.props.status.id, e?.target?.getAttribute('data-featured'));
+    this.props.onMoveUp(this.props.status.id, this.props.featured);
   }
 
   handleHotkeyMoveDown = (e?: KeyboardEvent): void => {
-    // FIXME: what's going on here?
-    // this.props.onMoveDown(this.props.status.id, e?.target?.getAttribute('data-featured'));
+    this.props.onMoveDown(this.props.status.id, this.props.featured);
   }
 
   handleHotkeyToggleHidden = (): void => {
@@ -334,14 +310,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     this.node = c;
   }
 
-  setRef = (c: HTMLDivElement): void => {
-    if (c) {
-      this.setState({ mediaWrapperWidth: c.offsetWidth });
-    }
-  }
-
   render() {
-    let media = null;
     const poll = null;
     let prepend, rebloggedByText, reblogElement, reblogElementMobile;
 
@@ -439,130 +408,14 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         </div>
       );
 
-      rebloggedByText = intl.formatMessage({
-        id: 'status.reblogged_by',
-        defaultMessage: '{name} reposted',
-      }, {
-        name: String(status.getIn(['account', 'acct'])),
-      });
+      rebloggedByText = intl.formatMessage(
+        messages.reblogged_by,
+        { name: String(status.getIn(['account', 'acct'])) },
+      );
 
       // @ts-ignore what the FUCK
       account = status.account;
       status = status.reblog;
-    }
-
-    const size = status.media_attachments.size;
-    const firstAttachment = status.media_attachments.first();
-
-    if (size > 0 && firstAttachment) {
-      if (this.props.muted) {
-        media = (
-          <AttachmentThumbs
-            media={status.media_attachments}
-            onClick={this.handleClick}
-            sensitive={status.sensitive}
-          />
-        );
-      } else if (size === 1 && firstAttachment.type === 'video') {
-        const video = firstAttachment;
-
-        if (video.external_video_id && status.card) {
-          const { mediaWrapperWidth } = this.state;
-
-          const getHeight = (): number => {
-            const width = Number(video.meta.getIn(['original', 'width']));
-            const height = Number(video.meta.getIn(['original', 'height']));
-            return Number(mediaWrapperWidth) / (width / height);
-          };
-
-          const height = getHeight();
-
-          media = (
-            <div className='status-card horizontal compact interactive status-card--video'>
-              <div
-                ref={this.setRef}
-                className='status-card__image status-card-video'
-                style={height ? { height } : undefined}
-                dangerouslySetInnerHTML={{ __html: status.card.html }}
-              />
-            </div>
-          );
-        } else {
-          media = (
-            <Bundle fetchComponent={Video} loading={this.renderLoadingVideoPlayer} >
-              {(Component: any) => (
-                <Component
-                  preview={video.preview_url}
-                  blurhash={video.blurhash}
-                  src={video.url}
-                  alt={video.description}
-                  aspectRatio={video.meta.getIn(['original', 'aspect'])}
-                  width={this.props.cachedMediaWidth}
-                  height={285}
-                  inline
-                  sensitive={status.sensitive}
-                  onOpenVideo={this.handleOpenVideo}
-                  cacheWidth={this.props.cacheMediaWidth}
-                  visible={this.state.showMedia}
-                  onToggleVisibility={this.handleToggleMediaVisibility}
-                />
-              )}
-            </Bundle>
-          );
-        }
-      } else if (size === 1 && firstAttachment.type === 'audio') {
-        const attachment = firstAttachment;
-
-        media = (
-          <Bundle fetchComponent={Audio} loading={this.renderLoadingAudioPlayer} >
-            {(Component: any) => (
-              <Component
-                src={attachment.url}
-                alt={attachment.description}
-                poster={attachment.preview_url !== attachment.url ? attachment.preview_url : status.getIn(['account', 'avatar_static'])}
-                backgroundColor={attachment.meta.getIn(['colors', 'background'])}
-                foregroundColor={attachment.meta.getIn(['colors', 'foreground'])}
-                accentColor={attachment.meta.getIn(['colors', 'accent'])}
-                duration={attachment.meta.getIn(['original', 'duration'], 0)}
-                width={this.props.cachedMediaWidth}
-                height={263}
-                cacheWidth={this.props.cacheMediaWidth}
-              />
-            )}
-          </Bundle>
-        );
-      } else {
-        media = (
-          <Bundle fetchComponent={MediaGallery} loading={this.renderLoadingMediaGallery}>
-            {(Component: any) => (
-              <Component
-                media={status.media_attachments}
-                sensitive={status.sensitive}
-                height={285}
-                onOpenMedia={this.props.onOpenMedia}
-                cacheWidth={this.props.cacheMediaWidth}
-                defaultWidth={this.props.cachedMediaWidth}
-                visible={this.state.showMedia}
-                onToggleVisibility={this.handleToggleMediaVisibility}
-              />
-            )}
-          </Bundle>
-        );
-      }
-    } else if (status.spoiler_text.length === 0 && !status.quote && status.card) {
-      media = (
-        <Card
-          onOpenMedia={this.props.onOpenMedia}
-          card={status.card}
-          compact
-          cacheWidth={this.props.cacheMediaWidth}
-          defaultWidth={this.props.cachedMediaWidth}
-        />
-      );
-    } else if (status.expectsCard) {
-      media = (
-        <PlaceholderCard />
-      );
     }
 
     let quote;
@@ -601,7 +454,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     return (
       <HotKeys handlers={handlers} data-testid='status'>
         <div
-          className='status cursor-pointer'
+          className={classNames('status cursor-pointer', { focusable: this.props.focusable })}
           tabIndex={this.props.focusable && !this.props.muted ? 0 : undefined}
           data-featured={featured ? 'true' : null}
           aria-label={textForScreenReader(intl, status, rebloggedByText)}
@@ -654,7 +507,14 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
                 collapsable
               />
 
-              {media}
+              <StatusMedia
+                status={status}
+                muted={this.props.muted}
+                onClick={this.handleClick}
+                showMedia={this.state.showMedia}
+                onToggleVisibility={this.handleToggleMediaVisibility}
+              />
+
               {poll}
               {quote}
 

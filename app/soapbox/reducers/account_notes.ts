@@ -7,7 +7,7 @@ import {
   ACCOUNT_NOTE_SUBMIT_REQUEST,
   ACCOUNT_NOTE_SUBMIT_FAIL,
   ACCOUNT_NOTE_SUBMIT_SUCCESS,
-} from '../actions/account_notes';
+} from '../actions/account-notes';
 
 const EditRecord = ImmutableRecord({
   isSubmitting: false,

@@ -6,11 +6,10 @@ import { Link } from 'react-router-dom';
 
 import { logOut, switchAccount } from 'soapbox/actions/auth';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
+import Account from 'soapbox/components/account';
 import { Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
-
-import Account from '../../../components/account';
 
 import ThemeToggle from './theme-toggle';
 
@@ -112,7 +111,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
         {menu.map((menuItem, idx) => {
           if (menuItem.toggle) {
             return (
-              <div className='flex flex-row items-center justify-between px-4 py-1 text-sm text-gray-700 dark:text-gray-400'>
+              <div key={idx} className='flex flex-row items-center justify-between px-4 py-1 text-sm text-gray-700 dark:text-gray-400'>
                 <span>{menuItem.text}</span>
 
                 {menuItem.toggle}

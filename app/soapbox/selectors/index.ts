@@ -266,15 +266,26 @@ export const makeGetReport = () => {
   return createSelector(
     [
       (state: RootState, id: string) => state.admin.reports.get(id),
-      (state: RootState, id: string) => ImmutableList(fromJS(state.admin.reports.getIn([id, 'statuses']))).map(
+      (state: RootState, id: string) => state.accounts.get(state.admin.reports.get(id)?.account || ''),
+      (state: RootState, id: string) => state.accounts.get(state.admin.reports.get(id)?.target_account || ''),
+      // (state: RootState, id: string) => state.accounts.get(state.admin.reports.get(id)?.action_taken_by_account || ''),
+      // (state: RootState, id: string) => state.accounts.get(state.admin.reports.get(id)?.assigned_account || ''),
+      (state: RootState, id: string) => ImmutableList(fromJS(state.admin.reports.get(id)?.statuses)).map(
         statusId => state.statuses.get(normalizeId(statusId)))
         .filter((s: any) => s)
         .map((s: any) => getStatus(state, s.toJS())),
     ],
 
-    (report, statuses) => {
+    (report, account, targetAccount, statuses) => {
       if (!report) return null;
-      return report.set('statuses', statuses);
+      return report.withMutations((report) => {
+        // @ts-ignore
+        report.set('account', account);
+        // @ts-ignore
+        report.set('target_account', targetAccount);
+        // @ts-ignore
+        report.set('statuses', statuses);
+      });
     },
   );
 };

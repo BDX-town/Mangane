@@ -4,13 +4,13 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
+import BirthdayInput from 'soapbox/components/birthday_input';
 import List, { ListItem } from 'soapbox/components/list';
+import { Button, Column, Form, FormActions, FormGroup, Input, Textarea, HStack, Toggle, FileInput } from 'soapbox/components/ui';
+import Streamfield, { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
 import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
 import resizeImage from 'soapbox/utils/resize_image';
-
-import { Button, Column, Form, FormActions, FormGroup, Input, Textarea, HStack, Toggle, FileInput } from '../../components/ui';
-import Streamfield, { StreamfieldComponent } from '../../components/ui/streamfield/streamfield';
 
 import ProfilePreview from './components/profile-preview';
 
@@ -242,6 +242,10 @@ const EditProfile: React.FC = () => {
     };
   };
 
+  const handleBirthdayChange = (date: string) => {
+    updateData('birthday', date);
+  };
+
   const handleHideNetworkChange: React.ChangeEventHandler<HTMLInputElement> = e => {
     const hide = e.target.checked;
 
@@ -325,10 +329,9 @@ const EditProfile: React.FC = () => {
           <FormGroup
             labelText={<FormattedMessage id='edit_profile.fields.birthday_label' defaultMessage='Birthday' />}
           >
-            <Input
-              type='text'
+            <BirthdayInput
               value={data.birthday}
-              onChange={handleTextChange('birthday')}
+              onChange={handleBirthdayChange}
             />
           </FormGroup>
         )}

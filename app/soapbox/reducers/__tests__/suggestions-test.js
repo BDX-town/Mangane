@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
 
 import { SUGGESTIONS_DISMISS } from 'soapbox/actions/suggestions';
 
@@ -7,7 +7,7 @@ import reducer from '../suggestions';
 describe('suggestions reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(ImmutableMap({
-      items: ImmutableList(),
+      items: ImmutableOrderedSet(),
       next: null,
       isLoading: false,
     }));

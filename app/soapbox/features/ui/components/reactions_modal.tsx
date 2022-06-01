@@ -1,16 +1,13 @@
 import { List as ImmutableList } from 'immutable';
-import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { fetchFavourites, fetchReactions } from 'soapbox/actions/interactions';
 import FilterBar from 'soapbox/components/filter_bar';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { Modal, Spinner } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -20,14 +17,13 @@ const messages = defineMessages({
 interface IReactionsModal {
   onClose: (string: string) => void,
   statusId: string,
-  username: string,
   reaction?: string,
 }
 
-const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, ...props }) => {
-  const dispatch = useDispatch();
+const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction: initialReaction }) => {
+  const dispatch = useAppDispatch();
   const intl = useIntl();
-  const [reaction, setReaction] = useState(props.reaction);
+  const [reaction, setReaction] = useState(initialReaction);
   const reactions = useAppSelector<Array<{
     accounts: Array<string>,
     count: number,

@@ -7,17 +7,6 @@
     position: relative;
   }
 
-  &__chart {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    display: inline-block;
-    border-radius: 4px;
-    background: hsla(var(--primary-text-color_hsl), 0.1);
-    &.leading { background: hsla(var(--primary-text-color_hsl), 0.15); }
-  }
-
   &__text {
     position: relative;
     display: flex;
@@ -113,50 +102,6 @@
     }
   }
 
-  &__number {
-    display: inline-block;
-    width: 36px;
-    font-weight: 700;
-    padding: 0 10px;
-    text-align: right;
-  }
-
-  &.voted &__number {
-    width: 52px;
-    padding-left: 8px;
-    flex: 0 0 52px;
-  }
-
-  &__vote__mark {
-    float: left;
-    color: var(--highlight-text-color);
-    line-height: 18px;
-  }
-
-  &__footer {
-    @apply pt-1.5 pb-[5px] text-black dark:text-white;
-  }
-
-  &__link {
-    display: inline;
-    background: transparent;
-    padding: 0;
-    margin: 0;
-    border: 0;
-    color: var(--primary-text-color);
-    text-decoration: underline;
-    font-size: inherit;
-
-    &:hover {
-      text-decoration: none;
-    }
-
-    &:active,
-    &:focus {
-      background-color: hsla(var(--primary-text-color_hsl), 0.1);
-    }
-  }
-
   .button {
     height: 36px;
     padding: 0 16px;
@@ -178,18 +123,6 @@
 
   ul {
     padding: 10px;
-  }
-
-  .poll__footer {
-    border-top: 1px solid var(--foreground-color);
-    padding: 10px;
-    margin: -5px 0 0 -5px;
-
-    button,
-    select {
-      flex: 1 1 50%;
-      margin: 5px 0 0 5px;
-    }
   }
 
   .button.button-secondary {

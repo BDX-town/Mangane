@@ -147,7 +147,9 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/accounts
      * @see PATCH /api/v1/accounts/update_credentials
      */
-    birthdays: v.software === PLEROMA && gte(v.version, '2.4.50'),
+    // birthdays: v.software === PLEROMA && gte(v.version, '2.4.50'),
+    // FIXME: temporarily disabled until they can be deleted on the backend.
+    birthdays: false,
 
     /** Whether people who blocked you are visible through the API. */
     blockersVisible: features.includes('blockers_visible'),
@@ -256,6 +258,12 @@ const getInstanceFeatures = (instance: Instance) => {
       features.includes('exposable_reactions'),
     ]),
 
+    /**
+     * Can see accounts' followers you know
+     * @see GET /api/v1/accounts/familiar_followers
+     */
+    familiarFollowers: v.software === MASTODON && gte(v.version, '3.5.0'),
+
     /** Whether the instance federates. */
     federating: federation.get('enabled', true) === true, // Assume true unless explicitly false
 
@@ -301,10 +309,12 @@ const getInstanceFeatures = (instance: Instance) => {
     importAPI: v.software === PLEROMA,
 
     /**
-     * Pleroma import mutes API.
+     * Pleroma import endpoints.
+     * @see POST /api/pleroma/follow_import
+     * @see POST /api/pleroma/blocks_import
      * @see POST /api/pleroma/mutes_import
      */
-    importMutes: v.software === PLEROMA && gte(v.version, '2.2.0'),
+    importData: v.software === PLEROMA && gte(v.version, '2.2.0'),
 
     /**
      * Can create, view, and manage lists.
@@ -314,6 +324,20 @@ const getInstanceFeatures = (instance: Instance) => {
     lists: any([
       v.software === MASTODON && gte(v.compatVersion, '2.1.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
+    ]),
+
+    /**
+     * Can perform moderation actions with account and reports.
+     * @see {@link https://docs.joinmastodon.org/methods/admin/}
+     * @see GET /api/v1/admin/reports
+     * @see POST /api/v1/admin/reports/:report_id/resolve
+     * @see POST /api/v1/admin/reports/:report_id/reopen
+     * @see POST /api/v1/admin/accounts/:account_id/action
+     * @see POST /api/v1/admin/accounts/:account_id/approve
+     */
+    mastodonAdminApi: any([
+      v.software === MASTODON && gte(v.compatVersion, '2.9.1'),
+      v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
     ]),
 
     /**
@@ -419,6 +443,15 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/pleroma/remote_interaction
      */
     remoteInteractionsAPI: v.software === PLEROMA && gte(v.version, '2.4.50'),
+
+    /**
+     * Ability to remove an account from your followers.
+     * @see POST /api/v1/accounts/:id/remove_from_followers
+     */
+    removeFromFollowers: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
+      v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
+    ]),
 
     reportMultipleStatuses: any([
       v.software === MASTODON,

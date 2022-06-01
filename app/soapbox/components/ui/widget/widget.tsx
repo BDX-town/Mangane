@@ -28,6 +28,7 @@ interface IWidget {
   actionIcon?: string,
   /** Text for the action. */
   actionTitle?: string,
+  action?: JSX.Element,
 }
 
 /** Sidebar widget. */
@@ -37,19 +38,20 @@ const Widget: React.FC<IWidget> = ({
   onActionClick,
   actionIcon = require('@tabler/icons/icons/arrow-right.svg'),
   actionTitle,
+  action,
 }): JSX.Element => {
   return (
     <Stack space={2}>
       <HStack alignItems='center'>
         <WidgetTitle title={title} />
-        {onActionClick && (
+        {action || (onActionClick && (
           <IconButton
             className='w-6 h-6 ml-2 text-black dark:text-white'
             src={actionIcon}
             onClick={onActionClick}
             title={actionTitle}
           />
-        )}
+        ))}
       </HStack>
       <WidgetBody>{children}</WidgetBody>
     </Stack>

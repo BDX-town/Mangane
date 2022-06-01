@@ -4,9 +4,8 @@ import { useHistory } from 'react-router-dom';
 
 import { fetchBackupCodes } from 'soapbox/actions/mfa';
 import snackbar from 'soapbox/actions/snackbar';
+import { Button, FormActions, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
-
-import { Button, FormActions, Spinner, Stack, Text } from '../../../components/ui';
 
 const  messages = defineMessages({
   mfaCancelButton: { id: 'column.mfa_cancel', defaultMessage: 'Cancel' },

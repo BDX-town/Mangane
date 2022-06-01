@@ -5,18 +5,14 @@ import { FormattedMessage, injectIntl, WrappedComponentProps as IntlProps } from
 import { FormattedDate } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
+import StatusMedia from 'soapbox/components/status-media';
+import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
+import StatusContent from 'soapbox/components/status_content';
+import { HStack, Text } from 'soapbox/components/ui';
+import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
+import scheduleIdleTask from 'soapbox/features/ui/util/schedule_idle_task';
 
-import MediaGallery from '../../../components/media_gallery';
-import StatusContent from '../../../components/status_content';
-import StatusReplyMentions from '../../../components/status_reply_mentions';
-import { HStack, Text } from '../../../components/ui';
-import AccountContainer from '../../../containers/account_container';
-import Audio from '../../audio';
-import scheduleIdleTask from '../../ui/util/schedule_idle_task';
-import Video from '../../video';
-
-import Card from './card';
 import StatusInteractionBar from './status-interaction-bar';
 
 import type { List as ImmutableList } from 'immutable';
@@ -38,21 +34,15 @@ interface IDetailedStatus extends IntlProps {
 
 interface IDetailedStatusState {
   height: number | null,
-  mediaWrapperWidth: number,
 }
 
 class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedStatusState> {
 
   state = {
     height: null,
-    mediaWrapperWidth: NaN,
   };
 
   node: HTMLDivElement | null = null;
-
-  handleOpenVideo = (media: ImmutableList<AttachmentEntity>, startTime: number) => {
-    this.props.onOpenVideo(media, startTime);
-  }
 
   handleExpandedToggle = () => {
     this.props.onToggleHidden(this.props.status);
@@ -75,10 +65,6 @@ class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedSt
   setRef: React.RefCallback<HTMLDivElement> = c => {
     this.node = c;
     this._measureHeight();
-
-    if (c) {
-      this.setState({ mediaWrapperWidth: c.offsetWidth });
-    }
   }
 
   componentDidUpdate(prevProps: IDetailedStatus, prevState: IDetailedStatusState) {
@@ -114,88 +100,10 @@ class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedSt
     const outerStyle: React.CSSProperties = { boxSizing: 'border-box' };
     const { compact } = this.props;
 
-    let media = null;
     let statusTypeIcon = null;
 
     if (this.props.measureHeight) {
       outerStyle.height = `${this.state.height}px`;
-    }
-
-    const size = status.media_attachments.size;
-    const firstAttachment = status.media_attachments.get(0);
-
-    if (size > 0 && firstAttachment) {
-      if (size === 1 && firstAttachment.type === 'video') {
-        const video = firstAttachment;
-        if (video.external_video_id && status.card?.html) {
-          const { mediaWrapperWidth } = this.state;
-
-          const getHeight = (): number => {
-            const width = Number(video.meta.getIn(['original', 'width']));
-            const height = Number(video.meta.getIn(['original', 'height']));
-            return Number(mediaWrapperWidth) / (width / height);
-          };
-
-          const height = getHeight();
-
-          media = (
-            <div className='status-card horizontal interactive status-card--video'>
-              <div
-                ref={this.setRef}
-                className='status-card-video'
-                style={{ height }}
-                dangerouslySetInnerHTML={{ __html: status.card.html }}
-              />
-            </div>
-          );
-        } else {
-          media = (
-            <Video
-              preview={video.preview_url}
-              blurhash={video.blurhash}
-              src={video.url}
-              alt={video.description}
-              aspectRatio={video.meta.getIn(['original', 'aspect'])}
-              width={300}
-              height={150}
-              inline
-              onOpenVideo={this.handleOpenVideo}
-              sensitive={status.sensitive}
-              visible={this.props.showMedia}
-              onToggleVisibility={this.props.onToggleMediaVisibility}
-            />
-          );
-        }
-      } else if (size === 1 && firstAttachment.type === 'audio') {
-        const attachment = firstAttachment;
-
-        media = (
-          <Audio
-            src={attachment.url}
-            alt={attachment.description}
-            duration={attachment.meta.getIn(['original', 'duration', 0])}
-            poster={attachment.preview_url !== attachment.url ? attachment.preview_url : account.avatar_static}
-            backgroundColor={attachment.meta.getIn(['colors', 'background'])}
-            foregroundColor={attachment.meta.getIn(['colors', 'foreground'])}
-            accentColor={attachment.meta.getIn(['colors', 'accent'])}
-            height={150}
-          />
-        );
-      } else {
-        media = (
-          <MediaGallery
-            standalone
-            sensitive={status.sensitive}
-            media={status.media_attachments}
-            height={300}
-            onOpenMedia={this.props.onOpenMedia}
-            visible={this.props.showMedia}
-            onToggleVisibility={this.props.onToggleMediaVisibility}
-          />
-        );
-      }
-    } else if (status.spoiler_text.length === 0 && !status.quote && status.card) {
-      media = <Card onOpenMedia={this.props.onOpenMedia} card={status.card} />;
     }
 
     let quote;
@@ -245,7 +153,12 @@ class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedSt
             onExpandedToggle={this.handleExpandedToggle}
           />
 
-          {media}
+          <StatusMedia
+            status={status}
+            showMedia={this.props.showMedia}
+            onToggleVisibility={this.props.onToggleMediaVisibility}
+          />
+
           {quote}
 
           <HStack justifyContent='between' alignItems='center' className='py-2'>

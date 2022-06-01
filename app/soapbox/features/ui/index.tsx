@@ -84,7 +84,7 @@ import {
   EmailConfirmation,
   DeleteAccount,
   SoapboxConfig,
-  ExportData,
+  // ExportData,
   ImportData,
   // Backups,
   MfaForm,
@@ -104,8 +104,6 @@ import {
   Directory,
   SidebarMenu,
   UploadArea,
-  NotificationsContainer,
-  ModalContainer,
   ProfileHoverCard,
   Share,
   NewStatus,
@@ -186,9 +184,8 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.federating && <WrappedRoute path='/timeline/:instance' exact page={RemoteInstancePage} component={RemoteTimeline} content={children} />}
 
       {features.conversations && <WrappedRoute path='/conversations' page={DefaultPage} component={Conversations} content={children} />}
-      {features.directTimeline ? (
-        <WrappedRoute path='/messages' page={DefaultPage} component={DirectTimeline} content={children} />
-      ) : (
+      {features.directTimeline && <WrappedRoute path='/messages' page={DefaultPage} component={DirectTimeline} content={children} />}
+      {(features.conversations && !features.directTimeline) && (
         <WrappedRoute path='/messages' page={DefaultPage} component={Conversations} content={children} />
       )}
 
@@ -285,12 +282,13 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
 
       <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />
-      <WrappedRoute path='/statuses/:statusId' exact component={Status} content={children} />
+      <WrappedRoute path='/statuses/:statusId' exact page={StatusPage} component={Status} content={children} />
       {features.scheduledStatuses && <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />}
 
       <WrappedRoute path='/settings/profile' page={DefaultPage} component={EditProfile} content={children} />
-      <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} />
-      <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />
+      {/* FIXME: this could DDoS our API? :\ */}
+      {/* <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} /> */}
+      {features.importData && <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />}
       {features.accountAliasesAPI && <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />}
       {features.accountMoving && <WrappedRoute path='/settings/migration' page={DefaultPage} component={Migration} content={children} />}
       <WrappedRoute path='/settings/email' page={DefaultPage} component={EditEmail} content={children} />
@@ -457,7 +455,7 @@ const UI: React.FC = ({ children }) => {
     }
 
     if (account.staff) {
-      dispatch(fetchReports({ state: 'open' }));
+      dispatch(fetchReports({ resolved: false }));
       dispatch(fetchUsers(['local', 'need_approval']));
     }
 
@@ -669,14 +667,6 @@ const UI: React.FC = ({ children }) => {
           </Layout>
 
           {me && floatingActionButton}
-
-          <BundleContainer fetchComponent={NotificationsContainer}>
-            {Component => <Component />}
-          </BundleContainer>
-
-          <BundleContainer fetchComponent={ModalContainer}>
-            {Component => <Component />}
-          </BundleContainer>
 
           <BundleContainer fetchComponent={UploadArea}>
             {Component => <Component active={draggingOver} onClose={closeUploadModal} />}

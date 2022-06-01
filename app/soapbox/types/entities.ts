@@ -1,4 +1,6 @@
 import {
+  AdminAccountRecord,
+  AdminReportRecord,
   AccountRecord,
   AttachmentRecord,
   CardRecord,
@@ -17,6 +19,8 @@ import {
 
 import type { Record as ImmutableRecord } from 'immutable';
 
+type AdminAccount = ReturnType<typeof AdminAccountRecord>;
+type AdminReport = ReturnType<typeof AdminReportRecord>;
 type Attachment = ReturnType<typeof AttachmentRecord>;
 type Card = ReturnType<typeof CardRecord>;
 type Chat = ReturnType<typeof ChatRecord>;
@@ -47,6 +51,8 @@ type APIEntity = Record<string, any>;
 type EmbeddedEntity<T extends object> = null | string | ReturnType<ImmutableRecord.Factory<T>>;
 
 export {
+  AdminAccount,
+  AdminReport,
   Account,
   Attachment,
   Card,

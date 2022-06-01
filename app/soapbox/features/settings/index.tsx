@@ -23,6 +23,8 @@ const messages = defineMessages({
   sessions: { id: 'settings.sessions', defaultMessage: 'Active sessions' },
   deleteAccount: { id: 'settings.delete_account', defaultMessage: 'Delete Account' },
   other: { id: 'settings.other', defaultMessage: 'Other options' },
+  mfaEnabled: { id: 'mfa.enabled', defaultMessage: 'Enabled' },
+  mfaDisabled: { id: 'mfa.disabled', defaultMessage: 'Disabled' },
 });
 
 /** User settings page. */
@@ -77,8 +79,8 @@ const Settings = () => {
             <ListItem label={intl.formatMessage(messages.changePassword)} onClick={navigateToChangePassword} />
             <ListItem label={intl.formatMessage(messages.configureMfa)} onClick={navigateToMfa}>
               {isMfaEnabled ?
-                intl.formatMessage({ id: 'mfa.enabled', defaultMessage: 'Enabled' }) :
-                intl.formatMessage({ id: 'mfa.disabled', defaultMessage: 'Disabled' })}
+                intl.formatMessage(messages.mfaEnabled) :
+                intl.formatMessage(messages.mfaDisabled)}
             </ListItem>
             {features.sessionsAPI && (
               <ListItem label={intl.formatMessage(messages.sessions)} onClick={navigateToSessions} />

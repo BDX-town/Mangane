@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages, FormattedDate, useIntl } from 'react-intl';
 
 import { fetchOAuthTokens, revokeOAuthTokenById } from 'soapbox/actions/security';

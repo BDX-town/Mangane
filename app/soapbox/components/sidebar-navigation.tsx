@@ -6,7 +6,6 @@ import { getSettings } from 'soapbox/actions/settings';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 import ComposeButton from 'soapbox/features/ui/components/compose-button';
 import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
-import { getBaseURL } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
 
 import SidebarNavigationLink from './sidebar-navigation-link';
@@ -23,7 +22,6 @@ const SidebarNavigation = () => {
   const followRequestsCount = useAppSelector((state) => state.user_lists.getIn(['follow_requests', 'items'], ImmutableOrderedSet()).count());
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
 
-  const baseURL = account ? getBaseURL(account) : '';
   const features = getFeatures(instance);
 
   const makeMenu = (): Menu => {
@@ -52,14 +50,6 @@ const SidebarNavigation = () => {
           to: '/lists',
           text: <FormattedMessage id='column.lists' defaultMessage='Lists' />,
           icon: require('@tabler/icons/icons/list.svg'),
-        });
-      }
-
-      if (instance.invites_enabled) {
-        menu.push({
-          to: `${baseURL}/invites`,
-          icon: require('@tabler/icons/icons/mailbox.svg'),
-          text: <FormattedMessage id='navigation.invites' defaultMessage='Invites' />,
         });
       }
 

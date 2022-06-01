@@ -22,45 +22,9 @@
   }
 }
 
-.emoji-react--reblogs,
-.emoji-react--favourites {
-  vertical-align: middle;
-  display: inline-flex;
-  margin-right: 10px;
-
-  .svg-icon {
-    margin-right: 0.2em;
-  }
-}
-
-.emoji-react--reblogs {
-  .svg-icon {
-    color: var(--highlight-text-color);
-
-    svg {
-      stroke-width: 3px;
-    }
-  }
-}
-
-.emoji-react--favourites {
-  .svg-icon {
-    color: var(--accent-color);
-
-    svg path {
-      fill: var(--accent-color);
-    }
-  }
-}
-
 .emoji-reacts {
   display: inline-flex;
   flex-direction: row-reverse;
-}
-
-.status-interaction-bar {
-  margin-right: auto;
-  min-height: 20px;
 }
 
 .emoji-reacts-container {
@@ -78,13 +42,6 @@
     .emoji-reacts__count {
       display: none;
     }
-  }
-}
-
-.emoji-react-selector-container {
-  &:hover,
-  &:focus {
-    outline: 0;
   }
 }
 
@@ -126,49 +83,6 @@
         transform: scale(1.2);
       }
     }
-  }
-}
-
-.status__action-bar__counter--favourite {
-  position: relative;
-
-  @media (max-width: 455px) {
-    position: static;
-  }
-}
-
-.status__action-bar,
-.detailed-status__action-bar {
-  .svg-icon {
-    width: 20px;
-    height: 20px;
-    display: block;
-    overflow: visible;
-  }
-
-  .icon-button__emoji .emojione {
-    width: 20px;
-    height: 20px;
-    margin: 0;
-  }
-
-  svg {
-    stroke-width: 2px;
-  }
-
-  svg.icon-tabler {
-    // Tabler icons are a little thicker than Feather icons
-    stroke-width: 1.6px !important;
-    transform: scale(1.2);
-  }
-}
-
-// This icon is a little different than the others...
-.status__action-bar__counter--favourite,
-.detailed-status__button--favourite {
-  .svg-icon svg.icon-tabler {
-    transform: translateY(-1px) scale(1.3);
-    stroke-width: 1.4px !important;
   }
 }
 

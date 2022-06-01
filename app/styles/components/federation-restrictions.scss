@@ -67,21 +67,3 @@
     }
   }
 }
-
-.edit-federation-modal {
-  background: var(--foreground-color);
-  border-radius: 8px;
-  padding: 20px;
-
-  &__title {
-    font-size: 18px;
-    margin-bottom: 15px;
-    font-weight: bold;
-    text-align: center;
-  }
-
-  &__submit {
-    margin-bottom: 0 !important;
-    margin-top: 20px;
-  }
-}

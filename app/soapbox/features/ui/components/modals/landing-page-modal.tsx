@@ -3,7 +3,7 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import SiteLogo from 'soapbox/components/site-logo';
-import { Button, Icon, Modal } from 'soapbox/components/ui';
+import { Text, Button, Icon, Modal } from 'soapbox/components/ui';
 import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
 const messages = defineMessages({
@@ -17,6 +17,7 @@ interface ILandingPageModal {
   onClose: (type: string) => void,
 }
 
+/** Login and links to display from the hamburger menu of the homepage. */
 const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
   const intl = useIntl();
 
@@ -41,13 +42,13 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
             <a
               href={links.get('help')}
               target='_blank'
-              className='p-3 flex items-center rounded-md dark:hover:bg-slate-900/50 hover:bg-gray-50'
+              className='p-3 space-x-3 flex items-center rounded-md dark:hover:bg-slate-900/50 hover:bg-gray-50'
             >
               <Icon src={require('@tabler/icons/icons/lifebuoy.svg')} className='flex-shrink-0 h-6 w-6 text-gray-400 dark:text-gray-200' />
 
-              <span className='ml-3 text-base font-medium text-gray-900 dark:text-gray-200'>
+              <Text weight='medium'>
                 {intl.formatMessage(messages.helpCenter)}
-              </span>
+              </Text>
             </a>
           </nav>
         )}

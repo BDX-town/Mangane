@@ -228,7 +228,7 @@ const importAdminUser = (state: State, adminUser: ImmutableMap<string, any>): St
 
 const importAdminUsers = (state: State, adminUsers: Array<Record<string, any>>): State => {
   return state.withMutations((state: State) => {
-    adminUsers.forEach(adminUser => {
+    adminUsers.filter(adminUser => !adminUser.account).forEach(adminUser => {
       importAdminUser(state, ImmutableMap(fromJS(adminUser)));
     });
   });

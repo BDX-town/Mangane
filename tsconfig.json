@@ -5,6 +5,7 @@
     "sourceMap": true,
     "strict": true,
     "module": "es2022",
+    "lib": ["es2019", "es6", "dom", "webworker"],
     "target": "es5",
     "jsx": "react",
     "allowJs": true,

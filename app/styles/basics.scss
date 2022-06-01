@@ -54,16 +54,6 @@ body {
       vertical-align: middle;
       margin: 20px;
 
-      &__illustration {
-        img {
-          display: block;
-          max-width: 470px;
-          width: 100%;
-          height: auto;
-          margin-top: -120px;
-        }
-      }
-
       h1 {
         font-size: 20px;
         line-height: 28px;
@@ -77,17 +67,6 @@ body {
 // will cause severe performance degradation on Safari.
 div[tabindex="-1"]:focus {
   outline: 0;
-}
-
-.visuallyhidden {
-  border: 0 !important;
-  clip: rect(1px, 1px, 1px, 1px) !important;
-  font-size: 1px !important;
-  height: 1px !important;
-  overflow: hidden !important;
-  padding: 0 !important;
-  position: absolute !important;
-  width: 1px !important;
 }
 
 ::selection {

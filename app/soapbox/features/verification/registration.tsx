@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import * as React from 'react';
-import { useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -10,10 +10,24 @@ import { startOnboarding } from 'soapbox/actions/onboarding';
 import snackbar from 'soapbox/actions/snackbar';
 import { createAccount } from 'soapbox/actions/verification';
 import { removeStoredVerification } from 'soapbox/actions/verification';
+import { Button, Form, FormGroup, Input } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 import { getRedirectUrl } from 'soapbox/utils/redirect';
 
-import { Button, Form, FormGroup, Input } from '../../components/ui';
+const messages = defineMessages({
+  success: {
+    id: 'registrations.success',
+    defaultMessage: 'Welcome to {siteTitle}!',
+  },
+  usernameTaken: {
+    id: 'registrations.unprocessable_entity',
+    defaultMessage: 'This username has already been taken.',
+  },
+  error: {
+    id: 'registrations.error',
+    defaultMessage: 'Failed to register your account.',
+  },
+});
 
 const initialState = {
   username: '',
@@ -45,10 +59,7 @@ const Registration = () => {
         dispatch(startOnboarding());
         dispatch(
           snackbar.success(
-            intl.formatMessage({
-              id: 'registrations.success',
-              defaultMessage: 'Welcome to {siteTitle}!',
-            }, { siteTitle }),
+            intl.formatMessage(messages.success, { siteTitle }),
           ),
         );
       })
@@ -56,19 +67,13 @@ const Registration = () => {
         if (error?.response?.status === 422) {
           dispatch(
             snackbar.error(
-              intl.formatMessage({
-                id: 'registrations.unprocessable_entity',
-                defaultMessage: 'This username has already been taken.',
-              }),
+              intl.formatMessage(messages.usernameTaken),
             ),
           );
         } else {
           dispatch(
             snackbar.error(
-              intl.formatMessage({
-                id: 'registrations.error',
-                defaultMessage: 'Failed to register your account.',
-              }),
+              intl.formatMessage(messages.error),
             ),
           );
         }
@@ -90,7 +95,7 @@ const Registration = () => {
     <div>
       <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 border-solid -mx-4 sm:-mx-10'>
         <h1 className='text-center font-bold text-2xl'>
-          {intl.formatMessage({ id: 'registration.header', defaultMessage: 'Register your account' })}
+          <FormattedMessage id='registration.header' defaultMessage='Register your account' />
         </h1>
       </div>
 

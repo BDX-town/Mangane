@@ -14,12 +14,16 @@ import { loadSoapboxConfig, getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchVerificationConfig } from 'soapbox/actions/verification';
 import * as BuildConfig from 'soapbox/build_config';
 import Helmet from 'soapbox/components/helmet';
+import LoadingScreen from 'soapbox/components/loading-screen';
 import AuthLayout from 'soapbox/features/auth_layout';
-import OnboardingWizard from 'soapbox/features/onboarding/onboarding-wizard';
 import PublicLayout from 'soapbox/features/public_layout';
-import NotificationsContainer from 'soapbox/features/ui/containers/notifications_container';
-import { ModalContainer } from 'soapbox/features/ui/util/async-components';
-import WaitlistPage from 'soapbox/features/verification/waitlist_page';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import {
+  ModalContainer,
+  NotificationsContainer,
+  OnboardingWizard,
+  WaitlistPage,
+} from 'soapbox/features/ui/util/async-components';
 import { createGlobals } from 'soapbox/globals';
 import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures, useSoapboxConfig, useSettings, useSystemTheme } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
@@ -30,7 +34,6 @@ import { checkOnboardingStatus } from '../actions/onboarding';
 import { preload } from '../actions/preload';
 import ErrorBoundary from '../components/error_boundary';
 import UI from '../features/ui';
-import BundleContainer from '../features/ui/containers/bundle_container';
 import { store } from '../store';
 
 /** Ensure the given locale exists in our codebase */
@@ -66,6 +69,7 @@ const loadInitial = () => {
   };
 };
 
+/** Highest level node with the Redux store. */
 const SoapboxMount = () => {
   useCachedLocationHandler();
   const dispatch = useAppDispatch();
@@ -79,7 +83,9 @@ const SoapboxMount = () => {
 
   const locale = validLocale(settings.get('locale')) ? settings.get('locale') : 'en';
 
+  const waitlisted = account && !account.source.get('approved', true);
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
+  const showOnboarding = account && !waitlisted && needsOnboarding;
   const singleUserMode = soapboxConfig.singleUserMode && soapboxConfig.singleUserModeProfile;
 
   const [messages, setMessages] = useState<Record<string, string>>({});
@@ -115,12 +121,13 @@ const SoapboxMount = () => {
     return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
   };
 
-  if (me === null) return null;
-  if (me && !account) return null;
-  if (!isLoaded) return null;
-  if (localeLoading) return null;
-
-  const waitlisted = account && !account.source.get('approved', true);
+  /** Whether to display a loading indicator. */
+  const showLoading = [
+    me === null,
+    me && !account,
+    !isLoaded,
+    localeLoading,
+  ].some(Boolean);
 
   const bodyClass = classNames('bg-white dark:bg-slate-900 text-base h-full', {
     'no-reduce-motion': !settings.get('reduceMotion'),
@@ -129,94 +136,118 @@ const SoapboxMount = () => {
     'demetricator': settings.get('demetricator'),
   });
 
-  if (account && !waitlisted && needsOnboarding) {
-    return (
-      <IntlProvider locale={locale} messages={messages}>
-        <Helmet>
-          <html lang={locale} className={classNames({ dark: darkMode })} />
-          <body className={bodyClass} />
-          {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
-          <meta name='theme-color' content={soapboxConfig.brandColor} />
-        </Helmet>
+  const helmet = (
+    <Helmet>
+      <html lang={locale} className={classNames('h-full', { dark: darkMode })} />
+      <body className={bodyClass} />
+      {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
+      {darkMode && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
+      <meta name='theme-color' content={soapboxConfig.brandColor} />
+    </Helmet>
+  );
 
-        <ErrorBoundary>
-          <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
-            <OnboardingWizard />
-            <NotificationsContainer />
-          </BrowserRouter>
-        </ErrorBoundary>
-      </IntlProvider>
+  /** Render the onboarding flow. */
+  const renderOnboarding = () => (
+    <BundleContainer fetchComponent={OnboardingWizard} loading={LoadingScreen}>
+      {(Component) => <Component />}
+    </BundleContainer>
+  );
+
+  /** Render the auth layout or UI. */
+  const renderSwitch = () => (
+    <Switch>
+      <Redirect from='/v1/verify_email/:token' to='/verify/email/:token' />
+
+      {/* Redirect signup route depending on Pepe enablement. */}
+      {/* We should prefer using /signup in components. */}
+      {pepeEnabled ? (
+        <Redirect from='/signup' to='/verify' />
+      ) : (
+        <Redirect from='/verify' to='/signup' />
+      )}
+
+      {waitlisted && (
+        <Route render={(props) => (
+          <BundleContainer fetchComponent={WaitlistPage} loading={LoadingScreen}>
+            {(Component) => <Component {...props} account={account} />}
+          </BundleContainer>
+        )}
+        />
+      )}
+
+      {!me && (singleUserMode
+        ? <Redirect exact from='/' to={`/${singleUserMode}`} />
+        : <Route exact path='/' component={PublicLayout} />)}
+
+      {!me && (
+        <Route exact path='/' component={PublicLayout} />
+      )}
+
+      <Route exact path='/about/:slug?' component={PublicLayout} />
+      <Route exact path='/mobile/:slug?' component={PublicLayout} />
+      <Route path='/login' component={AuthLayout} />
+
+      {(features.accountCreation && instance.registrations) && (
+        <Route exact path='/signup' component={AuthLayout} />
+      )}
+
+      {pepeEnabled && (
+        <Route path='/verify' component={AuthLayout} />
+      )}
+
+      <Route path='/reset-password' component={AuthLayout} />
+      <Route path='/edit-password' component={AuthLayout} />
+      <Route path='/invite/:token' component={AuthLayout} />
+
+      <Route path='/' component={UI} />
+    </Switch>
+  );
+
+  /** Render the onboarding flow or UI. */
+  const renderBody = () => {
+    if (showOnboarding) {
+      return renderOnboarding();
+    } else {
+      return renderSwitch();
+    }
+  };
+
+  // intl is part of loading.
+  // It's important nothing in here depends on intl.
+  if (showLoading) {
+    return (
+      <>
+        {helmet}
+        <LoadingScreen />
+      </>
     );
   }
 
   return (
     <IntlProvider locale={locale} messages={messages}>
-      <Helmet>
-        <html lang={locale} className={classNames('h-full', { dark: darkMode })} />
-        <body className={bodyClass} />
-        {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
-        <meta name='theme-color' content={soapboxConfig.brandColor} />
-      </Helmet>
-
+      {helmet}
       <ErrorBoundary>
         <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
-          <>
-            <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
-              <Switch>
-                <Redirect from='/v1/verify_email/:token' to='/verify/email/:token' />
+          <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
+            <>
+              {renderBody()}
 
-                {/* Redirect signup route depending on Pepe enablement. */}
-                {/* We should prefer using /signup in components. */}
-                {pepeEnabled ? (
-                  <Redirect from='/signup' to='/verify' />
-                ) : (
-                  <Redirect from='/verify' to='/signup' />
-                )}
+              <BundleContainer fetchComponent={NotificationsContainer}>
+                {(Component) => <Component />}
+              </BundleContainer>
 
-                {waitlisted && (
-                  <>
-                    <Route render={(props) => <WaitlistPage {...props} account={account} />} />
-
-                    <BundleContainer fetchComponent={ModalContainer}>
-                      {Component => <Component />}
-                    </BundleContainer>
-                  </>
-                )}
-
-                {!me && (singleUserMode
-                  ? <Redirect exact from='/' to={`/${singleUserMode}`} />
-                  : <Route exact path='/' component={PublicLayout} />)}
-
-                {!me && (
-                  <Route exact path='/' component={PublicLayout} />
-                )}
-
-                <Route exact path='/about/:slug?' component={PublicLayout} />
-                <Route exact path='/mobile/:slug?' component={PublicLayout} />
-                <Route path='/login' component={AuthLayout} />
-
-                {(features.accountCreation && instance.registrations) && (
-                  <Route exact path='/signup' component={AuthLayout} />
-                )}
-
-                {pepeEnabled && (
-                  <Route path='/verify' component={AuthLayout} />
-                )}
-
-                <Route path='/reset-password' component={AuthLayout} />
-                <Route path='/edit-password' component={AuthLayout} />
-                <Route path='/invite/:token' component={AuthLayout} />
-
-                <Route path='/' component={UI} />
-              </Switch>
-            </ScrollContext>
-          </>
+              <BundleContainer fetchComponent={ModalContainer}>
+                {Component => <Component />}
+              </BundleContainer>
+            </>
+          </ScrollContext>
         </BrowserRouter>
       </ErrorBoundary>
     </IntlProvider>
   );
 };
 
+/** The root React node of the application. */
 const Soapbox = () => {
   return (
     <Provider store={store}>

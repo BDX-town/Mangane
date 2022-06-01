@@ -4,9 +4,8 @@ import { useHistory } from 'react-router-dom';
 
 import { disableMfa } from 'soapbox/actions/mfa';
 import snackbar from 'soapbox/actions/snackbar';
+import { Button, Form, FormGroup, Input, FormActions, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
-
-import { Button, Form, FormGroup, Input, FormActions, Stack, Text } from '../../../components/ui';
 
 const  messages = defineMessages({
   mfa_setup_disable_button: { id: 'column.mfa_disable_button', defaultMessage: 'Disable' },

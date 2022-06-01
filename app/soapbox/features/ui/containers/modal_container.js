@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
+import { cancelReplyCompose } from 'soapbox/actions/compose';
+import { closeModal } from 'soapbox/actions/modals';
 import { cancelReport } from 'soapbox/actions/reports';
 
-import { cancelReplyCompose } from '../../../actions/compose';
-import { closeModal } from '../../../actions/modals';
 import ModalRoot from '../components/modal_root';
 
 const mapStateToProps = state => {

@@ -11,22 +11,19 @@ cache:
     - node_modules/
 
 stages:
-  - install
-  - lint
+  - deps
   - test
-  - build
   - deploy
 
-install-dependencies:
-  stage: install
-  script:
-    - yarn install --ignore-scripts
-  artifacts:
-    paths:
-      - node_modules/
+deps:
+  stage: deps
+  script: yarn install --ignore-scripts
+  only:
+    changes:
+      - yarn.lock
 
 lint-js:
-  stage: lint
+  stage: test
   script: yarn lint:js
   only:
     changes:
@@ -38,7 +35,7 @@ lint-js:
       - ".eslintrc.js"
 
 lint-sass:
-  stage: lint
+  stage: test
   script: yarn lint:sass
   only:
     changes:
@@ -55,18 +52,29 @@ jest:
       - "**/*.json"
       - "app/soapbox/**/*"
       - "webpack/**/*"
+      - "custom/**/*"
       - "jest.config.js"
       - "package.json"
       - "yarn.lock"
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+
+nginx-test:
+  stage: test
+  image: nginx:latest
+  before_script: cp installation/mastodon.conf /etc/nginx/conf.d/default.conf
+  script: nginx -t
+  only:
+    changes:
+      - "installation/mastodon.conf"
 
 build-production:
-  stage: build
+  stage: test
   script: yarn build
   variables:
     NODE_ENV: production
   artifacts:
     paths:
-    - static
+     - static
 
 docs-deploy:
   stage: deploy
@@ -99,6 +107,7 @@ review:
     url: https://$CI_COMMIT_REF_SLUG.git.soapbox.pub
   script:
     - npx -y surge static $CI_COMMIT_REF_SLUG.git.soapbox.pub
+  allow_failure: true
 
 pages:
   stage: deploy

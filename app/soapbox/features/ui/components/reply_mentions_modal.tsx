@@ -33,7 +33,7 @@ const ReplyMentionsModal: React.FC<IReplyMentionsModal> = ({ onClose }) => {
       closePosition='left'
     >
       <div className='reply-mentions-modal__accounts'>
-        {mentions.map(accountId => <Account key={accountId} accountId={accountId} added author={author === accountId} />)}
+        {mentions.map(accountId => <Account key={accountId} accountId={accountId} author={author === accountId} />)}
       </div>
     </Modal>
   );

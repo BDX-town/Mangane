@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { Button, Card, CardBody, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import RegistrationForm from 'soapbox/features/auth_login/components/registration_form';
 import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
-
-import { Button, Card, CardBody, Stack, Text } from '../../components/ui';
 
 const LandingPage = () => {
   const features = useFeatures();
@@ -73,9 +72,9 @@ const LandingPage = () => {
       <div className='mx-auto max-w-7xl'>
         <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 py-12'>
           <div className='px-4 sm:px-6 sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left lg:flex'>
-            <div>
+            <div className='w-full'>
               <Stack space={3}>
-                <h1 className='text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-accent-500 via-primary-500 to-gradient-end sm:mt-5 sm:leading-none lg:mt-6 lg:text-6xl xl:text-7xl'>
+                <h1 className='text-5xl font-extrabold text-transparent text-ellipsis overflow-hidden bg-clip-text bg-gradient-to-br from-accent-500 via-primary-500 to-gradient-end sm:mt-5 sm:leading-none lg:mt-6 lg:text-6xl xl:text-7xl'>
                   {instance.title}
                 </h1>
 

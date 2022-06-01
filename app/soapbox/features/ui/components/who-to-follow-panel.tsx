@@ -3,11 +3,10 @@ import * as React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
+import { fetchSuggestions, dismissSuggestion } from 'soapbox/actions/suggestions';
 import { Widget } from 'soapbox/components/ui';
+import AccountContainer from 'soapbox/containers/account_container';
 import { useAppSelector } from 'soapbox/hooks';
-
-import { fetchSuggestions, dismissSuggestion } from '../../../actions/suggestions';
-import AccountContainer from '../../../containers/account_container';
 
 const messages = defineMessages({
   dismissSuggestion: { id: 'suggestions.dismiss', defaultMessage: 'Dismiss suggestion' },

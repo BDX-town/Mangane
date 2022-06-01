@@ -4,10 +4,9 @@ import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
+import { fetchListSuggestions, clearListSuggestions, changeListSuggestions } from 'soapbox/actions/lists';
 import Icon from 'soapbox/components/icon';
 import { Button } from 'soapbox/components/ui';
-
-import { fetchListSuggestions, clearListSuggestions, changeListSuggestions } from '../../../actions/lists';
 
 const messages = defineMessages({
   search: { id: 'lists.search', defaultMessage: 'Search among people you follow' },

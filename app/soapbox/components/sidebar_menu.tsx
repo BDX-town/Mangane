@@ -14,7 +14,6 @@ import { Stack } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile_stats';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount, makeGetOtherAccounts } from 'soapbox/selectors';
-import { getBaseURL } from 'soapbox/utils/accounts';
 
 import { HStack, Icon, IconButton, Text } from './ui';
 
@@ -43,14 +42,15 @@ const messages = defineMessages({
 });
 
 interface ISidebarLink {
-  to: string,
+  href?: string,
+  to?: string,
   icon: string,
   text: string | JSX.Element,
   onClick: React.EventHandler<React.MouseEvent>,
 }
 
-const SidebarLink: React.FC<ISidebarLink> = ({ to, icon, text, onClick }) => (
-  <NavLink className='group py-1 rounded-md' to={to} onClick={onClick}>
+const SidebarLink: React.FC<ISidebarLink> = ({ href, to, icon, text, onClick }) => {
+  const body = (
     <HStack space={2} alignItems='center'>
       <div className='bg-primary-50 dark:bg-slate-700 relative rounded inline-flex p-2'>
         <Icon src={icon} className='text-primary-600 h-5 w-5' />
@@ -58,8 +58,22 @@ const SidebarLink: React.FC<ISidebarLink> = ({ to, icon, text, onClick }) => (
 
       <Text tag='span' weight='medium' theme='muted' className='group-hover:text-gray-800 dark:group-hover:text-gray-200'>{text}</Text>
     </HStack>
-  </NavLink>
-);
+  );
+
+  if (to) {
+    return (
+      <NavLink className='group py-1 rounded-md' to={to} onClick={onClick}>
+        {body}
+      </NavLink>
+    );
+  }
+
+  return (
+    <a className='group py-1 rounded-md' href={href} target='_blank' onClick={onClick}>
+      {body}
+    </a>
+  );
+};
 
 const getOtherAccounts = makeGetOtherAccounts();
 
@@ -75,8 +89,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const otherAccounts: ImmutableList<AccountEntity> = useAppSelector((state) => getOtherAccounts(state));
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
   const settings = useAppSelector((state) => getSettings(state));
-
-  const baseURL = account ? getBaseURL(account) : '';
 
   const closeButtonRef = React.useRef(null);
 
@@ -216,15 +228,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     to='/lists'
                     icon={require('@tabler/icons/icons/list.svg')}
                     text={intl.formatMessage(messages.lists)}
-                    onClick={onClose}
-                  />
-                )}
-
-                {instance.invites_enabled && (
-                  <SidebarLink
-                    to={`${baseURL}/invites`}
-                    icon={require('@tabler/icons/icons/mailbox.svg')}
-                    text={intl.formatMessage(messages.invites)}
                     onClick={onClose}
                   />
                 )}

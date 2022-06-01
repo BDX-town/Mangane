@@ -3,12 +3,11 @@ import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
+import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from 'soapbox/actions/bookmarks';
+import StatusList from 'soapbox/components/status_list';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { Column } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
-
-import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from '../../actions/bookmarks';
-import StatusList from '../../components/status_list';
 
 const messages = defineMessages({
   heading: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },

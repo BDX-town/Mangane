@@ -2,12 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
+import { connectRemoteStream } from 'soapbox/actions/streaming';
+import { expandRemoteTimeline } from 'soapbox/actions/timelines';
 import IconButton from 'soapbox/components/icon_button';
+import { HStack, Text } from 'soapbox/components/ui';
 import Column from 'soapbox/features/ui/components/column';
 import { useAppDispatch, useSettings } from 'soapbox/hooks';
 
-import { connectRemoteStream } from '../../actions/streaming';
-import { expandRemoteTimeline } from '../../actions/timelines';
 import StatusListContainer from '../ui/containers/status_list_container';
 
 import PinnedHostsPicker from './components/pinned_hosts_picker';
@@ -66,14 +67,16 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
   return (
     <Column label={intl.formatMessage(messages.title)} heading={instance} transparent>
       {instance && <PinnedHostsPicker host={instance} />}
-      {!pinned && <div className='timeline-filter-message'>
-        <IconButton src={require('@tabler/icons/icons/x.svg')} onClick={handleCloseClick} />
-        <FormattedMessage
-          id='remote_timeline.filter_message'
-          defaultMessage='You are viewing the timeline of {instance}.'
-          values={{ instance }}
-        />
-      </div>}
+      {!pinned && <HStack className='mb-4 px-2' space={2}>
+        <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/icons/x.svg')} onClick={handleCloseClick} />
+        <Text>
+          <FormattedMessage
+            id='remote_timeline.filter_message'
+            defaultMessage='You are viewing the timeline of {instance}.'
+            values={{ instance }}
+          />
+        </Text>
+      </HStack>}
       <StatusListContainer
         scrollKey={`${timelineId}_${instance}_timeline`}
         timelineId={`${timelineId}${onlyMedia ? ':media' : ''}:${instance}`}

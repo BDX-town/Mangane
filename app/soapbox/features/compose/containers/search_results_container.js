@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
+import { expandSearch, setFilter } from 'soapbox/actions/search';
+import { fetchSuggestions, dismissSuggestion } from 'soapbox/actions/suggestions';
 import { fetchTrendingStatuses } from 'soapbox/actions/trending_statuses';
 import { getFeatures } from 'soapbox/utils/features';
 
-import { expandSearch, setFilter } from '../../../actions/search';
-import { fetchSuggestions, dismissSuggestion } from '../../../actions/suggestions';
 import SearchResults from '../components/search_results';
 
 const mapStateToProps = state => {

@@ -5,9 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { confirmPhoneVerification, requestPhoneVerification } from 'soapbox/actions/verification';
+import { Button, Form, FormGroup, Input, Text } from 'soapbox/components/ui';
 import { formatPhoneNumber } from 'soapbox/utils/phone';
-
-import { Button, Form, FormGroup, Input, Text } from '../../../components/ui';
 
 const Statuses = {
   IDLE: 'IDLE',

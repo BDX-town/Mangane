@@ -1,6 +1,7 @@
 import { jest } from '@jest/globals';
-import { AxiosInstance } from 'axios';
+import { AxiosInstance, AxiosResponse } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+import LinkHeader from 'http-link-header';
 
 const api = jest.requireActual('../api') as Record<string, Function>;
 let mocks: Array<Function> = [];
@@ -14,6 +15,10 @@ const setupMock = (axios: AxiosInstance) => {
 };
 
 export const staticClient = api.staticClient;
+
+export const getLinks = (response: AxiosResponse): LinkHeader => {
+  return new LinkHeader(response.headers?.link);
+};
 
 export const baseClient = (...params: any[]) => {
   const axios = api.baseClient(...params);

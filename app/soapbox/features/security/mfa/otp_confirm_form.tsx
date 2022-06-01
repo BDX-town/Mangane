@@ -3,14 +3,13 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import snackbar from 'soapbox/actions/snackbar';
-import { useAppDispatch } from 'soapbox/hooks';
-
 import {
   setupMfa,
   confirmMfa,
-} from '../../../actions/mfa';
-import { Button, Form, FormActions, FormGroup, Input, Stack, Text } from '../../../components/ui';
+} from 'soapbox/actions/mfa';
+import snackbar from 'soapbox/actions/snackbar';
+import { Button, Form, FormActions, FormGroup, Input, Stack, Text } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
 
 const messages = defineMessages({
   mfaCancelButton: { id: 'column.mfa_cancel', defaultMessage: 'Cancel' },
