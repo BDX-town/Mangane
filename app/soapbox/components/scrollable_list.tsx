@@ -12,6 +12,11 @@ type Context = {
   listClassName?: string,
 }
 
+type SavedScrollPosition = {
+  index: number,
+  offset: number,
+}
+
 // NOTE: It's crucial to space lists with **padding** instead of margin!
 // Pass an `itemClassName` like `pb-3`, NOT a `space-y-3` className
 // https://virtuoso.dev/troubleshooting#list-does-not-scroll-to-the-bottom--items-jump-around
@@ -72,10 +77,11 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   const settings = useSettings();
   const autoloadMore = settings.get('autoloadMore');
 
-  // Preserve scroll index
-  const scrollIndexKey = `soapbox:scrollIndex:${location.pathname}`;
-  const scrollIndex = Number(sessionStorage.getItem(scrollIndexKey));
-  const initialIndex = useRef(scrollIndex);
+  // Preserve scroll position
+  const scrollDataKey = `soapbox:scrollData:${location.pathname}`;
+  const scrollData: SavedScrollPosition | null = JSON.parse(sessionStorage.getItem(scrollDataKey)!);
+  const topIndex = useRef<number>(scrollData ? scrollData.index : 0);
+  const topOffset = useRef<number>(scrollData ? scrollData.offset : 0);
 
   /** Normalized children */
   const elements = Array.from(children || []);
@@ -95,8 +101,22 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
     data.push(<Spinner />);
   }
 
+  const handleScroll = () => {
+    const node = document.querySelector(`[data-virtuoso-scroller] [data-item-index="${topIndex.current}"]`);
+    if (node) {
+      topOffset.current = node.getBoundingClientRect().top * -1;
+    }
+  };
+
   useEffect(() => {
-    sessionStorage.removeItem(scrollIndexKey);
+    document.addEventListener('scroll', handleScroll);
+    sessionStorage.removeItem(scrollDataKey);
+
+    return () => {
+      const data = { index: topIndex.current, offset: topOffset.current };
+      sessionStorage.setItem(scrollDataKey, JSON.stringify(data));
+      document.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   /* Render an empty state instead of the scrollable list */
@@ -139,8 +159,8 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
     }
   };
 
-  const handleRangeChanged = (range: ListRange) => {
-    sessionStorage.setItem(scrollIndexKey, String(range.startIndex));
+  const handleRangeChange = (range: ListRange) => {
+    topIndex.current = range.startIndex;
   };
 
   /** Render the actual Virtuoso list */
@@ -155,8 +175,8 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
       endReached={handleEndReached}
       isScrolling={isScrolling => isScrolling && onScroll && onScroll()}
       itemContent={renderItem}
-      initialTopMostItemIndex={showLoading ? 0 : initialTopMostItemIndex || initialIndex.current}
-      rangeChanged={handleRangeChanged}
+      initialTopMostItemIndex={showLoading ? 0 : initialTopMostItemIndex || (scrollData ? { align: 'start', index: scrollData.index, offset: scrollData.offset } : 0)}
+      rangeChanged={handleRangeChange}
       style={style}
       context={{
         listClassName: className,
