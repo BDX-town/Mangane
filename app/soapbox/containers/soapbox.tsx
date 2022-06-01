@@ -141,6 +141,7 @@ const SoapboxMount = () => {
       <html lang={locale} className={classNames('h-full', { dark: darkMode })} />
       <body className={bodyClass} />
       {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
+      {darkMode && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
       <meta name='theme-color' content={soapboxConfig.brandColor} />
     </Helmet>
   );
