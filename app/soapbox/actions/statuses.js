@@ -124,7 +124,7 @@ export function fetchStatus(id) {
 
 export function deleteStatus(id, routerHistory, withRedraft = false) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     let status = getState().getIn(['statuses', id]);
 
@@ -132,19 +132,22 @@ export function deleteStatus(id, routerHistory, withRedraft = false) {
       status = status.set('poll', getState().getIn(['polls', status.get('poll')]));
     }
 
-    dispatch({ type: STATUS_DELETE_REQUEST, id });
+    dispatch({ type: STATUS_DELETE_REQUEST, params: status });
 
-    api(getState).delete(`/api/v1/statuses/${id}`).then(response => {
-      dispatch({ type: STATUS_DELETE_SUCCESS, id });
-      dispatch(deleteFromTimelines(id));
+    return api(getState)
+      .delete(`/api/v1/statuses/${id}`)
+      .then(response => {
+        dispatch({ type: STATUS_DELETE_SUCCESS, id });
+        dispatch(deleteFromTimelines(id));
 
-      if (withRedraft) {
-        dispatch(setComposeToStatus(status, response.data.text, response.data.spoiler_text, response.data.pleroma?.content_type, withRedraft));
-        dispatch(openModal('COMPOSE'));
-      }
-    }).catch(error => {
-      dispatch({ type: STATUS_DELETE_FAIL, id, error });
-    });
+        if (withRedraft) {
+          dispatch(setComposeToStatus(status, response.data.text, response.data.spoiler_text, response.data.pleroma?.content_type, withRedraft));
+          dispatch(openModal('COMPOSE'));
+        }
+      })
+      .catch(error => {
+        dispatch({ type: STATUS_DELETE_FAIL, params: status, error });
+      });
   };
 }
 
