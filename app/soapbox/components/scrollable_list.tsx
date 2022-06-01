@@ -76,7 +76,6 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   const scrollIndexKey = `soapbox:scrollIndex:${location.pathname}`;
   const scrollIndex = Number(sessionStorage.getItem(scrollIndexKey));
   const initialIndex = useRef(scrollIndex);
-  const scroller = useRef<Window | HTMLElement | null>(null);
 
   /** Normalized children */
   const elements = Array.from(children || []);
@@ -171,7 +170,6 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
         Item,
         Footer: loadMore,
       }}
-      scrollerRef={c => scroller.current = c}
     />
   );
 
