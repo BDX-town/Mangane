@@ -136,17 +136,20 @@ export function fetchAccount(id) {
     const account = getState().getIn(['accounts', id]);
 
     if (account && !account.get('should_refetch')) {
-      return;
+      return null;
     }
 
     dispatch(fetchAccountRequest(id));
 
-    api(getState).get(`/api/v1/accounts/${id}`).then(response => {
-      dispatch(importFetchedAccount(response.data));
-      dispatch(fetchAccountSuccess(response.data));
-    }).catch(error => {
-      dispatch(fetchAccountFail(id, error));
-    });
+    return api(getState)
+      .get(`/api/v1/accounts/${id}`)
+      .then(response => {
+        dispatch(importFetchedAccount(response.data));
+        dispatch(fetchAccountSuccess(response.data));
+      })
+      .catch(error => {
+        dispatch(fetchAccountFail(id, error));
+      });
   };
 }
 
