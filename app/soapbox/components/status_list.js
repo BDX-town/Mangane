@@ -46,10 +46,6 @@ export default class StatusList extends ImmutablePureComponent {
     divideType: 'border',
   }
 
-  componentDidMount() {
-    this.handleDequeueTimeline();
-  }
-
   getFeaturedStatusCount = () => {
     return this.props.featuredStatusIds ? this.props.featuredStatusIds.size : 0;
   }
