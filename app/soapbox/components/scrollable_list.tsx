@@ -161,6 +161,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
 
   const handleRangeChange = (range: ListRange) => {
     topIndex.current = range.startIndex;
+    handleScroll();
   };
 
   /** Render the actual Virtuoso list */
@@ -190,6 +191,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
         Item,
         Footer: loadMore,
       }}
+      overscan={{ main: 200, reverse: 200 }}
     />
   );
 
