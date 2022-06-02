@@ -170,7 +170,6 @@ describe('fetchAccountByUsername()', () => {
   describe('when "accountByUsername" feature is enabled', () => {
     beforeEach(() => {
       const state = rootReducer(undefined, {})
-        .set('soapbox', ImmutableMap({ accountByUsername: true }))
         .set('instance', {
           version: '2.7.2 (compatible; Pleroma 2.4.52-1337-g4779199e.gleasonator+soapbox)',
           pleroma: ImmutableMap({
@@ -181,24 +180,180 @@ describe('fetchAccountByUsername()', () => {
         })
         .set('me', '123');
       store = mockStore(state);
+    });
 
-      __stub((mock) => {
-        mock.onGet(`/api/v1/accounts/${username}`).reply(200, account);
-        mock.onGet(`/api/v1/accounts/relationships?${[account.id].map(id => `id[]=${id}`).join('&')}`);
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet(`/api/v1/accounts/${username}`).reply(200, account);
+          mock.onGet(`/api/v1/accounts/relationships?${[account.id].map(id => `id[]=${id}`).join('&')}`);
+        });
+      });
+
+      it('should return dispatch the proper actions', async() => {
+        await store.dispatch(fetchAccountByUsername(username));
+        const actions = store.getActions();
+
+        expect(actions[0]).toEqual({
+          type: 'RELATIONSHIPS_FETCH_REQUEST',
+          ids: ['123'],
+          skipLoading: true,
+        });
+        expect(actions[1].type).toEqual('ACCOUNTS_IMPORT');
+        expect(actions[2].type).toEqual('ACCOUNT_FETCH_SUCCESS');
       });
     });
 
-    it('should return dispatch the proper actions', async() => {
-      await store.dispatch(fetchAccountByUsername(username));
-      const actions = store.getActions();
-
-      expect(actions[0]).toEqual({
-        type: 'RELATIONSHIPS_FETCH_REQUEST',
-        ids: ['123'],
-        skipLoading: true,
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet(`/api/v1/accounts/${username}`).networkError();
+        });
       });
-      expect(actions[1].type).toEqual('ACCOUNTS_IMPORT');
-      expect(actions[2].type).toEqual('ACCOUNT_FETCH_SUCCESS');
+
+      it('should return dispatch the proper actions', async() => {
+        const expectedActions = [
+          {
+            type: 'ACCOUNT_FETCH_FAIL',
+            id: null,
+            error: new Error('Network Error'),
+            skipAlert: true,
+          },
+          { type: 'ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP', username: 'tiger' },
+        ];
+
+        await store.dispatch(fetchAccountByUsername(username));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+
+  describe('when "accountLookup" feature is enabled', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {})
+        .set('instance', {
+          version: '3.4.1 (compatible; TruthSocial 1.0.0)',
+          pleroma: ImmutableMap({
+            metadata: ImmutableMap({
+              features: [],
+            }),
+          }),
+        })
+        .set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet('/api/v1/accounts/lookup').reply(200, account);
+        });
+      });
+
+      it('should return dispatch the proper actions', async() => {
+        await store.dispatch(fetchAccountByUsername(username));
+        const actions = store.getActions();
+
+        expect(actions[0]).toEqual({
+          type: 'ACCOUNT_LOOKUP_REQUEST',
+          acct: username,
+        });
+        expect(actions[1].type).toEqual('ACCOUNTS_IMPORT');
+        expect(actions[2].type).toEqual('ACCOUNT_LOOKUP_SUCCESS');
+        expect(actions[3].type).toEqual('ACCOUNT_FETCH_SUCCESS');
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet('/api/v1/accounts/lookup').networkError();
+        });
+      });
+
+      it('should return dispatch the proper actions', async() => {
+        const expectedActions = [
+          { type: 'ACCOUNT_LOOKUP_REQUEST', acct: 'tiger' },
+          { type: 'ACCOUNT_LOOKUP_FAIL' },
+          {
+            type: 'ACCOUNT_FETCH_FAIL',
+            id: null,
+            error: new Error('Network Error'),
+            skipAlert: true,
+          },
+          { type: 'ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP', username },
+        ];
+
+        await store.dispatch(fetchAccountByUsername(username));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+
+  describe('when using the accountSearch function', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet('/api/v1/accounts/search').reply(200, [account]);
+        });
+      });
+
+      it('should return dispatch the proper actions', async() => {
+        await store.dispatch(fetchAccountByUsername(username));
+        const actions = store.getActions();
+
+        expect(actions[0]).toEqual({
+          type: 'ACCOUNT_SEARCH_REQUEST',
+          params: { q: username, limit: 5, resolve: true },
+        });
+        expect(actions[1].type).toEqual('ACCOUNTS_IMPORT');
+        expect(actions[2].type).toEqual('ACCOUNT_SEARCH_SUCCESS');
+        expect(actions[3]).toEqual({
+          type: 'RELATIONSHIPS_FETCH_REQUEST',
+          ids: [ '123' ],
+          skipLoading: true,
+        });
+        expect(actions[4].type).toEqual('ACCOUNT_FETCH_SUCCESS');
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet('/api/v1/accounts/search').networkError();
+        });
+      });
+
+      it('should return dispatch the proper actions', async() => {
+        const expectedActions = [
+          {
+            type: 'ACCOUNT_SEARCH_REQUEST',
+            params: { q: username, limit: 5, resolve: true },
+          },
+          { type: 'ACCOUNT_SEARCH_FAIL', skipAlert: true },
+          {
+            type: 'ACCOUNT_FETCH_FAIL',
+            id: null,
+            error: new Error('Network Error'),
+            skipAlert: true,
+          },
+          { type: 'ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP', username },
+        ];
+
+        await store.dispatch(fetchAccountByUsername(username));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
     });
   });
 });
