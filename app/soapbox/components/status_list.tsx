@@ -235,3 +235,4 @@ const StatusList: React.FC<IStatusList> = ({
 };
 
 export default StatusList;
+export type { IStatusList };
