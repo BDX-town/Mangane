@@ -61,6 +61,8 @@ export const defaultMediaVisibility = (status: StatusEntity, displayMedia: strin
 };
 
 interface IStatus extends RouteComponentProps {
+  id?: string,
+  contextType?: string,
   intl: IntlShape,
   status: StatusEntity,
   account: AccountEntity,
@@ -87,8 +89,8 @@ interface IStatus extends RouteComponentProps {
   muted: boolean,
   hidden: boolean,
   unread: boolean,
-  onMoveUp: (statusId: string, featured?: string) => void,
-  onMoveDown: (statusId: string, featured?: string) => void,
+  onMoveUp: (statusId: string, featured?: boolean) => void,
+  onMoveDown: (statusId: string, featured?: boolean) => void,
   getScrollPosition?: () => ScrollPosition | undefined,
   updateScrollBottom?: (bottom: number) => void,
   cacheMediaWidth: () => void,
@@ -98,7 +100,7 @@ interface IStatus extends RouteComponentProps {
   allowedEmoji: ImmutableList<string>,
   focusable: boolean,
   history: History,
-  featured?: string,
+  featured?: boolean,
 }
 
 interface IStatusState {
