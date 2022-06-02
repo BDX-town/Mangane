@@ -65,7 +65,7 @@ const ListTimeline: React.FC = () => {
   //   }));
   // };
 
-  const title  = list ? list.get('title') : id;
+  const title  = list ? list.title : id;
 
   if (typeof list === 'undefined') {
     return (

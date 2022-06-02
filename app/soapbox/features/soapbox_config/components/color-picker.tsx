@@ -30,7 +30,7 @@ const ColorPicker: React.FC<IColorPicker> = ({ style, value, onClose, onChange }
       document.removeEventListener('click', handleDocumentClick, false);
       document.removeEventListener('touchend', handleDocumentClick);
     };
-  });
+  }, []);
 
   const pickerStyle: React.CSSProperties = {
     ...style,
