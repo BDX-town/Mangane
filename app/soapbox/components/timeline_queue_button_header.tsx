@@ -5,11 +5,11 @@ import { useIntl, MessageDescriptor } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
 import { Text } from 'soapbox/components/ui';
-import { useSettings } from 'soapbox/hooks';
+import { useAppSelector, useSettings } from 'soapbox/hooks';
 
 interface ITimelineQueueButtonHeader {
   onClick: () => void,
-  count?: number,
+  timelineId: string,
   message: MessageDescriptor,
   threshold?: number,
   autoloadThreshold?: number,
@@ -17,13 +17,14 @@ interface ITimelineQueueButtonHeader {
 
 const TimelineQueueButtonHeader: React.FC<ITimelineQueueButtonHeader> = ({
   onClick,
-  count = 0,
+  timelineId,
   message,
   threshold = 400,
   autoloadThreshold = 50,
 }) => {
   const intl = useIntl();
   const settings = useSettings();
+  const count = useAppSelector(state => state.timelines.getIn([timelineId, 'totalQueuedItemsCount']));
 
   const [scrolled, setScrolled] = useState<boolean>(false);
   const autoload = settings.get('autoloadTimelines') === true;

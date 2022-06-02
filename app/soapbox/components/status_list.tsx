@@ -1,25 +1,17 @@
 import classNames from 'classnames';
 import { debounce } from 'lodash';
 import React, { useRef, useCallback } from 'react';
-import { FormattedMessage, defineMessages } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import LoadGap from 'soapbox/components/load_gap';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import TimelineQueueButtonHeader from 'soapbox/components/timeline_queue_button_header';
 import StatusContainer from 'soapbox/containers/status_container';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 
-import type {
-  Map as ImmutableMap,
-  OrderedSet as ImmutableOrderedSet,
-} from 'immutable';
+import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
 import type { IScrollableList } from 'soapbox/components/scrollable_list';
-
-const messages = defineMessages({
-  queue: { id: 'status_list.queue_label', defaultMessage: 'Click to see {count} new {count, plural, one {post} other {posts}}' },
-});
 
 interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
   scrollKey: string,
@@ -35,10 +27,6 @@ interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
   alwaysPrepend?: boolean,
   timelineId?: string,
   queuedItemSize?: number,
-  onDequeueTimeline?: (timelineId: string) => void,
-  totalQueuedItemsCount?: number,
-  group?: ImmutableMap<string, any>,
-  withGroupAdmin?: boolean,
   onScrollToTop?: () => void,
   onScroll?: () => void,
   divideType: 'space' | 'border',
@@ -51,12 +39,8 @@ const StatusList: React.FC<IStatusList> = ({
   divideType = 'border',
   onLoadMore,
   timelineId,
-  totalQueuedItemsCount,
-  onDequeueTimeline,
   isLoading,
   isPartial,
-  withGroupAdmin,
-  group,
   ...other
 }) => {
   const node = useRef<VirtuosoHandle>(null);
@@ -99,11 +83,6 @@ const StatusList: React.FC<IStatusList> = ({
         element?.focus();
       },
     });
-  };
-
-  const handleDequeueTimeline = () => {
-    if (!onDequeueTimeline || !timelineId) return;
-    onDequeueTimeline(timelineId);
   };
 
   const renderLoadGap = (index: number) => {
@@ -204,33 +183,25 @@ const StatusList: React.FC<IStatusList> = ({
   }
 
   return (
-    <>
-      <TimelineQueueButtonHeader
-        key='timeline-queue-button-header'
-        onClick={handleDequeueTimeline}
-        count={totalQueuedItemsCount}
-        message={messages.queue}
-      />
-      <ScrollableList
-        id='status-list'
-        key='scrollable-list'
-        isLoading={isLoading}
-        showLoading={isLoading && statusIds.size === 0}
-        onLoadMore={handleLoadOlder}
-        placeholderComponent={PlaceholderStatus}
-        placeholderCount={20}
-        ref={node}
-        className={classNames('divide-y divide-solid divide-gray-200 dark:divide-slate-700', {
-          'divide-none': divideType !== 'border',
-        })}
-        itemClassName={classNames({
-          'pb-3': divideType !== 'border',
-        })}
-        {...other}
-      >
-        {renderScrollableContent()}
-      </ScrollableList>,
-    </>
+    <ScrollableList
+      id='status-list'
+      key='scrollable-list'
+      isLoading={isLoading}
+      showLoading={isLoading && statusIds.size === 0}
+      onLoadMore={handleLoadOlder}
+      placeholderComponent={PlaceholderStatus}
+      placeholderCount={20}
+      ref={node}
+      className={classNames('divide-y divide-solid divide-gray-200 dark:divide-slate-700', {
+        'divide-none': divideType !== 'border',
+      })}
+      itemClassName={classNames({
+        'pb-3': divideType !== 'border',
+      })}
+      {...other}
+    >
+      {renderScrollableContent()}
+    </ScrollableList>
   );
 };
 
