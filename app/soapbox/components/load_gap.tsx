@@ -9,8 +9,8 @@ const messages = defineMessages({
 
 interface ILoadGap {
   disabled?: boolean,
-  maxId: string | null,
-  onClick: (id: string | null) => void,
+  maxId: string,
+  onClick: (id: string) => void,
 }
 
 const LoadGap: React.FC<ILoadGap> = ({ disabled, maxId, onClick }) => {

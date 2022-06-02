@@ -16,31 +16,32 @@ import type {
   OrderedSet as ImmutableOrderedSet,
 } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
+import type { IScrollableList } from 'soapbox/components/scrollable_list';
 
 const messages = defineMessages({
   queue: { id: 'status_list.queue_label', defaultMessage: 'Click to see {count} new {count, plural, one {post} other {posts}}' },
 });
 
-interface IStatusList {
+interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
   scrollKey: string,
   statusIds: ImmutableOrderedSet<string>,
-  lastStatusId: string,
+  lastStatusId?: string,
   featuredStatusIds?: ImmutableOrderedSet<string>,
-  onLoadMore: (lastStatusId: string | null) => void,
+  onLoadMore?: (lastStatusId: string) => void,
   isLoading: boolean,
-  isPartial: boolean,
+  isPartial?: boolean,
   hasMore: boolean,
-  prepend: React.ReactNode,
+  prepend?: React.ReactNode,
   emptyMessage: React.ReactNode,
-  alwaysPrepend: boolean,
-  timelineId: string,
-  queuedItemSize: number,
-  onDequeueTimeline: (timelineId: string) => void,
-  totalQueuedItemsCount: number,
+  alwaysPrepend?: boolean,
+  timelineId?: string,
+  queuedItemSize?: number,
+  onDequeueTimeline?: (timelineId: string) => void,
+  totalQueuedItemsCount?: number,
   group?: ImmutableMap<string, any>,
-  withGroupAdmin: boolean,
-  onScrollToTop: () => void,
-  onScroll: () => void,
+  withGroupAdmin?: boolean,
+  onScrollToTop?: () => void,
+  onScroll?: () => void,
   divideType: 'space' | 'border',
 }
 
@@ -85,7 +86,7 @@ const StatusList: React.FC<IStatusList> = ({
 
   const handleLoadOlder = useCallback(debounce(() => {
     const loadMoreID = lastStatusId || statusIds.last();
-    if (loadMoreID) {
+    if (onLoadMore && loadMoreID) {
       onLoadMore(loadMoreID);
     }
   }, 300, { leading: true }), []);
@@ -108,12 +109,16 @@ const StatusList: React.FC<IStatusList> = ({
 
   const renderLoadGap = (index: number) => {
     const ids = statusIds.toList();
+    const nextId = ids.get(index + 1);
+    const prevId = ids.get(index - 1);
+
+    if (index < 1 || !nextId || !prevId || !onLoadMore) return null;
 
     return (
       <LoadGap
-        key={'gap:' + ids.get(index + 1)}
+        key={'gap:' + nextId}
         disabled={isLoading}
-        maxId={index > 0 ? ids.get(index - 1) || null : null}
+        maxId={prevId!}
         onClick={onLoadMore}
       />
     );
@@ -143,7 +148,7 @@ const StatusList: React.FC<IStatusList> = ({
     );
   };
 
-  const renderFeaturedStatuses = (): JSX.Element[] => {
+  const renderFeaturedStatuses = (): React.ReactNode[] => {
     if (!featuredStatusIds) return [];
 
     return featuredStatusIds.toArray().map(statusId => (
@@ -159,7 +164,7 @@ const StatusList: React.FC<IStatusList> = ({
     ));
   };
 
-  const renderStatuses = (): JSX.Element[] => {
+  const renderStatuses = (): React.ReactNode[] => {
     if (isLoading || statusIds.size > 0) {
       return statusIds.toArray().map((statusId, index) => {
         if (statusId === null) {

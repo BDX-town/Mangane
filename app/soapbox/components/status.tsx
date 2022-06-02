@@ -101,6 +101,7 @@ interface IStatus extends RouteComponentProps {
   focusable: boolean,
   history: History,
   featured?: boolean,
+  withDismiss?: boolean,
 }
 
 interface IStatusState {
