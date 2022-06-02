@@ -3,13 +3,12 @@ import { debounce } from 'lodash';
 import React, { useRef, useCallback } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
+import LoadGap from 'soapbox/components/load_gap';
+import ScrollableList from 'soapbox/components/scrollable_list';
+import TimelineQueueButtonHeader from 'soapbox/components/timeline_queue_button_header';
 import StatusContainer from 'soapbox/containers/status_container';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
-
-import LoadGap from './load_gap';
-import ScrollableList from './scrollable_list';
-import TimelineQueueButtonHeader from './timeline_queue_button_header';
 
 import type {
   Map as ImmutableMap,
