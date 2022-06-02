@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle, ListRange } from 'react-virtuoso';
 
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
@@ -74,6 +75,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   style = {},
   useWindowScroll = true,
 }, ref) => {
+  const history = useHistory();
   const settings = useSettings();
   const autoloadMore = settings.get('autoloadMore');
 
@@ -176,7 +178,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
       endReached={handleEndReached}
       isScrolling={isScrolling => isScrolling && onScroll && onScroll()}
       itemContent={renderItem}
-      initialTopMostItemIndex={showLoading ? 0 : initialTopMostItemIndex || (scrollData ? { align: 'start', index: scrollData.index, offset: scrollData.offset } : 0)}
+      initialTopMostItemIndex={showLoading ? 0 : initialTopMostItemIndex || (scrollData && history.action === 'POP' ? { align: 'start', index: scrollData.index, offset: scrollData.offset } : 0)}
       rangeChanged={handleRangeChange}
       style={style}
       context={{
