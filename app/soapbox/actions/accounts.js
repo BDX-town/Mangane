@@ -160,7 +160,7 @@ export function fetchAccountByUsername(username) {
 
     if (account) {
       dispatch(fetchAccount(account.get('id')));
-      return;
+      return null;
     }
 
     const instance = state.get('instance');
@@ -168,7 +168,7 @@ export function fetchAccountByUsername(username) {
     const me = state.get('me');
 
     if (features.accountByUsername && (me || !features.accountLookup)) {
-      api(getState).get(`/api/v1/accounts/${username}`).then(response => {
+      return api(getState).get(`/api/v1/accounts/${username}`).then(response => {
         dispatch(fetchRelationships([response.data.id]));
         dispatch(importFetchedAccount(response.data));
         dispatch(fetchAccountSuccess(response.data));
@@ -177,14 +177,14 @@ export function fetchAccountByUsername(username) {
         dispatch(importErrorWhileFetchingAccountByUsername(username));
       });
     } else if (features.accountLookup) {
-      dispatch(accountLookup(username)).then(account => {
+      return dispatch(accountLookup(username)).then(account => {
         dispatch(fetchAccountSuccess(account));
       }).catch(error => {
         dispatch(fetchAccountFail(null, error));
         dispatch(importErrorWhileFetchingAccountByUsername(username));
       });
     } else {
-      dispatch(accountSearch({
+      return dispatch(accountSearch({
         q: username,
         limit: 5,
         resolve: true,

@@ -5,8 +5,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
-import { Switch, useHistory } from 'react-router-dom';
-import { Redirect } from 'react-router-dom';
+import { Switch, useHistory, matchPath, Redirect } from 'react-router-dom';
 
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
 import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin';
@@ -608,7 +607,14 @@ const UI: React.FC = ({ children }) => {
   // Wait for login to succeed or fail
   if (me === null) return null;
 
-  if (!me && !guestExperience) {
+  const isProfileOrStatusPage = !!matchPath(
+    history.location.pathname,
+    ['/@:username', '/@:username/posts/:statusId'],
+  );
+
+  // Require login if Guest Experience is disabled and we're not trying
+  // to render a Profile or Status.
+  if (!me && (!guestExperience && !isProfileOrStatusPage)) {
     cacheCurrentUrl(history.location);
     return <Redirect to='/login' />;
   }

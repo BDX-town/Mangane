@@ -9,6 +9,7 @@ import {
   EmojiRecord,
   FieldRecord,
   InstanceRecord,
+  ListRecord,
   MentionRecord,
   NotificationRecord,
   PollRecord,
@@ -28,6 +29,7 @@ type ChatMessage = ReturnType<typeof ChatMessageRecord>;
 type Emoji = ReturnType<typeof EmojiRecord>;
 type Field = ReturnType<typeof FieldRecord>;
 type Instance = ReturnType<typeof InstanceRecord>;
+type List = ReturnType<typeof ListRecord>;
 type Mention = ReturnType<typeof MentionRecord>;
 type Notification = ReturnType<typeof NotificationRecord>;
 type Poll = ReturnType<typeof PollRecord>;
@@ -61,6 +63,7 @@ export {
   Emoji,
   Field,
   Instance,
+  List,
   Mention,
   Notification,
   Poll,
