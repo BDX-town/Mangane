@@ -215,7 +215,6 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
         Item,
         Footer: loadMore,
       }}
-      overscan={{ main: 200, reverse: 200 }}
     />
   );
 
