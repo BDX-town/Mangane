@@ -14,11 +14,11 @@ const messages = defineMessages({
   queue: { id: 'status_list.queue_label', defaultMessage: 'Click to see {count} new {count, plural, one {post} other {posts}}' },
 });
 
-interface IStatusListContainer extends Omit<IStatusList, 'statusIds' | 'isLoading' | 'hasMore'> {
+interface ITimeline extends Omit<IStatusList, 'statusIds' | 'isLoading' | 'hasMore'> {
   timelineId: string,
 }
 
-const StatusListContainer: React.FC<IStatusListContainer> = ({
+const Timeline: React.FC<ITimeline> = ({
   timelineId,
   onLoadMore,
   ...rest
@@ -68,4 +68,4 @@ const StatusListContainer: React.FC<IStatusListContainer> = ({
   );
 };
 
-export default StatusListContainer;
+export default Timeline;

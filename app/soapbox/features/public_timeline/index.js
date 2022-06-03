@@ -12,7 +12,7 @@ import { Column } from 'soapbox/components/ui';
 import Accordion from 'soapbox/features/ui/components/accordion';
 
 import PinnedHostsPicker from '../remote_timeline/components/pinned_hosts_picker';
-import StatusListContainer from '../ui/containers/status_list_container';
+import Timeline from '../ui/components/timeline';
 
 import ColumnSettings from './containers/column_settings_container';
 
@@ -130,7 +130,7 @@ class CommunityTimeline extends React.PureComponent {
             />
           </Accordion>
         </div>}
-        <StatusListContainer
+        <Timeline
           scrollKey={`${timelineId}_timeline`}
           timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}
           onLoadMore={this.handleLoadMore}

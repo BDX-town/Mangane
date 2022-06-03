@@ -12,7 +12,7 @@ import { Button, Spinner } from 'soapbox/components/ui';
 import Column from 'soapbox/features/ui/components/column';
 import { useAppSelector } from 'soapbox/hooks';
 
-import StatusListContainer from '../ui/containers/status_list_container';
+import Timeline from '../ui/components/timeline';
 
 // const messages = defineMessages({
 //   deleteHeading: { id: 'confirmations.delete_list.heading', defaultMessage: 'Delete list' },
@@ -110,7 +110,7 @@ const ListTimeline: React.FC = () => {
         </div>
       </HomeColumnHeader> */}
 
-      <StatusListContainer
+      <Timeline
         scrollKey='list_timeline'
         timelineId={`list:${id}`}
         onLoadMore={handleLoadMore}
