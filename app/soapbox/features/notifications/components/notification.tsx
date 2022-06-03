@@ -260,8 +260,8 @@ const Notification: React.FC<INotificaton> = (props) => {
       case 'poll':
       case 'pleroma:emoji_reaction':
         return status && typeof status === 'object' ? (
+          // @ts-ignore
           <StatusContainer
-            // @ts-ignore
             id={status.id}
             withDismiss
             hidden={hidden}

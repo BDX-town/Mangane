@@ -1,13 +1,12 @@
 import { debounce } from 'lodash';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from 'soapbox/actions/bookmarks';
 import StatusList from 'soapbox/components/status_list';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { Column } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
 const messages = defineMessages({
   heading: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
@@ -18,7 +17,7 @@ const handleLoadMore = debounce((dispatch) => {
 }, 300, { leading: true });
 
 const Bookmarks: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const statusIds = useAppSelector((state) => state.status_lists.getIn(['bookmarks', 'items']));
@@ -42,7 +41,7 @@ const Bookmarks: React.FC = () => {
       </div>
       <StatusList
         statusIds={statusIds}
-        scrollKey={'bookmarked_statuses'}
+        scrollKey='bookmarked_statuses'
         hasMore={hasMore}
         isLoading={isLoading}
         onLoadMore={() => handleLoadMore(dispatch)}

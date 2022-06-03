@@ -1,3 +1,4 @@
+import { fromJS } from 'immutable';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
@@ -14,9 +15,11 @@ describe('<TimelineQueueButtonHeader />', () => {
       <TimelineQueueButtonHeader
         key='timeline-queue-button-header'
         onClick={() => {}} // eslint-disable-line react/jsx-no-bind
-        count={0}
+        timelineId='home'
         message={messages.queue}
       />,
+      undefined,
+      { timelines: fromJS({ home: { totalQueuedItemsCount: 0 } }) },
     );
     expect(screen.queryAllByRole('link')).toHaveLength(0);
 
@@ -24,20 +27,24 @@ describe('<TimelineQueueButtonHeader />', () => {
       <TimelineQueueButtonHeader
         key='timeline-queue-button-header'
         onClick={() => {}} // eslint-disable-line react/jsx-no-bind
-        count={1}
+        timelineId='home'
         message={messages.queue}
       />,
+      undefined,
+      { timelines: fromJS({ home: { totalQueuedItemsCount: 1 } }) },
     );
-    expect(screen.getByText('Click to see 1 new post', { hidden: true })).toBeInTheDocument();
+    expect(screen.getByText(/Click to see\s+1\s+new post/, { hidden: true })).toBeInTheDocument();
 
     render(
       <TimelineQueueButtonHeader
         key='timeline-queue-button-header'
         onClick={() => {}} // eslint-disable-line react/jsx-no-bind
-        count={9999999}
+        timelineId='home'
         message={messages.queue}
       />,
+      undefined,
+      { timelines: fromJS({ home: { totalQueuedItemsCount: 9999999 } }) },
     );
-    expect(screen.getByText('Click to see 9999999 new posts', { hidden: true })).toBeInTheDocument();
+    expect(screen.getByText(/10.*M/, { hidden: true })).toBeInTheDocument();
   });
 });
