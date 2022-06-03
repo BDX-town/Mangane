@@ -68,11 +68,11 @@ const StatusList: React.FC<IStatusList> = ({
   };
 
   const handleLoadOlder = useCallback(debounce(() => {
-    const loadMoreID = lastStatusId || statusIds.last();
-    if (onLoadMore && loadMoreID) {
-      onLoadMore(loadMoreID);
+    const maxId = lastStatusId || statusIds.last();
+    if (onLoadMore && maxId) {
+      onLoadMore(maxId);
     }
-  }, 300, { leading: true }), []);
+  }, 300, { leading: true }), [onLoadMore, lastStatusId, statusIds.last()]);
 
   const selectChild = (index: number) => {
     node.current?.scrollIntoView({
