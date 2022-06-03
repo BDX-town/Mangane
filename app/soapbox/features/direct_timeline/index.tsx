@@ -9,7 +9,7 @@ import ColumnHeader from 'soapbox/components/column_header';
 import { Column } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
-import StatusListContainer from '../ui/containers/status_list_container';
+import Timeline from '../ui/components/timeline';
 
 const messages = defineMessages({
   title: { id: 'column.direct', defaultMessage: 'Direct messages' },
@@ -52,7 +52,7 @@ const DirectTimeline = () => {
         onSelected={handleSuggestion}
       />
 
-      <StatusListContainer
+      <Timeline
         scrollKey='direct_timeline'
         timelineId='direct'
         onLoadMore={handleLoadMore}

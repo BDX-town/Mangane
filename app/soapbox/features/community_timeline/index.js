@@ -9,7 +9,7 @@ import { expandCommunityTimeline } from 'soapbox/actions/timelines';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { Column } from 'soapbox/components/ui';
 
-import StatusListContainer from '../ui/containers/status_list_container';
+import Timeline from '../ui/components/timeline';
 
 import ColumnSettings from './containers/column_settings_container';
 
@@ -81,7 +81,7 @@ class CommunityTimeline extends React.PureComponent {
     return (
       <Column label={intl.formatMessage(messages.title)} transparent>
         <SubNavigation message={intl.formatMessage(messages.title)} settings={ColumnSettings} />
-        <StatusListContainer
+        <Timeline
           scrollKey={`${timelineId}_timeline`}
           timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}
           onLoadMore={this.handleLoadMore}
