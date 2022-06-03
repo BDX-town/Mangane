@@ -15,9 +15,11 @@ const messages = defineMessages({
 });
 
 interface ITimeline extends Omit<IStatusList, 'statusIds' | 'isLoading' | 'hasMore'> {
+  /** ID of the timeline in Redux. */
   timelineId: string,
 }
 
+/** Scrollable list of statuses from a timeline in the Redux store. */
 const Timeline: React.FC<ITimeline> = ({
   timelineId,
   onLoadMore,
@@ -55,6 +57,7 @@ const Timeline: React.FC<ITimeline> = ({
       />
 
       <StatusList
+        timelineId={timelineId}
         onScrollToTop={handleScrollToTop}
         onScroll={handleScroll}
         lastStatusId={lastStatusId}

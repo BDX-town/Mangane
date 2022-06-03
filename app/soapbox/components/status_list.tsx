@@ -14,24 +14,31 @@ import type { VirtuosoHandle } from 'react-virtuoso';
 import type { IScrollableList } from 'soapbox/components/scrollable_list';
 
 interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
+  /** Unique key to preserve the scroll position when navigating back. */
   scrollKey: string,
+  /** List of status IDs to display. */
   statusIds: ImmutableOrderedSet<string>,
+  /** Last _unfiltered_ status ID (maxId) for pagination.  */
   lastStatusId?: string,
+  /** Pinned statuses to show at the top of the feed. */
   featuredStatusIds?: ImmutableOrderedSet<string>,
+  /** Pagination callback when the end of the list is reached. */
   onLoadMore?: (lastStatusId: string) => void,
+  /** Whether the data is currently being fetched. */
   isLoading: boolean,
+  /** Whether the server did not return a complete page. */
   isPartial?: boolean,
+  /** Whether we expect an additional page of data. */
   hasMore: boolean,
-  prepend?: React.ReactNode,
+  /** Message to display when the list is loaded but empty. */
   emptyMessage: React.ReactNode,
-  alwaysPrepend?: boolean,
+  /** ID of the timeline in Redux. */
   timelineId?: string,
-  queuedItemSize?: number,
-  onScrollToTop?: () => void,
-  onScroll?: () => void,
+  /** Whether to display a gap or border between statuses in the list. */
   divideType: 'space' | 'border',
 }
 
+/** Feed of statuses, built atop ScrollableList. */
 const StatusList: React.FC<IStatusList> = ({
   statusIds,
   lastStatusId,

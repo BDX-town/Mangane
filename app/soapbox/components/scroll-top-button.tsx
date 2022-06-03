@@ -9,13 +9,19 @@ import { useSettings } from 'soapbox/hooks';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 interface IScrollTopButton {
+  /** Callback when clicked, and also when scrolled to the top. */
   onClick: () => void,
+  /** Number of unread items. */
   count: number,
+  /** Message to display in the button (should contain a `{count}` value). */
   message: MessageDescriptor,
+  /** Distance from the top of the screen (scrolling down) before the button appears. */
   threshold?: number,
+  /** Distance from the top of the screen (scrolling up) before the action is triggered. */
   autoloadThreshold?: number,
 }
 
+/** Floating new post counter above timelines, clicked to scroll to top. */
 const ScrollTopButton: React.FC<IScrollTopButton> = ({
   onClick,
   count,
@@ -41,7 +47,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
     } else {
       setScrolled(false);
     }
-  }, 150, { trailing: true }), []);
+  }, 150, { trailing: true }), [autoload, threshold, autoloadThreshold]);
 
   const scrollUp = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
