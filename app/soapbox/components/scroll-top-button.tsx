@@ -8,7 +8,7 @@ import { Text } from 'soapbox/components/ui';
 import { useAppSelector, useSettings } from 'soapbox/hooks';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
-interface ITimelineQueueButtonHeader {
+interface IScrollTopButton {
   onClick: () => void,
   timelineId: string,
   message: MessageDescriptor,
@@ -16,7 +16,7 @@ interface ITimelineQueueButtonHeader {
   autoloadThreshold?: number,
 }
 
-const TimelineQueueButtonHeader: React.FC<ITimelineQueueButtonHeader> = ({
+const ScrollTopButton: React.FC<IScrollTopButton> = ({
   onClick,
   timelineId,
   message,
@@ -82,4 +82,4 @@ const TimelineQueueButtonHeader: React.FC<ITimelineQueueButtonHeader> = ({
   );
 };
 
-export default TimelineQueueButtonHeader;
+export default ScrollTopButton;

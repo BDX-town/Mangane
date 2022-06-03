@@ -3,17 +3,17 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { render, screen } from '../../jest/test-helpers';
-import TimelineQueueButtonHeader from '../timeline_queue_button_header';
+import ScrollTopButton from '../scroll-top-button';
 
 const messages = defineMessages({
   queue: { id: 'status_list.queue_label', defaultMessage: 'Click to see {count} new {count, plural, one {post} other {posts}}' },
 });
 
-describe('<TimelineQueueButtonHeader />', () => {
+describe('<ScrollTopButton />', () => {
   it('renders correctly', async() => {
     render(
-      <TimelineQueueButtonHeader
-        key='timeline-queue-button-header'
+      <ScrollTopButton
+        key='scroll-top-button'
         onClick={() => {}} // eslint-disable-line react/jsx-no-bind
         timelineId='home'
         message={messages.queue}
@@ -24,8 +24,8 @@ describe('<TimelineQueueButtonHeader />', () => {
     expect(screen.queryAllByRole('link')).toHaveLength(0);
 
     render(
-      <TimelineQueueButtonHeader
-        key='timeline-queue-button-header'
+      <ScrollTopButton
+        key='scroll-top-button'
         onClick={() => {}} // eslint-disable-line react/jsx-no-bind
         timelineId='home'
         message={messages.queue}
@@ -36,8 +36,8 @@ describe('<TimelineQueueButtonHeader />', () => {
     expect(screen.getByText(/Click to see\s+1\s+new post/, { hidden: true })).toBeInTheDocument();
 
     render(
-      <TimelineQueueButtonHeader
-        key='timeline-queue-button-header'
+      <ScrollTopButton
+        key='scroll-top-button'
         onClick={() => {}} // eslint-disable-line react/jsx-no-bind
         timelineId='home'
         message={messages.queue}
