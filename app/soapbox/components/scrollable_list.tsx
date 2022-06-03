@@ -1,4 +1,4 @@
-import { throttle } from 'lodash';
+import { debounce } from 'lodash';
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle, ListRange, IndexLocationWithAlign } from 'react-virtuoso';
@@ -106,7 +106,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
     data.push(<Spinner />);
   }
 
-  const handleScroll = useCallback(throttle(() => {
+  const handleScroll = useCallback(debounce(() => {
     // HACK: Virtuoso has no better way to get this...
     const node = document.querySelector(`[data-virtuoso-scroller] [data-item-index="${topIndex.current}"]`);
     if (node) {
