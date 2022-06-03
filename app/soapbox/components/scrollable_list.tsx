@@ -111,6 +111,8 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
     const node = document.querySelector(`[data-virtuoso-scroller] [data-item-index="${topIndex.current}"]`);
     if (node) {
       topOffset.current = node.getBoundingClientRect().top * -1;
+    } else {
+      topOffset.current = 0;
     }
   }, 150, { trailing: true }), []);
 
