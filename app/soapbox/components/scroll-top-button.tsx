@@ -6,7 +6,6 @@ import { useIntl, MessageDescriptor } from 'react-intl';
 import Icon from 'soapbox/components/icon';
 import { Text } from 'soapbox/components/ui';
 import { useSettings } from 'soapbox/hooks';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 interface IScrollTopButton {
   /** Callback when clicked, and also when scrolled to the top. */
@@ -79,7 +78,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
 
         {(count > 0) && (
           <Text theme='inherit' size='sm'>
-            {intl.formatMessage(message, { count: shortNumberFormat(count) })}
+            {intl.formatMessage(message, { count })}
           </Text>
         )}
       </a>

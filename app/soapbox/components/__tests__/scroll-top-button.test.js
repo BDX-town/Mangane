@@ -1,4 +1,3 @@
-import { fromJS } from 'immutable';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
@@ -14,37 +13,31 @@ describe('<ScrollTopButton />', () => {
     render(
       <ScrollTopButton
         key='scroll-top-button'
-        onClick={() => {}} // eslint-disable-line react/jsx-no-bind
-        timelineId='home'
+        onClick={() => {}}
+        count={0}
         message={messages.queue}
       />,
-      undefined,
-      { timelines: fromJS({ home: { totalQueuedItemsCount: 0 } }) },
     );
     expect(screen.queryAllByRole('link')).toHaveLength(0);
 
     render(
       <ScrollTopButton
         key='scroll-top-button'
-        onClick={() => {}} // eslint-disable-line react/jsx-no-bind
-        timelineId='home'
+        onClick={() => {}}
+        count={1}
         message={messages.queue}
       />,
-      undefined,
-      { timelines: fromJS({ home: { totalQueuedItemsCount: 1 } }) },
     );
-    expect(screen.getByText(/Click to see\s+1\s+new post/, { hidden: true })).toBeInTheDocument();
+    expect(screen.getByText('Click to see 1 new post', { hidden: true })).toBeInTheDocument();
 
     render(
       <ScrollTopButton
         key='scroll-top-button'
-        onClick={() => {}} // eslint-disable-line react/jsx-no-bind
-        timelineId='home'
+        onClick={() => {}}
+        count={9999999}
         message={messages.queue}
       />,
-      undefined,
-      { timelines: fromJS({ home: { totalQueuedItemsCount: 9999999 } }) },
     );
-    expect(screen.getByText(/10.*M/, { hidden: true })).toBeInTheDocument();
+    expect(screen.getByText('Click to see 9999999 new posts', { hidden: true })).toBeInTheDocument();
   });
 });
