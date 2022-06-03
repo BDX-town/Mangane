@@ -6,6 +6,7 @@ import { useIntl, MessageDescriptor } from 'react-intl';
 import Icon from 'soapbox/components/icon';
 import { Text } from 'soapbox/components/ui';
 import { useAppSelector, useSettings } from 'soapbox/hooks';
+import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 interface ITimelineQueueButtonHeader {
   onClick: () => void,
@@ -73,7 +74,7 @@ const TimelineQueueButtonHeader: React.FC<ITimelineQueueButtonHeader> = ({
 
         {(count > 0) && (
           <Text theme='inherit' size='sm'>
-            {intl.formatMessage(message, { count })}
+            {intl.formatMessage(message, { count: shortNumberFormat(count) })}
           </Text>
         )}
       </a>
