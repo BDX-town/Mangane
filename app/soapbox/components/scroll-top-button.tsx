@@ -49,7 +49,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
   }, 150, { trailing: true }), [autoload, threshold, autoloadThreshold]);
 
   const scrollUp = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0 });
   };
 
   const handleClick: React.MouseEventHandler = () => {
