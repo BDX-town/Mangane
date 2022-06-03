@@ -31,6 +31,7 @@ const Timeline: React.FC<ITimeline> = ({
   const isLoading = useAppSelector(state => state.timelines.getIn([timelineId, 'isLoading'], true) === true);
   const isPartial = useAppSelector(state => state.timelines.getIn([timelineId, 'isPartial'], false) === true);
   const hasMore = useAppSelector(state => state.timelines.getIn([timelineId, 'hasMore']) === true);
+  const totalQueuedItemsCount = useAppSelector(state => state.timelines.getIn([timelineId, 'totalQueuedItemsCount']));
 
   const handleDequeueTimeline = () => {
     dispatch(dequeueTimeline(timelineId, onLoadMore));
@@ -49,7 +50,7 @@ const Timeline: React.FC<ITimeline> = ({
       <ScrollTopButton
         key='timeline-queue-button-header'
         onClick={handleDequeueTimeline}
-        timelineId={timelineId}
+        count={totalQueuedItemsCount}
         message={messages.queue}
       />
 
