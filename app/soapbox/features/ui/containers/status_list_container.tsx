@@ -38,11 +38,11 @@ const StatusListContainer: React.FC<IStatusListContainer> = ({
 
   const handleScrollToTop = useCallback(debounce(() => {
     dispatch(scrollTopTimeline(timelineId, true));
-  }, 100), []);
+  }, 100), [timelineId]);
 
   const handleScroll = useCallback(debounce(() => {
     dispatch(scrollTopTimeline(timelineId, false));
-  }, 100), []);
+  }, 100), [timelineId]);
 
   return (
     <>
