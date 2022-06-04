@@ -57,12 +57,14 @@ export default class AutosuggestInput extends ImmutablePureComponent {
     searchTokens: PropTypes.arrayOf(PropTypes.string),
     maxLength: PropTypes.number,
     menu: PropTypes.arrayOf(PropTypes.object),
+    resultsPosition: PropTypes.string,
   };
 
   static defaultProps = {
     autoFocus: false,
     autoSelect: true,
     searchTokens: ImmutableList(['@', ':', '#']),
+    resultsPosition: 'below',
   };
 
   getFirstIndex = () => {
@@ -255,7 +257,7 @@ export default class AutosuggestInput extends ImmutablePureComponent {
   };
 
   render() {
-    const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength, menu } = this.props;
+    const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength, menu, resultsPosition } = this.props;
     const { suggestionsHidden } = this.state;
     const style = { direction: 'ltr' };
 
@@ -293,7 +295,9 @@ export default class AutosuggestInput extends ImmutablePureComponent {
         />
 
         <div className={classNames({
-          'absolute top-full w-full z-50 shadow bg-white dark:bg-slate-800 rounded-lg py-1': true,
+          'absolute w-full z-50 shadow bg-white dark:bg-slate-800 rounded-lg py-1': true,
+          'top-full': resultsPosition === 'below',
+          'bottom-full': resultsPosition === 'above',
           hidden: !visible,
           block: visible,
         })}
