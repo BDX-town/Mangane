@@ -5,16 +5,11 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { getFeatures } from 'soapbox/utils/features';
 
 import { expandHomeTimeline } from '../../actions/timelines';
 import { Column } from '../../components/ui';
 import Timeline from '../ui/components/timeline';
-
-function FollowRecommendationsContainer() {
-  return import(/* webpackChunkName: "features/follow_recommendations" */'soapbox/features/follow_recommendations/components/follow_recommendations_container');
-}
 
 const messages = defineMessages({
   title: { id: 'column.home', defaultMessage: 'Home' },
@@ -92,37 +87,24 @@ class HomeTimeline extends React.PureComponent {
     }
   }
 
-  handleDone = e => {
-    this.props.dispatch(expandHomeTimeline());
-    this.setState({ done: true });
-  }
-
   handleRefresh = () => {
     const { dispatch } = this.props;
     return dispatch(expandHomeTimeline());
   }
 
   render() {
-    const { intl, siteTitle, isLoading, loadingFailed, isEmpty, features } = this.props;
-    const { done } = this.state;
-    const showSuggestions = features.suggestions && isEmpty && !isLoading && !loadingFailed && !done;
+    const { intl, siteTitle } = this.props;
 
     return (
-      <Column label={intl.formatMessage(messages.title)} transparent={!showSuggestions}>
-        {showSuggestions ? (
-          <BundleContainer fetchComponent={FollowRecommendationsContainer}>
-            {Component => <Component onDone={this.handleDone} />}
-          </BundleContainer>
-        ) : (
-          <Timeline
-            scrollKey='home_timeline'
-            onLoadMore={this.handleLoadMore}
-            onRefresh={this.handleRefresh}
-            timelineId='home'
-            divideType='space'
-            emptyMessage={<FormattedMessage id='empty_column.home' defaultMessage='Your home timeline is empty! Visit {public} to get started and meet other users.' values={{ public: <Link to='/timeline/local'><FormattedMessage id='empty_column.home.local_tab' defaultMessage='the {site_title} tab' values={{ site_title: siteTitle }} /></Link> }} />}
-          />
-        )}
+      <Column label={intl.formatMessage(messages.title)}>
+        <Timeline
+          scrollKey='home_timeline'
+          onLoadMore={this.handleLoadMore}
+          onRefresh={this.handleRefresh}
+          timelineId='home'
+          divideType='space'
+          emptyMessage={<FormattedMessage id='empty_column.home' defaultMessage='Your home timeline is empty! Visit {public} to get started and meet other users.' values={{ public: <Link to='/timeline/local'><FormattedMessage id='empty_column.home.local_tab' defaultMessage='the {site_title} tab' values={{ site_title: siteTitle }} /></Link> }} />}
+        />
       </Column>
     );
   }
