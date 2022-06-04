@@ -59,7 +59,7 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
     onChange(e);
   };
 
-  const handleSelected = (_tokenStart: string, _lastToken: string, accountId: string) => {
+  const handleSelected = (_tokenStart: number, _lastToken: string | null, accountId: string) => {
     onSelected(accountId);
   };
 
