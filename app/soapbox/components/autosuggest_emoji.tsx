@@ -3,7 +3,8 @@ import React from 'react';
 import unicodeMapping from 'soapbox/features/emoji/emoji_unicode_mapping_light';
 import { joinPublicPath } from 'soapbox/utils/static';
 
-type Emoji = {
+export type Emoji = {
+  id: string,
   custom: boolean,
   imageUrl: string,
   native: string,

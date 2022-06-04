@@ -3,7 +3,7 @@ import { throttle } from 'lodash';
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 
 import { accountSearch } from 'soapbox/actions/accounts';
-import AutosuggestInput from 'soapbox/components/autosuggest_input';
+import AutosuggestInput, { Suggestion } from 'soapbox/components/autosuggest_input';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import type { Menu } from 'soapbox/components/dropdown_menu';
@@ -59,8 +59,10 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
     onChange(e);
   };
 
-  const handleSelected = (_tokenStart: number, _lastToken: string | null, accountId: string) => {
-    onSelected(accountId);
+  const handleSelected = (_tokenStart: number, _lastToken: string | null, suggestion: Suggestion) => {
+    if (typeof suggestion === 'string' && suggestion[0] !== '#') {
+      onSelected(suggestion);
+    }
   };
 
   useEffect(() => {

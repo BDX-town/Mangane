@@ -3,7 +3,7 @@ import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import AutosuggestEmoji from 'soapbox/components/autosuggest_emoji';
+import AutosuggestEmoji, { Emoji } from 'soapbox/components/autosuggest_emoji';
 import Icon from 'soapbox/components/icon';
 import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest_account';
 import { isRtl } from 'soapbox/rtl';
@@ -14,6 +14,8 @@ type CursorMatch = [
   tokenStart: number | null,
   token: string | null,
 ];
+
+export type Suggestion = string | Emoji;
 
 const textAtCursorMatchesToken = (str: string, caretPosition: number, searchTokens: string[]): CursorMatch => {
   let word: string;
@@ -45,7 +47,7 @@ interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputElement>,
   suggestions: ImmutableList<any>,
   disabled?: boolean,
   placeholder?: string,
-  onSuggestionSelected: (tokenStart: number, lastToken: string | null, suggestion: any) => void,
+  onSuggestionSelected: (tokenStart: number, lastToken: string | null, suggestion: Suggestion) => void,
   onSuggestionsClearRequested: () => void,
   onSuggestionsFetchRequested: (token: string) => void,
   autoFocus: boolean,
@@ -193,7 +195,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     this.input = c;
   }
 
-  renderSuggestion = (suggestion: any, i: number) => {
+  renderSuggestion = (suggestion: Suggestion, i: number) => {
     const { selectedSuggestion } = this.state;
     let inner, key;
 
