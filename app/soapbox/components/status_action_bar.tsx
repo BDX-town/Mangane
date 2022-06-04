@@ -581,7 +581,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
     const favouriteCount = status.favourites_count;
 
     const emojiReactCount = reduceEmoji(
-      (status.getIn(['pleroma', 'emoji_reactions']) || ImmutableList()) as ImmutableList<any>,
+      (status.pleroma.get('emoji_reactions') || ImmutableList()) as ImmutableList<any>,
       favouriteCount,
       status.favourited,
       allowedEmoji,

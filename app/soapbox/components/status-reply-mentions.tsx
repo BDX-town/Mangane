@@ -21,15 +21,15 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status }) => {
 
     dispatch(openModal('MENTIONS', {
       username: status.getIn(['account', 'acct']),
-      statusId: status.get('id'),
+      statusId: status.id,
     }));
   };
 
-  if (!status.get('in_reply_to_id')) {
+  if (!status.in_reply_to_id) {
     return null;
   }
 
-  const to = status.get('mentions', ImmutableList());
+  const to = status.mentions || ImmutableList();
 
   // The post is a reply, but it has no mentions.
   // Rare, but it can happen.

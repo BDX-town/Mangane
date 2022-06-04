@@ -332,7 +332,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   handleEditClick = (status: StatusEntity) => {
     const { dispatch } = this.props;
 
-    dispatch(editStatus(status.get('id')));
+    dispatch(editStatus(status.id));
   }
 
   handleDirectClick = (account: AccountEntity, router: History) => {

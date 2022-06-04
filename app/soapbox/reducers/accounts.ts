@@ -30,15 +30,14 @@ import {
   ADMIN_USERS_UNSUGGEST_FAIL,
 } from 'soapbox/actions/admin';
 import { CHATS_FETCH_SUCCESS, CHATS_EXPAND_SUCCESS, CHAT_FETCH_SUCCESS } from 'soapbox/actions/chats';
-import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
-import { normalizeAccount } from 'soapbox/normalizers/account';
-import { normalizeId } from 'soapbox/utils/normalizers';
-
 import {
   ACCOUNT_IMPORT,
   ACCOUNTS_IMPORT,
   ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP,
-} from '../actions/importer';
+} from 'soapbox/actions/importer';
+import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
+import { normalizeAccount } from 'soapbox/normalizers/account';
+import { normalizeId } from 'soapbox/utils/normalizers';
 
 type AccountRecord = ReturnType<typeof normalizeAccount>;
 type AccountMap = ImmutableMap<string, any>;

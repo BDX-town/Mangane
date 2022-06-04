@@ -47,9 +47,9 @@ const SelectedStatus = ({ statusId }: { statusId: string }) => {
   return (
     <Stack space={2} className='p-4 rounded-lg bg-gray-100 dark:bg-slate-700'>
       <AccountContainer
-        id={status.get('account') as any}
+        id={status.account as any}
         showProfileHoverCard={false}
-        timestamp={status.get('created_at')}
+        timestamp={status.created_at}
         hideActions
       />
 
@@ -59,10 +59,10 @@ const SelectedStatus = ({ statusId }: { statusId: string }) => {
         collapsable
       />
 
-      {status.get('media_attachments').size > 0 && (
+      {status.media_attachments.size > 0 && (
         <AttachmentThumbs
-          media={status.get('media_attachments')}
-          sensitive={status.get('sensitive')}
+          media={status.media_attachments}
+          sensitive={status.sensitive}
         />
       )}
     </Stack>

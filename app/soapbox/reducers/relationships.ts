@@ -1,7 +1,8 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import { get } from 'lodash';
 
 import { STREAMING_FOLLOW_RELATIONSHIPS_UPDATE } from 'soapbox/actions/streaming';
+import { normalizeRelationship } from 'soapbox/normalizers/relationship';
 
 import { ACCOUNT_NOTE_SUBMIT_SUCCESS } from '../actions/account-notes';
 import {
@@ -31,17 +32,22 @@ import {
   ACCOUNTS_IMPORT,
 } from '../actions/importer';
 
-const normalizeRelationship = (state, relationship) => state.set(relationship.id, fromJS(relationship));
+import type { AnyAction } from 'redux';
 
-const normalizeRelationships = (state, relationships) => {
+type Relationship = ReturnType<typeof normalizeRelationship>;
+type State = ImmutableMap<string, Relationship>;
+type APIEntity = Record<string, any>;
+type APIEntities = Array<APIEntity>;
+
+const normalizeRelationships = (state: State, relationships: APIEntities) => {
   relationships.forEach(relationship => {
-    state = normalizeRelationship(state, relationship);
+    state = state.set(relationship.id, normalizeRelationship(relationship));
   });
 
   return state;
 };
 
-const setDomainBlocking = (state, accounts, blocking) => {
+const setDomainBlocking = (state: State, accounts: ImmutableList<string>, blocking: boolean) => {
   return state.withMutations(map => {
     accounts.forEach(id => {
       map.setIn([id, 'domain_blocking'], blocking);
@@ -49,14 +55,14 @@ const setDomainBlocking = (state, accounts, blocking) => {
   });
 };
 
-const importPleromaAccount = (state, account) => {
+const importPleromaAccount = (state: State, account: APIEntity) => {
   const relationship = get(account, ['pleroma', 'relationship'], {});
   if (relationship.id && relationship !== {})
-    return normalizeRelationship(state, relationship);
+    return normalizeRelationships(state, [relationship]);
   return state;
 };
 
-const importPleromaAccounts = (state, accounts) => {
+const importPleromaAccounts = (state: State, accounts: APIEntities) => {
   accounts.forEach(account => {
     state = importPleromaAccount(state, account);
   });
@@ -64,7 +70,7 @@ const importPleromaAccounts = (state, accounts) => {
   return state;
 };
 
-const followStateToRelationship = followState => {
+const followStateToRelationship = (followState: string) => {
   switch (followState) {
     case 'follow_pending':
       return { following: false, requested: true };
@@ -77,14 +83,12 @@ const followStateToRelationship = followState => {
   }
 };
 
-const updateFollowRelationship = (state, id, followState) => {
+const updateFollowRelationship = (state: State, id: string, followState: string) => {
   const map = followStateToRelationship(followState);
-  return state.update(id, ImmutableMap(), relationship => relationship.merge(map));
+  return state.update(id, normalizeRelationship({}), relationship => relationship.merge(map));
 };
 
-const initialState = ImmutableMap();
-
-export default function relationships(state = initialState, action) {
+export default function relationships(state: State = ImmutableMap<string, Relationship>(), action: AnyAction) {
   switch (action.type) {
     case ACCOUNT_IMPORT:
       return importPleromaAccount(state, action.account);
@@ -110,7 +114,7 @@ export default function relationships(state = initialState, action) {
     case ACCOUNT_UNPIN_SUCCESS:
     case ACCOUNT_NOTE_SUBMIT_SUCCESS:
     case ACCOUNT_REMOVE_FROM_FOLLOWERS_SUCCESS:
-      return normalizeRelationship(state, action.relationship);
+      return normalizeRelationships(state, [action.relationship]);
     case RELATIONSHIPS_FETCH_SUCCESS:
       return normalizeRelationships(state, action.relationships);
     case DOMAIN_BLOCK_SUCCESS:

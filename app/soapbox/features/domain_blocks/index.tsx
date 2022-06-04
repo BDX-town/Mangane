@@ -24,8 +24,8 @@ const DomainBlocks: React.FC = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const domains = useAppSelector((state) => state.domain_lists.getIn(['blocks', 'items'])) as string[];
-  const hasMore = useAppSelector((state) => !!state.domain_lists.getIn(['blocks', 'next']));
+  const domains = useAppSelector((state) => state.domain_lists.blocks.items);
+  const hasMore = useAppSelector((state) => !!state.domain_lists.blocks.next);
 
   React.useEffect(() => {
     dispatch(fetchDomainBlocks());

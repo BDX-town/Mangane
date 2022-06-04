@@ -14,6 +14,7 @@ import {
   NotificationRecord,
   PollRecord,
   PollOptionRecord,
+  RelationshipRecord,
   StatusEditRecord,
   StatusRecord,
 } from 'soapbox/normalizers';
@@ -34,6 +35,7 @@ type Mention = ReturnType<typeof MentionRecord>;
 type Notification = ReturnType<typeof NotificationRecord>;
 type Poll = ReturnType<typeof PollRecord>;
 type PollOption = ReturnType<typeof PollOptionRecord>;
+type Relationship = ReturnType<typeof RelationshipRecord>;
 type StatusEdit = ReturnType<typeof StatusEditRecord>;
 
 interface Account extends ReturnType<typeof AccountRecord> {
@@ -68,6 +70,7 @@ export {
   Notification,
   Poll,
   PollOption,
+  Relationship,
   Status,
   StatusEdit,
 

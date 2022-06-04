@@ -343,7 +343,7 @@ const UI: React.FC = ({ children }) => {
   const features = useFeatures();
   const vapidKey = useAppSelector(state => getVapidKey(state));
 
-  const dropdownMenuIsOpen = useAppSelector(state => state.dropdown_menu.get('openId') !== null);
+  const dropdownMenuIsOpen = useAppSelector(state => state.dropdown_menu.openId !== null);
   const accessToken = useAppSelector(state => getAccessToken(state));
   const streamingUrl = useAppSelector(state => state.instance.urls.get('streaming_api'));
   const standalone = useAppSelector(isStandalone);

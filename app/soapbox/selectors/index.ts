@@ -22,7 +22,7 @@ const getAccountBase         = (state: RootState, id: string) => state.accounts.
 const getAccountCounters     = (state: RootState, id: string) => state.accounts_counters.get(id);
 const getAccountRelationship = (state: RootState, id: string) => state.relationships.get(id);
 const getAccountMoved        = (state: RootState, id: string) => state.accounts.get(state.accounts.get(id)?.moved || '');
-const getAccountMeta         = (state: RootState, id: string) => state.accounts_meta.get(id, ImmutableMap());
+const getAccountMeta         = (state: RootState, id: string) => state.accounts_meta.get(id);
 const getAccountAdminData    = (state: RootState, id: string) => state.admin.users.get(id);
 const getAccountPatron       = (state: RootState, id: string) => {
   const url = state.accounts.get(id)?.url;
@@ -42,10 +42,12 @@ export const makeGetAccount = () => {
     if (!base) return null;
 
     return base.withMutations(map => {
-      map.merge(counters);
-      map.merge(meta);
-      map.set('pleroma', meta.get('pleroma', ImmutableMap()).merge(base.get('pleroma', ImmutableMap()))); // Lol, thanks Pleroma
-      map.set('relationship', relationship);
+      if (counters) map.merge(counters);
+      if (meta) {
+        map.merge(meta);
+        map.set('pleroma', meta.pleroma.merge(base.get('pleroma', ImmutableMap()))); // Lol, thanks Pleroma
+      }
+      if (relationship) map.set('relationship', relationship);
       map.set('moved', moved || null);
       map.set('patron', patron || null);
       map.setIn(['pleroma', 'admin'], admin);

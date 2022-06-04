@@ -17,7 +17,7 @@ import { unescapeHTML } from 'soapbox/utils/html';
 import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers';
 
 import type { PatronAccount } from 'soapbox/reducers/patron';
-import type { Emoji, Field, EmbeddedEntity } from 'soapbox/types/entities';
+import type { Emoji, Field, EmbeddedEntity, Relationship } from 'soapbox/types/entities';
 
 // https://docs.joinmastodon.org/entities/account/
 export const AccountRecord = ImmutableRecord({
@@ -61,7 +61,7 @@ export const AccountRecord = ImmutableRecord({
   note_emojified: '',
   note_plain: '',
   patron: null as PatronAccount | null,
-  relationship: ImmutableMap<string, any>(),
+  relationship: null as Relationship | null,
   should_refetch: false,
   staff: false,
 });

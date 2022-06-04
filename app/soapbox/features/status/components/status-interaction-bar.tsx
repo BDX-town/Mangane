@@ -53,7 +53,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
 
   const getNormalizedReacts = () => {
     return reduceEmoji(
-      ImmutableList(status.getIn(['pleroma', 'emoji_reactions']) as any),
+      ImmutableList(status.pleroma.get('emoji_reactions') as any),
       status.favourites_count,
       status.favourited,
       allowedEmoji,

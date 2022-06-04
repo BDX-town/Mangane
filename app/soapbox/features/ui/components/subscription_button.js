@@ -29,14 +29,14 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch) => ({
   onSubscriptionToggle(account) {
-    if (account.getIn(['relationship', 'subscribing'])) {
+    if (account.relationship?.subscribing) {
       dispatch(unsubscribeAccount(account.get('id')));
     } else {
       dispatch(subscribeAccount(account.get('id')));
     }
   },
   onNotifyToggle(account) {
-    if (account.getIn(['relationship', 'notifying'])) {
+    if (account.relationship?.notifying) {
       dispatch(followAccount(account.get('id'), { notify: false }));
     } else {
       dispatch(followAccount(account.get('id'), { notify: true }));
@@ -60,9 +60,9 @@ class SubscriptionButton extends ImmutablePureComponent {
 
   render() {
     const { account, intl, features } = this.props;
-    const subscribing = features.accountNotifies ? account.getIn(['relationship', 'notifying']) : account.getIn(['relationship', 'subscribing']);
-    const following = account.getIn(['relationship', 'following']);
-    const requested = account.getIn(['relationship', 'requested']);
+    const subscribing = features.accountNotifies ? account.relationship?.notifying : account.relationship?.subscribing;
+    const following = account.relationship?.following;
+    const requested = account.relationship?.requested;
 
     if (requested || following) {
       return (
