@@ -561,7 +561,12 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   renderTombstone(id: string) {
     return (
       <div className='py-4 pb-8'>
-        <Tombstone key={id} />
+        <Tombstone
+          key={id}
+          id={id}
+          onMoveUp={this.handleMoveUp}
+          onMoveDown={this.handleMoveDown}
+        />
       </div>
     );
   }
@@ -635,6 +640,8 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         index: this.props.ancestorsIds.size,
         offset: -80,
       });
+
+      setImmediate(() => this.status?.querySelector('a')?.focus());
     }
   }
 
