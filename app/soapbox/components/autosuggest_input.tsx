@@ -15,7 +15,7 @@ type CursorMatch = [
   token: string | null,
 ];
 
-export type Suggestion = string | Emoji;
+export type AutoSuggestion = string | Emoji;
 
 const textAtCursorMatchesToken = (str: string, caretPosition: number, searchTokens: string[]): CursorMatch => {
   let word: string;
@@ -47,7 +47,7 @@ interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputElement>,
   suggestions: ImmutableList<any>,
   disabled?: boolean,
   placeholder?: string,
-  onSuggestionSelected: (tokenStart: number, lastToken: string | null, suggestion: Suggestion) => void,
+  onSuggestionSelected: (tokenStart: number, lastToken: string | null, suggestion: AutoSuggestion) => void,
   onSuggestionsClearRequested: () => void,
   onSuggestionsFetchRequested: (token: string) => void,
   autoFocus: boolean,
@@ -195,7 +195,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     this.input = c;
   }
 
-  renderSuggestion = (suggestion: Suggestion, i: number) => {
+  renderSuggestion = (suggestion: AutoSuggestion, i: number) => {
     const { selectedSuggestion } = this.state;
     let inner, key;
 
