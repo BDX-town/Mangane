@@ -2,30 +2,37 @@ import {
   Map as ImmutableMap,
   Record as ImmutableRecord,
   OrderedSet as ImmutableOrderedSet,
-  fromJS,
 } from 'immutable';
 
 import { ADMIN_LOG_FETCH_SUCCESS } from 'soapbox/actions/admin';
 
 import type { AnyAction } from 'redux';
 
+const LogEntryRecord = ImmutableRecord({
+  data: ImmutableMap<string, any>(),
+  id: 0,
+  message: '',
+  time: 0,
+});
+
 const ReducerRecord = ImmutableRecord({
-  items: ImmutableMap(),
-  index: ImmutableOrderedSet(),
+  items: ImmutableMap<string, LogEntry>(),
+  index: ImmutableOrderedSet<number>(),
   total: 0,
 });
 
+type LogEntry = ReturnType<typeof LogEntryRecord>;
 type State = ReturnType<typeof ReducerRecord>;
 type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
 
 const parseItems = (items: APIEntities) => {
   const ids: Array<number> = [];
-  const map: Record<number, any> = {};
+  const map: Record<string, LogEntry> = {};
 
   items.forEach(item => {
     ids.push(item.id);
-    map[item.id] = item;
+    map[item.id] = LogEntryRecord(item);
   });
 
   return { ids: ids, map: map };
@@ -36,7 +43,7 @@ const importItems = (state: State, items: APIEntities, total: number) => {
 
   return state.withMutations(state => {
     state.update('index', v => v.union(ids));
-    state.update('items', v => v.merge(fromJS(map)));
+    state.update('items', v => v.merge(map));
     state.set('total', total);
   });
 };

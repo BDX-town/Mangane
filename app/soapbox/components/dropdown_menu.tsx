@@ -249,7 +249,7 @@ export interface IDropdown extends RouteComponentProps {
   ) => void,
   onClose?: (id: number) => void,
   dropdownPlacement?: string,
-  openDropdownId?: number,
+  openDropdownId?: number | null,
   openedViaKeyboard?: boolean,
   text?: string,
   onShiftClick?: React.EventHandler<React.MouseEvent | React.KeyboardEvent>,

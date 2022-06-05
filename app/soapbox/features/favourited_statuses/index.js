@@ -32,9 +32,9 @@ const mapStateToProps = (state, { params }) => {
   if (isMyAccount) {
     return {
       isMyAccount,
-      statusIds: state.getIn(['status_lists', 'favourites', 'items']),
-      isLoading: state.getIn(['status_lists', 'favourites', 'isLoading'], true),
-      hasMore: !!state.getIn(['status_lists', 'favourites', 'next']),
+      statusIds: state.status_lists.get('favourites').items,
+      isLoading: state.status_lists.get('favourites').isLoading,
+      hasMore: !!state.status_lists.get('favourites').next,
     };
   }
 
@@ -57,9 +57,9 @@ const mapStateToProps = (state, { params }) => {
     unavailable,
     username,
     isAccount: !!state.getIn(['accounts', accountId]),
-    statusIds: state.getIn(['status_lists', `favourites:${accountId}`, 'items'], []),
-    isLoading: state.getIn(['status_lists', `favourites:${accountId}`, 'isLoading'], true),
-    hasMore: !!state.getIn(['status_lists', `favourites:${accountId}`, 'next']),
+    statusIds: state.status_lists.get(`favourites:${accountId}`)?.items || [],
+    isLoading: state.status_lists.get(`favourites:${accountId}`)?.isLoading,
+    hasMore: !!state.status_lists.get(`favourites:${accountId}`)?.next,
   };
 };
 
@@ -147,7 +147,7 @@ class Favourites extends ImmutablePureComponent {
           statusIds={statusIds}
           scrollKey='favourited_statuses'
           hasMore={hasMore}
-          isLoading={isLoading}
+          isLoading={typeof isLoading === 'boolean' ? isLoading : true}
           onLoadMore={this.handleLoadMore}
           emptyMessage={emptyMessage}
         />

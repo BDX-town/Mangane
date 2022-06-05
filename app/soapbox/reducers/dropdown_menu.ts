@@ -6,10 +6,11 @@ import {
 } from '../actions/dropdown_menu';
 
 import type { AnyAction } from 'redux';
+import type { DropdownPlacement } from 'soapbox/components/dropdown_menu';
 
 const ReducerRecord = ImmutableRecord({
   openId: null as number | null,
-  placement: null as 'top' | 'bottom' | null,
+  placement: null as any as DropdownPlacement,
   keyboard: false,
 });
 
