@@ -118,7 +118,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
   /** Render a remote follow button, depending on features. */
   const renderRemoteFollow = () => {
     // Remote follow through the API.
-    if (features.remoteInteractionsAPI) {
+    if (features.remoteInteractions) {
       return (
         <Button
           onClick={handleRemoteFollow}
