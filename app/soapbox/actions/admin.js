@@ -143,7 +143,7 @@ export function fetchReports(params = {}) {
 
     dispatch({ type: ADMIN_REPORTS_FETCH_REQUEST, params });
 
-    if (features.mastodonAdminApi) {
+    if (features.mastodonAdmi) {
       return dispatch(fetchMastodonReports(params));
     } else {
       const { resolved } = params;
@@ -191,7 +191,7 @@ function patchReports(ids, reportState) {
 
     dispatch({ type: ADMIN_REPORTS_PATCH_REQUEST, reports });
 
-    if (features.mastodonAdminApi) {
+    if (features.mastodonAdmin) {
       return dispatch(patchMastodonReports(reports));
     } else {
       return dispatch(patchPleromaReports(reports));
@@ -258,7 +258,7 @@ export function fetchUsers(filters = [], page = 1, query, pageSize = 50, next) {
 
     dispatch({ type: ADMIN_USERS_FETCH_REQUEST, filters, page, pageSize });
 
-    if (features.mastodonAdminApi) {
+    if (features.mastodonAdmi) {
       return dispatch(fetchMastodonUsers(filters, page, query, pageSize, next));
     } else {
       return dispatch(fetchPleromaUsers(filters, page, query, pageSize));
@@ -305,7 +305,7 @@ export function deactivateUsers(accountIds, reportId) {
 
     dispatch({ type: ADMIN_USERS_DEACTIVATE_REQUEST, accountIds });
 
-    if (features.mastodonAdminApi) {
+    if (features.mastodonAdmi) {
       return dispatch(deactivateMastodonUsers(accountIds, reportId));
     } else {
       return dispatch(deactivatePleromaUsers(accountIds));
@@ -363,7 +363,7 @@ export function approveUsers(accountIds) {
 
     dispatch({ type: ADMIN_USERS_APPROVE_REQUEST, accountIds });
 
-    if (features.mastodonAdminApi) {
+    if (features.mastodonAdmi) {
       return dispatch(approveMastodonUsers(accountIds));
     } else {
       return dispatch(approvePleromaUsers(accountIds));

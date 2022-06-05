@@ -311,7 +311,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   />
                 )}
 
-                {features.importAPI && (
+                {features.import && (
                   <SidebarLink
                     to='/settings/import'
                     icon={require('@tabler/icons/icons/cloud-upload.svg')}
@@ -319,22 +319,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     onClick={onClose}
                   />
                 )}
-
-                {features.federating && (features.accountMoving ? (
-                  <SidebarLink
-                    to='/settings/migration'
-                    icon={require('@tabler/icons/icons/briefcase.svg')}
-                    text={intl.formatMessage(messages.accountMigration)}
-                    onClick={onClose}
-                  />
-                ) : features.accountAliasesAPI && (
-                  <SidebarLink
-                    to='/settings/aliases'
-                    icon={require('@tabler/icons/icons/briefcase.svg')}
-                    text={intl.formatMessage(messages.accountAliases)}
-                    onClick={onClose}
-                  />
-                ))}
 
                 <hr />
 

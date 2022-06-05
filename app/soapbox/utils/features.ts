@@ -69,7 +69,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/pleroma/aliases
      * @see PATCH /api/v1/accounts/update_credentials
      */
-    accountAliasesAPI: v.software === PLEROMA,
+    accountAliases: v.software === PLEROMA,
 
     /**
      * The accounts API allows an acct instead of an ID.
@@ -306,7 +306,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/pleroma/blocks_import
      * @see POST /api/pleroma/mutes_import
      */
-    importAPI: v.software === PLEROMA,
+    import: v.software === PLEROMA,
 
     /**
      * Pleroma import endpoints.
@@ -335,7 +335,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/admin/accounts/:account_id/action
      * @see POST /api/v1/admin/accounts/:account_id/approve
      */
-    mastodonAdminApi: any([
+    mastodonAdmin: any([
       v.software === MASTODON && gte(v.compatVersion, '2.9.1'),
       v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
     ]),
@@ -442,7 +442,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Interact with statuses from another instance while logged-out.
      * @see POST /api/v1/pleroma/remote_interaction
      */
-    remoteInteractionsAPI: v.software === PLEROMA && gte(v.version, '2.4.50'),
+    remoteInteractions: v.software === PLEROMA && gte(v.version, '2.4.50'),
 
     /**
      * Ability to remove an account from your followers.
@@ -462,7 +462,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Can request a password reset email through the API.
      * @see POST /auth/password
      */
-    resetPasswordAPI: v.software === PLEROMA,
+    resetPassword: v.software === PLEROMA,
 
     /**
      * Ability to post statuses in Markdown, BBCode, and HTML.
@@ -496,7 +496,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/pleroma/change_email
      * @see POST /api/pleroma/delete_account
      */
-    securityAPI: any([
+    security: any([
       v.software === PLEROMA,
       v.software === TRUTHSOCIAL,
     ]),
@@ -506,7 +506,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/oauth_tokens.json
      * @see DELETE /api/oauth_tokens/:id
      */
-    sessionsAPI: v.software === PLEROMA,
+    sessions: v.software === PLEROMA,
 
     /**
      * Can store client settings in the database.

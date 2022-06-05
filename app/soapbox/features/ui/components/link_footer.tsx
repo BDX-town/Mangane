@@ -56,11 +56,8 @@ const LinkFooter: React.FC = (): JSX.Element => {
           {account.locked && (
             <FooterLink to='/follow_requests'><FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' /></FooterLink>
           )}
-          {features.importAPI && (
+          {features.import && (
             <FooterLink to='/settings/import'><FormattedMessage id='navigation_bar.import_data' defaultMessage='Import data' /></FooterLink>
-          )}
-          {(features.federating && features.accountMoving) && (
-            <FooterLink to='/settings/migration'><FormattedMessage id='navigation_bar.account_migration' defaultMessage='Move account' /></FooterLink>
           )}
           <FooterLink to='/logout' onClick={onClickLogOut}><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></FooterLink>
         </>}
