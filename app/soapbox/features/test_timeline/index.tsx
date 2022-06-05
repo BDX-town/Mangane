@@ -7,7 +7,7 @@ import { expandTimelineSuccess } from 'soapbox/actions/timelines';
 import SubNavigation from 'soapbox/components/sub_navigation';
 
 import { Column } from '../../components/ui';
-import StatusListContainer from '../ui/containers/status_list_container';
+import Timeline from '../ui/components/timeline';
 
 const messages = defineMessages({
   title: { id: 'column.test', defaultMessage: 'Test timeline' },
@@ -40,7 +40,7 @@ const TestTimeline: React.FC = () => {
   return (
     <Column label={intl.formatMessage(messages.title)} transparent>
       <SubNavigation message={intl.formatMessage(messages.title)} />
-      <StatusListContainer
+      <Timeline
         scrollKey={`${timelineId}_timeline`}
         timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}
         emptyMessage={<FormattedMessage id='empty_column.test' defaultMessage='The test timeline is empty.' />}

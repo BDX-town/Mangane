@@ -5,27 +5,31 @@ import { useIntl, MessageDescriptor } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
 import { Text } from 'soapbox/components/ui';
-import { useAppSelector, useSettings } from 'soapbox/hooks';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
+import { useSettings } from 'soapbox/hooks';
 
-interface ITimelineQueueButtonHeader {
+interface IScrollTopButton {
+  /** Callback when clicked, and also when scrolled to the top. */
   onClick: () => void,
-  timelineId: string,
+  /** Number of unread items. */
+  count: number,
+  /** Message to display in the button (should contain a `{count}` value). */
   message: MessageDescriptor,
+  /** Distance from the top of the screen (scrolling down) before the button appears. */
   threshold?: number,
+  /** Distance from the top of the screen (scrolling up) before the action is triggered. */
   autoloadThreshold?: number,
 }
 
-const TimelineQueueButtonHeader: React.FC<ITimelineQueueButtonHeader> = ({
+/** Floating new post counter above timelines, clicked to scroll to top. */
+const ScrollTopButton: React.FC<IScrollTopButton> = ({
   onClick,
-  timelineId,
+  count,
   message,
   threshold = 400,
   autoloadThreshold = 50,
 }) => {
   const intl = useIntl();
   const settings = useSettings();
-  const count = useAppSelector(state => state.timelines.getIn([timelineId, 'totalQueuedItemsCount']));
 
   const [scrolled, setScrolled] = useState<boolean>(false);
   const autoload = settings.get('autoloadTimelines') === true;
@@ -42,10 +46,10 @@ const TimelineQueueButtonHeader: React.FC<ITimelineQueueButtonHeader> = ({
     } else {
       setScrolled(false);
     }
-  }, 150, { trailing: true }), []);
+  }, 150, { trailing: true }), [autoload, threshold, autoloadThreshold]);
 
   const scrollUp = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0 });
   };
 
   const handleClick: React.MouseEventHandler = () => {
@@ -74,7 +78,7 @@ const TimelineQueueButtonHeader: React.FC<ITimelineQueueButtonHeader> = ({
 
         {(count > 0) && (
           <Text theme='inherit' size='sm'>
-            {intl.formatMessage(message, { count: shortNumberFormat(count) })}
+            {intl.formatMessage(message, { count })}
           </Text>
         )}
       </a>
@@ -82,4 +86,4 @@ const TimelineQueueButtonHeader: React.FC<ITimelineQueueButtonHeader> = ({
   );
 };
 
-export default TimelineQueueButtonHeader;
+export default ScrollTopButton;

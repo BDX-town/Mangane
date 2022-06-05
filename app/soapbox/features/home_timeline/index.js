@@ -10,7 +10,7 @@ import { getFeatures } from 'soapbox/utils/features';
 
 import { expandHomeTimeline } from '../../actions/timelines';
 import { Column } from '../../components/ui';
-import StatusListContainer from '../ui/containers/status_list_container';
+import Timeline from '../ui/components/timeline';
 
 function FollowRecommendationsContainer() {
   return import(/* webpackChunkName: "features/follow_recommendations" */'soapbox/features/follow_recommendations/components/follow_recommendations_container');
@@ -114,7 +114,7 @@ class HomeTimeline extends React.PureComponent {
             {Component => <Component onDone={this.handleDone} />}
           </BundleContainer>
         ) : (
-          <StatusListContainer
+          <Timeline
             scrollKey='home_timeline'
             onLoadMore={this.handleLoadMore}
             onRefresh={this.handleRefresh}
