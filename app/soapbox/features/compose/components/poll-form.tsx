@@ -10,6 +10,8 @@ import IconButton from 'soapbox/components/icon_button';
 import { HStack } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
+import type { AutoSuggestion } from 'soapbox/components/autosuggest_input';
+
 const messages = defineMessages({
   option_placeholder: { id: 'compose_form.poll.option_placeholder', defaultMessage: 'Choice {number}' },
   add_option: { id: 'compose_form.poll.add_option', defaultMessage: 'Add a choice' },
@@ -83,8 +85,11 @@ const Option = (props: IOption) => {
 
   const onSuggestionsFetchRequested = (token: string) => onFetchSuggestions(token);
 
-  const onSuggestionSelected = (tokenStart: number, token: string, value: string) =>
-    props.onSuggestionSelected(tokenStart, token, value, ['poll', 'options', index]);
+  const onSuggestionSelected = (tokenStart: number, token: string | null, value: AutoSuggestion) => {
+    if (token && typeof value === 'string') {
+      props.onSuggestionSelected(tokenStart, token, value, ['poll', 'options', index]);
+    }
+  };
 
   return (
     <li>
