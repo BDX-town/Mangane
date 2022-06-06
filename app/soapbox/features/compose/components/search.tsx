@@ -21,7 +21,7 @@ const messages = defineMessages({
   action: { id: 'search.action', defaultMessage: 'Search for “{query}”' },
 });
 
-function redirectToAccount(accountId: number, routerHistory: any) {
+function redirectToAccount(accountId: string, routerHistory: any) {
   return (_dispatch: any, getState: () => ImmutableMap<string, any>) => {
     const acct = getState().getIn(['accounts', accountId, 'acct']);
 
@@ -97,7 +97,7 @@ const Search = (props: ISearch) => {
     dispatch(showSearch());
   };
 
-  const handleSelected = (accountId: number) => {
+  const handleSelected = (accountId: string) => {
     dispatch(clearSearch());
     dispatch(redirectToAccount(accountId, history));
   };

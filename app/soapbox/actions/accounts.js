@@ -1044,10 +1044,10 @@ export function fetchPinnedAccountsFail(id, error) {
   };
 }
 
-export function accountSearch(params, cancelToken) {
+export function accountSearch(params, signal) {
   return (dispatch, getState) => {
     dispatch({ type: ACCOUNT_SEARCH_REQUEST, params });
-    return api(getState).get('/api/v1/accounts/search', { params, cancelToken }).then(({ data: accounts }) => {
+    return api(getState).get('/api/v1/accounts/search', { params, signal }).then(({ data: accounts }) => {
       dispatch(importFetchedAccounts(accounts));
       dispatch({ type: ACCOUNT_SEARCH_SUCCESS, accounts });
       return accounts;

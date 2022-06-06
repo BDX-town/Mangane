@@ -102,6 +102,7 @@ class ChatPanes extends ImmutablePureComponent {
               <AccountSearch
                 placeholder={intl.formatMessage(messages.searchPlaceholder)}
                 onSelected={this.handleSuggestion}
+                resultsPosition='above'
               />
             </>
           )}
