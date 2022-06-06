@@ -26,6 +26,7 @@ const mapStateToProps = state => {
     privacy: state.getIn(['compose', 'privacy']),
     focusDate: state.getIn(['compose', 'focusDate']),
     caretPosition: state.getIn(['compose', 'caretPosition']),
+    hasPoll: !!state.getIn(['compose', 'poll']),
     isSubmitting: state.getIn(['compose', 'is_submitting']),
     isEditing: state.getIn(['compose', 'id']) !== null,
     isChangingUpload: state.getIn(['compose', 'is_changing_upload']),
