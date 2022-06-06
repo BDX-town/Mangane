@@ -235,8 +235,8 @@ class Header extends ImmutablePureComponent {
       //   });
       // }
 
-      if (account.getIn(['relationship', 'following'])) {
-        if (account.getIn(['relationship', 'showing_reblogs'])) {
+      if (account.relationship?.following) {
+        if (account.relationship?.showing_reblogs) {
           menu.push({
             text: intl.formatMessage(messages.hideReblogs, { name: account.get('username') }),
             action: this.props.onReblogToggle,
@@ -251,7 +251,7 @@ class Header extends ImmutablePureComponent {
         }
 
         if (features.accountSubscriptions) {
-          if (account.getIn(['relationship', 'subscribing'])) {
+          if (account.relationship?.subscribing) {
             menu.push({
               text: intl.formatMessage(messages.unsubscribe, { name: account.get('username') }),
               action: this.props.onSubscriptionToggle,
@@ -274,7 +274,7 @@ class Header extends ImmutablePureComponent {
           });
         }
 
-        // menu.push({ text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
+        // menu.push({ text: intl.formatMessage(account.relationship?.endorsed ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
         menu.push(null);
       } else if (features.lists && features.unrestrictedLists) {
         menu.push({
@@ -284,7 +284,7 @@ class Header extends ImmutablePureComponent {
         });
       }
 
-      if (features.removeFromFollowers && account.getIn(['relationship', 'followed_by'])) {
+      if (features.removeFromFollowers && account.relationship?.followed_by) {
         menu.push({
           text: intl.formatMessage(messages.removeFromFollowers),
           action: this.props.onRemoveFromFollowers,
@@ -292,7 +292,7 @@ class Header extends ImmutablePureComponent {
         });
       }
 
-      if (account.getIn(['relationship', 'muting'])) {
+      if (account.relationship?.muting) {
         menu.push({
           text: intl.formatMessage(messages.unmute, { name: account.get('username') }),
           action: this.props.onMute,
@@ -306,7 +306,7 @@ class Header extends ImmutablePureComponent {
         });
       }
 
-      if (account.getIn(['relationship', 'blocking'])) {
+      if (account.relationship?.blocking) {
         menu.push({
           text: intl.formatMessage(messages.unblock, { name: account.get('username') }),
           action: this.props.onBlock,
@@ -332,7 +332,7 @@ class Header extends ImmutablePureComponent {
 
       menu.push(null);
 
-      if (account.getIn(['relationship', 'domain_blocking'])) {
+      if (account.relationship?.domain_blocking) {
         menu.push({
           text: intl.formatMessage(messages.unblockDomain, { domain }),
           action: this.props.onUnblockDomain,
@@ -463,7 +463,7 @@ class Header extends ImmutablePureComponent {
 
     if (!account || !me) return info;
 
-    if (me !== account.get('id') && account.getIn(['relationship', 'followed_by'])) {
+    if (me !== account.get('id') && account.relationship?.followed_by) {
       info.push(
         <Badge
           key='followed_by'
@@ -471,7 +471,7 @@ class Header extends ImmutablePureComponent {
           title={<FormattedMessage id='account.follows_you' defaultMessage='Follows you' />}
         />,
       );
-    } else if (me !== account.get('id') && account.getIn(['relationship', 'blocking'])) {
+    } else if (me !== account.get('id') && account.relationship?.blocking) {
       info.push(
         <Badge
           key='blocked'
@@ -481,7 +481,7 @@ class Header extends ImmutablePureComponent {
       );
     }
 
-    if (me !== account.get('id') && account.getIn(['relationship', 'muting'])) {
+    if (me !== account.get('id') && account.relationship?.muting) {
       info.push(
         <Badge
           key='muted'
@@ -489,7 +489,7 @@ class Header extends ImmutablePureComponent {
           title={<FormattedMessage id='account.muted' defaultMessage='Muted' />}
         />,
       );
-    } else if (me !== account.get('id') && account.getIn(['relationship', 'domain_blocking'])) {
+    } else if (me !== account.get('id') && account.relationship?.domain_blocking) {
       info.push(
         <Badge
           key='domain_blocked'

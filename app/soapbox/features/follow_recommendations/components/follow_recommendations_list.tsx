@@ -11,8 +11,8 @@ import Account from './account';
 const FollowRecommendationsList: React.FC = () => {
   const dispatch = useDispatch();
 
-  const suggestions = useAppSelector((state) => state.suggestions.get('items'));
-  const isLoading = useAppSelector((state) => state.suggestions.get('isLoading'));
+  const suggestions = useAppSelector((state) => state.suggestions.items);
+  const isLoading = useAppSelector((state) => state.suggestions.isLoading);
 
   useEffect(() => {
     if (suggestions.size === 0) {
@@ -30,8 +30,8 @@ const FollowRecommendationsList: React.FC = () => {
 
   return (
     <div className='column-list'>
-      {suggestions.size > 0 ? suggestions.map((suggestion: { account: string }, idx: number) => (
-        <Account key={idx} id={suggestion.account} />
+      {suggestions.size > 0 ? suggestions.map((suggestion) => (
+        <Account key={suggestion.account} id={suggestion.account} />
       )) : (
         <div className='column-list__empty-message'>
           <FormattedMessage id='empty_column.follow_recommendations' defaultMessage='Looks like no suggestions could be generated for you. You can try using search to look for people you might know or explore trending hashtags.' />

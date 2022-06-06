@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 
 import {
   ALIASES_SUGGESTIONS_READY,
@@ -7,19 +7,23 @@ import {
   ALIASES_FETCH_SUCCESS,
 } from '../actions/aliases';
 
-const initialState = ImmutableMap({
-  aliases: ImmutableMap({
+import type { AnyAction } from 'redux';
+import type { APIEntity } from 'soapbox/types/entities';
+
+
+const ReducerRecord = ImmutableRecord({
+  aliases: ImmutableRecord({
+    items: ImmutableList<string>(),
     loaded: false,
-    items: ImmutableList(),
-  }),
-  suggestions: ImmutableMap({
+  })(),
+  suggestions: ImmutableRecord({
+    items: ImmutableList<string>(),
     value: '',
     loaded: false,
-    items: ImmutableList(),
-  }),
+  })(),
 });
 
-export default function aliasesReducer(state = initialState, action) {
+export default function aliasesReducer(state = ReducerRecord(), action: AnyAction) {
   switch (action.type) {
     case ALIASES_FETCH_SUCCESS:
       return state
@@ -30,7 +34,7 @@ export default function aliasesReducer(state = initialState, action) {
         .setIn(['suggestions', 'loaded'], false);
     case ALIASES_SUGGESTIONS_READY:
       return state
-        .setIn(['suggestions', 'items'], ImmutableList(action.accounts.map(item => item.id)))
+        .setIn(['suggestions', 'items'], ImmutableList(action.accounts.map((item: APIEntity) => item.id)))
         .setIn(['suggestions', 'loaded'], true);
     case ALIASES_SUGGESTIONS_CLEAR:
       return state.update('suggestions', suggestions => suggestions.withMutations(map => {

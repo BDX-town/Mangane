@@ -7,8 +7,6 @@ import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import Column from '../ui/components/column';
 
-import type { Map as ImmutableMap } from 'immutable';
-
 const messages = defineMessages({
   heading: { id: 'column.admin.moderation_log', defaultMessage: 'Moderation Log' },
   emptyMessage: { id: 'admin.moderation_log.empty_message', defaultMessage: 'You have not performed any moderation actions yet. When you do, a history will be shown here.' },
@@ -18,8 +16,10 @@ const ModerationLog = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const items = useAppSelector((state) => state.admin_log.get('index').map((i: number) => state.admin_log.getIn(['items', String(i)]))) as ImmutableMap<string, any>;
-  const hasMore = useAppSelector((state) => state.admin_log.get('total', 0) - state.admin_log.get('index').count() > 0);
+  const items = useAppSelector((state) => {
+    return state.admin_log.index.map((i) => state.admin_log.items.get(String(i)));
+  });
+  const hasMore = useAppSelector((state) => state.admin_log.total - state.admin_log.index.count() > 0);
 
   const [isLoading, setIsLoading] = useState(true);
   const [lastPage, setLastPage] = useState(0);
@@ -56,12 +56,12 @@ const ModerationLog = () => {
         hasMore={hasMore}
         onLoadMore={handleLoadMore}
       >
-        {items.map((item, i) => (
-          <div className='logentry' key={i}>
-            <div className='logentry__message'>{item.get('message')}</div>
+        {items.map((item) => item && (
+          <div className='logentry' key={item.id}>
+            <div className='logentry__message'>{item.message}</div>
             <div className='logentry__timestamp'>
               <FormattedDate
-                value={new Date(item.get('time') * 1000)}
+                value={new Date(item.time * 1000)}
                 hour12={false}
                 year='numeric'
                 month='short'

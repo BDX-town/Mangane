@@ -21,8 +21,8 @@ const mapStateToProps = (state, { params }) => {
   const meUsername = state.getIn(['accounts', me, 'username'], '');
   return {
     isMyAccount: (username.toLowerCase() === meUsername.toLowerCase()),
-    statusIds: state.getIn(['status_lists', 'pins', 'items']),
-    hasMore: !!state.getIn(['status_lists', 'pins', 'next']),
+    statusIds: state.status_lists.get('pins').items,
+    hasMore: !!state.status_lists.get('pins').next,
   };
 };
 

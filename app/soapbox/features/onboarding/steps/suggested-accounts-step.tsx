@@ -1,4 +1,3 @@
-import { Map as ImmutableMap } from 'immutable';
 import debounce from 'lodash/debounce';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -13,9 +12,9 @@ import { useAppSelector } from 'soapbox/hooks';
 const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
   const dispatch = useDispatch();
 
-  const suggestions = useAppSelector((state) => state.suggestions.get('items'));
-  const hasMore = useAppSelector((state) => !!state.suggestions.get('next'));
-  const isLoading = useAppSelector((state) => state.suggestions.get('isLoading'));
+  const suggestions = useAppSelector((state) => state.suggestions.items);
+  const hasMore = useAppSelector((state) => !!state.suggestions.next);
+  const isLoading = useAppSelector((state) => state.suggestions.isLoading);
 
   const handleLoadMore = debounce(() => {
     if (isLoading) {
@@ -40,11 +39,11 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
           useWindowScroll={false}
           style={{ height: 320 }}
         >
-          {suggestions.map((suggestion: ImmutableMap<string, any>) => (
-            <div key={suggestion.get('account')} className='py-2'>
+          {suggestions.map((suggestion) => (
+            <div key={suggestion.account} className='py-2'>
               <AccountContainer
                 // @ts-ignore: TS thinks `id` is passed to <Account>, but it isn't
-                id={suggestion.get('account')}
+                id={suggestion.account}
                 showProfileHoverCard={false}
               />
             </div>

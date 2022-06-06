@@ -1,4 +1,8 @@
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+import {
+  Map as ImmutableMap,
+  OrderedSet as ImmutableOrderedSet,
+  Record as ImmutableRecord,
+} from 'immutable';
 
 import {
   BOOKMARKED_STATUSES_FETCH_REQUEST,
@@ -44,29 +48,38 @@ import {
   SCHEDULED_STATUS_CANCEL_SUCCESS,
 } from '../actions/scheduled_statuses';
 
-const initialMap = ImmutableMap({
-  next: null,
+import type { AnyAction } from 'redux';
+import type { Status as StatusEntity } from 'soapbox/types/entities';
+
+const StatusListRecord = ImmutableRecord({
+  next: null as string | null,
   loaded: false,
-  items: ImmutableOrderedSet(),
+  isLoading: null as boolean | null,
+  items: ImmutableOrderedSet<string>(),
 });
 
-const initialState = ImmutableMap({
-  favourites: initialMap,
-  bookmarks: initialMap,
-  pins: initialMap,
-  scheduled_statuses: initialMap,
+type State = ImmutableMap<string, StatusList>;
+type StatusList = ReturnType<typeof StatusListRecord>;
+type Status = string | StatusEntity;
+type Statuses = Array<string | StatusEntity>;
+
+const initialState: State = ImmutableMap({
+  favourites: StatusListRecord(),
+  bookmarks: StatusListRecord(),
+  pins: StatusListRecord(),
+  scheduled_statuses: StatusListRecord(),
 });
 
-const getStatusId = status => typeof status === 'string' ? status : status.get('id');
+const getStatusId = (status: string | StatusEntity) => typeof status === 'string' ? status : status.id;
 
-const getStatusIds = (statuses = []) => (
-  ImmutableOrderedSet(statuses.map(status => status.id))
+const getStatusIds = (statuses: Statuses = []) => (
+  ImmutableOrderedSet(statuses.map(getStatusId))
 );
 
-const setLoading = (state, listType, loading) => state.setIn([listType, 'isLoading'], loading);
+const setLoading = (state: State, listType: string, loading: boolean) => state.setIn([listType, 'isLoading'], loading);
 
-const normalizeList = (state, listType, statuses, next) => {
-  return state.update(listType, initialMap, listMap => listMap.withMutations(map => {
+const normalizeList = (state: State, listType: string, statuses: Statuses, next: string | null) => {
+  return state.update(listType, StatusListRecord(), listMap => listMap.withMutations(map => {
     map.set('next', next);
     map.set('loaded', true);
     map.set('isLoading', false);
@@ -74,29 +87,29 @@ const normalizeList = (state, listType, statuses, next) => {
   }));
 };
 
-const appendToList = (state, listType, statuses, next) => {
+const appendToList = (state: State, listType: string, statuses: Statuses, next: string | null) => {
   const newIds = getStatusIds(statuses);
 
-  return state.update(listType, initialMap, listMap => listMap.withMutations(map => {
+  return state.update(listType, StatusListRecord(), listMap => listMap.withMutations(map => {
     map.set('next', next);
     map.set('isLoading', false);
-    map.update('items', ImmutableOrderedSet(), items => items.union(newIds));
+    map.update('items', items => items.union(newIds));
   }));
 };
 
-const prependOneToList = (state, listType, status) => {
+const prependOneToList = (state: State, listType: string, status: Status) => {
   const statusId = getStatusId(status);
   return state.updateIn([listType, 'items'], ImmutableOrderedSet(), items => {
-    return ImmutableOrderedSet([statusId]).union(items);
+    return ImmutableOrderedSet([statusId]).union(items as ImmutableOrderedSet<string>);
   });
 };
 
-const removeOneFromList = (state, listType, status) => {
+const removeOneFromList = (state: State, listType: string, status: Status) => {
   const statusId = getStatusId(status);
-  return state.updateIn([listType, 'items'], ImmutableOrderedSet(), items => items.delete(statusId));
+  return state.updateIn([listType, 'items'], ImmutableOrderedSet(), items => (items as ImmutableOrderedSet<string>).delete(statusId));
 };
 
-export default function statusLists(state = initialState, action) {
+export default function statusLists(state = initialState, action: AnyAction) {
   switch (action.type) {
     case FAVOURITED_STATUSES_FETCH_REQUEST:
     case FAVOURITED_STATUSES_EXPAND_REQUEST:
@@ -154,7 +167,7 @@ export default function statusLists(state = initialState, action) {
       return appendToList(state, 'scheduled_statuses', action.statuses, action.next);
     case SCHEDULED_STATUS_CANCEL_REQUEST:
     case SCHEDULED_STATUS_CANCEL_SUCCESS:
-      return removeOneFromList(state, 'scheduled_statuses', action.id || action.status.get('id'));
+      return removeOneFromList(state, 'scheduled_statuses', action.id || action.status.id);
     default:
       return state;
   }

@@ -17,7 +17,7 @@ const Search: React.FC = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const value = useAppSelector(state => state.aliases.getIn(['suggestions', 'value'])) as string;
+  const value = useAppSelector(state => state.aliases.suggestions.value);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(changeAliasesSuggestions(e.target.value));

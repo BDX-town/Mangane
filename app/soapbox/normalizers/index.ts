@@ -11,6 +11,7 @@ export { ListRecord, normalizeList } from './list';
 export { MentionRecord, normalizeMention } from './mention';
 export { NotificationRecord, normalizeNotification } from './notification';
 export { PollRecord, PollOptionRecord, normalizePoll } from './poll';
+export { RelationshipRecord, normalizeRelationship } from './relationship';
 export { StatusRecord, normalizeStatus } from './status';
 export { StatusEditRecord, normalizeStatusEdit } from './status_edit';
 

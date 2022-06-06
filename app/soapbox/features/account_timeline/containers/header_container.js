@@ -75,7 +75,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   onFollow(account) {
     dispatch((_, getState) => {
       const unfollowModal = getSettings(getState()).get('unfollowModal');
-      if (account.getIn(['relationship', 'following']) || account.getIn(['relationship', 'requested'])) {
+      if (account.relationship?.following || account.relationship?.requested) {
         if (unfollowModal) {
           dispatch(openModal('CONFIRM', {
             message: <FormattedMessage id='confirmations.unfollow.message' defaultMessage='Are you sure you want to unfollow {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
@@ -92,7 +92,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 
   onBlock(account) {
-    if (account.getIn(['relationship', 'blocking'])) {
+    if (account.relationship?.blocking) {
       dispatch(unblockAccount(account.get('id')));
     } else {
       dispatch(openModal('CONFIRM', {
@@ -119,7 +119,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 
   onReblogToggle(account) {
-    if (account.getIn(['relationship', 'showing_reblogs'])) {
+    if (account.relationship?.showing_reblogs) {
       dispatch(followAccount(account.get('id'), { reblogs: false }));
     } else {
       dispatch(followAccount(account.get('id'), { reblogs: true }));
@@ -127,7 +127,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 
   onSubscriptionToggle(account) {
-    if (account.getIn(['relationship', 'subscribing'])) {
+    if (account.relationship?.subscribing) {
       dispatch(unsubscribeAccount(account.get('id')));
     } else {
       dispatch(subscribeAccount(account.get('id')));
@@ -135,7 +135,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 
   onNotifyToggle(account) {
-    if (account.getIn(['relationship', 'notifying'])) {
+    if (account.relationship?.notifying) {
       dispatch(followAccount(account.get('id'), { notify: false }));
     } else {
       dispatch(followAccount(account.get('id'), { notify: true }));
@@ -143,7 +143,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 
   onEndorseToggle(account) {
-    if (account.getIn(['relationship', 'endorsed'])) {
+    if (account.relationship?.endorsed) {
       dispatch(unpinAccount(account.get('id')));
     } else {
       dispatch(pinAccount(account.get('id')));
@@ -155,7 +155,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 
   onMute(account) {
-    if (account.getIn(['relationship', 'muting'])) {
+    if (account.relationship?.muting) {
       dispatch(unmuteAccount(account.get('id')));
     } else {
       dispatch(initMuteModal(account));

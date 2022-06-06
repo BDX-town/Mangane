@@ -20,9 +20,9 @@ const Bookmarks: React.FC = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const statusIds = useAppSelector((state) => state.status_lists.getIn(['bookmarks', 'items']));
-  const isLoading = useAppSelector((state) => state.status_lists.getIn(['bookmarks', 'isLoading'], true));
-  const hasMore = useAppSelector((state) => !!state.status_lists.getIn(['bookmarks', 'next']));
+  const statusIds = useAppSelector((state) => state.status_lists.get('bookmarks')!.items);
+  const isLoading = useAppSelector((state) => state.status_lists.get('bookmarks')!.isLoading);
+  const hasMore = useAppSelector((state) => !!state.status_lists.get('bookmarks')!.next);
 
   React.useEffect(() => {
     dispatch(fetchBookmarkedStatuses());
@@ -43,7 +43,7 @@ const Bookmarks: React.FC = () => {
         statusIds={statusIds}
         scrollKey='bookmarked_statuses'
         hasMore={hasMore}
-        isLoading={isLoading}
+        isLoading={typeof isLoading === 'boolean' ? isLoading : true}
         onLoadMore={() => handleLoadMore(dispatch)}
         onRefresh={handleRefresh}
         emptyMessage={emptyMessage}

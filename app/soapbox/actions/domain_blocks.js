@@ -142,7 +142,7 @@ export function expandDomainBlocks() {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
 
-    const url = getState().getIn(['domain_lists', 'blocks', 'next']);
+    const url = getState().domain_lists.blocks.next;
 
     if (!url) {
       return;

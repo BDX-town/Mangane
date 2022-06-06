@@ -387,9 +387,9 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
     if (me) {
       if (features.bookmarks) {
         menu.push({
-          text: intl.formatMessage(status.get('bookmarked') ? messages.unbookmark : messages.bookmark),
+          text: intl.formatMessage(status.bookmarked ? messages.unbookmark : messages.bookmark),
           action: this.handleBookmarkClick,
-          icon: require(status.get('bookmarked') ? '@tabler/icons/icons/bookmark-off.svg' : '@tabler/icons/icons/bookmark.svg'),
+          icon: require(status.bookmarked ? '@tabler/icons/icons/bookmark-off.svg' : '@tabler/icons/icons/bookmark.svg'),
         });
       }
 
@@ -406,7 +406,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
           menu.push(null);
         } else if (status.visibility === 'private') {
           menu.push({
-            text: intl.formatMessage(status.get('reblogged') ? messages.cancel_reblog_private : messages.reblog_private),
+            text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog_private),
             action: this.handleReblogClick,
             icon: require('@tabler/icons/icons/repeat.svg'),
           });
@@ -496,7 +496,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
         }
 
         menu.push({
-          text: intl.formatMessage(status.get('sensitive') === false ? messages.markStatusSensitive : messages.markStatusNotSensitive),
+          text: intl.formatMessage(status.sensitive === false ? messages.markStatusSensitive : messages.markStatusNotSensitive),
           action: this.handleToggleStatusSensitivity,
           icon: require('@tabler/icons/icons/alert-triangle.svg'),
         });
@@ -523,18 +523,18 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
       }
     }
 
-    const canShare = ('share' in navigator) && status.get('visibility') === 'public';
+    const canShare = ('share' in navigator) && status.visibility === 'public';
 
 
     let reblogIcon = require('@tabler/icons/icons/repeat.svg');
 
-    if (status.get('visibility') === 'direct') {
+    if (status.visibility === 'direct') {
       reblogIcon = require('@tabler/icons/icons/mail.svg');
-    } else if (status.get('visibility') === 'private') {
+    } else if (status.visibility === 'private') {
       reblogIcon = require('@tabler/icons/icons/lock.svg');
     }
 
-    const reblog_disabled = (status.get('visibility') === 'direct' || status.get('visibility') === 'private');
+    const reblog_disabled = (status.visibility === 'direct' || status.visibility === 'private');
 
     const reblogMenu: Menu = [{
       text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog),

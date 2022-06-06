@@ -116,7 +116,7 @@ export const calculateStatus = (
 
 // Check whether a status is a quote by secondary characteristics
 const isQuote = (status: StatusRecord) => {
-  return Boolean(status.getIn(['pleroma', 'quote_url']));
+  return Boolean(status.pleroma.get('quote_url'));
 };
 
 // Preserve quote if an existing status already has it
@@ -124,7 +124,7 @@ const fixQuote = (status: StatusRecord, oldStatus?: StatusRecord): StatusRecord 
   if (oldStatus && !status.quote && isQuote(status)) {
     return status
       .set('quote', oldStatus.quote)
-      .updateIn(['pleroma', 'quote_visible'], visible => visible || oldStatus.getIn(['pleroma', 'quote_visible']));
+      .updateIn(['pleroma', 'quote_visible'], visible => visible || oldStatus.pleroma.get('quote_visible'));
   } else {
     return status;
   }

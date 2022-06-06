@@ -1,8 +1,8 @@
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+import { OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord } from 'immutable';
+
 
 import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts';
 import { DOMAIN_BLOCK_SUCCESS } from 'soapbox/actions/domain_blocks';
-
 import {
   SUGGESTIONS_FETCH_REQUEST,
   SUGGESTIONS_FETCH_SUCCESS,
@@ -11,46 +11,58 @@ import {
   SUGGESTIONS_V2_FETCH_REQUEST,
   SUGGESTIONS_V2_FETCH_SUCCESS,
   SUGGESTIONS_V2_FETCH_FAIL,
-} from '../actions/suggestions';
+} from 'soapbox/actions/suggestions';
 
-const initialState = ImmutableMap({
-  items: ImmutableOrderedSet(),
-  next: null,
+import type { AnyAction } from 'redux';
+import type { APIEntity } from 'soapbox/types/entities';
+
+const SuggestionRecord = ImmutableRecord({
+  source: '',
+  account: '',
+});
+
+const ReducerRecord = ImmutableRecord({
+  items: ImmutableOrderedSet<Suggestion>(),
+  next: null as string | null,
   isLoading: false,
 });
 
+type State = ReturnType<typeof ReducerRecord>;
+type Suggestion = ReturnType<typeof SuggestionRecord>;
+type APIEntities = Array<APIEntity>;
+
 // Convert a v1 account into a v2 suggestion
-const accountToSuggestion = account => {
+const accountToSuggestion = (account: APIEntity) => {
   return {
     source: 'past_interactions',
     account: account.id,
   };
 };
 
-const importAccounts = (state, accounts) => {
+const importAccounts = (state: State, accounts: APIEntities) => {
   return state.withMutations(state => {
-    state.set('items', fromJS(accounts.map(accountToSuggestion)));
+    state.set('items', ImmutableOrderedSet(accounts.map(accountToSuggestion).map(suggestion => SuggestionRecord(suggestion))));
     state.set('isLoading', false);
   });
 };
 
-const importSuggestions = (state, suggestions, next) => {
+const importSuggestions = (state: State, suggestions: APIEntities, next: string | null) => {
   return state.withMutations(state => {
-    state.update('items', items => items.concat(fromJS(suggestions.map(x => ({ ...x, account: x.account.id })))));
+    state.update('items', items => items.concat(suggestions.map(x => ({ ...x, account: x.account.id })).map(suggestion => SuggestionRecord(suggestion))));
     state.set('isLoading', false);
     state.set('next', next);
   });
 };
 
-const dismissAccount = (state, accountId) => {
-  return state.update('items', items => items.filterNot(item => item.get('account') === accountId));
+const dismissAccount = (state: State, accountId: string) => {
+  return state.update('items', items => items.filterNot(item => item.account === accountId));
 };
 
-const dismissAccounts = (state, accountIds) => {
-  return state.update('items', items => items.filterNot(item => accountIds.includes(item.get('account'))));
+const dismissAccounts = (state: State, accountIds: Array<string>) => {
+  return state.update('items', items => items.filterNot(item => accountIds.includes(item.account)));
 };
 
-export default function suggestionsReducer(state = initialState, action) {
+export default function suggestionsReducer(state: State = ReducerRecord(), action: AnyAction) {
   switch (action.type) {
     case SUGGESTIONS_FETCH_REQUEST:
     case SUGGESTIONS_V2_FETCH_REQUEST:

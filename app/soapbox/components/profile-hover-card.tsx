@@ -92,7 +92,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
 
   if (!account) return null;
   const accountBio = { __html: account.note_emojified };
-  const followedBy = me !== account.id && account.relationship.get('followed_by') === true;
+  const followedBy = me !== account.id && account.relationship?.followed_by === true;
 
   return (
     <div
