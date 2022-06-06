@@ -23,14 +23,6 @@ const HomeTimeline: React.FC = () => {
     dispatch(expandHomeTimeline({ maxId }));
   };
 
-  useEffect(() => {
-    checkIfReloadNeeded();
-
-    return () => {
-      stopPolling();
-    };
-  }, [isPartial]);
-
   // Mastodon generates the feed in Redis, and can return a partial timeline
   // (HTTP 206) for new users. Poll until we get a full page of results.
   const checkIfReloadNeeded = () => {
@@ -53,6 +45,14 @@ const HomeTimeline: React.FC = () => {
   const handleRefresh = () => {
     return dispatch(expandHomeTimeline());
   };
+
+  useEffect(() => {
+    checkIfReloadNeeded();
+
+    return () => {
+      stopPolling();
+    };
+  }, [isPartial]);
 
   return (
     <Column label={intl.formatMessage(messages.title)} transparent>
