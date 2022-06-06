@@ -1,9 +1,7 @@
 import classNames from 'classnames';
-import { History } from 'history';
 import React from 'react';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { defineMessages, injectIntl, FormattedMessage, IntlShape, FormattedList } from 'react-intl';
-import { withRouter } from 'react-router-dom';
+import { defineMessages, useIntl, FormattedMessage, FormattedList } from 'react-intl';
+import { useHistory } from 'react-router-dom';
 
 import StatusMedia from 'soapbox/components/status-media';
 import { Stack, Text } from 'soapbox/components/ui';
@@ -16,49 +14,42 @@ const messages = defineMessages({
 });
 
 interface IQuotedStatus {
+  /** The quoted status entity. */
   status?: StatusEntity,
+  /** Callback when cancelled (during compose). */
   onCancel?: Function,
-  intl: IntlShape,
+  /** Whether the status is shown in the post composer. */
   compose?: boolean,
-  history: History,
 }
 
-class QuotedStatus extends ImmutablePureComponent<IQuotedStatus> {
+/** Status embedded in a quote post. */
+const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) => {
+  const intl = useIntl();
+  const history = useHistory();
 
-  handleExpandClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const { compose, status } = this.props;
-
+  const handleExpandClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!status) return;
-
     const account = status.account as AccountEntity;
 
     if (!compose && e.button === 0) {
-      if (!this.props.history) {
-        return;
-      }
-
-      this.props.history.push(`/@${account.acct}/posts/${status.id}`);
-
+      history.push(`/@${account.acct}/posts/${status.id}`);
       e.stopPropagation();
       e.preventDefault();
     }
-  }
+  };
 
-  handleClose = () => {
-    if (this.props.onCancel) {
-      this.props.onCancel();
+  const handleClose = () => {
+    if (onCancel) {
+      onCancel();
     }
-  }
+  };
 
-  renderReplyMentions = () => {
-    const { status } = this.props;
-
+  const renderReplyMentions = () => {
     if (!status?.in_reply_to_id) {
       return null;
     }
 
     const account = status.account as AccountEntity;
-
     const to = status.mentions || [];
 
     if (to.size === 0) {
@@ -102,58 +93,51 @@ class QuotedStatus extends ImmutablePureComponent<IQuotedStatus> {
         />
       </div>
     );
+  };
+
+  if (!status) {
+    return null;
   }
 
-  render() {
-    const { status, onCancel, intl, compose } = this.props;
+  const account = status.account as AccountEntity;
 
-    if (!status) {
-      return null;
-    }
-
-    const account = status.account as AccountEntity;
-
-    let actions = {};
-    if (onCancel) {
-      actions = {
-        onActionClick: this.handleClose,
-        actionIcon: require('@tabler/icons/icons/x.svg'),
-        actionAlignment: 'top',
-        actionTitle: intl.formatMessage(messages.cancel),
-      };
-    }
-
-    const quotedStatus = (
-      <Stack
-        space={2}
-        className={classNames('mt-3 p-4 rounded-lg border border-solid border-gray-100 dark:border-slate-700 cursor-pointer', {
-          'hover:bg-gray-50 dark:hover:bg-slate-700': !compose,
-        })}
-        onClick={this.handleExpandClick}
-      >
-        <AccountContainer
-          {...actions}
-          id={account.id}
-          timestamp={status.created_at}
-          withRelationship={false}
-          showProfileHoverCard={!compose}
-        />
-
-        {this.renderReplyMentions()}
-
-        <Text
-          className='break-words'
-          size='sm'
-          dangerouslySetInnerHTML={{ __html: status.contentHtml }}
-        />
-
-        <StatusMedia status={status} />
-      </Stack>
-    );
-
-    return quotedStatus;
+  let actions = {};
+  if (onCancel) {
+    actions = {
+      onActionClick: handleClose,
+      actionIcon: require('@tabler/icons/icons/x.svg'),
+      actionAlignment: 'top',
+      actionTitle: intl.formatMessage(messages.cancel),
+    };
   }
 
-}
+  return (
+    <Stack
+      space={2}
+      className={classNames('mt-3 p-4 rounded-lg border border-solid border-gray-100 dark:border-slate-700 cursor-pointer', {
+        'hover:bg-gray-50 dark:hover:bg-slate-700': !compose,
+      })}
+      onClick={handleExpandClick}
+    >
+      <AccountContainer
+        {...actions}
+        id={account.id}
+        timestamp={status.created_at}
+        withRelationship={false}
+        showProfileHoverCard={!compose}
+      />
 
-export default withRouter(injectIntl(QuotedStatus) as any);
+      {renderReplyMentions()}
+
+      <Text
+        className='break-words'
+        size='sm'
+        dangerouslySetInnerHTML={{ __html: status.contentHtml }}
+      />
+
+      <StatusMedia status={status} />
+    </Stack>
+  );
+};
+
+export default QuotedStatus;
