@@ -230,32 +230,30 @@ export function fetchAccountFail(id, error) {
 
 export function followAccount(id, options = { reblogs: true }) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     const alreadyFollowing = getState().getIn(['relationships', id, 'following']);
     const locked = getState().getIn(['accounts', id, 'locked'], false);
 
     dispatch(followAccountRequest(id, locked));
 
-    api(getState).post(`/api/v1/accounts/${id}/follow`, options).then(response => {
-      dispatch(followAccountSuccess(response.data, alreadyFollowing));
-    }).catch(error => {
-      dispatch(followAccountFail(error, locked));
-    });
+    return api(getState)
+      .post(`/api/v1/accounts/${id}/follow`, options)
+      .then(response => dispatch(followAccountSuccess(response.data, alreadyFollowing)))
+      .catch(error => dispatch(followAccountFail(error, locked)));
   };
 }
 
 export function unfollowAccount(id) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     dispatch(unfollowAccountRequest(id));
 
-    api(getState).post(`/api/v1/accounts/${id}/unfollow`).then(response => {
-      dispatch(unfollowAccountSuccess(response.data, getState().get('statuses')));
-    }).catch(error => {
-      dispatch(unfollowAccountFail(error));
-    });
+    return api(getState)
+      .post(`/api/v1/accounts/${id}/unfollow`)
+      .then(response => dispatch(unfollowAccountSuccess(response.data, getState().get('statuses'))))
+      .catch(error => dispatch(unfollowAccountFail(error)));
   };
 }
 
@@ -313,30 +311,29 @@ export function unfollowAccountFail(error) {
 
 export function blockAccount(id) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     dispatch(blockAccountRequest(id));
 
-    api(getState).post(`/api/v1/accounts/${id}/block`).then(response => {
-      // Pass in entire statuses map so we can use it to filter stuff in different parts of the reducers
-      dispatch(blockAccountSuccess(response.data, getState().get('statuses')));
-    }).catch(error => {
-      dispatch(blockAccountFail(id, error));
-    });
+    return api(getState)
+      .post(`/api/v1/accounts/${id}/block`)
+      .then(response => {
+        // Pass in entire statuses map so we can use it to filter stuff in different parts of the reducers
+        return dispatch(blockAccountSuccess(response.data, getState().get('statuses')));
+      }).catch(error => dispatch(blockAccountFail(error)));
   };
 }
 
 export function unblockAccount(id) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     dispatch(unblockAccountRequest(id));
 
-    api(getState).post(`/api/v1/accounts/${id}/unblock`).then(response => {
-      dispatch(unblockAccountSuccess(response.data));
-    }).catch(error => {
-      dispatch(unblockAccountFail(id, error));
-    });
+    return api(getState)
+      .post(`/api/v1/accounts/${id}/unblock`)
+      .then(response => dispatch(unblockAccountSuccess(response.data)))
+      .catch(error => dispatch(unblockAccountFail(error)));
   };
 }
 
@@ -383,33 +380,32 @@ export function unblockAccountFail(error) {
   };
 }
 
-
 export function muteAccount(id, notifications) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     dispatch(muteAccountRequest(id));
 
-    api(getState).post(`/api/v1/accounts/${id}/mute`, { notifications }).then(response => {
-      // Pass in entire statuses map so we can use it to filter stuff in different parts of the reducers
-      dispatch(muteAccountSuccess(response.data, getState().get('statuses')));
-    }).catch(error => {
-      dispatch(muteAccountFail(id, error));
-    });
+    return api(getState)
+      .post(`/api/v1/accounts/${id}/mute`, { notifications })
+      .then(response => {
+        // Pass in entire statuses map so we can use it to filter stuff in different parts of the reducers
+        return dispatch(muteAccountSuccess(response.data, getState().get('statuses')));
+      })
+      .catch(error => dispatch(muteAccountFail(error)));
   };
 }
 
 export function unmuteAccount(id) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     dispatch(unmuteAccountRequest(id));
 
-    api(getState).post(`/api/v1/accounts/${id}/unmute`).then(response => {
-      dispatch(unmuteAccountSuccess(response.data));
-    }).catch(error => {
-      dispatch(unmuteAccountFail(id, error));
-    });
+    return api(getState)
+      .post(`/api/v1/accounts/${id}/unmute`)
+      .then(response => dispatch(unmuteAccountSuccess(response.data)))
+      .catch(error => dispatch(unmuteAccountFail(error)));
   };
 }
 
@@ -459,29 +455,27 @@ export function unmuteAccountFail(error) {
 
 export function subscribeAccount(id, notifications) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     dispatch(subscribeAccountRequest(id));
 
-    api(getState).post(`/api/v1/pleroma/accounts/${id}/subscribe`, { notifications }).then(response => {
-      dispatch(subscribeAccountSuccess(response.data));
-    }).catch(error => {
-      dispatch(subscribeAccountFail(id, error));
-    });
+    return api(getState)
+      .post(`/api/v1/pleroma/accounts/${id}/subscribe`, { notifications })
+      .then(response => dispatch(subscribeAccountSuccess(response.data)))
+      .catch(error => dispatch(subscribeAccountFail(error)));
   };
 }
 
 export function unsubscribeAccount(id) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     dispatch(unsubscribeAccountRequest(id));
 
-    api(getState).post(`/api/v1/pleroma/accounts/${id}/unsubscribe`).then(response => {
-      dispatch(unsubscribeAccountSuccess(response.data));
-    }).catch(error => {
-      dispatch(unsubscribeAccountFail(id, error));
-    });
+    return api(getState)
+      .post(`/api/v1/pleroma/accounts/${id}/unsubscribe`)
+      .then(response => dispatch(unsubscribeAccountSuccess(response.data)))
+      .catch(error => dispatch(unsubscribeAccountFail(error)));
   };
 }
 

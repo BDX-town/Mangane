@@ -5,7 +5,19 @@ import { mockStore } from 'soapbox/jest/test-helpers';
 import rootReducer from 'soapbox/reducers';
 
 import { normalizeAccount } from '../../normalizers';
-import { createAccount, fetchAccount, fetchAccountByUsername } from '../accounts';
+import {
+  blockAccount,
+  createAccount,
+  fetchAccount,
+  fetchAccountByUsername,
+  followAccount,
+  muteAccount,
+  subscribeAccount,
+  unblockAccount,
+  unfollowAccount,
+  unmuteAccount,
+  unsubscribeAccount,
+} from '../accounts';
 
 let store;
 
@@ -350,6 +362,563 @@ describe('fetchAccountByUsername()', () => {
         ];
 
         await store.dispatch(fetchAccountByUsername(username));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('followAccount()', () => {
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(followAccount(1));
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    const id = 1;
+
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/accounts/${id}/follow`).reply(200, { success: true });
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          {
+            type: 'ACCOUNT_FOLLOW_REQUEST',
+            id,
+            locked: false,
+            skipLoading: true,
+          },
+          {
+            type: 'ACCOUNT_FOLLOW_SUCCESS',
+            relationship: { success: true },
+            alreadyFollowing: undefined,
+            skipLoading: true,
+          },
+        ];
+        await store.dispatch(followAccount(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/accounts/${id}/follow`).networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          {
+            type: 'ACCOUNT_FOLLOW_REQUEST',
+            id,
+            locked: false,
+            skipLoading: true,
+          },
+          {
+            type: 'ACCOUNT_FOLLOW_FAIL',
+            error: new Error('Network Error'),
+            locked: false,
+            skipLoading: true,
+          },
+        ];
+        await store.dispatch(followAccount(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('unfollowAccount()', () => {
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(unfollowAccount(1));
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    const id = 1;
+
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/accounts/${id}/unfollow`).reply(200, { success: true });
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'ACCOUNT_UNFOLLOW_REQUEST', id: 1, skipLoading: true },
+          {
+            type: 'ACCOUNT_UNFOLLOW_SUCCESS',
+            relationship: { success: true },
+            statuses: ImmutableMap({}),
+            skipLoading: true,
+          },
+        ];
+        await store.dispatch(unfollowAccount(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/accounts/${id}/unfollow`).networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          {
+            type: 'ACCOUNT_UNFOLLOW_REQUEST',
+            id,
+            skipLoading: true,
+          },
+          {
+            type: 'ACCOUNT_UNFOLLOW_FAIL',
+            error: new Error('Network Error'),
+            skipLoading: true,
+          },
+        ];
+        await store.dispatch(unfollowAccount(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('blockAccount()', () => {
+  const id = 1;
+
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(blockAccount(id));
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/accounts/${id}/block`).reply(200, {});
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'ACCOUNT_BLOCK_REQUEST', id },
+          {
+            type: 'ACCOUNT_BLOCK_SUCCESS',
+            relationship: {},
+            statuses: ImmutableMap({}),
+          },
+        ];
+        await store.dispatch(blockAccount(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/accounts/${id}/block`).networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'ACCOUNT_BLOCK_REQUEST', id },
+          { type: 'ACCOUNT_BLOCK_FAIL', error: new Error('Network Error') },
+        ];
+        await store.dispatch(blockAccount(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('unblockAccount()', () => {
+  const id = 1;
+
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(unblockAccount(id));
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/accounts/${id}/unblock`).reply(200, {});
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'ACCOUNT_UNBLOCK_REQUEST', id },
+          {
+            type: 'ACCOUNT_UNBLOCK_SUCCESS',
+            relationship: {},
+          },
+        ];
+        await store.dispatch(unblockAccount(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/accounts/${id}/unblock`).networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'ACCOUNT_UNBLOCK_REQUEST', id },
+          { type: 'ACCOUNT_UNBLOCK_FAIL', error: new Error('Network Error') },
+        ];
+        await store.dispatch(unblockAccount(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('muteAccount()', () => {
+  const id = 1;
+
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(unblockAccount(id));
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/accounts/${id}/mute`).reply(200, {});
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'ACCOUNT_MUTE_REQUEST', id },
+          {
+            type: 'ACCOUNT_MUTE_SUCCESS',
+            relationship: {},
+            statuses: ImmutableMap({}),
+          },
+        ];
+        await store.dispatch(muteAccount(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/accounts/${id}/mute`).networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'ACCOUNT_MUTE_REQUEST', id },
+          { type: 'ACCOUNT_MUTE_FAIL', error: new Error('Network Error') },
+        ];
+        await store.dispatch(muteAccount(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('unmuteAccount()', () => {
+  const id = 1;
+
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(unblockAccount(id));
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/accounts/${id}/unmute`).reply(200, {});
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'ACCOUNT_UNMUTE_REQUEST', id },
+          {
+            type: 'ACCOUNT_UNMUTE_SUCCESS',
+            relationship: {},
+          },
+        ];
+        await store.dispatch(unmuteAccount(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/accounts/${id}/unmute`).networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'ACCOUNT_UNMUTE_REQUEST', id },
+          { type: 'ACCOUNT_UNMUTE_FAIL', error: new Error('Network Error') },
+        ];
+        await store.dispatch(unmuteAccount(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('subscribeAccount()', () => {
+  const id = 1;
+
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(subscribeAccount(id));
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/pleroma/accounts/${id}/subscribe`).reply(200, {});
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'ACCOUNT_SUBSCRIBE_REQUEST', id },
+          {
+            type: 'ACCOUNT_SUBSCRIBE_SUCCESS',
+            relationship: {},
+          },
+        ];
+        await store.dispatch(subscribeAccount(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/pleroma/accounts/${id}/subscribe`).networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'ACCOUNT_SUBSCRIBE_REQUEST', id },
+          { type: 'ACCOUNT_SUBSCRIBE_FAIL', error: new Error('Network Error') },
+        ];
+        await store.dispatch(subscribeAccount(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('unsubscribeAccount()', () => {
+  const id = 1;
+
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(subscribeAccount(id));
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/pleroma/accounts/${id}/unsubscribe`).reply(200, {});
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'ACCOUNT_UNSUBSCRIBE_REQUEST', id },
+          {
+            type: 'ACCOUNT_UNSUBSCRIBE_SUCCESS',
+            relationship: {},
+          },
+        ];
+        await store.dispatch(unsubscribeAccount(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/pleroma/accounts/${id}/unsubscribe`).networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'ACCOUNT_UNSUBSCRIBE_REQUEST', id },
+          { type: 'ACCOUNT_UNSUBSCRIBE_FAIL', error: new Error('Network Error') },
+        ];
+        await store.dispatch(unsubscribeAccount(id));
         const actions = store.getActions();
 
         expect(actions).toEqual(expectedActions);
