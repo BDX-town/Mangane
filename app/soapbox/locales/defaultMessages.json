@@ -2411,7 +2411,7 @@
         "id": "intervals.full.days"
       }
     ],
-    "path": "app/soapbox/features/compose/components/poll_form.json"
+    "path": "app/soapbox/features/compose/components/poll-form.json"
   },
   {
     "descriptors": [

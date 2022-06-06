@@ -6,7 +6,7 @@ import {
   fetchComposeSuggestions,
   selectComposeSuggestion,
 } from '../../../actions/compose';
-import PollForm from '../components/poll_form';
+import PollForm from '../components/poll-form';
 
 const mapStateToProps = state => ({
   suggestions: state.getIn(['compose', 'suggestions']),
