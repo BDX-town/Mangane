@@ -135,7 +135,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
         dangerouslySetInnerHTML={{ __html: status.contentHtml }}
       />
 
-      <StatusMedia status={status} />
+      <StatusMedia status={status} muted={compose} />
     </Stack>
   );
 };
