@@ -4,7 +4,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import AutosuggestInput from 'soapbox/components/autosuggest_input';
-import { Button, Divider, HStack, Stack, Text } from 'soapbox/components/ui';
+import { Button, Divider, HStack, Stack, Text, Toggle } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
 import DurationSelector from './polls/duration-selector';
@@ -15,12 +15,15 @@ const messages = defineMessages({
   option_placeholder: { id: 'compose_form.poll.option_placeholder', defaultMessage: 'Answer #{number}' },
   add_option: { id: 'compose_form.poll.add_option', defaultMessage: 'Add an answer' },
   remove_option: { id: 'compose_form.poll.remove_option', defaultMessage: 'Remove this answer' },
-  poll_duration: { id: 'compose_form.poll.duration', defaultMessage: 'Poll duration' },
+  pollDuration: { id: 'compose_form.poll.duration', defaultMessage: 'Duration' },
+  removePoll: { id: 'compose_form.poll.remove', defaultMessage: 'Remove poll' },
   switchToMultiple: { id: 'compose_form.poll.switch_to_multiple', defaultMessage: 'Change poll to allow multiple answers' },
   switchToSingle: { id: 'compose_form.poll.switch_to_single', defaultMessage: 'Change poll to allow for a single answer' },
   minutes: { id: 'intervals.full.minutes', defaultMessage: '{number, plural, one {# minute} other {# minutes}}' },
   hours: { id: 'intervals.full.hours', defaultMessage: '{number, plural, one {# hour} other {# hours}}' },
   days: { id: 'intervals.full.days', defaultMessage: '{number, plural, one {# day} other {# days}}' },
+  multiSelect: { id: 'compose_form.poll.multiselect', defaultMessage: 'Multi-Select' },
+  multiSelectDetail: { id: 'compose_form.poll.multiselect_detail', defaultMessage: 'Allow users to select multiple answers' },
 });
 
 interface IOption {
@@ -63,20 +66,7 @@ const Option = (props: IOption) => {
     }
   };
 
-  // const handleToggleMultiple = (event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
-  //   event.preventDefault();
-  //   event.stopPropagation();
-
-  //   onToggleMultiple();
-  // };
-
   const onSuggestionsClearRequested = () => onClearSuggestions();
-
-  // const handleCheckboxKeypress = (event: React.KeyboardEvent<HTMLElement>) => {
-  //   if (event.key === 'Enter' || event.key === ' ') {
-  //     handleToggleMultiple(event);
-  //   }
-  // };
 
   const onSuggestionsFetchRequested = (token: string) => onFetchSuggestions(token);
 
@@ -143,13 +133,15 @@ const PollForm = (props: IPollForm) => {
     ...filteredProps
   } = props;
 
+  const intl = useIntl();
+
   const pollLimits = useAppSelector((state) => state.instance.getIn(['configuration', 'polls']) as any);
   const maxOptions = pollLimits.get('max_options');
   const maxOptionChars = pollLimits.get('max_characters_per_option');
 
   const handleAddOption = () => onAddOption('');
   const handleSelectDuration = (value: number) => onChangeSettings(value, isMultiple);
-  // const handleToggleMultiple = () => onChangeSettings(expiresIn, !isMultiple);
+  const handleToggleMultiple = () => onChangeSettings(expiresIn, !isMultiple);
 
   if (!options) {
     return null;
@@ -189,16 +181,36 @@ const PollForm = (props: IPollForm) => {
 
       <Divider />
 
+      <HStack alignItems='center' justifyContent='between'>
+        <Stack>
+          <Text size='lg' weight='medium'>
+            {intl.formatMessage(messages.multiSelect)}
+          </Text>
+
+          <Text theme='muted'>
+            {intl.formatMessage(messages.multiSelectDetail)}
+          </Text>
+        </Stack>
+
+        <Toggle checked={isMultiple} onChange={handleToggleMultiple} />
+      </HStack>
+
+      <Divider />
+
       {/* Duration */}
       <Stack space={2}>
-        <Text size='lg' weight='medium'>Duration</Text>
+        <Text size='lg' weight='medium'>
+          {intl.formatMessage(messages.pollDuration)}
+        </Text>
 
         <DurationSelector onDurationChange={handleSelectDuration} />
       </Stack>
 
       {/* Remove Poll */}
       <div className='text-center'>
-        <Button theme='danger' onClick={props.onRemovePoll}>Remove Poll</Button>
+        <Button theme='danger' onClick={props.onRemovePoll}>
+          {intl.formatMessage(messages.removePoll)}
+        </Button>
       </div>
     </Stack>
   );
