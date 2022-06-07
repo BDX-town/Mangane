@@ -4,7 +4,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import AutosuggestInput from 'soapbox/components/autosuggest_input';
-import { Button, HStack, Stack, Text } from 'soapbox/components/ui';
+import { Button, Divider, HStack, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
 import DurationSelector from './polls/duration-selector';
@@ -187,6 +187,7 @@ const PollForm = (props: IPollForm) => {
         </HStack>
       </Stack>
 
+      <Divider />
 
       {/* Duration */}
       <Stack space={2}>
