@@ -422,7 +422,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
           </div>
         );
       } else {
-        quote = <QuotedStatus statusId={status.quote} />;
+        quote = <QuotedStatus statusId={status.quote as string} />;
       }
     }
 
