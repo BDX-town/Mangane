@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { List as ImmutableList } from 'immutable';
 import React from 'react';
 
 import { render, screen } from '../../../../jest/test-helpers';
@@ -7,16 +7,16 @@ import TrendsPanel from '../trends-panel';
 describe('<TrendsPanel />', () => {
   it('renders trending hashtags', () => {
     const store = {
-      trends: ImmutableMap({
-        items: fromJS([{
+      trends: {
+        items: ImmutableList([{
           name: 'hashtag 1',
-          history: [{
+          history: ImmutableList([{
             day: '1652745600',
             uses: '294',
             accounts: '180',
-          }],
+          }]),
         }]),
-      }),
+      },
     };
 
     render(<TrendsPanel limit={1} />, null, store);
@@ -27,18 +27,18 @@ describe('<TrendsPanel />', () => {
 
   it('renders multiple trends', () => {
     const store = {
-      trends: ImmutableMap({
-        items: fromJS([
+      trends: {
+        items: ImmutableList([
           {
             name: 'hashtag 1',
-            history: [{ accounts: [] }],
+            history: ImmutableList([{ accounts: [] }]),
           },
           {
             name: 'hashtag 2',
-            history: [{ accounts: [] }],
+            history: ImmutableList([{ accounts: [] }]),
           },
         ]),
-      }),
+      },
     };
 
     render(<TrendsPanel limit={3} />, null, store);
@@ -47,18 +47,18 @@ describe('<TrendsPanel />', () => {
 
   it('respects the limit prop', () => {
     const store = {
-      trends: ImmutableMap({
-        items: fromJS([
+      trends: {
+        items: ImmutableList([
           {
             name: 'hashtag 1',
-            history: [{ accounts: [] }],
+            history: ImmutableList([{ accounts: [] }]),
           },
           {
             name: 'hashtag 2',
-            history: [{ accounts: [] }],
+            history: ImmutableList([{ accounts: [] }]),
           },
         ]),
-      }),
+      },
     };
 
     render(<TrendsPanel limit={1} />, null, store);
@@ -67,9 +67,9 @@ describe('<TrendsPanel />', () => {
 
   it('renders empty', () => {
     const store = {
-      trends: ImmutableMap({
-        items: fromJS([]),
-      }),
+      trends: {
+        items: ImmutableList([]),
+      },
     };
 
     render(<TrendsPanel limit={1} />, null, store);

@@ -16,10 +16,10 @@ describe('modal reducer', () => {
       modalType: 'type1',
       modalProps: { props1: '1' },
     };
-    expect(reducer(state, action)).toMatchObject(ImmutableList([{
+    expect(reducer(state, action).toJS()).toMatchObject([{
       modalType: 'type1',
       modalProps: { props1: '1' },
-    }]));
+    }]);
   });
 
   it('should handle MODAL_CLOSE', () => {

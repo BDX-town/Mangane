@@ -1,13 +1,22 @@
-import { List as ImmutableList } from 'immutable';
+import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 
 import { MODAL_OPEN, MODAL_CLOSE } from '../actions/modals';
 
-const initialState = ImmutableList();
+import type { AnyAction } from 'redux';
 
-export default function modal(state = initialState, action) {
+
+const ModalRecord = ImmutableRecord({
+  modalType: '',
+  modalProps: null as Record<string, any> | null,
+});
+
+type Modal = ReturnType<typeof ModalRecord>;
+type State = ImmutableList<Modal>;
+
+export default function modal(state: State = ImmutableList<Modal>(), action: AnyAction) {
   switch (action.type) {
     case MODAL_OPEN:
-      return state.push({ modalType: action.modalType, modalProps: action.modalProps });
+      return state.push(ModalRecord({ modalType: action.modalType, modalProps: action.modalProps }));
     case MODAL_CLOSE:
       if (state.size === 0) {
         return state;

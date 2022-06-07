@@ -77,14 +77,14 @@ const ReportModal = ({ onClose }: IReportModal) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const accountId = useAppSelector((state) => state.reports.getIn(['new', 'account_id']) as string);
-  const account = useAccount(accountId);
+  const accountId = useAppSelector((state) => state.reports.new.account_id);
+  const account = useAccount(accountId as string);
 
-  const isBlocked = useAppSelector((state) => state.reports.getIn(['new', 'block']) as boolean);
-  const isSubmitting = useAppSelector((state) => state.reports.getIn(['new', 'isSubmitting']) as boolean);
+  const isBlocked = useAppSelector((state) => state.reports.new.block);
+  const isSubmitting = useAppSelector((state) => state.reports.new.isSubmitting);
   const rules = useAppSelector((state) => state.rules.items);
-  const ruleIds = useAppSelector((state) => state.reports.getIn(['new', 'rule_ids']) as ImmutableSet<string>);
-  const selectedStatusIds = useAppSelector((state) => state.reports.getIn(['new', 'status_ids']) as ImmutableSet<string>);
+  const ruleIds = useAppSelector((state) => state.reports.new.rule_ids);
+  const selectedStatusIds = useAppSelector((state) => state.reports.new.status_ids);
 
   const isReportingAccount = useMemo(() => selectedStatusIds.size === 0, []);
   const shouldRequireRule = rules.length > 0;

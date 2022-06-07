@@ -26,6 +26,8 @@ export interface MenuItem {
   icon: string,
   count?: number,
   destructive?: boolean,
+  meta?: string,
+  active?: boolean,
 }
 
 export type Menu = Array<MenuItem | null>;

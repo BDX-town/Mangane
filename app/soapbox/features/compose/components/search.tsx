@@ -50,8 +50,8 @@ const Search = (props: ISearch) => {
   const history = useHistory();
   const intl = useIntl();
 
-  const value = useAppSelector((state) => state.search.get('value'));
-  const submitted = useAppSelector((state) => state.search.get('submitted'));
+  const value = useAppSelector((state) => state.search.value);
+  const submitted = useAppSelector((state) => state.search.submitted);
 
   const debouncedSubmit = debounce(() => {
     dispatch(submitSearch());

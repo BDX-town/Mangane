@@ -1,18 +1,27 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage } from 'react-intl';
-import spring from 'react-motion/lib/spring';
+import { spring } from 'react-motion';
 
-import Icon from '../../../components/icon';
-import StatusContent from '../../../components/status_content';
-import { Stack } from '../../../components/ui';
-import AccountContainer from '../../../containers/account_container';
+import Icon from 'soapbox/components/icon';
+import StatusContent from 'soapbox/components/status_content';
+import { Stack } from 'soapbox/components/ui';
+import AccountContainer from 'soapbox/containers/account_container';
+
 import Motion from '../util/optional_motion';
 
-const ActionsModal = ({ status, actions, onClick, onClose }) => {
-  const renderAction = (action, i) => {
+import type { Menu, MenuItem } from 'soapbox/components/dropdown_menu';
+import type { Status as StatusEntity } from 'soapbox/types/entities';
+
+interface IActionsModal {
+  status: StatusEntity,
+  actions: Menu,
+  onClick: () => void,
+  onClose: () => void,
+}
+
+const ActionsModal: React.FC<IActionsModal> = ({ status, actions, onClick, onClose }) => {
+  const renderAction = (action: MenuItem | null, i: number) => {
     if (action === null) {
       return <li key={`sep-${i}`} className='dropdown-menu__separator' />;
     }
@@ -48,9 +57,10 @@ const ActionsModal = ({ status, actions, onClick, onClose }) => {
           {status && (
             <Stack space={2} className='p-4 bg-gray-50 dark:bg-slate-800 border-b border-solid border-gray-200 dark:border-gray-700'>
               <AccountContainer
-                account={status.get('account')}
+                key={status.account as string}
+                id={status.account as string}
                 showProfileHoverCard={false}
-                timestamp={status.get('created_at')}
+                timestamp={status.created_at}
               />
               <StatusContent status={status} />
             </Stack>
@@ -71,13 +81,6 @@ const ActionsModal = ({ status, actions, onClick, onClose }) => {
       )}
     </Motion>
   );
-};
-
-ActionsModal.propTypes = {
-  status: ImmutablePropTypes.record,
-  actions: PropTypes.array,
-  onClick: PropTypes.func,
-  onClose: PropTypes.func.isRequired,
 };
 
 export default ActionsModal;

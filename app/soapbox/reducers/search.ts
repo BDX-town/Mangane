@@ -1,4 +1,6 @@
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+import { OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord, fromJS } from 'immutable';
+
+import { APIEntity } from 'soapbox/types/entities';
 
 import {
   COMPOSE_MENTION,
@@ -17,26 +19,50 @@ import {
   SEARCH_EXPAND_SUCCESS,
 } from '../actions/search';
 
-const initialState = ImmutableMap({
+import type { AnyAction } from 'redux';
+
+const HashtagRecord = ImmutableRecord({
+  name: '',
+  url: '',
+});
+
+const ResultsRecord = ImmutableRecord({
+  accounts: ImmutableOrderedSet<string>(),
+  statuses: ImmutableOrderedSet<string>(),
+  hashtags: ImmutableOrderedSet<Hashtag>(), // it's a list of maps
+  accountsHasMore: false,
+  statusesHasMore: false,
+  hashtagsHasMore: false,
+  accountsLoaded: false,
+  statusesLoaded: false,
+  hashtagsLoaded: false,
+});
+
+const ReducerRecord = ImmutableRecord({
   value: '',
   submitted: false,
   submittedValue: '',
   hidden: false,
-  results: ImmutableMap(),
-  filter: 'accounts',
+  results: ResultsRecord(),
+  filter: 'accounts' as SearchFilter,
 });
 
-const toIds = items => {
+type State = ReturnType<typeof ReducerRecord>;
+type APIEntities = Array<APIEntity>;
+export type Hashtag = ReturnType<typeof HashtagRecord>;
+export type SearchFilter = 'accounts' | 'statuses' | 'hashtags';
+
+const toIds = (items: APIEntities) => {
   return ImmutableOrderedSet(items.map(item => item.id));
 };
 
-const importResults = (state, results, searchTerm, searchType) => {
+const importResults = (state: State, results: APIEntity, searchTerm: string, searchType: SearchFilter) => {
   return state.withMutations(state => {
-    if (state.get('value') === searchTerm && state.get('filter') === searchType) {
-      state.set('results', ImmutableMap({
+    if (state.value === searchTerm && state.filter === searchType) {
+      state.set('results', ResultsRecord({
         accounts: toIds(results.accounts),
         statuses: toIds(results.statuses),
-        hashtags: fromJS(results.hashtags), // it's a list of maps
+        hashtags: ImmutableOrderedSet(results.hashtags.map(HashtagRecord)), // it's a list of maps
         accountsHasMore: results.accounts.length >= 20,
         statusesHasMore: results.statuses.length >= 20,
         hashtagsHasMore: results.hashtags.length >= 20,
@@ -50,38 +76,38 @@ const importResults = (state, results, searchTerm, searchType) => {
   });
 };
 
-const paginateResults = (state, searchType, results, searchTerm) => {
+const paginateResults = (state: State, searchType: SearchFilter, results: APIEntity, searchTerm: string) => {
   return state.withMutations(state => {
-    if (state.get('value') === searchTerm) {
+    if (state.value === searchTerm) {
       state.setIn(['results', `${searchType}HasMore`], results[searchType].length >= 20);
       state.setIn(['results', `${searchType}Loaded`], true);
       state.updateIn(['results', searchType], items => {
         const data = results[searchType];
         // Hashtags are a list of maps. Others are IDs.
         if (searchType === 'hashtags') {
-          return items.concat(fromJS(data));
+          return (items as ImmutableOrderedSet<string>).concat(fromJS(data));
         } else {
-          return items.concat(toIds(data));
+          return (items as ImmutableOrderedSet<string>).concat(toIds(data));
         }
       });
     }
   });
 };
 
-const handleSubmitted = (state, value) => {
+const handleSubmitted = (state: State, value: string) => {
   return state.withMutations(state => {
-    state.set('results', ImmutableMap());
+    state.set('results', ResultsRecord());
     state.set('submitted', true);
     state.set('submittedValue', value);
   });
 };
 
-export default function search(state = initialState, action) {
+export default function search(state = ReducerRecord(), action: AnyAction) {
   switch (action.type) {
     case SEARCH_CHANGE:
       return state.set('value', action.value);
     case SEARCH_CLEAR:
-      return initialState;
+      return ReducerRecord();
     case SEARCH_SHOW:
       return state.set('hidden', false);
     case COMPOSE_REPLY:
