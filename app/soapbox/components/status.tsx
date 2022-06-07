@@ -8,6 +8,7 @@ import { NavLink, withRouter, RouteComponentProps } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
+import { defaultMediaVisibility } from 'soapbox/utils/status';
 
 import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
@@ -48,16 +49,6 @@ export const textForScreenReader = (intl: IntlShape, status: StatusEntity, reblo
   }
 
   return values.join(', ');
-};
-
-export const defaultMediaVisibility = (status: StatusEntity, displayMedia: string): boolean => {
-  if (!status) return false;
-
-  if (status.reblog && typeof status.reblog === 'object') {
-    status = status.reblog;
-  }
-
-  return (displayMedia !== 'hide_all' && !status.sensitive || displayMedia === 'show_all');
 };
 
 interface IStatus extends RouteComponentProps {

@@ -2,6 +2,17 @@ import { isIntegerId } from 'soapbox/utils/numbers';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities';
 
+/** Get the initial visibility of media attachments from user settings. */
+export const defaultMediaVisibility = (status: StatusEntity | undefined, displayMedia: string): boolean => {
+  if (!status) return false;
+
+  if (status.reblog && typeof status.reblog === 'object') {
+    status = status.reblog;
+  }
+
+  return (displayMedia !== 'hide_all' && !status.sensitive || displayMedia === 'show_all');
+};
+
 /** Grab the first external link from a status. */
 export const getFirstExternalLink = (status: StatusEntity): HTMLAnchorElement | null => {
   try {
