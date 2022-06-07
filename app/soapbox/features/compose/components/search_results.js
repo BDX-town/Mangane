@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { FormattedMessage } from 'react-intl';
-import { defineMessages, injectIntl } from 'react-intl';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 
 import Hashtag from 'soapbox/components/hashtag';
 import ScrollableList from 'soapbox/components/scrollable_list';

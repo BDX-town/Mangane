@@ -4,8 +4,7 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 
-import { logOut, switchAccount } from 'soapbox/actions/auth';
-import { fetchOwnAccounts } from 'soapbox/actions/auth';
+import { fetchOwnAccounts, logOut, switchAccount } from 'soapbox/actions/auth';
 import { getSettings } from 'soapbox/actions/settings';
 import { closeSidebar } from 'soapbox/actions/sidebar';
 import Account from 'soapbox/components/account';

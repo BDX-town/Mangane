@@ -11,8 +11,7 @@ import { createSelector } from 'reselect';
 
 import * as BuildConfig from 'soapbox/build_config';
 import { RootState } from 'soapbox/store';
-import { getAccessToken, getAppToken, parseBaseURL } from 'soapbox/utils/auth';
-import { isURL } from 'soapbox/utils/auth';
+import { getAccessToken, getAppToken, isURL, parseBaseURL } from 'soapbox/utils/auth';
 
 /**
  Parse Link headers, mostly for pagination.

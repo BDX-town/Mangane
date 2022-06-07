@@ -6,14 +6,13 @@ import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
+import { openModal } from 'soapbox/actions/modals';
 import EmojiButtonWrapper from 'soapbox/components/emoji-button-wrapper';
 import StatusActionButton from 'soapbox/components/status-action-button';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { isUserTouching } from 'soapbox/is_mobile';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
 import { getFeatures } from 'soapbox/utils/features';
-
-import { openModal } from '../actions/modals';
 
 import type { History } from 'history';
 import type { AnyAction, Dispatch } from 'redux';

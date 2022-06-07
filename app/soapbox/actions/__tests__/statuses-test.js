@@ -6,8 +6,7 @@ import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { normalizeStatus } from 'soapbox/normalizers/status';
 import rootReducer from 'soapbox/reducers';
 
-import { fetchContext } from '../statuses';
-import { deleteStatus } from '../statuses';
+import { deleteStatus, fetchContext } from '../statuses';
 
 describe('fetchContext()', () => {
   it('handles Mitra context', done => {

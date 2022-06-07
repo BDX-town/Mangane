@@ -45,8 +45,9 @@ import {
   hideStatus,
   revealStatus,
   editStatus,
+  fetchStatusWithContext,
+  fetchNext,
 } from 'soapbox/actions/statuses';
-import { fetchStatusWithContext, fetchNext } from 'soapbox/actions/statuses';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { textForScreenReader, defaultMediaVisibility } from 'soapbox/components/status';
