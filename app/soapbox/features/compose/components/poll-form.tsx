@@ -90,7 +90,7 @@ const Option = (props: IOption) => {
     <HStack alignItems='center' justifyContent='between' space={4}>
       <HStack alignItems='center' space={2} grow>
         <div className='w-6'>
-          <Text weight='bold'>{index + 1}</Text>
+          <Text weight='bold'>{index + 1}.</Text>
         </div>
 
         <AutosuggestInput
