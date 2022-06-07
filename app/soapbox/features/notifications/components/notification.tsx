@@ -1,7 +1,6 @@
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
-import { defineMessages, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
-import { useIntl } from 'react-intl';
+import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';

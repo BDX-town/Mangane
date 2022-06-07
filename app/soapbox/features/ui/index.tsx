@@ -29,13 +29,11 @@ import AdminPage from 'soapbox/pages/admin_page';
 import DefaultPage from 'soapbox/pages/default_page';
 // import GroupsPage from 'soapbox/pages/groups_page';
 // import GroupPage from 'soapbox/pages/group_page';
-import EmptyPage from 'soapbox/pages/default_page';
 import HomePage from 'soapbox/pages/home_page';
 import ProfilePage from 'soapbox/pages/profile_page';
 import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
 import StatusPage from 'soapbox/pages/status_page';
-import { getAccessToken } from 'soapbox/utils/auth';
-import { getVapidKey } from 'soapbox/utils/auth';
+import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { cacheCurrentUrl } from 'soapbox/utils/redirect';
 import { isStandalone } from 'soapbox/utils/state';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
@@ -119,6 +117,8 @@ import { WrappedRoute } from './util/react_router_helpers';
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
 import 'soapbox/components/status';
+
+const EmptyPage = HomePage;
 
 const isMobile = (width: number): boolean => width <= 1190;
 

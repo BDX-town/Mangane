@@ -11,10 +11,10 @@ import {
   ACCOUNT_MUTE_SUCCESS,
 } from '../actions/accounts';
 import {
+  CONTEXT_FETCH_SUCCESS,
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_SUCCESS,
 } from '../actions/statuses';
-import { CONTEXT_FETCH_SUCCESS } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
 import type { ReducerStatus } from './statuses';

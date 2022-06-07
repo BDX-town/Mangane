@@ -8,8 +8,7 @@ import { fetchFilters, createFilter, deleteFilter } from 'soapbox/actions/filter
 import snackbar from 'soapbox/actions/snackbar';
 import Icon from 'soapbox/components/icon';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import { Button } from 'soapbox/components/ui';
-import { CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
+import { Button, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
 import {
   FieldsGroup,
   Checkbox,

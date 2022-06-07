@@ -4,8 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { logOut, switchAccount } from 'soapbox/actions/auth';
-import { fetchOwnAccounts } from 'soapbox/actions/auth';
+import { fetchOwnAccounts, logOut, switchAccount } from 'soapbox/actions/auth';
 import Account from 'soapbox/components/account';
 import { Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
