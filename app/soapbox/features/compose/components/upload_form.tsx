@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useAppSelector } from 'soapbox/hooks';
 
-// import SensitiveButtonContainer from '../containers/sensitive_button_container';
+import SensitiveButton from '../components/sensitive-button';
 import UploadProgress from '../components/upload-progress';
 import UploadContainer from '../containers/upload_container';
 
@@ -25,7 +25,7 @@ const UploadForm = () => {
         ))}
       </div>
 
-      {/* {!mediaIds.isEmpty() && <SensitiveButtonContainer />} */}
+      {!mediaIds.isEmpty() && <SensitiveButton />}
     </div>
   );
 };
