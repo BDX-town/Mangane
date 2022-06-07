@@ -84,6 +84,7 @@ const Option = (props: IOption) => {
         </div>
 
         <AutosuggestInput
+          className='rounded-md'
           placeholder={intl.formatMessage(messages.option_placeholder, { number: index + 1 })}
           maxLength={maxChars}
           value={title}
@@ -93,7 +94,7 @@ const Option = (props: IOption) => {
           onSuggestionsClearRequested={onSuggestionsClearRequested}
           onSuggestionSelected={onSuggestionSelected}
           searchTokens={[':']}
-          autoFocus
+          autoFocus={index === 0}
         />
       </HStack>
 

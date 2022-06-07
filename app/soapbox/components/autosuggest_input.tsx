@@ -285,7 +285,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
         <input
           type='text'
           className={classNames({
-            'block w-full rounded-md sm:text-sm border-gray-300 dark:border-gray-600 dark:bg-slate-800 dark:text-white dark:placeholder:text-gray-500 focus:ring-primary-500 focus:border-primary-500': true,
+            'block w-full sm:text-sm border-gray-300 dark:border-gray-600 dark:bg-slate-800 dark:text-white dark:placeholder:text-gray-500 focus:ring-primary-500 focus:border-primary-500': true,
           }, className)}
           ref={this.setInput}
           disabled={disabled}
