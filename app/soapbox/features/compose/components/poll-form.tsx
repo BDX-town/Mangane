@@ -1,24 +1,23 @@
 'use strict';
 
-import classNames from 'classnames';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import AutosuggestInput from 'soapbox/components/autosuggest_input';
-import Icon from 'soapbox/components/icon';
-import IconButton from 'soapbox/components/icon_button';
-import { HStack } from 'soapbox/components/ui';
+import { Button, HStack, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
+
+import DurationSelector from './polls/duration-selector';
 
 import type { AutoSuggestion } from 'soapbox/components/autosuggest_input';
 
 const messages = defineMessages({
-  option_placeholder: { id: 'compose_form.poll.option_placeholder', defaultMessage: 'Choice {number}' },
-  add_option: { id: 'compose_form.poll.add_option', defaultMessage: 'Add a choice' },
-  remove_option: { id: 'compose_form.poll.remove_option', defaultMessage: 'Remove this choice' },
+  option_placeholder: { id: 'compose_form.poll.option_placeholder', defaultMessage: 'Answer #{number}' },
+  add_option: { id: 'compose_form.poll.add_option', defaultMessage: 'Add an answer' },
+  remove_option: { id: 'compose_form.poll.remove_option', defaultMessage: 'Remove this answer' },
   poll_duration: { id: 'compose_form.poll.duration', defaultMessage: 'Poll duration' },
-  switchToMultiple: { id: 'compose_form.poll.switch_to_multiple', defaultMessage: 'Change poll to allow multiple choices' },
-  switchToSingle: { id: 'compose_form.poll.switch_to_single', defaultMessage: 'Change poll to allow for a single choice' },
+  switchToMultiple: { id: 'compose_form.poll.switch_to_multiple', defaultMessage: 'Change poll to allow multiple answers' },
+  switchToSingle: { id: 'compose_form.poll.switch_to_single', defaultMessage: 'Change poll to allow for a single answer' },
   minutes: { id: 'intervals.full.minutes', defaultMessage: '{number, plural, one {# minute} other {# minutes}}' },
   hours: { id: 'intervals.full.hours', defaultMessage: '{number, plural, one {# hour} other {# hours}}' },
   days: { id: 'intervals.full.days', defaultMessage: '{number, plural, one {# day} other {# days}}' },
@@ -26,7 +25,6 @@ const messages = defineMessages({
 
 interface IOption {
   index: number
-  isPollMultiple?: boolean
   maxChars: number
   numOptions: number
   onChange(index: number, value: string): void
@@ -35,7 +33,6 @@ interface IOption {
   onRemove(index: number): void
   onRemovePoll(): void
   onSuggestionSelected(tokenStart: number, token: string, value: string, key: (string | number)[]): void
-  onToggleMultiple(): void
   suggestions?: any // list
   title: string
 }
@@ -43,7 +40,6 @@ interface IOption {
 const Option = (props: IOption) => {
   const {
     index,
-    isPollMultiple,
     maxChars,
     numOptions,
     onChange,
@@ -51,7 +47,6 @@ const Option = (props: IOption) => {
     onFetchSuggestions,
     onRemove,
     onRemovePoll,
-    onToggleMultiple,
     suggestions,
     title,
   } = props;
@@ -68,20 +63,20 @@ const Option = (props: IOption) => {
     }
   };
 
-  const handleToggleMultiple = (event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
+  // const handleToggleMultiple = (event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+  //   event.preventDefault();
+  //   event.stopPropagation();
 
-    onToggleMultiple();
-  };
+  //   onToggleMultiple();
+  // };
 
   const onSuggestionsClearRequested = () => onClearSuggestions();
 
-  const handleCheckboxKeypress = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      handleToggleMultiple(event);
-    }
-  };
+  // const handleCheckboxKeypress = (event: React.KeyboardEvent<HTMLElement>) => {
+  //   if (event.key === 'Enter' || event.key === ' ') {
+  //     handleToggleMultiple(event);
+  //   }
+  // };
 
   const onSuggestionsFetchRequested = (token: string) => onFetchSuggestions(token);
 
@@ -92,17 +87,11 @@ const Option = (props: IOption) => {
   };
 
   return (
-    <li>
-      <label className='poll__text editable'>
-        <span
-          className={classNames('poll__input', { checkbox: isPollMultiple })}
-          onClick={handleToggleMultiple}
-          onKeyPress={handleCheckboxKeypress}
-          role='button'
-          tabIndex={0}
-          title={intl.formatMessage(isPollMultiple ? messages.switchToSingle : messages.switchToMultiple)}
-          aria-label={intl.formatMessage(isPollMultiple ? messages.switchToSingle : messages.switchToMultiple)}
-        />
+    <HStack alignItems='center' justifyContent='between' space={4}>
+      <HStack alignItems='center' space={2} grow>
+        <div className='w-6'>
+          <Text weight='bold'>{index + 1}</Text>
+        </div>
 
         <AutosuggestInput
           placeholder={intl.formatMessage(messages.option_placeholder, { number: index + 1 })}
@@ -116,16 +105,14 @@ const Option = (props: IOption) => {
           searchTokens={[':']}
           autoFocus
         />
-      </label>
+      </HStack>
 
-      <div className='poll__cancel'>
-        <IconButton
-          title={intl.formatMessage(messages.remove_option)}
-          src={require('@tabler/icons/icons/x.svg')}
-          onClick={handleOptionRemove}
-        />
-      </div>
-    </li>
+      {index > 1 && (
+        <div>
+          <Button theme='danger' size='sm' onClick={handleOptionRemove}>Delete</Button>
+        </div>
+      )}
+    </HStack>
   );
 };
 
@@ -156,27 +143,21 @@ const PollForm = (props: IPollForm) => {
     ...filteredProps
   } = props;
 
-  const intl = useIntl();
-
   const pollLimits = useAppSelector((state) => state.instance.getIn(['configuration', 'polls']) as any);
   const maxOptions = pollLimits.get('max_options');
   const maxOptionChars = pollLimits.get('max_characters_per_option');
 
   const handleAddOption = () => onAddOption('');
-
-  const handleSelectDuration = (event: React.ChangeEvent<HTMLSelectElement>) =>
-    onChangeSettings(event.target.value, isMultiple);
-
-  const handleToggleMultiple = () => onChangeSettings(expiresIn, !isMultiple);
-
+  const handleSelectDuration = (value: number) => onChangeSettings(value, isMultiple);
+  // const handleToggleMultiple = () => onChangeSettings(expiresIn, !isMultiple);
 
   if (!options) {
     return null;
   }
 
   return (
-    <div className='compose-form__poll-wrapper'>
-      <ul>
+    <Stack space={4}>
+      <Stack space={2}>
         {options.map((title: string, i: number) => (
           <Option
             title={title}
@@ -184,34 +165,41 @@ const PollForm = (props: IPollForm) => {
             index={i}
             onChange={onChangeOption}
             onRemove={onRemoveOption}
-            isPollMultiple={isMultiple}
-            onToggleMultiple={handleToggleMultiple}
             maxChars={maxOptionChars}
             numOptions={options.size}
             {...filteredProps}
           />
         ))}
-      </ul>
 
-      <HStack className='text-black dark:text-white' space={2}>
-        {options.size < maxOptions && (
-          <button className='button button-secondary' onClick={handleAddOption}>
-            <Icon src={require('@tabler/icons/icons/plus.svg')} />
-            <FormattedMessage {...messages.add_option} />
-          </button>
-        )}
+        <HStack space={2}>
+          <div className='w-6' />
 
-        <select value={expiresIn} onChange={handleSelectDuration}>
-          <option value={300}>{intl.formatMessage(messages.minutes, { number: 5 })}</option>
-          <option value={1800}>{intl.formatMessage(messages.minutes, { number: 30 })}</option>
-          <option value={3600}>{intl.formatMessage(messages.hours, { number: 1 })}</option>
-          <option value={21600}>{intl.formatMessage(messages.hours, { number: 6 })}</option>
-          <option value={86400}>{intl.formatMessage(messages.days, { number: 1 })}</option>
-          <option value={259200}>{intl.formatMessage(messages.days, { number: 3 })}</option>
-          <option value={604800}>{intl.formatMessage(messages.days, { number: 7 })}</option>
-        </select>
-      </HStack>
-    </div>
+          {options.size < maxOptions && (
+            <Button
+              theme='secondary'
+              icon={require('@tabler/icons/icons/plus.svg')}
+              onClick={handleAddOption}
+              size='sm'
+            >
+              <FormattedMessage {...messages.add_option} />
+            </Button>
+          )}
+        </HStack>
+      </Stack>
+
+
+      {/* Duration */}
+      <Stack space={2}>
+        <Text size='lg' weight='medium'>Duration</Text>
+
+        <DurationSelector onDurationChange={handleSelectDuration} />
+      </Stack>
+
+      {/* Remove Poll */}
+      <div className='text-center'>
+        <Button theme='danger' onClick={props.onRemovePoll}>Remove Poll</Button>
+      </div>
+    </Stack>
   );
 };
 

@@ -20,7 +20,7 @@ export type AutoSuggestion = string | Emoji;
 const textAtCursorMatchesToken = (str: string, caretPosition: number, searchTokens: string[]): CursorMatch => {
   let word: string;
 
-  const left:  number = str.slice(0, caretPosition).search(/\S+$/);
+  const left: number = str.slice(0, caretPosition).search(/\S+$/);
   const right: number = str.slice(caretPosition).search(/\s/);
 
   if (right < 0) {
@@ -201,13 +201,13 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
 
     if (typeof suggestion === 'object') {
       inner = <AutosuggestEmoji emoji={suggestion} />;
-      key   = suggestion.id;
+      key = suggestion.id;
     } else if (suggestion[0] === '#') {
       inner = suggestion;
-      key   = suggestion;
+      key = suggestion;
     } else {
       inner = <AutosuggestAccount id={suggestion} />;
-      key   = suggestion;
+      key = suggestion;
     }
 
     return (
@@ -279,13 +279,13 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     }
 
     return (
-      <div className='relative'>
+      <div className='relative w-full'>
         <label className='sr-only'>{placeholder}</label>
 
         <input
           type='text'
           className={classNames({
-            'block w-full sm:text-sm dark:bg-slate-800 dark:text-white dark:placeholder:text-gray-500 focus:ring-indigo-500 focus:border-indigo-500': true,
+            'block w-full rounded-md sm:text-sm border-gray-300 dark:border-gray-600 dark:bg-slate-800 dark:text-white dark:placeholder:text-gray-500 focus:ring-primary-500 focus:border-primary-500': true,
           }, className)}
           ref={this.setInput}
           disabled={disabled}

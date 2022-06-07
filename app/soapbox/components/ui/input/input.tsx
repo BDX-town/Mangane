@@ -64,7 +64,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
           type={revealed ? 'text' : type}
           ref={ref}
           className={classNames({
-            'dark:bg-slate-800 dark:text-white block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500':
+            'dark:bg-slate-800 dark:text-white block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md focus:ring-primary-500 focus:border-primary-500':
               true,
             'pr-7': isPassword,
             'text-red-600 border-red-600': hasError,
