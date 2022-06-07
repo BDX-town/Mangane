@@ -1,8 +1,8 @@
-import classNames from 'classnames';
 import React from 'react';
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import { changeComposeSensitivity } from 'soapbox/actions/compose';
+import { FormGroup, Checkbox } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
 const messages = defineMessages({
@@ -23,20 +23,18 @@ const SensitiveButton: React.FC = () => {
   };
 
   return (
-    <div className='compose-form__sensitive-button'>
-      <label className={classNames('icon-button', { active })} title={intl.formatMessage(active ? messages.marked : messages.unmarked)}>
-        <input
+    <div className='px-2.5 py-1'>
+      <FormGroup
+        labelText={<FormattedMessage id='compose_form.sensitive.hide' defaultMessage='Mark media as sensitive' />}
+        labelTitle={intl.formatMessage(active ? messages.marked : messages.unmarked)}
+      >
+        <Checkbox
           name='mark-sensitive'
-          type='checkbox'
           checked={active}
           onChange={onClick}
           disabled={disabled}
         />
-
-        <span className={classNames('checkbox', { active })} />
-
-        <FormattedMessage id='compose_form.sensitive.hide' defaultMessage='Mark media as sensitive' />
-      </label>
+      </FormGroup>
     </div>
   );
 };
