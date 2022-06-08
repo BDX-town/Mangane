@@ -8,6 +8,8 @@ import Stack from '../stack/stack';
 interface IFormGroup {
   /** Input label message. */
   labelText?: React.ReactNode,
+  /** Input label tooltip message. */
+  labelTitle?: string,
   /** Input hint message. */
   hintText?: React.ReactNode,
   /** Input errors. */
@@ -16,7 +18,7 @@ interface IFormGroup {
 
 /** Input container with label. Renders the child. */
 const FormGroup: React.FC<IFormGroup> = (props) => {
-  const { children, errors = [], labelText, hintText } = props;
+  const { children, errors = [], labelText, labelTitle, hintText } = props;
   const formFieldId: string = useMemo(() => `field-${uuidv4()}`, []);
   const inputChildren = React.Children.toArray(children);
   const hasError = errors?.length > 0;
@@ -41,6 +43,7 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
               htmlFor={formFieldId}
               data-testid='form-group-label'
               className='-mt-0.5 block text-sm font-medium text-gray-700 dark:text-gray-400'
+              title={labelTitle}
             >
               {labelText}
             </label>
@@ -74,6 +77,7 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
           htmlFor={formFieldId}
           data-testid='form-group-label'
           className='block text-sm font-medium text-gray-700 dark:text-gray-400'
+          title={labelTitle}
         >
           {labelText}
         </label>

@@ -115,7 +115,7 @@ class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedSt
           </div>
         );
       } else {
-        quote = <QuotedStatus statusId={status.quote} />;
+        quote = <QuotedStatus statusId={status.quote as string} />;
       }
     }
 
