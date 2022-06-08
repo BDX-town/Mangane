@@ -1,9 +1,8 @@
 import React from 'react';
 
+import QuotedStatus from 'soapbox/components/quoted-status';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
-
-import QuotedStatus from '../components/quoted_status';
 
 const getStatus = makeGetStatus();
 

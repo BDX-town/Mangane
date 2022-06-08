@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { cancelQuoteCompose } from 'soapbox/actions/compose';
-import QuotedStatus from 'soapbox/features/status/components/quoted_status';
+import QuotedStatus from 'soapbox/components/quoted-status';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
 
