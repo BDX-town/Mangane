@@ -14,7 +14,7 @@ interface ITrendsPanel {
 const TrendsPanel = ({ limit }: ITrendsPanel) => {
   const dispatch = useDispatch();
 
-  const trends = useAppSelector((state) => state.trends.get('items'));
+  const trends = useAppSelector((state) => state.trends.items);
 
   const sortedTrends = React.useMemo(() => {
     return trends.sort((a, b) => {

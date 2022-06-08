@@ -1,6 +1,6 @@
 import { OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord, fromJS } from 'immutable';
 
-import { APIEntity } from 'soapbox/types/entities';
+import { normalizeTag } from 'soapbox/normalizers';
 
 import {
   COMPOSE_MENTION,
@@ -20,16 +20,12 @@ import {
 } from '../actions/search';
 
 import type { AnyAction } from 'redux';
-
-const HashtagRecord = ImmutableRecord({
-  name: '',
-  url: '',
-});
+import type { APIEntity, Tag } from 'soapbox/types/entities';
 
 const ResultsRecord = ImmutableRecord({
   accounts: ImmutableOrderedSet<string>(),
   statuses: ImmutableOrderedSet<string>(),
-  hashtags: ImmutableOrderedSet<Hashtag>(), // it's a list of maps
+  hashtags: ImmutableOrderedSet<Tag>(), // it's a list of maps
   accountsHasMore: false,
   statusesHasMore: false,
   hashtagsHasMore: false,
@@ -49,7 +45,6 @@ const ReducerRecord = ImmutableRecord({
 
 type State = ReturnType<typeof ReducerRecord>;
 type APIEntities = Array<APIEntity>;
-export type Hashtag = ReturnType<typeof HashtagRecord>;
 export type SearchFilter = 'accounts' | 'statuses' | 'hashtags';
 
 const toIds = (items: APIEntities) => {
@@ -62,7 +57,7 @@ const importResults = (state: State, results: APIEntity, searchTerm: string, sea
       state.set('results', ResultsRecord({
         accounts: toIds(results.accounts),
         statuses: toIds(results.statuses),
-        hashtags: ImmutableOrderedSet(results.hashtags.map(HashtagRecord)), // it's a list of maps
+        hashtags: ImmutableOrderedSet(results.hashtags.map(normalizeTag)), // it's a list of records
         accountsHasMore: results.accounts.length >= 20,
         statusesHasMore: results.statuses.length >= 20,
         hashtagsHasMore: results.hashtags.length >= 20,

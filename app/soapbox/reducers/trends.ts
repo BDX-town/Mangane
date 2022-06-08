@@ -1,5 +1,7 @@
 import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 
+import { normalizeTag } from 'soapbox/normalizers';
+
 import {
   TRENDS_FETCH_REQUEST,
   TRENDS_FETCH_SUCCESS,
@@ -7,28 +9,14 @@ import {
 } from '../actions/trends';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities';
-
-const HistoryRecord = ImmutableRecord({
-  accounts: '',
-  day: '',
-  uses: '',
-});
-
-const TrendingHashtagRecord = ImmutableRecord({
-  name: '',
-  url: '',
-  history: ImmutableList<History>(),
-});
+import type { APIEntity, Tag } from 'soapbox/types/entities';
 
 const ReducerRecord = ImmutableRecord({
-  items: ImmutableList<TrendingHashtag>(),
+  items: ImmutableList<Tag>(),
   isLoading: false,
 });
 
 type State = ReturnType<typeof ReducerRecord>;
-type History = ReturnType<typeof HistoryRecord>;
-export type TrendingHashtag = ReturnType<typeof TrendingHashtagRecord>;
 
 export default function trendsReducer(state: State = ReducerRecord(), action: AnyAction) {
   switch (action.type) {
@@ -36,7 +24,7 @@ export default function trendsReducer(state: State = ReducerRecord(), action: An
       return state.set('isLoading', true);
     case TRENDS_FETCH_SUCCESS:
       return state.withMutations(map => {
-        map.set('items', ImmutableList(action.tags.map((item: APIEntity) => TrendingHashtagRecord({ ...item, history: ImmutableList(item.history.map(HistoryRecord)) }))));
+        map.set('items', ImmutableList(action.tags.map((item: APIEntity) => normalizeTag(item))));
         map.set('isLoading', false);
       });
     case TRENDS_FETCH_FAIL:

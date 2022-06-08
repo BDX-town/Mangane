@@ -10,16 +10,14 @@ import { shortNumberFormat } from '../utils/numbers';
 import Permalink from './permalink';
 import { HStack, Stack, Text } from './ui';
 
-import type { Hashtag as HashtagEntity } from 'soapbox/reducers/search';
-import type { TrendingHashtag } from 'soapbox/reducers/trends';
+import type { Tag } from 'soapbox/types/entities';
 
 interface IHashtag {
-  hashtag: HashtagEntity | TrendingHashtag,
+  hashtag: Tag,
 }
 
 const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {
-  const history = (hashtag as TrendingHashtag).history;
-  const count = Number(history?.get(0)?.accounts);
+  const count = Number(hashtag.history?.get(0)?.accounts);
   const brandColor = useSelector((state) => getSoapboxConfig(state).brandColor);
 
   return (
@@ -29,7 +27,7 @@ const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {
           <Text tag='span' size='sm' weight='semibold'>#{hashtag.name}</Text>
         </Permalink>
 
-        {history && (
+        {hashtag.history && (
           <Text theme='muted' size='sm'>
             <FormattedMessage
               id='trends.count_by_accounts'
@@ -43,12 +41,12 @@ const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {
         )}
       </Stack>
 
-      {history && (
+      {hashtag.history && (
         <div className='w-[40px]' data-testid='sparklines'>
           <Sparklines
             width={40}
             height={28}
-            data={history.reverse().map((day) => +day.uses).toArray()}
+            data={hashtag.history.reverse().map((day) => +day.uses).toArray()}
           >
             <SparklinesCurve style={{ fill: 'none' }} color={brandColor} />
           </Sparklines>
