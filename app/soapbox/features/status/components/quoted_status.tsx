@@ -32,7 +32,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
   const settings = useSettings();
   const displayMedia = settings.get('displayMedia');
 
-  const [showMedia, setShowMedia] = useState(defaultMediaVisibility(status, displayMedia));
+  const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
 
   const handleExpandClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!status) return;
