@@ -59,7 +59,7 @@ const AgeVerification = () => {
         </h1>
       </div>
 
-      <div className='sm:pt-10 sm:w-2/3 mx-auto'>
+      <div className='sm:pt-10 md:w-2/3 mx-auto'>
         <Form onSubmit={handleSubmit}>
           <Datepicker onChange={onChange} />
 
