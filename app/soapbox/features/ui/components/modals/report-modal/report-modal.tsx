@@ -1,5 +1,4 @@
 import { AxiosError } from 'axios';
-import { Set as ImmutableSet } from 'immutable';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 

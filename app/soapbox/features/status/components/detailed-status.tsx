@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { FormattedMessage, injectIntl, WrappedComponentProps as IntlProps } from 'react-intl';
-import { FormattedDate } from 'react-intl';
+import { FormattedDate, FormattedMessage, injectIntl, WrappedComponentProps as IntlProps } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
 import StatusMedia from 'soapbox/components/status-media';
@@ -116,7 +115,7 @@ class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedSt
           </div>
         );
       } else {
-        quote = <QuotedStatus statusId={status.quote} />;
+        quote = <QuotedStatus statusId={status.quote as string} />;
       }
     }
 

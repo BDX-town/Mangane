@@ -4,8 +4,7 @@ import { useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 
 import snackbar from 'soapbox/actions/snackbar';
-import { checkEmailVerification, requestEmailVerification } from 'soapbox/actions/verification';
-import { postEmailVerification } from 'soapbox/actions/verification';
+import { checkEmailVerification, postEmailVerification, requestEmailVerification } from 'soapbox/actions/verification';
 import Icon from 'soapbox/components/icon';
 import { Button, Form, FormGroup, Input, Text } from 'soapbox/components/ui';
 

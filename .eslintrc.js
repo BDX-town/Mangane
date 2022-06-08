@@ -258,6 +258,7 @@ module.exports = {
         alphabetize: { order: 'asc' },
       },
     ],
+    '@typescript-eslint/no-duplicate-imports': 'error',
 
     'promise/catch-or-return': 'error',
 

@@ -3,8 +3,7 @@ import { debounce } from 'lodash';
 import React, { useCallback } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { dequeueTimeline } from 'soapbox/actions/timelines';
-import { scrollTopTimeline } from 'soapbox/actions/timelines';
+import { dequeueTimeline, scrollTopTimeline } from 'soapbox/actions/timelines';
 import ScrollTopButton from 'soapbox/components/scroll-top-button';
 import StatusList, { IStatusList } from 'soapbox/components/status_list';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';

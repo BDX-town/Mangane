@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
 import * as React from 'react';
-import DatePicker from 'react-datepicker';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { verifyAge } from 'soapbox/actions/verification';
-import { Button, Form, FormGroup, Text } from 'soapbox/components/ui';
+import { Button, Datepicker, Form, Text } from 'soapbox/components/ui';
 
 const messages = defineMessages({
   fail: {
@@ -21,13 +20,6 @@ function meetsAgeMinimum(birthday, ageMinimum) {
   const year = birthday.getUTCFullYear();
 
   return new Date(year + ageMinimum, month, day) <= new Date();
-}
-
-function getMaximumDate(ageMinimum) {
-  const date = new Date();
-  date.setUTCFullYear(date.getUTCFullYear() - ageMinimum);
-
-  return date;
 }
 
 const AgeVerification = () => {
@@ -67,21 +59,9 @@ const AgeVerification = () => {
         </h1>
       </div>
 
-      <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
+      <div className='sm:pt-10 md:w-2/3 mx-auto'>
         <Form onSubmit={handleSubmit}>
-          <FormGroup labelText='Birth Date'>
-            <DatePicker
-              selected={date}
-              dateFormat='MMMM d, yyyy'
-              onChange={onChange}
-              showMonthDropdown
-              showYearDropdown
-              maxDate={getMaximumDate(ageMinimum)}
-              className='block w-full sm:text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500'
-              dropdownMode='select'
-              required
-            />
-          </FormGroup>
+          <Datepicker onChange={onChange} />
 
           <Text theme='muted' size='sm'>
             {siteTitle} requires users to be at least {ageMinimum} years old to

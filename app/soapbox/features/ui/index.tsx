@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
-import { Switch, useHistory, matchPath, Redirect } from 'react-router-dom';
+import { Switch, useHistory, useLocation, matchPath, Redirect } from 'react-router-dom';
 
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
 import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin';
@@ -29,13 +29,11 @@ import AdminPage from 'soapbox/pages/admin_page';
 import DefaultPage from 'soapbox/pages/default_page';
 // import GroupsPage from 'soapbox/pages/groups_page';
 // import GroupPage from 'soapbox/pages/group_page';
-import EmptyPage from 'soapbox/pages/default_page';
 import HomePage from 'soapbox/pages/home_page';
 import ProfilePage from 'soapbox/pages/profile_page';
 import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
 import StatusPage from 'soapbox/pages/status_page';
-import { getAccessToken } from 'soapbox/utils/auth';
-import { getVapidKey } from 'soapbox/utils/auth';
+import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { cacheCurrentUrl } from 'soapbox/utils/redirect';
 import { isStandalone } from 'soapbox/utils/state';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
@@ -120,6 +118,8 @@ import { WrappedRoute } from './util/react_router_helpers';
 // Without this it ends up in ~8 very commonly used bundles.
 import 'soapbox/components/status';
 
+const EmptyPage = HomePage;
+
 const isMobile = (width: number): boolean => width <= 1190;
 
 const messages = defineMessages({
@@ -156,8 +156,8 @@ const keyMap = {
 };
 
 const SwitchingColumnsArea: React.FC = ({ children }) => {
-  const history = useHistory();
   const features = useFeatures();
+  const { search } = useLocation();
 
   const { authenticatedProfile, cryptoAddresses } = useSoapboxConfig();
   const hasCrypto = cryptoAddresses.size > 0;
@@ -232,7 +232,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <Redirect from='/settings/otp_authentication' to='/settings/mfa' />
       <Redirect from='/settings/applications' to='/developers' />
       <Redirect from='/auth/edit' to='/settings' />
-      <Redirect from='/auth/confirmation' to={`/email-confirmation${history.location.search}`} />
+      <Redirect from='/auth/confirmation' to={`/email-confirmation${search}`} />
       <Redirect from='/auth/reset_password' to='/reset-password' />
       <Redirect from='/auth/edit_password' to='/edit-password' />
       <Redirect from='/auth/sign_in' to='/login' />
@@ -247,7 +247,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <Redirect from='/auth/external' to='/login/external' />
       <Redirect from='/auth/mfa' to='/settings/mfa' />
       <Redirect from='/auth/password/new' to='/reset-password' />
-      <Redirect from='/auth/password/edit' to='/edit-password' />
+      <Redirect from='/auth/password/edit' to={`/edit-password${search}`} />
 
       <WrappedRoute path='/tags/:id' publicRoute page={DefaultPage} component={HashtagTimeline} content={children} />
 

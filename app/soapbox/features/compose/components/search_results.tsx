@@ -1,8 +1,6 @@
 import classNames from 'classnames';
-import React from 'react';
-import { useEffect } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { defineMessages } from 'react-intl';
+import React, { useEffect } from 'react';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { expandSearch, setFilter } from 'soapbox/actions/search';
 import { fetchTrendingStatuses } from 'soapbox/actions/trending_statuses';

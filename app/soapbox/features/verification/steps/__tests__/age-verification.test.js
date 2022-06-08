@@ -39,7 +39,10 @@ describe('<AgeVerification />', () => {
       store,
     );
 
-    await userEvent.type(screen.getByLabelText('Birth Date'), '{enter}');
+    await userEvent.selectOptions(
+      screen.getByTestId('datepicker-year'),
+      screen.getByRole('option', { name: '2020' }),
+    );
 
     fireEvent.submit(
       screen.getByRole('button'), {
