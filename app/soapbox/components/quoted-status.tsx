@@ -124,6 +124,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
 
   return (
     <Stack
+      data-testid='quoted-status'
       space={2}
       className={classNames('mt-3 p-4 rounded-lg border border-solid border-gray-100 dark:border-slate-700 cursor-pointer', {
         'hover:bg-gray-50 dark:hover:bg-slate-700': !compose,
