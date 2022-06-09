@@ -140,12 +140,7 @@ const PollForm = (props: IPollForm) => {
   const maxOptions = pollLimits.get('max_options');
   const maxOptionChars = pollLimits.get('max_characters_per_option');
 
-  const handleAddOption = () => {
-    // autofocus on new input
-    // use streamfield
-    onAddOption('');
-  };
-
+  const handleAddOption = () => onAddOption('');
   const handleSelectDuration = (value: number) => onChangeSettings(value, isMultiple);
   const handleToggleMultiple = () => onChangeSettings(expiresIn, !isMultiple);
 
