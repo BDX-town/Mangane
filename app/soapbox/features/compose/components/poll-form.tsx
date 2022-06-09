@@ -170,7 +170,6 @@ const PollForm = (props: IPollForm) => {
           {options.size < maxOptions && (
             <Button
               theme='secondary'
-              icon={require('@tabler/icons/icons/plus.svg')}
               onClick={handleAddOption}
               size='sm'
             >
