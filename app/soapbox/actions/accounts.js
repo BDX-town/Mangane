@@ -176,6 +176,7 @@ export function fetchAccountByUsername(username, history) {
       });
     } else if (features.accountLookup) {
       return dispatch(accountLookup(username)).then(account => {
+        dispatch(fetchRelationships([account.id]));
         dispatch(fetchAccountSuccess(account));
       }).catch(error => {
         dispatch(fetchAccountFail(null, error));
