@@ -177,6 +177,7 @@ const PollForm = (props: IPollForm) => {
               theme='secondary'
               onClick={handleAddOption}
               size='sm'
+              block
             >
               <FormattedMessage {...messages.add_option} />
             </Button>
