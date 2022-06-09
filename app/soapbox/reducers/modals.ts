@@ -4,7 +4,6 @@ import { MODAL_OPEN, MODAL_CLOSE } from '../actions/modals';
 
 import type { AnyAction } from 'redux';
 
-
 const ModalRecord = ImmutableRecord({
   modalType: '',
   modalProps: null as Record<string, any> | null,

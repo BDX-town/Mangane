@@ -7,7 +7,6 @@ import reducer from '../accounts_counters';
 // import accounts_counter_unfollow from 'soapbox/__fixtures__/accounts_counter_unfollow.json';
 // import accounts_counter_follow from 'soapbox/__fixtures__/accounts_counter_follow.json';
 
-
 describe('accounts_counters reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(ImmutableMap());

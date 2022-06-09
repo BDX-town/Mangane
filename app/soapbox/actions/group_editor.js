@@ -27,7 +27,6 @@ export const submit = (routerHistory) => (dispatch, getState) => {
   }
 };
 
-
 export const create = (title, description, coverImage, routerHistory) => (dispatch, getState) => {
   if (!isLoggedIn(getState)) return;
 
@@ -46,7 +45,6 @@ export const create = (title, description, coverImage, routerHistory) => (dispat
     routerHistory.push(`/groups/${data.id}`);
   }).catch(err => dispatch(createFail(err)));
 };
-
 
 export const createRequest = id => ({
   type: GROUP_CREATE_REQUEST,
@@ -81,7 +79,6 @@ export const update = (groupId, title, description, coverImage, routerHistory) =
     routerHistory.push(`/groups/${data.id}`);
   }).catch(err => dispatch(updateFail(err)));
 };
-
 
 export const updateRequest = id => ({
   type: GROUP_UPDATE_REQUEST,

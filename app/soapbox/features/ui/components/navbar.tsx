@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios';
 import classNames from 'classnames';
 import React, { useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
@@ -14,6 +13,8 @@ import Search from 'soapbox/features/compose/components/search';
 import { useOwnAccount, useSoapboxConfig } from 'soapbox/hooks';
 
 import ProfileDropdown from './profile-dropdown';
+
+import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
   login: { id: 'navbar.login.action', defaultMessage: 'Log in' },

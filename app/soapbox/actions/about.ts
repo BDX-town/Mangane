@@ -1,6 +1,6 @@
-import { AnyAction } from 'redux';
-
 import { staticClient } from '../api';
+
+import type { AnyAction } from 'redux';
 
 const FETCH_ABOUT_PAGE_REQUEST = 'FETCH_ABOUT_PAGE_REQUEST';
 const FETCH_ABOUT_PAGE_SUCCESS = 'FETCH_ABOUT_PAGE_SUCCESS';

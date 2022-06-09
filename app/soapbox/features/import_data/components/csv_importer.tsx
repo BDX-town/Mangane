@@ -21,7 +21,6 @@ const CSVImporter: React.FC<ICSVImporter> = ({ messages, action }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState<File | null | undefined>(null);
 
-
   const handleSubmit: React.FormEventHandler = (event) => {
     const params = new FormData();
     params.append('list', file!);

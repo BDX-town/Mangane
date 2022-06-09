@@ -1,6 +1,5 @@
 import { OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord } from 'immutable';
 
-
 import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts';
 import { DOMAIN_BLOCK_SUCCESS } from 'soapbox/actions/domain_blocks';
 import {

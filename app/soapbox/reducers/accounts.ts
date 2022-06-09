@@ -4,7 +4,6 @@ import {
   OrderedSet as ImmutableOrderedSet,
   fromJS,
 } from 'immutable';
-import { AnyAction } from 'redux';
 
 import {
   ADMIN_USERS_FETCH_SUCCESS,
@@ -38,6 +37,8 @@ import {
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { normalizeAccount } from 'soapbox/normalizers/account';
 import { normalizeId } from 'soapbox/utils/normalizers';
+
+import type { AnyAction } from 'redux';
 
 type AccountRecord = ReturnType<typeof normalizeAccount>;
 type AccountMap = ImmutableMap<string, any>;

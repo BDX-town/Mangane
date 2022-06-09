@@ -14,7 +14,6 @@ const  messages = defineMessages({
   passwordPlaceholder: { id: 'mfa.mfa_setup.password_placeholder', defaultMessage: 'Password' },
 });
 
-
 const DisableOtpForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState('');
@@ -38,7 +37,6 @@ const DisableOtpForm: React.FC = () => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
-
 
   return (
     <Form onSubmit={handleSubmit}>

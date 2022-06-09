@@ -100,7 +100,6 @@ manageTranslations({
   },
 });
 
-
 // Check variable interpolations and print error messages if variables are
 // used in translations which are not used in the default message.
 /* eslint-disable no-console */

@@ -1,5 +1,4 @@
 import { Map as ImmutableMap } from 'immutable';
-import { AnyAction } from 'redux';
 
 import {
   LIST_FETCH_SUCCESS,
@@ -10,6 +9,8 @@ import {
   LIST_DELETE_SUCCESS,
 } from 'soapbox/actions/lists';
 import { normalizeList } from 'soapbox/normalizers';
+
+import type { AnyAction } from 'redux';
 
 type ListRecord = ReturnType<typeof normalizeList>;
 type APIEntity = Record<string, any>;

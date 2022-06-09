@@ -1,5 +1,4 @@
 import { Record as ImmutableRecord } from 'immutable';
-import { AnyAction } from 'redux';
 
 import {
   ACCOUNT_NOTE_INIT_MODAL,
@@ -8,6 +7,8 @@ import {
   ACCOUNT_NOTE_SUBMIT_FAIL,
   ACCOUNT_NOTE_SUBMIT_SUCCESS,
 } from '../actions/account-notes';
+
+import type { AnyAction } from 'redux';
 
 const EditRecord = ImmutableRecord({
   isSubmitting: false,

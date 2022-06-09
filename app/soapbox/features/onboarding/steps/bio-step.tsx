@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -7,6 +6,8 @@ import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
 import { Button, Card, CardBody, FormGroup, Stack, Text, Textarea } from 'soapbox/components/ui';
 import { useOwnAccount } from 'soapbox/hooks';
+
+import type { AxiosError } from 'axios';
 
 const BioStep = ({ onNext }: { onNext: () => void }) => {
   const dispatch = useDispatch();

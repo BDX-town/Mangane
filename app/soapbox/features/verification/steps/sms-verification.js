@@ -165,5 +165,4 @@ const SmsVerification = () => {
   );
 };
 
-
 export { SmsVerification as default, validPhoneNumberRegex };

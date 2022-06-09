@@ -13,7 +13,6 @@ const emojiMap = require('./emoji_map.json');
 const { unicodeToFilename } = require('./unicode_to_filename');
 const { unicodeToUnifiedName } = require('./unicode_to_unified_name');
 
-
 if (data.compressed) {
   data = emojiMartUncompress(data);
 }

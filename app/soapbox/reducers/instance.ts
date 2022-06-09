@@ -1,5 +1,4 @@
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
-import { AnyAction } from 'redux';
 
 import { ADMIN_CONFIG_UPDATE_REQUEST, ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
 import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
@@ -12,6 +11,8 @@ import {
   fetchInstance,
   fetchNodeinfo,
 } from '../actions/instance';
+
+import type { AnyAction } from 'redux';
 
 const initialState = normalizeInstance(ImmutableMap());
 

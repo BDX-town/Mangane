@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios';
 import * as React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -12,6 +11,8 @@ import { createAccount, removeStoredVerification } from 'soapbox/actions/verific
 import { Button, Form, FormGroup, Input } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 import { getRedirectUrl } from 'soapbox/utils/redirect';
+
+import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
   success: {

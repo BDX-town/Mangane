@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -14,6 +13,8 @@ import { useAccount, useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import ConfirmationStep from './steps/confirmation-step';
 import OtherActionsStep from './steps/other-actions-step';
 import ReasonStep from './steps/reason-step';
+
+import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
   blankslate: { id: 'report.reason.blankslate', defaultMessage: 'You have removed all statuses from being selected.' },

@@ -1,5 +1,4 @@
 import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
-import { AnyAction } from 'redux';
 
 import {
   LIST_ADDER_RESET,
@@ -10,6 +9,8 @@ import {
   LIST_EDITOR_ADD_SUCCESS,
   LIST_EDITOR_REMOVE_SUCCESS,
 } from '../actions/lists';
+
+import type { AnyAction } from 'redux';
 
 const ListsRecord = ImmutableRecord({
   items: ImmutableList<string>(),

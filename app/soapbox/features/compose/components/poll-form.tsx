@@ -169,7 +169,6 @@ const PollForm = (props: IPollForm) => {
 
   const handleToggleMultiple = () => onChangeSettings(expiresIn, !isMultiple);
 
-
   if (!options) {
     return null;
   }

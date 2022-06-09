@@ -257,7 +257,6 @@ const importMastodonPreload = (state, data) => {
   });
 };
 
-
 const persistAuthAccount = account => {
   if (account && account.url) {
     const key = `authAccount:${account.url}`;

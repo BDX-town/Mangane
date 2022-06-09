@@ -525,7 +525,6 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
 
     const canShare = ('share' in navigator) && status.visibility === 'public';
 
-
     let reblogIcon = require('@tabler/icons/icons/repeat.svg');
 
     if (status.visibility === 'direct') {
