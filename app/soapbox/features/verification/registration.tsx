@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios';
+import classNames from 'classnames';
 import * as React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -9,7 +10,7 @@ import { fetchInstance } from 'soapbox/actions/instance';
 import { startOnboarding } from 'soapbox/actions/onboarding';
 import snackbar from 'soapbox/actions/snackbar';
 import { createAccount, removeStoredVerification } from 'soapbox/actions/verification';
-import { Button, Form, FormGroup, Input } from 'soapbox/components/ui';
+import { Button, Form, FormGroup, HStack, Icon, Input, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 import { getRedirectUrl } from 'soapbox/utils/redirect';
 
@@ -43,6 +44,8 @@ const Registration = () => {
   const [state, setState] = React.useState(initialState);
   const [shouldRedirect, setShouldRedirect] = React.useState<boolean>(false);
   const { username, password } = state;
+
+  const meetsLengthRequirements = React.useMemo(() => password.length >= 8, [password]);
 
   const handleSubmit = React.useCallback((event) => {
     event.preventDefault();
@@ -119,6 +122,21 @@ const Registration = () => {
               onChange={handleInputChange}
               required
             />
+
+            <Stack className='mt-2'>
+              <HStack alignItems='center' space={2}>
+                <Icon
+                  src={require('@tabler/icons/icons/check.svg')}
+                  className={classNames({
+                    'w-4 h-4': true,
+                    'text-gray-500': !meetsLengthRequirements,
+                    'text-success-600': meetsLengthRequirements,
+                  })}
+                />
+
+                <Text theme='muted' size='sm'>8 characters</Text>
+              </HStack>
+            </Stack>
           </FormGroup>
 
           <div className='text-center'>
