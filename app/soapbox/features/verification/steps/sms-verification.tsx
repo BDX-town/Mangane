@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import { useIntl } from 'react-intl';
 import OtpInput from 'react-otp-input';
-import { useDispatch, useSelector } from 'react-redux';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { confirmPhoneVerification, requestPhoneVerification } from 'soapbox/actions/verification';
 import { Button, Form, FormGroup, Input, Text } from 'soapbox/components/ui';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { formatPhoneNumber } from 'soapbox/utils/phone';
 
 const Statuses = {
@@ -18,9 +18,9 @@ const validPhoneNumberRegex = /^\+1\s\(\d{3}\)\s\d{3}-\d{4}/;
 
 const SmsVerification = () => {
   const intl = useIntl();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const isLoading = useSelector((state) => state.verification.get('isLoading'));
+  const isLoading = useAppSelector((state) => state.verification.get('isLoading')) as boolean;
 
   const [phone, setPhone] = React.useState('');
   const [status, setStatus] = React.useState(Statuses.IDLE);
