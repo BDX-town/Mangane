@@ -186,25 +186,27 @@ const PollForm = (props: IPollForm) => {
 
       <Divider />
 
-      <HStack alignItems='center' justifyContent='between'>
-        <Stack>
-          <Text size='lg' weight='medium'>
-            {intl.formatMessage(messages.multiSelect)}
-          </Text>
+      <button onClick={handleToggleMultiple} className='text-left'>
+        <HStack alignItems='center' justifyContent='between'>
+          <Stack>
+            <Text weight='medium'>
+              {intl.formatMessage(messages.multiSelect)}
+            </Text>
 
-          <Text theme='muted'>
-            {intl.formatMessage(messages.multiSelectDetail)}
-          </Text>
-        </Stack>
+            <Text theme='muted' size='sm'>
+              {intl.formatMessage(messages.multiSelectDetail)}
+            </Text>
+          </Stack>
 
-        <Toggle checked={isMultiple} onChange={handleToggleMultiple} />
-      </HStack>
+          <Toggle checked={isMultiple} onChange={handleToggleMultiple} />
+        </HStack>
+      </button>
 
       <Divider />
 
       {/* Duration */}
       <Stack space={2}>
-        <Text size='lg' weight='medium'>
+        <Text weight='medium'>
           {intl.formatMessage(messages.pollDuration)}
         </Text>
 
