@@ -215,7 +215,7 @@ const PollForm = (props: IPollForm) => {
 
       {/* Remove Poll */}
       <div className='text-center'>
-        <Button theme='danger' onClick={props.onRemovePoll}>
+        <Button theme='danger' size='sm' onClick={props.onRemovePoll}>
           {intl.formatMessage(messages.removePoll)}
         </Button>
       </div>
