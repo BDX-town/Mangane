@@ -264,7 +264,8 @@ describe('fetchAccountByUsername()', () => {
         });
         expect(actions[1].type).toEqual('ACCOUNTS_IMPORT');
         expect(actions[2].type).toEqual('ACCOUNT_LOOKUP_SUCCESS');
-        expect(actions[3].type).toEqual('ACCOUNT_FETCH_SUCCESS');
+        expect(actions[3].type).toEqual('RELATIONSHIPS_FETCH_REQUEST');
+        expect(actions[4].type).toEqual('ACCOUNT_FETCH_SUCCESS');
       });
     });
 
