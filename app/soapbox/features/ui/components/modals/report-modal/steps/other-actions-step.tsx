@@ -7,7 +7,7 @@ import Toggle from 'react-toggle';
 import { changeReportBlock, changeReportForward } from 'soapbox/actions/reports';
 import { fetchRules } from 'soapbox/actions/rules';
 import { Button, FormGroup, HStack, Stack, Text } from 'soapbox/components/ui';
-import StatusCheckBox from 'soapbox/features/report/containers/status_check_box_container';
+import StatusCheckBox from 'soapbox/features/report/components/status_check_box';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { isRemote, getDomain } from 'soapbox/utils/accounts';
 
@@ -61,7 +61,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
           <FormGroup labelText={intl.formatMessage(messages.addAdditionalStatuses)}>
             {showAdditionalStatuses ? (
               <Stack space={2}>
-                <div className='bg-gray-100 rounded-lg p-4'>
+                <div className='bg-gray-100 dark:bg-slate-600 rounded-lg p-4'>
                   {statusIds.map((statusId) => <StatusCheckBox id={statusId} key={statusId} />)}
                 </div>
 

@@ -23,7 +23,7 @@ export interface MenuItem {
   to?: string,
   newTab?: boolean,
   isLogout?: boolean,
-  icon: string,
+  icon?: string,
   count?: number,
   destructive?: boolean,
   meta?: string,
