@@ -73,7 +73,7 @@ const Settings = () => {
           </List>
         </CardBody>
 
-        {features.security || features.sessions && (
+        {(features.security || features.sessions) && (
           <>
             <CardHeader>
               <CardTitle title={intl.formatMessage(messages.security)} />
