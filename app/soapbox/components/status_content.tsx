@@ -273,11 +273,13 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
       output.push(<ReadMoreButton onClick={onClick} key='read-more' />);
     }
 
-    if (status.poll && typeof status.poll === 'string') {
+    const hasPoll = status.poll && typeof status.poll === 'string';
+
+    if (hasPoll) {
       output.push(<Poll id={status.poll} key='poll' status={status.url} />);
     }
 
-    return <>{output}</>;
+    return <div className={classNames({ 'bg-gray-100 rounded-md p-4': hasPoll })}>{output}</div>;
   } else {
     const output = [
       <div

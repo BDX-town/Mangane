@@ -38,6 +38,7 @@ const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u20
 
 const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },
+  pollPlaceholder: { id: 'compose_form.poll_placeholder', defaultMessage: 'Add a poll topic...' },
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Post' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
@@ -62,6 +63,7 @@ class ComposeForm extends ImmutablePureComponent {
     spoilerText: PropTypes.string,
     focusDate: PropTypes.instanceOf(Date),
     caretPosition: PropTypes.number,
+    hasPoll: PropTypes.bool,
     isSubmitting: PropTypes.bool,
     isChangingUpload: PropTypes.bool,
     isEditing: PropTypes.bool,
@@ -340,7 +342,7 @@ class ComposeForm extends ImmutablePureComponent {
 
         <AutosuggestTextarea
           ref={(isModalOpen && shouldCondense) ? null : this.setAutosuggestTextarea}
-          placeholder={intl.formatMessage(messages.placeholder)}
+          placeholder={intl.formatMessage(this.props.hasPoll ? messages.pollPlaceholder : messages.placeholder)}
           disabled={disabled}
           value={this.props.text}
           onChange={this.handleChange}
