@@ -27,7 +27,7 @@ const DurationSelector = ({ onDurationChange }: IDurationSelector) => {
     now.setMinutes(now.getMinutes() + minutes);
     now.setHours(now.getHours() + hours);
 
-    return (now - future) / 1000;
+    return Math.round((now - future) / 1000);
   }, [days, hours, minutes]);
 
   useEffect(() => {
