@@ -73,7 +73,7 @@ const Settings = () => {
           </List>
         </CardBody>
 
-        {features.security || features.sessions && (
+        {(features.security || features.sessions) && (
           <>
             <CardHeader>
               <CardTitle title={intl.formatMessage(messages.security)} />
@@ -108,7 +108,7 @@ const Settings = () => {
           <Preferences />
         </CardBody>
 
-        {features.security || features.accountAliases && (
+        {(features.security || features.accountAliases) && (
           <>
             <CardHeader>
               <CardTitle title={intl.formatMessage(messages.other)} />

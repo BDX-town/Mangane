@@ -118,49 +118,6 @@
   }
 }
 
-.compose-form__poll-wrapper {
-  border-top: 1px solid var(--foreground-color);
-
-  ul {
-    padding: 10px;
-  }
-
-  .button.button-secondary {
-    @apply h-auto py-1.5 px-2.5 text-primary-600 dark:text-primary-400 border-primary-600;
-  }
-
-  li {
-    display: flex;
-    align-items: center;
-
-    .poll__text {
-      flex: 0 0 auto;
-      width: calc(100% - (23px + 6px));
-      margin-right: 6px;
-    }
-  }
-
-  select {
-    @apply border border-solid border-primary-600 bg-white dark:bg-slate-800;
-    box-sizing: border-box;
-    font-size: 14px;
-    display: inline-block;
-    width: auto;
-    outline: 0;
-    font-family: inherit;
-    background-repeat: no-repeat;
-    background-position: right 8px center;
-    background-size: auto 16px;
-    border-radius: 4px;
-    padding: 6px 10px;
-    padding-right: 30px;
-  }
-
-  .icon-button.disabled {
-    color: var(--brand-color);
-  }
-}
-
 .muted .poll {
   color: var(--primary-text-color);
 

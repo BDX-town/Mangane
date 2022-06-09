@@ -1,9 +1,9 @@
+import { AxiosError } from 'axios';
+
 import { mockStore } from 'soapbox/jest/test-helpers';
 import rootReducer from 'soapbox/reducers';
 
 import { dismissAlert, showAlert, showAlertForError } from '../alerts';
-
-import  type { AxiosError } from 'axios';
 
 const buildError = (message: string, status: number) => new AxiosError<any>(message, String(status), null, null, {
   data: {
