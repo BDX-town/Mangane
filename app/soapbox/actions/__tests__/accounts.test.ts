@@ -148,34 +148,24 @@ describe('fetchAccountByUsername()', () => {
   const username = 'tiger';
   let state, account;
 
-  describe('when the account has already been cached in redux', () => {
-    beforeEach(() => {
-      account = normalizeAccount({
-        id,
-        acct: username,
-        display_name: 'Tiger',
-        avatar: 'test.jpg',
-        birthday: undefined,
-      });
-
-      state = rootReducer(undefined, {})
-        .set('accounts', ImmutableMap({
-          [id]: account,
-        }));
-
-      store = mockStore(state);
-
-      __stub((mock) => {
-        mock.onGet(`/api/v1/accounts/${id}`).reply(200, account);
-      });
+  beforeEach(() => {
+    account = normalizeAccount({
+      id,
+      acct: username,
+      display_name: 'Tiger',
+      avatar: 'test.jpg',
+      birthday: undefined,
     });
 
-    it('should return null', async() => {
-      const result = await store.dispatch(fetchAccountByUsername(username));
-      const actions = store.getActions();
+    state = rootReducer(undefined, {})
+      .set('accounts', ImmutableMap({
+        [id]: account,
+      }));
 
-      expect(actions).toEqual([]);
-      expect(result).toBeNull();
+    store = mockStore(state);
+
+    __stub((mock) => {
+      mock.onGet(`/api/v1/accounts/${id}`).reply(200, account);
     });
   });
 

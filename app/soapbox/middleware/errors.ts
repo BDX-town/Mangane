@@ -12,9 +12,12 @@ const isRememberFailType = (type: string): boolean => type.endsWith('_REMEMBER_F
 /** Whether the error contains an Axios response. */
 const hasResponse = (error: any): boolean => Boolean(error && error.response);
 
+/** Don't show 401's. */
+const authorized = (error: any): boolean => error?.response?.status !== 401;
+
 /** Whether the error should be shown to the user. */
 const shouldShowError = ({ type, skipAlert, error }: AnyAction): boolean => {
-  return !skipAlert && hasResponse(error) && isFailType(type) && !isRememberFailType(type);
+  return !skipAlert && hasResponse(error) && authorized(error) && isFailType(type) && !isRememberFailType(type);
 };
 
 /** Middleware to display Redux errors to the user. */

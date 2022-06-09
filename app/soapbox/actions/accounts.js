@@ -117,6 +117,13 @@ export const BIRTHDAY_REMINDERS_FETCH_REQUEST = 'BIRTHDAY_REMINDERS_FETCH_REQUES
 export const BIRTHDAY_REMINDERS_FETCH_SUCCESS = 'BIRTHDAY_REMINDERS_FETCH_SUCCESS';
 export const BIRTHDAY_REMINDERS_FETCH_FAIL    = 'BIRTHDAY_REMINDERS_FETCH_FAIL';
 
+const maybeRedirectLogin = (error, history) => {
+  // The client is unauthorized - redirect to login.
+  if (history && error?.response?.status === 401) {
+    history.push('/login');
+  }
+};
+
 export function createAccount(params) {
   return (dispatch, getState) => {
     dispatch({ type: ACCOUNT_CREATE_REQUEST, params });
@@ -153,19 +160,10 @@ export function fetchAccount(id) {
   };
 }
 
-export function fetchAccountByUsername(username) {
+export function fetchAccountByUsername(username, history) {
   return (dispatch, getState) => {
-    const state = getState();
-    const account = state.get('accounts').find(account => account.get('acct') === username);
-
-    if (account) {
-      dispatch(fetchAccount(account.get('id')));
-      return null;
-    }
-
-    const instance = state.get('instance');
+    const { instance, me } = getState();
     const features = getFeatures(instance);
-    const me = state.get('me');
 
     if (features.accountByUsername && (me || !features.accountLookup)) {
       return api(getState).get(`/api/v1/accounts/${username}`).then(response => {
@@ -182,6 +180,7 @@ export function fetchAccountByUsername(username) {
       }).catch(error => {
         dispatch(fetchAccountFail(null, error));
         dispatch(importErrorWhileFetchingAccountByUsername(username));
+        maybeRedirectLogin(error, history);
       });
     } else {
       return dispatch(accountSearch({
