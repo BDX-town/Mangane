@@ -381,6 +381,14 @@ const getInstanceFeatures = (instance: Instance) => {
     paginatedContext: v.software === TRUTHSOCIAL,
 
     /**
+     * Require minimum password requirements.
+     * - 8 characters
+     * - 1 uppercase
+     * - 1 lowercase
+     */
+    passwordRequirements: v.software === TRUTHSOCIAL,
+
+    /**
      * Displays a form to follow a user when logged out.
      * @see POST /main/ostatus
      */

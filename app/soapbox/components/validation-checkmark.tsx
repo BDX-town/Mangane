@@ -12,10 +12,10 @@ const ValidationCheckmark = ({ isValid, text }: IValidationCheckmark) => {
   return (
     <HStack alignItems='center' space={2} data-testid='validation-checkmark'>
       <Icon
-        src={require('@tabler/icons/icons/check.svg')}
+        src={isValid ? require('@tabler/icons/icons/check.svg') : require('@tabler/icons/icons/point.svg')}
         className={classNames({
           'w-4 h-4': true,
-          'text-gray-500': !isValid,
+          'text-gray-400 fill-gray-400': !isValid,
           'text-success-500': isValid,
         })}
       />

@@ -14,6 +14,8 @@ import ValidationCheckmark from 'soapbox/components/validation-checkmark';
 import { useAppSelector } from 'soapbox/hooks';
 import { getRedirectUrl } from 'soapbox/utils/redirect';
 
+import PasswordIndicator from './components/password-indicator';
+
 const messages = defineMessages({
   success: {
     id: 'registrations.success',
@@ -27,36 +29,11 @@ const messages = defineMessages({
     id: 'registrations.error',
     defaultMessage: 'Failed to register your account.',
   },
-  minimumCharacters: {
-    id: 'registration.validation.minimum_characters',
-    defaultMessage: '8 characters',
-  },
-  capitalLetter: {
-    id: 'registration.validation.capital_letter',
-    defaultMessage: '1 capital letter',
-  },
-  lowercaseLetter: {
-    id: 'registration.validation.lowercase_letter',
-    defaultMessage: '1 lowercase letter',
-  },
 });
 
 const initialState = {
   username: '',
   password: '',
-};
-
-const hasUppercaseCharacter = (string: string) => {
-  for (let i = 0; i < string.length; i++) {
-    if (string.charAt(i) === string.charAt(i).toUpperCase() && string.charAt(i).match(/[a-z]/i)) {
-      return true;
-    }
-  }
-  return false;
-};
-
-const hasLowercaseCharacter = (string: string) => {
-  return string.toUpperCase() !== string;
 };
 
 const Registration = () => {
@@ -68,12 +45,8 @@ const Registration = () => {
 
   const [state, setState] = React.useState(initialState);
   const [shouldRedirect, setShouldRedirect] = React.useState<boolean>(false);
+  const [hasValidPassword, setHasValidPassword] = React.useState<boolean>(false);
   const { username, password } = state;
-
-  const meetsLengthRequirements = React.useMemo(() => password.length >= 8, [password]);
-  const meetsCapitalLetterRequirements = React.useMemo(() => hasUppercaseCharacter(password), [password]);
-  const meetsLowercaseLetterRequirements = React.useMemo(() => hasLowercaseCharacter(password), [password]);
-  const hasValidPassword = meetsLengthRequirements && meetsCapitalLetterRequirements && meetsLowercaseLetterRequirements;
 
   const handleSubmit = React.useCallback((event) => {
     event.preventDefault();
@@ -151,22 +124,7 @@ const Registration = () => {
               data-testid='password-input'
             />
 
-            <Stack className='mt-2' space={1}>
-              <ValidationCheckmark
-                isValid={meetsLengthRequirements}
-                text={intl.formatMessage(messages.minimumCharacters)}
-              />
-
-              <ValidationCheckmark
-                isValid={meetsCapitalLetterRequirements}
-                text={intl.formatMessage(messages.capitalLetter)}
-              />
-
-              <ValidationCheckmark
-                isValid={meetsLowercaseLetterRequirements}
-                text={intl.formatMessage(messages.lowercaseLetter)}
-              />
-            </Stack>
+            <PasswordIndicator password={password} onChange={setHasValidPassword} />
           </FormGroup>
 
           <div className='text-center'>

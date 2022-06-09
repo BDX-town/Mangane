@@ -4,7 +4,9 @@ import { defineMessages, useIntl } from 'react-intl';
 import { changePassword } from 'soapbox/actions/security';
 import snackbar from 'soapbox/actions/snackbar';
 import { Button, Card, CardBody, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useFeatures } from 'soapbox/hooks';
+
+import PasswordIndicator from '../verification/components/password-indicator';
 
 const messages = defineMessages({
   updatePasswordSuccess: { id: 'security.update_password.success', defaultMessage: 'Password successfully updated.' },
@@ -22,9 +24,11 @@ const initialState = { currentPassword: '', newPassword: '', newPasswordConfirma
 const EditPassword = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const { passwordRequirements } = useFeatures();
 
   const [state, setState] = React.useState(initialState);
   const [isLoading, setLoading] = React.useState(false);
+  const [hasValidPassword, setHasValidPassword] = React.useState<boolean>(passwordRequirements ? false : true);
 
   const { currentPassword, newPassword, newPasswordConfirmation } = state;
 
@@ -75,6 +79,10 @@ const EditPassword = () => {
                 onChange={handleInputChange}
                 value={newPassword}
               />
+
+              {passwordRequirements && (
+                <PasswordIndicator password={newPassword} onChange={setHasValidPassword} />
+              )}
             </FormGroup>
 
             <FormGroup labelText={intl.formatMessage(messages.confirmationFieldLabel)}>
@@ -91,7 +99,7 @@ const EditPassword = () => {
                 {intl.formatMessage(messages.cancel)}
               </Button>
 
-              <Button type='submit' theme='primary' disabled={isLoading}>
+              <Button type='submit' theme='primary' disabled={isLoading || !hasValidPassword}>
                 {intl.formatMessage(messages.submit)}
               </Button>
             </FormActions>
