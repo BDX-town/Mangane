@@ -1,5 +1,4 @@
 import { AxiosError } from 'axios';
-import classNames from 'classnames';
 import * as React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -10,7 +9,8 @@ import { fetchInstance } from 'soapbox/actions/instance';
 import { startOnboarding } from 'soapbox/actions/onboarding';
 import snackbar from 'soapbox/actions/snackbar';
 import { createAccount, removeStoredVerification } from 'soapbox/actions/verification';
-import { Button, Form, FormGroup, HStack, Icon, Input, Stack, Text } from 'soapbox/components/ui';
+import { Button, Form, FormGroup, Input, Stack } from 'soapbox/components/ui';
+import ValidationCheckmark from 'soapbox/components/validation-checkmark';
 import { useAppSelector } from 'soapbox/hooks';
 import { getRedirectUrl } from 'soapbox/utils/redirect';
 
@@ -27,11 +27,36 @@ const messages = defineMessages({
     id: 'registrations.error',
     defaultMessage: 'Failed to register your account.',
   },
+  minimumCharacters: {
+    id: 'registration.validation.minimum_characters',
+    defaultMessage: '8 characters',
+  },
+  capitalLetter: {
+    id: 'registration.validation.capital_letter',
+    defaultMessage: '1 capital letter',
+  },
+  lowercaseLetter: {
+    id: 'registration.validation.lowercase_letter',
+    defaultMessage: '1 lowercase letter',
+  },
 });
 
 const initialState = {
   username: '',
   password: '',
+};
+
+const hasUppercaseCharacter = (string: string) => {
+  for (let i = 0; i < string.length; i++) {
+    if (string.charAt(i) === string.charAt(i).toUpperCase() && string.charAt(i).match(/[a-z]/i)) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const hasLowercaseCharacter = (string: string) => {
+  return string.toUpperCase() !== string;
 };
 
 const Registration = () => {
@@ -46,11 +71,13 @@ const Registration = () => {
   const { username, password } = state;
 
   const meetsLengthRequirements = React.useMemo(() => password.length >= 8, [password]);
+  const meetsCapitalLetterRequirements = React.useMemo(() => hasUppercaseCharacter(password), [password]);
+  const meetsLowercaseLetterRequirements = React.useMemo(() => hasLowercaseCharacter(password), [password]);
+  const hasValidPassword = meetsLengthRequirements && meetsCapitalLetterRequirements && meetsLowercaseLetterRequirements;
 
   const handleSubmit = React.useCallback((event) => {
     event.preventDefault();
 
-    // TODO: handle validation errors from Pepe
     dispatch(createAccount(username, password))
       .then(() => dispatch(logIn(intl, username, password)))
       .then(({ access_token }: any) => dispatch(verifyCredentials(access_token)))
@@ -121,26 +148,36 @@ const Registration = () => {
               value={password}
               onChange={handleInputChange}
               required
+              data-testid='password-input'
             />
 
-            <Stack className='mt-2'>
-              <HStack alignItems='center' space={2}>
-                <Icon
-                  src={require('@tabler/icons/icons/check.svg')}
-                  className={classNames({
-                    'w-4 h-4': true,
-                    'text-gray-500': !meetsLengthRequirements,
-                    'text-success-600': meetsLengthRequirements,
-                  })}
-                />
+            <Stack className='mt-2' space={1}>
+              <ValidationCheckmark
+                isValid={meetsLengthRequirements}
+                text={intl.formatMessage(messages.minimumCharacters)}
+              />
 
-                <Text theme='muted' size='sm'>8 characters</Text>
-              </HStack>
+              <ValidationCheckmark
+                isValid={meetsCapitalLetterRequirements}
+                text={intl.formatMessage(messages.capitalLetter)}
+              />
+
+              <ValidationCheckmark
+                isValid={meetsLowercaseLetterRequirements}
+                text={intl.formatMessage(messages.lowercaseLetter)}
+              />
             </Stack>
           </FormGroup>
 
           <div className='text-center'>
-            <Button block theme='primary' type='submit' disabled={isLoading}>Register</Button>
+            <Button
+              block
+              theme='primary'
+              type='submit'
+              disabled={isLoading || !hasValidPassword}
+            >
+              Register
+            </Button>
           </div>
         </Form>
       </div>
