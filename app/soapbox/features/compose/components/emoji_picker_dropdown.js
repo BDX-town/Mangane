@@ -301,7 +301,9 @@ class EmojiPickerDropdown extends React.PureComponent {
     this.dropdown = c;
   }
 
-  onShowDropdown = ({ target }) => {
+  onShowDropdown = (e) => {
+    e.stopPropagation();
+
     this.setState({ active: true });
 
     if (!EmojiPicker) {
@@ -317,7 +319,7 @@ class EmojiPickerDropdown extends React.PureComponent {
       });
     }
 
-    const { top } = target.getBoundingClientRect();
+    const { top } = e.target.getBoundingClientRect();
     this.setState({ placement: top * 2 < innerHeight ? 'bottom' : 'top' });
   }
 
