@@ -8,6 +8,8 @@
 
 import { baseClient } from '../api';
 
+import type { AppDispatch } from 'soapbox/store';
+
 export const OAUTH_TOKEN_CREATE_REQUEST = 'OAUTH_TOKEN_CREATE_REQUEST';
 export const OAUTH_TOKEN_CREATE_SUCCESS = 'OAUTH_TOKEN_CREATE_SUCCESS';
 export const OAUTH_TOKEN_CREATE_FAIL    = 'OAUTH_TOKEN_CREATE_FAIL';
@@ -16,8 +18,8 @@ export const OAUTH_TOKEN_REVOKE_REQUEST = 'OAUTH_TOKEN_REVOKE_REQUEST';
 export const OAUTH_TOKEN_REVOKE_SUCCESS = 'OAUTH_TOKEN_REVOKE_SUCCESS';
 export const OAUTH_TOKEN_REVOKE_FAIL    = 'OAUTH_TOKEN_REVOKE_FAIL';
 
-export function obtainOAuthToken(params, baseURL) {
-  return (dispatch, getState) => {
+export const obtainOAuthToken = (params: Record<string, string>, baseURL?: string) =>
+  (dispatch: AppDispatch) => {
     dispatch({ type: OAUTH_TOKEN_CREATE_REQUEST, params });
     return baseClient(null, baseURL).post('/oauth/token', params).then(({ data: token }) => {
       dispatch({ type: OAUTH_TOKEN_CREATE_SUCCESS, params, token });
@@ -27,10 +29,9 @@ export function obtainOAuthToken(params, baseURL) {
       throw error;
     });
   };
-}
 
-export function revokeOAuthToken(params) {
-  return (dispatch, getState) => {
+export const revokeOAuthToken = (params: Record<string, string>) =>
+  (dispatch: AppDispatch) => {
     dispatch({ type: OAUTH_TOKEN_REVOKE_REQUEST, params });
     return baseClient().post('/oauth/revoke', params).then(({ data }) => {
       dispatch({ type: OAUTH_TOKEN_REVOKE_SUCCESS, params, data });
@@ -40,4 +41,3 @@ export function revokeOAuthToken(params) {
       throw error;
     });
   };
-}

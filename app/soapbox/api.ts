@@ -53,7 +53,7 @@ const getAuthBaseURL = createSelector([
  * @param {string} baseURL
  * @returns {object} Axios instance
  */
-export const baseClient = (accessToken: string, baseURL: string = ''): AxiosInstance => {
+export const baseClient = (accessToken?: string | null, baseURL: string = ''): AxiosInstance => {
   return axios.create({
     // When BACKEND_URL is set, always use it.
     baseURL: isURL(BuildConfig.BACKEND_URL) ? BuildConfig.BACKEND_URL : baseURL,

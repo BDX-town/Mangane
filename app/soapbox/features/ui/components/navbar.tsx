@@ -44,7 +44,7 @@ const Navbar = () => {
     event.preventDefault();
     setLoading(true);
 
-    dispatch(logIn(intl, username, password) as any)
+    dispatch(logIn(username, password) as any)
       .then(({ access_token }: { access_token: string }) => {
         setLoading(false);
 

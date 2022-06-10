@@ -39,6 +39,7 @@ export const InstanceRecord = ImmutableRecord({
   fedibird_capabilities: ImmutableList(),
   invites_enabled: false,
   languages: ImmutableList(),
+  login_message: '',
   pleroma: ImmutableMap<string, any>({
     metadata: ImmutableMap<string, any>({
       account_activation_required: false,

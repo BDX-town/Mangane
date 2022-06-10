@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
@@ -15,7 +14,6 @@ import OtpAuthForm from './otp_auth_form';
 import type { AxiosError } from 'axios';
 
 const LoginPage = () => {
-  const intl = useIntl();
   const dispatch = useAppDispatch();
 
   const me = useAppSelector((state) => state.me);
@@ -36,8 +34,8 @@ const LoginPage = () => {
 
   const handleSubmit: React.FormEventHandler = (event) => {
     const { username, password } = getFormData(event.target as HTMLFormElement);
-    dispatch(logIn(intl, username, password)).then(({ access_token }: { access_token: string }) => {
-      return dispatch(verifyCredentials(access_token))
+    dispatch(logIn(username, password)).then(({ access_token }) => {
+      return dispatch(verifyCredentials(access_token as string))
         // Refetch the instance for authenticated fetch
         .then(() => dispatch(fetchInstance() as any));
     }).then((account: { id: string }) => {

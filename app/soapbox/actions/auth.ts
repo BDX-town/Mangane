@@ -26,6 +26,10 @@ import api, { baseClient } from '../api';
 
 import { importFetchedAccount } from './importer';
 
+import type { AxiosError } from 'axios';
+import type { Map as ImmutableMap } from 'immutable';
+import type { AppDispatch, RootState } from 'soapbox/store';
+
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 
 export const AUTH_APP_CREATED    = 'AUTH_APP_CREATED';
@@ -48,35 +52,32 @@ export const messages = defineMessages({
   invalidCredentials: { id: 'auth.invalid_credentials', defaultMessage: 'Wrong username or password' },
 });
 
-const noOp = () => new Promise(f => f());
+const noOp = () => new Promise(f => f(undefined));
 
-const getScopes = state => {
-  const instance = state.get('instance');
+const getScopes = (state: RootState) => {
+  const instance = state.instance;
   const { scopes } = getFeatures(instance);
   return scopes;
 };
 
-function createAppAndToken() {
-  return (dispatch, getState) => {
-    return dispatch(getAuthApp()).then(() => {
-      return dispatch(createAppToken());
-    });
-  };
-}
+const createAppAndToken = () =>
+  (dispatch: AppDispatch) =>
+    dispatch(getAuthApp()).then(() =>
+      dispatch(createAppToken()),
+    );
 
 /** Create an auth app, or use it from build config */
-function getAuthApp() {
-  return (dispatch, getState) => {
+const getAuthApp = () =>
+  (dispatch: AppDispatch) => {
     if (customApp?.client_secret) {
       return noOp().then(() => dispatch({ type: AUTH_APP_CREATED, app: customApp }));
     } else {
       return dispatch(createAuthApp());
     }
   };
-}
 
-function createAuthApp() {
-  return (dispatch, getState) => {
+const createAuthApp = () =>
+  (dispatch: AppDispatch, getState: () => any) => {
     const params = {
       client_name:   sourceCode.displayName,
       redirect_uris: 'urn:ietf:wg:oauth:2.0:oob',
@@ -84,15 +85,14 @@ function createAuthApp() {
       website:       sourceCode.homepage,
     };
 
-    return dispatch(createApp(params)).then(app => {
-      return dispatch({ type: AUTH_APP_CREATED, app });
-    });
+    return dispatch(createApp(params)).then((app: Record<string, string>) =>
+      dispatch({ type: AUTH_APP_CREATED, app }),
+    );
   };
-}
 
-function createAppToken() {
-  return (dispatch, getState) => {
-    const app = getState().getIn(['auth', 'app']);
+const createAppToken = () =>
+  (dispatch: AppDispatch, getState: () => any) => {
+    const app = getState().auth.get('app');
 
     const params = {
       client_id:     app.get('client_id'),
@@ -102,15 +102,14 @@ function createAppToken() {
       scope:         getScopes(getState()),
     };
 
-    return dispatch(obtainOAuthToken(params)).then(token => {
-      return dispatch({ type: AUTH_APP_AUTHORIZED, app, token });
-    });
+    return dispatch(obtainOAuthToken(params)).then((token: Record<string, string | number>) =>
+      dispatch({ type: AUTH_APP_AUTHORIZED, app, token }),
+    );
   };
-}
 
-function createUserToken(username, password) {
-  return (dispatch, getState) => {
-    const app = getState().getIn(['auth', 'app']);
+const createUserToken = (username: string, password: string) =>
+  (dispatch: AppDispatch, getState: () => any) => {
+    const app = getState().auth.get('app');
 
     const params = {
       client_id:     app.get('client_id'),
@@ -123,14 +122,13 @@ function createUserToken(username, password) {
     };
 
     return dispatch(obtainOAuthToken(params))
-      .then(token => dispatch(authLoggedIn(token)));
+      .then((token: Record<string, string | number>) => dispatch(authLoggedIn(token)));
   };
-}
 
-export function refreshUserToken() {
-  return (dispatch, getState) => {
-    const refreshToken = getState().getIn(['auth', 'user', 'refresh_token']);
-    const app = getState().getIn(['auth', 'app']);
+export const refreshUserToken = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const refreshToken = getState().auth.getIn(['user', 'refresh_token']);
+    const app = getState().auth.get('app');
 
     if (!refreshToken) return dispatch(noOp);
 
@@ -144,13 +142,12 @@ export function refreshUserToken() {
     };
 
     return dispatch(obtainOAuthToken(params))
-      .then(token => dispatch(authLoggedIn(token)));
+      .then((token: Record<string, string | number>) => dispatch(authLoggedIn(token)));
   };
-}
 
-export function otpVerify(code, mfa_token) {
-  return (dispatch, getState) => {
-    const app = getState().getIn(['auth', 'app']);
+export const otpVerify = (code: string, mfa_token: string) =>
+  (dispatch: AppDispatch, getState: () => any) => {
+    const app = getState().auth.get('app');
     return api(getState, 'app').post('/oauth/mfa/challenge', {
       client_id: app.get('client_id'),
       client_secret: app.get('client_secret'),
@@ -161,18 +158,17 @@ export function otpVerify(code, mfa_token) {
       scope: getScopes(getState()),
     }).then(({ data: token }) => dispatch(authLoggedIn(token)));
   };
-}
 
-export function verifyCredentials(token, accountUrl) {
+export const verifyCredentials = (token: string, accountUrl?: string) => {
   const baseURL = parseBaseURL(accountUrl);
 
-  return (dispatch, getState) => {
+  return (dispatch: AppDispatch, getState: () => any) => {
     dispatch({ type: VERIFY_CREDENTIALS_REQUEST, token });
 
     return baseClient(token, baseURL).get('/api/v1/accounts/verify_credentials').then(({ data: account }) => {
       dispatch(importFetchedAccount(account));
       dispatch({ type: VERIFY_CREDENTIALS_SUCCESS, token, account });
-      if (account.id === getState().get('me')) dispatch(fetchMeSuccess(account));
+      if (account.id === getState().me) dispatch(fetchMeSuccess(account));
       return account;
     }).catch(error => {
       if (error?.response?.status === 403 && error?.response?.data?.id) {
@@ -180,75 +176,64 @@ export function verifyCredentials(token, accountUrl) {
         const account = error.response.data;
         dispatch(importFetchedAccount(account));
         dispatch({ type: VERIFY_CREDENTIALS_SUCCESS, token, account });
-        if (account.id === getState().get('me')) dispatch(fetchMeSuccess(account));
+        if (account.id === getState().me) dispatch(fetchMeSuccess(account));
         return account;
       } else {
-        if (getState().get('me') === null) dispatch(fetchMeFail(error));
+        if (getState().me === null) dispatch(fetchMeFail(error));
         dispatch({ type: VERIFY_CREDENTIALS_FAIL, token, error, skipAlert: true });
         return error;
       }
     });
   };
-}
+};
 
-export function rememberAuthAccount(accountUrl) {
-  return (dispatch, getState) => {
+export const rememberAuthAccount = (accountUrl: string) =>
+  (dispatch: AppDispatch, getState: () => any) => {
     dispatch({ type: AUTH_ACCOUNT_REMEMBER_REQUEST, accountUrl });
     return KVStore.getItemOrError(`authAccount:${accountUrl}`).then(account => {
       dispatch(importFetchedAccount(account));
       dispatch({ type: AUTH_ACCOUNT_REMEMBER_SUCCESS, account, accountUrl });
-      if (account.id === getState().get('me')) dispatch(fetchMeSuccess(account));
+      if (account.id === getState().me) dispatch(fetchMeSuccess(account));
       return account;
     }).catch(error => {
       dispatch({ type: AUTH_ACCOUNT_REMEMBER_FAIL, error, accountUrl, skipAlert: true });
     });
   };
-}
 
-export function loadCredentials(token, accountUrl) {
-  return (dispatch, getState) => {
-    return dispatch(rememberAuthAccount(accountUrl))
-      .then(account => account)
-      .then(() => {
-        dispatch(verifyCredentials(token, accountUrl));
-      })
-      .catch(error => dispatch(verifyCredentials(token, accountUrl)));
-  };
-}
+export const loadCredentials = (token: string, accountUrl: string) =>
+  (dispatch: AppDispatch) => dispatch(rememberAuthAccount(accountUrl))
+    .then(() => {
+      dispatch(verifyCredentials(token, accountUrl));
+    })
+    .catch(() => dispatch(verifyCredentials(token, accountUrl)));
 
-export function logIn(intl, username, password) {
-  return (dispatch, getState) => {
-    return dispatch(getAuthApp()).then(() => {
-      return dispatch(createUserToken(username, password));
-    }).catch(error => {
-      if (error.response.data.error === 'mfa_required') {
-        // If MFA is required, throw the error and handle it in the component.
-        throw error;
-      } else if (error.response.data.error === 'invalid_grant') {
-        // Mastodon returns this user-unfriendly error as a catch-all
-        // for everything from "bad request" to "wrong password".
-        // Assume our code is correct and it's a wrong password.
-        dispatch(snackbar.error(intl.formatMessage(messages.invalidCredentials)));
-      } else if (error.response.data.error) {
-        // If the backend returns an error, display it.
-        dispatch(snackbar.error(error.response.data.error));
-      } else {
-        // Return "wrong password" message.
-        dispatch(snackbar.error(intl.formatMessage(messages.invalidCredentials)));
-      }
+export const logIn = (username: string, password: string) =>
+  (dispatch: AppDispatch) => dispatch(getAuthApp()).then(() => {
+    return dispatch(createUserToken(username, password));
+  }).catch((error: AxiosError) => {
+    if ((error.response?.data as any).error === 'mfa_required') {
+      // If MFA is required, throw the error and handle it in the component.
       throw error;
-    });
-  };
-}
+    } else if ((error.response?.data as any).error === 'invalid_grant') {
+      // Mastodon returns this user-unfriendly error as a catch-all
+      // for everything from "bad request" to "wrong password".
+      // Assume our code is correct and it's a wrong password.
+      dispatch(snackbar.error(messages.invalidCredentials));
+    } else if ((error.response?.data as any).error) {
+      // If the backend returns an error, display it.
+      dispatch(snackbar.error((error.response?.data as any).error));
+    } else {
+      // Return "wrong password" message.
+      dispatch(snackbar.error(messages.invalidCredentials));
+    }
+    throw error;
+  });
 
-export function deleteSession() {
-  return (dispatch, getState) => {
-    return api(getState).delete('/api/sign_out');
-  };
-}
+export const deleteSession = () =>
+  (dispatch: AppDispatch, getState: () => any) => api(getState).delete('/api/sign_out');
 
-export function logOut(intl) {
-  return (dispatch, getState) => {
+export const logOut = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const account = getLoggedInAccount(state);
     const standalone = isStandalone(state);
@@ -256,9 +241,9 @@ export function logOut(intl) {
     if (!account) return dispatch(noOp);
 
     const params = {
-      client_id: state.getIn(['auth', 'app', 'client_id']),
-      client_secret: state.getIn(['auth', 'app', 'client_secret']),
-      token: state.getIn(['auth', 'users', account.url, 'access_token']),
+      client_id: state.auth.getIn(['app', 'client_id']),
+      client_secret: state.auth.getIn(['app', 'client_secret']),
+      token: state.auth.getIn(['users', account.url, 'access_token']),
     };
 
     return Promise.all([
@@ -266,52 +251,47 @@ export function logOut(intl) {
       dispatch(deleteSession()),
     ]).finally(() => {
       dispatch({ type: AUTH_LOGGED_OUT, account, standalone });
-      dispatch(snackbar.success(intl.formatMessage(messages.loggedOut)));
+      return dispatch(snackbar.success(messages.loggedOut));
     });
   };
-}
 
-export function switchAccount(accountId, background = false) {
-  return (dispatch, getState) => {
-    const account = getState().getIn(['accounts', accountId]);
-    dispatch({ type: SWITCH_ACCOUNT, account, background });
+export const switchAccount = (accountId: string, background = false) =>
+  (dispatch: AppDispatch, getState: () => any) => {
+    const account = getState().accounts.get(accountId);
+    return dispatch({ type: SWITCH_ACCOUNT, account, background });
   };
-}
 
-export function fetchOwnAccounts() {
-  return (dispatch, getState) => {
+export const fetchOwnAccounts = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    state.getIn(['auth', 'users']).forEach(user => {
-      const account = state.getIn(['accounts', user.get('id')]);
+    return state.auth.get('users').forEach((user: ImmutableMap<string, string>) => {
+      const account = state.accounts.get(user.get('id'));
       if (!account) {
-        dispatch(verifyCredentials(user.get('access_token'), user.get('url')));
+        dispatch(verifyCredentials(user.get('access_token')!, user.get('url')));
       }
     });
   };
-}
 
-export function register(params) {
-  return (dispatch, getState) => {
+
+export const register = (params: Record<string, any>) =>
+  (dispatch: AppDispatch) => {
     params.fullname = params.username;
 
     return dispatch(createAppAndToken())
       .then(() => dispatch(createAccount(params)))
-      .then(({ token }) => {
+      .then(({ token }: { token: Record<string, string | number> }) => {
         dispatch(startOnboarding());
         return dispatch(authLoggedIn(token));
       });
   };
-}
 
-export function fetchCaptcha() {
-  return (dispatch, getState) => {
+export const fetchCaptcha = () =>
+  (_dispatch: AppDispatch, getState: () => any) => {
     return api(getState).get('/api/pleroma/captcha');
   };
-}
 
-export function authLoggedIn(token) {
-  return (dispatch, getState) => {
+export const authLoggedIn = (token: Record<string, string | number>) =>
+  (dispatch: AppDispatch) => {
     dispatch({ type: AUTH_LOGGED_IN, token });
     return token;
   };
-}

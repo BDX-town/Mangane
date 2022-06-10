@@ -2,10 +2,7 @@ import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import {
-  fetchBackups,
-  createBackup,
-} from 'soapbox/actions/backups';
+import { fetchBackups, createBackup } from 'soapbox/actions/backups';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 

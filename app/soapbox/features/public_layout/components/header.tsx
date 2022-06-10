@@ -48,7 +48,7 @@ const Header = () => {
     event.preventDefault();
     setLoading(true);
 
-    dispatch(logIn(intl, username, password) as any)
+    dispatch(logIn(username, password) as any)
       .then(({ access_token }: { access_token: string }) => {
         return (
           dispatch(verifyCredentials(access_token) as any)

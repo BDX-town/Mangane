@@ -49,9 +49,9 @@ const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false })
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const chatIds = useAppSelector(state => sortedChatIdsSelector(state.chats.get('items')));
-  const hasMore = useAppSelector(state => !!state.chats.get('next'));
-  const isLoading = useAppSelector(state => state.chats.get('isLoading'));
+  const chatIds = useAppSelector(state => sortedChatIdsSelector(state.chats.items));
+  const hasMore = useAppSelector(state => !!state.chats.next);
+  const isLoading = useAppSelector(state => state.chats.isLoading);
 
   const handleLoadMore = useCallback(() => {
     if (hasMore && !isLoading) {
