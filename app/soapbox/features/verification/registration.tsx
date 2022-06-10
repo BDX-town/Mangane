@@ -12,6 +12,8 @@ import { Button, Form, FormGroup, Input } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 import { getRedirectUrl } from 'soapbox/utils/redirect';
 
+import PasswordIndicator from './components/password-indicator';
+
 import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
@@ -43,12 +45,12 @@ const Registration = () => {
 
   const [state, setState] = React.useState(initialState);
   const [shouldRedirect, setShouldRedirect] = React.useState<boolean>(false);
+  const [hasValidPassword, setHasValidPassword] = React.useState<boolean>(false);
   const { username, password } = state;
 
   const handleSubmit = React.useCallback((event) => {
     event.preventDefault();
 
-    // TODO: handle validation errors from Pepe
     dispatch(createAccount(username, password))
       .then(() => dispatch(logIn(username, password)))
       .then(({ access_token }: any) => dispatch(verifyCredentials(access_token)))
@@ -119,11 +121,21 @@ const Registration = () => {
               value={password}
               onChange={handleInputChange}
               required
+              data-testid='password-input'
             />
+
+            <PasswordIndicator password={password} onChange={setHasValidPassword} />
           </FormGroup>
 
           <div className='text-center'>
-            <Button block theme='primary' type='submit' disabled={isLoading}>Register</Button>
+            <Button
+              block
+              theme='primary'
+              type='submit'
+              disabled={isLoading || !hasValidPassword}
+            >
+              Register
+            </Button>
           </div>
         </Form>
       </div>

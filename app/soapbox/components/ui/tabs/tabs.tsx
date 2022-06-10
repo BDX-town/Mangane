@@ -101,7 +101,7 @@ const AnimatedTab: React.FC<IAnimatedTab> = ({ index, ...props }) => {
 };
 
 /** Structure to represent a tab. */
-type Item = {
+export type Item = {
   /** Tab text. */
   text: React.ReactNode,
   /** Tab tooltip text. */
