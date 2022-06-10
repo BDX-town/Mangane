@@ -69,8 +69,19 @@ export function importFetchedStatus(status, idempotencyKey) {
       dispatch(importFetchedStatus(status.quote));
     }
 
+    // Pleroma quotes
     if (status.pleroma?.quote?.id) {
       dispatch(importFetchedStatus(status.pleroma.quote));
+    }
+
+    // Fedibird quote from reblog
+    if (status.reblog?.quote?.id) {
+      dispatch(importFetchedStatus(status.reblog.quote));
+    }
+
+    // Pleroma quote from reblog
+    if (status.reblog?.pleroma?.quote?.id) {
+      dispatch(importFetchedStatus(status.reblog.pleroma.quote));
     }
 
     if (status.poll?.id) {
