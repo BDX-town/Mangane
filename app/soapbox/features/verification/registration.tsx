@@ -9,8 +9,7 @@ import { fetchInstance } from 'soapbox/actions/instance';
 import { startOnboarding } from 'soapbox/actions/onboarding';
 import snackbar from 'soapbox/actions/snackbar';
 import { createAccount, removeStoredVerification } from 'soapbox/actions/verification';
-import { Button, Form, FormGroup, Input, Stack } from 'soapbox/components/ui';
-import ValidationCheckmark from 'soapbox/components/validation-checkmark';
+import { Button, Form, FormGroup, Input } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 import { getRedirectUrl } from 'soapbox/utils/redirect';
 
