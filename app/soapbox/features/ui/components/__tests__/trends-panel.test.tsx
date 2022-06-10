@@ -1,22 +1,26 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 import React from 'react';
 
 import { render, screen } from '../../../../jest/test-helpers';
+import { normalizeTag } from '../../../../normalizers';
 import TrendsPanel from '../trends-panel';
 
 describe('<TrendsPanel />', () => {
   it('renders trending hashtags', () => {
     const store = {
-      trends: ImmutableMap({
-        items: fromJS([{
-          name: 'hashtag 1',
-          history: [{
-            day: '1652745600',
-            uses: '294',
-            accounts: '180',
-          }],
-        }]),
-      }),
+      trends: ImmutableRecord({
+        items: ImmutableList([
+          normalizeTag({
+            name: 'hashtag 1',
+            history: [{
+              day: '1652745600',
+              uses: '294',
+              accounts: '180',
+            }],
+          }),
+        ]),
+        isLoading: false,
+      })(),
     };
 
     render(<TrendsPanel limit={1} />, null, store);
@@ -27,18 +31,19 @@ describe('<TrendsPanel />', () => {
 
   it('renders multiple trends', () => {
     const store = {
-      trends: ImmutableMap({
-        items: fromJS([
-          {
+      trends: ImmutableRecord({
+        items: ImmutableList([
+          normalizeTag({
             name: 'hashtag 1',
-            history: [{ accounts: [] }],
-          },
-          {
+            history: ImmutableList([{ accounts: [] }]),
+          }),
+          normalizeTag({
             name: 'hashtag 2',
-            history: [{ accounts: [] }],
-          },
+            history: ImmutableList([{ accounts: [] }]),
+          }),
         ]),
-      }),
+        isLoading: false,
+      })(),
     };
 
     render(<TrendsPanel limit={3} />, null, store);
@@ -47,18 +52,19 @@ describe('<TrendsPanel />', () => {
 
   it('respects the limit prop', () => {
     const store = {
-      trends: ImmutableMap({
-        items: fromJS([
-          {
+      trends: ImmutableRecord({
+        items: ImmutableList([
+          normalizeTag({
             name: 'hashtag 1',
             history: [{ accounts: [] }],
-          },
-          {
+          }),
+          normalizeTag({
             name: 'hashtag 2',
             history: [{ accounts: [] }],
-          },
+          }),
         ]),
-      }),
+        isLoading: false,
+      })(),
     };
 
     render(<TrendsPanel limit={1} />, null, store);
@@ -67,9 +73,10 @@ describe('<TrendsPanel />', () => {
 
   it('renders empty', () => {
     const store = {
-      trends: ImmutableMap({
-        items: fromJS([]),
-      }),
+      trends: ImmutableRecord({
+        items: ImmutableList([]),
+        isLoading: false,
+      })(),
     };
 
     render(<TrendsPanel limit={1} />, null, store);

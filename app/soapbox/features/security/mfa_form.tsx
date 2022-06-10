@@ -29,7 +29,6 @@ const MfaForm: React.FC = () => {
     dispatch(fetchMfa());
   }, []);
 
-
   const handleSetupProceedClick = (event: React.MouseEvent) => {
     event.preventDefault();
     setDisplayOtpForm(true);

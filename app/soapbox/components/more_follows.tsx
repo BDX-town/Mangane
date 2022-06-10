@@ -29,7 +29,6 @@ const MoreFollows: React.FC<IMoreFollows> = ({ visible = true, count, type }) =>
     return intl.formatMessage(messages[type], { count });
   };
 
-
   // If the instance isn't federating, there are no remote followers
   if (!features.federating) {
     return null;

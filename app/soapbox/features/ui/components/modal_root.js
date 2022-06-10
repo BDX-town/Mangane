@@ -39,7 +39,6 @@ import BundleContainer from '../containers/bundle_container';
 import BundleModalError from './bundle_modal_error';
 import ModalLoading from './modal_loading';
 
-
 const MODAL_COMPONENTS = {
   'MEDIA': MediaModal,
   'VIDEO': VideoModal,

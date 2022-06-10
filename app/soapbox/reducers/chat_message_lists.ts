@@ -1,5 +1,4 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
-import { AnyAction } from 'redux';
 
 import {
   CHATS_FETCH_SUCCESS,
@@ -10,6 +9,8 @@ import {
   CHAT_MESSAGE_DELETE_SUCCESS,
 } from 'soapbox/actions/chats';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
+
+import type { AnyAction } from 'redux';
 
 type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;

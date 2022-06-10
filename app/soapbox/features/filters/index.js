@@ -48,7 +48,6 @@ const mapStateToProps = state => ({
   filters: state.get('filters'),
 });
 
-
 export default @connect(mapStateToProps)
 @injectIntl
 class Filters extends ImmutablePureComponent {

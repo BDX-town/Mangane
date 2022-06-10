@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios';
 import * as React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -14,6 +13,8 @@ import { useAppSelector } from 'soapbox/hooks';
 import { getRedirectUrl } from 'soapbox/utils/redirect';
 
 import PasswordIndicator from './components/password-indicator';
+
+import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
   success: {

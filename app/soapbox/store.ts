@@ -1,10 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { AnyAction } from 'redux';
 import thunk, { ThunkDispatch } from 'redux-thunk';
 
 import errorsMiddleware from './middleware/errors';
 import soundsMiddleware from './middleware/sounds';
 import appReducer from './reducers';
+
+import type { AnyAction } from 'redux';
 
 export const store = configureStore({
   reducer: appReducer,

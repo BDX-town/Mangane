@@ -7,7 +7,7 @@ import { useSettings } from 'soapbox/hooks';
 
 interface IPinnedHostsPicker {
   /** The active host among pinned hosts. */
-  host: string,
+  host?: string,
 }
 
 const PinnedHostsPicker: React.FC<IPinnedHostsPicker> = ({ host: activeHost }) => {

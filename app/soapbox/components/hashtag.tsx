@@ -10,24 +10,24 @@ import { shortNumberFormat } from '../utils/numbers';
 import Permalink from './permalink';
 import { HStack, Stack, Text } from './ui';
 
-import type { Map as ImmutableMap } from 'immutable';
+import type { Tag } from 'soapbox/types/entities';
 
 interface IHashtag {
-  hashtag: ImmutableMap<string, any>,
+  hashtag: Tag,
 }
 
 const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {
-  const count = Number(hashtag.getIn(['history', 0, 'accounts']));
-  const brandColor = useSelector((state) => getSoapboxConfig(state).get('brandColor'));
+  const count = Number(hashtag.history?.get(0)?.accounts);
+  const brandColor = useSelector((state) => getSoapboxConfig(state).brandColor);
 
   return (
     <HStack alignItems='center' justifyContent='between' data-testid='hashtag'>
       <Stack>
-        <Permalink href={hashtag.get('url')} to={`/tags/${hashtag.get('name')}`} className='hover:underline'>
-          <Text tag='span' size='sm' weight='semibold'>#{hashtag.get('name')}</Text>
+        <Permalink href={hashtag.url} to={`/tags/${hashtag.name}`} className='hover:underline'>
+          <Text tag='span' size='sm' weight='semibold'>#{hashtag.name}</Text>
         </Permalink>
 
-        {hashtag.get('history') && (
+        {hashtag.history && (
           <Text theme='muted' size='sm'>
             <FormattedMessage
               id='trends.count_by_accounts'
@@ -41,12 +41,12 @@ const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {
         )}
       </Stack>
 
-      {hashtag.get('history') && (
+      {hashtag.history && (
         <div className='w-[40px]' data-testid='sparklines'>
           <Sparklines
             width={40}
             height={28}
-            data={hashtag.get('history').reverse().map((day: ImmutableMap<string, any>) => day.get('uses')).toArray()}
+            data={hashtag.history.reverse().map((day) => +day.uses).toArray()}
           >
             <SparklinesCurve style={{ fill: 'none' }} color={brandColor} />
           </Sparklines>

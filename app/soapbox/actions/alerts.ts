@@ -1,10 +1,10 @@
-import { AnyAction } from '@reduxjs/toolkit';
-import { AxiosError } from 'axios';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 
 import { httpErrorMessages } from 'soapbox/utils/errors';
 
-import { SnackbarActionSeverity } from './snackbar';
+import type { SnackbarActionSeverity } from './snackbar';
+import type { AnyAction } from '@reduxjs/toolkit';
+import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
   unexpectedTitle: { id: 'alert.unexpected.title', defaultMessage: 'Oops!' },

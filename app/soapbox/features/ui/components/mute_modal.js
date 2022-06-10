@@ -11,7 +11,7 @@ import { Modal, HStack, Stack, Text } from 'soapbox/components/ui';
 
 const mapStateToProps = state => {
   return {
-    isSubmitting: state.getIn(['reports', 'new', 'isSubmitting']),
+    isSubmitting: state.reports.new.isSubmitting,
     account: state.getIn(['mutes', 'new', 'account']),
     notifications: state.getIn(['mutes', 'new', 'notifications']),
   };

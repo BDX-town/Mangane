@@ -1,5 +1,4 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
-import { AnyAction } from 'redux';
 
 import {
   CHATS_FETCH_SUCCESS,
@@ -12,6 +11,8 @@ import {
 } from 'soapbox/actions/chats';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { normalizeChatMessage } from 'soapbox/normalizers';
+
+import type { AnyAction } from 'redux';
 
 type ChatMessageRecord = ReturnType<typeof normalizeChatMessage>;
 type APIEntity = Record<string, any>;

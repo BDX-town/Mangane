@@ -13,7 +13,7 @@ const makeMapStateToProps = state => {
 
   return {
     selectedFilter: settings.getIn(['notifications', 'quickFilter', 'active']),
-    advancedMode:   settings.getIn(['notifications', 'quickFilter', 'advanced']),
+    advancedMode: settings.getIn(['notifications', 'quickFilter', 'advanced']),
     supportsEmojiReacts: features.emojiReacts,
   };
 };

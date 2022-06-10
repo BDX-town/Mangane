@@ -10,7 +10,6 @@ import {
 import type { AnyAction } from 'redux';
 import type { APIEntity } from 'soapbox/types/entities';
 
-
 const ReducerRecord = ImmutableRecord({
   aliases: ImmutableRecord({
     items: ImmutableList<string>(),

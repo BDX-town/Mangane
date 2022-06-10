@@ -10,7 +10,7 @@ import type { DropdownPlacement, IDropdown } from 'soapbox/components/dropdown_m
 import type { RootState } from 'soapbox/store';
 
 const mapStateToProps = (state: RootState) => ({
-  isModalOpen: Boolean(state.modals.size && state.modals.last().modalType === 'ACTIONS'),
+  isModalOpen: Boolean(state.modals.size && state.modals.last()!.modalType === 'ACTIONS'),
   dropdownPlacement: state.dropdown_menu.placement,
   openDropdownId: state.dropdown_menu.openId,
   openedViaKeyboard: state.dropdown_menu.keyboard,

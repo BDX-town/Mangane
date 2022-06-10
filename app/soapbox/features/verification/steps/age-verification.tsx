@@ -1,11 +1,10 @@
-import PropTypes from 'prop-types';
-import * as React from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch, useSelector } from 'react-redux';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { verifyAge } from 'soapbox/actions/verification';
 import { Button, Datepicker, Form, Text } from 'soapbox/components/ui';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
   fail: {
@@ -14,7 +13,7 @@ const messages = defineMessages({
   },
 });
 
-function meetsAgeMinimum(birthday, ageMinimum) {
+function meetsAgeMinimum(birthday: Date, ageMinimum: number) {
   const month = birthday.getUTCMonth();
   const day = birthday.getUTCDate();
   const year = birthday.getUTCFullYear();
@@ -24,11 +23,11 @@ function meetsAgeMinimum(birthday, ageMinimum) {
 
 const AgeVerification = () => {
   const intl = useIntl();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const isLoading = useSelector((state) => state.verification.get('isLoading'));
-  const ageMinimum = useSelector((state) => state.verification.get('ageMinimum'));
-  const siteTitle = useSelector((state) => state.instance.get('title'));
+  const isLoading = useAppSelector((state) => state.verification.get('isLoading')) as boolean;
+  const ageMinimum = useAppSelector((state) => state.verification.get('ageMinimum')) as any;
+  const siteTitle = useAppSelector((state) => state.instance.title);
 
   const [date, setDate] = React.useState('');
   const isValid = typeof date === 'object';
@@ -44,9 +43,7 @@ const AgeVerification = () => {
       dispatch(verifyAge(birthday));
     } else {
       dispatch(
-        snackbar.error(intl.formatMessage(messages.fail, {
-          ageMinimum,
-        })),
+        snackbar.error(intl.formatMessage(messages.fail, { ageMinimum })),
       );
     }
   }, [date, ageMinimum]);
@@ -76,10 +73,6 @@ const AgeVerification = () => {
       </div>
     </div>
   );
-};
-
-AgeVerification.propTypes = {
-  verifyAge: PropTypes.func,
 };
 
 export default AgeVerification;

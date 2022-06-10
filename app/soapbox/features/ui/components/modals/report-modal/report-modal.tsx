@@ -1,5 +1,3 @@
-import { AxiosError } from 'axios';
-import { Set as ImmutableSet } from 'immutable';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -15,6 +13,8 @@ import { useAccount, useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import ConfirmationStep from './steps/confirmation-step';
 import OtherActionsStep from './steps/other-actions-step';
 import ReasonStep from './steps/reason-step';
+
+import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
   blankslate: { id: 'report.reason.blankslate', defaultMessage: 'You have removed all statuses from being selected.' },
@@ -77,14 +77,14 @@ const ReportModal = ({ onClose }: IReportModal) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const accountId = useAppSelector((state) => state.reports.getIn(['new', 'account_id']) as string);
-  const account = useAccount(accountId);
+  const accountId = useAppSelector((state) => state.reports.new.account_id);
+  const account = useAccount(accountId as string);
 
-  const isBlocked = useAppSelector((state) => state.reports.getIn(['new', 'block']) as boolean);
-  const isSubmitting = useAppSelector((state) => state.reports.getIn(['new', 'isSubmitting']) as boolean);
+  const isBlocked = useAppSelector((state) => state.reports.new.block);
+  const isSubmitting = useAppSelector((state) => state.reports.new.isSubmitting);
   const rules = useAppSelector((state) => state.rules.items);
-  const ruleIds = useAppSelector((state) => state.reports.getIn(['new', 'rule_ids']) as ImmutableSet<string>);
-  const selectedStatusIds = useAppSelector((state) => state.reports.getIn(['new', 'status_ids']) as ImmutableSet<string>);
+  const ruleIds = useAppSelector((state) => state.reports.new.rule_ids);
+  const selectedStatusIds = useAppSelector((state) => state.reports.new.status_ids);
 
   const isReportingAccount = useMemo(() => selectedStatusIds.size === 0, []);
   const shouldRequireRule = rules.length > 0;

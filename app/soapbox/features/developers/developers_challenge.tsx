@@ -6,7 +6,6 @@ import { changeSettingImmediate } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
 import { Button, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
 
-
 import Column from '../ui/components/column';
 
 const messages = defineMessages({

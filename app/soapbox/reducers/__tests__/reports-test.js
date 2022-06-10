@@ -1,19 +1,17 @@
-import { Map as ImmutableMap, Set as ImmutableSet } from 'immutable';
-
 import reducer from '../reports';
 
 describe('reports reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap({
-      new: ImmutableMap({
+    expect(reducer(undefined, {}).toJS()).toEqual({
+      new: {
         isSubmitting: false,
         account_id: null,
-        status_ids: ImmutableSet(),
+        status_ids: [],
         comment: '',
         forward: false,
         block: false,
-        rule_ids: ImmutableSet(),
-      }),
-    }));
+        rule_ids: [],
+      },
+    });
   });
 });

@@ -7,7 +7,7 @@ import { useSoapboxConfig } from 'soapbox/hooks';
 
 import { Card, CardBody, CardHeader, CardTitle } from '../card/card';
 
-interface IColumn {
+export interface IColumn {
   /** Route the back button goes to. */
   backHref?: string,
   /** Column title text. */

@@ -8,25 +8,30 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-const hex2rgba = (hex, alpha = 1) => {
-  const [r, g, b] = hex.match(/\w\w/g).map(x => parseInt(x, 16));
+const hex2rgba = (hex: string, alpha = 1) => {
+  const [r, g, b] = hex.match(/\w\w/g)!.map(x => parseInt(x, 16));
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
 export default class Visualizer {
 
-  constructor(tickSize) {
+  tickSize: number
+  canvas?: HTMLCanvasElement
+  context?: CanvasRenderingContext2D
+  analyser?: AnalyserNode
+
+  constructor(tickSize: number) {
     this.tickSize = tickSize;
   }
 
-  setCanvas(canvas) {
+  setCanvas(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     if (canvas) {
-      this.context = canvas.getContext('2d');
+      this.context = canvas.getContext('2d')!;
     }
   }
 
-  setAudioContext(context, source) {
+  setAudioContext(context: AudioContext, source: MediaElementAudioSourceNode) {
     const analyser = context.createAnalyser();
 
     analyser.smoothingTimeConstant = 0.6;
@@ -37,7 +42,7 @@ export default class Visualizer {
     this.analyser = analyser;
   }
 
-  getTickPoints(count) {
+  getTickPoints(count: number) {
     const coords = [];
 
     for (let i = 0; i < count; i++) {
@@ -48,13 +53,13 @@ export default class Visualizer {
     return coords;
   }
 
-  drawTick(cx, cy, mainColor, x1, y1, x2, y2) {
+  drawTick(cx: number, cy: number, mainColor: string, x1: number, y1: number, x2: number, y2: number) {
     const dx1 = Math.ceil(cx + x1);
     const dy1 = Math.ceil(cy + y1);
     const dx2 = Math.ceil(cx + x2);
     const dy2 = Math.ceil(cy + y2);
 
-    const gradient = this.context.createLinearGradient(dx1, dy1, dx2, dy2);
+    const gradient = this.context!.createLinearGradient(dx1, dy1, dx2, dy2);
 
     const lastColor = hex2rgba(mainColor, 0);
 
@@ -62,21 +67,21 @@ export default class Visualizer {
     gradient.addColorStop(0.6, mainColor);
     gradient.addColorStop(1, lastColor);
 
-    this.context.beginPath();
-    this.context.strokeStyle = gradient;
-    this.context.lineWidth = 2;
-    this.context.moveTo(dx1, dy1);
-    this.context.lineTo(dx2, dy2);
-    this.context.stroke();
+    this.context!.beginPath();
+    this.context!.strokeStyle = gradient;
+    this.context!.lineWidth = 2;
+    this.context!.moveTo(dx1, dy1);
+    this.context!.lineTo(dx2, dy2);
+    this.context!.stroke();
   }
 
-  getTicks(count, size, radius, scaleCoefficient) {
+  getTicks(count: number, size: number, radius: number, scaleCoefficient: number) {
     const ticks = this.getTickPoints(count);
     const lesser = 200;
-    const m = [];
+    const m: Array<Record<'x1' | 'y1' | 'x2' | 'y2', number>> = [];
     const bufferLength = this.analyser ? this.analyser.frequencyBinCount : 0;
     const frequencyData = new Uint8Array(bufferLength);
-    const allScales = [];
+    const allScales: Array<number> = [];
 
     if (this.analyser) {
       this.analyser.getByteFrequencyData(frequencyData);
@@ -117,20 +122,20 @@ export default class Visualizer {
     }));
   }
 
-  clear(width, height) {
-    this.context.clearRect(0, 0, width, height);
+  clear(width: number, height: number) {
+    this.context!.clearRect(0, 0, width, height);
   }
 
-  draw(cx, cy, color, radius, coefficient) {
-    this.context.save();
+  draw(cx: number, cy: number, color: string, radius: number, coefficient: number) {
+    this.context!.save();
 
-    const ticks = this.getTicks(parseInt(360 * coefficient), this.tickSize, radius, coefficient);
+    const ticks = this.getTicks(parseInt(360 * coefficient as any), this.tickSize, radius, coefficient);
 
     ticks.forEach(tick => {
       this.drawTick(cx, cy, color, tick.x1, tick.y1, tick.x2, tick.y2);
     });
 
-    this.context.restore();
+    this.context!.restore();
   }
 
 }

@@ -1,12 +1,12 @@
-import PropTypes from 'prop-types';
-import * as React from 'react';
+import { AxiosError } from 'axios';
+import React from 'react';
 import { useIntl } from 'react-intl';
-import { useDispatch, useSelector } from 'react-redux';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { checkEmailVerification, postEmailVerification, requestEmailVerification } from 'soapbox/actions/verification';
 import Icon from 'soapbox/components/icon';
 import { Button, Form, FormGroup, Input, Text } from 'soapbox/components/ui';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const Statuses = {
   IDLE: 'IDLE',
@@ -16,8 +16,12 @@ const Statuses = {
 
 const EMAIL_REGEX = /^[^@\s]+@[^@\s]+$/;
 
-const EmailSent = ({ handleSubmit }) => {
-  const dispatch = useDispatch();
+interface IEmailSent {
+  handleSubmit: React.FormEventHandler,
+}
+
+const EmailSent: React.FC<IEmailSent> = ({ handleSubmit }) => {
+  const dispatch = useAppDispatch();
 
   const checkEmailConfirmation = () => {
     dispatch(checkEmailVerification())
@@ -47,19 +51,19 @@ const EmailSent = ({ handleSubmit }) => {
 
 const EmailVerification = () => {
   const intl = useIntl();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const isLoading = useSelector((state) => state.verification.get('isLoading'));
+  const isLoading = useAppSelector((state) => state.verification.get('isLoading')) as boolean;
 
   const [email, setEmail] = React.useState('');
   const [status, setStatus] = React.useState(Statuses.IDLE);
-  const [errors, setErrors] = React.useState([]);
+  const [errors, setErrors] = React.useState<Array<string>>([]);
 
   const isValid = email.length > 0 && EMAIL_REGEX.test(email);
 
   const onChange = React.useCallback((event) => setEmail(event.target.value), []);
 
-  const handleSubmit = React.useCallback((event) => {
+  const handleSubmit: React.FormEventHandler = React.useCallback((event) => {
     event.preventDefault();
     setErrors([]);
 
@@ -80,8 +84,8 @@ const EmailVerification = () => {
           ),
         );
       })
-      .catch(error => {
-        const isEmailTaken = error.response?.data?.error === 'email_taken';
+      .catch((error: AxiosError) => {
+        const isEmailTaken = (error.response?.data as any)?.error === 'email_taken';
 
         const message = isEmailTaken ? (
           intl.formatMessage({ id: 'email_verification.exists', defaultMessage: 'This email has already been taken.' })
@@ -128,10 +132,6 @@ const EmailVerification = () => {
       </div>
     </div>
   );
-};
-
-EmailSent.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
 };
 
 export default EmailVerification;

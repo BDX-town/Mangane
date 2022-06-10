@@ -1,5 +1,4 @@
 import { Map as ImmutableMap, List as ImmutableList, Record as ImmutableRecord, fromJS } from 'immutable';
-import { AnyAction } from 'redux';
 
 import {
   MFA_FETCH_SUCCESS,
@@ -10,6 +9,8 @@ import {
   FETCH_TOKENS_SUCCESS,
   REVOKE_TOKEN_SUCCESS,
 } from '../actions/security';
+
+import type { AnyAction } from 'redux';
 
 const TokenRecord = ImmutableRecord({
   id: 0,

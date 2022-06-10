@@ -1,5 +1,5 @@
 import userEvent from '@testing-library/user-event';
-import { Map as ImmutableMap, Set as ImmutableSet } from 'immutable';
+import { Map as ImmutableMap, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 import React from 'react';
 
 import { __stub } from 'soapbox/api';
@@ -24,13 +24,13 @@ describe('<ReportModal />', () => {
           avatar: 'test.jpg',
         }),
       }),
-      reports: ImmutableMap({
-        new: {
+      reports: ImmutableRecord({
+        new: ImmutableRecord({
           account_id: '1',
           status_ids: ImmutableSet(['1']),
           rule_ids: ImmutableSet(),
-        },
-      }),
+        })(),
+      })(),
       statuses: ImmutableMap({
         '1': normalizeStatus(status),
       }),

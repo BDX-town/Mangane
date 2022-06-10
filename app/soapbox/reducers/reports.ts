@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, Set as ImmutableSet } from 'immutable';
+import { Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 
 import {
   REPORT_INIT,
@@ -13,39 +13,45 @@ import {
   REPORT_RULE_CHANGE,
 } from '../actions/reports';
 
-const initialState = ImmutableMap({
-  new: ImmutableMap({
-    isSubmitting: false,
-    account_id: null,
-    status_ids: ImmutableSet(),
-    comment: '',
-    forward: false,
-    block: false,
-    rule_ids: ImmutableSet(),
-  }),
+import type { AnyAction } from 'redux';
+
+const NewReportRecord = ImmutableRecord({
+  isSubmitting: false,
+  account_id: null as string | null,
+  status_ids: ImmutableSet<string>(),
+  comment: '',
+  forward: false,
+  block: false,
+  rule_ids: ImmutableSet<string>(),
 });
 
-export default function reports(state = initialState, action) {
+const ReducerRecord = ImmutableRecord({
+  new: NewReportRecord(),
+});
+
+type State = ReturnType<typeof ReducerRecord>;
+
+export default function reports(state: State = ReducerRecord(), action: AnyAction) {
   switch (action.type) {
     case REPORT_INIT:
       return state.withMutations(map => {
         map.setIn(['new', 'isSubmitting'], false);
-        map.setIn(['new', 'account_id'], action.account.get('id'));
+        map.setIn(['new', 'account_id'], action.account.id);
 
-        if (state.getIn(['new', 'account_id']) !== action.account.get('id')) {
-          map.setIn(['new', 'status_ids'], action.status ? ImmutableSet([action.status.getIn(['reblog', 'id'], action.status.get('id'))]) : ImmutableSet());
+        if (state.new.account_id !== action.account.id) {
+          map.setIn(['new', 'status_ids'], action.status ? ImmutableSet([action.status.reblog?.id || action.status.id]) : ImmutableSet());
           map.setIn(['new', 'comment'], '');
         } else if (action.status) {
-          map.updateIn(['new', 'status_ids'], ImmutableSet(), set => set.add(action.status.getIn(['reblog', 'id'], action.status.get('id'))));
+          map.updateIn(['new', 'status_ids'], set => (set as ImmutableSet<string>).add(action.status.reblog?.id || action.status.id));
         }
       });
     case REPORT_STATUS_TOGGLE:
-      return state.updateIn(['new', 'status_ids'], ImmutableSet(), set => {
+      return state.updateIn(['new', 'status_ids'], set => {
         if (action.checked) {
-          return set.add(action.statusId);
+          return (set as ImmutableSet<string>).add(action.statusId);
         }
 
-        return set.remove(action.statusId);
+        return (set as ImmutableSet<string>).remove(action.statusId);
       });
     case REPORT_COMMENT_CHANGE:
       return state.setIn(['new', 'comment'], action.comment);
@@ -54,12 +60,12 @@ export default function reports(state = initialState, action) {
     case REPORT_BLOCK_CHANGE:
       return state.setIn(['new', 'block'], action.block);
     case REPORT_RULE_CHANGE:
-      return state.updateIn(['new', 'rule_ids'], ImmutableSet(), (set) => {
-        if (set.includes(action.rule_id)) {
-          return set.remove(action.rule_id);
+      return state.updateIn(['new', 'rule_ids'], (set) => {
+        if ((set as ImmutableSet<string>).includes(action.rule_id)) {
+          return (set as ImmutableSet<string>).remove(action.rule_id);
         }
 
-        return set.add(action.rule_id);
+        return (set as ImmutableSet<string>).add(action.rule_id);
       });
     case REPORT_SUBMIT_REQUEST:
       return state.setIn(['new', 'isSubmitting'], true);
