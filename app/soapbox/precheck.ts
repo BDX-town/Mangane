@@ -3,9 +3,6 @@
  * @module soapbox/precheck
  */
 
-/** Whether a page title was inserted with SSR. */
-const hasTitle = Boolean(document.querySelector('title'));
-
 /** Whether pre-rendered data exists in Mastodon's format. */
 const hasPrerenderPleroma  = Boolean(document.getElementById('initial-results'));
 
@@ -13,4 +10,4 @@ const hasPrerenderPleroma  = Boolean(document.getElementById('initial-results'))
 const hasPrerenderMastodon = Boolean(document.getElementById('initial-state'));
 
 /** Whether initial data was loaded into the page by server-side-rendering (SSR). */
-export const isPrerendered = hasTitle || hasPrerenderPleroma || hasPrerenderMastodon;
+export const isPrerendered = hasPrerenderPleroma || hasPrerenderMastodon;
