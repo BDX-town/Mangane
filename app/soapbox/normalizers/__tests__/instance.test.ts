@@ -27,6 +27,7 @@ describe('normalizeInstance()', () => {
       fedibird_capabilities: [],
       invites_enabled: false,
       languages: [],
+      login_message: '',
       pleroma: {
         metadata: {
           account_activation_required: false,
