@@ -55,6 +55,7 @@
     "@gamestdio/websocket": "^0.3.2",
     "@jest/globals": "^27.5.1",
     "@lcdp/offline-plugin": "^5.1.0",
+    "@metamask/providers": "^9.0.0",
     "@popperjs/core": "^2.4.4",
     "@reach/menu-button": "^0.16.2",
     "@reach/popover": "^0.16.2",
