@@ -244,8 +244,8 @@ type APIChat = { id: string, last_message: string };
 export const makeGetChat = () => {
   return createSelector(
     [
-      (state: RootState, { id }: APIChat) => state.chats.getIn(['items', id]) as ReducerChat,
-      (state: RootState, { id }: APIChat) => state.accounts.get(state.chats.getIn(['items', id, 'account'])),
+      (state: RootState, { id }: APIChat) => state.chats.items.get(id) as ReducerChat,
+      (state: RootState, { id }: APIChat) => state.accounts.get(state.chats.items.getIn([id, 'account'])),
       (state: RootState, { last_message }: APIChat) => state.chat_messages.get(last_message),
     ],
 

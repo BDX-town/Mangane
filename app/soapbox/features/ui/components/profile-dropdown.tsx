@@ -43,7 +43,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
   const otherAccounts = useAppSelector((state) => authUsers.map((authUser: any) => getAccount(state, authUser.get('id'))));
 
   const handleLogOut = () => {
-    dispatch(logOut(intl));
+    dispatch(logOut());
   };
 
   const handleSwitchAccount = (account: AccountEntity) => {

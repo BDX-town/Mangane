@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -12,7 +11,6 @@ import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
 
 const WaitlistPage = (/* { account } */) => {
   const dispatch = useDispatch();
-  const intl = useIntl();
   const title = useAppSelector((state) => state.instance.title);
 
   const me = useOwnAccount();
@@ -20,7 +18,7 @@ const WaitlistPage = (/* { account } */) => {
 
   const onClickLogOut: React.MouseEventHandler = (event) => {
     event.preventDefault();
-    dispatch(logOut(intl));
+    dispatch(logOut());
   };
 
   const openVerifySmsModal = () => dispatch(openModal('VERIFY_SMS'));

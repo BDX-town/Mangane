@@ -18,7 +18,10 @@ import { getQuirks } from 'soapbox/utils/quirks';
 
 import { baseClient } from '../api';
 
-const fetchExternalInstance = baseURL => {
+import type { AppDispatch } from 'soapbox/store';
+import type { Instance } from 'soapbox/types/entities';
+
+const fetchExternalInstance = (baseURL?: string) => {
   return baseClient(null, baseURL)
     .get('/api/v1/instance')
     .then(({ data: instance }) => normalizeInstance(instance))
@@ -33,8 +36,8 @@ const fetchExternalInstance = baseURL => {
     });
 };
 
-function createExternalApp(instance, baseURL) {
-  return (dispatch, getState) => {
+const createExternalApp = (instance: Instance, baseURL?: string) =>
+  (dispatch: AppDispatch) => {
     // Mitra: skip creating the auth app
     if (getQuirks(instance).noApps) return new Promise(f => f({}));
 
@@ -49,14 +52,13 @@ function createExternalApp(instance, baseURL) {
 
     return dispatch(createApp(params, baseURL));
   };
-}
 
-function externalAuthorize(instance, baseURL) {
-  return (dispatch, getState) => {
+const externalAuthorize = (instance: Instance, baseURL: string) =>
+  (dispatch: AppDispatch) => {
     const { scopes } = getFeatures(instance);
 
-    return dispatch(createExternalApp(instance, baseURL)).then(app => {
-      const { client_id, redirect_uri } = app;
+    return dispatch(createExternalApp(instance, baseURL)).then((app) => {
+      const { client_id, redirect_uri } = app as Record<string, string>;
 
       const query = new URLSearchParams({
         client_id,
@@ -72,58 +74,56 @@ function externalAuthorize(instance, baseURL) {
       window.location.href = `${baseURL}/oauth/authorize?${query.toString()}`;
     });
   };
-}
 
-export function externalEthereumLogin(instance, baseURL) {
-  return (dispatch, getState) => {
-    const loginMessage = instance.get('login_message');
+const externalEthereumLogin = (instance: Instance, baseURL?: string) =>
+  (dispatch: AppDispatch) => {
+    const loginMessage = instance.login_message;
 
     return getWalletAndSign(loginMessage).then(({ wallet, signature }) => {
-      return dispatch(createExternalApp(instance, baseURL)).then(app => {
+      return dispatch(createExternalApp(instance, baseURL)).then((app) => {
+        const { client_id, client_secret } = app as Record<string, string>;
         const params = {
           grant_type: 'ethereum',
           wallet_address: wallet.toLowerCase(),
-          client_id: app.client_id,
-          client_secret: app.client_secret,
-          password: signature,
+          client_id: client_id,
+          client_secret: client_secret,
+          password: signature as string,
           redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
           scope: getFeatures(instance).scopes,
         };
 
         return dispatch(obtainOAuthToken(params, baseURL))
-          .then(token => dispatch(authLoggedIn(token)))
-          .then(({ access_token }) => dispatch(verifyCredentials(access_token, baseURL)))
-          .then(account => dispatch(switchAccount(account.id)))
+          .then((token: Record<string, string | number>) => dispatch(authLoggedIn(token)))
+          .then(({ access_token }: any) => dispatch(verifyCredentials(access_token, baseURL)))
+          .then((account: { id: string }) => dispatch(switchAccount(account.id)))
           .then(() => window.location.href = '/');
       });
     });
   };
-}
 
-export function externalLogin(host) {
-  return (dispatch, getState) => {
+export const externalLogin = (host: string) =>
+  (dispatch: AppDispatch) => {
     const baseURL = parseBaseURL(host) || parseBaseURL(`https://${host}`);
 
-    return fetchExternalInstance(baseURL).then(instance => {
+    return fetchExternalInstance(baseURL).then((instance) => {
       const features = getFeatures(instance);
       const quirks = getQuirks(instance);
 
       if (features.ethereumLogin && quirks.noOAuthForm) {
-        return dispatch(externalEthereumLogin(instance, baseURL));
+        dispatch(externalEthereumLogin(instance, baseURL));
       } else {
-        return dispatch(externalAuthorize(instance, baseURL));
+        dispatch(externalAuthorize(instance, baseURL));
       }
     });
   };
-}
 
-export function loginWithCode(code) {
-  return (dispatch, getState) => {
-    const { client_id, client_secret, redirect_uri } = JSON.parse(localStorage.getItem('soapbox:external:app'));
-    const baseURL = localStorage.getItem('soapbox:external:baseurl');
-    const scope   = localStorage.getItem('soapbox:external:scopes');
+export const loginWithCode = (code: string) =>
+  (dispatch: AppDispatch) => {
+    const { client_id, client_secret, redirect_uri } = JSON.parse(localStorage.getItem('soapbox:external:app')!);
+    const baseURL = localStorage.getItem('soapbox:external:baseurl')!;
+    const scope   = localStorage.getItem('soapbox:external:scopes')!;
 
-    const params = {
+    const params: Record<string, string> = {
       client_id,
       client_secret,
       redirect_uri,
@@ -133,9 +133,8 @@ export function loginWithCode(code) {
     };
 
     return dispatch(obtainOAuthToken(params, baseURL))
-      .then(token => dispatch(authLoggedIn(token)))
-      .then(({ access_token }) => dispatch(verifyCredentials(access_token, baseURL)))
-      .then(account => dispatch(switchAccount(account.id)))
+      .then((token: Record<string, string | number>) => dispatch(authLoggedIn(token)))
+      .then(({ access_token }: any) => dispatch(verifyCredentials(access_token as string, baseURL)))
+      .then((account: { id: string }) => dispatch(switchAccount(account.id)))
       .then(() => window.location.href = '/');
   };
-}

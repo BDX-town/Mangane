@@ -109,7 +109,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
   const onClickLogOut: React.MouseEventHandler = (e) => {
     e.preventDefault();
-    dispatch(logOut(intl));
+    dispatch(logOut());
   };
 
   const handleSwitcherClick: React.MouseEventHandler = (e) => {

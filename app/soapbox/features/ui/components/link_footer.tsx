@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -27,11 +27,10 @@ const LinkFooter: React.FC = (): JSX.Element => {
   const features = useFeatures();
   const soapboxConfig = useSoapboxConfig();
 
-  const intl = useIntl();
   const dispatch = useDispatch();
 
   const onClickLogOut: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(logOut(intl));
+    dispatch(logOut());
     e.preventDefault();
   };
 

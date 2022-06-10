@@ -50,7 +50,7 @@ const Registration = () => {
 
     // TODO: handle validation errors from Pepe
     dispatch(createAccount(username, password))
-      .then(() => dispatch(logIn(intl, username, password)))
+      .then(() => dispatch(logIn(username, password)))
       .then(({ access_token }: any) => dispatch(verifyCredentials(access_token)))
       .then(() => dispatch(fetchInstance()))
       .then(() => {
