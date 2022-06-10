@@ -9,7 +9,7 @@ import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
 import RelativeTimestamp from './relative_timestamp';
-import { Avatar, HStack, Icon, IconButton, Text } from './ui';
+import { Avatar, Emoji, HStack, Icon, IconButton, Text } from './ui';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
@@ -60,6 +60,7 @@ interface IAccount {
   withDate?: boolean,
   withRelationship?: boolean,
   showEdit?: boolean,
+  emoji?: string,
 }
 
 const Account = ({
@@ -80,6 +81,7 @@ const Account = ({
   withDate = false,
   withRelationship = true,
   showEdit = false,
+  emoji,
 }: IAccount) => {
   const overflowRef = React.useRef<HTMLDivElement>(null);
   const actionRef = React.useRef<HTMLDivElement>(null);
@@ -160,7 +162,7 @@ const Account = ({
         <HStack alignItems='center' space={3} grow>
           <ProfilePopper
             condition={showProfileHoverCard}
-            wrapper={(children) => <HoverRefWrapper accountId={account.id} inline>{children}</HoverRefWrapper>}
+            wrapper={(children) => <HoverRefWrapper className='relative' accountId={account.id} inline>{children}</HoverRefWrapper>}
           >
             <LinkEl
               to={`/@${account.acct}`}
@@ -168,6 +170,12 @@ const Account = ({
               onClick={(event: React.MouseEvent) => event.stopPropagation()}
             >
               <Avatar src={account.avatar} size={avatarSize} />
+              {emoji && (
+                <Emoji
+                  className='w-5 h-5 absolute -bottom-1.5 -right-1.5'
+                  emoji={emoji}
+                />
+              )}
             </LinkEl>
           </ProfilePopper>
 

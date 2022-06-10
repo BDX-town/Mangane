@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { debounce } from 'lodash';
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
@@ -15,10 +16,11 @@ const showProfileHoverCard = debounce((dispatch, ref, accountId) => {
 interface IHoverRefWrapper {
   accountId: string,
   inline: boolean,
+  className?: string,
 }
 
 /** Makes a profile hover card appear when the wrapped element is hovered. */
-export const HoverRefWrapper: React.FC<IHoverRefWrapper> = ({ accountId, children, inline = false }) => {
+export const HoverRefWrapper: React.FC<IHoverRefWrapper> = ({ accountId, children, inline = false, className }) => {
   const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
   const Elem: keyof JSX.IntrinsicElements = inline ? 'span' : 'div';
@@ -42,7 +44,7 @@ export const HoverRefWrapper: React.FC<IHoverRefWrapper> = ({ accountId, childre
   return (
     <Elem
       ref={ref}
-      className='hover-ref-wrapper'
+      className={classNames('hover-ref-wrapper', className)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
