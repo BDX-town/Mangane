@@ -325,6 +325,8 @@
   "confirmations.block.confirm": "Zablokuj",
   "confirmations.block.heading": "Zablokuj @{name}",
   "confirmations.block.message": "Czy na pewno chcesz zablokować {name}?",
+  "confirmations.cancel_editing.heading": "Anuluj edycję wpisu",
+  "confirmations.cancel_editing.message": "Czy na pewno chcesz anulować edytowanie wpisu? Niezapisane zmiany zostaną utracone.",
   "confirmations.delete.confirm": "Usuń",
   "confirmations.delete.heading": "Usuń wpis",
   "confirmations.delete.message": "Czy na pewno chcesz usunąć ten wpis?",
