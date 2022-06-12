@@ -27,7 +27,7 @@ interface IModal {
   /** Callback when the modal is cancelled. */
   cancelAction?: () => void,
   /** Cancel button text. */
-  cancelText?: string,
+  cancelText?: React.ReactNode,
   /** URL to an SVG icon for the close button. */
   closeIcon?: string,
   /** Position of the close button. */

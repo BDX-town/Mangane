@@ -9,13 +9,13 @@ import type { Status } from 'soapbox/types/entities';
 
 interface IReplyIndicator {
   status?: Status,
-  onCancel: () => void,
+  onCancel?: () => void,
   hideActions: boolean,
 }
 
 const ReplyIndicator: React.FC<IReplyIndicator> = ({ status, hideActions, onCancel }) => {
   const handleClick = () => {
-    onCancel();
+    onCancel!();
   };
 
   if (!status) {
@@ -23,7 +23,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ status, hideActions, onCanc
   }
 
   let actions = {};
-  if (!hideActions) {
+  if (!hideActions && onCancel) {
     actions = {
       onActionClick: handleClick,
       actionIcon: require('@tabler/icons/icons/x.svg'),
