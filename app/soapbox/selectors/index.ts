@@ -14,7 +14,7 @@ import { shouldFilter } from 'soapbox/utils/timelines';
 
 import type { ReducerChat } from 'soapbox/reducers/chats';
 import type { RootState } from 'soapbox/store';
-import type { Notification } from 'soapbox/types/entities';
+import type { Filter as FilterEntity, Notification } from 'soapbox/types/entities';
 
 const normalizeId = (id: any): string => typeof id === 'string' ? id : '';
 
@@ -104,18 +104,18 @@ const toServerSideType = (columnType: string): string => {
 type FilterContext = { contextType?: string };
 
 export const getFilters = (state: RootState, query: FilterContext) => {
-  return state.filters.filter((filter): boolean => {
+  return state.filters.filter((filter) => {
     return query?.contextType
-      && filter.get('context').includes(toServerSideType(query.contextType))
-      && (filter.get('expires_at') === null
-      || Date.parse(filter.get('expires_at')) > new Date().getTime());
+      && filter.context.includes(toServerSideType(query.contextType))
+      && (filter.expires_at === null
+      || Date.parse(filter.expires_at) > new Date().getTime());
   });
 };
 
 const escapeRegExp = (string: string) =>
   string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 
-export const regexFromFilters = (filters: ImmutableList<ImmutableMap<string, any>>) => {
+export const regexFromFilters = (filters: ImmutableList<FilterEntity>) => {
   if (filters.size === 0) return null;
 
   return new RegExp(filters.map(filter => {

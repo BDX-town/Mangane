@@ -10,7 +10,7 @@ describe('<AutosuggestEmoji />', () => {
       colons: ':foobar:',
     };
 
-    render(<AutosuggestEmoji emoji={emoji} />);
+    render(<AutosuggestEmoji emoji={emoji as any} />);
 
     expect(screen.getByTestId('emoji')).toHaveTextContent('foobar');
     expect(screen.getByRole('img').getAttribute('src')).not.toBe('http://example.com/emoji.png');
@@ -24,7 +24,7 @@ describe('<AutosuggestEmoji />', () => {
       colons: ':foobar:',
     };
 
-    render(<AutosuggestEmoji emoji={emoji} />);
+    render(<AutosuggestEmoji emoji={emoji as any} />);
 
     expect(screen.getByTestId('emoji')).toHaveTextContent('foobar');
     expect(screen.getByRole('img').getAttribute('src')).toBe('http://example.com/emoji.png');

@@ -1,24 +1,30 @@
-import { Map as ImmutableMap } from 'immutable';
+import { Record as ImmutableRecord } from 'immutable';
 
 import {
   MUTES_INIT_MODAL,
   MUTES_TOGGLE_HIDE_NOTIFICATIONS,
 } from '../actions/mutes';
 
-const initialState = ImmutableMap({
-  new: ImmutableMap({
-    isSubmitting: false,
-    account: null,
-    notifications: true,
-  }),
+import type { AnyAction } from 'redux';
+
+const NewMuteRecord = ImmutableRecord({
+  isSubmitting: false,
+  accountId: null,
+  notifications: true,
 });
 
-export default function mutes(state = initialState, action) {
+const ReducerRecord = ImmutableRecord({
+  new: NewMuteRecord(),
+});
+
+type State = ReturnType<typeof ReducerRecord>;
+
+export default function mutes(state: State = ReducerRecord(), action: AnyAction) {
   switch (action.type) {
     case MUTES_INIT_MODAL:
       return state.withMutations((state) => {
         state.setIn(['new', 'isSubmitting'], false);
-        state.setIn(['new', 'account'], action.account);
+        state.setIn(['new', 'accountId'], action.account.id);
         state.setIn(['new', 'notifications'], true);
       });
     case MUTES_TOGGLE_HIDE_NOTIFICATIONS:

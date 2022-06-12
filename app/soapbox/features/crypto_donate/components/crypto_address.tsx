@@ -10,7 +10,7 @@ import { getTitle } from '../utils/coin_db';
 
 import CryptoIcon from './crypto_icon';
 
-interface ICryptoAddress {
+export interface ICryptoAddress {
   address: string,
   ticker: string,
   note?: string,

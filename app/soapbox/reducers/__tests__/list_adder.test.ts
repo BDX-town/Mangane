@@ -6,7 +6,7 @@ import reducer from '../list_adder';
 
 describe('list_adder reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toMatchObject({
+    expect(reducer(undefined, {} as any)).toMatchObject({
       accountId: null,
 
       lists: {
@@ -22,7 +22,7 @@ describe('list_adder reducer', () => {
       accountId: null,
 
       lists: ImmutableRecord({
-        items: ImmutableList(),
+        items: ImmutableList<string>(),
         loaded: false,
         isLoading: false,
       })(),
@@ -46,7 +46,7 @@ describe('list_adder reducer', () => {
       accountId: null,
 
       lists: ImmutableRecord({
-        items: ImmutableList(),
+        items: ImmutableList<string>(),
         loaded: false,
         isLoading: false,
       })(),
@@ -70,7 +70,7 @@ describe('list_adder reducer', () => {
       accountId: null,
 
       lists: ImmutableRecord({
-        items: ImmutableList(),
+        items: ImmutableList<string>(),
         loaded: false,
         isLoading: false,
       })(),

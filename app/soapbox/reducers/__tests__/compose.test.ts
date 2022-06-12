@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { List as ImmutableList, Map as ImmutableMap, fromJS } from 'immutable';
 
 import * as actions from 'soapbox/actions/compose';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';
@@ -220,7 +220,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_SPOILERNESS_CHANGE on CW button click', () => {
-    const state = ImmutableMap({ spoiler_text: 'spoiler text', spoiler: true, media_attachments: { } });
+    const state = ImmutableMap({ spoiler_text: 'spoiler text', spoiler: true, media_attachments: ImmutableList() });
     const action = {
       type: actions.COMPOSE_SPOILERNESS_CHANGE,
     };
@@ -337,7 +337,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_UPLOAD_SUCCESS', () => {
-    const state = ImmutableMap({ media_attachments: [] });
+    const state = ImmutableMap({ media_attachments: ImmutableList() });
     const media = [
       {
         description: null,
@@ -385,19 +385,18 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_SUGGESTIONS_CLEAR', () => {
-    const state = ImmutableMap({ });
     const action = {
       type: actions.COMPOSE_SUGGESTIONS_CLEAR,
       suggestions: [],
       suggestion_token: 'aiekdns3',
     };
-    expect(reducer(state, action).toJS()).toMatchObject({
+    expect(reducer(undefined, action).toJS()).toMatchObject({
       suggestion_token: null,
     });
   });
 
   it('should handle COMPOSE_SUGGESTION_TAGS_UPDATE', () => {
-    const state = ImmutableMap({ tagHistory: [ 'hashtag' ] });
+    const state = ImmutableMap({ tagHistory: ImmutableList([ 'hashtag' ]) });
     const action = {
       type: actions.COMPOSE_SUGGESTION_TAGS_UPDATE,
       token: 'aaadken3',
@@ -410,12 +409,11 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_TAG_HISTORY_UPDATE', () => {
-    const state = ImmutableMap({ });
     const action = {
       type: actions.COMPOSE_TAG_HISTORY_UPDATE,
       tags: [ 'hashtag', 'hashtag2'],
     };
-    expect(reducer(state, action).toJS()).toMatchObject({
+    expect(reducer(undefined, action).toJS()).toMatchObject({
       tagHistory: [ 'hashtag', 'hashtag2' ],
     });
   });
@@ -450,11 +448,10 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_POLL_REMOVE', () => {
-    const state = ImmutableMap({ });
     const action = {
       type: actions.COMPOSE_POLL_REMOVE,
     };
-    expect(reducer(state, action).toJS()).toMatchObject({
+    expect(reducer(undefined, action).toJS()).toMatchObject({
       poll: null,
     });
   });

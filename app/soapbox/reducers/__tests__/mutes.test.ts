@@ -1,4 +1,4 @@
-import { Map as ImmutableMap } from 'immutable';
+import { Record as ImmutableRecord } from 'immutable';
 
 import {
   MUTES_INIT_MODAL,
@@ -9,50 +9,54 @@ import reducer from '../mutes';
 
 describe('mutes reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap({
-      new: ImmutableMap({
+    expect(reducer(undefined, {}).toJS()).toEqual({
+      new: {
         isSubmitting: false,
-        account: null,
+        accountId: null,
         notifications: true,
-      }),
-    }));
+      },
+    });
   });
 
   it('should handle MUTES_INIT_MODAL', () => {
-    const state = ImmutableMap({
-      new: ImmutableMap({
+    const state = ImmutableRecord({
+      new: ImmutableRecord({
         isSubmitting: false,
-        account: null,
+        accountId: null,
         notifications: true,
-      }),
-    });
+      })(),
+    })();
     const action = {
       type: MUTES_INIT_MODAL,
-      account: 'account1',
+      account: { id: 'account1' },
     };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      new: ImmutableMap({
+    expect(reducer(state, action).toJS()).toEqual({
+      new: {
         isSubmitting: false,
-        account: 'account1',
+        accountId: 'account1',
         notifications: true,
-      }),
-    }));
+      },
+    });
   });
 
   it('should handle MUTES_TOGGLE_HIDE_NOTIFICATIONS', () => {
-    const state = ImmutableMap({
-      new: ImmutableMap({
+    const state = ImmutableRecord({
+      new: ImmutableRecord({
+        isSubmitting: false,
+        accountId: null,
         notifications: true,
-      }),
-    });
+      })(),
+    })();
     const action = {
       type: MUTES_TOGGLE_HIDE_NOTIFICATIONS,
     };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      new: ImmutableMap({
+    expect(reducer(state, action).toJS()).toEqual({
+      new: {
+        isSubmitting: false,
+        accountId: null,
         notifications: false,
-      }),
-    }));
+      },
+    });
   });
 
 });

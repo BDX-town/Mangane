@@ -9,7 +9,7 @@ import reducer from '../accounts_counters';
 
 describe('accounts_counters reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap());
+    expect(reducer(undefined, {} as any)).toEqual(ImmutableMap());
   });
 
   // it('should handle ACCOUNT_FOLLOW_SUCCESS', () => {

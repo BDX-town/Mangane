@@ -8,6 +8,7 @@ import {
   ChatMessageRecord,
   EmojiRecord,
   FieldRecord,
+  FilterRecord,
   HistoryRecord,
   InstanceRecord,
   ListRecord,
@@ -31,6 +32,7 @@ type Chat = ReturnType<typeof ChatRecord>;
 type ChatMessage = ReturnType<typeof ChatMessageRecord>;
 type Emoji = ReturnType<typeof EmojiRecord>;
 type Field = ReturnType<typeof FieldRecord>;
+type Filter = ReturnType<typeof FilterRecord>;
 type History = ReturnType<typeof HistoryRecord>;
 type Instance = ReturnType<typeof InstanceRecord>;
 type List = ReturnType<typeof ListRecord>;
@@ -68,6 +70,7 @@ export {
   ChatMessage,
   Emoji,
   Field,
+  Filter,
   History,
   Instance,
   List,
