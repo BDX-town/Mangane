@@ -42,6 +42,8 @@ describe('mutes reducer', () => {
   it('should handle MUTES_TOGGLE_HIDE_NOTIFICATIONS', () => {
     const state = ImmutableRecord({
       new: ImmutableRecord({
+        isSubmitting: false,
+        accountId: null,
         notifications: true,
       })(),
     })();
@@ -50,6 +52,8 @@ describe('mutes reducer', () => {
     };
     expect(reducer(state, action).toJS()).toEqual({
       new: {
+        isSubmitting: false,
+        accountId: null,
         notifications: false,
       },
     });

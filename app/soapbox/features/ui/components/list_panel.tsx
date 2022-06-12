@@ -15,7 +15,7 @@ const getOrderedLists = createSelector([(state: RootState) => state.lists], list
     return lists;
   }
 
-  return lists.toList().filter(item => !!item).sort((a, b) => (a as ListEntity).title.localeCompare((b as ListEntity).title)).take(4) as ImmutableList<ListEntity>;;
+  return lists.toList().filter(item => !!item).sort((a, b) => (a as ListEntity).title.localeCompare((b as ListEntity).title)).take(4) as ImmutableList<ListEntity>;
 });
 
 const ListPanel = () => {

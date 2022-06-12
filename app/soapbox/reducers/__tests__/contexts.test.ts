@@ -13,7 +13,7 @@ import reducer, { ReducerRecord } from '../contexts';
 
 describe('contexts reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ReducerRecord({
+    expect(reducer(undefined, {} as any)).toEqual(ReducerRecord({
       inReplyTos: ImmutableMap(),
       replies: ImmutableMap(),
     }));
@@ -97,18 +97,18 @@ describe('contexts reducer', () => {
         inReplyTos: fromJS({
           B: 'A',
           C: 'B',
-        }),
+        }) as ImmutableMap<string, string>,
         replies: fromJS({
           A: ImmutableOrderedSet(['B']),
           B: ImmutableOrderedSet(['C']),
-        }),
+        }) as ImmutableMap<string, ImmutableOrderedSet<string>>,
       });
 
       const expected = ReducerRecord({
-        inReplyTos: fromJS({}),
+        inReplyTos: fromJS({}) as ImmutableMap<string, string>,
         replies: fromJS({
           A: ImmutableOrderedSet(),
-        }),
+        }) as ImmutableMap<string, ImmutableOrderedSet<string>>,
       });
 
       expect(reducer(state, action)).toEqual(expected);
