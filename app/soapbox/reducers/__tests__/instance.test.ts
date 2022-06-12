@@ -7,7 +7,7 @@ import reducer from '../instance';
 
 describe('instance reducer', () => {
   it('should return the initial state', () => {
-    const result = reducer(undefined, {});
+    const result = reducer(undefined, {} as any);
 
     const expected = {
       description_limit: 1500,
@@ -128,7 +128,7 @@ describe('instance reducer', () => {
       };
 
       // The normalizer has `registrations: closed` by default
-      const state = reducer(undefined, {});
+      const state = reducer(undefined, {} as any);
       expect(state.registrations).toBe(false);
 
       // After importing the configs, registration will be open

@@ -5,7 +5,7 @@ import reducer from '../patron';
 
 describe('patron reducer', () => {
   it('should return the initial state', () => {
-    const result = reducer(undefined, {});
+    const result = reducer(undefined, {} as any);
     expect(ImmutableRecord.isRecord(result)).toBe(true);
     expect(result.instance.url).toBe('');
   });

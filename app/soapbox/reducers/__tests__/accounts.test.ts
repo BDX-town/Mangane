@@ -6,7 +6,7 @@ import reducer from '../accounts';
 
 describe('accounts reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap());
+    expect(reducer(undefined, {} as any)).toEqual(ImmutableMap());
   });
 
   describe('ACCOUNT_IMPORT', () => {
