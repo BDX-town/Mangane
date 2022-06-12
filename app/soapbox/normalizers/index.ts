@@ -6,6 +6,7 @@ export { CardRecord, normalizeCard } from './card';
 export { ChatRecord, normalizeChat } from './chat';
 export { ChatMessageRecord, normalizeChatMessage } from './chat_message';
 export { EmojiRecord, normalizeEmoji } from './emoji';
+export { FilterRecord, normalizeFilter } from './filter';
 export { HistoryRecord, normalizeHistory } from './history';
 export { InstanceRecord, normalizeInstance } from './instance';
 export { ListRecord, normalizeList } from './list';

@@ -68,9 +68,9 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
   const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
 
   const me = useAppSelector(state => state.me);
-  const accountId: string | undefined = useAppSelector(state => state.profile_hover_card.get<string | undefined>('accountId', undefined));
+  const accountId: string | undefined = useAppSelector(state => state.profile_hover_card.accountId || undefined);
   const account   = useAppSelector(state => accountId && getAccount(state, accountId));
-  const targetRef = useAppSelector(state => state.profile_hover_card.getIn(['ref', 'current']) as Element | null);
+  const targetRef = useAppSelector(state => state.profile_hover_card.ref?.current);
   const badges = account ? getBadges(account) : [];
 
   useEffect(() => {
