@@ -58,6 +58,7 @@ jest:
       - "yarn.lock"
   artifacts:
     reports:
+      junit: junit.xml
       coverage_report:
         coverage_format: cobertura
         path: .coverage/cobertura-coverage.xml
