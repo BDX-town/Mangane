@@ -56,6 +56,7 @@ jest:
       - "jest.config.js"
       - "package.json"
       - "yarn.lock"
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   artifacts:
     reports:
       junit: junit.xml
