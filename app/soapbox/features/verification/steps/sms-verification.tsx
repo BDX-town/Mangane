@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import OtpInput from 'react-otp-input';
@@ -61,15 +62,13 @@ const SmsVerification = () => {
         ),
       );
       setStatus(Statuses.REQUESTED);
-    }).catch(() => {
-      dispatch(
-        snackbar.error(
-          intl.formatMessage({
-            id: 'sms_verification.fail',
-            defaultMessage: 'Failed to send SMS message to your phone number.',
-          }),
-        ),
-      );
+    }).catch((error: AxiosError) => {
+      const message = (error.response?.data as any)?.message || intl.formatMessage({
+        id: 'sms_verification.fail',
+        defaultMessage: 'Failed to send SMS message to your phone number.',
+      });
+
+      dispatch(snackbar.error(message));
       setStatus(Statuses.FAIL);
     });
   }, [phone, isValid]);
