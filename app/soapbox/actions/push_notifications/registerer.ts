@@ -1,12 +1,15 @@
-import { createPushSubsription, updatePushSubscription } from 'soapbox/actions/push_subscriptions';
+import { createPushSubscription, updatePushSubscription } from 'soapbox/actions/push_subscriptions';
 import { pushNotificationsSetting } from 'soapbox/settings';
 import { getVapidKey } from 'soapbox/utils/auth';
 import { decode as decodeBase64 } from 'soapbox/utils/base64';
 
 import { setBrowserSupport, setSubscription, clearSubscription } from './setter';
 
+import type { AppDispatch, RootState } from 'soapbox/store';
+import type { Me } from 'soapbox/types/soapbox';
+
 // Taken from https://www.npmjs.com/package/web-push
-const urlBase64ToUint8Array = (base64String) => {
+const urlBase64ToUint8Array = (base64String: string) => {
   const padding = '='.repeat((4 - base64String.length % 4) % 4);
   const base64 = (base64String + padding)
     .replace(/\-/g, '+')
@@ -17,22 +20,25 @@ const urlBase64ToUint8Array = (base64String) => {
 
 const getRegistration = () => navigator.serviceWorker.ready;
 
-const getPushSubscription = (registration) =>
+const getPushSubscription = (registration: ServiceWorkerRegistration) =>
   registration.pushManager.getSubscription()
     .then(subscription => ({ registration, subscription }));
 
-const subscribe = (registration, getState) =>
+const subscribe = (registration: ServiceWorkerRegistration, getState: () => RootState) =>
   registration.pushManager.subscribe({
     userVisibleOnly: true,
     applicationServerKey: urlBase64ToUint8Array(getVapidKey(getState())),
   });
 
-const unsubscribe = ({ registration, subscription }) =>
-  subscription ? subscription.unsubscribe().then(() => registration) : registration;
+const unsubscribe = ({ registration, subscription }: {
+  registration: ServiceWorkerRegistration,
+  subscription: PushSubscription | null,
+}) =>
+  subscription ? subscription.unsubscribe().then(() => registration) : new Promise<ServiceWorkerRegistration>(r => r(registration));
 
-const sendSubscriptionToBackend = (subscription, me) => {
-  return (dispatch, getState) => {
-    const alerts = getState().getIn(['push_notifications', 'alerts']).toJS();
+const sendSubscriptionToBackend = (subscription: PushSubscription, me: Me) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const alerts = getState().push_notifications.get('alerts').toJS();
     const params = { subscription, data: { alerts } };
 
     if (me) {
@@ -42,16 +48,15 @@ const sendSubscriptionToBackend = (subscription, me) => {
       }
     }
 
-    return dispatch(createPushSubsription(params));
+    return dispatch(createPushSubscription(params) as any);
   };
-};
 
 // Last one checks for payload support: https://web-push-book.gauntface.com/chapter-06/01-non-standards-browsers/#no-payload
 const supportsPushNotifications = ('serviceWorker' in navigator && 'PushManager' in window && 'getKey' in PushSubscription.prototype);
 
-export function register() {
-  return (dispatch, getState) => {
-    const me = getState().get('me');
+export const register = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const me = getState().me;
     const vapidKey = getVapidKey(getState());
 
     dispatch(setBrowserSupport(supportsPushNotifications));
@@ -68,35 +73,39 @@ export function register() {
 
     getRegistration()
       .then(getPushSubscription)
-      .then(({ registration, subscription }) => {
+      // @ts-ignore
+      .then(({ registration, subscription }: {
+        registration: ServiceWorkerRegistration,
+        subscription: PushSubscription | null,
+      }) => {
         if (subscription !== null) {
           // We have a subscription, check if it is still valid
-          const currentServerKey = (new Uint8Array(subscription.options.applicationServerKey)).toString();
+          const currentServerKey = (new Uint8Array(subscription.options.applicationServerKey!)).toString();
           const subscriptionServerKey = urlBase64ToUint8Array(vapidKey).toString();
-          const serverEndpoint = getState().getIn(['push_notifications', 'subscription', 'endpoint']);
+          const serverEndpoint = getState().push_notifications.getIn(['subscription', 'endpoint']);
 
           // If the VAPID public key did not change and the endpoint corresponds
           // to the endpoint saved in the backend, the subscription is valid
           if (subscriptionServerKey === currentServerKey && subscription.endpoint === serverEndpoint) {
-            return subscription;
+            return { subscription };
           } else {
             // Something went wrong, try to subscribe again
-            return unsubscribe({ registration, subscription }).then(registration => {
+            return unsubscribe({ registration, subscription }).then((registration: ServiceWorkerRegistration) => {
               return subscribe(registration, getState);
             }).then(
-              subscription => dispatch(sendSubscriptionToBackend(subscription, me)));
+              (subscription: PushSubscription) => dispatch(sendSubscriptionToBackend(subscription, me) as any));
           }
         }
 
         // No subscription, try to subscribe
         return subscribe(registration, getState)
-          .then(subscription => dispatch(sendSubscriptionToBackend(subscription, me)));
+          .then(subscription => dispatch(sendSubscriptionToBackend(subscription, me) as any));
       })
-      .then(subscription => {
+      .then(({ subscription }: { subscription: PushSubscription | Record<string, any> }) => {
         // If we got a PushSubscription (and not a subscription object from the backend)
         // it means that the backend subscription is valid (and was set during hydration)
         if (!(subscription instanceof PushSubscription)) {
-          dispatch(setSubscription(subscription));
+          dispatch(setSubscription(subscription as PushSubscription));
           if (me) {
             pushNotificationsSetting.set(me, { alerts: subscription.alerts });
           }
@@ -123,14 +132,13 @@ export function register() {
       })
       .catch(console.warn);
   };
-}
 
-export function saveSettings() {
-  return (dispatch, getState) => {
-    const state = getState().get('push_notifications');
+export const saveSettings = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const state = getState().push_notifications;
     const alerts = state.get('alerts');
     const data = { alerts };
-    const me = getState().get('me');
+    const me = getState().me;
 
     return dispatch(updatePushSubscription({ data })).then(() => {
       if (me) {
@@ -138,4 +146,3 @@ export function saveSettings() {
       }
     }).catch(console.warn);
   };
-}

@@ -7,6 +7,8 @@ import {
   setAlerts,
 } from './setter';
 
+import type { AppDispatch } from 'soapbox/store';
+
 export {
   SET_BROWSER_SUPPORT,
   SET_SUBSCRIPTION,
@@ -15,9 +17,8 @@ export {
   register,
 };
 
-export function changeAlerts(path, value) {
-  return dispatch => {
+export const changeAlerts = (path: Array<string>, value: any) =>
+  (dispatch: AppDispatch) => {
     dispatch(setAlerts(path, value));
-    dispatch(saveSettings());
+    dispatch(saveSettings() as any);
   };
-}
