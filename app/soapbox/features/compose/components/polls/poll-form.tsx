@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -192,7 +190,7 @@ const PollForm = () => {
 
       {/* Remove Poll */}
       <div className='text-center'>
-        <Button theme='danger' size='sm' onClick={onRemovePoll}>
+        <Button theme='danger-link' onClick={onRemovePoll}>
           {intl.formatMessage(messages.removePoll)}
         </Button>
       </div>
