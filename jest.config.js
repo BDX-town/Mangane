@@ -28,7 +28,7 @@ module.exports = {
   ],
   'coverageDirectory': '<rootDir>/.coverage/',
   'coverageReporters': ['html', 'text', 'text-summary', 'cobertura'],
-  'reporters': ['jest-junit'],
+  'reporters': ['default', 'jest-junit'],
   'moduleDirectories': [
     '<rootDir>/node_modules',
     '<rootDir>/app',
