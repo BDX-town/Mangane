@@ -30,8 +30,8 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
   const features = useFeatures();
   const intl = useIntl();
 
-  const following = account.relationship?.following;
-  const requested = account.relationship?.requested;
+  const isFollowing = account.relationship?.following;
+  const isRequested = account.relationship?.requested;
   const isSubscribed = features.accountNotifies ?
     account.relationship?.notifying :
     account.relationship?.subscribing;
@@ -83,11 +83,11 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
     }
   };
 
-  if (!features.accountSubscriptions) {
+  if (!features.accountSubscriptions && !features.accountNotifies) {
     return null;
   }
 
-  if (requested || following) {
+  if (isRequested || isFollowing) {
     return (
       <IconButton
         src={isSubscribed ? require('@tabler/icons/icons/bell-ringing.svg') : require('@tabler/icons/icons/bell.svg')}
