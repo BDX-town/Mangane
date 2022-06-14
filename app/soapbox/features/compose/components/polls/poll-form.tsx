@@ -7,7 +7,7 @@ import AutosuggestInput from 'soapbox/components/autosuggest_input';
 import { Button, Divider, HStack, Stack, Text, Toggle } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
-import DurationSelector from './polls/duration-selector';
+import DurationSelector from './duration-selector';
 
 import type { AutoSuggestion } from 'soapbox/components/autosuggest_input';
 
@@ -94,7 +94,7 @@ const Option = (props: IOption) => {
           onSuggestionsClearRequested={onSuggestionsClearRequested}
           onSuggestionSelected={onSuggestionSelected}
           searchTokens={[':']}
-          autoFocus={index === 0}
+          autoFocus={index === 0 || index >= 2}
         />
       </HStack>
 
