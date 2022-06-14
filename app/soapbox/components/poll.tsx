@@ -6,8 +6,7 @@ import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
 import { vote, fetchPoll } from 'soapbox/actions/polls';
-import Icon from 'soapbox/components/icon';
-import { Text, Button, Stack, HStack } from 'soapbox/components/ui';
+import { Text, Button, Icon, Stack, HStack } from 'soapbox/components/ui';
 import Motion from 'soapbox/features/ui/util/optional_motion';
 import { useAppSelector } from 'soapbox/hooks';
 
@@ -21,10 +20,10 @@ const messages = defineMessages({
   votes: { id: 'poll.votes', defaultMessage: '{votes, plural, one {# vote} other {# votes}}' },
 });
 
-const PollPercentageBar: React.FC<{percent: number, leading: boolean}> = ({ percent, leading }): JSX.Element => {
+const PollPercentageBar: React.FC<{ percent: number, leading: boolean }> = ({ percent, leading }): JSX.Element => {
   return (
     <Motion defaultStyle={{ width: 0 }} style={{ width: spring(percent, { stiffness: 180, damping: 12 }) }}>
-      {({ width }) =>(
+      {({ width }) => (
         <span
           className={classNames('absolute inset-0 h-full inline-block rounded bg-gray-300 dark:bg-slate-900', {
             'bg-primary-300 dark:bg-primary-400': leading,
@@ -59,7 +58,12 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
 
   return (
     <label
-      className={classNames('relative', { 'cursor-pointer': !showResults })}
+      className={classNames({
+        'relative flex rounded-full border border-solid bg-white p-2 hover:bg-primary-50': true,
+        'border-primary-600 ring-1 ring-primary-600 bg-primary-50': active,
+        'border-primary-300': !active,
+        'cursor-pointer': !showResults,
+      })}
       title={showResults ? message : undefined}
     >
       <input
@@ -71,34 +75,44 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
         onChange={handleOptionChange}
       />
 
-      <HStack alignItems='center' className='p-1 text-gray-900 dark:text-gray-300'>
-        {!showResults && (
-          <span
-            className={classNames('inline-block w-4 h-4 flex-none mr-2.5 border border-solid border-primary-600 rounded-full', {
-              'bg-primary-600': active,
-              'rounded': poll.multiple,
-            })}
-            tabIndex={0}
-            role={poll.multiple ? 'checkbox' : 'radio'}
-            onKeyPress={handleOptionKeyPress}
-            aria-checked={active}
-            aria-label={option.title}
+      <div className='grid items-center w-full'>
+        <div className='col-start-1 row-start-1 justify-self-center ml-4 mr-6'>
+          <Text
+            theme='primary'
+            weight='semibold'
+            dangerouslySetInnerHTML={{ __html: option.title_emojified }}
           />
-        )}
+        </div>
 
-        {showResults && (
-          <HStack space={2} alignItems='center' className='mr-2.5'>
-            {voted ? (
-              <Icon src={require('@tabler/icons/icons/check.svg')} title={intl.formatMessage(messages.voted)} />
-            ) : (
-              <div className='svg-icon' />
-            )}
-            <span className='font-bold'>{Math.round(percent)}%</span>
-          </HStack>
-        )}
-
-        <span dangerouslySetInnerHTML={{ __html: option.title_emojified }} />
-      </HStack>
+        <div className='col-start-1 row-start-1 justify-self-end flex items-center'>
+          {showResults ? (
+            <HStack space={2} alignItems='center' className='mr-2.5'>
+              {voted ? (
+                <Icon src={require('@tabler/icons/icons/check.svg')} alt={intl.formatMessage(messages.voted)} />
+              ) : (
+                <div className='svg-icon' />
+              )}
+              <span className='font-bold'>{Math.round(percent)}%</span>
+            </HStack>
+          ) : (
+            <span
+              className={classNames('flex items-center justify-center w-6 h-6 flex-none border border-solid rounded-full', {
+                'bg-primary-600 border-primary-600': active,
+                'border-primary-300 bg-white': !active,
+              })}
+              tabIndex={0}
+              role={poll.multiple ? 'checkbox' : 'radio'}
+              onKeyPress={handleOptionKeyPress}
+              aria-checked={active}
+              aria-label={option.title}
+            >
+              {active && (
+                <Icon src={require('@tabler/icons/icons/check.svg')} className='text-white w-4 h-4' />
+              )}
+            </span>
+          )}
+        </div>
+      </div>
     </label>
   );
 };
@@ -120,7 +134,7 @@ const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
   const leading = poll.options.filterNot(other => other.title === option.title).every(other => option.votes_count >= other.votes_count);
 
   return (
-    <div className='relative mb-2.5' key={option.title}>
+    <div className='relative' key={option.title}>
       {showResults && (
         <PollPercentageBar percent={percent} leading={leading} />
       )}
@@ -130,7 +144,7 @@ const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
   );
 };
 
-const RefreshButton: React.FC<{poll: PollEntity}> = ({ poll }): JSX.Element => {
+const RefreshButton: React.FC<{ poll: PollEntity }> = ({ poll }): JSX.Element => {
   const dispatch = useDispatch();
 
   const handleRefresh: React.EventHandler<React.MouseEvent> = (e) => {
@@ -148,12 +162,12 @@ const RefreshButton: React.FC<{poll: PollEntity}> = ({ poll }): JSX.Element => {
   );
 };
 
-const VoteButton: React.FC<{poll: PollEntity, selected: Selected}> = ({ poll, selected }): JSX.Element => {
+const VoteButton: React.FC<{ poll: PollEntity, selected: Selected }> = ({ poll, selected }): JSX.Element => {
   const dispatch = useDispatch();
   const handleVote = () => dispatch(vote(poll.id, Object.keys(selected)));
 
   return (
-    <Button onClick={handleVote} theme='ghost'>
+    <Button onClick={handleVote} theme='primary' block>
       <FormattedMessage id='poll.vote' defaultMessage='Vote' />
     </Button>
   );
@@ -167,18 +181,35 @@ interface IPollFooter {
 
 const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX.Element => {
   const intl = useIntl();
-  const timeRemaining = poll.expired ? intl.formatMessage(messages.closed) : <RelativeTimestamp timestamp={poll.expires_at} futureDate />;
+  const timeRemaining = poll.expired ? intl.formatMessage(messages.closed) : <RelativeTimestamp weight='medium' timestamp={poll.expires_at} futureDate />;
 
   return (
-    <Stack space={2}>
+    <Stack space={4}>
       {!showResults && <div><VoteButton poll={poll} selected={selected} /></div>}
-      <Text>
+
+      <HStack space={1.5} alignItems='center'>
         {showResults && (
-          <><RefreshButton poll={poll} /> · </>
+          <>
+            <RefreshButton poll={poll} />
+            <Text theme='muted'>&middot;</Text>
+          </>
         )}
-        <FormattedMessage id='poll.total_votes' defaultMessage='{count, plural, one {# vote} other {# votes}}' values={{ count: poll.votes_count }} />
-        {poll.expires_at && <span> · {timeRemaining}</span>}
-      </Text>
+
+        <Text theme='muted' weight='medium'>
+          <FormattedMessage
+            id='poll.total_votes'
+            defaultMessage='{count, plural, one {# vote} other {# votes}}'
+            values={{ count: poll.votes_count }}
+          />
+        </Text>
+
+        {poll.expires_at && (
+          <>
+            <Text theme='muted'>&middot;</Text>
+            <Text weight='medium' theme='muted'>{timeRemaining}</Text>
+          </>
+        )}
+      </HStack>
     </Stack>
   );
 };
@@ -231,8 +262,8 @@ const Poll: React.FC<IPoll> = ({ id, status }): JSX.Element | null => {
 
   return (
     <div onClick={e => e.stopPropagation()}>
-      <Stack className={classNames('my-2', { voted: poll.voted })}>
-        <Stack>
+      <Stack space={4} className={classNames('mt-4', { voted: poll.voted })}>
+        <Stack space={2}>
           {poll.options.map((option, i) => (
             <PollOption
               key={i}

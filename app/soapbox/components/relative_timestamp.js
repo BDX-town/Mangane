@@ -33,8 +33,8 @@ const shortDateFormatOptions = {
 
 const SECOND = 1000;
 const MINUTE = 1000 * 60;
-const HOUR   = 1000 * 60 * 60;
-const DAY    = 1000 * 60 * 60 * 24;
+const HOUR = 1000 * 60 * 60;
+const DAY = 1000 * 60 * 60 * 24;
 
 const MAX_DELAY = 2147483647;
 
@@ -160,12 +160,12 @@ class RelativeTimestamp extends React.Component {
   _scheduleNextUpdate() {
     clearTimeout(this._timer);
 
-    const { timestamp }  = this.props;
-    const delta          = (new Date(timestamp)).getTime() - this.state.now;
-    const unitDelay      = getUnitDelay(selectUnits(delta));
-    const unitRemainder  = Math.abs(delta % unitDelay);
+    const { timestamp } = this.props;
+    const delta = (new Date(timestamp)).getTime() - this.state.now;
+    const unitDelay = getUnitDelay(selectUnits(delta));
+    const unitRemainder = Math.abs(delta % unitDelay);
     const updateInterval = 1000 * 10;
-    const delay          = delta < 0 ? Math.max(updateInterval, unitDelay - unitRemainder) : Math.max(updateInterval, unitRemainder);
+    const delay = delta < 0 ? Math.max(updateInterval, unitDelay - unitRemainder) : Math.max(updateInterval, unitRemainder);
 
     this._timer = setTimeout(() => {
       this.setState({ now: Date.now() });
@@ -175,11 +175,11 @@ class RelativeTimestamp extends React.Component {
   render() {
     const { timestamp, intl, year, futureDate, ...textProps } = this.props;
 
-    const date         = new Date(timestamp);
+    const date = new Date(timestamp);
     const relativeTime = futureDate ? timeRemainingString(intl, date, this.state.now) : timeAgoString(intl, date, this.state.now, year);
 
     return (
-      <Text {...textProps} color='inherit' tag='time' title={intl.formatDate(date, dateFormatOptions)}>
+      <Text {...textProps} theme='inherit' tag='time' title={intl.formatDate(date, dateFormatOptions)}>
         {relativeTime}
       </Text>
     );

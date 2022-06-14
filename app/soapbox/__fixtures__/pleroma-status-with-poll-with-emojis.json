@@ -196,7 +196,7 @@
     "expired": false,
     "expires_at": "2022-03-12T01:33:18.000Z",
     "id": "AHHue67gF2JDqCQGhc",
-    "multiple": false,
+    "multiple": true,
     "options": [
       {
         "title": "Regular emoji 😍 ",
