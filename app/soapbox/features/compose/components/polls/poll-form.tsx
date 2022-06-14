@@ -66,7 +66,7 @@ const Option = (props: IOption) => {
   const onSuggestionsFetchRequested = (token: string) => dispatch(fetchComposeSuggestions(token));
 
   const onSuggestionSelected = (tokenStart: number, token: string | null, value: AutoSuggestion) => {
-    if (token && typeof value === 'string') {
+    if (token && typeof token === 'string') {
       dispatch(selectComposeSuggestion(tokenStart, token, value, ['poll', 'options', index]));
     }
   };
