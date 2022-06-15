@@ -4,12 +4,13 @@ import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
-import Poll from 'soapbox/components/poll';
 import { useSoapboxConfig } from 'soapbox/hooks';
 import { addGreentext } from 'soapbox/utils/greentext';
 import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich_content';
 
 import { isRtl } from '../rtl';
+
+import Poll from './polls/poll';
 
 import type { Status, Mention } from 'soapbox/types/entities';
 
