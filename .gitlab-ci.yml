@@ -25,6 +25,8 @@ deps:
 danger:
   stage: test
   script: yarn danger ci
+  only:
+    - merge_requests
 
 lint-js:
   stage: test
