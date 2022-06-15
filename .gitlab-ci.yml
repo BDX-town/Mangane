@@ -22,6 +22,10 @@ deps:
     changes:
       - yarn.lock
 
+danger:
+  stage: test
+  script: yarn danger ci
+
 lint-js:
   stage: test
   script: yarn lint:js
