@@ -1,11 +1,13 @@
 import { staticClient } from '../api';
 
-export const FETCH_MOBILE_PAGE_REQUEST = 'FETCH_MOBILE_PAGE_REQUEST';
-export const FETCH_MOBILE_PAGE_SUCCESS = 'FETCH_MOBILE_PAGE_SUCCESS';
-export const FETCH_MOBILE_PAGE_FAIL    = 'FETCH_MOBILE_PAGE_FAIL';
+import type { AppDispatch } from 'soapbox/store';
 
-export function fetchMobilePage(slug = 'index', locale) {
-  return (dispatch, getState) => {
+const FETCH_MOBILE_PAGE_REQUEST = 'FETCH_MOBILE_PAGE_REQUEST';
+const FETCH_MOBILE_PAGE_SUCCESS = 'FETCH_MOBILE_PAGE_SUCCESS';
+const FETCH_MOBILE_PAGE_FAIL    = 'FETCH_MOBILE_PAGE_FAIL';
+
+const fetchMobilePage = (slug = 'index', locale?: string) =>
+  (dispatch: AppDispatch) => {
     dispatch({ type: FETCH_MOBILE_PAGE_REQUEST, slug, locale });
     const filename = `${slug}${locale ? `.${locale}` : ''}.html`;
     return staticClient.get(`/instance/mobile/${filename}`).then(({ data: html }) => {
@@ -16,4 +18,10 @@ export function fetchMobilePage(slug = 'index', locale) {
       throw error;
     });
   };
-}
+
+export {
+  FETCH_MOBILE_PAGE_REQUEST,
+  FETCH_MOBILE_PAGE_SUCCESS,
+  FETCH_MOBILE_PAGE_FAIL,
+  fetchMobilePage,
+};

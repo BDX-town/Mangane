@@ -187,7 +187,7 @@ export function changeSettingImmediate(path, value) {
   };
 }
 
-export function changeSetting(path, value, intl) {
+export function changeSetting(path, value) {
   return dispatch => {
     dispatch({
       type: SETTING_CHANGE,
@@ -195,11 +195,11 @@ export function changeSetting(path, value, intl) {
       value,
     });
 
-    return dispatch(saveSettings(intl));
+    return dispatch(saveSettings());
   };
 }
 
-export function saveSettingsImmediate(intl) {
+export function saveSettingsImmediate() {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
 
@@ -215,15 +215,13 @@ export function saveSettingsImmediate(intl) {
     })).then(response => {
       dispatch({ type: SETTING_SAVE });
 
-      if (intl) {
-        dispatch(snackbar.success(intl.formatMessage(messages.saveSuccess)));
-      }
+      dispatch(snackbar.success(messages.saveSuccess));
     }).catch(error => {
       dispatch(showAlertForError(error));
     });
   };
 }
 
-export function saveSettings(intl) {
-  return (dispatch, getState) => dispatch(saveSettingsImmediate(intl));
+export function saveSettings() {
+  return (dispatch, getState) => dispatch(saveSettingsImmediate());
 }

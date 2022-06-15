@@ -1,24 +1,29 @@
 import { getSettings, changeSetting } from 'soapbox/actions/settings';
 
-const getPinnedHosts = state => {
+import type { AppDispatch, RootState } from 'soapbox/store';
+
+const getPinnedHosts = (state: RootState) => {
   const settings = getSettings(state);
   return settings.getIn(['remote_timeline', 'pinnedHosts']);
 };
 
-export function pinHost(host) {
-  return (dispatch, getState) => {
+const pinHost = (host: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const pinnedHosts = getPinnedHosts(state);
 
     return dispatch(changeSetting(['remote_timeline', 'pinnedHosts'], pinnedHosts.push(host)));
   };
-}
 
-export function unpinHost(host) {
-  return (dispatch, getState) => {
+const unpinHost = (host) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const pinnedHosts = getPinnedHosts(state);
 
     return dispatch(changeSetting(['remote_timeline', 'pinnedHosts'], pinnedHosts.filter((value) => value !== host)));
   };
-}
+
+export {
+  pinHost,
+  unpinHost,
+};

@@ -1,24 +1,24 @@
 import api from '../api';
 
-export const PUSH_SUBSCRIPTION_CREATE_REQUEST = 'PUSH_SUBSCRIPTION_CREATE_REQUEST';
-export const PUSH_SUBSCRIPTION_CREATE_SUCCESS = 'PUSH_SUBSCRIPTION_CREATE_SUCCESS';
-export const PUSH_SUBSCRIPTION_CREATE_FAIL    = 'PUSH_SUBSCRIPTION_CREATE_FAIL';
+const PUSH_SUBSCRIPTION_CREATE_REQUEST = 'PUSH_SUBSCRIPTION_CREATE_REQUEST';
+const PUSH_SUBSCRIPTION_CREATE_SUCCESS = 'PUSH_SUBSCRIPTION_CREATE_SUCCESS';
+const PUSH_SUBSCRIPTION_CREATE_FAIL    = 'PUSH_SUBSCRIPTION_CREATE_FAIL';
 
-export const PUSH_SUBSCRIPTION_FETCH_REQUEST = 'PUSH_SUBSCRIPTION_FETCH_REQUEST';
-export const PUSH_SUBSCRIPTION_FETCH_SUCCESS = 'PUSH_SUBSCRIPTION_FETCH_SUCCESS';
-export const PUSH_SUBSCRIPTION_FETCH_FAIL    = 'PUSH_SUBSCRIPTION_FETCH_FAIL';
+const PUSH_SUBSCRIPTION_FETCH_REQUEST = 'PUSH_SUBSCRIPTION_FETCH_REQUEST';
+const PUSH_SUBSCRIPTION_FETCH_SUCCESS = 'PUSH_SUBSCRIPTION_FETCH_SUCCESS';
+const PUSH_SUBSCRIPTION_FETCH_FAIL    = 'PUSH_SUBSCRIPTION_FETCH_FAIL';
 
-export const PUSH_SUBSCRIPTION_UPDATE_REQUEST = 'PUSH_SUBSCRIPTION_UPDATE_REQUEST';
-export const PUSH_SUBSCRIPTION_UPDATE_SUCCESS = 'PUSH_SUBSCRIPTION_UPDATE_SUCCESS';
-export const PUSH_SUBSCRIPTION_UPDATE_FAIL    = 'PUSH_SUBSCRIPTION_UPDATE_FAIL';
+const PUSH_SUBSCRIPTION_UPDATE_REQUEST = 'PUSH_SUBSCRIPTION_UPDATE_REQUEST';
+const PUSH_SUBSCRIPTION_UPDATE_SUCCESS = 'PUSH_SUBSCRIPTION_UPDATE_SUCCESS';
+const PUSH_SUBSCRIPTION_UPDATE_FAIL    = 'PUSH_SUBSCRIPTION_UPDATE_FAIL';
 
-export const PUSH_SUBSCRIPTION_DELETE_REQUEST = 'PUSH_SUBSCRIPTION_DELETE_REQUEST';
-export const PUSH_SUBSCRIPTION_DELETE_SUCCESS = 'PUSH_SUBSCRIPTION_DELETE_SUCCESS';
-export const PUSH_SUBSCRIPTION_DELETE_FAIL    = 'PUSH_SUBSCRIPTION_DELETE_FAIL';
+const PUSH_SUBSCRIPTION_DELETE_REQUEST = 'PUSH_SUBSCRIPTION_DELETE_REQUEST';
+const PUSH_SUBSCRIPTION_DELETE_SUCCESS = 'PUSH_SUBSCRIPTION_DELETE_SUCCESS';
+const PUSH_SUBSCRIPTION_DELETE_FAIL    = 'PUSH_SUBSCRIPTION_DELETE_FAIL';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
 
-export const createPushSubscription = (params: Record<string, any>) =>
+const createPushSubscription = (params: Record<string, any>) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: PUSH_SUBSCRIPTION_CREATE_REQUEST, params });
     return api(getState).post('/api/v1/push/subscription', params).then(({ data: subscription }) =>
@@ -28,7 +28,7 @@ export const createPushSubscription = (params: Record<string, any>) =>
     );
   };
 
-export const fetchPushSubscription = () =>
+const fetchPushSubscription = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: PUSH_SUBSCRIPTION_FETCH_REQUEST });
     return api(getState).get('/api/v1/push/subscription').then(({ data: subscription }) =>
@@ -38,7 +38,7 @@ export const fetchPushSubscription = () =>
     );
   };
 
-export const updatePushSubscription = (params: Record<string, any>) =>
+const updatePushSubscription = (params: Record<string, any>) =>
   (dispatch: AppDispatch, getState: () => any) => {
     dispatch({ type: PUSH_SUBSCRIPTION_UPDATE_REQUEST, params });
     return api(getState).put('/api/v1/push/subscription', params).then(({ data: subscription }) =>
@@ -48,7 +48,7 @@ export const updatePushSubscription = (params: Record<string, any>) =>
     );
   };
 
-export const deletePushSubscription = () =>
+const deletePushSubscription = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: PUSH_SUBSCRIPTION_DELETE_REQUEST });
     return api(getState).delete('/api/v1/push/subscription').then(() =>
@@ -57,3 +57,22 @@ export const deletePushSubscription = () =>
       dispatch({ type: PUSH_SUBSCRIPTION_DELETE_FAIL, error }),
     );
   };
+
+export {
+  PUSH_SUBSCRIPTION_CREATE_REQUEST,
+  PUSH_SUBSCRIPTION_CREATE_SUCCESS,
+  PUSH_SUBSCRIPTION_CREATE_FAIL,
+  PUSH_SUBSCRIPTION_FETCH_REQUEST,
+  PUSH_SUBSCRIPTION_FETCH_SUCCESS,
+  PUSH_SUBSCRIPTION_FETCH_FAIL,
+  PUSH_SUBSCRIPTION_UPDATE_REQUEST,
+  PUSH_SUBSCRIPTION_UPDATE_SUCCESS,
+  PUSH_SUBSCRIPTION_UPDATE_FAIL,
+  PUSH_SUBSCRIPTION_DELETE_REQUEST,
+  PUSH_SUBSCRIPTION_DELETE_SUCCESS,
+  PUSH_SUBSCRIPTION_DELETE_FAIL,
+  createPushSubscription,
+  fetchPushSubscription,
+  updatePushSubscription,
+  deletePushSubscription,
+};

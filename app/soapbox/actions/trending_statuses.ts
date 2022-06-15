@@ -4,15 +4,17 @@ import api from '../api';
 
 import { importFetchedStatuses } from './importer';
 
-export const TRENDING_STATUSES_FETCH_REQUEST = 'TRENDING_STATUSES_FETCH_REQUEST';
-export const TRENDING_STATUSES_FETCH_SUCCESS = 'TRENDING_STATUSES_FETCH_SUCCESS';
-export const TRENDING_STATUSES_FETCH_FAIL    = 'TRENDING_STATUSES_FETCH_FAIL';
+import type { AppDispatch, RootState } from 'soapbox/store';
 
-export function fetchTrendingStatuses() {
-  return (dispatch, getState) => {
+const TRENDING_STATUSES_FETCH_REQUEST = 'TRENDING_STATUSES_FETCH_REQUEST';
+const TRENDING_STATUSES_FETCH_SUCCESS = 'TRENDING_STATUSES_FETCH_SUCCESS';
+const TRENDING_STATUSES_FETCH_FAIL    = 'TRENDING_STATUSES_FETCH_FAIL';
+
+const fetchTrendingStatuses = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
 
-    const instance = state.get('instance');
+    const instance = state.instance;
     const features = getFeatures(instance);
 
     dispatch({ type: TRENDING_STATUSES_FETCH_REQUEST });
@@ -24,4 +26,10 @@ export function fetchTrendingStatuses() {
       dispatch({ type: TRENDING_STATUSES_FETCH_FAIL, error });
     });
   };
-}
+
+export {
+  TRENDING_STATUSES_FETCH_REQUEST,
+  TRENDING_STATUSES_FETCH_SUCCESS,
+  TRENDING_STATUSES_FETCH_FAIL,
+  fetchTrendingStatuses,
+};

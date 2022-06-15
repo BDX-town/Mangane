@@ -54,7 +54,7 @@ const sendSubscriptionToBackend = (subscription: PushSubscription, me: Me) =>
 // Last one checks for payload support: https://web-push-book.gauntface.com/chapter-06/01-non-standards-browsers/#no-payload
 const supportsPushNotifications = ('serviceWorker' in navigator && 'PushManager' in window && 'getKey' in PushSubscription.prototype);
 
-export const register = () =>
+const register = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const me = getState().me;
     const vapidKey = getVapidKey(getState());
@@ -133,7 +133,7 @@ export const register = () =>
       .catch(console.warn);
   };
 
-export const saveSettings = () =>
+const saveSettings = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState().push_notifications;
     const alerts = state.get('alerts');
@@ -146,3 +146,8 @@ export const saveSettings = () =>
       }
     }).catch(console.warn);
   };
+
+export {
+  register,
+  saveSettings,
+};

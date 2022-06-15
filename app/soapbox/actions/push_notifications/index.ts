@@ -15,9 +15,10 @@ export {
   CLEAR_SUBSCRIPTION,
   SET_ALERTS,
   register,
+  changeAlerts,
 };
 
-export const changeAlerts = (path: Array<string>, value: any) =>
+const changeAlerts = (path: Array<string>, value: any) =>
   (dispatch: AppDispatch) => {
     dispatch(setAlerts(path, value));
     dispatch(saveSettings() as any);
