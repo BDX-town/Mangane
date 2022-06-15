@@ -1,13 +1,12 @@
-'use strict';
-
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
+import { addPollOption, changePollOption, changePollSettings, clearComposeSuggestions, fetchComposeSuggestions, removePoll, removePollOption, selectComposeSuggestion } from 'soapbox/actions/compose';
 import AutosuggestInput from 'soapbox/components/autosuggest_input';
 import { Button, Divider, HStack, Stack, Text, Toggle } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
-import DurationSelector from './polls/duration-selector';
+import DurationSelector from './duration-selector';
 
 import type { AutoSuggestion } from 'soapbox/components/autosuggest_input';
 
@@ -31,12 +30,8 @@ interface IOption {
   maxChars: number
   numOptions: number
   onChange(index: number, value: string): void
-  onClearSuggestions(): void
-  onFetchSuggestions(token: string): void
   onRemove(index: number): void
   onRemovePoll(): void
-  onSuggestionSelected(tokenStart: number, token: string, value: string, key: (string | number)[]): void
-  suggestions?: any // list
   title: string
 }
 
@@ -46,15 +41,15 @@ const Option = (props: IOption) => {
     maxChars,
     numOptions,
     onChange,
-    onClearSuggestions,
-    onFetchSuggestions,
     onRemove,
     onRemovePoll,
-    suggestions,
     title,
   } = props;
 
+  const dispatch = useAppDispatch();
   const intl = useIntl();
+
+  const suggestions = useAppSelector((state) => state.compose.get('suggestions'));
 
   const handleOptionTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => onChange(index, event.target.value);
 
@@ -66,13 +61,13 @@ const Option = (props: IOption) => {
     }
   };
 
-  const onSuggestionsClearRequested = () => onClearSuggestions();
+  const onSuggestionsClearRequested = () => dispatch(clearComposeSuggestions());
 
-  const onSuggestionsFetchRequested = (token: string) => onFetchSuggestions(token);
+  const onSuggestionsFetchRequested = (token: string) => dispatch(fetchComposeSuggestions(token));
 
   const onSuggestionSelected = (tokenStart: number, token: string | null, value: AutoSuggestion) => {
-    if (token && typeof value === 'string') {
-      props.onSuggestionSelected(tokenStart, token, value, ['poll', 'options', index]);
+    if (token && typeof token === 'string') {
+      dispatch(selectComposeSuggestion(tokenStart, token, value, ['poll', 'options', index]));
     }
   };
 
@@ -94,7 +89,7 @@ const Option = (props: IOption) => {
           onSuggestionsClearRequested={onSuggestionsClearRequested}
           onSuggestionSelected={onSuggestionSelected}
           searchTokens={[':']}
-          autoFocus={index === 0}
+          autoFocus={index === 0 || index >= 2}
         />
       </HStack>
 
@@ -107,42 +102,26 @@ const Option = (props: IOption) => {
   );
 };
 
-interface IPollForm {
-  expiresIn?: number
-  isMultiple?: boolean
-  onAddOption(value: string): void
-  onChangeOption(): void
-  onChangeSettings(value: string | number | undefined, isMultiple?: boolean): void
-  onClearSuggestions(): void
-  onFetchSuggestions(token: string): void
-  onRemoveOption(): void
-  onRemovePoll(): void
-  onSuggestionSelected(tokenStart: number, token: string, value: string, key: (string | number)[]): void
-  options?: any
-  suggestions?: any // list
-}
-
-const PollForm = (props: IPollForm) => {
-  const {
-    expiresIn,
-    isMultiple,
-    onAddOption,
-    onChangeOption,
-    onChangeSettings,
-    onRemoveOption,
-    options,
-    ...filteredProps
-  } = props;
-
+const PollForm = () => {
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const pollLimits = useAppSelector((state) => state.instance.getIn(['configuration', 'polls']) as any);
+  const options = useAppSelector((state) => state.compose.getIn(['poll', 'options']));
+  const expiresIn = useAppSelector((state) => state.compose.getIn(['poll', 'expires_in']));
+  const isMultiple = useAppSelector((state) => state.compose.getIn(['poll', 'multiple']));
+
   const maxOptions = pollLimits.get('max_options');
   const maxOptionChars = pollLimits.get('max_characters_per_option');
 
-  const handleAddOption = () => onAddOption('');
+  const onRemoveOption = (index: number) => dispatch(removePollOption(index));
+  const onChangeOption = (index: number, title: string) => dispatch(changePollOption(index, title));
+  const handleAddOption = () => dispatch(addPollOption(''));
+  const onChangeSettings = (expiresIn: string | number | undefined, isMultiple?: boolean) =>
+    dispatch(changePollSettings(expiresIn, isMultiple));
   const handleSelectDuration = (value: number) => onChangeSettings(value, isMultiple);
   const handleToggleMultiple = () => onChangeSettings(expiresIn, !isMultiple);
+  const onRemovePoll = () => dispatch(removePoll());
 
   if (!options) {
     return null;
@@ -160,7 +139,7 @@ const PollForm = (props: IPollForm) => {
             onRemove={onRemoveOption}
             maxChars={maxOptionChars}
             numOptions={options.size}
-            {...filteredProps}
+            onRemovePoll={onRemovePoll}
           />
         ))}
 
@@ -211,7 +190,7 @@ const PollForm = (props: IPollForm) => {
 
       {/* Remove Poll */}
       <div className='text-center'>
-        <Button theme='danger' size='sm' onClick={props.onRemovePoll}>
+        <Button theme='danger-link' onClick={onRemovePoll}>
           {intl.formatMessage(messages.removePoll)}
         </Button>
       </div>

@@ -14,13 +14,13 @@ import Icon from 'soapbox/components/icon';
 import { Button } from 'soapbox/components/ui';
 import { isMobile } from 'soapbox/is_mobile';
 
+import PollForm from '../components/polls/poll-form';
 import ReplyMentions from '../components/reply_mentions';
 import UploadForm from '../components/upload_form';
 import Warning from '../components/warning';
 import EmojiPickerDropdown from '../containers/emoji_picker_dropdown_container';
 import MarkdownButtonContainer from '../containers/markdown_button_container';
 import PollButtonContainer from '../containers/poll_button_container';
-import PollFormContainer from '../containers/poll_form_container';
 import PrivacyDropdownContainer from '../containers/privacy_dropdown_container';
 import QuotedStatusContainer from '../containers/quoted_status_container';
 import ReplyIndicatorContainer from '../containers/reply_indicator_container';
@@ -361,7 +361,7 @@ class ComposeForm extends ImmutablePureComponent {
             !condensed &&
             <div className='compose-form__modifiers'>
               <UploadForm />
-              <PollFormContainer />
+              <PollForm />
               <ScheduleFormContainer />
             </div>
           }

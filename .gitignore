@@ -8,6 +8,7 @@
 /deploy.sh
 /.vs/
 yarn-error.log*
+/junit.xml
 
 /static/
 /static-test/
