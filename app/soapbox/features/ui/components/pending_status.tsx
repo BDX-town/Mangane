@@ -81,7 +81,7 @@ const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, mu
 
             <PendingStatusMedia status={status} />
 
-            {status.poll && <PollPreview poll={status.poll as PollEntity} />}
+            {status.poll && <PollPreview pollId={status.poll as string} />}
 
             {status.quote && <QuotedStatus statusId={status.quote as string} />}
           </div>

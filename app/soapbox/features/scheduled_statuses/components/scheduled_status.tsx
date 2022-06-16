@@ -55,7 +55,7 @@ const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => 
           />
         )}
 
-        {status.poll && <PollPreview poll={status.poll as PollEntity} />}
+        {status.poll && <PollPreview pollId={status.poll as string} />}
 
         <ScheduledStatusActionBar status={status} {...other} />
       </div>
