@@ -61,7 +61,7 @@ const Poll: React.FC<IPoll> = ({ id, status }): JSX.Element | null => {
   return (
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div onClick={e => e.stopPropagation()}>
-      <Stack space={4} className={classNames('mt-4', { voted: poll.voted })}>
+      <Stack space={4} className={classNames('mt-4')}>
         <Stack space={2}>
           {poll.options.map((option, i) => (
             <PollOption

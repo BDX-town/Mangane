@@ -37,7 +37,7 @@ const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX
     <RelativeTimestamp weight='medium' timestamp={poll.expires_at} futureDate />;
 
   return (
-    <Stack space={4}>
+    <Stack space={4} data-testid='poll-footer'>
       {(!showResults && poll?.multiple) && (
         <Button onClick={handleVote} theme='primary' block>
           <FormattedMessage id='poll.vote' defaultMessage='Vote' />
@@ -68,7 +68,7 @@ const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX
         {poll.expires_at && (
           <>
             <Text theme='muted'>&middot;</Text>
-            <Text weight='medium' theme='muted'>{timeRemaining}</Text>
+            <Text weight='medium' theme='muted' data-testid='poll-expiration'>{timeRemaining}</Text>
           </>
         )}
       </HStack>
