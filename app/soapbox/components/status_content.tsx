@@ -279,7 +279,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
       output.push(<Poll id={status.poll} key='poll' status={status.url} />);
     }
 
-    return <div className={classNames({ 'bg-gray-100 rounded-md p-4': hasPoll })}>{output}</div>;
+    return <div className={classNames({ 'bg-gray-100 dark:bg-primary-900 rounded-md p-4': hasPoll })}>{output}</div>;
   } else {
     const output = [
       <div

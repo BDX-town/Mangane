@@ -21,7 +21,7 @@ const PollPercentageBar: React.FC<{ percent: number, leading: boolean }> = ({ pe
     <Motion defaultStyle={{ width: 0 }} style={{ width: spring(percent, { ...presets.gentle, precision: 0.1 }) }}>
       {({ width }) => (
         <span
-          className='absolute inset-0 h-full inline-block bg-primary-100 rounded-l-md'
+          className='absolute inset-0 h-full inline-block bg-primary-100 dark:bg-primary-500 rounded-l-md'
           style={{ width: `${width}%` }}
         />
       )}
@@ -47,9 +47,9 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
   return (
     <label
       className={
-        classNames('flex relative p-2 bg-white cursor-pointer rounded-full border border-solid hover:bg-primary-50', {
-          'border-primary-600 ring-1 ring-primary-600 bg-primary-50': active,
-          'border-primary-300': !active,
+        classNames('flex relative p-2 bg-white dark:bg-primary-900 cursor-pointer rounded-full border border-solid hover:bg-primary-50 dark:hover:bg-primary-800/50', {
+          'border-primary-600 ring-1 ring-primary-600 bg-primary-50 dark:bg-primary-800/50 dark:border-primary-300 dark:ring-primary-300': active,
+          'border-primary-300 dark:border-primary-500': !active,
         })
       }
     >
@@ -64,18 +64,20 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
 
       <div className='grid items-center w-full'>
         <div className='col-start-1 row-start-1 justify-self-center ml-4 mr-6'>
-          <Text
-            theme='primary'
-            weight='medium'
-            dangerouslySetInnerHTML={{ __html: option.title_emojified }}
-          />
+          <div className='text-primary-600 dark:text-white'>
+            <Text
+              theme='inherit'
+              weight='medium'
+              dangerouslySetInnerHTML={{ __html: option.title_emojified }}
+            />
+          </div>
         </div>
 
         <div className='col-start-1 row-start-1 justify-self-end flex items-center'>
           <span
             className={classNames('flex items-center justify-center w-6 h-6 flex-none border border-solid rounded-full', {
-              'bg-primary-600 border-primary-600': active,
-              'border-primary-300 bg-white': !active,
+              'bg-primary-600 border-primary-600 dark:bg-primary-300 dark:border-primary-300': active,
+              'border-primary-300 bg-white dark:bg-primary-900 dark:border-primary-500': !active,
             })}
             tabIndex={0}
             role={poll.multiple ? 'checkbox' : 'radio'}
@@ -84,7 +86,7 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
             aria-label={option.title}
           >
             {active && (
-              <Icon src={require('@tabler/icons/icons/check.svg')} className='text-white w-4 h-4' />
+              <Icon src={require('@tabler/icons/icons/check.svg')} className='text-white dark:text-primary-900 w-4 h-4' />
             )}
           </span>
         </div>
@@ -121,29 +123,33 @@ const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
           <HStack
             justifyContent='between'
             alignItems='center'
-            className='relative p-2 w-full bg-white rounded-md overflow-hidden'
+            className='relative p-2 w-full bg-white dark:bg-primary-800 rounded-md overflow-hidden'
           >
             <PollPercentageBar percent={percent} leading={leading} />
 
-            <Text
-              theme='primary'
-              weight='medium'
-              dangerouslySetInnerHTML={{ __html: option.title_emojified }}
-              className='relative'
-            />
+            <div className='text-primary-600 dark:text-white'>
+              <Text
+                theme='inherit'
+                weight='medium'
+                dangerouslySetInnerHTML={{ __html: option.title_emojified }}
+                className='relative'
+              />
+            </div>
 
             <HStack space={2} alignItems='center' className='relative'>
               {voted ? (
                 <Icon
                   src={require('@tabler/icons/icons/circle-check.svg')}
                   alt={intl.formatMessage(messages.voted)}
-                  className='text-primary-600 w-4 h-4'
+                  className='text-primary-600 dark:text-primary-800 dark:fill-white w-4 h-4'
                 />
               ) : (
                 <div className='svg-icon' />
               )}
 
-              <Text weight='medium' theme='primary'>{Math.round(percent)}%</Text>
+              <div className='text-primary-600 dark:text-white'>
+                <Text weight='medium' theme='inherit'>{Math.round(percent)}%</Text>
+              </div>
             </HStack>
           </HStack>
         </div>
