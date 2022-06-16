@@ -14,7 +14,7 @@ import { buildStatus } from '../util/pending_status_builder';
 
 import PollPreview from './poll_preview';
 
-import type { Account as AccountEntity, Poll as PollEntity, Status as StatusEntity } from 'soapbox/types/entities';
+import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
 const shouldHaveCard = (pendingStatus: StatusEntity) => {
   return Boolean(pendingStatus.content.match(/https?:\/\/\S*/));
