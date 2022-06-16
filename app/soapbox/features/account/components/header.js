@@ -1,7 +1,7 @@
 'use strict';
 
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -476,7 +476,7 @@ class Header extends ImmutablePureComponent {
         <Badge
           key='blocked'
           slug='opaque'
-          title={<FormattedMessage  id='account.blocked' defaultMessage='Blocked' />}
+          title={<FormattedMessage id='account.blocked' defaultMessage='Blocked' />}
         />,
       );
     }

@@ -1,4 +1,4 @@
-import { mapValues } from 'lodash';
+import mapValues from 'lodash/mapValues';
 
 import { verifyCredentials } from './auth';
 import { importFetchedAccounts } from './importer';

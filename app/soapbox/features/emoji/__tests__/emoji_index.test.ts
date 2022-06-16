@@ -1,5 +1,5 @@
 import { emojiIndex } from 'emoji-mart';
-import { pick } from 'lodash';
+import pick from 'lodash/pick';
 
 import { search } from '../emoji_mart_search_light';
 

@@ -1,6 +1,6 @@
 'use strict';
 
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';

@@ -4,7 +4,7 @@ import {
   Record as ImmutableRecord,
   fromJS,
 } from 'immutable';
-import { trimStart } from 'lodash';
+import trimStart from 'lodash/trimStart';
 
 import { toTailwind } from 'soapbox/utils/tailwind';
 import { generateAccent } from 'soapbox/utils/theme';
