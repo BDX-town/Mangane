@@ -47,7 +47,7 @@ const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX
       <HStack space={1.5} alignItems='center'>
         {showResults && (
           <>
-            <button className='text-gray-600 underline' onClick={handleRefresh}>
+            <button className='text-gray-600 underline' onClick={handleRefresh} data-testid='poll-refresh'>
               <Text theme='muted' weight='medium'>
                 <FormattedMessage id='poll.refresh' defaultMessage='Refresh' />
               </Text>

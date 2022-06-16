@@ -1,12 +1,16 @@
+import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { IntlProvider } from 'react-intl';
+import { Provider } from 'react-redux';
 
+import { __stub } from 'soapbox/api';
 import { normalizePoll } from 'soapbox/normalizers/poll';
 
-import { render, screen } from '../../../jest/test-helpers';
+import { mockStore, render, rootReducer, screen } from '../../../jest/test-helpers';
 import PollFooter from '../poll-footer';
 
-
 let poll = normalizePoll({
+  id: 1,
   options: [{ title: 'Apples', votes_count: 0 }],
   emojis: [],
   expired: false,
@@ -24,6 +28,30 @@ describe('<PollFooter />', () => {
       render(<PollFooter poll={poll} showResults selected={{}} />);
 
       expect(screen.getByTestId('poll-footer')).toHaveTextContent('Refresh');
+    });
+
+    it('responds to the Refresh button', async() => {
+      __stub((mock) => {
+        mock.onGet('/api/v1/polls/1').reply(200, {});
+      });
+
+      const user = userEvent.setup();
+      const store = mockStore(rootReducer(undefined, {}));
+      render(
+        <Provider store={store}>
+          <IntlProvider locale='en'>
+            <PollFooter poll={poll} showResults selected={{}} />
+          </IntlProvider>
+        </Provider>,
+      );
+
+      await user.click(screen.getByTestId('poll-refresh'));
+      const actions = store.getActions();
+      expect(actions).toEqual([
+        { type: 'POLL_FETCH_REQUEST' },
+        { type: 'POLLS_IMPORT', polls: [{}] },
+        { type: 'POLL_FETCH_SUCCESS', poll: {} },
+      ]);
     });
 
     it('does not render the Vote button', () => {
