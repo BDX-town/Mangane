@@ -1,5 +1,5 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React, { useCallback } from 'react';
 import { defineMessages } from 'react-intl';
 

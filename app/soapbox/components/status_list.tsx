@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React, { useRef, useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 

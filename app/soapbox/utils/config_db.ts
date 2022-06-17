@@ -4,7 +4,7 @@ import {
   Set as ImmutableSet,
   fromJS,
 } from 'immutable';
-import { trimStart } from 'lodash';
+import trimStart from 'lodash/trimStart';
 
 export type Config = ImmutableMap<string, any>;
 export type Policy = ImmutableMap<string, any>;
