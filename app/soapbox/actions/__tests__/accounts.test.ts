@@ -435,10 +435,14 @@ describe('followAccount()', () => {
             skipLoading: true,
           },
         ];
-        await store.dispatch(followAccount(id));
-        const actions = store.getActions();
 
-        expect(actions).toEqual(expectedActions);
+        try {
+          await store.dispatch(followAccount(id));
+        } catch (e) {
+          const actions = store.getActions();
+          expect(actions).toEqual(expectedActions);
+          expect(e).toEqual(new Error('Network Error'));
+        }
       });
     });
   });
