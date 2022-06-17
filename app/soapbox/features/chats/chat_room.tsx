@@ -22,7 +22,7 @@ interface IChatRoom {
 const ChatRoom: React.FC<IChatRoom> = ({ params }) => {
   const dispatch = useAppDispatch();
   const displayFqn = useAppSelector(getDisplayFqn);
-  const inputElem = useRef<HTMLInputElement | null>(null);
+  const inputElem = useRef<HTMLTextAreaElement | null>(null);
 
   const chat = useAppSelector(state => {
     const chat = state.chats.items.get(params.chatId, ImmutableMap()).toJS() as any;
@@ -33,7 +33,7 @@ const ChatRoom: React.FC<IChatRoom> = ({ params }) => {
     inputElem.current?.focus();
   };
 
-  const handleInputRef = (el: HTMLInputElement) => {
+  const handleInputRef = (el: HTMLTextAreaElement) => {
     inputElem.current = el;
     focusInput();
   };
