@@ -93,6 +93,7 @@ interface IStatus extends RouteComponentProps {
   history: History,
   featured?: boolean,
   withDismiss?: boolean,
+  hideActionBar?: boolean,
 }
 
 interface IStatusState {
@@ -512,14 +513,16 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
               {poll}
               {quote}
 
-              <StatusActionBar
-                status={status}
-                // @ts-ignore what?
-                account={account}
-                emojiSelectorFocused={this.state.emojiSelectorFocused}
-                handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
-                {...other}
-              />
+              {!this.props.hideActionBar && (
+                <StatusActionBar
+                  status={status}
+                  // @ts-ignore what?
+                  account={account}
+                  emojiSelectorFocused={this.state.emojiSelectorFocused}
+                  handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
+                  {...other}
+                />
+              )}
             </div>
           </div>
         </div>

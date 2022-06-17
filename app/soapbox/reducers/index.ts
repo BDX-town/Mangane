@@ -53,6 +53,7 @@ import security from './security';
 import settings from './settings';
 import sidebar from './sidebar';
 import soapbox from './soapbox';
+import status_hover_card from './status_hover_card';
 import status_lists from './status_lists';
 import statuses from './statuses';
 import suggestions from './suggestions';
@@ -108,6 +109,7 @@ const reducers = {
   chat_messages,
   chat_message_lists,
   profile_hover_card,
+  status_hover_card,
   backups,
   admin_log,
   security,

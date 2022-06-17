@@ -102,6 +102,7 @@ import {
   SidebarMenu,
   UploadArea,
   ProfileHoverCard,
+  StatusHoverCard,
   Share,
   NewStatus,
   IntentionalError,
@@ -691,6 +692,10 @@ const UI: React.FC = ({ children }) => {
           <ThumbNavigation />
 
           <BundleContainer fetchComponent={ProfileHoverCard}>
+            {Component => <Component />}
+          </BundleContainer>
+
+          <BundleContainer fetchComponent={StatusHoverCard}>
             {Component => <Component />}
           </BundleContainer>
         </div>

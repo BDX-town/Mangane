@@ -406,6 +406,10 @@ export function ProfileHoverCard() {
   return import(/* webpackChunkName: "features/ui" */'soapbox/components/profile-hover-card');
 }
 
+export function StatusHoverCard() {
+  return import(/* webpackChunkName: "features/ui" */'soapbox/components/status-hover-card');
+}
+
 export function CryptoDonate() {
   return import(/* webpackChunkName: "features/crypto_donate" */'../../crypto_donate');
 }
