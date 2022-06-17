@@ -53,7 +53,7 @@ import security from './security';
 import settings from './settings';
 import sidebar from './sidebar';
 import soapbox from './soapbox';
-import status_hover_card from './status_hover_card';
+import status_hover_card from './status-hover-card';
 import status_lists from './status_lists';
 import statuses from './statuses';
 import suggestions from './suggestions';

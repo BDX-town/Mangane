@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import {
   openStatusHoverCard,
   closeStatusHoverCard,
-} from 'soapbox/actions/status_hover_card';
+} from 'soapbox/actions/status-hover-card';
 import { isMobile } from 'soapbox/is_mobile';
 
 const showStatusHoverCard = debounce((dispatch, ref, statusId) => {

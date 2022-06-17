@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
-import HoverStatusWrapper from 'soapbox/components/hover_status_wrapper';
+import HoverStatusWrapper from 'soapbox/components/hover-status-wrapper';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import type { Account, Status } from 'soapbox/types/entities';

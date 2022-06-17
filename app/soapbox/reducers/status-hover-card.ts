@@ -4,7 +4,7 @@ import {
   STATUS_HOVER_CARD_OPEN,
   STATUS_HOVER_CARD_CLOSE,
   STATUS_HOVER_CARD_UPDATE,
-} from 'soapbox/actions/status_hover_card';
+} from 'soapbox/actions/status-hover-card';
 
 import type { AnyAction } from 'redux';
 

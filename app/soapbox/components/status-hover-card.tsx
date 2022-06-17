@@ -8,15 +8,16 @@ import { fetchRelationships } from 'soapbox/actions/accounts';
 import {
   closeStatusHoverCard,
   updateStatusHoverCard,
-} from 'soapbox/actions/status_hover_card';
+} from 'soapbox/actions/status-hover-card';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { UserPanel } from 'soapbox/features/ui/util/async-components';
 import StatusContainer from 'soapbox/containers/status_container';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
+import { fetchStatus } from 'soapbox/actions/statuses';
 
-import { showStatusHoverCard } from './hover_status_wrapper';
+import { showStatusHoverCard } from './hover-status-wrapper';
 import { Card, CardBody, Stack, Text } from './ui';
 
 import type { AppDispatch } from 'soapbox/store';
@@ -48,6 +49,10 @@ export const StatusHoverCard: React.FC<IStatusHoverCard> = ({ visible = true }) 
 
   const statusId: string | undefined = useAppSelector(state => state.status_hover_card.statusId || undefined);
   const targetRef = useAppSelector(state => state.status_hover_card.ref?.current);
+
+  useEffect(() => {
+    if (statusId) dispatch(fetchStatus(statusId));
+  }, [dispatch, statusId])
 
   useEffect(() => {
     const unlisten = history.listen(() => {
