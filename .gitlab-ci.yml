@@ -22,13 +22,6 @@ deps:
     changes:
       - yarn.lock
 
-danger:
-  stage: test
-  script: npx danger ci
-  cache: []
-  only:
-    - merge_requests
-
 lint-js:
   stage: test
   script: yarn lint:js
