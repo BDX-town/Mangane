@@ -913,7 +913,7 @@
   "reply_mentions.account.add": "Dodaj do wspomnianych",
   "reply_mentions.account.remove": "Usuń z wspomnianych",
   "reply_mentions.more": "{count} więcej",
-  "reply_mentions.reply": "W odpowiedzi do {accounts}",
+  "reply_mentions.reply": "<hover>W odpowiedzi do</hover> {accounts}",
   "reply_mentions.reply_empty": "W odpowiedzi na wpis",
   "report.block": "Zablokuj {target}",
   "report.block_hint": "Czy chcesz też zablokować to konto?",

@@ -789,7 +789,7 @@
   "reply_mentions.account.add": "Bæta við í tilvísanirnar",
   "reply_mentions.account.remove": "Fjarlægja úr tilvísunum",
   "reply_mentions.more": "{count} fleirum",
-  "reply_mentions.reply": "Að svara {accounts}",
+  "reply_mentions.reply": "<hover>Að svara</hover> {accounts}",
   "reply_mentions.reply_empty": "Að svara færslu",
   "report.block": "Loka á {target}",
   "report.block_hint": "Viltu líka loka á þennan reikning?",
