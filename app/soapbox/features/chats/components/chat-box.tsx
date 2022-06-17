@@ -13,7 +13,7 @@ import UploadButton from 'soapbox/features/compose/components/upload_button';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { truncateFilename } from 'soapbox/utils/media';
 
-import ChatMessageList from './chat_message_list';
+import ChatMessageList from './chat-message-list';
 
 const messages = defineMessages({
   placeholder: { id: 'chat_box.input.placeholder', defaultMessage: 'Send a message…' },

@@ -8,7 +8,7 @@ import { makeGetChat } from 'soapbox/selectors';
 import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn as getDisplayFqn } from 'soapbox/utils/state';
 
-import ChatBox from './components/chat_box';
+import ChatBox from './components/chat-box';
 
 const getChat = makeGetChat();
 
