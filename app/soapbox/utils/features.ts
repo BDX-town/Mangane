@@ -126,7 +126,7 @@ const getInstanceFeatures = (instance: Instance) => {
     accountNotifies: any([
       v.software === MASTODON && gte(v.compatVersion, '3.3.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
-      v.software === TRUTHSOCIAL,
+      // v.software === TRUTHSOCIAL,
     ]),
 
     /**
