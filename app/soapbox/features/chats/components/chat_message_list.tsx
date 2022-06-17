@@ -18,7 +18,7 @@ import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import emojify from 'soapbox/features/emoji/emoji';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useRefEventHandler } from 'soapbox/hooks';
 import { onlyEmoji } from 'soapbox/utils/rich_content';
 
 import type { Menu } from 'soapbox/components/dropdown_menu';
@@ -134,12 +134,12 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chatId, chatMessageIds })
   useEffect(() => {
     dispatch(fetchChatMessages(chatId));
 
-    node.current?.addEventListener('scroll', handleScroll);
+    node.current?.addEventListener('scroll', e => handleScroll.current(e));
     window.addEventListener('resize', handleResize);
     scrollToBottom();
 
     return () => {
-      node.current?.removeEventListener('scroll', handleScroll);
+      node.current?.removeEventListener('scroll', e => handleScroll.current(e));
       window.removeEventListener('resize', handleResize);
     };
   }, []);
@@ -190,7 +190,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chatId, chatMessageIds })
     setIsLoading(true);
   };
 
-  const handleScroll = throttle(() => {
+  const handleScroll = useRefEventHandler(throttle(() => {
     if (node.current) {
       const { scrollTop, offsetHeight } = node.current;
       const computedScroll = lastComputedScroll.current === scrollTop;
@@ -202,7 +202,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chatId, chatMessageIds })
     }
   }, 150, {
     trailing: true,
-  });
+  }));
 
   const onOpenMedia = (media: any, index: number) => {
     dispatch(openModal('MEDIA', { media, index }));
