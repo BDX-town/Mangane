@@ -62,10 +62,13 @@ const getChatMessages = createSelector(
 );
 
 interface IChatMessageList {
+  /** Chat the messages are being rendered from. */
   chatId: string,
+  /** Message IDs to render. */
   chatMessageIds: ImmutableOrderedSet<string>,
 }
 
+/** Scrollable list of chat messages. */
 const ChatMessageList: React.FC<IChatMessageList> = ({ chatId, chatMessageIds }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -131,58 +134,12 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chatId, chatMessageIds })
     }
   }, 150);
 
-  useEffect(() => {
-    dispatch(fetchChatMessages(chatId));
-
-    node.current?.addEventListener('scroll', e => handleScroll.current(e));
-    window.addEventListener('resize', handleResize);
-    scrollToBottom();
-
-    return () => {
-      node.current?.removeEventListener('scroll', e => handleScroll.current(e));
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  useLayoutEffect(() => {
-    if (node.current) {
-      const { scrollHeight, scrollTop } = node.current;
-      scrollBottom.current = scrollHeight - scrollTop;
-    }
-  });
-
   const restoreScrollPosition = () => {
     if (node.current && scrollBottom.current) {
       lastComputedScroll.current = node.current.scrollHeight - scrollBottom.current;
       node.current.scrollTop = lastComputedScroll.current;
     }
   };
-
-  // Stick scrollbar to bottom.
-  useEffect(() => {
-    if (isNearBottom()) {
-      scrollToBottom();
-    }
-
-    // First load.
-    if (chatMessages.count() !== initialCount) {
-      setInitialLoad(false);
-      setIsLoading(false);
-      scrollToBottom();
-    }
-  }, [chatMessages.count()]);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messagesEnd.current]);
-
-  // History added.
-  useEffect(() => {
-    // Retain scroll bar position when loading old messages.
-    if (!initialLoad) {
-      restoreScrollPosition();
-    }
-  }, [chatMessageIds.first()]);
 
   const handleLoadMore = () => {
     const maxId = chatMessages.getIn([0, 'id']) as string;
@@ -300,6 +257,53 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chatId, chatMessageIds })
       </div>
     );
   };
+
+  useEffect(() => {
+    dispatch(fetchChatMessages(chatId));
+
+    node.current?.addEventListener('scroll', e => handleScroll.current(e));
+    window.addEventListener('resize', handleResize);
+    scrollToBottom();
+
+    return () => {
+      node.current?.removeEventListener('scroll', e => handleScroll.current(e));
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  // Store the scroll position.
+  useLayoutEffect(() => {
+    if (node.current) {
+      const { scrollHeight, scrollTop } = node.current;
+      scrollBottom.current = scrollHeight - scrollTop;
+    }
+  });
+
+  // Stick scrollbar to bottom.
+  useEffect(() => {
+    if (isNearBottom()) {
+      scrollToBottom();
+    }
+
+    // First load.
+    if (chatMessages.count() !== initialCount) {
+      setInitialLoad(false);
+      setIsLoading(false);
+      scrollToBottom();
+    }
+  }, [chatMessages.count()]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messagesEnd.current]);
+
+  // History added.
+  useEffect(() => {
+    // Restore scroll bar position when loading old messages.
+    if (!initialLoad) {
+      restoreScrollPosition();
+    }
+  }, [chatMessageIds.first()]);
 
   return (
     <div className='chat-messages' ref={node}>
