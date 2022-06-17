@@ -24,10 +24,11 @@ deps:
 
 danger:
   stage: test
-  script: npx danger ci
+  script:
+    # https://github.com/danger/danger-js/issues/1029#issuecomment-998915436
+    - export CI_MERGE_REQUEST_IID=${CI_OPEN_MERGE_REQUESTS#*!}
+    - npx danger ci
   cache: []
-  only:
-    - merge_requests
 
 lint-js:
   stage: test
