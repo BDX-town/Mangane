@@ -15,7 +15,7 @@ const showProfileHoverCard = debounce((dispatch, ref, accountId) => {
 
 interface IHoverRefWrapper {
   accountId: string,
-  inline: boolean,
+  inline?: boolean,
   className?: string,
 }
 
