@@ -1,8 +1,8 @@
-import { Map as ImmutableMap } from 'immutable';
+// import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
 
 import { render, screen } from '../../../../jest/test-helpers';
-import { normalizeAccount, normalizeInstance, normalizeRelationship } from '../../../../normalizers';
+import { normalizeAccount, normalizeRelationship } from '../../../../normalizers';
 import SubscribeButton from '../subscription-button';
 
 let account = {
