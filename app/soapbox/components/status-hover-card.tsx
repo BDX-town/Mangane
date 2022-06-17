@@ -51,7 +51,7 @@ export const StatusHoverCard: React.FC<IStatusHoverCard> = ({ visible = true }) 
   const targetRef = useAppSelector(state => state.status_hover_card.ref?.current);
 
   useEffect(() => {
-    if (statusId) dispatch(fetchStatus(statusId));
+    dispatch(fetchStatus(statusId));
   }, [dispatch, statusId])
 
   useEffect(() => {
