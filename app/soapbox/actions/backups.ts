@@ -1,6 +1,6 @@
 import api from '../api';
 
-import type { AppDispatch } from 'soapbox/store';
+import type { AppDispatch, RootState } from 'soapbox/store';
 
 export const BACKUPS_FETCH_REQUEST = 'BACKUPS_FETCH_REQUEST';
 export const BACKUPS_FETCH_SUCCESS = 'BACKUPS_FETCH_SUCCESS';
@@ -11,7 +11,7 @@ export const BACKUPS_CREATE_SUCCESS = 'BACKUPS_CREATE_SUCCESS';
 export const BACKUPS_CREATE_FAIL    = 'BACKUPS_CREATE_FAIL';
 
 export const fetchBackups = () =>
-  (dispatch: AppDispatch, getState: () => any) => {
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: BACKUPS_FETCH_REQUEST });
     return api(getState).get('/api/v1/pleroma/backups').then(({ data: backups }) =>
       dispatch({ type: BACKUPS_FETCH_SUCCESS, backups }),
@@ -21,7 +21,7 @@ export const fetchBackups = () =>
   };
 
 export const createBackup = () =>
-  (dispatch: AppDispatch, getState: () => any) => {
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: BACKUPS_CREATE_REQUEST });
     return api(getState).post('/api/v1/pleroma/backups').then(({ data: backups }) =>
       dispatch({ type: BACKUPS_CREATE_SUCCESS, backups }),

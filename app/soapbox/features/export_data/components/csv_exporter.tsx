@@ -3,7 +3,7 @@ import { MessageDescriptor, useIntl } from 'react-intl';
 
 import { Button, Form, FormActions, Text } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
-import { AppDispatch } from 'soapbox/store';
+import { AppDispatch, RootState } from 'soapbox/store';
 
 interface ICSVExporter {
   messages: {
@@ -11,7 +11,7 @@ interface ICSVExporter {
     input_hint: MessageDescriptor,
     submit: MessageDescriptor,
   },
-  action: () => (dispatch: AppDispatch, getState: any) => Promise<void>,
+  action: () => (dispatch: AppDispatch, getState: () => RootState) => Promise<void>,
 }
 
 const CSVExporter: React.FC<ICSVExporter> = ({ messages, action }) => {

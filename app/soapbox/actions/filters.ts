@@ -66,7 +66,7 @@ const createFilter = (phrase: string, expires_at: string, context: Array<string>
   };
 
 
-const deleteFilter = (id) =>
+const deleteFilter = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: FILTERS_DELETE_REQUEST });
     return api(getState).delete(`/api/v1/filters/${id}`).then(response => {

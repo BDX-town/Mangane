@@ -39,7 +39,7 @@ const fetchPushSubscription = () =>
   };
 
 const updatePushSubscription = (params: Record<string, any>) =>
-  (dispatch: AppDispatch, getState: () => any) => {
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: PUSH_SUBSCRIPTION_UPDATE_REQUEST, params });
     return api(getState).put('/api/v1/push/subscription', params).then(({ data: subscription }) =>
       dispatch({ type: PUSH_SUBSCRIPTION_UPDATE_SUCCESS, params, subscription }),

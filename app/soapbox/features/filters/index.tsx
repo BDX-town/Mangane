@@ -86,7 +86,7 @@ const Filters = () => {
   };
 
   const handleFilterDelete: React.MouseEventHandler<HTMLDivElement> = e => {
-    dispatch(deleteFilter(e.currentTarget.dataset.value)).then(() => {
+    dispatch(deleteFilter(e.currentTarget.dataset.value!)).then(() => {
       return dispatch(fetchFilters());
     }).catch(() => {
       dispatch(snackbar.error(intl.formatMessage(messages.delete_error)));

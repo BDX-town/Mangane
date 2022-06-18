@@ -4,6 +4,7 @@ import { openModal, closeModal } from './modals';
 
 import type { AxiosError } from 'axios';
 import type { AnyAction } from 'redux';
+import type { RootState } from 'soapbox/store';
 import type { Account } from 'soapbox/types/entities';
 
 const ACCOUNT_NOTE_SUBMIT_REQUEST = 'ACCOUNT_NOTE_SUBMIT_REQUEST';
@@ -14,14 +15,14 @@ const ACCOUNT_NOTE_INIT_MODAL = 'ACCOUNT_NOTE_INIT_MODAL';
 
 const ACCOUNT_NOTE_CHANGE_COMMENT = 'ACCOUNT_NOTE_CHANGE_COMMENT';
 
-const submitAccountNote = () => (dispatch: React.Dispatch<AnyAction>, getState: any) => {
+const submitAccountNote = () => (dispatch: React.Dispatch<AnyAction>, getState: () => RootState) => {
   dispatch(submitAccountNoteRequest());
 
-  const id = getState().getIn(['account_notes', 'edit', 'account_id']);
+  const id = getState().account_notes.edit.account;
 
   return api(getState)
     .post(`/api/v1/accounts/${id}/note`, {
-      comment: getState().getIn(['account_notes', 'edit', 'comment']),
+      comment: getState().account_notes.edit.comment,
     })
     .then(response => {
       dispatch(closeModal());
@@ -50,8 +51,8 @@ function submitAccountNoteFail(error: AxiosError) {
   };
 }
 
-const initAccountNoteModal = (account: Account) => (dispatch: React.Dispatch<AnyAction>, getState: any) => {
-  const comment = getState().getIn(['relationships', account.get('id'), 'note']);
+const initAccountNoteModal = (account: Account) => (dispatch: React.Dispatch<AnyAction>, getState: () => RootState) => {
+  const comment = getState().relationships.get(account.id)!.note;
 
   dispatch({
     type: ACCOUNT_NOTE_INIT_MODAL,

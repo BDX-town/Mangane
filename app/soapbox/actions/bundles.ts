@@ -12,7 +12,7 @@ const fetchBundleSuccess = (skipLoading?: boolean) => ({
   skipLoading,
 });
 
-const fetchBundleFail = (error, skipLoading?: boolean) => ({
+const fetchBundleFail = (error: any, skipLoading?: boolean) => ({
   type: BUNDLE_FETCH_FAIL,
   error,
   skipLoading,
