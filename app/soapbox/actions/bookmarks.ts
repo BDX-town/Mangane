@@ -18,7 +18,7 @@ const noOp = () => new Promise(f => f(undefined));
 
 const fetchBookmarkedStatuses = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (getState().status_lists.getIn(['bookmarks', 'isLoading'])) {
+    if (getState().status_lists.get('bookmarks')?.isLoading) {
       return dispatch(noOp);
     }
 
@@ -52,7 +52,7 @@ const expandBookmarkedStatuses = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const url = getState().status_lists.get('bookmarks')?.next || null;
 
-    if (url === null || getState().status_lists.getIn(['bookmarks', 'isLoading'])) {
+    if (url === null || getState().status_lists.get('bookmarks')?.isLoading) {
       return dispatch(noOp);
     }
 

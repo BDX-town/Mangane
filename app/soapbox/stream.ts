@@ -4,20 +4,28 @@ import WebSocketClient from '@gamestdio/websocket';
 
 import { getAccessToken } from 'soapbox/utils/auth';
 
-const randomIntUpTo = max => Math.floor(Math.random() * Math.floor(max));
+import type { AppDispatch, RootState } from 'soapbox/store';
 
-export function connectStream(path, pollingRefresh = null, callbacks = () => ({ onConnect() {}, onDisconnect() {}, onReceive() {} })) {
-  return (dispatch, getState) => {
-    const streamingAPIBaseURL = getState().getIn(['instance', 'urls', 'streaming_api']);
+const randomIntUpTo = (max: number) => Math.floor(Math.random() * Math.floor(max));
+
+export function connectStream(
+  path: string,
+  pollingRefresh: ((dispatch: AppDispatch, done?: () => void) => void) | null = null,
+  callbacks: (dispatch: AppDispatch, getState: () => RootState) => Record<string, any> = () => ({ onConnect() {}, onDisconnect() {}, onReceive() {} }),
+) {
+  return (dispatch: AppDispatch, getState: () => RootState) => {
+    const streamingAPIBaseURL = getState().instance.urls.get('streaming_api');
     const accessToken = getAccessToken(getState());
     const { onConnect, onDisconnect, onReceive } = callbacks(dispatch, getState);
 
-    let polling = null;
+    let polling: NodeJS.Timeout | null = null;
 
     const setupPolling = () => {
-      pollingRefresh(dispatch, () => {
-        polling = setTimeout(() => setupPolling(), 20000 + randomIntUpTo(20000));
-      });
+      if (pollingRefresh) {
+        pollingRefresh(dispatch, () => {
+          polling = setTimeout(() => setupPolling(), 20000 + randomIntUpTo(20000));
+        });
+      }
     };
 
     const clearPolling = () => {
@@ -27,12 +35,12 @@ export function connectStream(path, pollingRefresh = null, callbacks = () => ({ 
       }
     };
 
-    let subscription;
+    let subscription: WebSocketClient;
 
     // If the WebSocket fails to be created, don't crash the whole page,
     // just proceed without a subscription.
     try {
-      subscription = getStream(streamingAPIBaseURL, accessToken, path, {
+      subscription = getStream(streamingAPIBaseURL!, accessToken, path, {
         connected() {
           if (pollingRefresh) {
             clearPolling();
@@ -80,10 +88,20 @@ export function connectStream(path, pollingRefresh = null, callbacks = () => ({ 
 }
 
 
-export default function getStream(streamingAPIBaseURL, accessToken, stream, { connected, received, disconnected, reconnected }) {
+export default function getStream(
+  streamingAPIBaseURL: string,
+  accessToken: string,
+  stream: string,
+  { connected, received, disconnected, reconnected }: {
+    connected: ((this: WebSocket, ev: Event) => any) | null,
+    received: (data: any) => void,
+    disconnected: ((this: WebSocket, ev: Event) => any) | null,
+    reconnected: ((this: WebSocket, ev: Event) => any),
+  },
+) {
   const params = [ `stream=${stream}` ];
 
-  const ws = new WebSocketClient(`${streamingAPIBaseURL}/api/v1/streaming/?${params.join('&')}`, accessToken);
+  const ws = new WebSocketClient(`${streamingAPIBaseURL}/api/v1/streaming/?${params.join('&')}`, accessToken as any);
 
   ws.onopen      = connected;
   ws.onclose     = disconnected;

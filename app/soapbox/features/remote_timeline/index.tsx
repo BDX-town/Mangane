@@ -29,7 +29,7 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
 
-  const instance = params?.instance;
+  const instance = params?.instance as string;
   const settings = useSettings();
 
   const stream = useRef<any>(null);
