@@ -22,4 +22,4 @@ export type Store = typeof store;
 // Infer the `RootState` and `AppDispatch` types from the store itself
 // https://redux.js.org/usage/usage-with-typescript
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = ThunkDispatch<{}, {}, AnyAction>;
+export type AppDispatch = ThunkDispatch<RootState, {}, AnyAction>;
