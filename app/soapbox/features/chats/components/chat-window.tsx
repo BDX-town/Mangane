@@ -8,7 +8,7 @@ import {
 import Avatar from 'soapbox/components/avatar';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import IconButton from 'soapbox/components/icon_button';
-import { Counter } from 'soapbox/components/ui';
+import { HStack, Counter } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetChat } from 'soapbox/selectors';
 import { getAcct } from 'soapbox/utils/accounts';
@@ -58,7 +58,6 @@ const ChatWindow: React.FC<IChatWindow> = ({ idx, chatId, windowState }) => {
 
   const handleInputRef = (el: HTMLTextAreaElement) => {
     inputElem.current = el;
-    focusInput();
   };
 
   const focusInput = () => {
@@ -66,8 +65,10 @@ const ChatWindow: React.FC<IChatWindow> = ({ idx, chatId, windowState }) => {
   };
 
   useEffect(() => {
-    focusInput();
-  }, [windowState === 'open']);
+    if (windowState === 'open') {
+      focusInput();
+    }
+  }, [windowState]);
 
   if (!chat) return null;
   const account = chat.account as unknown as AccountEntity;
@@ -91,7 +92,7 @@ const ChatWindow: React.FC<IChatWindow> = ({ idx, chatId, windowState }) => {
 
   return (
     <div className={`pane pane--${windowState}`} style={{ right: `${right}px` }}>
-      <div className='pane__header'>
+      <HStack space={2} className='pane__header'>
         {unreadCount > 0 ? unreadIcon : avatar }
         <button className='pane__title' onClick={handleChatToggle(chat.id)}>
           @{getAcct(account, displayFqn)}
@@ -99,7 +100,7 @@ const ChatWindow: React.FC<IChatWindow> = ({ idx, chatId, windowState }) => {
         <div className='pane__close'>
           <IconButton src={require('@tabler/icons/icons/x.svg')} title='Close chat' onClick={handleChatClose(chat.id)} />
         </div>
-      </div>
+      </HStack>
       <div className='pane__content'>
         <ChatBox
           chatId={chat.id}
