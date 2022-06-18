@@ -1,3 +1,5 @@
+import { Map as ImmutableMap } from 'immutable';
+
 import { __stub } from 'soapbox/api';
 import { mockStore } from 'soapbox/jest/test-helpers';
 import rootReducer from 'soapbox/reducers';
@@ -111,7 +113,7 @@ describe('expandBlocks()', () => {
       beforeEach(() => {
         const state = rootReducer(undefined, {})
           .set('me', '1234')
-          .set('user_lists', { blocks: { next: null } });
+          .set('user_lists', ImmutableMap({ blocks: { next: null } }));
         store = mockStore(state);
       });
 
@@ -127,7 +129,7 @@ describe('expandBlocks()', () => {
       beforeEach(() => {
         const state = rootReducer(undefined, {})
           .set('me', '1234')
-          .set('user_lists', { blocks: { next: 'example' } });
+          .set('user_lists', ImmutableMap({ blocks: { next: 'example' } }));
         store = mockStore(state);
       });
 
