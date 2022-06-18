@@ -423,7 +423,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   }
 
   handleReport = (status: StatusEntity) => {
-    this.props.dispatch(initReport(status.account, status));
+    this.props.dispatch(initReport(status.account as AccountEntity, status));
   }
 
   handleEmbed = (status: StatusEntity) => {
