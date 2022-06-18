@@ -1,6 +1,6 @@
 import { CancelToken, isCancel } from 'axios';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import { throttle } from 'lodash';
+import throttle from 'lodash/throttle';
 import { defineMessages } from 'react-intl';
 
 import snackbar from 'soapbox/actions/snackbar';

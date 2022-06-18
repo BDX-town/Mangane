@@ -1,7 +1,7 @@
 'use strict';
 
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -17,6 +17,7 @@ import StillImage from 'soapbox/components/still_image';
 import { HStack, IconButton, Menu, MenuButton, MenuItem, MenuList, MenuLink, MenuDivider } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import ActionButton from 'soapbox/features/ui/components/action-button';
+import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
 import {
   isLocal,
   isRemote,
@@ -61,8 +62,6 @@ const messages = defineMessages({
   promoteToModerator: { id: 'admin.users.actions.promote_to_moderator', defaultMessage: 'Promote @{name} to a moderator' },
   demoteToModerator: { id: 'admin.users.actions.demote_to_moderator', defaultMessage: 'Demote @{name} to a moderator' },
   demoteToUser: { id: 'admin.users.actions.demote_to_user', defaultMessage: 'Demote @{name} to a regular user' },
-  subscribe: { id: 'account.subscribe', defaultMessage: 'Subscribe to notifications from @{name}' },
-  unsubscribe: { id: 'account.unsubscribe', defaultMessage: 'Unsubscribe to notifications from @{name}' },
   suggestUser: { id: 'admin.users.actions.suggest_user', defaultMessage: 'Suggest @{name}' },
   unsuggestUser: { id: 'admin.users.actions.unsuggest_user', defaultMessage: 'Unsuggest @{name}' },
 });
@@ -248,22 +247,6 @@ class Header extends ImmutablePureComponent {
             action: this.props.onReblogToggle,
             icon: require('@tabler/icons/icons/repeat.svg'),
           });
-        }
-
-        if (features.accountSubscriptions) {
-          if (account.relationship?.subscribing) {
-            menu.push({
-              text: intl.formatMessage(messages.unsubscribe, { name: account.get('username') }),
-              action: this.props.onSubscriptionToggle,
-              icon: require('@tabler/icons/icons/bell.svg'),
-            });
-          } else {
-            menu.push({
-              text: intl.formatMessage(messages.subscribe, { name: account.get('username') }),
-              action: this.props.onSubscriptionToggle,
-              icon: require('@tabler/icons/icons/bell-off.svg'),
-            });
-          }
         }
 
         if (features.lists) {
@@ -476,7 +459,7 @@ class Header extends ImmutablePureComponent {
         <Badge
           key='blocked'
           slug='opaque'
-          title={<FormattedMessage  id='account.blocked' defaultMessage='Blocked' />}
+          title={<FormattedMessage id='account.blocked' defaultMessage='Blocked' />}
         />,
       );
     }
@@ -578,11 +561,6 @@ class Header extends ImmutablePureComponent {
     const menu = this.makeMenu();
     const header = account.get('header', '');
 
-    // NOTE: Removing Subscription element
-    //   {features.accountSubscriptions && <div className='account__header__subscribe'>
-    //   <SubscriptionButton account={account} />
-    // </div>}
-
     return (
       <div className='-mt-4 -mx-4'>
         <div>
@@ -618,6 +596,8 @@ class Header extends ImmutablePureComponent {
 
             <div className='mt-6 flex justify-end w-full sm:pb-1'>
               <div className='mt-10 flex flex-row space-y-0 space-x-2'>
+                <SubscriptionButton account={account} />
+
                 {me && (
                   <Menu>
                     <MenuButton

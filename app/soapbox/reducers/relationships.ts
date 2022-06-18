@@ -1,5 +1,5 @@
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
-import { get } from 'lodash';
+import get from 'lodash/get';
 
 import { STREAMING_FOLLOW_RELATIONSHIPS_UPDATE } from 'soapbox/actions/streaming';
 import { normalizeRelationship } from 'soapbox/normalizers/relationship';

@@ -240,7 +240,10 @@ export function followAccount(id, options = { reblogs: true }) {
     return api(getState)
       .post(`/api/v1/accounts/${id}/follow`, options)
       .then(response => dispatch(followAccountSuccess(response.data, alreadyFollowing)))
-      .catch(error => dispatch(followAccountFail(error, locked)));
+      .catch(error => {
+        dispatch(followAccountFail(error, locked));
+        throw error;
+      });
   };
 }
 

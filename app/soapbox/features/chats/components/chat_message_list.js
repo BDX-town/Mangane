@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
-import { escape, throttle } from 'lodash';
+import escape from 'lodash/escape';
+import throttle from 'lodash/throttle';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';

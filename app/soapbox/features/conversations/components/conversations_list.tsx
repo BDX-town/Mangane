@@ -1,4 +1,4 @@
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React, { useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
