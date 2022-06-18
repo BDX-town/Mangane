@@ -58,7 +58,6 @@ const ChatWindow: React.FC<IChatWindow> = ({ idx, chatId, windowState }) => {
 
   const handleInputRef = (el: HTMLTextAreaElement) => {
     inputElem.current = el;
-    focusInput();
   };
 
   const focusInput = () => {
@@ -66,8 +65,10 @@ const ChatWindow: React.FC<IChatWindow> = ({ idx, chatId, windowState }) => {
   };
 
   useEffect(() => {
-    focusInput();
-  }, [windowState === 'open']);
+    if (windowState === 'open') {
+      focusInput();
+    }
+  }, [windowState]);
 
   if (!chat) return null;
   const account = chat.account as unknown as AccountEntity;
