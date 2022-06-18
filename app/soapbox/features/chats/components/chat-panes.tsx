@@ -8,13 +8,13 @@ import { openChat, launchChat, toggleMainWindow } from 'soapbox/actions/chats';
 import { getSettings } from 'soapbox/actions/settings';
 import AccountSearch from 'soapbox/components/account_search';
 import { Counter } from 'soapbox/components/ui';
-import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
+import AudioToggle from 'soapbox/features/chats/components/audio-toggle';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
 import { RootState } from 'soapbox/store';
 import { Chat } from 'soapbox/types/entities';
 
-import ChatList from './chat_list';
-import ChatWindow from './chat_window';
+import ChatList from './chat-list';
+import ChatWindow from './chat-window';
 
 const messages = defineMessages({
   searchPlaceholder: { id: 'chats.search_placeholder', defaultMessage: 'Start a chat with…' },
