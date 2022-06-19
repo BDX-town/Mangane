@@ -9,17 +9,19 @@ import { isLoggedIn } from 'soapbox/utils/auth';
 import { showAlertForError } from './alerts';
 import snackbar from './snackbar';
 
-export const SETTING_CHANGE = 'SETTING_CHANGE';
-export const SETTING_SAVE   = 'SETTING_SAVE';
-export const SETTINGS_UPDATE = 'SETTINGS_UPDATE';
+import type { AppDispatch, RootState } from 'soapbox/store';
 
-export const FE_NAME = 'soapbox_fe';
+const SETTING_CHANGE = 'SETTING_CHANGE';
+const SETTING_SAVE   = 'SETTING_SAVE';
+const SETTINGS_UPDATE = 'SETTINGS_UPDATE';
+
+const FE_NAME = 'soapbox_fe';
 
 const messages = defineMessages({
   saveSuccess: { id: 'settings.save.success', defaultMessage: 'Your preferences have been saved!' },
 });
 
-export const defaultSettings = ImmutableMap({
+const defaultSettings = ImmutableMap({
   onboarded: false,
   skinTone: 1,
   reduceMotion: false,
@@ -166,17 +168,17 @@ export const defaultSettings = ImmutableMap({
   }),
 });
 
-export const getSettings = createSelector([
-  state => state.getIn(['soapbox', 'defaultSettings']),
-  state => state.get('settings'),
+const getSettings = createSelector([
+  (state: RootState) => state.soapbox.get('defaultSettings'),
+  (state: RootState) => state.settings,
 ], (soapboxSettings, settings) => {
   return defaultSettings
     .mergeDeep(soapboxSettings)
     .mergeDeep(settings);
 });
 
-export function changeSettingImmediate(path, value) {
-  return dispatch => {
+const changeSettingImmediate = (path: string[], value: any) =>
+  (dispatch: AppDispatch) => {
     dispatch({
       type: SETTING_CHANGE,
       path,
@@ -185,10 +187,9 @@ export function changeSettingImmediate(path, value) {
 
     dispatch(saveSettingsImmediate());
   };
-}
 
-export function changeSetting(path, value) {
-  return dispatch => {
+const changeSetting = (path: string[], value: any) =>
+  (dispatch: AppDispatch) => {
     dispatch({
       type: SETTING_CHANGE,
       path,
@@ -197,22 +198,21 @@ export function changeSetting(path, value) {
 
     return dispatch(saveSettings());
   };
-}
 
-export function saveSettingsImmediate() {
-  return (dispatch, getState) => {
+const saveSettingsImmediate = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
     const state = getState();
     if (getSettings(state).getIn(['saved'])) return;
 
-    const data = state.get('settings').delete('saved').toJS();
+    const data = state.settings.delete('saved').toJS();
 
     dispatch(patchMe({
       pleroma_settings_store: {
         [FE_NAME]: data,
       },
-    })).then(response => {
+    })).then(() => {
       dispatch({ type: SETTING_SAVE });
 
       dispatch(snackbar.success(messages.saveSuccess));
@@ -220,8 +220,19 @@ export function saveSettingsImmediate() {
       dispatch(showAlertForError(error));
     });
   };
-}
 
-export function saveSettings() {
-  return (dispatch, getState) => dispatch(saveSettingsImmediate());
-}
+const saveSettings = () =>
+  (dispatch: AppDispatch) => dispatch(saveSettingsImmediate());
+
+export {
+  SETTING_CHANGE,
+  SETTING_SAVE,
+  SETTINGS_UPDATE,
+  FE_NAME,
+  defaultSettings,
+  getSettings,
+  changeSettingImmediate,
+  changeSetting,
+  saveSettingsImmediate,
+  saveSettings,
+};

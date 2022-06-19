@@ -76,7 +76,7 @@ interface IStatusActionBar extends RouteComponentProps {
   onBookmark: (status: Status) => void,
   onReblog: (status: Status, e: React.MouseEvent) => void,
   onQuote: (status: Status, history: History) => void,
-  onDelete: (status: Status, history: History, redraft?: boolean) => void,
+  onDelete: (status: Status, redraft?: boolean) => void,
   onEdit: (status: Status) => void,
   onDirect: (account: any, history: History) => void,
   onChat: (account: any, history: History) => void,
@@ -241,12 +241,12 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
 
   handleDeleteClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    this.props.onDelete(this.props.status, this.props.history);
+    this.props.onDelete(this.props.status);
   }
 
   handleRedraftClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    this.props.onDelete(this.props.status, this.props.history, true);
+    this.props.onDelete(this.props.status, true);
   }
 
   handleEditClick: React.EventHandler<React.MouseEvent> = () => {

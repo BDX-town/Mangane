@@ -128,18 +128,18 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }));
   },
 
-  onDelete(status, history, withRedraft = false) {
+  onDelete(status, withRedraft = false) {
     dispatch((_, getState) => {
       const deleteModal = getSettings(getState()).get('deleteModal');
       if (!deleteModal) {
-        dispatch(deleteStatus(status.get('id'), history, withRedraft));
+        dispatch(deleteStatus(status.get('id'), withRedraft));
       } else {
         dispatch(openModal('CONFIRM', {
           icon: withRedraft ? require('@tabler/icons/icons/edit.svg') : require('@tabler/icons/icons/trash.svg'),
           heading: intl.formatMessage(withRedraft ? messages.redraftHeading : messages.deleteHeading),
           message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
           confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
-          onConfirm: () => dispatch(deleteStatus(status.get('id'), history, withRedraft)),
+          onConfirm: () => dispatch(deleteStatus(status.get('id'), withRedraft)),
         }));
       }
     });

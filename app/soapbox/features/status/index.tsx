@@ -312,20 +312,20 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     }
   }
 
-  handleDeleteClick = (status: StatusEntity, history: History, withRedraft = false) => {
+  handleDeleteClick = (status: StatusEntity, withRedraft = false) => {
     const { dispatch, intl } = this.props;
 
     this.props.dispatch((_, getState) => {
       const deleteModal = getSettings(getState()).get('deleteModal');
       if (!deleteModal) {
-        dispatch(deleteStatus(status.id, history, withRedraft));
+        dispatch(deleteStatus(status.id, withRedraft));
       } else {
         dispatch(openModal('CONFIRM', {
           icon: withRedraft ? require('@tabler/icons/icons/edit.svg') : require('@tabler/icons/icons/trash.svg'),
           heading: intl.formatMessage(withRedraft ? messages.redraftHeading : messages.deleteHeading),
           message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
           confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
-          onConfirm: () => dispatch(deleteStatus(status.id, history, withRedraft)),
+          onConfirm: () => dispatch(deleteStatus(status.id, withRedraft)),
         }));
       }
     });

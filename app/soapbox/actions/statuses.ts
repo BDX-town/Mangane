@@ -9,43 +9,46 @@ import { importFetchedStatus, importFetchedStatuses } from './importer';
 import { openModal } from './modals';
 import { deleteFromTimelines } from './timelines';
 
-export const STATUS_CREATE_REQUEST = 'STATUS_CREATE_REQUEST';
-export const STATUS_CREATE_SUCCESS = 'STATUS_CREATE_SUCCESS';
-export const STATUS_CREATE_FAIL    = 'STATUS_CREATE_FAIL';
+import type { AppDispatch, RootState } from 'soapbox/store';
+import type { APIEntity } from 'soapbox/types/entities';
 
-export const STATUS_FETCH_SOURCE_REQUEST = 'STATUS_FETCH_SOURCE_REQUEST';
-export const STATUS_FETCH_SOURCE_SUCCESS = 'STATUS_FETCH_SOURCE_SUCCESS';
-export const STATUS_FETCH_SOURCE_FAIL    = 'STATUS_FETCH_SOURCE_FAIL';
+const STATUS_CREATE_REQUEST = 'STATUS_CREATE_REQUEST';
+const STATUS_CREATE_SUCCESS = 'STATUS_CREATE_SUCCESS';
+const STATUS_CREATE_FAIL    = 'STATUS_CREATE_FAIL';
 
-export const STATUS_FETCH_REQUEST = 'STATUS_FETCH_REQUEST';
-export const STATUS_FETCH_SUCCESS = 'STATUS_FETCH_SUCCESS';
-export const STATUS_FETCH_FAIL    = 'STATUS_FETCH_FAIL';
+const STATUS_FETCH_SOURCE_REQUEST = 'STATUS_FETCH_SOURCE_REQUEST';
+const STATUS_FETCH_SOURCE_SUCCESS = 'STATUS_FETCH_SOURCE_SUCCESS';
+const STATUS_FETCH_SOURCE_FAIL    = 'STATUS_FETCH_SOURCE_FAIL';
 
-export const STATUS_DELETE_REQUEST = 'STATUS_DELETE_REQUEST';
-export const STATUS_DELETE_SUCCESS = 'STATUS_DELETE_SUCCESS';
-export const STATUS_DELETE_FAIL    = 'STATUS_DELETE_FAIL';
+const STATUS_FETCH_REQUEST = 'STATUS_FETCH_REQUEST';
+const STATUS_FETCH_SUCCESS = 'STATUS_FETCH_SUCCESS';
+const STATUS_FETCH_FAIL    = 'STATUS_FETCH_FAIL';
 
-export const CONTEXT_FETCH_REQUEST = 'CONTEXT_FETCH_REQUEST';
-export const CONTEXT_FETCH_SUCCESS = 'CONTEXT_FETCH_SUCCESS';
-export const CONTEXT_FETCH_FAIL    = 'CONTEXT_FETCH_FAIL';
+const STATUS_DELETE_REQUEST = 'STATUS_DELETE_REQUEST';
+const STATUS_DELETE_SUCCESS = 'STATUS_DELETE_SUCCESS';
+const STATUS_DELETE_FAIL    = 'STATUS_DELETE_FAIL';
 
-export const STATUS_MUTE_REQUEST = 'STATUS_MUTE_REQUEST';
-export const STATUS_MUTE_SUCCESS = 'STATUS_MUTE_SUCCESS';
-export const STATUS_MUTE_FAIL    = 'STATUS_MUTE_FAIL';
+const CONTEXT_FETCH_REQUEST = 'CONTEXT_FETCH_REQUEST';
+const CONTEXT_FETCH_SUCCESS = 'CONTEXT_FETCH_SUCCESS';
+const CONTEXT_FETCH_FAIL    = 'CONTEXT_FETCH_FAIL';
 
-export const STATUS_UNMUTE_REQUEST = 'STATUS_UNMUTE_REQUEST';
-export const STATUS_UNMUTE_SUCCESS = 'STATUS_UNMUTE_SUCCESS';
-export const STATUS_UNMUTE_FAIL    = 'STATUS_UNMUTE_FAIL';
+const STATUS_MUTE_REQUEST = 'STATUS_MUTE_REQUEST';
+const STATUS_MUTE_SUCCESS = 'STATUS_MUTE_SUCCESS';
+const STATUS_MUTE_FAIL    = 'STATUS_MUTE_FAIL';
 
-export const STATUS_REVEAL = 'STATUS_REVEAL';
-export const STATUS_HIDE   = 'STATUS_HIDE';
+const STATUS_UNMUTE_REQUEST = 'STATUS_UNMUTE_REQUEST';
+const STATUS_UNMUTE_SUCCESS = 'STATUS_UNMUTE_SUCCESS';
+const STATUS_UNMUTE_FAIL    = 'STATUS_UNMUTE_FAIL';
 
-const statusExists = (getState, statusId) => {
-  return getState().getIn(['statuses', statusId], null) !== null;
+const STATUS_REVEAL = 'STATUS_REVEAL';
+const STATUS_HIDE   = 'STATUS_HIDE';
+
+const statusExists = (getState: () => RootState, statusId: string) => {
+  return (getState().statuses.get(statusId) || null) !== null;
 };
 
-export function createStatus(params, idempotencyKey, statusId) {
-  return (dispatch, getState) => {
+const createStatus = (params: Record<string, any>, idempotencyKey: string, statusId: string) => {
+  return (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: STATUS_CREATE_REQUEST, params, idempotencyKey });
 
     return api(getState).request({
@@ -85,13 +88,13 @@ export function createStatus(params, idempotencyKey, statusId) {
       throw error;
     });
   };
-}
+};
 
-export const editStatus = (id) => (dispatch, getState) => {
-  let status = getState().getIn(['statuses', id]);
+const editStatus = (id: string) => (dispatch: AppDispatch, getState: () => RootState) => {
+  let status = getState().statuses.get(id)!;
 
-  if (status.get('poll')) {
-    status = status.set('poll', getState().getIn(['polls', status.get('poll')]));
+  if (status.poll) {
+    status = status.set('poll', getState().polls.get(status.poll) as any);
   }
 
   dispatch({ type: STATUS_FETCH_SOURCE_REQUEST });
@@ -106,8 +109,8 @@ export const editStatus = (id) => (dispatch, getState) => {
   });
 };
 
-export function fetchStatus(id) {
-  return (dispatch, getState) => {
+const fetchStatus = (id: string) => {
+  return (dispatch: AppDispatch, getState: () => RootState) => {
     const skipLoading = statusExists(getState, id);
 
     dispatch({ type: STATUS_FETCH_REQUEST, id, skipLoading });
@@ -120,16 +123,16 @@ export function fetchStatus(id) {
       dispatch({ type: STATUS_FETCH_FAIL, id, error, skipLoading, skipAlert: true });
     });
   };
-}
+};
 
-export function deleteStatus(id, routerHistory, withRedraft = false) {
-  return (dispatch, getState) => {
+const deleteStatus = (id: string, withRedraft = false) => {
+  return (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return null;
 
-    let status = getState().getIn(['statuses', id]);
+    let status = getState().statuses.get(id)!;
 
-    if (status.get('poll')) {
-      status = status.set('poll', getState().getIn(['polls', status.get('poll')]));
+    if (status.poll) {
+      status = status.set('poll', getState().polls.get(status.poll) as any);
     }
 
     dispatch({ type: STATUS_DELETE_REQUEST, params: status });
@@ -149,13 +152,13 @@ export function deleteStatus(id, routerHistory, withRedraft = false) {
         dispatch({ type: STATUS_DELETE_FAIL, params: status, error });
       });
   };
-}
+};
 
-export const updateStatus = status => dispatch =>
+const updateStatus = (status: APIEntity) => (dispatch: AppDispatch) =>
   dispatch(importFetchedStatus(status));
 
-export function fetchContext(id) {
-  return (dispatch, getState) => {
+const fetchContext = (id: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: CONTEXT_FETCH_REQUEST, id });
 
     return api(getState).get(`/api/v1/statuses/${id}/context`).then(({ data: context }) => {
@@ -180,10 +183,9 @@ export function fetchContext(id) {
       dispatch({ type: CONTEXT_FETCH_FAIL, id, error, skipAlert: true });
     });
   };
-}
 
-export function fetchNext(statusId, next) {
-  return async(dispatch, getState) => {
+const fetchNext = (statusId: string, next: string) =>
+  async(dispatch: AppDispatch, getState: () => RootState) => {
     const response = await api(getState).get(next);
     dispatch(importFetchedStatuses(response.data));
 
@@ -196,26 +198,23 @@ export function fetchNext(statusId, next) {
 
     return { next: getNextLink(response) };
   };
-}
 
-export function fetchAncestors(id) {
-  return async(dispatch, getState) => {
+const fetchAncestors = (id: string) =>
+  async(dispatch: AppDispatch, getState: () => RootState) => {
     const response = await api(getState).get(`/api/v1/statuses/${id}/context/ancestors`);
     dispatch(importFetchedStatuses(response.data));
     return response;
   };
-}
 
-export function fetchDescendants(id) {
-  return async(dispatch, getState) => {
+const fetchDescendants = (id: string) =>
+  async(dispatch: AppDispatch, getState: () => RootState) => {
     const response = await api(getState).get(`/api/v1/statuses/${id}/context/descendants`);
     dispatch(importFetchedStatuses(response.data));
     return response;
   };
-}
 
-export function fetchStatusWithContext(id) {
-  return async(dispatch, getState) => {
+const fetchStatusWithContext = (id: string) =>
+  async(dispatch: AppDispatch, getState: () => RootState) => {
     const features = getFeatures(getState().instance);
 
     if (features.paginatedContext) {
@@ -242,10 +241,10 @@ export function fetchStatusWithContext(id) {
       return { next: undefined };
     }
   };
-}
 
-export function muteStatus(id) {
-  return (dispatch, getState) => {
+
+const muteStatus = (id: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
     dispatch({ type: STATUS_MUTE_REQUEST, id });
@@ -255,10 +254,9 @@ export function muteStatus(id) {
       dispatch({ type: STATUS_MUTE_FAIL, id, error });
     });
   };
-}
 
-export function unmuteStatus(id) {
-  return (dispatch, getState) => {
+const unmuteStatus = (id: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
     dispatch({ type: STATUS_UNMUTE_REQUEST, id });
@@ -268,9 +266,8 @@ export function unmuteStatus(id) {
       dispatch({ type: STATUS_UNMUTE_FAIL, id, error });
     });
   };
-}
 
-export function hideStatus(ids) {
+const hideStatus = (ids: string[] | string) => {
   if (!Array.isArray(ids)) {
     ids = [ids];
   }
@@ -279,9 +276,9 @@ export function hideStatus(ids) {
     type: STATUS_HIDE,
     ids,
   };
-}
+};
 
-export function revealStatus(ids) {
+const revealStatus = (ids: string[] | string) => {
   if (!Array.isArray(ids)) {
     ids = [ids];
   }
@@ -290,4 +287,44 @@ export function revealStatus(ids) {
     type: STATUS_REVEAL,
     ids,
   };
-}
+};
+
+export {
+  STATUS_CREATE_REQUEST,
+  STATUS_CREATE_SUCCESS,
+  STATUS_CREATE_FAIL,
+  STATUS_FETCH_SOURCE_REQUEST,
+  STATUS_FETCH_SOURCE_SUCCESS,
+  STATUS_FETCH_SOURCE_FAIL,
+  STATUS_FETCH_REQUEST,
+  STATUS_FETCH_SUCCESS,
+  STATUS_FETCH_FAIL,
+  STATUS_DELETE_REQUEST,
+  STATUS_DELETE_SUCCESS,
+  STATUS_DELETE_FAIL,
+  CONTEXT_FETCH_REQUEST,
+  CONTEXT_FETCH_SUCCESS,
+  CONTEXT_FETCH_FAIL,
+  STATUS_MUTE_REQUEST,
+  STATUS_MUTE_SUCCESS,
+  STATUS_MUTE_FAIL,
+  STATUS_UNMUTE_REQUEST,
+  STATUS_UNMUTE_SUCCESS,
+  STATUS_UNMUTE_FAIL,
+  STATUS_REVEAL,
+  STATUS_HIDE,
+  createStatus,
+  editStatus,
+  fetchStatus,
+  deleteStatus,
+  updateStatus,
+  fetchContext,
+  fetchNext,
+  fetchAncestors,
+  fetchDescendants,
+  fetchStatusWithContext,
+  muteStatus,
+  unmuteStatus,
+  hideStatus,
+  revealStatus,
+};

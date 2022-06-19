@@ -94,7 +94,7 @@ interface OwnProps {
   onQuote: (status: StatusEntity, history: History) => void,
   onFavourite: (status: StatusEntity) => void,
   onEmojiReact: (status: StatusEntity, emoji: string) => void,
-  onDelete: (status: StatusEntity, history: History, redraft?: boolean) => void,
+  onDelete: (status: StatusEntity, redraft?: boolean) => void,
   onEdit: (status: StatusEntity) => void,
   onBookmark: (status: StatusEntity) => void,
   onDirect: (account: AccountEntity, history: History) => void,
@@ -236,11 +236,11 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
   }
 
   handleDeleteClick: React.EventHandler<React.MouseEvent> = () => {
-    this.props.onDelete(this.props.status, this.props.history);
+    this.props.onDelete(this.props.status);
   }
 
   handleRedraftClick: React.EventHandler<React.MouseEvent> = () => {
-    this.props.onDelete(this.props.status, this.props.history, true);
+    this.props.onDelete(this.props.status, true);
   }
 
   handleEditClick: React.EventHandler<React.MouseEvent> = () => {
