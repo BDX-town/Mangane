@@ -8,16 +8,20 @@ import { getFeatures } from 'soapbox/utils/features';
 
 import api, { staticClient } from '../api';
 
-export const SOAPBOX_CONFIG_REQUEST_SUCCESS = 'SOAPBOX_CONFIG_REQUEST_SUCCESS';
-export const SOAPBOX_CONFIG_REQUEST_FAIL    = 'SOAPBOX_CONFIG_REQUEST_FAIL';
+import type { AxiosError } from 'axios';
+import type { AppDispatch, RootState } from 'soapbox/store';
+import type { APIEntity } from 'soapbox/types/entities';
 
-export const SOAPBOX_CONFIG_REMEMBER_REQUEST = 'SOAPBOX_CONFIG_REMEMBER_REQUEST';
-export const SOAPBOX_CONFIG_REMEMBER_SUCCESS = 'SOAPBOX_CONFIG_REMEMBER_SUCCESS';
-export const SOAPBOX_CONFIG_REMEMBER_FAIL    = 'SOAPBOX_CONFIG_REMEMBER_FAIL';
+const SOAPBOX_CONFIG_REQUEST_SUCCESS = 'SOAPBOX_CONFIG_REQUEST_SUCCESS';
+const SOAPBOX_CONFIG_REQUEST_FAIL    = 'SOAPBOX_CONFIG_REQUEST_FAIL';
 
-export const getSoapboxConfig = createSelector([
-  state => state.soapbox,
-  state => getFeatures(state.instance),
+const SOAPBOX_CONFIG_REMEMBER_REQUEST = 'SOAPBOX_CONFIG_REMEMBER_REQUEST';
+const SOAPBOX_CONFIG_REMEMBER_SUCCESS = 'SOAPBOX_CONFIG_REMEMBER_SUCCESS';
+const SOAPBOX_CONFIG_REMEMBER_FAIL    = 'SOAPBOX_CONFIG_REMEMBER_FAIL';
+
+const getSoapboxConfig = createSelector([
+  (state: RootState) => state.soapbox,
+  (state: RootState) => getFeatures(state.instance),
 ], (soapbox, features) => {
   // Do some additional normalization with the state
   return normalizeSoapboxConfig(soapbox).withMutations(soapboxConfig => {
@@ -35,8 +39,8 @@ export const getSoapboxConfig = createSelector([
   });
 });
 
-export function rememberSoapboxConfig(host) {
-  return (dispatch, getState) => {
+const rememberSoapboxConfig = (host: string | null) =>
+  (dispatch: AppDispatch) => {
     dispatch({ type: SOAPBOX_CONFIG_REMEMBER_REQUEST, host });
     return KVStore.getItemOrError(`soapbox_config:${host}`).then(soapboxConfig => {
       dispatch({ type: SOAPBOX_CONFIG_REMEMBER_SUCCESS, host, soapboxConfig });
@@ -45,19 +49,16 @@ export function rememberSoapboxConfig(host) {
       dispatch({ type: SOAPBOX_CONFIG_REMEMBER_FAIL, host, error, skipAlert: true });
     });
   };
-}
 
-export function fetchFrontendConfigurations() {
-  return (dispatch, getState) => {
-    return api(getState)
+const fetchFrontendConfigurations = () =>
+  (dispatch: AppDispatch, getState: () => RootState) =>
+    api(getState)
       .get('/api/pleroma/frontend_configurations')
       .then(({ data }) => data);
-  };
-}
 
 /** Conditionally fetches Soapbox config depending on backend features */
-export function fetchSoapboxConfig(host) {
-  return (dispatch, getState) => {
+const fetchSoapboxConfig = (host: string | null) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const features = getFeatures(getState().instance);
 
     if (features.frontendConfigurations) {
@@ -73,32 +74,28 @@ export function fetchSoapboxConfig(host) {
       return dispatch(fetchSoapboxJson(host));
     }
   };
-}
 
 /** Tries to remember the config from browser storage before fetching it */
-export function loadSoapboxConfig() {
-  return (dispatch, getState) => {
+const loadSoapboxConfig = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const host = getHost(getState());
 
-    return dispatch(rememberSoapboxConfig(host)).then(() => {
-      return dispatch(fetchSoapboxConfig(host));
-    });
+    return dispatch(rememberSoapboxConfig(host)).then(() =>
+      dispatch(fetchSoapboxConfig(host)),
+    );
   };
-}
 
-export function fetchSoapboxJson(host) {
-  return (dispatch, getState) => {
-    return staticClient.get('/instance/soapbox.json').then(({ data }) => {
+const fetchSoapboxJson = (host: string | null) =>
+  (dispatch: AppDispatch) =>
+    staticClient.get('/instance/soapbox.json').then(({ data }) => {
       if (!isObject(data)) throw 'soapbox.json failed';
       dispatch(importSoapboxConfig(data, host));
       return data;
     }).catch(error => {
       dispatch(soapboxConfigFail(error, host));
     });
-  };
-}
 
-export function importSoapboxConfig(soapboxConfig, host) {
+const importSoapboxConfig = (soapboxConfig: APIEntity, host: string | null) => {
   if (!soapboxConfig.brandColor) {
     soapboxConfig.brandColor = '#0482d8';
   }
@@ -107,18 +104,30 @@ export function importSoapboxConfig(soapboxConfig, host) {
     soapboxConfig,
     host,
   };
-}
+};
 
-export function soapboxConfigFail(error, host) {
-  return {
-    type: SOAPBOX_CONFIG_REQUEST_FAIL,
-    error,
-    skipAlert: true,
-    host,
-  };
-}
+const soapboxConfigFail = (error: AxiosError, host: string | null) => ({
+  type: SOAPBOX_CONFIG_REQUEST_FAIL,
+  error,
+  skipAlert: true,
+  host,
+});
 
 // https://stackoverflow.com/a/46663081
-function isObject(o) {
-  return o instanceof Object && o.constructor === Object;
-}
+const isObject = (o: any) => o instanceof Object && o.constructor === Object;
+
+export {
+  SOAPBOX_CONFIG_REQUEST_SUCCESS,
+  SOAPBOX_CONFIG_REQUEST_FAIL,
+  SOAPBOX_CONFIG_REMEMBER_REQUEST,
+  SOAPBOX_CONFIG_REMEMBER_SUCCESS,
+  SOAPBOX_CONFIG_REMEMBER_FAIL,
+  getSoapboxConfig,
+  rememberSoapboxConfig,
+  fetchFrontendConfigurations,
+  fetchSoapboxConfig,
+  loadSoapboxConfig,
+  fetchSoapboxJson,
+  importSoapboxConfig,
+  soapboxConfigFail,
+};

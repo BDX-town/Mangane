@@ -1,19 +1,17 @@
 import {
   List as ImmutableList,
   Map as ImmutableMap,
-  OrderedMap as ImmutableOrderedMap,
 } from 'immutable';
 import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
 import { defineMessages } from 'react-intl';
 
+import api, { getLinks } from 'soapbox/api';
+import { getFilters, regexFromFilters } from 'soapbox/selectors';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { parseVersion, PLEROMA } from 'soapbox/utils/features';
+import { unescapeHTML } from 'soapbox/utils/html';
 import { joinPublicPath } from 'soapbox/utils/static';
-
-import api, { getLinks } from '../api';
-import { getFilters, regexFromFilters } from '../selectors';
-import { unescapeHTML } from '../utils/html';
 
 import { fetchRelationships } from './accounts';
 import {
@@ -25,32 +23,36 @@ import {
 import { saveMarker } from './markers';
 import { getSettings, saveSettings } from './settings';
 
-export const NOTIFICATIONS_UPDATE      = 'NOTIFICATIONS_UPDATE';
-export const NOTIFICATIONS_UPDATE_NOOP = 'NOTIFICATIONS_UPDATE_NOOP';
-export const NOTIFICATIONS_UPDATE_QUEUE = 'NOTIFICATIONS_UPDATE_QUEUE';
-export const NOTIFICATIONS_DEQUEUE      = 'NOTIFICATIONS_DEQUEUE';
+import type { AxiosError } from 'axios';
+import type { AppDispatch, RootState } from 'soapbox/store';
+import type { APIEntity } from 'soapbox/types/entities';
 
-export const NOTIFICATIONS_EXPAND_REQUEST = 'NOTIFICATIONS_EXPAND_REQUEST';
-export const NOTIFICATIONS_EXPAND_SUCCESS = 'NOTIFICATIONS_EXPAND_SUCCESS';
-export const NOTIFICATIONS_EXPAND_FAIL    = 'NOTIFICATIONS_EXPAND_FAIL';
+const NOTIFICATIONS_UPDATE      = 'NOTIFICATIONS_UPDATE';
+const NOTIFICATIONS_UPDATE_NOOP = 'NOTIFICATIONS_UPDATE_NOOP';
+const NOTIFICATIONS_UPDATE_QUEUE = 'NOTIFICATIONS_UPDATE_QUEUE';
+const NOTIFICATIONS_DEQUEUE      = 'NOTIFICATIONS_DEQUEUE';
 
-export const NOTIFICATIONS_FILTER_SET = 'NOTIFICATIONS_FILTER_SET';
+const NOTIFICATIONS_EXPAND_REQUEST = 'NOTIFICATIONS_EXPAND_REQUEST';
+const NOTIFICATIONS_EXPAND_SUCCESS = 'NOTIFICATIONS_EXPAND_SUCCESS';
+const NOTIFICATIONS_EXPAND_FAIL    = 'NOTIFICATIONS_EXPAND_FAIL';
 
-export const NOTIFICATIONS_CLEAR      = 'NOTIFICATIONS_CLEAR';
-export const NOTIFICATIONS_SCROLL_TOP = 'NOTIFICATIONS_SCROLL_TOP';
+const NOTIFICATIONS_FILTER_SET = 'NOTIFICATIONS_FILTER_SET';
 
-export const NOTIFICATIONS_MARK_READ_REQUEST = 'NOTIFICATIONS_MARK_READ_REQUEST';
-export const NOTIFICATIONS_MARK_READ_SUCCESS = 'NOTIFICATIONS_MARK_READ_SUCCESS';
-export const NOTIFICATIONS_MARK_READ_FAIL    = 'NOTIFICATIONS_MARK_READ_FAIL';
+const NOTIFICATIONS_CLEAR      = 'NOTIFICATIONS_CLEAR';
+const NOTIFICATIONS_SCROLL_TOP = 'NOTIFICATIONS_SCROLL_TOP';
 
-export const MAX_QUEUED_NOTIFICATIONS = 40;
+const NOTIFICATIONS_MARK_READ_REQUEST = 'NOTIFICATIONS_MARK_READ_REQUEST';
+const NOTIFICATIONS_MARK_READ_SUCCESS = 'NOTIFICATIONS_MARK_READ_SUCCESS';
+const NOTIFICATIONS_MARK_READ_FAIL    = 'NOTIFICATIONS_MARK_READ_FAIL';
+
+const MAX_QUEUED_NOTIFICATIONS = 40;
 
 defineMessages({
   mention: { id: 'notification.mention', defaultMessage: '{name} mentioned you' },
   group: { id: 'notifications.group', defaultMessage: '{count} notifications' },
 });
 
-const fetchRelatedRelationships = (dispatch, notifications) => {
+const fetchRelatedRelationships = (dispatch: AppDispatch, notifications: APIEntity[]) => {
   const accountIds = notifications.filter(item => item.type === 'follow').map(item => item.account.id);
 
   if (accountIds.length > 0) {
@@ -58,8 +60,8 @@ const fetchRelatedRelationships = (dispatch, notifications) => {
   }
 };
 
-export function updateNotifications(notification, intlMessages, intlLocale) {
-  return (dispatch, getState) => {
+const updateNotifications = (notification: APIEntity) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const showInColumn = getSettings(getState()).getIn(['notifications', 'shows', notification.type], true);
 
     if (notification.account) {
@@ -84,17 +86,16 @@ export function updateNotifications(notification, intlMessages, intlLocale) {
       fetchRelatedRelationships(dispatch, [notification]);
     }
   };
-}
 
-export function updateNotificationsQueue(notification, intlMessages, intlLocale, curPath) {
-  return (dispatch, getState) => {
+const updateNotificationsQueue = (notification: APIEntity, intlMessages: Record<string, string>, intlLocale: string, curPath: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     if (notification.type === 'pleroma:chat_mention') return; // Drop chat notifications, handle them per-chat
 
     const showAlert = getSettings(getState()).getIn(['notifications', 'alerts', notification.type]);
     const filters = getFilters(getState(), { contextType: 'notifications' });
     const playSound = getSettings(getState()).getIn(['notifications', 'sounds', notification.type]);
 
-    let filtered = false;
+    let filtered: boolean | null = false;
 
     const isOnNotificationsPage = curPath === '/notifications';
 
@@ -140,21 +141,20 @@ export function updateNotificationsQueue(notification, intlMessages, intlLocale,
         intlLocale,
       });
     } else {
-      dispatch(updateNotifications(notification, intlMessages, intlLocale));
+      dispatch(updateNotifications(notification));
     }
   };
-}
 
-export function dequeueNotifications() {
-  return (dispatch, getState) => {
-    const queuedNotifications = getState().getIn(['notifications', 'queuedNotifications'], ImmutableOrderedMap());
-    const totalQueuedNotificationsCount = getState().getIn(['notifications', 'totalQueuedNotificationsCount'], 0);
+const dequeueNotifications = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const queuedNotifications = getState().notifications.get('queuedNotifications');
+    const totalQueuedNotificationsCount = getState().notifications.get('totalQueuedNotificationsCount');
 
     if (totalQueuedNotificationsCount === 0) {
       return;
     } else if (totalQueuedNotificationsCount > 0 && totalQueuedNotificationsCount <= MAX_QUEUED_NOTIFICATIONS) {
-      queuedNotifications.forEach(block => {
-        dispatch(updateNotifications(block.notification, block.intlMessages, block.intlLocale));
+      queuedNotifications.forEach((block: APIEntity) => {
+        dispatch(updateNotifications(block.notification));
       });
     } else {
       dispatch(expandNotifications());
@@ -165,23 +165,22 @@ export function dequeueNotifications() {
     });
     dispatch(markReadNotifications());
   };
-}
 
-const excludeTypesFromSettings = getState => getSettings(getState()).getIn(['notifications', 'shows']).filter(enabled => !enabled).keySeq().toJS();
+const excludeTypesFromSettings = (getState: () => RootState) => (getSettings(getState()).getIn(['notifications', 'shows']) as ImmutableMap<string, boolean>).filter(enabled => !enabled).keySeq().toJS();
 
-const excludeTypesFromFilter = filter => {
+const excludeTypesFromFilter = (filter: string) => {
   const allTypes = ImmutableList(['follow', 'follow_request', 'favourite', 'reblog', 'mention', 'status', 'poll', 'move', 'pleroma:emoji_reaction']);
   return allTypes.filterNot(item => item === filter).toJS();
 };
 
 const noOp = () => {};
 
-export function expandNotifications({ maxId } = {}, done = noOp) {
-  return (dispatch, getState) => {
+const expandNotifications = ({ maxId }: Record<string, any> = {}, done = noOp) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return dispatch(noOp);
 
-    const activeFilter = getSettings(getState()).getIn(['notifications', 'quickFilter', 'active']);
-    const notifications = getState().get('notifications');
+    const activeFilter = getSettings(getState()).getIn(['notifications', 'quickFilter', 'active']) as string;
+    const notifications = getState().notifications;
     const isLoadingMore = !!maxId;
 
     if (notifications.get('isLoading')) {
@@ -189,7 +188,7 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
       return dispatch(noOp);
     }
 
-    const params = {
+    const params: Record<string, any> = {
       max_id: maxId,
       exclude_types: activeFilter === 'all'
         ? excludeTypesFromSettings(getState)
@@ -205,7 +204,7 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
     return api(getState).get('/api/v1/notifications', { params }).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
-      const entries = response.data.reduce((acc, item) => {
+      const entries = (response.data as APIEntity[]).reduce((acc, item) => {
         if (item.account?.id) {
           acc.accounts[item.account.id] = item.account;
         }
@@ -233,34 +232,27 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
       done();
     });
   };
-}
 
-export function expandNotificationsRequest(isLoadingMore) {
-  return {
-    type: NOTIFICATIONS_EXPAND_REQUEST,
-    skipLoading: !isLoadingMore,
-  };
-}
+const expandNotificationsRequest = (isLoadingMore: boolean) => ({
+  type: NOTIFICATIONS_EXPAND_REQUEST,
+  skipLoading: !isLoadingMore,
+});
 
-export function expandNotificationsSuccess(notifications, next, isLoadingMore) {
-  return {
-    type: NOTIFICATIONS_EXPAND_SUCCESS,
-    notifications,
-    next,
-    skipLoading: !isLoadingMore,
-  };
-}
+const expandNotificationsSuccess = (notifications: APIEntity[], next: string | null, isLoadingMore: boolean) => ({
+  type: NOTIFICATIONS_EXPAND_SUCCESS,
+  notifications,
+  next,
+  skipLoading: !isLoadingMore,
+});
 
-export function expandNotificationsFail(error, isLoadingMore) {
-  return {
-    type: NOTIFICATIONS_EXPAND_FAIL,
-    error,
-    skipLoading: !isLoadingMore,
-  };
-}
+const expandNotificationsFail = (error: AxiosError, isLoadingMore: boolean) => ({
+  type: NOTIFICATIONS_EXPAND_FAIL,
+  error,
+  skipLoading: !isLoadingMore,
+});
 
-export function clearNotifications() {
-  return (dispatch, getState) => {
+const clearNotifications = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
     dispatch({
@@ -269,20 +261,18 @@ export function clearNotifications() {
 
     api(getState).post('/api/v1/notifications/clear');
   };
-}
 
-export function scrollTopNotifications(top) {
-  return (dispatch, getState) => {
+const scrollTopNotifications = (top: boolean) =>
+  (dispatch: AppDispatch) => {
     dispatch({
       type: NOTIFICATIONS_SCROLL_TOP,
       top,
     });
     dispatch(markReadNotifications());
   };
-}
 
-export function setFilter(filterType) {
-  return dispatch => {
+const setFilter = (filterType: string) =>
+  (dispatch: AppDispatch) => {
     dispatch({
       type: NOTIFICATIONS_FILTER_SET,
       path: ['notifications', 'quickFilter', 'active'],
@@ -291,25 +281,23 @@ export function setFilter(filterType) {
     dispatch(expandNotifications());
     dispatch(saveSettings());
   };
-}
 
 // Of course Markers don't work properly in Pleroma.
 // https://git.pleroma.social/pleroma/pleroma/-/issues/2769
-export function markReadPleroma(max_id) {
-  return (dispatch, getState) => {
+const markReadPleroma = (max_id: string | number) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     return api(getState).post('/api/v1/pleroma/notifications/read', { max_id });
   };
-}
 
-export function markReadNotifications() {
-  return (dispatch, getState) => {
+const markReadNotifications = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
     const state = getState();
-    const instance = state.get('instance');
-    const topNotificationId = state.getIn(['notifications', 'items'], ImmutableOrderedMap()).first(ImmutableMap()).get('id');
-    const lastReadId = state.getIn(['notifications', 'lastRead']);
-    const v = parseVersion(instance.get('version'));
+    const instance = state.instance;
+    const topNotificationId = state.notifications.get('items').first(ImmutableMap()).get('id');
+    const lastReadId = state.notifications.get('lastRead');
+    const v = parseVersion(instance.version);
 
     if (!(topNotificationId && topNotificationId > lastReadId)) return;
 
@@ -325,4 +313,32 @@ export function markReadNotifications() {
       dispatch(markReadPleroma(topNotificationId));
     }
   };
-}
+
+export {
+  NOTIFICATIONS_UPDATE,
+  NOTIFICATIONS_UPDATE_NOOP,
+  NOTIFICATIONS_UPDATE_QUEUE,
+  NOTIFICATIONS_DEQUEUE,
+  NOTIFICATIONS_EXPAND_REQUEST,
+  NOTIFICATIONS_EXPAND_SUCCESS,
+  NOTIFICATIONS_EXPAND_FAIL,
+  NOTIFICATIONS_FILTER_SET,
+  NOTIFICATIONS_CLEAR,
+  NOTIFICATIONS_SCROLL_TOP,
+  NOTIFICATIONS_MARK_READ_REQUEST,
+  NOTIFICATIONS_MARK_READ_SUCCESS,
+  NOTIFICATIONS_MARK_READ_FAIL,
+  MAX_QUEUED_NOTIFICATIONS,
+  updateNotifications,
+  updateNotificationsQueue,
+  dequeueNotifications,
+  expandNotifications,
+  expandNotificationsRequest,
+  expandNotificationsSuccess,
+  expandNotificationsFail,
+  clearNotifications,
+  scrollTopNotifications,
+  setFilter,
+  markReadPleroma,
+  markReadNotifications,
+};

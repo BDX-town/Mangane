@@ -432,12 +432,12 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
   handleDeactivateUser = (status: StatusEntity) => {
     const { dispatch, intl } = this.props;
-    dispatch(deactivateUserModal(intl, status.getIn(['account', 'id'])));
+    dispatch(deactivateUserModal(intl, status.getIn(['account', 'id']) as string));
   }
 
   handleDeleteUser = (status: StatusEntity) => {
     const { dispatch, intl } = this.props;
-    dispatch(deleteUserModal(intl, status.getIn(['account', 'id'])));
+    dispatch(deleteUserModal(intl, status.getIn(['account', 'id']) as string));
   }
 
   handleToggleStatusSensitivity = (status: StatusEntity) => {

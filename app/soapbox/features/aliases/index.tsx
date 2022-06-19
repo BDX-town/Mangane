@@ -46,7 +46,7 @@ const Aliases = () => {
   }, []);
 
   const handleFilterDelete: React.MouseEventHandler<HTMLDivElement> = e => {
-    dispatch(removeFromAliases(e.currentTarget.dataset.value));
+    dispatch(removeFromAliases(e.currentTarget.dataset.value as string));
   };
 
   const emptyMessage = <FormattedMessage id='empty_column.aliases' defaultMessage="You haven't created any account alias yet." />;

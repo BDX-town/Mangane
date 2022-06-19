@@ -1,5 +1,5 @@
 import React from 'react';
-import { defineMessages } from 'react-intl';
+import { defineMessages, IntlShape } from 'react-intl';
 
 import { fetchAccountByUsername } from 'soapbox/actions/accounts';
 import { deactivateUsers, deleteUsers, deleteStatus, toggleStatusSensitivity } from 'soapbox/actions/admin';
@@ -7,6 +7,8 @@ import { openModal } from 'soapbox/actions/modals';
 import snackbar from 'soapbox/actions/snackbar';
 import AccountContainer from 'soapbox/containers/account_container';
 import { isLocal } from 'soapbox/utils/accounts';
+
+import type { AppDispatch, RootState } from 'soapbox/store';
 
 const messages = defineMessages({
   deactivateUserHeading: { id: 'confirmations.admin.deactivate_user.heading', defaultMessage: 'Deactivate @{acct}' },
@@ -35,11 +37,11 @@ const messages = defineMessages({
   statusMarkedNotSensitive: { id: 'admin.statuses.status_marked_message_not_sensitive', defaultMessage: 'Post by @{acct} was marked not sensitive' },
 });
 
-export function deactivateUserModal(intl, accountId, afterConfirm = () => {}) {
-  return function(dispatch, getState) {
+const deactivateUserModal = (intl: IntlShape, accountId: string, afterConfirm = () => {}) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const acct = state.getIn(['accounts', accountId, 'acct']);
-    const name = state.getIn(['accounts', accountId, 'username']);
+    const acct = state.accounts.get(accountId)!.acct;
+    const name = state.accounts.get(accountId)!.username;
 
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/icons/user-off.svg'),
@@ -55,15 +57,15 @@ export function deactivateUserModal(intl, accountId, afterConfirm = () => {}) {
       },
     }));
   };
-}
 
-export function deleteUserModal(intl, accountId, afterConfirm = () => {}) {
-  return function(dispatch, getState) {
+const deleteUserModal = (intl: IntlShape, accountId: string, afterConfirm = () => {}) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const acct = state.getIn(['accounts', accountId, 'acct']);
-    const name = state.getIn(['accounts', accountId, 'username']);
-    const favicon = state.getIn(['accounts', accountId, 'pleroma', 'favicon']);
-    const local = isLocal(state.getIn(['accounts', accountId]));
+    const account = state.accounts.get(accountId)!;
+    const acct = account.acct;
+    const name = account.username;
+    const favicon = account.pleroma.get('favicon');
+    const local = isLocal(account);
 
     const message = (<>
       <AccountContainer id={accountId} />
@@ -96,13 +98,12 @@ export function deleteUserModal(intl, accountId, afterConfirm = () => {}) {
       },
     }));
   };
-}
 
-export function rejectUserModal(intl, accountId, afterConfirm = () => {}) {
-  return function(dispatch, getState) {
+const rejectUserModal = (intl: IntlShape, accountId: string, afterConfirm = () => {}) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const acct = state.getIn(['accounts', accountId, 'acct']);
-    const name = state.getIn(['accounts', accountId, 'username']);
+    const acct = state.accounts.get(accountId)!.acct;
+    const name = state.accounts.get(accountId)!.username;
 
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/icons/user-off.svg'),
@@ -118,13 +119,12 @@ export function rejectUserModal(intl, accountId, afterConfirm = () => {}) {
       },
     }));
   };
-}
 
-export function toggleStatusSensitivityModal(intl, statusId, sensitive, afterConfirm = () => {}) {
-  return function(dispatch, getState) {
+const toggleStatusSensitivityModal = (intl: IntlShape, statusId: string, sensitive: boolean, afterConfirm = () => {}) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const accountId = state.getIn(['statuses', statusId, 'account']);
-    const acct = state.getIn(['accounts', accountId, 'acct']);
+    const accountId = state.statuses.get(statusId)!.account;
+    const acct = state.accounts.get(accountId)!.acct;
 
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/icons/alert-triangle.svg'),
@@ -140,13 +140,12 @@ export function toggleStatusSensitivityModal(intl, statusId, sensitive, afterCon
       },
     }));
   };
-}
 
-export function deleteStatusModal(intl, statusId, afterConfirm = () => {}) {
-  return function(dispatch, getState) {
+const deleteStatusModal = (intl: IntlShape, statusId: string, afterConfirm = () => {}) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const accountId = state.getIn(['statuses', statusId, 'account']);
-    const acct = state.getIn(['accounts', accountId, 'acct']);
+    const accountId = state.statuses.get(statusId)!.account;
+    const acct = state.accounts.get(accountId)!.acct;
 
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/icons/trash.svg'),
@@ -162,4 +161,12 @@ export function deleteStatusModal(intl, statusId, afterConfirm = () => {}) {
       },
     }));
   };
-}
+
+
+export {
+  deactivateUserModal,
+  deleteUserModal,
+  rejectUserModal,
+  toggleStatusSensitivityModal,
+  deleteStatusModal,
+};

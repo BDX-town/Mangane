@@ -39,7 +39,7 @@ const Account: React.FC<IAccount> = ({ accountId, aliases }) => {
   });
   const me = useAppSelector((state) => state.me);
 
-  const handleOnAdd = () => dispatch(addToAliases(account));
+  const handleOnAdd = () => dispatch(addToAliases(account!));
 
   if (!account) return null;
 
