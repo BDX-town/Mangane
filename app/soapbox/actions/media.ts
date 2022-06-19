@@ -4,7 +4,7 @@ import api from '../api';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
 
-const noOp = (e) => {};
+const noOp = (e: any) => {};
 
 const fetchMedia = (mediaId: string) =>
   (dispatch: any, getState: () => RootState) => {
