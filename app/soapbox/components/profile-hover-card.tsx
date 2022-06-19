@@ -102,7 +102,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
         'opacity-0 pointer-events-none': !visible,
       })}
       ref={setPopperElement}
-      style={styles.popper}
+      style={{...styles.popper, zIndex: 100}}
       {...attributes.popper}
       onMouseEnter={handleMouseEnter(dispatch)}
       onMouseLeave={handleMouseLeave(dispatch)}
