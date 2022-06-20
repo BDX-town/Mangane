@@ -94,6 +94,7 @@ interface IStatus extends RouteComponentProps {
   featured?: boolean,
   withDismiss?: boolean,
   hideActionBar?: boolean,
+  hoverable?: boolean,
 }
 
 interface IStatusState {
@@ -106,6 +107,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
   static defaultProps = {
     focusable: true,
+    hoverable: true,
   };
 
   didShowCard = false;
@@ -481,6 +483,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
                   action={reblogElement}
                   hideActions={!reblogElement}
                   showEdit={!!status.edited_at}
+                  showProfileHoverCard={this.props.hoverable}
                 />
               </HStack>
             </div>
@@ -492,7 +495,10 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
                 </div>
               )}
 
-              <StatusReplyMentions status={this._properStatus()} />
+              <StatusReplyMentions
+                status={this._properStatus()}
+                hoverable={this.props.hoverable}
+              />
 
               <StatusContent
                 status={status}

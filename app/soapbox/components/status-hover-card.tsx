@@ -70,6 +70,7 @@ export const StatusHoverCard: React.FC<IStatusHoverCard> = ({ visible = true }) 
       <StatusContainer
         key={statusId}
         id={statusId}
+        hoverable={false}
         hideActionBar
         muted
       />
