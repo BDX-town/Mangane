@@ -165,7 +165,7 @@ const makeMapStateToProps = () => {
       status,
       ancestorsIds,
       descendantsIds,
-      askReplyConfirmation: state.compose.get('text', '').trim().length !== 0,
+      askReplyConfirmation: state.compose.text.trim().length !== 0,
       me: state.me,
       displayMedia: getSettings(state).get('displayMedia'),
       allowedEmoji: soapbox.allowedEmoji,

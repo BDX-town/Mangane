@@ -16,18 +16,18 @@ const messages = defineMessages({
 
 const checkComposeContent = compose => {
   return [
-    compose.get('text').length > 0,
-    compose.get('spoiler_text').length > 0,
-    compose.get('media_attachments').size > 0,
-    compose.get('in_reply_to') !== null,
-    compose.get('quote') !== null,
-    compose.get('poll') !== null,
+    compose.text.length > 0,
+    compose.spoiler_text.length > 0,
+    compose.media_attachments.size > 0,
+    compose.in_reply_to !== null,
+    compose.quote !== null,
+    compose.poll !== null,
   ].some(check => check === true);
 };
 
 const mapStateToProps = state => ({
-  hasComposeContent: checkComposeContent(state.get('compose')),
-  isEditing: state.compose.get('id') !== null,
+  hasComposeContent: checkComposeContent(state.compose),
+  isEditing: state.compose.id !== null,
 });
 
 const mapDispatchToProps = (dispatch) => ({

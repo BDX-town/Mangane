@@ -26,7 +26,7 @@ const Account: React.FC<IAccount> = ({ accountId, author }) => {
   const dispatch = useAppDispatch();
 
   const account = useAppSelector((state) => getAccount(state, accountId));
-  const added = useAppSelector((state) => !!account && state.compose.get('to').includes(account.acct));
+  const added = useAppSelector((state) => !!account && state.compose.to?.includes(account.acct));
 
   const onRemove = () => dispatch(removeFromMentions(accountId));
   const onAdd = () => dispatch(addToMentions(accountId));

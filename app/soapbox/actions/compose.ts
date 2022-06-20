@@ -1,5 +1,4 @@
 import axios, { AxiosError, Canceler } from 'axios';
-import { List as ImmutableList, Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import throttle from 'lodash/throttle';
 import { defineMessages, IntlShape } from 'react-intl';
 
@@ -100,7 +99,7 @@ const messages = defineMessages({
 const COMPOSE_PANEL_BREAKPOINT = 600 + (285 * 1) + (10 * 1);
 
 const ensureComposeIsVisible = (getState: () => RootState, routerHistory: History) => {
-  if (!getState().compose.get('mounted') && window.innerWidth < COMPOSE_PANEL_BREAKPOINT) {
+  if (!getState().compose.mounted && window.innerWidth < COMPOSE_PANEL_BREAKPOINT) {
     routerHistory.push('/posts/new');
   }
 };
@@ -212,16 +211,16 @@ const handleComposeSubmit = (dispatch: AppDispatch, getState: () => RootState, d
 };
 
 const needsDescriptions = (state: RootState) => {
-  const media  = state.compose.get('media_attachments') as ImmutableList<ImmutableMap<string, any>>;
+  const media  = state.compose.media_attachments;
   const missingDescriptionModal = getSettings(state).get('missingDescriptionModal');
 
-  const hasMissing = media.filter(item => !item.get('description')).size > 0;
+  const hasMissing = media.filter(item => !item.description).size > 0;
 
   return missingDescriptionModal && hasMissing;
 };
 
 const validateSchedule = (state: RootState) => {
-  const schedule = state.compose.get('schedule');
+  const schedule = state.compose.schedule;
   if (!schedule) return true;
 
   const fiveMinutesFromNow = new Date(new Date().getTime() + 300000);
@@ -234,10 +233,10 @@ const submitCompose = (routerHistory: History, force = false) =>
     if (!isLoggedIn(getState)) return;
     const state = getState();
 
-    const status   = state.compose.get('text') || '';
-    const media    = state.compose.get('media_attachments') as ImmutableList<ImmutableMap<string, any>>;
-    const statusId = state.compose.get('id') || null;
-    let to         = state.compose.get('to') || ImmutableOrderedSet();
+    const status   = state.compose.text;
+    const media    = state.compose.media_attachments;
+    const statusId = state.compose.id;
+    let to         = state.compose.to;
 
     if (!validateSchedule(state)) {
       dispatch(snackbar.error(messages.scheduleError));
@@ -259,7 +258,7 @@ const submitCompose = (routerHistory: History, force = false) =>
     }
 
     if (to && status) {
-      const mentions: string[] = status.match(/(?:^|\s|\.)@([a-z0-9_]+(?:@[a-z0-9\.\-]+)?)/gi); // not a perfect regex
+      const mentions: string[] | null = status.match(/(?:^|\s|\.)@([a-z0-9_]+(?:@[a-z0-9\.\-]+)?)/gi); // not a perfect regex
 
       if (mentions)
         to = to.union(mentions.map(mention => mention.trim().slice(1)));
@@ -268,19 +267,19 @@ const submitCompose = (routerHistory: History, force = false) =>
     dispatch(submitComposeRequest());
     dispatch(closeModal());
 
-    const idempotencyKey = state.compose.get('idempotencyKey');
+    const idempotencyKey = state.compose.idempotencyKey;
 
     const params = {
       status,
-      in_reply_to_id: state.compose.get('in_reply_to') || null,
-      quote_id: state.compose.get('quote') || null,
-      media_ids: media.map(item => item.get('id')),
-      sensitive: state.compose.get('sensitive'),
-      spoiler_text: state.compose.get('spoiler_text') || '',
-      visibility: state.compose.get('privacy'),
-      content_type: state.compose.get('content_type'),
-      poll: state.compose.get('poll') || null,
-      scheduled_at: state.compose.get('schedule') || null,
+      in_reply_to_id: state.compose.in_reply_to,
+      quote_id: state.compose.quote,
+      media_ids: media.map(item => item.id),
+      sensitive: state.compose.sensitive,
+      spoiler_text: state.compose.spoiler_text,
+      visibility: state.compose.privacy,
+      content_type: state.compose.content_type,
+      poll: state.compose.poll,
+      scheduled_at: state.compose.schedule,
       to,
     };
 
@@ -315,7 +314,7 @@ const uploadCompose = (files: FileList, intl: IntlShape) =>
     const maxImageSize = getState().instance.configuration.getIn(['media_attachments', 'image_size_limit']) as number | undefined;
     const maxVideoSize = getState().instance.configuration.getIn(['media_attachments', 'video_size_limit']) as number | undefined;
 
-    const media  = getState().compose.get('media_attachments');
+    const media  = getState().compose.media_attachments;
     const progress = new Array(files.length).fill(0);
     let total = Array.from(files).reduce((a, v) => a + v.size, 0);
 
@@ -550,7 +549,7 @@ const updateTagHistory = (tags: string[]) => ({
 const insertIntoTagHistory = (recognizedTags: APIEntity[], text: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const oldHistory = state.compose.get('tagHistory') as ImmutableList<string>;
+    const oldHistory = state.compose.tagHistory;
     const me = state.me;
     const names = recognizedTags
       .filter(tag => text.match(new RegExp(`#${tag.name}`, 'i')))

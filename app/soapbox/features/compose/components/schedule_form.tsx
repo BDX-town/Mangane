@@ -31,7 +31,7 @@ const ScheduleForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const scheduledAt = useAppSelector((state) => state.compose.get('schedule'));
+  const scheduledAt = useAppSelector((state) => state.compose.schedule);
   const active = !!scheduledAt;
 
   const onSchedule = (date: Date) => {

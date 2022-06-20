@@ -47,7 +47,7 @@ const statusExists = (getState: () => RootState, statusId: string) => {
   return (getState().statuses.get(statusId) || null) !== null;
 };
 
-const createStatus = (params: Record<string, any>, idempotencyKey: string, statusId: string) => {
+const createStatus = (params: Record<string, any>, idempotencyKey: string, statusId: string | null) => {
   return (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: STATUS_CREATE_REQUEST, params, idempotencyKey });
 

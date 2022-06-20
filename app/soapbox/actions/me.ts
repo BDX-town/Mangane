@@ -25,7 +25,7 @@ const getMeId = (state: RootState) => state.me || getAuthUserId(state);
 
 const getMeUrl = (state: RootState) => {
   const accountId = getMeId(state);
-  return state.accounts.get(accountId)!.url || getAuthUserUrl(state);
+  return state.accounts.get(accountId)?.url || getAuthUserUrl(state);
 };
 
 const getMeToken = (state: RootState) => {

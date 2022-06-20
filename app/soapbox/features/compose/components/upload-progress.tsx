@@ -5,8 +5,8 @@ import { useAppSelector } from 'soapbox/hooks';
 
 /** File upload progress bar for post composer. */
 const ComposeUploadProgress = () => {
-  const active = useAppSelector((state) => state.compose.get('is_uploading'));
-  const progress = useAppSelector((state) => state.compose.get('progress'));
+  const active = useAppSelector((state) => state.compose.is_uploading);
+  const progress = useAppSelector((state) => state.compose.progress);
 
   if (!active) {
     return null;
