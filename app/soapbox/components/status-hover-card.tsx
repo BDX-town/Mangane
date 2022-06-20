@@ -79,7 +79,7 @@ export const StatusHoverCard: React.FC<IStatusHoverCard> = ({ visible = true }) 
   return (
     <div
       className={classNames({
-        'absolute transition-opacity w-[500px] z-[100] top-0 left-0': true,
+        'absolute transition-opacity w-[500px] z-50 top-0 left-0': true,
         'opacity-100': visible,
         'opacity-0 pointer-events-none': !visible,
       })}
