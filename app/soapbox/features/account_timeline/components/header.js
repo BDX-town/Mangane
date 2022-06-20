@@ -39,11 +39,11 @@ class Header extends ImmutablePureComponent {
   }
 
   handleMention = () => {
-    this.props.onMention(this.props.account, this.props.history);
+    this.props.onMention(this.props.account);
   }
 
   handleDirect = () => {
-    this.props.onDirect(this.props.account, this.props.history);
+    this.props.onDirect(this.props.account);
   }
 
   handleReport = () => {

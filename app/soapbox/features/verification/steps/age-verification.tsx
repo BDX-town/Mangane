@@ -25,8 +25,8 @@ const AgeVerification = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const isLoading = useAppSelector((state) => state.verification.get('isLoading')) as boolean;
-  const ageMinimum = useAppSelector((state) => state.verification.get('ageMinimum')) as any;
+  const isLoading = useAppSelector((state) => state.verification.isLoading) as boolean;
+  const ageMinimum = useAppSelector((state) => state.verification.ageMinimum) as any;
   const siteTitle = useAppSelector((state) => state.instance.title);
 
   const [date, setDate] = React.useState('');

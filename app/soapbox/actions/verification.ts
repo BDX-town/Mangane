@@ -1,5 +1,7 @@
 import api from '../api';
 
+import type { AppDispatch, RootState } from 'soapbox/store';
+
 /**
  * LocalStorage 'soapbox:verification'
  *
@@ -22,99 +24,89 @@ const SET_NEXT_CHALLENGE = 'SET_NEXT_CHALLENGE';
 const SET_CHALLENGES_COMPLETE = 'SET_CHALLENGES_COMPLETE';
 const SET_LOADING = 'SET_LOADING';
 
-const ChallengeTypes = {
-  EMAIL: 'email',
-  SMS: 'sms',
-  AGE: 'age',
+const EMAIL: Challenge = 'email';
+const SMS: Challenge = 'sms';
+const AGE: Challenge = 'age';
+
+export type Challenge = 'age' | 'sms' | 'email'
+
+type Challenges = {
+  email?: 0 | 1,
+  sms?: number,
+  age?: number,
+}
+
+type Verification = {
+  token?: string,
+  challenges?: Challenges,
 };
 
 /**
  * Fetch the state of the user's verification in local storage.
- *
- * @returns {object}
- * {
- *   token: String,
- *   challenges: {
- *     email: Number (0 = incomplete, 1 = complete),
- *     sms: Number,
- *     age: Number
- *   }
- * }
  */
-function fetchStoredVerification() {
+const fetchStoredVerification = (): Verification | null => {
   try {
-    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_VERIFICATION_KEY));
+    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_VERIFICATION_KEY) as string);
   } catch {
     return null;
   }
-}
+};
 
 /**
  * Remove the state of the user's verification from local storage.
  */
-function removeStoredVerification() {
+const removeStoredVerification = () => {
   localStorage.removeItem(LOCAL_STORAGE_VERIFICATION_KEY);
-}
+};
 
 
 /**
  * Fetch and return the Registration token for Pepe.
- * @returns {string}
  */
-function fetchStoredToken() {
+const fetchStoredToken = () => {
   try {
-    const verification = fetchStoredVerification();
-    return verification.token;
+    const verification: Verification | null = fetchStoredVerification();
+    return verification!.token;
   } catch {
     return null;
   }
-}
+};
 
 /**
  * Fetch and return the state of the verification challenges.
- * @returns {object}
- * {
- *   challenges: {
- *     email: Number (0 = incomplete, 1 = complete),
- *     sms: Number,
- *     age: Number
- *   }
- * }
  */
-function fetchStoredChallenges() {
+const fetchStoredChallenges = () => {
   try {
-    const verification = fetchStoredVerification();
-    return verification.challenges;
+    const verification: Verification | null = fetchStoredVerification();
+    return verification!.challenges;
   } catch {
     return null;
   }
-}
+};
 
 /**
  * Update the verification object in local storage.
  *
  * @param {*} verification object
  */
-function updateStorage({ ...updatedVerification }) {
+const updateStorage = ({ ...updatedVerification }: Verification) => {
   const verification = fetchStoredVerification();
 
   localStorage.setItem(
     LOCAL_STORAGE_VERIFICATION_KEY,
     JSON.stringify({ ...verification, ...updatedVerification }),
   );
-}
+};
 
 /**
  * Fetch Pepe challenges and registration token
- * @returns {promise}
  */
-function fetchVerificationConfig() {
-  return async(dispatch) => {
+const fetchVerificationConfig = () =>
+  async(dispatch: AppDispatch) => {
     await dispatch(fetchPepeInstance());
 
     dispatch(fetchRegistrationToken());
   };
-}
 
 /**
  * Save the challenges in localStorage.
@@ -125,13 +117,11 @@ function fetchVerificationConfig() {
  *    challenge to localStorage.
  * - Don't overwrite a challenge that has already been completed.
  * - Update localStorage to the new set of challenges.
- *
- * @param {array} challenges - ['age', 'sms', 'email']
  */
-function saveChallenges(challenges) {
-  const currentChallenges = fetchStoredChallenges() || {};
+function saveChallenges(challenges: Array<'age' | 'sms' | 'email'>) {
+  const currentChallenges: Challenges = fetchStoredChallenges() || {};
 
-  const challengesToRemove = Object.keys(currentChallenges).filter((currentChallenge) => !challenges.includes(currentChallenge));
+  const challengesToRemove = Object.keys(currentChallenges).filter((currentChallenge) => !challenges.includes(currentChallenge as Challenge)) as Challenge[];
   challengesToRemove.forEach((challengeToRemove) => delete currentChallenges[challengeToRemove]);
 
   for (let i = 0; i < challenges.length; i++) {
@@ -147,10 +137,9 @@ function saveChallenges(challenges) {
 
 /**
  * Finish a challenge.
- * @param {string} challenge - "sms" or "email" or "age"
  */
-function finishChallenge(challenge) {
-  const currentChallenges = fetchStoredChallenges() || {};
+function finishChallenge(challenge: Challenge) {
+  const currentChallenges: Challenges = fetchStoredChallenges() || {};
   // Set challenge to "complete"
   currentChallenges[challenge] = 1;
 
@@ -159,17 +148,16 @@ function finishChallenge(challenge) {
 
 /**
  * Fetch the next challenge
- * @returns {string} challenge - "sms" or "email" or "age"
  */
-function fetchNextChallenge() {
-  const currentChallenges = fetchStoredChallenges() || {};
-  return Object.keys(currentChallenges).find((challenge) => currentChallenges[challenge] === 0);
-}
+const fetchNextChallenge = (): Challenge => {
+  const currentChallenges: Challenges = fetchStoredChallenges() || {};
+  return Object.keys(currentChallenges).find((challenge) => currentChallenges[challenge as Challenge] === 0) as Challenge;
+};
 
 /**
  * Dispatch the next challenge or set to complete if all challenges are completed.
  */
-function dispatchNextChallenge(dispatch) {
+const dispatchNextChallenge = (dispatch: AppDispatch) => {
   const nextChallenge = fetchNextChallenge();
 
   if (nextChallenge) {
@@ -177,14 +165,13 @@ function dispatchNextChallenge(dispatch) {
   } else {
     dispatch({ type: SET_CHALLENGES_COMPLETE });
   }
-}
+};
 
 /**
  * Fetch the challenges and age mininum from Pepe
- * @returns {promise}
  */
-function fetchPepeInstance() {
-  return (dispatch, getState) => {
+const fetchPepeInstance = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: SET_LOADING });
 
     return api(getState).get('/api/v1/pepe/instance').then(response => {
@@ -203,14 +190,12 @@ function fetchPepeInstance() {
     })
       .finally(() => dispatch({ type: SET_LOADING, value: false }));
   };
-}
 
 /**
  * Fetch the regristration token from Pepe unless it's already been stored locally
- * @returns {promise}
  */
-function fetchRegistrationToken() {
-  return (dispatch, getState) => {
+const fetchRegistrationToken = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: SET_LOADING });
 
     const token = fetchStoredToken();
@@ -234,10 +219,9 @@ function fetchRegistrationToken() {
       })
       .finally(() => dispatch({ type: SET_LOADING, value: false }));
   };
-}
 
-function checkEmailAvailability(email) {
-  return (dispatch, getState) => {
+const checkEmailAvailability = (email: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: SET_LOADING });
 
     const token = fetchStoredToken();
@@ -248,15 +232,12 @@ function checkEmailAvailability(email) {
       .catch(() => {})
       .then(() => dispatch({ type: SET_LOADING, value: false }));
   };
-}
 
 /**
  * Send the user's email to Pepe to request confirmation
- * @param {string} email
- * @returns {promise}
  */
-function requestEmailVerification(email) {
-  return (dispatch, getState) => {
+const requestEmailVerification = (email: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: SET_LOADING });
 
     const token = fetchStoredToken();
@@ -266,25 +247,21 @@ function requestEmailVerification(email) {
     })
       .finally(() => dispatch({ type: SET_LOADING, value: false }));
   };
-}
 
-function checkEmailVerification() {
-  return (dispatch, getState) => {
+const checkEmailVerification = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const token = fetchStoredToken();
 
     return api(getState).get('/api/v1/pepe/verify_email', {
       headers: { Authorization: `Bearer ${token}` },
     });
   };
-}
 
 /**
  * Confirm the user's email with Pepe
- * @param {string} emailToken
- * @returns {promise}
  */
-function confirmEmailVerification(emailToken) {
-  return (dispatch, getState) => {
+const confirmEmailVerification = (emailToken: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: SET_LOADING });
 
     const token = fetchStoredToken();
@@ -293,27 +270,23 @@ function confirmEmailVerification(emailToken) {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(() => {
-        finishChallenge(ChallengeTypes.EMAIL);
+        finishChallenge(EMAIL);
         dispatchNextChallenge(dispatch);
       })
       .finally(() => dispatch({ type: SET_LOADING, value: false }));
   };
-}
 
-function postEmailVerification() {
-  return (dispatch, getState) => {
-    finishChallenge(ChallengeTypes.EMAIL);
+const postEmailVerification = () =>
+  (dispatch: AppDispatch) => {
+    finishChallenge(EMAIL);
     dispatchNextChallenge(dispatch);
   };
-}
 
 /**
  * Send the user's phone number to Pepe to request confirmation
- * @param {string} phone
- * @returns {promise}
  */
-function requestPhoneVerification(phone) {
-  return (dispatch, getState) => {
+const requestPhoneVerification = (phone: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: SET_LOADING });
 
     const token = fetchStoredToken();
@@ -323,29 +296,23 @@ function requestPhoneVerification(phone) {
     })
       .finally(() => dispatch({ type: SET_LOADING, value: false }));
   };
-}
 
 /**
  * Send the user's phone number to Pepe to re-request confirmation
- * @param {string} phone
- * @returns {promise}
  */
-function reRequestPhoneVerification(phone) {
-  return (dispatch, getState) => {
+const reRequestPhoneVerification = (phone: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: SET_LOADING });
 
     return api(getState).post('/api/v1/pepe/reverify_sms/request', { phone })
       .finally(() => dispatch({ type: SET_LOADING, value: false }));
   };
-}
 
 /**
  * Confirm the user's phone number with Pepe
- * @param {string} code
- * @returns {promise}
  */
-function confirmPhoneVerification(code) {
-  return (dispatch, getState) => {
+const confirmPhoneVerification = (code: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: SET_LOADING });
 
     const token = fetchStoredToken();
@@ -354,34 +321,28 @@ function confirmPhoneVerification(code) {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(() => {
-        finishChallenge(ChallengeTypes.SMS);
+        finishChallenge(SMS);
         dispatchNextChallenge(dispatch);
       })
       .finally(() => dispatch({ type: SET_LOADING, value: false }));
   };
-}
 
 /**
  * Re-Confirm the user's phone number with Pepe
- * @param {string} code
- * @returns {promise}
  */
-function reConfirmPhoneVerification(code) {
-  return (dispatch, getState) => {
+const reConfirmPhoneVerification = (code: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: SET_LOADING });
 
     return api(getState).post('/api/v1/pepe/reverify_sms/confirm', { code })
       .finally(() => dispatch({ type: SET_LOADING, value: false }));
   };
-}
 
 /**
  * Confirm the user's age with Pepe
- * @param {date} birthday
- * @returns {promise}
  */
-function verifyAge(birthday) {
-  return (dispatch, getState) => {
+const verifyAge = (birthday: Date) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: SET_LOADING });
 
     const token = fetchStoredToken();
@@ -390,21 +351,17 @@ function verifyAge(birthday) {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(() => {
-        finishChallenge(ChallengeTypes.AGE);
+        finishChallenge(AGE);
         dispatchNextChallenge(dispatch);
       })
       .finally(() => dispatch({ type: SET_LOADING, value: false }));
   };
-}
 
 /**
  * Create the user's account with Pepe
- * @param {string} username
- * @param {string} password
- * @returns {promise}
  */
-function createAccount(username, password) {
-  return (dispatch, getState) => {
+const createAccount = (username: string, password: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: SET_LOADING });
 
     const token = fetchStoredToken();
@@ -413,7 +370,6 @@ function createAccount(username, password) {
       headers: { Authorization: `Bearer ${token}` },
     }).finally(() => dispatch({ type: SET_LOADING, value: false }));
   };
-}
 
 export {
   PEPE_FETCH_INSTANCE_SUCCESS,

@@ -27,7 +27,7 @@ const updateMrf = (host: string, restrictions: ImmutableMap<string, any>) =>
         const simplePolicy = ConfigDB.toSimplePolicy(configs);
         const merged = simplePolicyMerge(simplePolicy, host, restrictions);
         const config = ConfigDB.fromSimplePolicy(merged);
-        return dispatch(updateConfig(config));
+        return dispatch(updateConfig(config.toJS() as Array<Record<string, any>>));
       });
 
 export { updateMrf };

@@ -273,10 +273,10 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
       dispatch(openModal('CONFIRM', {
         message: intl.formatMessage(messages.replyMessage),
         confirm: intl.formatMessage(messages.replyConfirm),
-        onConfirm: () => dispatch(replyCompose(status, this.props.history)),
+        onConfirm: () => dispatch(replyCompose(status)),
       }));
     } else {
-      dispatch(replyCompose(status, this.props.history));
+      dispatch(replyCompose(status));
     }
   }
 
@@ -305,10 +305,10 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
       dispatch(openModal('CONFIRM', {
         message: intl.formatMessage(messages.replyMessage),
         confirm: intl.formatMessage(messages.replyConfirm),
-        onConfirm: () => dispatch(quoteCompose(status, this.props.history)),
+        onConfirm: () => dispatch(quoteCompose(status)),
       }));
     } else {
-      dispatch(quoteCompose(status, this.props.history));
+      dispatch(quoteCompose(status));
     }
   }
 
@@ -337,16 +337,16 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     dispatch(editStatus(status.id));
   }
 
-  handleDirectClick = (account: AccountEntity, router: History) => {
-    this.props.dispatch(directCompose(account, router));
+  handleDirectClick = (account: AccountEntity) => {
+    this.props.dispatch(directCompose(account));
   }
 
   handleChatClick = (account: AccountEntity, router: History) => {
     this.props.dispatch(launchChat(account.id, router));
   }
 
-  handleMentionClick = (account: AccountEntity, router: History) => {
-    this.props.dispatch(mentionCompose(account, router));
+  handleMentionClick = (account: AccountEntity) => {
+    this.props.dispatch(mentionCompose(account));
   }
 
   handleOpenMedia = (media: ImmutableList<AttachmentEntity>, index: number) => {
@@ -475,7 +475,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     e?.preventDefault();
     const { account } = this.props.status;
     if (!account || typeof account !== 'object') return;
-    this.handleMentionClick(account, this.props.history);
+    this.handleMentionClick(account);
   }
 
   handleHotkeyOpenProfile = () => {

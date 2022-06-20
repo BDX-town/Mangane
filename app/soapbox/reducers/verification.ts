@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { Map as ImmutableMap, Record as ImmutableRecord, fromJS } from 'immutable';
 
 import {
   PEPE_FETCH_INSTANCE_SUCCESS,
@@ -7,21 +7,24 @@ import {
   SET_CHALLENGES_COMPLETE,
   SET_LOADING,
   SET_NEXT_CHALLENGE,
+  Challenge,
 } from '../actions/verification';
 
-const initialState = ImmutableMap({
-  ageMinimum: null,
-  currentChallenge: null,
+import type { AnyAction } from 'redux';
+
+const ReducerRecord = ImmutableRecord({
+  ageMinimum: null as string |  null,
+  currentChallenge: null as Challenge | null,
   isLoading: false,
-  isComplete: false,
-  token: null,
-  instance: ImmutableMap(),
+  isComplete: false as boolean | null,
+  token: null as string | null,
+  instance: ImmutableMap<string, any>(),
 });
 
-export default function verification(state = initialState, action) {
+export default function verification(state = ReducerRecord(), action: AnyAction) {
   switch (action.type) {
     case PEPE_FETCH_INSTANCE_SUCCESS:
-      return state.set('instance', fromJS(action.instance));
+      return state.set('instance', ImmutableMap(fromJS(action.instance)));
     case FETCH_CHALLENGES_SUCCESS:
       return state
         .set('ageMinimum', action.ageMinimum)

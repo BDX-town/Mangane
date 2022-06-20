@@ -1,3 +1,5 @@
+import { fromJS } from 'immutable';
+
 import { mockStore } from 'soapbox/jest/test-helpers';
 import { InstanceRecord } from 'soapbox/normalizers';
 import rootReducer from 'soapbox/reducers';
@@ -10,14 +12,14 @@ describe('uploadCompose()', () => {
 
     beforeEach(() => {
       const instance = InstanceRecord({
-        configuration: {
+        configuration: fromJS({
           statuses: {
             max_media_attachments: 4,
           },
           media_attachments: {
             image_size_limit: 10,
           },
-        },
+        }),
       });
 
       const state = rootReducer(undefined, {})
@@ -62,14 +64,14 @@ describe('uploadCompose()', () => {
 
     beforeEach(() => {
       const instance = InstanceRecord({
-        configuration: {
+        configuration: fromJS({
           statuses: {
             max_media_attachments: 4,
           },
           media_attachments: {
             video_size_limit: 10,
           },
-        },
+        }),
       });
 
       const state = rootReducer(undefined, {})

@@ -53,7 +53,7 @@ const EmailVerification = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const isLoading = useAppSelector((state) => state.verification.get('isLoading')) as boolean;
+  const isLoading = useAppSelector((state) => state.verification.isLoading) as boolean;
 
   const [email, setEmail] = React.useState('');
   const [status, setStatus] = React.useState(Statuses.IDLE);

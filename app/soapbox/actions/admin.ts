@@ -4,78 +4,82 @@ import { getFeatures } from 'soapbox/utils/features';
 
 import api, { getLinks } from '../api';
 
-export const ADMIN_CONFIG_FETCH_REQUEST = 'ADMIN_CONFIG_FETCH_REQUEST';
-export const ADMIN_CONFIG_FETCH_SUCCESS = 'ADMIN_CONFIG_FETCH_SUCCESS';
-export const ADMIN_CONFIG_FETCH_FAIL    = 'ADMIN_CONFIG_FETCH_FAIL';
+import type { AxiosResponse } from 'axios';
+import type { AppDispatch, RootState } from 'soapbox/store';
+import type { APIEntity } from 'soapbox/types/entities';
 
-export const ADMIN_CONFIG_UPDATE_REQUEST = 'ADMIN_CONFIG_UPDATE_REQUEST';
-export const ADMIN_CONFIG_UPDATE_SUCCESS = 'ADMIN_CONFIG_UPDATE_SUCCESS';
-export const ADMIN_CONFIG_UPDATE_FAIL    = 'ADMIN_CONFIG_UPDATE_FAIL';
+const ADMIN_CONFIG_FETCH_REQUEST = 'ADMIN_CONFIG_FETCH_REQUEST';
+const ADMIN_CONFIG_FETCH_SUCCESS = 'ADMIN_CONFIG_FETCH_SUCCESS';
+const ADMIN_CONFIG_FETCH_FAIL    = 'ADMIN_CONFIG_FETCH_FAIL';
 
-export const ADMIN_REPORTS_FETCH_REQUEST = 'ADMIN_REPORTS_FETCH_REQUEST';
-export const ADMIN_REPORTS_FETCH_SUCCESS = 'ADMIN_REPORTS_FETCH_SUCCESS';
-export const ADMIN_REPORTS_FETCH_FAIL    = 'ADMIN_REPORTS_FETCH_FAIL';
+const ADMIN_CONFIG_UPDATE_REQUEST = 'ADMIN_CONFIG_UPDATE_REQUEST';
+const ADMIN_CONFIG_UPDATE_SUCCESS = 'ADMIN_CONFIG_UPDATE_SUCCESS';
+const ADMIN_CONFIG_UPDATE_FAIL    = 'ADMIN_CONFIG_UPDATE_FAIL';
 
-export const ADMIN_REPORTS_PATCH_REQUEST = 'ADMIN_REPORTS_PATCH_REQUEST';
-export const ADMIN_REPORTS_PATCH_SUCCESS = 'ADMIN_REPORTS_PATCH_SUCCESS';
-export const ADMIN_REPORTS_PATCH_FAIL    = 'ADMIN_REPORTS_PATCH_FAIL';
+const ADMIN_REPORTS_FETCH_REQUEST = 'ADMIN_REPORTS_FETCH_REQUEST';
+const ADMIN_REPORTS_FETCH_SUCCESS = 'ADMIN_REPORTS_FETCH_SUCCESS';
+const ADMIN_REPORTS_FETCH_FAIL    = 'ADMIN_REPORTS_FETCH_FAIL';
 
-export const ADMIN_USERS_FETCH_REQUEST = 'ADMIN_USERS_FETCH_REQUEST';
-export const ADMIN_USERS_FETCH_SUCCESS = 'ADMIN_USERS_FETCH_SUCCESS';
-export const ADMIN_USERS_FETCH_FAIL    = 'ADMIN_USERS_FETCH_FAIL';
+const ADMIN_REPORTS_PATCH_REQUEST = 'ADMIN_REPORTS_PATCH_REQUEST';
+const ADMIN_REPORTS_PATCH_SUCCESS = 'ADMIN_REPORTS_PATCH_SUCCESS';
+const ADMIN_REPORTS_PATCH_FAIL    = 'ADMIN_REPORTS_PATCH_FAIL';
 
-export const ADMIN_USERS_DELETE_REQUEST = 'ADMIN_USERS_DELETE_REQUEST';
-export const ADMIN_USERS_DELETE_SUCCESS = 'ADMIN_USERS_DELETE_SUCCESS';
-export const ADMIN_USERS_DELETE_FAIL    = 'ADMIN_USERS_DELETE_FAIL';
+const ADMIN_USERS_FETCH_REQUEST = 'ADMIN_USERS_FETCH_REQUEST';
+const ADMIN_USERS_FETCH_SUCCESS = 'ADMIN_USERS_FETCH_SUCCESS';
+const ADMIN_USERS_FETCH_FAIL    = 'ADMIN_USERS_FETCH_FAIL';
 
-export const ADMIN_USERS_APPROVE_REQUEST = 'ADMIN_USERS_APPROVE_REQUEST';
-export const ADMIN_USERS_APPROVE_SUCCESS = 'ADMIN_USERS_APPROVE_SUCCESS';
-export const ADMIN_USERS_APPROVE_FAIL    = 'ADMIN_USERS_APPROVE_FAIL';
+const ADMIN_USERS_DELETE_REQUEST = 'ADMIN_USERS_DELETE_REQUEST';
+const ADMIN_USERS_DELETE_SUCCESS = 'ADMIN_USERS_DELETE_SUCCESS';
+const ADMIN_USERS_DELETE_FAIL    = 'ADMIN_USERS_DELETE_FAIL';
 
-export const ADMIN_USERS_DEACTIVATE_REQUEST = 'ADMIN_USERS_DEACTIVATE_REQUEST';
-export const ADMIN_USERS_DEACTIVATE_SUCCESS = 'ADMIN_USERS_DEACTIVATE_SUCCESS';
-export const ADMIN_USERS_DEACTIVATE_FAIL    = 'ADMIN_USERS_DEACTIVATE_FAIL';
+const ADMIN_USERS_APPROVE_REQUEST = 'ADMIN_USERS_APPROVE_REQUEST';
+const ADMIN_USERS_APPROVE_SUCCESS = 'ADMIN_USERS_APPROVE_SUCCESS';
+const ADMIN_USERS_APPROVE_FAIL    = 'ADMIN_USERS_APPROVE_FAIL';
 
-export const ADMIN_STATUS_DELETE_REQUEST = 'ADMIN_STATUS_DELETE_REQUEST';
-export const ADMIN_STATUS_DELETE_SUCCESS = 'ADMIN_STATUS_DELETE_SUCCESS';
-export const ADMIN_STATUS_DELETE_FAIL    = 'ADMIN_STATUS_DELETE_FAIL';
+const ADMIN_USERS_DEACTIVATE_REQUEST = 'ADMIN_USERS_DEACTIVATE_REQUEST';
+const ADMIN_USERS_DEACTIVATE_SUCCESS = 'ADMIN_USERS_DEACTIVATE_SUCCESS';
+const ADMIN_USERS_DEACTIVATE_FAIL    = 'ADMIN_USERS_DEACTIVATE_FAIL';
 
-export const ADMIN_STATUS_TOGGLE_SENSITIVITY_REQUEST = 'ADMIN_STATUS_TOGGLE_SENSITIVITY_REQUEST';
-export const ADMIN_STATUS_TOGGLE_SENSITIVITY_SUCCESS = 'ADMIN_STATUS_TOGGLE_SENSITIVITY_SUCCESS';
-export const ADMIN_STATUS_TOGGLE_SENSITIVITY_FAIL    = 'ADMIN_STATUS_TOGGLE_SENSITIVITY_FAIL';
+const ADMIN_STATUS_DELETE_REQUEST = 'ADMIN_STATUS_DELETE_REQUEST';
+const ADMIN_STATUS_DELETE_SUCCESS = 'ADMIN_STATUS_DELETE_SUCCESS';
+const ADMIN_STATUS_DELETE_FAIL    = 'ADMIN_STATUS_DELETE_FAIL';
 
-export const ADMIN_LOG_FETCH_REQUEST = 'ADMIN_LOG_FETCH_REQUEST';
-export const ADMIN_LOG_FETCH_SUCCESS = 'ADMIN_LOG_FETCH_SUCCESS';
-export const ADMIN_LOG_FETCH_FAIL    = 'ADMIN_LOG_FETCH_FAIL';
+const ADMIN_STATUS_TOGGLE_SENSITIVITY_REQUEST = 'ADMIN_STATUS_TOGGLE_SENSITIVITY_REQUEST';
+const ADMIN_STATUS_TOGGLE_SENSITIVITY_SUCCESS = 'ADMIN_STATUS_TOGGLE_SENSITIVITY_SUCCESS';
+const ADMIN_STATUS_TOGGLE_SENSITIVITY_FAIL    = 'ADMIN_STATUS_TOGGLE_SENSITIVITY_FAIL';
 
-export const ADMIN_USERS_TAG_REQUEST = 'ADMIN_USERS_TAG_REQUEST';
-export const ADMIN_USERS_TAG_SUCCESS = 'ADMIN_USERS_TAG_SUCCESS';
-export const ADMIN_USERS_TAG_FAIL    = 'ADMIN_USERS_TAG_FAIL';
+const ADMIN_LOG_FETCH_REQUEST = 'ADMIN_LOG_FETCH_REQUEST';
+const ADMIN_LOG_FETCH_SUCCESS = 'ADMIN_LOG_FETCH_SUCCESS';
+const ADMIN_LOG_FETCH_FAIL    = 'ADMIN_LOG_FETCH_FAIL';
 
-export const ADMIN_USERS_UNTAG_REQUEST = 'ADMIN_USERS_UNTAG_REQUEST';
-export const ADMIN_USERS_UNTAG_SUCCESS = 'ADMIN_USERS_UNTAG_SUCCESS';
-export const ADMIN_USERS_UNTAG_FAIL    = 'ADMIN_USERS_UNTAG_FAIL';
+const ADMIN_USERS_TAG_REQUEST = 'ADMIN_USERS_TAG_REQUEST';
+const ADMIN_USERS_TAG_SUCCESS = 'ADMIN_USERS_TAG_SUCCESS';
+const ADMIN_USERS_TAG_FAIL    = 'ADMIN_USERS_TAG_FAIL';
 
-export const ADMIN_ADD_PERMISSION_GROUP_REQUEST = 'ADMIN_ADD_PERMISSION_GROUP_REQUEST';
-export const ADMIN_ADD_PERMISSION_GROUP_SUCCESS = 'ADMIN_ADD_PERMISSION_GROUP_SUCCESS';
-export const ADMIN_ADD_PERMISSION_GROUP_FAIL    = 'ADMIN_ADD_PERMISSION_GROUP_FAIL';
+const ADMIN_USERS_UNTAG_REQUEST = 'ADMIN_USERS_UNTAG_REQUEST';
+const ADMIN_USERS_UNTAG_SUCCESS = 'ADMIN_USERS_UNTAG_SUCCESS';
+const ADMIN_USERS_UNTAG_FAIL    = 'ADMIN_USERS_UNTAG_FAIL';
 
-export const ADMIN_REMOVE_PERMISSION_GROUP_REQUEST = 'ADMIN_REMOVE_PERMISSION_GROUP_REQUEST';
-export const ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS = 'ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS';
-export const ADMIN_REMOVE_PERMISSION_GROUP_FAIL    = 'ADMIN_REMOVE_PERMISSION_GROUP_FAIL';
+const ADMIN_ADD_PERMISSION_GROUP_REQUEST = 'ADMIN_ADD_PERMISSION_GROUP_REQUEST';
+const ADMIN_ADD_PERMISSION_GROUP_SUCCESS = 'ADMIN_ADD_PERMISSION_GROUP_SUCCESS';
+const ADMIN_ADD_PERMISSION_GROUP_FAIL    = 'ADMIN_ADD_PERMISSION_GROUP_FAIL';
 
-export const ADMIN_USERS_SUGGEST_REQUEST = 'ADMIN_USERS_SUGGEST_REQUEST';
-export const ADMIN_USERS_SUGGEST_SUCCESS = 'ADMIN_USERS_SUGGEST_SUCCESS';
-export const ADMIN_USERS_SUGGEST_FAIL    = 'ADMIN_USERS_SUGGEST_FAIL';
+const ADMIN_REMOVE_PERMISSION_GROUP_REQUEST = 'ADMIN_REMOVE_PERMISSION_GROUP_REQUEST';
+const ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS = 'ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS';
+const ADMIN_REMOVE_PERMISSION_GROUP_FAIL    = 'ADMIN_REMOVE_PERMISSION_GROUP_FAIL';
 
-export const ADMIN_USERS_UNSUGGEST_REQUEST = 'ADMIN_USERS_UNSUGGEST_REQUEST';
-export const ADMIN_USERS_UNSUGGEST_SUCCESS = 'ADMIN_USERS_UNSUGGEST_SUCCESS';
-export const ADMIN_USERS_UNSUGGEST_FAIL    = 'ADMIN_USERS_UNSUGGEST_FAIL';
+const ADMIN_USERS_SUGGEST_REQUEST = 'ADMIN_USERS_SUGGEST_REQUEST';
+const ADMIN_USERS_SUGGEST_SUCCESS = 'ADMIN_USERS_SUGGEST_SUCCESS';
+const ADMIN_USERS_SUGGEST_FAIL    = 'ADMIN_USERS_SUGGEST_FAIL';
 
-const nicknamesFromIds = (getState, ids) => ids.map(id => getState().getIn(['accounts', id, 'acct']));
+const ADMIN_USERS_UNSUGGEST_REQUEST = 'ADMIN_USERS_UNSUGGEST_REQUEST';
+const ADMIN_USERS_UNSUGGEST_SUCCESS = 'ADMIN_USERS_UNSUGGEST_SUCCESS';
+const ADMIN_USERS_UNSUGGEST_FAIL    = 'ADMIN_USERS_UNSUGGEST_FAIL';
 
-export function fetchConfig() {
-  return (dispatch, getState) => {
+const nicknamesFromIds = (getState: () => RootState, ids: string[]) => ids.map(id => getState().accounts.get(id)!.acct);
+
+const fetchConfig = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: ADMIN_CONFIG_FETCH_REQUEST });
     return api(getState)
       .get('/api/pleroma/admin/config')
@@ -85,10 +89,9 @@ export function fetchConfig() {
         dispatch({ type: ADMIN_CONFIG_FETCH_FAIL, error });
       });
   };
-}
 
-export function updateConfig(configs) {
-  return (dispatch, getState) => {
+const updateConfig = (configs: Record<string, any>[]) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: ADMIN_CONFIG_UPDATE_REQUEST, configs });
     return api(getState)
       .post('/api/pleroma/admin/config', { configs })
@@ -98,14 +101,13 @@ export function updateConfig(configs) {
         dispatch({ type: ADMIN_CONFIG_UPDATE_FAIL, error, configs });
       });
   };
-}
 
-function fetchMastodonReports(params) {
-  return (dispatch, getState) => {
-    return api(getState)
+const fetchMastodonReports = (params: Record<string, any>) =>
+  (dispatch: AppDispatch, getState: () => RootState) =>
+    api(getState)
       .get('/api/v1/admin/reports', { params })
       .then(({ data: reports }) => {
-        reports.forEach(report => {
+        reports.forEach((report: APIEntity) => {
           dispatch(importFetchedAccount(report.account?.account));
           dispatch(importFetchedAccount(report.target_account?.account));
           dispatch(importFetchedStatuses(report.statuses));
@@ -114,15 +116,13 @@ function fetchMastodonReports(params) {
       }).catch(error => {
         dispatch({ type: ADMIN_REPORTS_FETCH_FAIL, error, params });
       });
-  };
-}
 
-function fetchPleromaReports(params) {
-  return (dispatch, getState) => {
-    return api(getState)
+const fetchPleromaReports = (params: Record<string, any>) =>
+  (dispatch: AppDispatch, getState: () => RootState) =>
+    api(getState)
       .get('/api/pleroma/admin/reports', { params })
       .then(({ data: { reports } }) => {
-        reports.forEach(report => {
+        reports.forEach((report: APIEntity) => {
           dispatch(importFetchedAccount(report.account));
           dispatch(importFetchedAccount(report.actor));
           dispatch(importFetchedStatuses(report.statuses));
@@ -131,19 +131,17 @@ function fetchPleromaReports(params) {
       }).catch(error => {
         dispatch({ type: ADMIN_REPORTS_FETCH_FAIL, error, params });
       });
-  };
-}
 
-export function fetchReports(params = {}) {
-  return (dispatch, getState) => {
+const fetchReports = (params: Record<string, any> = {}) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
 
-    const instance = state.get('instance');
+    const instance = state.instance;
     const features = getFeatures(instance);
 
     dispatch({ type: ADMIN_REPORTS_FETCH_REQUEST, params });
 
-    if (features.mastodonAdmi) {
+    if (features.mastodonAdmin) {
       return dispatch(fetchMastodonReports(params));
     } else {
       const { resolved } = params;
@@ -153,11 +151,10 @@ export function fetchReports(params = {}) {
       }));
     }
   };
-}
 
-function patchMastodonReports(reports) {
-  return (dispatch, getState) => {
-    return Promise.all(reports.map(({ id, state }) => api(getState)
+const patchMastodonReports = (reports: { id: string, state: string }[]) =>
+  (dispatch: AppDispatch, getState: () => RootState) =>
+    Promise.all(reports.map(({ id, state }) => api(getState)
       .post(`/api/v1/admin/reports/${id}/${state === 'resolved' ? 'reopen' : 'resolve'}`)
       .then(() => {
         dispatch({ type: ADMIN_REPORTS_PATCH_SUCCESS, reports });
@@ -165,26 +162,22 @@ function patchMastodonReports(reports) {
         dispatch({ type: ADMIN_REPORTS_PATCH_FAIL, error, reports });
       }),
     ));
-  };
-}
 
-function patchPleromaReports(reports) {
-  return (dispatch, getState) => {
-    return api(getState)
+const patchPleromaReports = (reports: { id: string, state: string }[]) =>
+  (dispatch: AppDispatch, getState: () => RootState) =>
+    api(getState)
       .patch('/api/pleroma/admin/reports', { reports })
       .then(() => {
         dispatch({ type: ADMIN_REPORTS_PATCH_SUCCESS, reports });
       }).catch(error => {
         dispatch({ type: ADMIN_REPORTS_PATCH_FAIL, error, reports });
       });
-  };
-}
 
-function patchReports(ids, reportState) {
-  return (dispatch, getState) => {
+const patchReports = (ids: string[], reportState: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
 
-    const instance = state.get('instance');
+    const instance = state.instance;
     const features = getFeatures(instance);
 
     const reports = ids.map(id => ({ id, state: reportState }));
@@ -197,15 +190,13 @@ function patchReports(ids, reportState) {
       return dispatch(patchPleromaReports(reports));
     }
   };
-}
 
-export function closeReports(ids) {
-  return patchReports(ids, 'closed');
-}
+const closeReports = (ids: string[]) =>
+  patchReports(ids, 'closed');
 
-function fetchMastodonUsers(filters, page, query, pageSize, next) {
-  return (dispatch, getState) => {
-    const params = {
+const fetchMastodonUsers = (filters: string[], page: number, query: string | null | undefined, pageSize: number, next?: string | null) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const params: Record<string, any> = {
       username: query,
     };
 
@@ -216,59 +207,56 @@ function fetchMastodonUsers(filters, page, query, pageSize, next) {
     return api(getState)
       .get(next || '/api/v1/admin/accounts', { params })
       .then(({ data: accounts, ...response }) => {
-        const next = getLinks(response).refs.find(link => link.rel === 'next');
+        const next = getLinks(response as AxiosResponse<any, any>).refs.find(link => link.rel === 'next');
 
         const count = next
           ? page * pageSize + 1
           : (page - 1) * pageSize + accounts.length;
 
-        dispatch(importFetchedAccounts(accounts.map(({ account }) => account)));
-        dispatch(fetchRelationships(accounts.map(account => account.id)));
+        dispatch(importFetchedAccounts(accounts.map(({ account }: APIEntity) => account)));
+        dispatch(fetchRelationships(accounts.map((account: APIEntity) => account.id)));
         dispatch({ type: ADMIN_USERS_FETCH_SUCCESS, users: accounts, count, pageSize, filters, page, next: next?.uri || false });
         return { users: accounts, count, pageSize, next: next?.uri || false };
-      }).catch(error => {
-        dispatch({ type: ADMIN_USERS_FETCH_FAIL, error, filters, page, pageSize });
-      });
+      }).catch(error =>
+        dispatch({ type: ADMIN_USERS_FETCH_FAIL, error, filters, page, pageSize }),
+      );
   };
-}
 
-function fetchPleromaUsers(filters, page, query, pageSize) {
-  return (dispatch, getState) => {
-    const params = { filters: filters.join(), page, page_size: pageSize };
+const fetchPleromaUsers = (filters: string[], page: number, query?: string | null, pageSize?: number) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const params: Record<string, any> = { filters: filters.join(), page, page_size: pageSize };
     if (query) params.query = query;
 
     return api(getState)
       .get('/api/pleroma/admin/users', { params })
       .then(({ data: { users, count, page_size: pageSize } }) => {
-        dispatch(fetchRelationships(users.map(user => user.id)));
+        dispatch(fetchRelationships(users.map((user: APIEntity) => user.id)));
         dispatch({ type: ADMIN_USERS_FETCH_SUCCESS, users, count, pageSize, filters, page });
         return { users, count, pageSize };
-      }).catch(error => {
-        dispatch({ type: ADMIN_USERS_FETCH_FAIL, error, filters, page, pageSize });
-      });
+      }).catch(error =>
+        dispatch({ type: ADMIN_USERS_FETCH_FAIL, error, filters, page, pageSize }),
+      );
   };
-}
 
-export function fetchUsers(filters = [], page = 1, query, pageSize = 50, next) {
-  return (dispatch, getState) => {
+const fetchUsers = (filters: string[] = [], page = 1, query?: string | null, pageSize = 50, next?: string | null) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
 
-    const instance = state.get('instance');
+    const instance = state.instance;
     const features = getFeatures(instance);
 
     dispatch({ type: ADMIN_USERS_FETCH_REQUEST, filters, page, pageSize });
 
-    if (features.mastodonAdmi) {
+    if (features.mastodonAdmin) {
       return dispatch(fetchMastodonUsers(filters, page, query, pageSize, next));
     } else {
       return dispatch(fetchPleromaUsers(filters, page, query, pageSize));
     }
   };
-}
 
-function deactivateMastodonUsers(accountIds, reportId) {
-  return (dispatch, getState) => {
-    return Promise.all(accountIds.map(accountId => {
+const deactivateMastodonUsers = (accountIds: string[], reportId?: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) =>
+    Promise.all(accountIds.map(accountId => {
       api(getState)
         .post(`/api/v1/admin/accounts/${accountId}/action`, {
           type: 'disable',
@@ -280,11 +268,9 @@ function deactivateMastodonUsers(accountIds, reportId) {
           dispatch({ type: ADMIN_USERS_DEACTIVATE_FAIL, error, accountIds: [accountId] });
         });
     }));
-  };
-}
 
-function deactivatePleromaUsers(accountIds) {
-  return (dispatch, getState) => {
+const deactivatePleromaUsers = (accountIds: string[]) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const nicknames = nicknamesFromIds(getState, accountIds);
     return api(getState)
       .patch('/api/pleroma/admin/users/deactivate', { nicknames })
@@ -294,27 +280,25 @@ function deactivatePleromaUsers(accountIds) {
         dispatch({ type: ADMIN_USERS_DEACTIVATE_FAIL, error, accountIds });
       });
   };
-}
 
-export function deactivateUsers(accountIds, reportId) {
-  return (dispatch, getState) => {
+const deactivateUsers = (accountIds: string[], reportId?: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
 
-    const instance = state.get('instance');
+    const instance = state.instance;
     const features = getFeatures(instance);
 
     dispatch({ type: ADMIN_USERS_DEACTIVATE_REQUEST, accountIds });
 
-    if (features.mastodonAdmi) {
+    if (features.mastodonAdmin) {
       return dispatch(deactivateMastodonUsers(accountIds, reportId));
     } else {
       return dispatch(deactivatePleromaUsers(accountIds));
     }
   };
-}
 
-export function deleteUsers(accountIds) {
-  return (dispatch, getState) => {
+const deleteUsers = (accountIds: string[]) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const nicknames = nicknamesFromIds(getState, accountIds);
     dispatch({ type: ADMIN_USERS_DELETE_REQUEST, accountIds });
     return api(getState)
@@ -325,11 +309,10 @@ export function deleteUsers(accountIds) {
         dispatch({ type: ADMIN_USERS_DELETE_FAIL, error, accountIds });
       });
   };
-}
 
-function approveMastodonUsers(accountIds) {
-  return (dispatch, getState) => {
-    return Promise.all(accountIds.map(accountId => {
+const approveMastodonUsers = (accountIds: string[]) =>
+  (dispatch: AppDispatch, getState: () => RootState) =>
+    Promise.all(accountIds.map(accountId => {
       api(getState)
         .post(`/api/v1/admin/accounts/${accountId}/approve`)
         .then(({ data: user }) => {
@@ -338,11 +321,9 @@ function approveMastodonUsers(accountIds) {
           dispatch({ type: ADMIN_USERS_APPROVE_FAIL, error, accountIds: [accountId] });
         });
     }));
-  };
-}
 
-function approvePleromaUsers(accountIds) {
-  return (dispatch, getState) => {
+const approvePleromaUsers = (accountIds: string[]) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const nicknames = nicknamesFromIds(getState, accountIds);
     return api(getState)
       .patch('/api/pleroma/admin/users/approve', { nicknames })
@@ -352,27 +333,25 @@ function approvePleromaUsers(accountIds) {
         dispatch({ type: ADMIN_USERS_APPROVE_FAIL, error, accountIds });
       });
   };
-}
 
-export function approveUsers(accountIds) {
-  return (dispatch, getState) => {
+const approveUsers = (accountIds: string[]) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
 
-    const instance = state.get('instance');
+    const instance = state.instance;
     const features = getFeatures(instance);
 
     dispatch({ type: ADMIN_USERS_APPROVE_REQUEST, accountIds });
 
-    if (features.mastodonAdmi) {
+    if (features.mastodonAdmin) {
       return dispatch(approveMastodonUsers(accountIds));
     } else {
       return dispatch(approvePleromaUsers(accountIds));
     }
   };
-}
 
-export function deleteStatus(id) {
-  return (dispatch, getState) => {
+const deleteStatus = (id: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: ADMIN_STATUS_DELETE_REQUEST, id });
     return api(getState)
       .delete(`/api/pleroma/admin/statuses/${id}`)
@@ -382,10 +361,9 @@ export function deleteStatus(id) {
         dispatch({ type: ADMIN_STATUS_DELETE_FAIL, error, id });
       });
   };
-}
 
-export function toggleStatusSensitivity(id, sensitive) {
-  return (dispatch, getState) => {
+const toggleStatusSensitivity = (id: string, sensitive: boolean) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: ADMIN_STATUS_TOGGLE_SENSITIVITY_REQUEST, id });
     return api(getState)
       .put(`/api/pleroma/admin/statuses/${id}`, { sensitive: !sensitive })
@@ -395,10 +373,9 @@ export function toggleStatusSensitivity(id, sensitive) {
         dispatch({ type: ADMIN_STATUS_TOGGLE_SENSITIVITY_FAIL, error, id });
       });
   };
-}
 
-export function fetchModerationLog(params) {
-  return (dispatch, getState) => {
+const fetchModerationLog = (params?: Record<string, any>) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: ADMIN_LOG_FETCH_REQUEST });
     return api(getState)
       .get('/api/pleroma/admin/moderation_log', { params })
@@ -409,10 +386,9 @@ export function fetchModerationLog(params) {
         dispatch({ type: ADMIN_LOG_FETCH_FAIL, error });
       });
   };
-}
 
-export function tagUsers(accountIds, tags) {
-  return (dispatch, getState) => {
+const tagUsers = (accountIds: string[], tags: string[]) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const nicknames = nicknamesFromIds(getState, accountIds);
     dispatch({ type: ADMIN_USERS_TAG_REQUEST, accountIds, tags });
     return api(getState)
@@ -423,10 +399,9 @@ export function tagUsers(accountIds, tags) {
         dispatch({ type: ADMIN_USERS_TAG_FAIL, error, accountIds, tags });
       });
   };
-}
 
-export function untagUsers(accountIds, tags) {
-  return (dispatch, getState) => {
+const untagUsers = (accountIds: string[], tags: string[]) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const nicknames = nicknamesFromIds(getState, accountIds);
     dispatch({ type: ADMIN_USERS_UNTAG_REQUEST, accountIds, tags });
     return api(getState)
@@ -437,34 +412,25 @@ export function untagUsers(accountIds, tags) {
         dispatch({ type: ADMIN_USERS_UNTAG_FAIL, error, accountIds, tags });
       });
   };
-}
 
-export function verifyUser(accountId) {
-  return (dispatch, getState) => {
-    return dispatch(tagUsers([accountId], ['verified']));
-  };
-}
+const verifyUser = (accountId: string) =>
+  (dispatch: AppDispatch) =>
+    dispatch(tagUsers([accountId], ['verified']));
 
-export function unverifyUser(accountId) {
-  return (dispatch, getState) => {
-    return dispatch(untagUsers([accountId], ['verified']));
-  };
-}
+const unverifyUser = (accountId: string) =>
+  (dispatch: AppDispatch) =>
+    dispatch(untagUsers([accountId], ['verified']));
 
-export function setDonor(accountId) {
-  return (dispatch, getState) => {
-    return dispatch(tagUsers([accountId], ['donor']));
-  };
-}
+const setDonor = (accountId: string) =>
+  (dispatch: AppDispatch) =>
+    dispatch(tagUsers([accountId], ['donor']));
 
-export function removeDonor(accountId) {
-  return (dispatch, getState) => {
-    return dispatch(untagUsers([accountId], ['donor']));
-  };
-}
+const removeDonor = (accountId: string) =>
+  (dispatch: AppDispatch) =>
+    dispatch(untagUsers([accountId], ['donor']));
 
-export function addPermission(accountIds, permissionGroup) {
-  return (dispatch, getState) => {
+const addPermission = (accountIds: string[], permissionGroup: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const nicknames = nicknamesFromIds(getState, accountIds);
     dispatch({ type: ADMIN_ADD_PERMISSION_GROUP_REQUEST, accountIds, permissionGroup });
     return api(getState)
@@ -475,10 +441,9 @@ export function addPermission(accountIds, permissionGroup) {
         dispatch({ type: ADMIN_ADD_PERMISSION_GROUP_FAIL, error, accountIds, permissionGroup });
       });
   };
-}
 
-export function removePermission(accountIds, permissionGroup) {
-  return (dispatch, getState) => {
+const removePermission = (accountIds: string[], permissionGroup: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const nicknames = nicknamesFromIds(getState, accountIds);
     dispatch({ type: ADMIN_REMOVE_PERMISSION_GROUP_REQUEST, accountIds, permissionGroup });
     return api(getState)
@@ -489,37 +454,30 @@ export function removePermission(accountIds, permissionGroup) {
         dispatch({ type: ADMIN_REMOVE_PERMISSION_GROUP_FAIL, error, accountIds, permissionGroup });
       });
   };
-}
 
-export function promoteToAdmin(accountId) {
-  return (dispatch, getState) => {
-    return Promise.all([
+const promoteToAdmin = (accountId: string) =>
+  (dispatch: AppDispatch) =>
+    Promise.all([
       dispatch(addPermission([accountId], 'admin')),
       dispatch(removePermission([accountId], 'moderator')),
     ]);
-  };
-}
 
-export function promoteToModerator(accountId) {
-  return (dispatch, getState) => {
-    return Promise.all([
+const promoteToModerator = (accountId: string) =>
+  (dispatch: AppDispatch) =>
+    Promise.all([
       dispatch(removePermission([accountId], 'admin')),
       dispatch(addPermission([accountId], 'moderator')),
     ]);
-  };
-}
 
-export function demoteToUser(accountId) {
-  return (dispatch, getState) => {
-    return Promise.all([
+const demoteToUser = (accountId: string) =>
+  (dispatch: AppDispatch) =>
+    Promise.all([
       dispatch(removePermission([accountId], 'admin')),
       dispatch(removePermission([accountId], 'moderator')),
     ]);
-  };
-}
 
-export function suggestUsers(accountIds) {
-  return (dispatch, getState) => {
+const suggestUsers = (accountIds: string[]) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const nicknames = nicknamesFromIds(getState, accountIds);
     dispatch({ type: ADMIN_USERS_SUGGEST_REQUEST, accountIds });
     return api(getState)
@@ -530,10 +488,9 @@ export function suggestUsers(accountIds) {
         dispatch({ type: ADMIN_USERS_SUGGEST_FAIL, error, accountIds });
       });
   };
-}
 
-export function unsuggestUsers(accountIds) {
-  return (dispatch, getState) => {
+const unsuggestUsers = (accountIds: string[]) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const nicknames = nicknamesFromIds(getState, accountIds);
     dispatch({ type: ADMIN_USERS_UNSUGGEST_REQUEST, accountIds });
     return api(getState)
@@ -544,4 +501,81 @@ export function unsuggestUsers(accountIds) {
         dispatch({ type: ADMIN_USERS_UNSUGGEST_FAIL, error, accountIds });
       });
   };
-}
+
+export {
+  ADMIN_CONFIG_FETCH_REQUEST,
+  ADMIN_CONFIG_FETCH_SUCCESS,
+  ADMIN_CONFIG_FETCH_FAIL,
+  ADMIN_CONFIG_UPDATE_REQUEST,
+  ADMIN_CONFIG_UPDATE_SUCCESS,
+  ADMIN_CONFIG_UPDATE_FAIL,
+  ADMIN_REPORTS_FETCH_REQUEST,
+  ADMIN_REPORTS_FETCH_SUCCESS,
+  ADMIN_REPORTS_FETCH_FAIL,
+  ADMIN_REPORTS_PATCH_REQUEST,
+  ADMIN_REPORTS_PATCH_SUCCESS,
+  ADMIN_REPORTS_PATCH_FAIL,
+  ADMIN_USERS_FETCH_REQUEST,
+  ADMIN_USERS_FETCH_SUCCESS,
+  ADMIN_USERS_FETCH_FAIL,
+  ADMIN_USERS_DELETE_REQUEST,
+  ADMIN_USERS_DELETE_SUCCESS,
+  ADMIN_USERS_DELETE_FAIL,
+  ADMIN_USERS_APPROVE_REQUEST,
+  ADMIN_USERS_APPROVE_SUCCESS,
+  ADMIN_USERS_APPROVE_FAIL,
+  ADMIN_USERS_DEACTIVATE_REQUEST,
+  ADMIN_USERS_DEACTIVATE_SUCCESS,
+  ADMIN_USERS_DEACTIVATE_FAIL,
+  ADMIN_STATUS_DELETE_REQUEST,
+  ADMIN_STATUS_DELETE_SUCCESS,
+  ADMIN_STATUS_DELETE_FAIL,
+  ADMIN_STATUS_TOGGLE_SENSITIVITY_REQUEST,
+  ADMIN_STATUS_TOGGLE_SENSITIVITY_SUCCESS,
+  ADMIN_STATUS_TOGGLE_SENSITIVITY_FAIL,
+  ADMIN_LOG_FETCH_REQUEST,
+  ADMIN_LOG_FETCH_SUCCESS,
+  ADMIN_LOG_FETCH_FAIL,
+  ADMIN_USERS_TAG_REQUEST,
+  ADMIN_USERS_TAG_SUCCESS,
+  ADMIN_USERS_TAG_FAIL,
+  ADMIN_USERS_UNTAG_REQUEST,
+  ADMIN_USERS_UNTAG_SUCCESS,
+  ADMIN_USERS_UNTAG_FAIL,
+  ADMIN_ADD_PERMISSION_GROUP_REQUEST,
+  ADMIN_ADD_PERMISSION_GROUP_SUCCESS,
+  ADMIN_ADD_PERMISSION_GROUP_FAIL,
+  ADMIN_REMOVE_PERMISSION_GROUP_REQUEST,
+  ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS,
+  ADMIN_REMOVE_PERMISSION_GROUP_FAIL,
+  ADMIN_USERS_SUGGEST_REQUEST,
+  ADMIN_USERS_SUGGEST_SUCCESS,
+  ADMIN_USERS_SUGGEST_FAIL,
+  ADMIN_USERS_UNSUGGEST_REQUEST,
+  ADMIN_USERS_UNSUGGEST_SUCCESS,
+  ADMIN_USERS_UNSUGGEST_FAIL,
+  fetchConfig,
+  updateConfig,
+  fetchReports,
+  closeReports,
+  fetchUsers,
+  deactivateUsers,
+  deleteUsers,
+  approveUsers,
+  deleteStatus,
+  toggleStatusSensitivity,
+  fetchModerationLog,
+  tagUsers,
+  untagUsers,
+  verifyUser,
+  unverifyUser,
+  setDonor,
+  removeDonor,
+  addPermission,
+  removePermission,
+  promoteToAdmin,
+  promoteToModerator,
+  demoteToUser,
+  suggestUsers,
+  unsuggestUsers,
+};
