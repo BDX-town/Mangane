@@ -1,40 +1,18 @@
 import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import React, { useEffect, useState, useCallback } from 'react';
 import { usePopper } from 'react-popper';
 import { useHistory } from 'react-router-dom';
 
-import { fetchRelationships } from 'soapbox/actions/accounts';
 import {
   closeStatusHoverCard,
   updateStatusHoverCard,
 } from 'soapbox/actions/status-hover-card';
-import ActionButton from 'soapbox/features/ui/components/action-button';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
-import { UserPanel } from 'soapbox/features/ui/util/async-components';
+import { fetchStatus } from 'soapbox/actions/statuses';
 import StatusContainer from 'soapbox/containers/status_container';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
-import { makeGetStatus } from 'soapbox/selectors';
-import { fetchStatus } from 'soapbox/actions/statuses';
 
 import { showStatusHoverCard } from './hover-status-wrapper';
-import { Card, CardBody, Stack, Text } from './ui';
-
-import type { AppDispatch } from 'soapbox/store';
-
-const getStatus = makeGetStatus();
-
-const handleMouseEnter = (dispatch: AppDispatch): React.MouseEventHandler => {
-  return () => {
-    dispatch(updateStatusHoverCard());
-  };
-};
-
-const handleMouseLeave = (dispatch: AppDispatch): React.MouseEventHandler => {
-  return () => {
-    dispatch(closeStatusHoverCard(true));
-  };
-};
+import { Card, CardBody } from './ui';
 
 interface IStatusHoverCard {
   visible: boolean,
@@ -48,11 +26,14 @@ export const StatusHoverCard: React.FC<IStatusHoverCard> = ({ visible = true }) 
   const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
 
   const statusId: string | undefined = useAppSelector(state => state.status_hover_card.statusId || undefined);
+  const status = useAppSelector(state => state.statuses.get(statusId!));
   const targetRef = useAppSelector(state => state.status_hover_card.ref?.current);
 
   useEffect(() => {
-    dispatch(fetchStatus(statusId));
-  }, [dispatch, statusId])
+    if (!status) {
+      dispatch(fetchStatus(statusId));
+    }
+  }, [statusId, status]);
 
   useEffect(() => {
     const unlisten = history.listen(() => {
@@ -66,8 +47,20 @@ export const StatusHoverCard: React.FC<IStatusHoverCard> = ({ visible = true }) 
   }, []);
 
   const { styles, attributes } = usePopper(targetRef, popperElement, {
-    placement: 'top'
+    placement: 'top',
   });
+
+  const handleMouseEnter = useCallback((): React.MouseEventHandler => {
+    return () => {
+      dispatch(updateStatusHoverCard());
+    };
+  }, []);
+
+  const handleMouseLeave = useCallback((): React.MouseEventHandler => {
+    return () => {
+      dispatch(closeStatusHoverCard(true));
+    };
+  }, []);
 
   if (!statusId) return null;
 
@@ -85,15 +78,15 @@ export const StatusHoverCard: React.FC<IStatusHoverCard> = ({ visible = true }) 
   return (
     <div
       className={classNames({
-        'absolute transition-opacity w-[500px] z-50 top-0 left-0': true,
+        'absolute transition-opacity w-[500px] z-[100] top-0 left-0': true,
         'opacity-100': visible,
         'opacity-0 pointer-events-none': !visible,
       })}
       ref={setPopperElement}
       style={styles.popper}
       {...attributes.popper}
-      onMouseEnter={handleMouseEnter(dispatch)}
-      onMouseLeave={handleMouseLeave(dispatch)}
+      onMouseEnter={handleMouseEnter()}
+      onMouseLeave={handleMouseLeave()}
     >
       <Card className='relative'>
         <CardBody>
