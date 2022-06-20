@@ -40,7 +40,7 @@ describe('deleteStatus()', () => {
     });
 
     it('should do nothing', async() => {
-      await store.dispatch(deleteStatus('1', {}));
+      await store.dispatch(deleteStatus('1'));
       const actions = store.getActions();
 
       expect(actions).toEqual([]);
@@ -88,7 +88,7 @@ describe('deleteStatus()', () => {
             reblogOf: null,
           },
         ];
-        await store.dispatch(deleteStatus(statusId, {}));
+        await store.dispatch(deleteStatus(statusId));
         const actions = store.getActions();
 
         expect(actions).toEqual(expectedActions);
@@ -125,7 +125,7 @@ describe('deleteStatus()', () => {
           },
           { type: 'MODAL_OPEN', modalType: 'COMPOSE', modalProps: undefined },
         ];
-        await store.dispatch(deleteStatus(statusId, {}, true));
+        await store.dispatch(deleteStatus(statusId, true));
         const actions = store.getActions();
 
         expect(actions).toEqual(expectedActions);
@@ -151,7 +151,7 @@ describe('deleteStatus()', () => {
             error: new Error('Network Error'),
           },
         ];
-        await store.dispatch(deleteStatus(statusId, {}, true));
+        await store.dispatch(deleteStatus(statusId, true));
         const actions = store.getActions();
 
         expect(actions).toEqual(expectedActions);
