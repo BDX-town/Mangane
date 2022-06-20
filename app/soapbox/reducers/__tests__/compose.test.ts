@@ -1,4 +1,4 @@
-import { List as ImmutableList, Map as ImmutableMap, fromJS } from 'immutable';
+import { List as ImmutableList, Record as ImmutableRecord, fromJS } from 'immutable';
 
 import * as actions from 'soapbox/actions/compose';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';
@@ -6,11 +6,11 @@ import { SETTING_CHANGE } from 'soapbox/actions/settings';
 import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
 import { normalizeStatus } from 'soapbox/normalizers/status';
 
-import reducer from '../compose';
+import reducer, { ReducerRecord } from '../compose';
 
 describe('compose reducer', () => {
   it('returns the initial state by default', () => {
-    const state = reducer(undefined, {});
+    const state = reducer(undefined, {} as any);
     expect(state.toJS()).toMatchObject({
       mounted: 0,
       sensitive: false,
@@ -86,64 +86,64 @@ describe('compose reducer', () => {
   it('uses \'public\' scope as default', () => {
     const action = {
       type: actions.COMPOSE_REPLY,
-      status: ImmutableMap(),
-      account: ImmutableMap(),
+      status: ImmutableRecord({})(),
+      account: ImmutableRecord({})(),
     };
     expect(reducer(undefined, action).toJS()).toMatchObject({ privacy: 'public' });
   });
 
   it('uses \'direct\' scope when replying to a DM', () => {
-    const state = ImmutableMap({ default_privacy: 'public' });
+    const state = ReducerRecord({ default_privacy: 'public' });
     const action = {
       type: actions.COMPOSE_REPLY,
-      status: ImmutableMap({ visibility: 'direct' }),
-      account: ImmutableMap(),
+      status: ImmutableRecord({ visibility: 'direct' })(),
+      account: ImmutableRecord({})(),
     };
-    expect(reducer(state, action).toJS()).toMatchObject({ privacy: 'direct' });
+    expect(reducer(state as any, action).toJS()).toMatchObject({ privacy: 'direct' });
   });
 
   it('uses \'private\' scope when replying to a private post', () => {
-    const state = ImmutableMap({ default_privacy: 'public' });
+    const state = ReducerRecord({ default_privacy: 'public' });
     const action = {
       type: actions.COMPOSE_REPLY,
-      status: ImmutableMap({ visibility: 'private' }),
-      account: ImmutableMap(),
+      status: ImmutableRecord({ visibility: 'private' })(),
+      account: ImmutableRecord({})(),
     };
-    expect(reducer(state, action).toJS()).toMatchObject({ privacy: 'private' });
+    expect(reducer(state as any, action).toJS()).toMatchObject({ privacy: 'private' });
   });
 
   it('uses \'unlisted\' scope when replying to an unlisted post', () => {
-    const state = ImmutableMap({ default_privacy: 'public' });
+    const state = ReducerRecord({ default_privacy: 'public' });
     const action = {
       type: actions.COMPOSE_REPLY,
-      status: ImmutableMap({ visibility: 'unlisted' }),
-      account: ImmutableMap(),
+      status: ImmutableRecord({ visibility: 'unlisted' })(),
+      account: ImmutableRecord({})(),
     };
     expect(reducer(state, action).toJS()).toMatchObject({ privacy: 'unlisted' });
   });
 
   it('uses \'private\' scope when set as preference and replying to a public post', () => {
-    const state = ImmutableMap({ default_privacy: 'private' });
+    const state = ReducerRecord({ default_privacy: 'private' });
     const action = {
       type: actions.COMPOSE_REPLY,
-      status: ImmutableMap({ visibility: 'public' }),
-      account: ImmutableMap(),
+      status: ImmutableRecord({ visibility: 'public' })(),
+      account: ImmutableRecord({})(),
     };
     expect(reducer(state, action).toJS()).toMatchObject({ privacy: 'private' });
   });
 
   it('uses \'unlisted\' scope when set as preference and replying to a public post', () => {
-    const state = ImmutableMap({ default_privacy: 'unlisted' });
+    const state = ReducerRecord({ default_privacy: 'unlisted' });
     const action = {
       type: actions.COMPOSE_REPLY,
-      status: ImmutableMap({ visibility: 'public' }),
-      account: ImmutableMap(),
+      status: ImmutableRecord({ visibility: 'public' })(),
+      account: ImmutableRecord({})(),
     };
     expect(reducer(state, action).toJS()).toMatchObject({ privacy: 'unlisted' });
   });
 
   it('sets preferred scope on user login', () => {
-    const state = ImmutableMap({ default_privacy: 'public' });
+    const state = ReducerRecord({ default_privacy: 'public' });
     const action = {
       type: ME_FETCH_SUCCESS,
       me: { pleroma: { settings_store: { soapbox_fe: { defaultPrivacy: 'unlisted' } } } },
@@ -155,7 +155,7 @@ describe('compose reducer', () => {
   });
 
   it('sets preferred scope on settings change', () => {
-    const state = ImmutableMap({ default_privacy: 'public' });
+    const state = ReducerRecord({ default_privacy: 'public' });
     const action = {
       type: SETTING_CHANGE,
       path: ['defaultPrivacy'],
@@ -168,7 +168,7 @@ describe('compose reducer', () => {
   });
 
   it('sets default scope on settings save (but retains current scope)', () => {
-    const state = ImmutableMap({ default_privacy: 'public', privacy: 'public' });
+    const state = ReducerRecord({ default_privacy: 'public', privacy: 'public' });
     const action = {
       type: ME_PATCH_SUCCESS,
       me: { pleroma: { settings_store: { soapbox_fe: { defaultPrivacy: 'unlisted' } } } },
@@ -180,7 +180,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_MOUNT', () => {
-    const state = ImmutableMap({ mounted: 1 });
+    const state = ReducerRecord({ mounted: 1 });
     const action = {
       type: actions.COMPOSE_MOUNT,
     };
@@ -190,7 +190,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_UNMOUNT', () => {
-    const state = ImmutableMap({ mounted: 1 });
+    const state = ReducerRecord({ mounted: 1 });
     const action = {
       type: actions.COMPOSE_UNMOUNT,
     };
@@ -200,7 +200,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_SENSITIVITY_CHANGE on Mark Sensitive click, don\'t toggle if spoiler active', () => {
-    const state = ImmutableMap({ spoiler: true, sensitive: true, idempotencyKey: null });
+    const state = ReducerRecord({ spoiler: true, sensitive: true, idempotencyKey: null });
     const action = {
       type: actions.COMPOSE_SENSITIVITY_CHANGE,
     };
@@ -210,7 +210,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_SENSITIVITY_CHANGE on Mark Sensitive click, toggle if spoiler inactive', () => {
-    const state = ImmutableMap({ spoiler: false, sensitive: true });
+    const state = ReducerRecord({ spoiler: false, sensitive: true });
     const action = {
       type: actions.COMPOSE_SENSITIVITY_CHANGE,
     };
@@ -220,7 +220,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_SPOILERNESS_CHANGE on CW button click', () => {
-    const state = ImmutableMap({ spoiler_text: 'spoiler text', spoiler: true, media_attachments: ImmutableList() });
+    const state = ReducerRecord({ spoiler_text: 'spoiler text', spoiler: true, media_attachments: ImmutableList() });
     const action = {
       type: actions.COMPOSE_SPOILERNESS_CHANGE,
     };
@@ -231,7 +231,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_SPOILER_TEXT_CHANGE', () => {
-    const state = ImmutableMap({ spoiler_text: 'prevtext' });
+    const state = ReducerRecord({ spoiler_text: 'prevtext' });
     const action = {
       type: actions.COMPOSE_SPOILER_TEXT_CHANGE,
       text: 'nexttext',
@@ -242,7 +242,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_VISIBILITY_CHANGE', () => {
-    const state = ImmutableMap({ privacy: 'public' });
+    const state = ReducerRecord({ privacy: 'public' });
     const action = {
       type: actions.COMPOSE_VISIBILITY_CHANGE,
       value: 'direct',
@@ -254,7 +254,7 @@ describe('compose reducer', () => {
 
   describe('COMPOSE_CHANGE', () => {
     it('should handle text changing', () => {
-      const state = ImmutableMap({ text: 'prevtext' });
+      const state = ReducerRecord({ text: 'prevtext' });
       const action = {
         type: actions.COMPOSE_CHANGE,
         text: 'nexttext',
@@ -266,7 +266,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_COMPOSING_CHANGE', () => {
-    const state = ImmutableMap({ is_composing: true });
+    const state = ReducerRecord({ is_composing: true });
     const action = {
       type: actions.COMPOSE_COMPOSING_CHANGE,
       value: false,
@@ -277,7 +277,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_SUBMIT_REQUEST', () => {
-    const state = ImmutableMap({ is_submitting: false });
+    const state = ReducerRecord({ is_submitting: false });
     const action = {
       type: actions.COMPOSE_SUBMIT_REQUEST,
     };
@@ -287,7 +287,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_UPLOAD_CHANGE_REQUEST', () => {
-    const state = ImmutableMap({ is_changing_upload: false });
+    const state = ReducerRecord({ is_changing_upload: false });
     const action = {
       type: actions.COMPOSE_UPLOAD_CHANGE_REQUEST,
     };
@@ -297,17 +297,17 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_SUBMIT_SUCCESS', () => {
-    const state = ImmutableMap({ privacy: 'public' });
+    const state = ReducerRecord({ default_privacy: null, privacy: 'public' });
     const action = {
       type: actions.COMPOSE_SUBMIT_SUCCESS,
     };
     expect(reducer(state, action).toJS()).toMatchObject({
-      privacy: undefined,
+      privacy: null,
     });
   });
 
   it('should handle COMPOSE_SUBMIT_FAIL', () => {
-    const state = ImmutableMap({ is_submitting: true });
+    const state = ReducerRecord({ is_submitting: true });
     const action = {
       type: actions.COMPOSE_SUBMIT_FAIL,
     };
@@ -317,7 +317,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_UPLOAD_CHANGE_FAIL', () => {
-    const state = ImmutableMap({ is_changing_upload: true });
+    const state = ReducerRecord({ is_changing_upload: true });
     const action = {
       type: actions.COMPOSE_UPLOAD_CHANGE_FAIL,
     };
@@ -327,7 +327,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_UPLOAD_REQUEST', () => {
-    const state = ImmutableMap({ is_uploading: false });
+    const state = ReducerRecord({ is_uploading: false });
     const action = {
       type: actions.COMPOSE_UPLOAD_REQUEST,
     };
@@ -337,7 +337,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_UPLOAD_SUCCESS', () => {
-    const state = ImmutableMap({ media_attachments: ImmutableList() });
+    const state = ReducerRecord({ media_attachments: ImmutableList() });
     const media = [
       {
         description: null,
@@ -363,7 +363,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_UPLOAD_FAIL', () => {
-    const state = ImmutableMap({ is_uploading: true });
+    const state = ReducerRecord({ is_uploading: true });
     const action = {
       type: actions.COMPOSE_UPLOAD_FAIL,
     };
@@ -373,7 +373,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_UPLOAD_PROGRESS', () => {
-    const state = ImmutableMap({ progress: 0 });
+    const state = ReducerRecord({ progress: 0 });
     const action = {
       type: actions.COMPOSE_UPLOAD_PROGRESS,
       loaded: 10,
@@ -396,7 +396,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_SUGGESTION_TAGS_UPDATE', () => {
-    const state = ImmutableMap({ tagHistory: ImmutableList([ 'hashtag' ]) });
+    const state = ReducerRecord({ tagHistory: ImmutableList([ 'hashtag' ]) });
     const action = {
       type: actions.COMPOSE_SUGGESTION_TAGS_UPDATE,
       token: 'aaadken3',
@@ -419,7 +419,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle TIMELINE_DELETE - delete status from timeline', () => {
-    const state = ImmutableMap({ in_reply_to: '9wk6pmImMrZjgrK7iC' });
+    const state = ReducerRecord({ in_reply_to: '9wk6pmImMrZjgrK7iC' });
     const action = {
       type: TIMELINE_DELETE,
       id: '9wk6pmImMrZjgrK7iC',
@@ -430,7 +430,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_POLL_ADD', () => {
-    const state = ImmutableMap({ poll: null });
+    const state = ReducerRecord({ poll: null });
     const initialPoll = Object({
       options: [
         '',
@@ -465,7 +465,7 @@ describe('compose reducer', () => {
       expires_in: 86400,
       multiple: false,
     });
-    const state = ImmutableMap({ poll: initialPoll });
+    const state = ReducerRecord({ poll: initialPoll });
     const action = {
       type: actions.COMPOSE_POLL_OPTION_CHANGE,
       index: 0,

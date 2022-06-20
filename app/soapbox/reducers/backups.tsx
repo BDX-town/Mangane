@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, Record as ImmutableRecord, fromJS } from 'immutable';
+import { Map as ImmutableMap, Record as ImmutableRecord } from 'immutable';
 
 import {
   BACKUPS_FETCH_SUCCESS,

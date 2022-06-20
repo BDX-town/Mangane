@@ -75,14 +75,14 @@ const PollRecord = ImmutableRecord({
   multiple: false,
 });
 
-const ReducerRecord = ImmutableRecord({
+export const ReducerRecord = ImmutableRecord({
   caretPosition: null as number | null,
   content_type: 'text/plain',
   default_content_type: 'text/plain',
   default_privacy: 'public',
   default_sensitive: false,
   focusDate: null as Date | null,
-  idempotencyKey: uuid(),
+  idempotencyKey: '',
   id: null as string | null,
   in_reply_to: null as string | null,
   is_changing_upload: false,
@@ -112,7 +112,7 @@ type Poll = ReturnType<typeof PollRecord>;
 
 const statusToTextMentions = (state: State, status: ImmutableMap<string, any>, account: AccountEntity) => {
   const author = status.getIn(['account', 'acct']);
-  const mentions = status.get('mentions').map((m: ImmutableMap<string, any>) => m.get('acct'));
+  const mentions = status.get('mentions')?.map((m: ImmutableMap<string, any>) => m.get('acct')) || [];
 
   return ImmutableOrderedSet([author])
     .concat(mentions)
@@ -123,7 +123,7 @@ const statusToTextMentions = (state: State, status: ImmutableMap<string, any>, a
 
 export const statusToMentionsArray = (status: ImmutableMap<string, any>, account: AccountEntity) => {
   const author = status.getIn(['account', 'acct']) as string;
-  const mentions = status.get('mentions').map((m: ImmutableMap<string, any>) => m.get('acct'));
+  const mentions = status.get('mentions')?.map((m: ImmutableMap<string, any>) => m.get('acct')) || [];
 
   return ImmutableOrderedSet([author])
     .concat(mentions)
@@ -140,24 +140,29 @@ export const statusToMentionsAccountIdsArray = (status: StatusEntity, account: A
 };
 
 function clearAll(state: State) {
-  return state.withMutations(map => {
-    map.set('id', null);
-    map.set('text', '');
-    map.set('to', ImmutableOrderedSet());
-    map.set('spoiler', false);
-    map.set('spoiler_text', '');
-    map.set('content_type', state.default_content_type);
-    map.set('is_submitting', false);
-    map.set('is_changing_upload', false);
-    map.set('in_reply_to', null);
-    map.set('quote', null);
-    map.set('privacy', state.default_privacy);
-    map.set('sensitive', false);
-    map.set('media_attachments', ImmutableList());
-    map.set('poll', null);
-    map.set('idempotencyKey', uuid());
-    map.set('schedule', null);
+  return ReducerRecord({
+    content_type: state.default_content_type,
+    privacy: state.default_privacy,
+    idempotencyKey: uuid(),
   });
+  // state.withMutations(map => {
+  //   map.set('id', null);
+  //   map.set('text', '');
+  //   map.set('to', ImmutableOrderedSet());
+  //   map.set('spoiler', false);
+  //   map.set('spoiler_text', '');
+  //   map.set('content_type', state.COMPOSE_SUBMIT_SUCCESS);
+  //   map.set('is_submitting', false);
+  //   map.set('is_changing_upload', false);
+  //   map.set('in_reply_to', null);
+  //   map.set('quote', null);
+  //   map.set('privacy', state.default_privacy);
+  //   map.set('sensitive', false);
+  //   map.set('media_attachments', ImmutableList());
+  //   map.set('poll', null);
+  //   map.set('idempotencyKey', uuid());
+  //   map.set('schedule', null);
+  // });
 }
 
 function appendMedia(state: State, media: APIEntity) {
@@ -297,7 +302,7 @@ const updateSetting = (state: State, path: string[], value: string) => {
   }
 };
 
-export default function compose(state = ReducerRecord({ resetFileKey: getResetFileKey() }), action: AnyAction) {
+export default function compose(state = ReducerRecord({ idempotencyKey: uuid(), resetFileKey: getResetFileKey() }), action: AnyAction) {
   switch (action.type) {
     case COMPOSE_MOUNT:
       return state.set('mounted', state.mounted + 1);

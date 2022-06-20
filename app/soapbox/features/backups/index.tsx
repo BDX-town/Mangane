@@ -8,8 +8,6 @@ import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import Column from '../ui/components/better_column';
 
-import type { List as ImmutableList, Map as ImmutableMap } from 'immutable';
-
 const messages = defineMessages({
   heading: { id: 'column.backups', defaultMessage: 'Backups' },
   create: { id: 'backups.actions.create', defaultMessage: 'Create backup' },
