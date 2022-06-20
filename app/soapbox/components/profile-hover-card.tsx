@@ -97,12 +97,12 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
   return (
     <div
       className={classNames({
-        'absolute transition-opacity w-[320px] z-50 top-0 left-0': true,
+        'absolute transition-opacity w-[320px] z-[100] top-0 left-0': true,
         'opacity-100': visible,
         'opacity-0 pointer-events-none': !visible,
       })}
       ref={setPopperElement}
-      style={{...styles.popper, zIndex: 100}}
+      style={styles.popper}
       {...attributes.popper}
       onMouseEnter={handleMouseEnter(dispatch)}
       onMouseLeave={handleMouseLeave(dispatch)}
