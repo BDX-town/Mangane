@@ -3,8 +3,8 @@ import { FormattedList, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import HoverStatusWrapper from 'soapbox/components/hover-status-wrapper';
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import type { Account, Status } from 'soapbox/types/entities';
@@ -68,15 +68,17 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status }) => {
         defaultMessage='<hover>Replying to</hover> {accounts}'
         values={{
           accounts: <FormattedList type='conjunction' value={accounts} />,
-          hover: (children: any) => <HoverStatusWrapper statusId={status.in_reply_to_id} inline>
-            <span
-              key='hoverstatus'
-              className='hover:underline cursor-pointer'
-              role='presentation'
-            >
-              {children}
-            </span>
-          </HoverStatusWrapper>
+          hover: (children: React.ReactNode) => (
+            <HoverStatusWrapper statusId={status.in_reply_to_id} inline>
+              <span
+                key='hoverstatus'
+                className='hover:underline cursor-pointer'
+                role='presentation'
+              >
+                {children}
+              </span>
+            </HoverStatusWrapper>
+          ),
         }}
       />
     </div>
