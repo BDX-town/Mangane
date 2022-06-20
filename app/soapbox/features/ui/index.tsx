@@ -1,6 +1,6 @@
 'use strict';
 
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
@@ -610,7 +610,12 @@ const UI: React.FC = ({ children }) => {
 
   const isProfileOrStatusPage = !!matchPath(
     history.location.pathname,
-    ['/@:username', '/@:username/posts/:statusId'],
+    [
+      '/@:username',
+      '/@:username/posts/:statusId',
+      '/users/:username',
+      '/users/:username/statuses/:statusId',
+    ],
   );
 
   // Require login if Guest Experience is disabled and we're not trying

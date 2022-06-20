@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -15,7 +15,7 @@ const showProfileHoverCard = debounce((dispatch, ref, accountId) => {
 
 interface IHoverRefWrapper {
   accountId: string,
-  inline: boolean,
+  inline?: boolean,
   className?: string,
 }
 

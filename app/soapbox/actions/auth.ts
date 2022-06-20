@@ -229,9 +229,6 @@ export const logIn = (username: string, password: string) =>
     throw error;
   });
 
-export const deleteSession = () =>
-  (dispatch: AppDispatch, getState: () => any) => api(getState).delete('/api/sign_out');
-
 export const logOut = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
@@ -246,10 +243,7 @@ export const logOut = () =>
       token: state.auth.getIn(['users', account.url, 'access_token']),
     };
 
-    return Promise.all([
-      dispatch(revokeOAuthToken(params)),
-      dispatch(deleteSession()),
-    ]).finally(() => {
+    return dispatch(revokeOAuthToken(params)).finally(() => {
       dispatch({ type: AUTH_LOGGED_OUT, account, standalone });
       return dispatch(snackbar.success(messages.loggedOut));
     });

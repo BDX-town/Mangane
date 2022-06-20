@@ -3,12 +3,13 @@ image: node:18
 variables:
   NODE_ENV: test
 
-cache:
+cache: &cache
   key:
     files:
       - yarn.lock
   paths:
     - node_modules/
+  policy: pull
 
 stages:
   - deps
@@ -21,6 +22,17 @@ deps:
   only:
     changes:
       - yarn.lock
+  cache:
+    <<: *cache
+    policy: push
+
+danger:
+  stage: test
+  script:
+    # https://github.com/danger/danger-js/issues/1029#issuecomment-998915436
+    - export CI_MERGE_REQUEST_IID=${CI_OPEN_MERGE_REQUESTS#*!}
+    - npx danger ci
+  allow_failure: true
 
 lint-js:
   stage: test

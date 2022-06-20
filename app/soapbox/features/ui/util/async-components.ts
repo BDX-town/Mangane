@@ -315,11 +315,11 @@ export function ChatIndex() {
 }
 
 export function ChatRoom() {
-  return import(/* webpackChunkName: "features/chats/chat_room" */'../../chats/chat_room');
+  return import(/* webpackChunkName: "features/chats/chat_room" */'../../chats/chat-room');
 }
 
 export function ChatPanes() {
-  return import(/* webpackChunkName: "features/chats/components/chat_panes" */'../../chats/components/chat_panes');
+  return import(/* webpackChunkName: "features/chats/components/chat_panes" */'../../chats/components/chat-panes');
 }
 
 export function ServerInfo() {

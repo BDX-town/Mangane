@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { fromJS, is } from 'immutable';
-import { throttle, debounce } from 'lodash';
+import debounce from 'lodash/debounce';
+import throttle from 'lodash/throttle';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';

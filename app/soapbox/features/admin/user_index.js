@@ -1,5 +1,5 @@
 import { Set as ImmutableSet, OrderedSet as ImmutableOrderedSet, is } from 'immutable';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -61,7 +61,7 @@ class UserIndex extends ImmutablePureComponent {
           nextLink: next,
         });
       })
-      .catch(() => {});
+      .catch(() => { });
   }
 
   componentDidMount() {

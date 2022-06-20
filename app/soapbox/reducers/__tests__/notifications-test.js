@@ -3,7 +3,7 @@ import {
   OrderedMap as ImmutableOrderedMap,
   Record as ImmutableRecord,
 } from 'immutable';
-import { take } from 'lodash';
+import take from 'lodash/take';
 
 import intlMessages from 'soapbox/__fixtures__/intlMessages.json';
 import notification from 'soapbox/__fixtures__/notification.json';

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { get } from 'lodash';
+import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -367,9 +367,7 @@ class ComposeForm extends ImmutablePureComponent {
           }
         </AutosuggestTextarea>
 
-        <div className='mb-2'>
-          <QuotedStatusContainer />
-        </div>
+        <QuotedStatusContainer />
 
         <div
           className={classNames('flex flex-wrap items-center justify-between', {

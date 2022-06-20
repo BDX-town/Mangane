@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { throttle } from 'lodash';
+import throttle from 'lodash/throttle';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useIntl, MessageDescriptor } from 'react-intl';
 

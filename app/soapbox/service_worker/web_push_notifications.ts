@@ -1,6 +1,6 @@
 import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
-import { unescape } from 'lodash';
+import unescape from 'lodash/unescape';
 
 import locales from './web_push_locales';
 

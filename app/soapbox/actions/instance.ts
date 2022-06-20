@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { get } from 'lodash';
+import get from 'lodash/get';
 
 import KVStore from 'soapbox/storage/kv_store';
 import { RootState } from 'soapbox/store';

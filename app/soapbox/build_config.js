@@ -4,7 +4,8 @@
  * @module soapbox/build_config
  */
 
-const { trim, trimEnd } = require('lodash');
+const trim = require('lodash/trim');
+const trimEnd = require('lodash/trimEnd');
 
 const {
   NODE_ENV,
