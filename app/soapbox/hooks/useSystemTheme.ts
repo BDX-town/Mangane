@@ -11,10 +11,22 @@ export const useSystemTheme = (): SystemTheme => {
     setDark(event.matches);
   };
 
+  // Older versions of Safari on iOS don't support these events,
+  // so try-catch and do nothing.
   useEffect(() => {
-    query.addEventListener('change', handleChange);
+    try {
+      query.addEventListener('change', handleChange);
+    } catch (e) {
+      // do nothing
+    }
 
-    return () => query.removeEventListener('change', handleChange);
+    return () => {
+      try {
+        query.removeEventListener('change', handleChange);
+      } catch (e) {
+        // do nothing
+      }
+    };
   }, []);
 
   return dark ? 'dark' : 'light';

@@ -246,10 +246,7 @@ export const logOut = () =>
       token: state.auth.getIn(['users', account.url, 'access_token']),
     };
 
-    return Promise.all([
-      dispatch(revokeOAuthToken(params)),
-      dispatch(deleteSession()),
-    ]).finally(() => {
+    return dispatch(revokeOAuthToken(params)).finally(() => {
       dispatch({ type: AUTH_LOGGED_OUT, account, standalone });
       return dispatch(snackbar.success(messages.loggedOut));
     });

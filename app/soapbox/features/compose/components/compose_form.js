@@ -367,9 +367,7 @@ class ComposeForm extends ImmutablePureComponent {
           }
         </AutosuggestTextarea>
 
-        <div className='mb-2'>
-          <QuotedStatusContainer />
-        </div>
+        <QuotedStatusContainer />
 
         <div
           className={classNames('flex flex-wrap items-center justify-between', {
