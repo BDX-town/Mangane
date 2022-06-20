@@ -21,11 +21,13 @@ const QuotedStatusContainer: React.FC = () => {
   }
 
   return (
-    <QuotedStatus
-      status={status}
-      onCancel={onCancel}
-      compose
-    />
+    <div className='mb-2'>
+      <QuotedStatus
+        status={status}
+        onCancel={onCancel}
+        compose
+      />
+    </div>
   );
 };
 
