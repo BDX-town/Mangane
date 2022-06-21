@@ -860,7 +860,7 @@
   "reply_mentions.account.add": "Add to mentions",
   "reply_mentions.account.remove": "Remove from mentions",
   "reply_mentions.more": "{count, plural, one {einen weiteren Nutzer} other {# weitere Nutzer}}",
-  "reply_mentions.reply": "Antwort an {accounts}",
+  "reply_mentions.reply": "<hover>Antwort an</hover> {accounts}",
   "reply_mentions.reply_empty": "Antwort auf einen Beitrag",
   "report.block": "{target} blockieren.",
   "report.block_hint": "Soll dieses Konto zusammen mit der Meldung auch gleich blockiert werden?",
