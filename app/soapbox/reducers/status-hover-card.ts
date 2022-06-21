@@ -8,7 +8,7 @@ import {
 
 import type { AnyAction } from 'redux';
 
-const ReducerRecord = ImmutableRecord({
+export const ReducerRecord = ImmutableRecord({
   ref: null as React.MutableRefObject<HTMLDivElement> | null,
   statusId: '',
   hovered: false,
@@ -26,7 +26,7 @@ export default function statusHoverCard(state: State = ReducerRecord(), action: 
     case STATUS_HOVER_CARD_UPDATE:
       return state.set('hovered', true);
     case STATUS_HOVER_CARD_CLOSE:
-      if (state.get('hovered') === true && !action.force)
+      if (state.hovered === true && !action.force)
         return state;
       else
         return ReducerRecord();
@@ -34,4 +34,3 @@ export default function statusHoverCard(state: State = ReducerRecord(), action: 
       return state;
   }
 }
-
