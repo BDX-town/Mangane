@@ -59,7 +59,7 @@ interface IStatus extends RouteComponentProps {
   account: AccountEntity,
   otherAccounts: ImmutableList<AccountEntity>,
   onClick: () => void,
-  onReply: (status: StatusEntity, history: History) => void,
+  onReply: (status: StatusEntity) => void,
   onFavourite: (status: StatusEntity) => void,
   onReblog: (status: StatusEntity, e?: KeyboardEvent) => void,
   onQuote: (status: StatusEntity) => void,
@@ -67,7 +67,7 @@ interface IStatus extends RouteComponentProps {
   onEdit: (status: StatusEntity) => void,
   onDirect: (status: StatusEntity) => void,
   onChat: (status: StatusEntity) => void,
-  onMention: (account: StatusEntity['account'], history: History) => void,
+  onMention: (account: StatusEntity['account']) => void,
   onPin: (status: StatusEntity) => void,
   onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void,
   onOpenVideo: (media: ImmutableMap<string, any> | AttachmentEntity, startTime: number) => void,
@@ -232,7 +232,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
   handleHotkeyReply = (e?: KeyboardEvent): void => {
     e?.preventDefault();
-    this.props.onReply(this._properStatus(), this.props.history);
+    this.props.onReply(this._properStatus());
   }
 
   handleHotkeyFavourite = (): void => {
@@ -245,7 +245,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
   handleHotkeyMention = (e?: KeyboardEvent): void => {
     e?.preventDefault();
-    this.props.onMention(this._properStatus().account, this.props.history);
+    this.props.onMention(this._properStatus().account);
   }
 
   handleHotkeyOpen = (): void => {

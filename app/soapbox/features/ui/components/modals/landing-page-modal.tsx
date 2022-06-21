@@ -29,7 +29,7 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
   const features = useFeatures();
 
   const isOpen = features.accountCreation && instance.registrations;
-  const pepeOpen = useAppSelector(state => state.verification.getIn(['instance', 'registrations'], false) === true);
+  const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
 
   return (
     <Modal

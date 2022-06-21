@@ -31,8 +31,8 @@ const makeMapStateToProps = () => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  onMention: (account, router) => {
-    dispatch(mentionCompose(account, router));
+  onMention: (account) => {
+    dispatch(mentionCompose(account));
   },
 
   onModalReblog(status) {

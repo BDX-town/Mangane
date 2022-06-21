@@ -15,8 +15,8 @@ const SensitiveButton: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const active = useAppSelector(state => state.compose.get('sensitive') === true);
-  const disabled = useAppSelector(state => state.compose.get('spoiler') === true);
+  const active = useAppSelector(state => state.compose.sensitive === true);
+  const disabled = useAppSelector(state => state.compose.spoiler === true);
 
   const onClick = () => {
     dispatch(changeComposeSensitivity());

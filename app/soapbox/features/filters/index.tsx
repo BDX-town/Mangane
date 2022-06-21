@@ -63,7 +63,7 @@ const Filters = () => {
 
   const handleAddNew: React.FormEventHandler = e => {
     e.preventDefault();
-    const context = [];
+    const context: Array<string> = [];
 
     if (homeTimeline) {
       context.push('home');
@@ -78,7 +78,7 @@ const Filters = () => {
       context.push('thread');
     }
 
-    dispatch(createFilter(intl, phrase, expiresAt, context, wholeWord, irreversible)).then(() => {
+    dispatch(createFilter(phrase, expiresAt, context, wholeWord, irreversible)).then(() => {
       return dispatch(fetchFilters());
     }).catch(error => {
       dispatch(snackbar.error(intl.formatMessage(messages.create_error)));
@@ -86,7 +86,7 @@ const Filters = () => {
   };
 
   const handleFilterDelete: React.MouseEventHandler<HTMLDivElement> = e => {
-    dispatch(deleteFilter(intl, e.currentTarget.dataset.value)).then(() => {
+    dispatch(deleteFilter(e.currentTarget.dataset.value!)).then(() => {
       return dispatch(fetchFilters());
     }).catch(() => {
       dispatch(snackbar.error(intl.formatMessage(messages.delete_error)));

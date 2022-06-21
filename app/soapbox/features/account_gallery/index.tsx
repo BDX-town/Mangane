@@ -44,7 +44,7 @@ const AccountGallery = () => {
     const accountFetchError = (state.accounts.get(-1)?.username || '').toLowerCase() === username.toLowerCase();
     const features = getFeatures(state.instance);
 
-    let accountId: string | number | null = -1;
+    let accountId: string | -1 | null = -1;
     let accountUsername = username;
     if (accountFetchError) {
       accountId = null;

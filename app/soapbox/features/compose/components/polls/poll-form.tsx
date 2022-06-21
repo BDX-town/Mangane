@@ -49,7 +49,7 @@ const Option = (props: IOption) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const suggestions = useAppSelector((state) => state.compose.get('suggestions'));
+  const suggestions = useAppSelector((state) => state.compose.suggestions);
 
   const handleOptionTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => onChange(index, event.target.value);
 
@@ -107,9 +107,9 @@ const PollForm = () => {
   const intl = useIntl();
 
   const pollLimits = useAppSelector((state) => state.instance.getIn(['configuration', 'polls']) as any);
-  const options = useAppSelector((state) => state.compose.getIn(['poll', 'options']));
-  const expiresIn = useAppSelector((state) => state.compose.getIn(['poll', 'expires_in']));
-  const isMultiple = useAppSelector((state) => state.compose.getIn(['poll', 'multiple']));
+  const options = useAppSelector((state) => state.compose.poll?.options);
+  const expiresIn = useAppSelector((state) => state.compose.poll?.expires_in);
+  const isMultiple = useAppSelector((state) => state.compose.poll?.multiple);
 
   const maxOptions = pollLimits.get('max_options');
   const maxOptionChars = pollLimits.get('max_characters_per_option');

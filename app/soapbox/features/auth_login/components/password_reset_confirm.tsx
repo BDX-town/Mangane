@@ -35,7 +35,7 @@ const PasswordResetConfirm = () => {
     event.preventDefault();
 
     setStatus(Statuses.LOADING);
-    dispatch(resetPasswordConfirm(password, token))
+    dispatch(resetPasswordConfirm(password, token as string))
       .then(() => setStatus(Statuses.SUCCESS))
       .catch(() => setStatus(Statuses.FAIL));
   }, [password]);

@@ -96,11 +96,11 @@ const Preferences = () => {
   const settings = useAppSelector((state) => getSettings(state));
 
   const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>, path: string[]) => {
-    dispatch(changeSetting(path, event.target.value, intl));
+    dispatch(changeSetting(path, event.target.value));
   };
 
   const onToggleChange = (key: string[], checked: boolean) => {
-    dispatch(changeSetting(key, checked, intl));
+    dispatch(changeSetting(key, checked));
   };
 
   const displayMediaOptions = React.useMemo(() => ({

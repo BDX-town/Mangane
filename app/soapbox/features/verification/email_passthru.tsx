@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { confirmEmailVerification } from 'soapbox/actions/verification';
 import { Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
 
 import type { AxiosError } from 'axios';
 
@@ -96,7 +96,7 @@ const TokenExpired = () => {
 const EmailPassThru = () => {
   const { token } = useParams<{ token: string }>();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const [status, setStatus] = React.useState(Statuses.IDLE);

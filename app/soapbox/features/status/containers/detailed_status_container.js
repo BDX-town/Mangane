@@ -63,17 +63,17 @@ const makeMapStateToProps = () => {
 
 const mapDispatchToProps = (dispatch, { intl }) => ({
 
-  onReply(status, router) {
+  onReply(status) {
     dispatch((_, getState) => {
       const state = getState();
       if (state.getIn(['compose', 'text']).trim().length !== 0) {
         dispatch(openModal('CONFIRM', {
           message: intl.formatMessage(messages.replyMessage),
           confirm: intl.formatMessage(messages.replyConfirm),
-          onConfirm: () => dispatch(replyCompose(status, router)),
+          onConfirm: () => dispatch(replyCompose(status)),
         }));
       } else {
-        dispatch(replyCompose(status, router));
+        dispatch(replyCompose(status));
       }
     });
   },
@@ -128,18 +128,18 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }));
   },
 
-  onDelete(status, history, withRedraft = false) {
+  onDelete(status, withRedraft = false) {
     dispatch((_, getState) => {
       const deleteModal = getSettings(getState()).get('deleteModal');
       if (!deleteModal) {
-        dispatch(deleteStatus(status.get('id'), history, withRedraft));
+        dispatch(deleteStatus(status.get('id'), withRedraft));
       } else {
         dispatch(openModal('CONFIRM', {
           icon: withRedraft ? require('@tabler/icons/icons/edit.svg') : require('@tabler/icons/icons/trash.svg'),
           heading: intl.formatMessage(withRedraft ? messages.redraftHeading : messages.deleteHeading),
           message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
           confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
-          onConfirm: () => dispatch(deleteStatus(status.get('id'), history, withRedraft)),
+          onConfirm: () => dispatch(deleteStatus(status.get('id'), withRedraft)),
         }));
       }
     });
@@ -149,16 +149,16 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     dispatch(editStatus(status.get('id')));
   },
 
-  onDirect(account, router) {
-    dispatch(directCompose(account, router));
+  onDirect(account) {
+    dispatch(directCompose(account));
   },
 
   onChat(account, router) {
     dispatch(launchChat(account.get('id'), router));
   },
 
-  onMention(account, router) {
-    dispatch(mentionCompose(account, router));
+  onMention(account) {
+    dispatch(mentionCompose(account));
   },
 
   onOpenMedia(media, index) {

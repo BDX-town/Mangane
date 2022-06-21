@@ -8,8 +8,6 @@ import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import Column from '../ui/components/better_column';
 
-import type { List as ImmutableList, Map as ImmutableMap } from 'immutable';
-
 const messages = defineMessages({
   heading: { id: 'column.backups', defaultMessage: 'Backups' },
   create: { id: 'backups.actions.create', defaultMessage: 'Create backup' },
@@ -22,7 +20,7 @@ const Backups = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const backups = useAppSelector<ImmutableList<ImmutableMap<string, any>>>((state) => state.backups.toList().sortBy((backup: ImmutableMap<string, any>) => backup.get('inserted_at')));
+  const backups = useAppSelector((state) => state.backups.toList().sortBy((backup) => backup.inserted_at));
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -63,12 +61,12 @@ const Backups = () => {
       >
         {backups.map((backup) => (
           <div
-            className={classNames('backup', { 'backup--pending': !backup.get('processed') })}
-            key={backup.get('id')}
+            className={classNames('backup', { 'backup--pending': !backup.processed })}
+            key={backup.id}
           >
-            {backup.get('processed')
-              ? <a href={backup.get('url')} target='_blank'>{backup.get('inserted_at')}</a>
-              : <div>{intl.formatMessage(messages.pending)}: {backup.get('inserted_at')}</div>
+            {backup.processed
+              ? <a href={backup.url} target='_blank'>{backup.inserted_at}</a>
+              : <div>{intl.formatMessage(messages.pending)}: {backup.inserted_at}</div>
             }
           </div>
         ))}

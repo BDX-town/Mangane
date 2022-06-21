@@ -32,7 +32,7 @@ const DeleteAccount = () => {
 
   const handleSubmit = React.useCallback(() => {
     setLoading(true);
-    dispatch(deleteAccount(intl, password)).then(() => {
+    dispatch(deleteAccount(password)).then(() => {
       setPassword('');
       dispatch(snackbar.success(intl.formatMessage(messages.deleteAccountSuccess)));
     }).finally(() => {

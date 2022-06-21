@@ -33,7 +33,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
   const statusIds = useAppSelector((state) => OrderedSet(state.timelines.getIn([`account:${account.id}:with_replies`, 'items'])).union(state.reports.new.status_ids) as OrderedSet<string>);
   const isBlocked = useAppSelector((state) => state.reports.new.block);
   const isForward = useAppSelector((state) => state.reports.new.forward);
-  const canForward = isRemote(account as any) && features.federating;
+  const canForward = isRemote(account) && features.federating;
   const isSubmitting = useAppSelector((state) => state.reports.new.isSubmitting);
 
   const [showAdditionalStatuses, setShowAdditionalStatuses] = useState<boolean>(false);

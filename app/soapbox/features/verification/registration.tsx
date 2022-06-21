@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
@@ -9,7 +8,7 @@ import { startOnboarding } from 'soapbox/actions/onboarding';
 import snackbar from 'soapbox/actions/snackbar';
 import { createAccount, removeStoredVerification } from 'soapbox/actions/verification';
 import { Button, Form, FormGroup, Input } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { getRedirectUrl } from 'soapbox/utils/redirect';
 
 import PasswordIndicator from './components/password-indicator';
@@ -37,10 +36,10 @@ const initialState = {
 };
 
 const Registration = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const isLoading = useAppSelector((state) => state.verification.get('isLoading') as boolean);
+  const isLoading = useAppSelector((state) => state.verification.isLoading as boolean);
   const siteTitle = useAppSelector((state) => state.instance.title);
 
   const [state, setState] = React.useState(initialState);

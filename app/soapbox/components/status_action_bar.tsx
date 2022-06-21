@@ -71,16 +71,16 @@ interface IStatusActionBar extends RouteComponentProps {
   status: Status,
   onOpenUnauthorizedModal: (modalType?: string) => void,
   onOpenReblogsModal: (acct: string, statusId: string) => void,
-  onReply: (status: Status, history: History) => void,
+  onReply: (status: Status) => void,
   onFavourite: (status: Status) => void,
   onBookmark: (status: Status) => void,
   onReblog: (status: Status, e: React.MouseEvent) => void,
-  onQuote: (status: Status, history: History) => void,
-  onDelete: (status: Status, history: History, redraft?: boolean) => void,
+  onQuote: (status: Status) => void,
+  onDelete: (status: Status, redraft?: boolean) => void,
   onEdit: (status: Status) => void,
-  onDirect: (account: any, history: History) => void,
+  onDirect: (account: any) => void,
   onChat: (account: any, history: History) => void,
-  onMention: (account: any, history: History) => void,
+  onMention: (account: any) => void,
   onMute: (account: any) => void,
   onBlock: (status: Status) => void,
   onReport: (status: Status) => void,
@@ -134,7 +134,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
     const { me, onReply, onOpenUnauthorizedModal, status } = this.props;
 
     if (me) {
-      onReply(status, this.props.history);
+      onReply(status);
     } else {
       onOpenUnauthorizedModal('REPLY');
     }
@@ -233,7 +233,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
     e.stopPropagation();
     const { me, onQuote, onOpenUnauthorizedModal, status } = this.props;
     if (me) {
-      onQuote(status, this.props.history);
+      onQuote(status);
     } else {
       onOpenUnauthorizedModal('REBLOG');
     }
@@ -241,12 +241,12 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
 
   handleDeleteClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    this.props.onDelete(this.props.status, this.props.history);
+    this.props.onDelete(this.props.status);
   }
 
   handleRedraftClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    this.props.onDelete(this.props.status, this.props.history, true);
+    this.props.onDelete(this.props.status, true);
   }
 
   handleEditClick: React.EventHandler<React.MouseEvent> = () => {
@@ -260,12 +260,12 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
 
   handleMentionClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    this.props.onMention(this.props.status.account, this.props.history);
+    this.props.onMention(this.props.status.account);
   }
 
   handleDirectClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    this.props.onDirect(this.props.status.account, this.props.history);
+    this.props.onDirect(this.props.status.account);
   }
 
   handleChatClick: React.EventHandler<React.MouseEvent> = (e) => {

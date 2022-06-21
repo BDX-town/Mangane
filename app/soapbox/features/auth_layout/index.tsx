@@ -32,7 +32,7 @@ const AuthLayout = () => {
   const features = useFeatures();
   const instance = useAppSelector((state) => state.instance);
   const isOpen = features.accountCreation && instance.registrations;
-  const pepeOpen = useAppSelector(state => state.verification.getIn(['instance', 'registrations'], false) === true);
+  const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
   const isLoginPage = history.location.pathname === '/login';
   const shouldShowRegisterLink = (isLoginPage && (isOpen || (pepeEnabled && pepeOpen)));
 

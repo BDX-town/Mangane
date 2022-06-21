@@ -10,7 +10,6 @@ import AccountContainer from 'soapbox/containers/account_container';
 import StatusContainer from 'soapbox/containers/status_container';
 import { useAppSelector } from 'soapbox/hooks';
 
-import type { History } from 'history';
 import type { ScrollPosition } from 'soapbox/components/status';
 import type { NotificationType } from 'soapbox/normalizers/notification';
 import type { Account, Status, Notification as NotificationEntity } from 'soapbox/types/entities';
@@ -131,7 +130,7 @@ interface INotificaton {
   notification: NotificationEntity,
   onMoveUp: (notificationId: string) => void,
   onMoveDown: (notificationId: string) => void,
-  onMention: (account: Account, history: History) => void,
+  onMention: (account: Account) => void,
   onFavourite: (status: Status) => void,
   onReblog: (status: Status, e?: KeyboardEvent) => void,
   onToggleHidden: (status: Status) => void,
@@ -182,7 +181,7 @@ const Notification: React.FC<INotificaton> = (props) => {
     e?.preventDefault();
 
     if (account && typeof account === 'object') {
-      props.onMention(account, history);
+      props.onMention(account);
     }
   };
 

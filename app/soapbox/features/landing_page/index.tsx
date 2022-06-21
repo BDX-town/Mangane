@@ -12,7 +12,7 @@ const LandingPage = () => {
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
 
   const instance = useAppSelector((state) => state.instance);
-  const pepeOpen = useAppSelector(state => state.verification.getIn(['instance', 'registrations'], false) === true);
+  const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
 
   /** Registrations are closed */
   const renderClosed = () => {

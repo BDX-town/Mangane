@@ -172,7 +172,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
         )}
 
         <div className='flex flex-col md:flex-row items-start md:flex-wrap md:items-center gap-2'>
-          {isLocal(account as any) ? (
+          {isLocal(account) ? (
             <HStack alignItems='center' space={0.5}>
               <Icon
                 src={require('@tabler/icons/icons/calendar.svg')}

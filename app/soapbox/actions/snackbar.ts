@@ -9,12 +9,12 @@ type SnackbarMessage = string | MessageDescriptor
 export type SnackbarAction = {
   type: typeof ALERT_SHOW
   message: SnackbarMessage
-  actionLabel?: string
+  actionLabel?: SnackbarMessage
   actionLink?: string
   severity: SnackbarActionSeverity
 }
 
-export const show = (severity: SnackbarActionSeverity, message: SnackbarMessage, actionLabel?: string, actionLink?: string): SnackbarAction => ({
+export const show = (severity: SnackbarActionSeverity, message: SnackbarMessage, actionLabel?: SnackbarMessage, actionLink?: string): SnackbarAction => ({
   type: ALERT_SHOW,
   message,
   actionLabel,
@@ -22,13 +22,13 @@ export const show = (severity: SnackbarActionSeverity, message: SnackbarMessage,
   severity,
 });
 
-export const info = (message: SnackbarMessage, actionLabel?: string, actionLink?: string) =>
+export const info = (message: SnackbarMessage, actionLabel?: SnackbarMessage, actionLink?: string) =>
   show('info', message, actionLabel, actionLink);
 
-export const success = (message: SnackbarMessage, actionLabel?: string, actionLink?: string) =>
+export const success = (message: SnackbarMessage, actionLabel?: SnackbarMessage, actionLink?: string) =>
   show('success', message, actionLabel, actionLink);
 
-export const error = (message: SnackbarMessage, actionLabel?: string, actionLink?: string) =>
+export const error = (message: SnackbarMessage, actionLabel?: SnackbarMessage, actionLink?: string) =>
   show('error', message, actionLabel, actionLink);
 
 export default {

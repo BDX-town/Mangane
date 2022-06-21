@@ -25,10 +25,10 @@ const verificationSteps = {
 const Verification = () => {
   const dispatch = useDispatch();
 
-  const isInstanceReady = useAppSelector((state) => state.verification.getIn(['instance', 'isReady'], false) === true);
-  const isRegistrationOpen = useAppSelector(state => state.verification.getIn(['instance', 'registrations'], false) === true);
-  const currentChallenge = useAppSelector((state) => state.verification.getIn(['currentChallenge']) as ChallengeTypes);
-  const isVerificationComplete = useAppSelector((state) => state.verification.get('isComplete'));
+  const isInstanceReady = useAppSelector((state) => state.verification.instance.get('isReady') === true);
+  const isRegistrationOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
+  const currentChallenge = useAppSelector((state) => state.verification.currentChallenge as ChallengeTypes);
+  const isVerificationComplete = useAppSelector((state) => state.verification.isComplete);
   const StepToRender = verificationSteps[currentChallenge];
 
   React.useEffect(() => {

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { fetchList } from 'soapbox/actions/lists';
@@ -10,7 +9,7 @@ import { expandListTimeline } from 'soapbox/actions/timelines';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import { Button, Spinner } from 'soapbox/components/ui';
 import Column from 'soapbox/features/ui/components/column';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import Timeline from '../ui/components/timeline';
 
@@ -21,7 +20,7 @@ import Timeline from '../ui/components/timeline';
 // });
 
 const ListTimeline: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   // const intl = useIntl();
   // const history = useHistory();
@@ -30,19 +29,15 @@ const ListTimeline: React.FC = () => {
   // const hasUnread = useAppSelector((state) => state.timelines.getIn([`list:${props.params.id}`, 'unread']) > 0);
 
   useEffect(() => {
-    const disconnect = handleConnect(id);
+    dispatch(fetchList(id));
+    dispatch(expandListTimeline(id));
+
+    const disconnect = dispatch(connectListStream(id));
 
     return () => {
       disconnect();
     };
   }, [id]);
-
-  const handleConnect = (id: string) => {
-    dispatch(fetchList(id));
-    dispatch(expandListTimeline(id));
-
-    return dispatch(connectListStream(id));
-  };
 
   const handleLoadMore = (maxId: string) => {
     dispatch(expandListTimeline(id, { maxId }));

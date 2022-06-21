@@ -10,7 +10,7 @@ const getStatus = makeGetStatus();
 /** QuotedStatus shown in post composer. */
 const QuotedStatusContainer: React.FC = () => {
   const dispatch = useAppDispatch();
-  const status = useAppSelector(state => getStatus(state, { id: state.compose.get('quote') }));
+  const status = useAppSelector(state => getStatus(state, { id: state.compose.quote! }));
 
   const onCancel = () => {
     dispatch(cancelQuoteCompose());
