@@ -206,7 +206,10 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === PLEROMA && gte(v.version, '0.9.9'),
     ]),
 
-    editStatuses: v.software === MASTODON && gte(v.version, '3.5.0'),
+    editStatuses: any([
+      v.software === MASTODON && gte(v.version, '3.5.0'),
+      features.includes('editing'),
+    ]),
 
     /**
      * Soapbox email list.
