@@ -25,13 +25,14 @@ const fileKeyGen = (): number => Math.floor((Math.random() * 0x10000));
 interface IChatBox {
   chatId: string,
   onSetInputRef: (el: HTMLTextAreaElement) => void,
+  autosize?: boolean,
 }
 
 /**
  * Chat UI with just the messages and textarea.
  * Reused between floating desktop chats and fullscreen/mobile chats.
  */
-const ChatBox: React.FC<IChatBox> = ({ chatId, onSetInputRef }) => {
+const ChatBox: React.FC<IChatBox> = ({ chatId, onSetInputRef, autosize }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const chatMessageIds = useAppSelector(state => state.chat_message_lists.get(chatId, ImmutableOrderedSet<string>()));
@@ -167,7 +168,7 @@ const ChatBox: React.FC<IChatBox> = ({ chatId, onSetInputRef }) => {
 
   return (
     <div className='chat-box' onMouseOver={handleHover}>
-      <ChatMessageList chatMessageIds={chatMessageIds} chatId={chatId} />
+      <ChatMessageList chatMessageIds={chatMessageIds} chatId={chatId} autosize />
       {renderAttachment()}
       {isUploading && (
         <UploadProgress progress={uploadProgress * 100} />

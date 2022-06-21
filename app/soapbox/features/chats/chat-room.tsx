@@ -60,6 +60,7 @@ const ChatRoom: React.FC<IChatRoom> = ({ params }) => {
       <ChatBox
         chatId={chat.id}
         onSetInputRef={handleInputRef}
+        autosize
       />
     </Column>
   );
