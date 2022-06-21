@@ -13,6 +13,8 @@ import * as BuildConfig from 'soapbox/build_config';
 import { RootState } from 'soapbox/store';
 import { getAccessToken, getAppToken, isURL, parseBaseURL } from 'soapbox/utils/auth';
 
+import type MockAdapter from 'axios-mock-adapter';
+
 /**
  Parse Link headers, mostly for pagination.
  @see {@link https://www.npmjs.com/package/http-link-header}
@@ -90,3 +92,7 @@ export default (getState: () => RootState, authType: string = 'user'): AxiosInst
 
   return baseClient(accessToken, baseURL);
 };
+
+// The Jest mock exports these, so they're needed for TypeScript.
+export const __stub = (_func: (mock: MockAdapter) => void) => 0;
+export const __clear = (): Function[] => [];
