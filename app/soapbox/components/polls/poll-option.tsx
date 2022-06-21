@@ -11,7 +11,6 @@ import type {
 } from 'soapbox/types/entities';
 
 const messages = defineMessages({
-  closed: { id: 'poll.closed', defaultMessage: 'Closed' },
   voted: { id: 'poll.voted', defaultMessage: 'You voted for this answer' },
   votes: { id: 'poll.votes', defaultMessage: '{votes, plural, one {# vote} other {# votes}}' },
 });

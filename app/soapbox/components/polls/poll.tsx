@@ -1,11 +1,12 @@
 import classNames from 'classnames';
 import React, { useState } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import { vote } from 'soapbox/actions/polls';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
-import { Stack } from '../ui';
+import { Stack, Text } from '../ui';
 
 import PollFooter from './poll-footer';
 import PollOption from './poll-option';
@@ -17,8 +18,13 @@ interface IPoll {
   status?: string,
 }
 
+const messages = defineMessages({
+  multiple: { id: 'poll.chooseMultiple', defaultMessage: 'Choose as many as you\'d like.' },
+});
+
 const Poll: React.FC<IPoll> = ({ id, status }): JSX.Element | null => {
   const dispatch = useAppDispatch();
+  const intl = useIntl();
 
   const isLoggedIn = useAppSelector((state) => state.me);
   const poll = useAppSelector((state) => state.polls.get(id));
@@ -61,6 +67,12 @@ const Poll: React.FC<IPoll> = ({ id, status }): JSX.Element | null => {
   return (
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div onClick={e => e.stopPropagation()}>
+      {poll.multiple && (
+        <Text theme='muted' size='sm'>
+          {intl.formatMessage(messages.multiple)}
+        </Text>
+      )}
+
       <Stack space={4} className={classNames('mt-4')}>
         <Stack space={2}>
           {poll.options.map((option, i) => (
