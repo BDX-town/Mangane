@@ -532,7 +532,7 @@ const expandFollowers = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
-    const url = getState().user_lists.getIn(['followers', id, 'next']);
+    const url = getState().user_lists.followers.get(id)?.next as string;
 
     if (url === null) {
       return;
@@ -606,7 +606,7 @@ const expandFollowing = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
-    const url = getState().user_lists.getIn(['following', id, 'next']);
+    const url = getState().user_lists.following.get(id)!.next;
 
     if (url === null) {
       return;
@@ -713,7 +713,7 @@ const expandFollowRequests = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
-    const url = getState().user_lists.getIn(['follow_requests', 'next']);
+    const url = getState().user_lists.follow_requests.next;
 
     if (url === null) {
       return;

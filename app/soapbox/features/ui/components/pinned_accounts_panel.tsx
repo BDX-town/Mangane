@@ -1,4 +1,4 @@
-import { List as ImmutableList } from 'immutable';
+import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -16,7 +16,7 @@ interface IPinnedAccountsPanel {
 
 const PinnedAccountsPanel: React.FC<IPinnedAccountsPanel> = ({ account, limit }) => {
   const dispatch = useAppDispatch();
-  const pinned = useAppSelector((state) => state.user_lists.getIn(['pinned', account.id, 'items'], ImmutableList())).slice(0, limit);
+  const pinned = useAppSelector((state) => state.user_lists.pinned.get(account.id)?.items || ImmutableOrderedSet<string>()).slice(0, limit);
 
   useEffect(() => {
     dispatch(fetchPinnedAccounts(account.id));
@@ -36,7 +36,7 @@ const PinnedAccountsPanel: React.FC<IPinnedAccountsPanel> = ({ account, limit })
         }}
       />}
     >
-      {pinned && pinned.map((suggestion: string) => (
+      {pinned && pinned.map((suggestion) => (
         <AccountContainer
           key={suggestion}
           id={suggestion}

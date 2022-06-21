@@ -18,8 +18,8 @@ import Column from '../../ui/components/column';
 
 const mapStateToProps = (state, { params: { id } }) => ({
   group: state.getIn(['groups', id]),
-  accountIds: state.getIn(['user_lists', 'groups', id, 'items']),
-  hasMore: !!state.getIn(['user_lists', 'groups', id, 'next']),
+  accountIds: state.user_lists.groups.get(id)?.items,
+  hasMore: !!state.user_lists.groups.get(id)?.next,
 });
 
 export default @connect(mapStateToProps)

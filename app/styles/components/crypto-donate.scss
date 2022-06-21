@@ -58,12 +58,7 @@
 }
 
 .crypto-donate-modal {
-  background: var(--foreground-color);
-  border-radius: 8px;
-  padding-bottom: 13px;
-
-  .crypto-address__actions .svg-icon {
-    width: 22px;
-    height: 22px;
+  .crypto-address {
+    padding: 0;
   }
 }

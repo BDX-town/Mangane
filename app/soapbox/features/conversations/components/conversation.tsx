@@ -5,8 +5,6 @@ import { markConversationRead } from 'soapbox/actions/conversations';
 import StatusContainer from 'soapbox/containers/status_container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
-import type { Map as ImmutableMap } from 'immutable';
-
 interface IConversation {
   conversationId: string,
   onMoveUp: (id: string) => void,
@@ -18,12 +16,12 @@ const Conversation: React.FC<IConversation> = ({ conversationId, onMoveUp, onMov
   const history = useHistory();
 
   const { accounts, unread, lastStatusId } = useAppSelector((state) => {
-    const conversation = state.conversations.get('items').find((x: ImmutableMap<string, any>) => x.get('id') === conversationId);
+    const conversation = state.conversations.items.find(x => x.id === conversationId)!;
 
     return {
-      accounts: conversation.get('accounts').map((accountId: string) => state.accounts.get(accountId, null)),
-      unread: conversation.get('unread'),
-      lastStatusId: conversation.get('last_status', null),
+      accounts: conversation.accounts.map((accountId: string) => state.accounts.get(accountId, null)!),
+      unread: conversation.unread,
+      lastStatusId: conversation.last_status || null,
     };
   });
 

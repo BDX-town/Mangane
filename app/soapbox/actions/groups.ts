@@ -253,7 +253,7 @@ const expandMembers = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
-    const url = getState().user_lists.getIn(['groups', id, 'next']);
+    const url = getState().user_lists.groups.get(id)!.next;
 
     if (url === null) {
       return;
@@ -329,7 +329,7 @@ const expandRemovedAccounts = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
-    const url = getState().user_lists.getIn(['groups_removed_accounts', id, 'next']);
+    const url = getState().user_lists.groups_removed_accounts.get(id)!.next;
 
     if (url === null) {
       return;

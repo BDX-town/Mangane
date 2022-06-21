@@ -48,8 +48,8 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
     accountId,
     unavailable,
     isAccount: !!state.getIn(['accounts', accountId]),
-    accountIds: state.getIn(['user_lists', 'following', accountId, 'items']),
-    hasMore: !!state.getIn(['user_lists', 'following', accountId, 'next']),
+    accountIds: state.user_lists.following.get(accountId)?.items,
+    hasMore: !!state.user_lists.following.get(accountId)?.next,
     diffCount,
   };
 };

@@ -50,7 +50,7 @@ interface IModal {
   /** Don't focus the "confirm" button on mount. */
   skipFocus?: boolean,
   /** Title text for the modal. */
-  title: React.ReactNode,
+  title?: React.ReactNode,
   width?: Widths,
 }
 
@@ -86,28 +86,32 @@ const Modal: React.FC<IModal> = ({
     <div data-testid='modal' className={classNames('block w-full p-6 mx-auto overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-slate-800 text-black dark:text-white shadow-xl rounded-2xl pointer-events-auto', widths[width])}>
       <div className='sm:flex sm:items-start w-full justify-between'>
         <div className='w-full'>
-          <div
-            className={classNames('w-full flex items-center gap-2', {
-              'flex-row-reverse': closePosition === 'left',
-            })}
-          >
-            <h3 className='flex-grow text-lg leading-6 font-medium text-gray-900 dark:text-white'>
-              {title}
-            </h3>
+          {title && (
+            <div
+              className={classNames('w-full flex items-center gap-2', {
+                'flex-row-reverse': closePosition === 'left',
+              })}
+            >
+              <h3 className='flex-grow text-lg leading-6 font-medium text-gray-900 dark:text-white'>
+                {title}
+              </h3>
 
-            {onClose && (
-              <IconButton
-                src={closeIcon}
-                title={intl.formatMessage(messages.close)}
-                onClick={onClose}
-                className='text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200'
-              />
-            )}
-          </div>
+              {onClose && (
+                <IconButton
+                  src={closeIcon}
+                  title={intl.formatMessage(messages.close)}
+                  onClick={onClose}
+                  className='text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200'
+                />
+              )}
+            </div>
+          )}
 
-          <div className={classNames('mt-2 w-full')}>
-            {children}
-          </div>
+          {title ? (
+            <div className='w-full mt-2'>
+              {children}
+            </div>
+          ) : children}
         </div>
       </div>
 

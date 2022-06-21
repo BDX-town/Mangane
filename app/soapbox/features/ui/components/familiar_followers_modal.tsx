@@ -17,7 +17,7 @@ interface IFamiliarFollowersModal {
 
 const FamiliarFollowersModal = ({ accountId, onClose }: IFamiliarFollowersModal) => {
   const account = useAppSelector(state => getAccount(state, accountId));
-  const familiarFollowerIds: ImmutableOrderedSet<string> = useAppSelector(state => state.user_lists.getIn(['familiar_followers', accountId]));
+  const familiarFollowerIds: ImmutableOrderedSet<string> = useAppSelector(state => state.user_lists.familiar_followers.get(accountId)?.items || ImmutableOrderedSet());
 
   const onClickClose = () => {
     onClose('FAMILIAR_FOLLOWERS');

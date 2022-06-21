@@ -24,7 +24,7 @@ const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account
   const dispatch = useDispatch();
   const me = useAppSelector((state) => state.me);
   const features = useFeatures();
-  const familiarFollowerIds: ImmutableOrderedSet<string> = useAppSelector(state => state.user_lists.getIn(['familiar_followers', account.id], ImmutableOrderedSet()));
+  const familiarFollowerIds = useAppSelector(state => state.user_lists.familiar_followers.get(account.id)?.items || ImmutableOrderedSet<string>());
   const familiarFollowers: ImmutableOrderedSet<Account | null> = useAppSelector(state => familiarFollowerIds.slice(0, 2).map(accountId => getAccount(state, accountId)));
 
   useEffect(() => {
