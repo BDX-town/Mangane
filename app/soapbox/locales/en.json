@@ -780,7 +780,7 @@
   "poll.closed": "Closed",
   "poll.refresh": "Refresh",
   "poll.total_votes": "{count, plural, one {# vote} other {# votes}}",
-  "poll.vote": "Vote",
+  "poll.vote": "Submit Vote",
   "poll.voted": "You voted for this answer",
   "poll.votes": "{votes, plural, one {# vote} other {# votes}}",
   "poll_button.add_poll": "Add a poll",

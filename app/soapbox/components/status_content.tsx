@@ -4,12 +4,13 @@ import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
-import Poll from 'soapbox/components/poll';
 import { useSoapboxConfig } from 'soapbox/hooks';
 import { addGreentext } from 'soapbox/utils/greentext';
 import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich_content';
 
 import { isRtl } from '../rtl';
+
+import Poll from './polls/poll';
 
 import type { Status, Mention } from 'soapbox/types/entities';
 
@@ -174,8 +175,8 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     const target = e.target as HTMLElement;
     const parentNode = target.parentNode as HTMLElement;
 
-    const [ startX, startY ] = startXY.current;
-    const [ deltaX, deltaY ] = [Math.abs(e.clientX - startX), Math.abs(e.clientY - startY)];
+    const [startX, startY] = startXY.current;
+    const [deltaX, deltaY] = [Math.abs(e.clientX - startX), Math.abs(e.clientY - startY)];
 
     if (target.localName === 'button' || target.localName === 'a' || (parentNode && (parentNode.localName === 'button' || parentNode.localName === 'a'))) {
       return;
@@ -273,11 +274,12 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
       output.push(<ReadMoreButton onClick={onClick} key='read-more' />);
     }
 
-    if (status.poll && typeof status.poll === 'string') {
+    const hasPoll = status.poll && typeof status.poll === 'string';
+    if (hasPoll) {
       output.push(<Poll id={status.poll} key='poll' status={status.url} />);
     }
 
-    return <>{output}</>;
+    return <div className={classNames({ 'bg-gray-100 dark:bg-primary-900 rounded-md p-4': hasPoll })}>{output}</div>;
   } else {
     const output = [
       <div

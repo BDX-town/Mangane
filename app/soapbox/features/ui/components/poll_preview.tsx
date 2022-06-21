@@ -1,43 +1,36 @@
-import classNames from 'classnames';
+import noop from 'lodash/noop';
 import React from 'react';
 
-import { Poll as PollEntity, PollOption as PollOptionEntity } from 'soapbox/types/entities';
+import PollOption from 'soapbox/components/polls/poll-option';
+import { Stack } from 'soapbox/components/ui';
+import { useAppSelector } from 'soapbox/hooks';
+import { Poll as PollEntity } from 'soapbox/types/entities';
 
 interface IPollPreview {
-  poll: PollEntity,
+  pollId: string,
 }
 
-const PollPreview: React.FC<IPollPreview> = ({ poll }) => {
-  const renderOption = (option: PollOptionEntity, index: number) => {
-    const showResults = poll.voted || poll.expired;
-
-    return (
-      <li key={index}>
-        <label className={classNames('poll__text', { selectable: !showResults })}>
-          <input
-            name='vote-options'
-            type={poll.multiple ? 'checkbox' : 'radio'}
-            disabled
-          />
-
-          <span className={classNames('poll__input', { checkbox: poll.multiple })} />
-
-          <span dangerouslySetInnerHTML={{ __html: option.title_emojified }} />
-        </label>
-      </li>
-    );
-  };
+const PollPreview: React.FC<IPollPreview> = ({ pollId }) => {
+  const poll = useAppSelector((state) => state.polls.get(pollId) as PollEntity);
 
   if (!poll) {
     return null;
   }
 
   return (
-    <div className='poll'>
-      <ul>
-        {poll.options.map((option, i) => renderOption(option, i))}
-      </ul>
-    </div>
+    <Stack space={2}>
+      {poll.options.map((option, i) => (
+        <PollOption
+          key={i}
+          poll={poll}
+          option={option}
+          index={i}
+          showResults={false}
+          active={false}
+          onToggle={noop}
+        />
+      ))}
+    </Stack>
   );
 };
 
