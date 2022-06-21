@@ -13,7 +13,7 @@ import { buildStatus } from '../builder';
 
 import ScheduledStatusActionBar from './scheduled_status_action_bar';
 
-import type { Account as AccountEntity, Poll as PollEntity, Status as StatusEntity } from 'soapbox/types/entities';
+import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
 interface IScheduledStatus {
   statusId: string,
@@ -55,7 +55,7 @@ const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => 
           />
         )}
 
-        {status.poll && <PollPreview poll={status.poll as PollEntity} />}
+        {status.poll && <PollPreview pollId={status.poll as string} />}
 
         <ScheduledStatusActionBar status={status} {...other} />
       </div>
