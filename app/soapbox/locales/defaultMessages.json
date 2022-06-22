@@ -3793,7 +3793,7 @@
         "id": "column.home"
       },
       {
-        "defaultMessage": "Your home timeline is empty! Visit {public} to get started and meet other users.",
+        "defaultMessage": "Or you can visit {public} to get started and meet other users.",
         "id": "empty_column.home"
       },
       {

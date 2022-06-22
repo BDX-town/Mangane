@@ -5,12 +5,14 @@ import { useDimensions } from '../useDimensions';
 let listener: ((rect: any) => void) | undefined = undefined;
 
 (window as any).ResizeObserver = class ResizeObserver {
+
   constructor(ls) {
     listener = ls;
   }
 
   observe() {}
   disconnect() {}
+
 };
 
 describe('useDimensions()', () => {
@@ -56,10 +58,12 @@ describe('useDimensions()', () => {
   it('disconnects on unmount', () => {
     const disconnect = jest.fn();
     (window as any).ResizeObserver = class ResizeObserver {
+
       observe() {}
       disconnect() {
         disconnect();
       }
+    
     };
 
     const { result, unmount } = renderHook(() => useDimensions());
