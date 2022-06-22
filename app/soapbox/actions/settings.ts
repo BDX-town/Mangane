@@ -17,6 +17,12 @@ const SETTINGS_UPDATE = 'SETTINGS_UPDATE';
 
 const FE_NAME = 'soapbox_fe';
 
+/** Options when changing/saving settings. */
+type SettingOpts = {
+  /** Whether to display an alert when settings are saved. */
+  showAlert?: boolean,
+}
+
 const messages = defineMessages({
   saveSuccess: { id: 'settings.save.success', defaultMessage: 'Your preferences have been saved!' },
 });
@@ -177,7 +183,7 @@ const getSettings = createSelector([
     .mergeDeep(settings);
 });
 
-const changeSettingImmediate = (path: string[], value: any, showAlert = false) =>
+const changeSettingImmediate = (path: string[], value: any, opts?: SettingOpts) =>
   (dispatch: AppDispatch) => {
     dispatch({
       type: SETTING_CHANGE,
@@ -185,10 +191,10 @@ const changeSettingImmediate = (path: string[], value: any, showAlert = false) =
       value,
     });
 
-    dispatch(saveSettingsImmediate(showAlert));
+    dispatch(saveSettingsImmediate(opts));
   };
 
-const changeSetting = (path: string[], value: any, showAlert = false) =>
+const changeSetting = (path: string[], value: any, opts?: SettingOpts) =>
   (dispatch: AppDispatch) => {
     dispatch({
       type: SETTING_CHANGE,
@@ -196,10 +202,10 @@ const changeSetting = (path: string[], value: any, showAlert = false) =>
       value,
     });
 
-    return dispatch(saveSettings(showAlert));
+    return dispatch(saveSettings(opts));
   };
 
-const saveSettingsImmediate = (showAlert = false) =>
+const saveSettingsImmediate = (opts?: SettingOpts) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
@@ -215,7 +221,7 @@ const saveSettingsImmediate = (showAlert = false) =>
     })).then(() => {
       dispatch({ type: SETTING_SAVE });
 
-      if (showAlert) {
+      if (opts?.showAlert) {
         dispatch(snackbar.success(messages.saveSuccess));
       }
     }).catch(error => {
@@ -223,8 +229,8 @@ const saveSettingsImmediate = (showAlert = false) =>
     });
   };
 
-const saveSettings = (showAlert = false) =>
-  (dispatch: AppDispatch) => dispatch(saveSettingsImmediate(showAlert));
+const saveSettings = (opts?: SettingOpts) =>
+  (dispatch: AppDispatch) => dispatch(saveSettingsImmediate(opts));
 
 export {
   SETTING_CHANGE,
