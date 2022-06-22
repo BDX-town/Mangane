@@ -17,6 +17,12 @@ const SETTINGS_UPDATE = 'SETTINGS_UPDATE';
 
 const FE_NAME = 'soapbox_fe';
 
+/** Options when changing/saving settings. */
+type SettingOpts = {
+  /** Whether to display an alert when settings are saved. */
+  showAlert?: boolean,
+}
+
 const messages = defineMessages({
   saveSuccess: { id: 'settings.save.success', defaultMessage: 'Your preferences have been saved!' },
 });
@@ -177,7 +183,7 @@ const getSettings = createSelector([
     .mergeDeep(settings);
 });
 
-const changeSettingImmediate = (path: string[], value: any) =>
+const changeSettingImmediate = (path: string[], value: any, opts?: SettingOpts) =>
   (dispatch: AppDispatch) => {
     dispatch({
       type: SETTING_CHANGE,
@@ -185,10 +191,10 @@ const changeSettingImmediate = (path: string[], value: any) =>
       value,
     });
 
-    dispatch(saveSettingsImmediate());
+    dispatch(saveSettingsImmediate(opts));
   };
 
-const changeSetting = (path: string[], value: any) =>
+const changeSetting = (path: string[], value: any, opts?: SettingOpts) =>
   (dispatch: AppDispatch) => {
     dispatch({
       type: SETTING_CHANGE,
@@ -196,10 +202,10 @@ const changeSetting = (path: string[], value: any) =>
       value,
     });
 
-    return dispatch(saveSettings());
+    return dispatch(saveSettings(opts));
   };
 
-const saveSettingsImmediate = () =>
+const saveSettingsImmediate = (opts?: SettingOpts) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
@@ -215,14 +221,16 @@ const saveSettingsImmediate = () =>
     })).then(() => {
       dispatch({ type: SETTING_SAVE });
 
-      dispatch(snackbar.success(messages.saveSuccess));
+      if (opts?.showAlert) {
+        dispatch(snackbar.success(messages.saveSuccess));
+      }
     }).catch(error => {
       dispatch(showAlertForError(error));
     });
   };
 
-const saveSettings = () =>
-  (dispatch: AppDispatch) => dispatch(saveSettingsImmediate());
+const saveSettings = (opts?: SettingOpts) =>
+  (dispatch: AppDispatch) => dispatch(saveSettingsImmediate(opts));
 
 export {
   SETTING_CHANGE,
