@@ -177,7 +177,7 @@ const getSettings = createSelector([
     .mergeDeep(settings);
 });
 
-const changeSettingImmediate = (path: string[], value: any) =>
+const changeSettingImmediate = (path: string[], value: any, showAlert = false) =>
   (dispatch: AppDispatch) => {
     dispatch({
       type: SETTING_CHANGE,
@@ -185,10 +185,10 @@ const changeSettingImmediate = (path: string[], value: any) =>
       value,
     });
 
-    dispatch(saveSettingsImmediate());
+    dispatch(saveSettingsImmediate(showAlert));
   };
 
-const changeSetting = (path: string[], value: any) =>
+const changeSetting = (path: string[], value: any, showAlert = false) =>
   (dispatch: AppDispatch) => {
     dispatch({
       type: SETTING_CHANGE,
@@ -196,10 +196,10 @@ const changeSetting = (path: string[], value: any) =>
       value,
     });
 
-    return dispatch(saveSettings());
+    return dispatch(saveSettings(showAlert));
   };
 
-const saveSettingsImmediate = () =>
+const saveSettingsImmediate = (showAlert = false) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
@@ -215,14 +215,16 @@ const saveSettingsImmediate = () =>
     })).then(() => {
       dispatch({ type: SETTING_SAVE });
 
-      dispatch(snackbar.success(messages.saveSuccess));
+      if (showAlert) {
+        dispatch(snackbar.success(messages.saveSuccess));
+      }
     }).catch(error => {
       dispatch(showAlertForError(error));
     });
   };
 
-const saveSettings = () =>
-  (dispatch: AppDispatch) => dispatch(saveSettingsImmediate());
+const saveSettings = (showAlert = false) =>
+  (dispatch: AppDispatch) => dispatch(saveSettingsImmediate(showAlert));
 
 export {
   SETTING_CHANGE,
