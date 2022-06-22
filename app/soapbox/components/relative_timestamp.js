@@ -179,7 +179,7 @@ class RelativeTimestamp extends React.Component {
     const relativeTime = futureDate ? timeRemainingString(intl, date, this.state.now) : timeAgoString(intl, date, this.state.now, year);
 
     return (
-      <Text {...textProps} theme='inherit' tag='time' title={intl.formatDate(date, dateFormatOptions)}>
+      <Text {...textProps} theme='muted' tag='time' title={intl.formatDate(date, dateFormatOptions)}>
         {relativeTime}
       </Text>
     );
