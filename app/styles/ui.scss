@@ -220,17 +220,6 @@ article:last-child > .domain {
   display: flex;
 }
 
-.muted {
-  .status__content p,
-  .status__content a {
-    color: var(--primary-text-color);
-  }
-
-  .status__display-name strong {
-    color: var(--primary-text-color);
-  }
-}
-
 .image-loader {
   position: relative;
   width: 100%;
