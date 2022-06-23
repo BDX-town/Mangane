@@ -6,6 +6,7 @@ import rootReducer from 'soapbox/reducers';
 
 import { normalizeAccount } from '../../normalizers';
 import {
+  authorizeFollowRequest,
   blockAccount,
   createAccount,
   expandFollowers,
@@ -1565,6 +1566,69 @@ describe('expandFollowRequests()', () => {
           { type: 'FOLLOW_REQUESTS_EXPAND_FAIL', error: new Error('Network Error') },
         ];
         await store.dispatch(expandFollowRequests());
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('authorizeFollowRequest()', () => {
+  const id = '1';
+
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(authorizeFollowRequest(id));
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/follow_requests/${id}/authorize`).reply(200);
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOW_REQUEST_AUTHORIZE_REQUEST', id },
+          { type: 'FOLLOW_REQUEST_AUTHORIZE_SUCCESS', id },
+        ];
+        await store.dispatch(authorizeFollowRequest(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/follow_requests/${id}/authorize`).networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOW_REQUEST_AUTHORIZE_REQUEST', id },
+          { type: 'FOLLOW_REQUEST_AUTHORIZE_FAIL', id, error: new Error('Network Error') },
+        ];
+        await store.dispatch(authorizeFollowRequest(id));
         const actions = store.getActions();
 
         expect(actions).toEqual(expectedActions);

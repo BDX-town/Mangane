@@ -761,11 +761,11 @@ const expandFollowRequestsFail = (error: AxiosError) => ({
 
 const authorizeFollowRequest = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     dispatch(authorizeFollowRequestRequest(id));
 
-    api(getState)
+    return api(getState)
       .post(`/api/v1/follow_requests/${id}/authorize`)
       .then(() => dispatch(authorizeFollowRequestSuccess(id)))
       .catch(error => dispatch(authorizeFollowRequestFail(id, error)));
