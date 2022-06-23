@@ -37,7 +37,6 @@ const BirthdaysModal = ({ onClose }: IBirthdaysModal) => {
     );
   }
 
-
   return (
     <Modal
       title={<FormattedMessage id='column.birthdays' defaultMessage='Birthdays' />}

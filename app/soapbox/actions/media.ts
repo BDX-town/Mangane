@@ -22,13 +22,11 @@ const uploadMediaV1 = (data: FormData, onUploadProgress = noOp) =>
       onUploadProgress: onUploadProgress,
     });
 
-
 const uploadMediaV2 = (data: FormData, onUploadProgress = noOp) =>
   (dispatch: any, getState: () => RootState) =>
     api(getState).post('/api/v2/media', data, {
       onUploadProgress: onUploadProgress,
     });
-
 
 const uploadMedia = (data: FormData, onUploadProgress = noOp) =>
   (dispatch: AppDispatch, getState: () => RootState) => {

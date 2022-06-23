@@ -410,7 +410,6 @@ const unmuteAccountFail = (error: AxiosError) => ({
   error,
 });
 
-
 const subscribeAccount = (id: string, notifications?: boolean) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return null;
@@ -464,7 +463,6 @@ const unsubscribeAccountFail = (error: AxiosError) => ({
   type: ACCOUNT_UNSUBSCRIBE_FAIL,
   error,
 });
-
 
 const removeFromFollowers = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
@@ -770,7 +768,6 @@ const authorizeFollowRequestFail = (id: string, error: AxiosError) => ({
   id,
   error,
 });
-
 
 const rejectFollowRequest = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {

@@ -20,7 +20,7 @@ const DirectTimeline = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const hasUnread = useAppSelector((state) => state.timelines.getIn(['direct', 'unread']) > 0);
+  const hasUnread = useAppSelector((state) => (state.timelines.get('direct')?.unread || 0) > 0);
 
   useEffect(() => {
     dispatch(expandDirectTimeline());

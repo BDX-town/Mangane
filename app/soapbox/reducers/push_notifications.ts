@@ -1,10 +1,17 @@
-import { Map as ImmutableMap } from 'immutable';
+import { Map as ImmutableMap, Record as ImmutableRecord } from 'immutable';
 
 import { SET_BROWSER_SUPPORT, SET_SUBSCRIPTION, CLEAR_SUBSCRIPTION, SET_ALERTS } from '../actions/push_notifications';
 
-const initialState = ImmutableMap({
-  subscription: null,
-  alerts: new ImmutableMap({
+import type { AnyAction } from 'redux';
+
+const SubscriptionRecord = ImmutableRecord({
+  id: '',
+  endpoint: '',
+});
+
+const ReducerRecord = ImmutableRecord({
+  subscription: null as Subscription | null,
+  alerts: ImmutableMap<string, boolean>({
     follow: true,
     follow_request: true,
     favourite: true,
@@ -16,20 +23,22 @@ const initialState = ImmutableMap({
   browserSupport: false,
 });
 
-export default function push_subscriptions(state = initialState, action) {
+type Subscription = ReturnType<typeof SubscriptionRecord>;
+
+export default function push_subscriptions(state = ReducerRecord(), action: AnyAction) {
   switch (action.type) {
     case SET_SUBSCRIPTION:
       return state
-        .set('subscription', new ImmutableMap({
+        .set('subscription', SubscriptionRecord({
           id: action.subscription.id,
           endpoint: action.subscription.endpoint,
         }))
-        .set('alerts', new ImmutableMap(action.subscription.alerts))
+        .set('alerts', ImmutableMap(action.subscription.alerts))
         .set('isSubscribed', true);
     case SET_BROWSER_SUPPORT:
       return state.set('browserSupport', action.value);
     case CLEAR_SUBSCRIPTION:
-      return initialState;
+      return ReducerRecord();
     case SET_ALERTS:
       return state.setIn(action.path, action.value);
     default:

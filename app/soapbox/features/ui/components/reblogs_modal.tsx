@@ -50,7 +50,6 @@ const ReblogsModal: React.FC<IReblogsModal> = ({ onClose, statusId }) => {
     );
   }
 
-
   return (
     <Modal
       title={<FormattedMessage id='column.reblogs' defaultMessage='Reposts' />}

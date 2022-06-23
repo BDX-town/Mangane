@@ -14,7 +14,6 @@ import compareId from '../compare_id';
 import type { AnyAction } from 'redux';
 import type { APIEntity } from 'soapbox/types/entities';
 
-
 const ConversationRecord = ImmutableRecord({
   id: '',
   unread: false,

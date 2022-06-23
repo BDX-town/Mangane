@@ -163,7 +163,6 @@ class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedSt
           <HStack justifyContent='between' alignItems='center' className='py-2'>
             <StatusInteractionBar status={status} />
 
-
             <div className='detailed-status__timestamp'>
               {statusTypeIcon}
 

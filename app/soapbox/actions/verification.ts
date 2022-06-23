@@ -59,7 +59,6 @@ const removeStoredVerification = () => {
   localStorage.removeItem(LOCAL_STORAGE_VERIFICATION_KEY);
 };
 
-
 /**
  * Fetch and return the Registration token for Pepe.
  */
@@ -206,7 +205,6 @@ const fetchRegistrationToken = () =>
       });
       return null;
     }
-
 
     return api(getState).post('/api/v1/pepe/registrations')
       .then(response => {

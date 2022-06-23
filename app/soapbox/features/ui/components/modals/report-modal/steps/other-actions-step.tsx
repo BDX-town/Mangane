@@ -30,7 +30,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
   const features = useFeatures();
   const intl = useIntl();
 
-  const statusIds = useAppSelector((state) => OrderedSet(state.timelines.getIn([`account:${account.id}:with_replies`, 'items'])).union(state.reports.new.status_ids) as OrderedSet<string>);
+  const statusIds = useAppSelector((state) => OrderedSet(state.timelines.get(`account:${account.id}:with_replies`)!.items).union(state.reports.new.status_ids) as OrderedSet<string>);
   const isBlocked = useAppSelector((state) => state.reports.new.block);
   const isForward = useAppSelector((state) => state.reports.new.forward);
   const canForward = isRemote(account) && features.federating;

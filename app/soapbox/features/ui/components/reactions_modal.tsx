@@ -94,7 +94,6 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
     </>);
   }
 
-
   return (
     <Modal
       title={<FormattedMessage id='column.reactions' defaultMessage='Reactions' />}

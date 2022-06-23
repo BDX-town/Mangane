@@ -27,12 +27,12 @@ const Timeline: React.FC<ITimeline> = ({
   const dispatch = useAppDispatch();
   const getStatusIds = useCallback(makeGetStatusIds, [])();
 
-  const lastStatusId = useAppSelector(state => state.timelines.getIn([timelineId, 'items'], ImmutableOrderedSet()).last() as string | undefined);
+  const lastStatusId = useAppSelector(state => (state.timelines.get(timelineId)?.items || ImmutableOrderedSet()).last() as string | undefined);
   const statusIds = useAppSelector(state => getStatusIds(state, { type: timelineId }));
-  const isLoading = useAppSelector(state => state.timelines.getIn([timelineId, 'isLoading'], true) === true);
-  const isPartial = useAppSelector(state => state.timelines.getIn([timelineId, 'isPartial'], false) === true);
-  const hasMore = useAppSelector(state => state.timelines.getIn([timelineId, 'hasMore']) === true);
-  const totalQueuedItemsCount = useAppSelector(state => state.timelines.getIn([timelineId, 'totalQueuedItemsCount']));
+  const isLoading = useAppSelector(state => (state.timelines.get(timelineId) || { isLoading: true }).isLoading === true);
+  const isPartial = useAppSelector(state => (state.timelines.get(timelineId)?.isPartial || false) === true);
+  const hasMore = useAppSelector(state => state.timelines.get(timelineId)?.hasMore === true);
+  const totalQueuedItemsCount = useAppSelector(state => state.timelines.get(timelineId)?.totalQueuedItemsCount || 0);
 
   const handleDequeueTimeline = () => {
     dispatch(dequeueTimeline(timelineId, onLoadMore));

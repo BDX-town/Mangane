@@ -128,7 +128,6 @@ const Modal: React.FC<IModal> = ({
             )}
           </div>
 
-
           <div className='flex flex-row space-x-2'>
             {secondaryAction && (
               <Button
