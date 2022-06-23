@@ -38,7 +38,7 @@ const mapStateToProps = (state, { intl }) => {
     if (notification.action) {
       const { action } = notification;
       notification.action = (
-        <Button onClick={action} text={notification.actionLabel} />
+        <Button theme='ghost' onClick={action} text={notification.actionLabel} />
       );
     } else if (notification.actionLabel) {
       notification.action = (
