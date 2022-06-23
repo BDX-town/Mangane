@@ -1,4 +1,4 @@
-import QRCode from 'qrcode.react';
+import { QRCodeCanvas as QRCode } from 'qrcode.react';
 import React from 'react';
 
 import Icon from 'soapbox/components/icon';
