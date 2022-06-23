@@ -52,3 +52,7 @@ export default function alerts(state: State = ImmutableList<Alert>(), action: An
       return state;
   }
 }
+
+export {
+  Alert,
+};

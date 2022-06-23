@@ -1,56 +1,72 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { NotificationStack, NotificationObject, StyleFactoryFn } from 'react-notification';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
+import { dismissAlert } from 'soapbox/actions/alerts';
 import { Button } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
-import { dismissAlert } from '../../../actions/alerts';
-import { getAlerts } from '../../../selectors';
+import type { Alert } from 'soapbox/reducers/alerts';
 
-const defaultBarStyleFactory: StyleFactoryFn = (index, style, _notification) => {
-  return Object.assign(
-    {},
-    style,
-    { bottom: `${14 + index * 12 + index * 42}px` },
-  );
-};
-
+/** Portal for snackbar alerts. */
 const SnackbarContainer: React.FC = () => {
   const intl = useIntl();
+  const history = useHistory();
   const dispatch = useAppDispatch();
 
-  const notifications = useAppSelector(getAlerts);
+  const alerts = useAppSelector(state => state.alerts);
 
-  notifications.forEach(notification => {
-    ['title', 'message', 'actionLabel'].forEach(key => {
-      // @ts-ignore
-      const value = notification[key];
-
-      if (typeof value === 'object') {
-        // @ts-ignore
-        notification[key] = intl.formatMessage(value);
-      }
-    });
-
-    if (notification.action) {
-      const { action } = notification;
-      notification.action = (
-        <Button theme='ghost' size='sm' onClick={action} text={notification.actionLabel} />
-      );
-    } else if (notification.actionLabel) {
-      notification.action = (
-        <Link to={notification.actionLink}>
-          {notification.actionLabel}
-        </Link>
-      );
+  /** Apply i18n to the message if it's an object. */
+  const maybeFormatMessage = (message: any): string => {
+    switch (typeof message) {
+      case 'string': return message;
+      case 'object': return intl.formatMessage(message);
+      default: return '';
     }
-  });
+  };
+
+  /** Convert a reducer Alert into a react-notification object. */
+  const buildAlert = (item: Alert): NotificationObject => {
+    // Backwards-compatibility
+    if (item.actionLink) {
+      item = item.set('action', () => history.push(item.actionLink));
+    }
+
+    const alert: NotificationObject = {
+      message: maybeFormatMessage(item.message),
+      title: maybeFormatMessage(item.title),
+      key: item.key,
+      className: `notification-bar-${item.severity}`,
+      activeClassName: 'snackbar--active',
+      dismissAfter: 6000,
+      style: false,
+    };
+
+    if (item.action && item.actionLabel) {
+      // HACK: it's a JSX.Element instead of a string!
+      // react-notification displays it just fine.
+      alert.action = (
+        <Button theme='ghost' size='sm' onClick={item.action} text={maybeFormatMessage(item.actionLabel)} />
+      ) as any;
+    }
+
+    return alert;
+  };
 
   const onDismiss = (alert: NotificationObject) => {
     dispatch(dismissAlert(alert));
   };
+
+  const defaultBarStyleFactory: StyleFactoryFn = (index, style, _notification) => {
+    return Object.assign(
+      {},
+      style,
+      { bottom: `${14 + index * 12 + index * 42}px` },
+    );
+  };
+
+  const notifications = alerts.toArray().map(buildAlert);
 
   return (
     <div role='assertive' data-testid='toast' className='z-1000 fixed inset-0 flex items-end px-4 py-6 pointer-events-none pt-16 lg:pt-20 sm:items-start'>
