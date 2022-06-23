@@ -468,15 +468,14 @@ const unsubscribeAccountFail = (error: AxiosError) => ({
 
 const removeFromFollowers = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
-    dispatch(muteAccountRequest(id));
+    dispatch(removeFromFollowersRequest(id));
 
-    api(getState).post(`/api/v1/accounts/${id}/remove_from_followers`).then(response => {
-      dispatch(removeFromFollowersSuccess(response.data));
-    }).catch(error => {
-      dispatch(removeFromFollowersFail(id, error));
-    });
+    return api(getState)
+      .post(`/api/v1/accounts/${id}/remove_from_followers`)
+      .then(response => dispatch(removeFromFollowersSuccess(response.data)))
+      .catch(error => dispatch(removeFromFollowersFail(id, error)));
   };
 
 const removeFromFollowersRequest = (id: string) => ({
