@@ -63,9 +63,12 @@ const connectTimelineStream = (
         case 'status.update':
           dispatch(updateStatus(JSON.parse(data.payload)));
           break;
-        case 'delete':
-          dispatch(deleteFromTimelines(data.payload));
-          break;
+        // FIXME: We think delete & redraft is causing jumpy timelines.
+        // Fix that in ScrollableList then re-enable this!
+        //
+        // case 'delete':
+        //   dispatch(deleteFromTimelines(data.payload));
+        //   break;
         case 'notification':
           messages[locale]().then(messages => {
             dispatch(updateNotificationsQueue(JSON.parse(data.payload), messages, locale, window.location.pathname));
