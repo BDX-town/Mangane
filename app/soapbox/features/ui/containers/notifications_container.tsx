@@ -1,21 +1,15 @@
 import React from 'react';
-import { injectIntl } from 'react-intl';
-import { NotificationStack } from 'react-notification';
-import { connect } from 'react-redux';
+import { useIntl } from 'react-intl';
+import { NotificationStack, NotificationObject, StyleFactoryFn } from 'react-notification';
 import { Link } from 'react-router-dom';
 
 import { Button } from 'soapbox/components/ui';
+import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
 import { dismissAlert } from '../../../actions/alerts';
 import { getAlerts } from '../../../selectors';
 
-const CustomNotificationStack = (props) => (
-  <div role='assertive' data-testid='toast' className='z-1000 fixed inset-0 flex items-end px-4 py-6 pointer-events-none pt-16 lg:pt-20 sm:items-start'>
-    <NotificationStack {...props} />
-  </div>
-);
-
-const defaultBarStyleFactory = (index, style, notification) => {
+const defaultBarStyleFactory: StyleFactoryFn = (index, style, _notification) => {
   return Object.assign(
     {},
     style,
@@ -23,14 +17,19 @@ const defaultBarStyleFactory = (index, style, notification) => {
   );
 };
 
-const mapStateToProps = (state, { intl }) => {
-  const notifications = getAlerts(state);
+const SnackbarContainer: React.FC = () => {
+  const intl = useIntl();
+  const dispatch = useAppDispatch();
+
+  const notifications = useAppSelector(getAlerts);
 
   notifications.forEach(notification => {
     ['title', 'message', 'actionLabel'].forEach(key => {
+      // @ts-ignore
       const value = notification[key];
 
       if (typeof value === 'object') {
+        // @ts-ignore
         notification[key] = intl.formatMessage(value);
       }
     });
@@ -49,20 +48,21 @@ const mapStateToProps = (state, { intl }) => {
     }
   });
 
-  return { notifications, linkComponent: Link };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  const onDismiss = alert => {
+  const onDismiss = (alert: NotificationObject) => {
     dispatch(dismissAlert(alert));
   };
 
-  return {
-    onDismiss,
-    onClick: onDismiss,
-    barStyleFactory: defaultBarStyleFactory,
-    activeBarStyleFactory: defaultBarStyleFactory,
-  };
+  return (
+    <div role='assertive' data-testid='toast' className='z-1000 fixed inset-0 flex items-end px-4 py-6 pointer-events-none pt-16 lg:pt-20 sm:items-start'>
+      <NotificationStack
+        onDismiss={onDismiss}
+        onClick={onDismiss}
+        barStyleFactory={defaultBarStyleFactory}
+        activeBarStyleFactory={defaultBarStyleFactory}
+        notifications={notifications}
+      />
+    </div>
+  );
 };
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(CustomNotificationStack));
+export default SnackbarContainer;
