@@ -12,6 +12,7 @@ import {
   fetchAccount,
   fetchAccountByUsername,
   fetchFollowers,
+  fetchFollowing,
   followAccount,
   muteAccount,
   removeFromFollowers,
@@ -996,7 +997,7 @@ describe('fetchFollowers()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {});
+      const state = rootReducer(undefined, {}).set('me', '123');
       store = mockStore(state);
     });
 
@@ -1127,6 +1128,63 @@ describe('expandFollowers()', () => {
           { type: 'FOLLOWERS_EXPAND_FAIL', id, error: new Error('Network Error') },
         ];
         await store.dispatch(expandFollowers(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('fetchFollowing()', () => {
+  const id = '1';
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet(`/api/v1/accounts/${id}/following`).reply(200, [], {
+            link: `<https://example.com/api/v1/accounts/${id}/following?since_id=1>; rel='prev'`,
+          });
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOWING_FETCH_REQUEST', id },
+          { type: 'ACCOUNTS_IMPORT', accounts: [] },
+          {
+            type: 'FOLLOWING_FETCH_SUCCESS',
+            id,
+            accounts: [],
+            next: null,
+          },
+        ];
+        await store.dispatch(fetchFollowing(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet(`/api/v1/accounts/${id}/following`).networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOWING_FETCH_REQUEST', id },
+          { type: 'FOLLOWING_FETCH_FAIL', id, error: new Error('Network Error') },
+        ];
+        await store.dispatch(fetchFollowing(id));
         const actions = store.getActions();
 
         expect(actions).toEqual(expectedActions);
