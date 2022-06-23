@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { fetchCarouselAvatars } from 'soapbox/actions/carousels';
 import { replaceHomeTimeline } from 'soapbox/actions/timelines';
@@ -57,6 +58,7 @@ const FeedCarousel = () => {
 
   const avatars = useAppSelector((state) => state.carousels.avatars);
   const isLoading = useAppSelector((state) => state.carousels.isLoading);
+  const hasError = useAppSelector((state) => state.carousels.error);
   const numberOfPages = Math.floor(avatars.length / pageSize);
 
   const hasNextPage = currentPage < numberOfPages && numberOfPages > 1;
@@ -79,6 +81,16 @@ const FeedCarousel = () => {
 
   if (!features.feedUserFiltering) {
     return null;
+  }
+
+  if (hasError) {
+    return (
+      <Card variant='rounded' size='lg'>
+        <Text align='center'>
+          <FormattedMessage id='common.error' defaultMessage="Something isn't right. Try reloading the page." />
+        </Text>
+      </Card>
+    );
   }
 
   return (

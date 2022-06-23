@@ -32,6 +32,7 @@ describe('carousels reducer', () => {
 
       expect(result.isLoading).toEqual(false);
       expect(result.avatars).toEqual([45]);
+      expect(result.error).toEqual(false);
     });
   });
 
@@ -39,7 +40,10 @@ describe('carousels reducer', () => {
     it('sets "isLoading" to "true"', () => {
       const initialState = { isLoading: true, avatars: [] };
       const action = { type: CAROUSEL_AVATAR_FAIL };
-      expect(reducer(initialState, action).isLoading).toEqual(false);
+      const result = reducer(initialState, action);
+
+      expect(result.isLoading).toEqual(false);
+      expect(result.error).toEqual(true);
     });
   });
 });

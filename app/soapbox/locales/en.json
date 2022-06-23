@@ -258,6 +258,7 @@
   "column_forbidden.title": "Forbidden",
   "column_header.show_settings": "Show settings",
   "common.cancel": "Cancel",
+  "common.error": "Something isn't right. Try reloading the page.",
   "community.column_settings.media_only": "Media Only",
   "community.column_settings.title": "Local timeline settings",
   "compose.character_counter.title": "Used {chars} out of {maxChars} characters",

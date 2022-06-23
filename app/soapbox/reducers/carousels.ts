@@ -13,13 +13,15 @@ type Avatar = {
 }
 
 type CarouselsState = {
-  avatars: Avatar[],
+  avatars: Avatar[]
   isLoading: boolean
+  error: boolean
 }
 
 const initialState: CarouselsState = {
   avatars: [],
   isLoading: false,
+  error: false,
 };
 
 export default function rules(state: CarouselsState = initialState, action: AnyAction): CarouselsState {
@@ -29,7 +31,7 @@ export default function rules(state: CarouselsState = initialState, action: AnyA
     case CAROUSEL_AVATAR_SUCCESS:
       return { ...state, isLoading: false, avatars: action.payload };
     case CAROUSEL_AVATAR_FAIL:
-      return { ...state, isLoading: false };
+      return { ...state, isLoading: false, error: true };
     default:
       return state;
   }
