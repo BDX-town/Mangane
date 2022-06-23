@@ -693,15 +693,18 @@ const fetchRelationshipsFail = (error: AxiosError) => ({
 
 const fetchFollowRequests = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     dispatch(fetchFollowRequestsRequest());
 
-    api(getState).get('/api/v1/follow_requests').then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(fetchFollowRequestsSuccess(response.data, next ? next.uri : null));
-    }).catch(error => dispatch(fetchFollowRequestsFail(error)));
+    return api(getState)
+      .get('/api/v1/follow_requests')
+      .then(response => {
+        const next = getLinks(response).refs.find(link => link.rel === 'next');
+        dispatch(importFetchedAccounts(response.data));
+        dispatch(fetchFollowRequestsSuccess(response.data, next ? next.uri : null));
+      })
+      .catch(error => dispatch(fetchFollowRequestsFail(error)));
   };
 
 const fetchFollowRequestsRequest = () => ({

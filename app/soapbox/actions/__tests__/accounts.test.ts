@@ -14,6 +14,7 @@ import {
   fetchAccountByUsername,
   fetchFollowers,
   fetchFollowing,
+  fetchFollowRequests,
   fetchRelationships,
   followAccount,
   muteAccount,
@@ -1395,6 +1396,80 @@ describe('fetchRelationships()', () => {
           { type: 'RELATIONSHIPS_FETCH_FAIL', skipLoading: true, error: new Error('Network Error') },
         ];
         await store.dispatch(fetchRelationships([id]));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('fetchFollowRequests()', () => {
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(fetchFollowRequests());
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {})
+        .set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        const state = rootReducer(undefined, {})
+          .set('relationships', ImmutableMap({}))
+          .set('me', '123');
+        store = mockStore(state);
+
+        __stub((mock) => {
+          mock.onGet('/api/v1/follow_requests').reply(200, [], {
+            link: '<https://example.com/api/v1/follow_requests?since_id=1>; rel=\'prev\'',
+          });
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOW_REQUESTS_FETCH_REQUEST' },
+          { type: 'ACCOUNTS_IMPORT', accounts: [] },
+          {
+            type: 'FOLLOW_REQUESTS_FETCH_SUCCESS',
+            accounts: [],
+            next: null,
+          },
+        ];
+        await store.dispatch(fetchFollowRequests());
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet('/api/v1/follow_requests').networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOW_REQUESTS_FETCH_REQUEST' },
+          { type: 'FOLLOW_REQUESTS_FETCH_FAIL', error: new Error('Network Error') },
+        ];
+        await store.dispatch(fetchFollowRequests());
         const actions = store.getActions();
 
         expect(actions).toEqual(expectedActions);
