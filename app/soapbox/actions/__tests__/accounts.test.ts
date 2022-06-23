@@ -10,6 +10,7 @@ import {
   createAccount,
   expandFollowers,
   expandFollowing,
+  expandFollowRequests,
   fetchAccount,
   fetchAccountByUsername,
   fetchFollowers,
@@ -1470,6 +1471,100 @@ describe('fetchFollowRequests()', () => {
           { type: 'FOLLOW_REQUESTS_FETCH_FAIL', error: new Error('Network Error') },
         ];
         await store.dispatch(fetchFollowRequests());
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('expandFollowRequests()', () => {
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(expandFollowRequests());
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {})
+        .set('user_lists', ImmutableMap({
+          follow_requests: ImmutableMap({
+            next: 'next_url',
+          }),
+        }))
+        .set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('when the url is null', () => {
+      beforeEach(() => {
+        const state = rootReducer(undefined, {})
+          .set('user_lists', ImmutableMap({
+            follow_requests: ImmutableMap({
+              next: null,
+            }),
+          }))
+          .set('me', '123');
+        store = mockStore(state);
+      });
+
+      it('should do nothing', async() => {
+        await store.dispatch(expandFollowRequests());
+        const actions = store.getActions();
+
+        expect(actions).toEqual([]);
+      });
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet('next_url').reply(200, [], {
+            link: '<next_url>; rel=\'prev\'',
+          });
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOW_REQUESTS_EXPAND_REQUEST' },
+          { type: 'ACCOUNTS_IMPORT', accounts: [] },
+          {
+            type: 'FOLLOW_REQUESTS_EXPAND_SUCCESS',
+            accounts: [],
+            next: null,
+          },
+        ];
+        await store.dispatch(expandFollowRequests());
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet('next_url').networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOW_REQUESTS_EXPAND_REQUEST' },
+          { type: 'FOLLOW_REQUESTS_EXPAND_FAIL', error: new Error('Network Error') },
+        ];
+        await store.dispatch(expandFollowRequests());
         const actions = store.getActions();
 
         expect(actions).toEqual(expectedActions);

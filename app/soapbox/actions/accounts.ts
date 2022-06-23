@@ -724,21 +724,24 @@ const fetchFollowRequestsFail = (error: AxiosError) => ({
 
 const expandFollowRequests = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     const url = getState().user_lists.getIn(['follow_requests', 'next']);
 
     if (url === null) {
-      return;
+      return null;
     }
 
     dispatch(expandFollowRequestsRequest());
 
-    api(getState).get(url).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(expandFollowRequestsSuccess(response.data, next ? next.uri : null));
-    }).catch(error => dispatch(expandFollowRequestsFail(error)));
+    return api(getState)
+      .get(url)
+      .then(response => {
+        const next = getLinks(response).refs.find(link => link.rel === 'next');
+        dispatch(importFetchedAccounts(response.data));
+        dispatch(expandFollowRequestsSuccess(response.data, next ? next.uri : null));
+      })
+      .catch(error => dispatch(expandFollowRequestsFail(error)));
   };
 
 const expandFollowRequestsRequest = () => ({
