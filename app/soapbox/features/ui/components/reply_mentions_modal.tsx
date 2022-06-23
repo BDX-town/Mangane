@@ -15,10 +15,10 @@ interface IReplyMentionsModal {
 }
 
 const ReplyMentionsModal: React.FC<IReplyMentionsModal> = ({ onClose }) => {
-  const status = useAppSelector<StatusEntity | null>(state => makeGetStatus()(state, { id: state.compose.get('in_reply_to') }));
+  const status = useAppSelector<StatusEntity | null>(state => makeGetStatus()(state, { id: state.compose.in_reply_to! }));
   const account = useAppSelector((state) => state.accounts.get(state.me));
 
-  const mentions = statusToMentionsAccountIdsArray(status, account);
+  const mentions = statusToMentionsAccountIdsArray(status!, account!);
   const author = (status?.account as AccountEntity).id;
 
   const onClickClose = () => {

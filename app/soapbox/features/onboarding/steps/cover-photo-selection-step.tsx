@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios';
 import classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -10,6 +9,8 @@ import StillImage from 'soapbox/components/still_image';
 import { Avatar, Button, Card, CardBody, Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useOwnAccount } from 'soapbox/hooks';
 import resizeImage from 'soapbox/utils/resize_image';
+
+import type { AxiosError } from 'axios';
 
 /** Default header filenames from various backends */
 const DEFAULT_HEADERS = [

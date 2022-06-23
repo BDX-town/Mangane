@@ -9,7 +9,7 @@ import { HStack, Text } from 'soapbox/components/ui';
 import Column from 'soapbox/features/ui/components/column';
 import { useAppDispatch, useSettings } from 'soapbox/hooks';
 
-import StatusListContainer from '../ui/containers/status_list_container';
+import Timeline from '../ui/components/timeline';
 
 import PinnedHostsPicker from './components/pinned_hosts_picker';
 
@@ -29,7 +29,7 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
 
-  const instance = params?.instance;
+  const instance = params?.instance as string;
   const settings = useSettings();
 
   const stream = useRef<any>(null);
@@ -77,7 +77,7 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
           />
         </Text>
       </HStack>}
-      <StatusListContainer
+      <Timeline
         scrollKey={`${timelineId}_${instance}_timeline`}
         timelineId={`${timelineId}${onlyMedia ? ':media' : ''}:${instance}`}
         onLoadMore={handleLoadMore}

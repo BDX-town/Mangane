@@ -45,17 +45,19 @@ import {
   hideStatus,
   revealStatus,
   editStatus,
+  fetchStatusWithContext,
+  fetchNext,
 } from 'soapbox/actions/statuses';
-import { fetchStatusWithContext, fetchNext } from 'soapbox/actions/statuses';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import { textForScreenReader, defaultMediaVisibility } from 'soapbox/components/status';
+import { textForScreenReader } from 'soapbox/components/status';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import Tombstone from 'soapbox/components/tombstone';
 import { Column, Stack } from 'soapbox/components/ui';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import { makeGetStatus } from 'soapbox/selectors';
+import { defaultMediaVisibility } from 'soapbox/utils/status';
 
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
 
@@ -163,7 +165,7 @@ const makeMapStateToProps = () => {
       status,
       ancestorsIds,
       descendantsIds,
-      askReplyConfirmation: state.compose.get('text', '').trim().length !== 0,
+      askReplyConfirmation: state.compose.text.trim().length !== 0,
       me: state.me,
       displayMedia: getSettings(state).get('displayMedia'),
       allowedEmoji: soapbox.allowedEmoji,
@@ -271,10 +273,10 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
       dispatch(openModal('CONFIRM', {
         message: intl.formatMessage(messages.replyMessage),
         confirm: intl.formatMessage(messages.replyConfirm),
-        onConfirm: () => dispatch(replyCompose(status, this.props.history)),
+        onConfirm: () => dispatch(replyCompose(status)),
       }));
     } else {
-      dispatch(replyCompose(status, this.props.history));
+      dispatch(replyCompose(status));
     }
   }
 
@@ -303,27 +305,27 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
       dispatch(openModal('CONFIRM', {
         message: intl.formatMessage(messages.replyMessage),
         confirm: intl.formatMessage(messages.replyConfirm),
-        onConfirm: () => dispatch(quoteCompose(status, this.props.history)),
+        onConfirm: () => dispatch(quoteCompose(status)),
       }));
     } else {
-      dispatch(quoteCompose(status, this.props.history));
+      dispatch(quoteCompose(status));
     }
   }
 
-  handleDeleteClick = (status: StatusEntity, history: History, withRedraft = false) => {
+  handleDeleteClick = (status: StatusEntity, withRedraft = false) => {
     const { dispatch, intl } = this.props;
 
     this.props.dispatch((_, getState) => {
       const deleteModal = getSettings(getState()).get('deleteModal');
       if (!deleteModal) {
-        dispatch(deleteStatus(status.id, history, withRedraft));
+        dispatch(deleteStatus(status.id, withRedraft));
       } else {
         dispatch(openModal('CONFIRM', {
           icon: withRedraft ? require('@tabler/icons/icons/edit.svg') : require('@tabler/icons/icons/trash.svg'),
           heading: intl.formatMessage(withRedraft ? messages.redraftHeading : messages.deleteHeading),
           message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
           confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
-          onConfirm: () => dispatch(deleteStatus(status.id, history, withRedraft)),
+          onConfirm: () => dispatch(deleteStatus(status.id, withRedraft)),
         }));
       }
     });
@@ -332,19 +334,19 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   handleEditClick = (status: StatusEntity) => {
     const { dispatch } = this.props;
 
-    dispatch(editStatus(status.get('id')));
+    dispatch(editStatus(status.id));
   }
 
-  handleDirectClick = (account: AccountEntity, router: History) => {
-    this.props.dispatch(directCompose(account, router));
+  handleDirectClick = (account: AccountEntity) => {
+    this.props.dispatch(directCompose(account));
   }
 
   handleChatClick = (account: AccountEntity, router: History) => {
     this.props.dispatch(launchChat(account.id, router));
   }
 
-  handleMentionClick = (account: AccountEntity, router: History) => {
-    this.props.dispatch(mentionCompose(account, router));
+  handleMentionClick = (account: AccountEntity) => {
+    this.props.dispatch(mentionCompose(account));
   }
 
   handleOpenMedia = (media: ImmutableList<AttachmentEntity>, index: number) => {
@@ -421,7 +423,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   }
 
   handleReport = (status: StatusEntity) => {
-    this.props.dispatch(initReport(status.account, status));
+    this.props.dispatch(initReport(status.account as AccountEntity, status));
   }
 
   handleEmbed = (status: StatusEntity) => {
@@ -430,12 +432,12 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
   handleDeactivateUser = (status: StatusEntity) => {
     const { dispatch, intl } = this.props;
-    dispatch(deactivateUserModal(intl, status.getIn(['account', 'id'])));
+    dispatch(deactivateUserModal(intl, status.getIn(['account', 'id']) as string));
   }
 
   handleDeleteUser = (status: StatusEntity) => {
     const { dispatch, intl } = this.props;
-    dispatch(deleteUserModal(intl, status.getIn(['account', 'id'])));
+    dispatch(deleteUserModal(intl, status.getIn(['account', 'id']) as string));
   }
 
   handleToggleStatusSensitivity = (status: StatusEntity) => {
@@ -473,7 +475,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     e?.preventDefault();
     const { account } = this.props.status;
     if (!account || typeof account !== 'object') return;
-    this.handleMentionClick(account, this.props.history);
+    this.handleMentionClick(account);
   }
 
   handleHotkeyOpenProfile = () => {
@@ -561,7 +563,12 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   renderTombstone(id: string) {
     return (
       <div className='py-4 pb-8'>
-        <Tombstone key={id} />
+        <Tombstone
+          key={id}
+          id={id}
+          onMoveUp={this.handleMoveUp}
+          onMoveDown={this.handleMoveDown}
+        />
       </div>
     );
   }
@@ -635,6 +642,8 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         index: this.props.ancestorsIds.size,
         offset: -80,
       });
+
+      setImmediate(() => this.status?.querySelector('a')?.focus());
     }
   }
 

@@ -16,17 +16,18 @@ const messages = defineMessages({
 
 const checkComposeContent = compose => {
   return [
-    compose.get('text').length > 0,
-    compose.get('spoiler_text').length > 0,
-    compose.get('media_attachments').size > 0,
-    compose.get('in_reply_to') !== null,
-    compose.get('quote') !== null,
-    compose.get('poll') !== null,
+    compose.text.length > 0,
+    compose.spoiler_text.length > 0,
+    compose.media_attachments.size > 0,
+    compose.in_reply_to !== null,
+    compose.quote !== null,
+    compose.poll !== null,
   ].some(check => check === true);
 };
 
 const mapStateToProps = state => ({
-  hasComposeContent: checkComposeContent(state.get('compose')),
+  hasComposeContent: checkComposeContent(state.compose),
+  isEditing: state.compose.id !== null,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -53,6 +54,7 @@ class ModalRoot extends React.PureComponent {
     onCancelReplyCompose: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     hasComposeContent: PropTypes.bool,
+    isEditing: PropTypes.bool,
     type: PropTypes.string,
     onCancel: PropTypes.func,
     history: PropTypes.object,
@@ -72,13 +74,13 @@ class ModalRoot extends React.PureComponent {
   }
 
   handleOnClose = () => {
-    const { onOpenModal, onCloseModal, hasComposeContent, intl, type, onCancelReplyCompose } = this.props;
+    const { onOpenModal, onCloseModal, hasComposeContent, isEditing, intl, type, onCancelReplyCompose } = this.props;
 
     if (hasComposeContent && type === 'COMPOSE') {
       onOpenModal('CONFIRM', {
         icon: require('@tabler/icons/icons/trash.svg'),
-        heading: <FormattedMessage id='confirmations.delete.heading' defaultMessage='Delete post' />,
-        message: <FormattedMessage id='confirmations.delete.message' defaultMessage='Are you sure you want to delete this post?' />,
+        heading: isEditing ? <FormattedMessage id='confirmations.cancel_editing.heading' defaultMessage='Cancel post editing' /> : <FormattedMessage id='confirmations.delete.heading' defaultMessage='Delete post' />,
+        message: isEditing ? <FormattedMessage id='confirmations.cancel_editing.message' defaultMessage='Are you sure you want to cancel editing this post? All changes will be lost.' /> : <FormattedMessage id='confirmations.delete.message' defaultMessage='Are you sure you want to delete this post?' />,
         confirm: intl.formatMessage(messages.confirm),
         onConfirm: () => onCancelReplyCompose(),
         onCancel: () => onCloseModal('CONFIRM'),
@@ -89,7 +91,6 @@ class ModalRoot extends React.PureComponent {
       this.props.onClose();
     }
   };
-
 
   handleKeyDown = (e) => {
     if (e.key === 'Tab') {

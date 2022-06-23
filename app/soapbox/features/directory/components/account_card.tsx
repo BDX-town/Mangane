@@ -26,7 +26,7 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
 
   if (!account) return null;
 
-  const followedBy = me !== account.id && account.relationship.get('followed_by');
+  const followedBy = me !== account.id && account.relationship?.followed_by;
 
   return (
     <div className='directory__card'>

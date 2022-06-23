@@ -7,7 +7,7 @@ import Toggle from 'react-toggle';
 import { changeReportBlock, changeReportForward } from 'soapbox/actions/reports';
 import { fetchRules } from 'soapbox/actions/rules';
 import { Button, FormGroup, HStack, Stack, Text } from 'soapbox/components/ui';
-import StatusCheckBox from 'soapbox/features/report/containers/status_check_box_container';
+import StatusCheckBox from 'soapbox/features/report/components/status_check_box';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { isRemote, getDomain } from 'soapbox/utils/accounts';
 
@@ -30,11 +30,11 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
   const features = useFeatures();
   const intl = useIntl();
 
-  const statusIds = useAppSelector((state) => OrderedSet(state.timelines.getIn([`account:${account.id}:with_replies`, 'items'])).union(state.reports.getIn(['new', 'status_ids']) as Iterable<unknown>) as OrderedSet<string>);
-  const isBlocked = useAppSelector((state) => state.reports.getIn(['new', 'block']) as boolean);
-  const isForward = useAppSelector((state) => state.reports.getIn(['new', 'forward']) as boolean);
-  const canForward = isRemote(account as any) && features.federating;
-  const isSubmitting = useAppSelector((state) => state.reports.getIn(['new', 'isSubmitting']) as boolean);
+  const statusIds = useAppSelector((state) => OrderedSet(state.timelines.getIn([`account:${account.id}:with_replies`, 'items'])).union(state.reports.new.status_ids) as OrderedSet<string>);
+  const isBlocked = useAppSelector((state) => state.reports.new.block);
+  const isForward = useAppSelector((state) => state.reports.new.forward);
+  const canForward = isRemote(account) && features.federating;
+  const isSubmitting = useAppSelector((state) => state.reports.new.isSubmitting);
 
   const [showAdditionalStatuses, setShowAdditionalStatuses] = useState<boolean>(false);
 
@@ -61,7 +61,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
           <FormGroup labelText={intl.formatMessage(messages.addAdditionalStatuses)}>
             {showAdditionalStatuses ? (
               <Stack space={2}>
-                <div className='bg-gray-100 rounded-lg p-4'>
+                <div className='bg-gray-100 dark:bg-slate-600 rounded-lg p-4'>
                   {statusIds.map((statusId) => <StatusCheckBox id={statusId} key={statusId} />)}
                 </div>
 

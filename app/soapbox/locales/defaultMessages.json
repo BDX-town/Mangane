@@ -1001,7 +1001,7 @@
         "id": "reply_mentions.reply_empty"
       },
       {
-        "defaultMessage": "Replying to {accounts}{more}",
+        "defaultMessage": "<hover>Replying to</hover> {accounts}{more}",
         "id": "reply_mentions.reply"
       },
       {
@@ -2411,7 +2411,7 @@
         "id": "intervals.full.days"
       }
     ],
-    "path": "app/soapbox/features/compose/components/poll_form.json"
+    "path": "app/soapbox/features/compose/components/poll-form.json"
   },
   {
     "descriptors": [
@@ -2470,7 +2470,7 @@
         "id": "reply_mentions.reply_empty"
       },
       {
-        "defaultMessage": "Replying to {accounts}{more}",
+        "defaultMessage": "<hover>Replying to</hover> {accounts}{more}",
         "id": "reply_mentions.reply"
       },
       {
@@ -5609,7 +5609,7 @@
         "id": "reply_indicator.cancel"
       },
       {
-        "defaultMessage": "Replying to {accounts}{more}",
+        "defaultMessage": "<hover>Replying to</hover> {accounts}{more}",
         "id": "reply_mentions.reply"
       },
       {

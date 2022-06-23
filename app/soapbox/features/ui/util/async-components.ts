@@ -315,11 +315,11 @@ export function ChatIndex() {
 }
 
 export function ChatRoom() {
-  return import(/* webpackChunkName: "features/chats/chat_room" */'../../chats/chat_room');
+  return import(/* webpackChunkName: "features/chats/chat_room" */'../../chats/chat-room');
 }
 
 export function ChatPanes() {
-  return import(/* webpackChunkName: "features/chats/components/chat_panes" */'../../chats/components/chat_panes');
+  return import(/* webpackChunkName: "features/chats/components/chat_panes" */'../../chats/components/chat-panes');
 }
 
 export function ServerInfo() {
@@ -404,6 +404,10 @@ export function ModalContainer() {
 
 export function ProfileHoverCard() {
   return import(/* webpackChunkName: "features/ui" */'soapbox/components/profile-hover-card');
+}
+
+export function StatusHoverCard() {
+  return import(/* webpackChunkName: "features/ui" */'soapbox/components/status-hover-card');
 }
 
 export function CryptoDonate() {

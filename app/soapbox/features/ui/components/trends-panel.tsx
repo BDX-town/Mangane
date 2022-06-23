@@ -1,4 +1,3 @@
-import { Map as ImmutableMap } from 'immutable';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -15,10 +14,10 @@ interface ITrendsPanel {
 const TrendsPanel = ({ limit }: ITrendsPanel) => {
   const dispatch = useDispatch();
 
-  const trends: any = useAppSelector((state) => state.trends.get('items'));
+  const trends = useAppSelector((state) => state.trends.items);
 
   const sortedTrends = React.useMemo(() => {
-    return trends.sort((a: ImmutableMap<string, any>, b: ImmutableMap<string, any>) => {
+    return trends.sort((a, b) => {
       const num_a = Number(a.getIn(['history', 0, 'accounts']));
       const num_b = Number(b.getIn(['history', 0, 'accounts']));
       return num_b - num_a;
@@ -35,8 +34,8 @@ const TrendsPanel = ({ limit }: ITrendsPanel) => {
 
   return (
     <Widget title={<FormattedMessage id='trends.title' defaultMessage='Trends' />}>
-      {sortedTrends.map((hashtag: ImmutableMap<string, any>) => (
-        <Hashtag key={hashtag.get('name')} hashtag={hashtag} />
+      {sortedTrends.map((hashtag) => (
+        <Hashtag key={hashtag.name} hashtag={hashtag} />
       ))}
     </Widget>
   );

@@ -30,11 +30,11 @@ export const isLoggedIn = (getState: () => RootState) => {
   return validId(getState().me);
 };
 
-export const getAppToken = (state: RootState) => state.auth.getIn(['app', 'access_token']);
+export const getAppToken = (state: RootState) => state.auth.getIn(['app', 'access_token']) as string;
 
 export const getUserToken = (state: RootState, accountId?: string | false | null) => {
   const accountUrl = state.accounts.getIn([accountId, 'url']);
-  return state.auth.getIn(['users', accountUrl, 'access_token']);
+  return state.auth.getIn(['users', accountUrl, 'access_token']) as string;
 };
 
 export const getAccessToken = (state: RootState) => {

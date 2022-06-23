@@ -339,33 +339,6 @@
   }
 }
 
-.compose-modal__content {
-  display: flex;
-  flex-direction: row;
-  flex: 1;
-  overflow-y: hidden;
-
-  &--scroll {
-    display: block;
-    overflow-y: auto;
-  }
-
-  .timeline-compose-block {
-    background: transparent !important;
-    width: 100%;
-    padding: 0;
-    margin-bottom: 0;
-
-    .compose-form {
-      max-height: 100%;
-      max-width: 100%;
-      display: flex;
-      flex-direction: column;
-      padding: 0 !important;
-    }
-  }
-}
-
 .reply-mentions-modal__accounts {
   display: block;
   flex-direction: row;

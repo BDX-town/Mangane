@@ -82,9 +82,9 @@ export const reduceEmoji = (emojiReacts: ImmutableList<EmojiReact>, favouritesCo
 
 export const getReactForStatus = (status: any, allowedEmoji = ALLOWED_EMOJI): string | undefined => {
   const result = reduceEmoji(
-    status.getIn(['pleroma', 'emoji_reactions'], ImmutableList()),
-    status.get('favourites_count', 0),
-    status.get('favourited'),
+    status.pleroma.get('emoji_reactions', ImmutableList()),
+    status.favourites_count || 0,
+    status.favourited,
     allowedEmoji,
   ).filter(e => e.get('me') === true)
     .getIn([0, 'name']);

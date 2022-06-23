@@ -7,13 +7,10 @@ import { NavLink, withRouter, RouteComponentProps } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
 import AccountContainer from 'soapbox/containers/account_container';
-import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
-import Card from 'soapbox/features/status/components/card';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
-import Bundle from 'soapbox/features/ui/components/bundle';
-import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components';
+import { defaultMediaVisibility } from 'soapbox/utils/status';
 
-import AttachmentThumbs from './attachment-thumbs';
+import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
 import StatusActionBar from './status_action_bar';
 import StatusContent from './status_content';
@@ -54,23 +51,15 @@ export const textForScreenReader = (intl: IntlShape, status: StatusEntity, reblo
   return values.join(', ');
 };
 
-export const defaultMediaVisibility = (status: StatusEntity, displayMedia: string): boolean => {
-  if (!status) return false;
-
-  if (status.reblog && typeof status.reblog === 'object') {
-    status = status.reblog;
-  }
-
-  return (displayMedia !== 'hide_all' && !status.sensitive || displayMedia === 'show_all');
-};
-
 interface IStatus extends RouteComponentProps {
+  id?: string,
+  contextType?: string,
   intl: IntlShape,
   status: StatusEntity,
   account: AccountEntity,
   otherAccounts: ImmutableList<AccountEntity>,
   onClick: () => void,
-  onReply: (status: StatusEntity, history: History) => void,
+  onReply: (status: StatusEntity) => void,
   onFavourite: (status: StatusEntity) => void,
   onReblog: (status: StatusEntity, e?: KeyboardEvent) => void,
   onQuote: (status: StatusEntity) => void,
@@ -78,7 +67,7 @@ interface IStatus extends RouteComponentProps {
   onEdit: (status: StatusEntity) => void,
   onDirect: (status: StatusEntity) => void,
   onChat: (status: StatusEntity) => void,
-  onMention: (account: StatusEntity['account'], history: History) => void,
+  onMention: (account: StatusEntity['account']) => void,
   onPin: (status: StatusEntity) => void,
   onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void,
   onOpenVideo: (media: ImmutableMap<string, any> | AttachmentEntity, startTime: number) => void,
@@ -91,8 +80,8 @@ interface IStatus extends RouteComponentProps {
   muted: boolean,
   hidden: boolean,
   unread: boolean,
-  onMoveUp: (statusId: string, featured?: string) => void,
-  onMoveDown: (statusId: string, featured?: string) => void,
+  onMoveUp: (statusId: string, featured?: boolean) => void,
+  onMoveDown: (statusId: string, featured?: boolean) => void,
   getScrollPosition?: () => ScrollPosition | undefined,
   updateScrollBottom?: (bottom: number) => void,
   cacheMediaWidth: () => void,
@@ -102,20 +91,23 @@ interface IStatus extends RouteComponentProps {
   allowedEmoji: ImmutableList<string>,
   focusable: boolean,
   history: History,
-  featured?: string,
+  featured?: boolean,
+  withDismiss?: boolean,
+  hideActionBar?: boolean,
+  hoverable?: boolean,
 }
 
 interface IStatusState {
   showMedia: boolean,
   statusId?: string,
   emojiSelectorFocused: boolean,
-  mediaWrapperWidth?: number,
 }
 
 class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
   static defaultProps = {
     focusable: true,
+    hoverable: true,
   };
 
   didShowCard = false;
@@ -222,26 +214,6 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     this.props.onToggleHidden(this._properStatus());
   };
 
-  renderLoadingMediaGallery(): JSX.Element {
-    return <div className='media_gallery' style={{ height: '285px' }} />;
-  }
-
-  renderLoadingVideoPlayer(): JSX.Element {
-    return <div className='media-spoiler-video' style={{ height: '285px' }} />;
-  }
-
-  renderLoadingAudioPlayer(): JSX.Element {
-    return <div className='media-spoiler-audio' style={{ height: '285px' }} />;
-  }
-
-  handleOpenVideo = (media: ImmutableMap<string, any>, startTime: number): void => {
-    this.props.onOpenVideo(media, startTime);
-  }
-
-  handleOpenAudio = (media: ImmutableMap<string, any>, startTime: number): void => {
-    this.props.onOpenAudio(media, startTime);
-  }
-
   handleHotkeyOpenMedia = (e?: KeyboardEvent): void => {
     const { onOpenMedia, onOpenVideo } = this.props;
     const status = this._properStatus();
@@ -260,7 +232,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
   handleHotkeyReply = (e?: KeyboardEvent): void => {
     e?.preventDefault();
-    this.props.onReply(this._properStatus(), this.props.history);
+    this.props.onReply(this._properStatus());
   }
 
   handleHotkeyFavourite = (): void => {
@@ -273,7 +245,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
   handleHotkeyMention = (e?: KeyboardEvent): void => {
     e?.preventDefault();
-    this.props.onMention(this._properStatus().account, this.props.history);
+    this.props.onMention(this._properStatus().account);
   }
 
   handleHotkeyOpen = (): void => {
@@ -335,14 +307,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     this.node = c;
   }
 
-  setRef = (c: HTMLDivElement): void => {
-    if (c) {
-      this.setState({ mediaWrapperWidth: c.offsetWidth });
-    }
-  }
-
   render() {
-    let media = null;
     const poll = null;
     let prepend, rebloggedByText, reblogElement, reblogElementMobile;
 
@@ -450,120 +415,6 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
       status = status.reblog;
     }
 
-    const size = status.media_attachments.size;
-    const firstAttachment = status.media_attachments.first();
-
-    if (size > 0 && firstAttachment) {
-      if (this.props.muted) {
-        media = (
-          <AttachmentThumbs
-            media={status.media_attachments}
-            onClick={this.handleClick}
-            sensitive={status.sensitive}
-          />
-        );
-      } else if (size === 1 && firstAttachment.type === 'video') {
-        const video = firstAttachment;
-
-        if (video.external_video_id && status.card) {
-          const { mediaWrapperWidth } = this.state;
-
-          const getHeight = (): number => {
-            const width = Number(video.meta.getIn(['original', 'width']));
-            const height = Number(video.meta.getIn(['original', 'height']));
-            return Number(mediaWrapperWidth) / (width / height);
-          };
-
-          const height = getHeight();
-
-          media = (
-            <div className='status-card horizontal compact interactive status-card--video'>
-              <div
-                ref={this.setRef}
-                className='status-card__image status-card-video'
-                style={height ? { height } : undefined}
-                dangerouslySetInnerHTML={{ __html: status.card.html }}
-              />
-            </div>
-          );
-        } else {
-          media = (
-            <Bundle fetchComponent={Video} loading={this.renderLoadingVideoPlayer} >
-              {(Component: any) => (
-                <Component
-                  preview={video.preview_url}
-                  blurhash={video.blurhash}
-                  src={video.url}
-                  alt={video.description}
-                  aspectRatio={video.meta.getIn(['original', 'aspect'])}
-                  width={this.props.cachedMediaWidth}
-                  height={285}
-                  inline
-                  sensitive={status.sensitive}
-                  onOpenVideo={this.handleOpenVideo}
-                  cacheWidth={this.props.cacheMediaWidth}
-                  visible={this.state.showMedia}
-                  onToggleVisibility={this.handleToggleMediaVisibility}
-                />
-              )}
-            </Bundle>
-          );
-        }
-      } else if (size === 1 && firstAttachment.type === 'audio') {
-        const attachment = firstAttachment;
-
-        media = (
-          <Bundle fetchComponent={Audio} loading={this.renderLoadingAudioPlayer} >
-            {(Component: any) => (
-              <Component
-                src={attachment.url}
-                alt={attachment.description}
-                poster={attachment.preview_url !== attachment.url ? attachment.preview_url : status.getIn(['account', 'avatar_static'])}
-                backgroundColor={attachment.meta.getIn(['colors', 'background'])}
-                foregroundColor={attachment.meta.getIn(['colors', 'foreground'])}
-                accentColor={attachment.meta.getIn(['colors', 'accent'])}
-                duration={attachment.meta.getIn(['original', 'duration'], 0)}
-                width={this.props.cachedMediaWidth}
-                height={263}
-                cacheWidth={this.props.cacheMediaWidth}
-              />
-            )}
-          </Bundle>
-        );
-      } else {
-        media = (
-          <Bundle fetchComponent={MediaGallery} loading={this.renderLoadingMediaGallery}>
-            {(Component: any) => (
-              <Component
-                media={status.media_attachments}
-                sensitive={status.sensitive}
-                height={285}
-                onOpenMedia={this.props.onOpenMedia}
-                cacheWidth={this.props.cacheMediaWidth}
-                defaultWidth={this.props.cachedMediaWidth}
-                visible={this.state.showMedia}
-                onToggleVisibility={this.handleToggleMediaVisibility}
-              />
-            )}
-          </Bundle>
-        );
-      }
-    } else if (status.spoiler_text.length === 0 && !status.quote && status.card) {
-      media = (
-        <Card
-          onOpenMedia={this.props.onOpenMedia}
-          card={status.card}
-          compact
-          cacheWidth={this.props.cacheMediaWidth}
-          defaultWidth={this.props.cachedMediaWidth}
-        />
-      );
-    } else if (status.expectsCard) {
-      media = (
-        <PlaceholderCard />
-      );
-    }
-
     let quote;
 
     if (status.quote) {
@@ -574,7 +425,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
           </div>
         );
       } else {
-        quote = <QuotedStatus statusId={status.quote} />;
+        quote = <QuotedStatus statusId={status.quote as string} />;
       }
     }
 
@@ -632,6 +483,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
                   action={reblogElement}
                   hideActions={!reblogElement}
                   showEdit={!!status.edited_at}
+                  showProfileHoverCard={this.props.hoverable}
                 />
               </HStack>
             </div>
@@ -643,7 +495,10 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
                 </div>
               )}
 
-              <StatusReplyMentions status={this._properStatus()} />
+              <StatusReplyMentions
+                status={this._properStatus()}
+                hoverable={this.props.hoverable}
+              />
 
               <StatusContent
                 status={status}
@@ -653,18 +508,27 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
                 collapsable
               />
 
-              {media}
+              <StatusMedia
+                status={status}
+                muted={this.props.muted}
+                onClick={this.handleClick}
+                showMedia={this.state.showMedia}
+                onToggleVisibility={this.handleToggleMediaVisibility}
+              />
+
               {poll}
               {quote}
 
-              <StatusActionBar
-                status={status}
-                // @ts-ignore what?
-                account={account}
-                emojiSelectorFocused={this.state.emojiSelectorFocused}
-                handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
-                {...other}
-              />
+              {!this.props.hideActionBar && (
+                <StatusActionBar
+                  status={status}
+                  // @ts-ignore what?
+                  account={account}
+                  emojiSelectorFocused={this.state.emojiSelectorFocused}
+                  handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
+                  {...other}
+                />
+              )}
             </div>
           </div>
         </div>

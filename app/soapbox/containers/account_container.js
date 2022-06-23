@@ -35,7 +35,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   onFollow(account) {
     dispatch((_, getState) => {
       const unfollowModal = getSettings(getState()).get('unfollowModal');
-      if (account.getIn(['relationship', 'following']) || account.getIn(['relationship', 'requested'])) {
+      if (account.relationship?.following || account.relationship?.requested) {
         if (unfollowModal) {
           dispatch(openModal('CONFIRM', {
             icon: require('@tabler/icons/icons/minus.svg'),
@@ -54,7 +54,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 
   onBlock(account) {
-    if (account.getIn(['relationship', 'blocking'])) {
+    if (account.relationship?.blocking) {
       dispatch(unblockAccount(account.get('id')));
     } else {
       dispatch(blockAccount(account.get('id')));
@@ -62,7 +62,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 
   onMute(account) {
-    if (account.getIn(['relationship', 'muting'])) {
+    if (account.relationship?.muting) {
       dispatch(unmuteAccount(account.get('id')));
     } else {
       dispatch(initMuteModal(account));

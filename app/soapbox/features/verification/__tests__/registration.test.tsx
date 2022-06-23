@@ -64,4 +64,21 @@ describe('<Registration />', () => {
       expect(screen.getByTestId('toast')).toHaveTextContent(/failed to register your account/i);
     });
   });
+
+  describe('validations', () => {
+    it('should undisable button with valid password', async() => {
+      render(<Registration />);
+
+      expect(screen.getByTestId('button')).toBeDisabled();
+      fireEvent.change(screen.getByTestId('password-input'), { target: { value: 'Password' } });
+      expect(screen.getByTestId('button')).not.toBeDisabled();
+    });
+
+    it('should disable button with invalid password', async() => {
+      render(<Registration />);
+
+      fireEvent.change(screen.getByTestId('password-input'), { target: { value: 'Passwor' } });
+      expect(screen.getByTestId('button')).toBeDisabled();
+    });
+  });
 });

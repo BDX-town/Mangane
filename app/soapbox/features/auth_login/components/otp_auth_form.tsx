@@ -32,8 +32,8 @@ const OtpAuthForm: React.FC<IOtpAuthForm> = ({ mfa_token }) => {
     const { code } = getFormData(event.target);
     dispatch(otpVerify(code, mfa_token)).then(({ access_token }) => {
       setCodeError(false);
-      return dispatch(verifyCredentials(access_token));
-    }).then(account => {
+      return dispatch(verifyCredentials(access_token as string));
+    }).then((account: Record<string, any>) => {
       setShouldRedirect(true);
       return dispatch(switchAccount(account.id));
     }).catch(() => {

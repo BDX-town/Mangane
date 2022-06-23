@@ -14,6 +14,8 @@ interface IAccountSearch {
   onSelected: (accountId: string) => void,
   /** Override the default placeholder of the input. */
   placeholder?: string,
+  /** Position of results relative to the input. */
+  resultsPosition?: 'above' | 'below',
 }
 
 /** Input to search for accounts. */

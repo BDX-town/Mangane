@@ -4,7 +4,8 @@ import { Redirect } from 'react-router-dom';
 
 import { resetPasswordConfirm } from 'soapbox/actions/security';
 import { Button, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import PasswordIndicator from 'soapbox/features/verification/components/password-indicator';
+import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 
 const token = new URLSearchParams(window.location.search).get('reset_password_token');
 
@@ -22,9 +23,11 @@ const Statuses = {
 const PasswordResetConfirm = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const { passwordRequirements } = useFeatures();
 
   const [password, setPassword] = React.useState('');
   const [status, setStatus] = React.useState(Statuses.IDLE);
+  const [hasValidPassword, setHasValidPassword] = React.useState<boolean>(passwordRequirements ? false : true);
 
   const isLoading = status === Statuses.LOADING;
 
@@ -32,7 +35,7 @@ const PasswordResetConfirm = () => {
     event.preventDefault();
 
     setStatus(Statuses.LOADING);
-    dispatch(resetPasswordConfirm(password, token))
+    dispatch(resetPasswordConfirm(password, token as string))
       .then(() => setStatus(Statuses.SUCCESS))
       .catch(() => setStatus(Statuses.FAIL));
   }, [password]);
@@ -71,10 +74,14 @@ const PasswordResetConfirm = () => {
               onChange={onChange}
               required
             />
+
+            {passwordRequirements && (
+              <PasswordIndicator password={password} onChange={setHasValidPassword} />
+            )}
           </FormGroup>
 
           <FormActions>
-            <Button type='submit' theme='primary' disabled={isLoading}>
+            <Button type='submit' theme='primary' disabled={isLoading || !hasValidPassword}>
               <FormattedMessage id='password_reset.reset' defaultMessage='Reset password' />
             </Button>
           </FormActions>

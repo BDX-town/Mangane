@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -8,7 +8,7 @@ import { connectHashtagStream } from '../../actions/streaming';
 import { expandHashtagTimeline, clearTimeline } from '../../actions/timelines';
 import ColumnHeader from '../../components/column_header';
 import { Column } from '../../components/ui';
-import StatusListContainer from '../ui/containers/status_list_container';
+import Timeline from '../ui/components/timeline';
 
 const mapStateToProps = (state, props) => ({
   hasUnread: state.getIn(['timelines', `hashtag:${props.params.id}`, 'unread']) > 0,
@@ -114,7 +114,7 @@ class HashtagTimeline extends React.PureComponent {
     return (
       <Column label={`#${id}`} transparent>
         <ColumnHeader active={hasUnread} title={this.title()} />
-        <StatusListContainer
+        <Timeline
           scrollKey='hashtag_timeline'
           timelineId={`hashtag:${id}`}
           onLoadMore={this.handleLoadMore}

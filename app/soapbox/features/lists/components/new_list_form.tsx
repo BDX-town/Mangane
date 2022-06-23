@@ -3,7 +3,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { changeListEditorTitle, submitListEditor } from 'soapbox/actions/lists';
-import { Button } from 'soapbox/components/ui';
+import { Button, Form, HStack, Input } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
@@ -23,7 +23,7 @@ const NewListForm: React.FC = () => {
     dispatch(changeListEditorTitle(e.target.value));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement | HTMLButtonElement>) => {
+  const handleSubmit = (e: React.FormEvent<Element>) => {
     e.preventDefault();
     dispatch(submitListEditor(true));
   };
@@ -32,27 +32,28 @@ const NewListForm: React.FC = () => {
   const create = intl.formatMessage(messages.create);
 
   return (
-    <form className='column-inline-form' method='post' onSubmit={handleSubmit}>
-      <label>
-        <span style={{ display: 'none' }}>{label}</span>
+    <Form onSubmit={handleSubmit}>
+      <HStack space={2}>
+        <label className='flex-grow'>
+          <span style={{ display: 'none' }}>{label}</span>
 
-        <input
-          className='setting-text new-list-form__input'
-          value={value}
+          <Input
+            type='text'
+            value={value}
+            disabled={disabled}
+            onChange={handleChange}
+            placeholder={label}
+          />
+        </label>
+
+        <Button
           disabled={disabled}
-          onChange={handleChange}
-          placeholder={label}
-        />
-      </label>
-
-      <Button
-        // className='new-list-form__btn'
-        disabled={disabled}
-        onClick={handleSubmit}
-      >
-        {create}
-      </Button>
-    </form>
+          onClick={handleSubmit}
+        >
+          {create}
+        </Button>
+      </HStack>
+    </Form>
   );
 };
 

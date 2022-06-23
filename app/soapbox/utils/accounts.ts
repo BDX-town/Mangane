@@ -34,9 +34,9 @@ export const getFollowDifference = (state: ImmutableMap<string, any>, accountId:
   return Math.max(counter - items.size, 0);
 };
 
-export const isLocal = (account: ImmutableMap<string, any>): boolean => {
-  const domain: string = account.get('acct').split('@')[1];
+export const isLocal = (account: Account): boolean => {
+  const domain: string = account.acct.split('@')[1];
   return domain === undefined ? true : false;
 };
 
-export const isRemote = (account: ImmutableMap<string, any>): boolean => !isLocal(account);
+export const isRemote = (account: Account): boolean => !isLocal(account);

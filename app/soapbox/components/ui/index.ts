@@ -4,6 +4,8 @@ export { Card, CardBody, CardHeader, CardTitle } from './card/card';
 export { default as Checkbox } from './checkbox/checkbox';
 export { default as Column } from './column/column';
 export { default as Counter } from './counter/counter';
+export { default as Datepicker } from './datepicker/datepicker';
+export { default as Divider } from './divider/divider';
 export { default as Emoji } from './emoji/emoji';
 export { default as EmojiSelector } from './emoji-selector/emoji-selector';
 export { default as FileInput } from './file-input/file-input';

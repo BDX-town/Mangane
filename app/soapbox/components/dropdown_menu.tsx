@@ -23,9 +23,11 @@ export interface MenuItem {
   to?: string,
   newTab?: boolean,
   isLogout?: boolean,
-  icon: string,
+  icon?: string,
   count?: number,
   destructive?: boolean,
+  meta?: string,
+  active?: boolean,
 }
 
 export type Menu = Array<MenuItem | null>;
@@ -249,7 +251,7 @@ export interface IDropdown extends RouteComponentProps {
   ) => void,
   onClose?: (id: number) => void,
   dropdownPlacement?: string,
-  openDropdownId?: number,
+  openDropdownId?: number | null,
   openedViaKeyboard?: boolean,
   text?: string,
   onShiftClick?: React.EventHandler<React.MouseEvent | React.KeyboardEvent>,

@@ -34,7 +34,6 @@ const StillImage: React.FC<IStillImage> = ({ alt, className, src, style }) => {
     }
   };
 
-
   return (
     <div data-testid='still-image-container' className={classNames(className, 'still-image', { 'still-image--play-on-hover': hoverToPlay })} style={style}>
       <img src={src} alt={alt} ref={img} onLoad={handleImageLoad} />

@@ -1,7 +1,6 @@
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
-import { defineMessages, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
-import { useIntl } from 'react-intl';
+import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
@@ -11,7 +10,6 @@ import AccountContainer from 'soapbox/containers/account_container';
 import StatusContainer from 'soapbox/containers/status_container';
 import { useAppSelector } from 'soapbox/hooks';
 
-import type { History } from 'history';
 import type { ScrollPosition } from 'soapbox/components/status';
 import type { NotificationType } from 'soapbox/normalizers/notification';
 import type { Account, Status, Notification as NotificationEntity } from 'soapbox/types/entities';
@@ -132,7 +130,7 @@ interface INotificaton {
   notification: NotificationEntity,
   onMoveUp: (notificationId: string) => void,
   onMoveDown: (notificationId: string) => void,
-  onMention: (account: Account, history: History) => void,
+  onMention: (account: Account) => void,
   onFavourite: (status: Status) => void,
   onReblog: (status: Status, e?: KeyboardEvent) => void,
   onToggleHidden: (status: Status) => void,
@@ -183,7 +181,7 @@ const Notification: React.FC<INotificaton> = (props) => {
     e?.preventDefault();
 
     if (account && typeof account === 'object') {
-      props.onMention(account, history);
+      props.onMention(account);
     }
   };
 
@@ -260,8 +258,8 @@ const Notification: React.FC<INotificaton> = (props) => {
       case 'poll':
       case 'pleroma:emoji_reaction':
         return status && typeof status === 'object' ? (
+          // @ts-ignore
           <StatusContainer
-            // @ts-ignore
             id={status.id}
             withDismiss
             hidden={hidden}

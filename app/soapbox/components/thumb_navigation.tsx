@@ -8,7 +8,7 @@ import { getFeatures } from 'soapbox/utils/features';
 const ThumbNavigation: React.FC = (): JSX.Element => {
   const account = useOwnAccount();
   const notificationCount = useAppSelector((state) => state.notifications.unread);
-  const chatsCount = useAppSelector((state) => state.chats.get('items').reduce((acc: number, curr: any) => acc + Math.min(curr.get('unread', 0), 1), 0));
+  const chatsCount = useAppSelector((state) => state.chats.items.reduce((acc, curr) => acc + Math.min(curr.unread || 0, 1), 0));
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
   const features = getFeatures(useAppSelector((state) => state.instance));
 

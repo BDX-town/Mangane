@@ -2,8 +2,7 @@ import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
-import { setFilter } from 'soapbox/actions/notifications';
-import { clearNotifications } from 'soapbox/actions/notifications';
+import { clearNotifications, setFilter } from 'soapbox/actions/notifications';
 import { changeAlerts as changePushNotifications } from 'soapbox/actions/push_notifications';
 import { getSettings, changeSetting } from 'soapbox/actions/settings';
 import { getFeatures } from 'soapbox/utils/features';

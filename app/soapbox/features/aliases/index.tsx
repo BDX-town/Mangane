@@ -35,18 +35,18 @@ const Aliases = () => {
     const instance = state.instance;
     const features = getFeatures(instance);
 
-    if (features.accountMoving) return state.aliases.getIn(['aliases', 'items'], ImmutableList());
+    if (features.accountMoving) return state.aliases.aliases.items;
     return account!.pleroma.get('also_known_as');
   }) as ImmutableList<string>;
-  const searchAccountIds = useAppSelector((state) => state.aliases.getIn(['suggestions', 'items'])) as ImmutableList<string>;
-  const loaded = useAppSelector((state) => state.aliases.getIn(['suggestions', 'loaded']));
+  const searchAccountIds = useAppSelector((state) => state.aliases.suggestions.items);
+  const loaded = useAppSelector((state) => state.aliases.suggestions.loaded);
 
   useEffect(() => {
     dispatch(fetchAliases);
   }, []);
 
   const handleFilterDelete: React.MouseEventHandler<HTMLDivElement> = e => {
-    dispatch(removeFromAliases(e.currentTarget.dataset.value));
+    dispatch(removeFromAliases(e.currentTarget.dataset.value as string));
   };
 
   const emptyMessage = <FormattedMessage id='empty_column.aliases' defaultMessage="You haven't created any account alias yet." />;

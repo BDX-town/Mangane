@@ -5,11 +5,11 @@ import { useHistory } from 'react-router-dom';
 
 import { launchChat } from 'soapbox/actions/chats';
 import AccountSearch from 'soapbox/components/account_search';
-import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
+import AudioToggle from 'soapbox/features/chats/components/audio-toggle';
 
 import { Column } from '../../components/ui';
 
-import ChatList from './components/chat_list';
+import ChatList from './components/chat-list';
 
 const messages = defineMessages({
   title: { id: 'column.chats', defaultMessage: 'Chats' },

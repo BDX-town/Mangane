@@ -1,4 +1,4 @@
-import QRCode from 'qrcode.react';
+import { QRCodeCanvas as QRCode } from 'qrcode.react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { useHistory } from 'react-router-dom';

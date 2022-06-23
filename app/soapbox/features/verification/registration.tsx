@@ -1,18 +1,19 @@
-import { AxiosError } from 'axios';
 import * as React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { startOnboarding } from 'soapbox/actions/onboarding';
 import snackbar from 'soapbox/actions/snackbar';
-import { createAccount } from 'soapbox/actions/verification';
-import { removeStoredVerification } from 'soapbox/actions/verification';
+import { createAccount, removeStoredVerification } from 'soapbox/actions/verification';
 import { Button, Form, FormGroup, Input } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { getRedirectUrl } from 'soapbox/utils/redirect';
+
+import PasswordIndicator from './components/password-indicator';
+
+import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
   success: {
@@ -35,22 +36,22 @@ const initialState = {
 };
 
 const Registration = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const isLoading = useAppSelector((state) => state.verification.get('isLoading') as boolean);
+  const isLoading = useAppSelector((state) => state.verification.isLoading as boolean);
   const siteTitle = useAppSelector((state) => state.instance.title);
 
   const [state, setState] = React.useState(initialState);
   const [shouldRedirect, setShouldRedirect] = React.useState<boolean>(false);
+  const [hasValidPassword, setHasValidPassword] = React.useState<boolean>(false);
   const { username, password } = state;
 
   const handleSubmit = React.useCallback((event) => {
     event.preventDefault();
 
-    // TODO: handle validation errors from Pepe
     dispatch(createAccount(username, password))
-      .then(() => dispatch(logIn(intl, username, password)))
+      .then(() => dispatch(logIn(username, password)))
       .then(({ access_token }: any) => dispatch(verifyCredentials(access_token)))
       .then(() => dispatch(fetchInstance()))
       .then(() => {
@@ -119,11 +120,21 @@ const Registration = () => {
               value={password}
               onChange={handleInputChange}
               required
+              data-testid='password-input'
             />
+
+            <PasswordIndicator password={password} onChange={setHasValidPassword} />
           </FormGroup>
 
           <div className='text-center'>
-            <Button block theme='primary' type='submit' disabled={isLoading}>Register</Button>
+            <Button
+              block
+              theme='primary'
+              type='submit'
+              disabled={isLoading || !hasValidPassword}
+            >
+              Register
+            </Button>
           </div>
         </Form>
       </div>

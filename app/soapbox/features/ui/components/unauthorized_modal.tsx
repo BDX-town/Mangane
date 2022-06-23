@@ -48,7 +48,7 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
   const onSubmit: React.FormEventHandler = e => {
     e.preventDefault();
 
-    dispatch(remoteInteraction(apId, account))
+    dispatch(remoteInteraction(apId!, account))
       .then(url => {
         window.open(url, '_new', 'noopener,noreferrer');
         onClose('UNAUTHORIZED');
@@ -129,7 +129,7 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
     );
   };
 
-  if (action && features.remoteInteractionsAPI && features.federating) {
+  if (action && features.remoteInteractions && features.federating) {
     return renderRemoteInteractions();
   }
 

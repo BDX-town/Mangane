@@ -11,8 +11,9 @@ import { createSelector } from 'reselect';
 
 import * as BuildConfig from 'soapbox/build_config';
 import { RootState } from 'soapbox/store';
-import { getAccessToken, getAppToken, parseBaseURL } from 'soapbox/utils/auth';
-import { isURL } from 'soapbox/utils/auth';
+import { getAccessToken, getAppToken, isURL, parseBaseURL } from 'soapbox/utils/auth';
+
+import type MockAdapter from 'axios-mock-adapter';
 
 /**
  Parse Link headers, mostly for pagination.
@@ -54,7 +55,7 @@ const getAuthBaseURL = createSelector([
  * @param {string} baseURL
  * @returns {object} Axios instance
  */
-export const baseClient = (accessToken: string, baseURL: string = ''): AxiosInstance => {
+export const baseClient = (accessToken?: string | null, baseURL: string = ''): AxiosInstance => {
   return axios.create({
     // When BACKEND_URL is set, always use it.
     baseURL: isURL(BuildConfig.BACKEND_URL) ? BuildConfig.BACKEND_URL : baseURL,
@@ -91,3 +92,7 @@ export default (getState: () => RootState, authType: string = 'user'): AxiosInst
 
   return baseClient(accessToken, baseURL);
 };
+
+// The Jest mock exports these, so they're needed for TypeScript.
+export const __stub = (_func: (mock: MockAdapter) => void) => 0;
+export const __clear = (): Function[] => [];

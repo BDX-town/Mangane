@@ -3,14 +3,14 @@ import React from 'react';
 
 import { useAppSelector } from 'soapbox/hooks';
 
-// import SensitiveButtonContainer from '../containers/sensitive_button_container';
+import SensitiveButton from '../components/sensitive-button';
 import UploadProgress from '../components/upload-progress';
 import UploadContainer from '../containers/upload_container';
 
 import type { Attachment as AttachmentEntity } from 'soapbox/types/entities';
 
 const UploadForm = () => {
-  const mediaIds = useAppSelector((state) => state.compose.get('media_attachments').map((item: AttachmentEntity) => item.get('id')));
+  const mediaIds = useAppSelector((state) => state.compose.media_attachments.map((item: AttachmentEntity) => item.id));
   const classes = classNames('compose-form__uploads-wrapper', {
     'contains-media': mediaIds.size !== 0,
   });
@@ -25,7 +25,7 @@ const UploadForm = () => {
         ))}
       </div>
 
-      {/* {!mediaIds.isEmpty() && <SensitiveButtonContainer />} */}
+      {!mediaIds.isEmpty() && <SensitiveButton />}
     </div>
   );
 };

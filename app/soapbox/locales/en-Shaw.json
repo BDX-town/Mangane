@@ -860,7 +860,7 @@
   "reply_mentions.account.add": "𐑨𐑛 𐑑 𐑥𐑧𐑯𐑖𐑩𐑯𐑟",
   "reply_mentions.account.remove": "𐑮𐑦𐑥𐑵𐑝 𐑓𐑮𐑪𐑥 𐑥𐑧𐑯𐑖𐑩𐑯𐑟",
   "reply_mentions.more": "{count} 𐑥𐑹",
-  "reply_mentions.reply": "𐑮𐑦𐑐𐑤𐑲𐑦𐑙 𐑑 {accounts}",
+  "reply_mentions.reply": "<hover>𐑮𐑦𐑐𐑤𐑲𐑦𐑙 𐑑</hover> {accounts}",
   "reply_mentions.reply_empty": "𐑮𐑦𐑐𐑤𐑲𐑦𐑙 𐑑 𐑐𐑴𐑕𐑑",
   "report.block": "𐑚𐑤𐑪𐑒 {target}",
   "report.block_hint": "𐑛𐑵 𐑿 𐑷𐑤𐑕𐑴 𐑢𐑪𐑯𐑑 𐑑 𐑚𐑤𐑪𐑒 𐑞𐑦𐑕 𐑩𐑒𐑬𐑯𐑑?",

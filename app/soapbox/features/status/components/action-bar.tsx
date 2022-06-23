@@ -91,15 +91,15 @@ interface OwnProps {
   status: StatusEntity,
   onReply: (status: StatusEntity) => void,
   onReblog: (status: StatusEntity, e: React.MouseEvent) => void,
-  onQuote: (status: StatusEntity, history: History) => void,
+  onQuote: (status: StatusEntity) => void,
   onFavourite: (status: StatusEntity) => void,
   onEmojiReact: (status: StatusEntity, emoji: string) => void,
-  onDelete: (status: StatusEntity, history: History, redraft?: boolean) => void,
+  onDelete: (status: StatusEntity, redraft?: boolean) => void,
   onEdit: (status: StatusEntity) => void,
   onBookmark: (status: StatusEntity) => void,
-  onDirect: (account: AccountEntity, history: History) => void,
+  onDirect: (account: AccountEntity) => void,
   onChat: (account: AccountEntity, history: History) => void,
-  onMention: (account: AccountEntity, history: History) => void,
+  onMention: (account: AccountEntity) => void,
   onMute: (account: AccountEntity) => void,
   onMuteConversation: (status: StatusEntity) => void,
   onBlock: (status: StatusEntity) => void,
@@ -164,7 +164,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
   handleQuoteClick: React.EventHandler<React.MouseEvent> = () => {
     const { me, onQuote, onOpenUnauthorizedModal, status } = this.props;
     if (me) {
-      onQuote(status, this.props.history);
+      onQuote(status);
     } else {
       onOpenUnauthorizedModal('REBLOG');
     }
@@ -236,11 +236,11 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
   }
 
   handleDeleteClick: React.EventHandler<React.MouseEvent> = () => {
-    this.props.onDelete(this.props.status, this.props.history);
+    this.props.onDelete(this.props.status);
   }
 
   handleRedraftClick: React.EventHandler<React.MouseEvent> = () => {
-    this.props.onDelete(this.props.status, this.props.history, true);
+    this.props.onDelete(this.props.status, true);
   }
 
   handleEditClick: React.EventHandler<React.MouseEvent> = () => {
@@ -250,7 +250,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
   handleDirectClick: React.EventHandler<React.MouseEvent> = () => {
     const { account } = this.props.status;
     if (!account || typeof account !== 'object') return;
-    this.props.onDirect(account, this.props.history);
+    this.props.onDirect(account);
   }
 
   handleChatClick: React.EventHandler<React.MouseEvent> = () => {
@@ -262,7 +262,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
   handleMentionClick: React.EventHandler<React.MouseEvent> = () => {
     const { account } = this.props.status;
     if (!account || typeof account !== 'object') return;
-    this.props.onMention(account, this.props.history);
+    this.props.onMention(account);
   }
 
   handleMuteClick: React.EventHandler<React.MouseEvent> = () => {
@@ -387,9 +387,9 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
     if (me) {
       if (features.bookmarks) {
         menu.push({
-          text: intl.formatMessage(status.get('bookmarked') ? messages.unbookmark : messages.bookmark),
+          text: intl.formatMessage(status.bookmarked ? messages.unbookmark : messages.bookmark),
           action: this.handleBookmarkClick,
-          icon: require(status.get('bookmarked') ? '@tabler/icons/icons/bookmark-off.svg' : '@tabler/icons/icons/bookmark.svg'),
+          icon: require(status.bookmarked ? '@tabler/icons/icons/bookmark-off.svg' : '@tabler/icons/icons/bookmark.svg'),
         });
       }
 
@@ -406,7 +406,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
           menu.push(null);
         } else if (status.visibility === 'private') {
           menu.push({
-            text: intl.formatMessage(status.get('reblogged') ? messages.cancel_reblog_private : messages.reblog_private),
+            text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog_private),
             action: this.handleReblogClick,
             icon: require('@tabler/icons/icons/repeat.svg'),
           });
@@ -496,7 +496,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
         }
 
         menu.push({
-          text: intl.formatMessage(status.get('sensitive') === false ? messages.markStatusSensitive : messages.markStatusNotSensitive),
+          text: intl.formatMessage(status.sensitive === false ? messages.markStatusSensitive : messages.markStatusNotSensitive),
           action: this.handleToggleStatusSensitivity,
           icon: require('@tabler/icons/icons/alert-triangle.svg'),
         });
@@ -523,18 +523,17 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
       }
     }
 
-    const canShare = ('share' in navigator) && status.get('visibility') === 'public';
-
+    const canShare = ('share' in navigator) && status.visibility === 'public';
 
     let reblogIcon = require('@tabler/icons/icons/repeat.svg');
 
-    if (status.get('visibility') === 'direct') {
+    if (status.visibility === 'direct') {
       reblogIcon = require('@tabler/icons/icons/mail.svg');
-    } else if (status.get('visibility') === 'private') {
+    } else if (status.visibility === 'private') {
       reblogIcon = require('@tabler/icons/icons/lock.svg');
     }
 
-    const reblog_disabled = (status.get('visibility') === 'direct' || status.get('visibility') === 'private');
+    const reblog_disabled = (status.visibility === 'direct' || status.visibility === 'private');
 
     const reblogMenu: Menu = [{
       text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog),

@@ -8,13 +8,18 @@ import {
   ChatMessageRecord,
   EmojiRecord,
   FieldRecord,
+  FilterRecord,
+  HistoryRecord,
   InstanceRecord,
+  ListRecord,
   MentionRecord,
   NotificationRecord,
   PollRecord,
   PollOptionRecord,
+  RelationshipRecord,
   StatusEditRecord,
   StatusRecord,
+  TagRecord,
 } from 'soapbox/normalizers';
 
 import type { Record as ImmutableRecord } from 'immutable';
@@ -27,12 +32,17 @@ type Chat = ReturnType<typeof ChatRecord>;
 type ChatMessage = ReturnType<typeof ChatMessageRecord>;
 type Emoji = ReturnType<typeof EmojiRecord>;
 type Field = ReturnType<typeof FieldRecord>;
+type Filter = ReturnType<typeof FilterRecord>;
+type History = ReturnType<typeof HistoryRecord>;
 type Instance = ReturnType<typeof InstanceRecord>;
+type List = ReturnType<typeof ListRecord>;
 type Mention = ReturnType<typeof MentionRecord>;
 type Notification = ReturnType<typeof NotificationRecord>;
 type Poll = ReturnType<typeof PollRecord>;
 type PollOption = ReturnType<typeof PollOptionRecord>;
+type Relationship = ReturnType<typeof RelationshipRecord>;
 type StatusEdit = ReturnType<typeof StatusEditRecord>;
+type Tag = ReturnType<typeof TagRecord>;
 
 interface Account extends ReturnType<typeof AccountRecord> {
   // HACK: we can't do a circular reference in the Record definition itself,
@@ -60,13 +70,18 @@ export {
   ChatMessage,
   Emoji,
   Field,
+  Filter,
+  History,
   Instance,
+  List,
   Mention,
   Notification,
   Poll,
   PollOption,
+  Relationship,
   Status,
   StatusEdit,
+  Tag,
 
   // Utility types
   APIEntity,

@@ -4,8 +4,7 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 
-import { logOut, switchAccount } from 'soapbox/actions/auth';
-import { fetchOwnAccounts } from 'soapbox/actions/auth';
+import { fetchOwnAccounts, logOut, switchAccount } from 'soapbox/actions/auth';
 import { getSettings } from 'soapbox/actions/settings';
 import { closeSidebar } from 'soapbox/actions/sidebar';
 import Account from 'soapbox/components/account';
@@ -110,7 +109,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
   const onClickLogOut: React.MouseEventHandler = (e) => {
     e.preventDefault();
-    dispatch(logOut(intl));
+    dispatch(logOut());
   };
 
   const handleSwitcherClick: React.MouseEventHandler = (e) => {
@@ -311,7 +310,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   />
                 )}
 
-                {features.importAPI && (
+                {features.import && (
                   <SidebarLink
                     to='/settings/import'
                     icon={require('@tabler/icons/icons/cloud-upload.svg')}
@@ -319,22 +318,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     onClick={onClose}
                   />
                 )}
-
-                {features.federating && (features.accountMoving ? (
-                  <SidebarLink
-                    to='/settings/migration'
-                    icon={require('@tabler/icons/icons/briefcase.svg')}
-                    text={intl.formatMessage(messages.accountMigration)}
-                    onClick={onClose}
-                  />
-                ) : features.accountAliasesAPI && (
-                  <SidebarLink
-                    to='/settings/aliases'
-                    icon={require('@tabler/icons/icons/briefcase.svg')}
-                    text={intl.formatMessage(messages.accountAliases)}
-                    onClick={onClose}
-                  />
-                ))}
 
                 <hr />
 

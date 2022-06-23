@@ -34,7 +34,7 @@ const Header = () => {
   const features = useFeatures();
   const instance = useAppSelector((state) => state.instance);
   const isOpen = features.accountCreation && instance.registrations;
-  const pepeOpen = useAppSelector(state => state.verification.getIn(['instance', 'registrations'], false) === true);
+  const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
 
   const [isLoading, setLoading] = React.useState(false);
   const [username, setUsername] = React.useState('');
@@ -48,7 +48,7 @@ const Header = () => {
     event.preventDefault();
     setLoading(true);
 
-    dispatch(logIn(intl, username, password) as any)
+    dispatch(logIn(username, password) as any)
       .then(({ access_token }: { access_token: string }) => {
         return (
           dispatch(verifyCredentials(access_token) as any)
@@ -107,7 +107,7 @@ const Header = () => {
                 )}
               </HStack>
 
-              <HStack space={2} className='xl:hidden'>
+              <HStack space={2} className='xl:hidden shrink-0'>
                 <Button to='/login' theme='secondary'>
                   {intl.formatMessage(messages.login)}
                 </Button>

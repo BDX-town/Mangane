@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { List as ImmutableList } from 'immutable';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -14,8 +14,8 @@ import {
   dequeueNotifications,
 } from 'soapbox/actions/notifications';
 import { getSettings } from 'soapbox/actions/settings';
+import ScrollTopButton from 'soapbox/components/scroll-top-button';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import TimelineQueueButtonHeader from  'soapbox/components/timeline_queue_button_header';
 import { Column } from 'soapbox/components/ui';
 import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
 
@@ -195,7 +195,7 @@ class Notifications extends React.PureComponent {
     return (
       <Column ref={this.setColumnRef} label={intl.formatMessage(messages.title)} withHeader={false}>
         {filterBarContainer}
-        <TimelineQueueButtonHeader
+        <ScrollTopButton
           onClick={this.handleDequeueNotifications}
           count={totalQueuedNotificationsCount}
           message={messages.queue}

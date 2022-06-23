@@ -20,7 +20,7 @@ interface IChat {
 
 const Chat: React.FC<IChat> = ({ chatId, onClick }) => {
   const chat = useAppSelector((state) => {
-    const chat = state.chats.getIn(['items', chatId]);
+    const chat = state.chats.items.get(chatId);
     return chat ? getChat(state, (chat as any).toJS()) : undefined;
   }) as ChatEntity;
 

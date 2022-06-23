@@ -13,9 +13,9 @@ import type { Status as StatusEntity } from 'soapbox/types/entities';
 const ReplyMentions: React.FC = () => {
   const dispatch = useDispatch();
   const instance = useAppSelector((state) => state.instance);
-  const status = useAppSelector<StatusEntity | null>(state => makeGetStatus()(state, { id: state.compose.get('in_reply_to') }));
+  const status = useAppSelector<StatusEntity | null>(state => makeGetStatus()(state, { id: state.compose.in_reply_to! }));
 
-  const to = useAppSelector((state) => state.compose.get('to'));
+  const to = useAppSelector((state) => state.compose.to);
   const account = useAppSelector((state) => state.accounts.get(state.me));
 
   const { explicitAddressing } = getFeatures(instance);
@@ -24,7 +24,7 @@ const ReplyMentions: React.FC = () => {
     return null;
   }
 
-  const parentTo = status && statusToMentionsAccountIdsArray(status, account);
+  const parentTo = status && statusToMentionsAccountIdsArray(status, account!);
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();

@@ -8,7 +8,6 @@ import { fetchRules } from 'soapbox/actions/rules';
 import { FormGroup, Stack, Text, Textarea } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
-import type { Set as ImmutableSet } from 'immutable';
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 
 const messages = defineMessages({
@@ -31,12 +30,12 @@ const ReasonStep = (_props: IReasonStep) => {
   const [isNearBottom, setNearBottom] = useState<boolean>(false);
   const [isNearTop, setNearTop] = useState<boolean>(true);
 
-  const comment = useAppSelector((state) => state.reports.getIn(['new', 'comment']) as string);
+  const comment = useAppSelector((state) => state.reports.new.comment);
   const rules = useAppSelector((state) => state.rules.items);
-  const ruleIds = useAppSelector((state) => state.reports.getIn(['new', 'rule_ids']) as ImmutableSet<string>);
+  const ruleIds = useAppSelector((state) => state.reports.new.rule_ids);
   const shouldRequireRule = rules.length > 0;
 
-  const selectedStatusIds = useAppSelector((state) => state.reports.getIn(['new', 'status_ids']) as ImmutableSet<string>);
+  const selectedStatusIds = useAppSelector((state) => state.reports.new.status_ids);
   const isReportingAccount = useMemo(() => selectedStatusIds.size === 0, []);
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {

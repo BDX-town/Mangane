@@ -1,3 +1,5 @@
+import { Map as ImmutableMap } from 'immutable';
+
 import { __stub } from 'soapbox/api';
 import { mockStore } from 'soapbox/jest/test-helpers';
 import rootReducer from 'soapbox/reducers';
@@ -10,7 +12,7 @@ describe('submitAccountNote()', () => {
 
   beforeEach(() => {
     const state = rootReducer(undefined, {})
-      .set('account_notes', { edit: { account_id: 1, comment: 'hello' } });
+      .set('account_notes', { edit: { account: 1, comment: 'hello' } });
     store = mockStore(state);
   });
 
@@ -62,7 +64,7 @@ describe('initAccountNoteModal()', () => {
 
   beforeEach(() => {
     const state = rootReducer(undefined, {})
-      .set('relationships', { 1: { note: 'hello' } });
+      .set('relationships', ImmutableMap({ 1: { note: 'hello' } }));
     store = mockStore(state);
   });
 

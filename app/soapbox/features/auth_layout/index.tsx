@@ -1,6 +1,6 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { Link, Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 
 import LandingGradient from 'soapbox/components/landing-gradient';
 import SiteLogo from 'soapbox/components/site-logo';
@@ -23,6 +23,7 @@ const messages = defineMessages({
 const AuthLayout = () => {
   const intl = useIntl();
   const history = useHistory();
+  const { search } = useLocation();
 
   const siteTitle = useAppSelector(state => state.instance.title);
   const soapboxConfig = useSoapboxConfig();
@@ -31,7 +32,7 @@ const AuthLayout = () => {
   const features = useFeatures();
   const instance = useAppSelector((state) => state.instance);
   const isOpen = features.accountCreation && instance.registrations;
-  const pepeOpen = useAppSelector(state => state.verification.getIn(['instance', 'registrations'], false) === true);
+  const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
   const isLoginPage = history.location.pathname === '/login';
   const shouldShowRegisterLink = (isLoginPage && (isOpen || (pepeEnabled && pepeOpen)));
 
@@ -76,7 +77,7 @@ const AuthLayout = () => {
                     <Route path='/invite/:token' component={RegisterInvite} />
 
                     <Redirect from='/auth/password/new' to='/reset-password' />
-                    <Redirect from='/auth/password/edit' to='/edit-password' />
+                    <Redirect from='/auth/password/edit' to={`/edit-password${search}`} />
                   </Switch>
                 </CardBody>
               </Card>

@@ -28,6 +28,8 @@ import {
   STATUS_UNMUTE_SUCCESS,
   STATUS_REVEAL,
   STATUS_HIDE,
+  STATUS_DELETE_REQUEST,
+  STATUS_DELETE_FAIL,
 } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
@@ -114,7 +116,7 @@ export const calculateStatus = (
 
 // Check whether a status is a quote by secondary characteristics
 const isQuote = (status: StatusRecord) => {
-  return Boolean(status.getIn(['pleroma', 'quote_url']));
+  return Boolean(status.pleroma.get('quote_url'));
 };
 
 // Preserve quote if an existing status already has it
@@ -122,7 +124,7 @@ const fixQuote = (status: StatusRecord, oldStatus?: StatusRecord): StatusRecord 
   if (oldStatus && !status.quote && isQuote(status)) {
     return status
       .set('quote', oldStatus.quote)
-      .updateIn(['pleroma', 'quote_visible'], visible => visible || oldStatus.getIn(['pleroma', 'quote_visible']));
+      .updateIn(['pleroma', 'quote_visible'], visible => visible || oldStatus.pleroma.get('quote_visible'));
   } else {
     return status;
   }
@@ -152,7 +154,7 @@ const deleteStatus = (state: State, id: string, references: Array<string>) => {
   return state.delete(id);
 };
 
-const importPendingStatus = (state: State, { in_reply_to_id }: APIEntity) => {
+const incrementReplyCount = (state: State, { in_reply_to_id }: APIEntity) => {
   if (in_reply_to_id) {
     return state.updateIn([in_reply_to_id, 'replies_count'], 0, count => {
       return typeof count === 'number' ? count + 1 : 0;
@@ -162,7 +164,7 @@ const importPendingStatus = (state: State, { in_reply_to_id }: APIEntity) => {
   }
 };
 
-const deletePendingStatus = (state: State, { in_reply_to_id }: APIEntity) => {
+const decrementReplyCount = (state: State, { in_reply_to_id }: APIEntity) => {
   if (in_reply_to_id) {
     return state.updateIn([in_reply_to_id, 'replies_count'], 0, count => {
       return typeof count === 'number' ? Math.max(0, count - 1) : 0;
@@ -200,9 +202,9 @@ export default function statuses(state = initialState, action: AnyAction): State
     case STATUSES_IMPORT:
       return importStatuses(state, action.statuses, action.expandSpoilers);
     case STATUS_CREATE_REQUEST:
-      return importPendingStatus(state, action.params);
+      return incrementReplyCount(state, action.params);
     case STATUS_CREATE_FAIL:
-      return deletePendingStatus(state, action.params);
+      return decrementReplyCount(state, action.params);
     case FAVOURITE_REQUEST:
       return simulateFavourite(state, action.status.id, true);
     case UNFAVOURITE_REQUEST:
@@ -249,6 +251,10 @@ export default function statuses(state = initialState, action: AnyAction): State
           }
         });
       });
+    case STATUS_DELETE_REQUEST:
+      return decrementReplyCount(state, action.params);
+    case STATUS_DELETE_FAIL:
+      return incrementReplyCount(state, action.params);
     case TIMELINE_DELETE:
       return deleteStatus(state, action.id, action.references);
     default:

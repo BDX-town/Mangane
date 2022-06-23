@@ -14,7 +14,7 @@ import { shouldFilter } from 'soapbox/utils/timelines';
 
 import type { ReducerChat } from 'soapbox/reducers/chats';
 import type { RootState } from 'soapbox/store';
-import type { Notification } from 'soapbox/types/entities';
+import type { Filter as FilterEntity, Notification } from 'soapbox/types/entities';
 
 const normalizeId = (id: any): string => typeof id === 'string' ? id : '';
 
@@ -22,7 +22,7 @@ const getAccountBase         = (state: RootState, id: string) => state.accounts.
 const getAccountCounters     = (state: RootState, id: string) => state.accounts_counters.get(id);
 const getAccountRelationship = (state: RootState, id: string) => state.relationships.get(id);
 const getAccountMoved        = (state: RootState, id: string) => state.accounts.get(state.accounts.get(id)?.moved || '');
-const getAccountMeta         = (state: RootState, id: string) => state.accounts_meta.get(id, ImmutableMap());
+const getAccountMeta         = (state: RootState, id: string) => state.accounts_meta.get(id);
 const getAccountAdminData    = (state: RootState, id: string) => state.admin.users.get(id);
 const getAccountPatron       = (state: RootState, id: string) => {
   const url = state.accounts.get(id)?.url;
@@ -42,10 +42,12 @@ export const makeGetAccount = () => {
     if (!base) return null;
 
     return base.withMutations(map => {
-      map.merge(counters);
-      map.merge(meta);
-      map.set('pleroma', meta.get('pleroma', ImmutableMap()).merge(base.get('pleroma', ImmutableMap()))); // Lol, thanks Pleroma
-      map.set('relationship', relationship);
+      if (counters) map.merge(counters);
+      if (meta) {
+        map.merge(meta);
+        map.set('pleroma', meta.pleroma.merge(base.get('pleroma', ImmutableMap()))); // Lol, thanks Pleroma
+      }
+      if (relationship) map.set('relationship', relationship);
       map.set('moved', moved || null);
       map.set('patron', patron || null);
       map.setIn(['pleroma', 'admin'], admin);
@@ -102,18 +104,18 @@ const toServerSideType = (columnType: string): string => {
 type FilterContext = { contextType?: string };
 
 export const getFilters = (state: RootState, query: FilterContext) => {
-  return state.filters.filter((filter): boolean => {
+  return state.filters.filter((filter) => {
     return query?.contextType
-      && filter.get('context').includes(toServerSideType(query.contextType))
-      && (filter.get('expires_at') === null
-      || Date.parse(filter.get('expires_at')) > new Date().getTime());
+      && filter.context.includes(toServerSideType(query.contextType))
+      && (filter.expires_at === null
+      || Date.parse(filter.expires_at) > new Date().getTime());
   });
 };
 
 const escapeRegExp = (string: string) =>
   string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 
-export const regexFromFilters = (filters: ImmutableList<ImmutableMap<string, any>>) => {
+export const regexFromFilters = (filters: ImmutableList<FilterEntity>) => {
   if (filters.size === 0) return null;
 
   return new RegExp(filters.map(filter => {
@@ -242,8 +244,8 @@ type APIChat = { id: string, last_message: string };
 export const makeGetChat = () => {
   return createSelector(
     [
-      (state: RootState, { id }: APIChat) => state.chats.getIn(['items', id]) as ReducerChat,
-      (state: RootState, { id }: APIChat) => state.accounts.get(state.chats.getIn(['items', id, 'account'])),
+      (state: RootState, { id }: APIChat) => state.chats.items.get(id) as ReducerChat,
+      (state: RootState, { id }: APIChat) => state.accounts.get(state.chats.items.getIn([id, 'account'])),
       (state: RootState, { last_message }: APIChat) => state.chat_messages.get(last_message),
     ],
 
@@ -364,8 +366,8 @@ type ColumnQuery = { type: string, prefix?: string };
 export const makeGetStatusIds = () => createSelector([
   (state: RootState, { type, prefix }: ColumnQuery) => getSettings(state).get(prefix || type, ImmutableMap()),
   (state: RootState, { type }: ColumnQuery) => state.timelines.getIn([type, 'items'], ImmutableOrderedSet()),
-  (state: RootState)           => state.statuses,
-], (columnSettings, statusIds: string[], statuses) => {
+  (state: RootState) => state.statuses,
+], (columnSettings, statusIds: ImmutableOrderedSet<string>, statuses) => {
   return statusIds.filter((id: string) => {
     const status = statuses.get(id);
     if (!status) return true;

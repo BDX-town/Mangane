@@ -30,7 +30,7 @@ const Sidebar: React.FC = ({ children }) => (
 const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className }) => (
   <main
     className={classNames({
-      'md:col-span-12 lg:col-span-9 xl:col-span-6 sm:space-y-4 pb-36': true,
+      'md:col-span-12 lg:col-span-9 xl:col-span-6 pb-36': true,
     }, className)}
   >
     {children}

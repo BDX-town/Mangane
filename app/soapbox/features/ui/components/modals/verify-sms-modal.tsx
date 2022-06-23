@@ -29,7 +29,7 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
   const intl = useIntl();
   const accessToken = useAppSelector((state) => getAccessToken(state));
   const title = useAppSelector((state) => state.instance.title);
-  const isLoading = useAppSelector((state) => state.verification.get('isLoading') as boolean);
+  const isLoading = useAppSelector((state) => state.verification.isLoading);
 
   const [status, setStatus] = useState<Statuses>(Statuses.IDLE);
   const [phone, setPhone] = useState<string>('');

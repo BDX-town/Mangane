@@ -1,5 +1,5 @@
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
-import { trim } from 'lodash';
+import trim from 'lodash/trim';
 
 import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
 import { FE_SUBDIRECTORY } from 'soapbox/build_config';
@@ -256,7 +256,6 @@ const importMastodonPreload = (state, data) => {
     maybeShiftMe(state);
   });
 };
-
 
 const persistAuthAccount = account => {
   if (account && account.url) {

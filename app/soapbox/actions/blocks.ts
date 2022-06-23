@@ -1,6 +1,3 @@
-import { AnyAction } from '@reduxjs/toolkit';
-import { AxiosError } from 'axios';
-
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getNextLinkName } from 'soapbox/utils/quirks';
 
@@ -8,6 +5,10 @@ import api, { getLinks } from '../api';
 
 import { fetchRelationships } from './accounts';
 import { importFetchedAccounts } from './importer';
+
+import type { AnyAction } from '@reduxjs/toolkit';
+import type { AxiosError } from 'axios';
+import type { RootState } from 'soapbox/store';
 
 const BLOCKS_FETCH_REQUEST = 'BLOCKS_FETCH_REQUEST';
 const BLOCKS_FETCH_SUCCESS = 'BLOCKS_FETCH_SUCCESS';
@@ -17,7 +18,7 @@ const BLOCKS_EXPAND_REQUEST = 'BLOCKS_EXPAND_REQUEST';
 const BLOCKS_EXPAND_SUCCESS = 'BLOCKS_EXPAND_SUCCESS';
 const BLOCKS_EXPAND_FAIL = 'BLOCKS_EXPAND_FAIL';
 
-const fetchBlocks = () => (dispatch: React.Dispatch<AnyAction>, getState: any) => {
+const fetchBlocks = () => (dispatch: React.Dispatch<AnyAction>, getState: () => RootState) => {
   if (!isLoggedIn(getState)) return null;
   const nextLinkName = getNextLinkName(getState);
 
@@ -53,11 +54,11 @@ function fetchBlocksFail(error: AxiosError) {
   };
 }
 
-const expandBlocks = () => (dispatch: React.Dispatch<AnyAction>, getState: any) => {
+const expandBlocks = () => (dispatch: React.Dispatch<AnyAction>, getState: () => RootState) => {
   if (!isLoggedIn(getState)) return null;
   const nextLinkName = getNextLinkName(getState);
 
-  const url = getState().getIn(['user_lists', 'blocks', 'next']);
+  const url = getState().user_lists.getIn(['blocks', 'next']);
 
   if (url === null) {
     return null;

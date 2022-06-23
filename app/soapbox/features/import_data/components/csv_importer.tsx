@@ -3,7 +3,8 @@ import { MessageDescriptor, useIntl } from 'react-intl';
 
 import { Button, FileInput, Form, FormActions, FormGroup, Text } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
-import { AppDispatch } from 'soapbox/store';
+
+import type { AppDispatch, RootState } from 'soapbox/store';
 
 interface ICSVImporter {
   messages: {
@@ -11,7 +12,7 @@ interface ICSVImporter {
     input_hint: MessageDescriptor,
     submit: MessageDescriptor,
   },
-  action: (params: FormData) => (dispatch: AppDispatch, getState: any) => Promise<void>,
+  action: (params: FormData) => (dispatch: AppDispatch, getState: () => RootState) => Promise<void>,
 }
 
 const CSVImporter: React.FC<ICSVImporter> = ({ messages, action }) => {
@@ -20,7 +21,6 @@ const CSVImporter: React.FC<ICSVImporter> = ({ messages, action }) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState<File | null | undefined>(null);
-
 
   const handleSubmit: React.FormEventHandler = (event) => {
     const params = new FormData();

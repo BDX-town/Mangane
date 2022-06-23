@@ -1,7 +1,7 @@
 'use strict';
 
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -17,6 +17,7 @@ import StillImage from 'soapbox/components/still_image';
 import { HStack, IconButton, Menu, MenuButton, MenuItem, MenuList, MenuLink, MenuDivider } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import ActionButton from 'soapbox/features/ui/components/action-button';
+import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
 import {
   isLocal,
   isRemote,
@@ -61,8 +62,6 @@ const messages = defineMessages({
   promoteToModerator: { id: 'admin.users.actions.promote_to_moderator', defaultMessage: 'Promote @{name} to a moderator' },
   demoteToModerator: { id: 'admin.users.actions.demote_to_moderator', defaultMessage: 'Demote @{name} to a moderator' },
   demoteToUser: { id: 'admin.users.actions.demote_to_user', defaultMessage: 'Demote @{name} to a regular user' },
-  subscribe: { id: 'account.subscribe', defaultMessage: 'Subscribe to notifications from @{name}' },
-  unsubscribe: { id: 'account.unsubscribe', defaultMessage: 'Unsubscribe to notifications from @{name}' },
   suggestUser: { id: 'admin.users.actions.suggest_user', defaultMessage: 'Suggest @{name}' },
   unsuggestUser: { id: 'admin.users.actions.unsuggest_user', defaultMessage: 'Unsuggest @{name}' },
 });
@@ -235,8 +234,8 @@ class Header extends ImmutablePureComponent {
       //   });
       // }
 
-      if (account.getIn(['relationship', 'following'])) {
-        if (account.getIn(['relationship', 'showing_reblogs'])) {
+      if (account.relationship?.following) {
+        if (account.relationship?.showing_reblogs) {
           menu.push({
             text: intl.formatMessage(messages.hideReblogs, { name: account.get('username') }),
             action: this.props.onReblogToggle,
@@ -250,22 +249,6 @@ class Header extends ImmutablePureComponent {
           });
         }
 
-        if (features.accountSubscriptions) {
-          if (account.getIn(['relationship', 'subscribing'])) {
-            menu.push({
-              text: intl.formatMessage(messages.unsubscribe, { name: account.get('username') }),
-              action: this.props.onSubscriptionToggle,
-              icon: require('@tabler/icons/icons/bell.svg'),
-            });
-          } else {
-            menu.push({
-              text: intl.formatMessage(messages.subscribe, { name: account.get('username') }),
-              action: this.props.onSubscriptionToggle,
-              icon: require('@tabler/icons/icons/bell-off.svg'),
-            });
-          }
-        }
-
         if (features.lists) {
           menu.push({
             text: intl.formatMessage(messages.add_or_remove_from_list),
@@ -274,7 +257,7 @@ class Header extends ImmutablePureComponent {
           });
         }
 
-        // menu.push({ text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
+        // menu.push({ text: intl.formatMessage(account.relationship?.endorsed ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
         menu.push(null);
       } else if (features.lists && features.unrestrictedLists) {
         menu.push({
@@ -284,7 +267,7 @@ class Header extends ImmutablePureComponent {
         });
       }
 
-      if (features.removeFromFollowers && account.getIn(['relationship', 'followed_by'])) {
+      if (features.removeFromFollowers && account.relationship?.followed_by) {
         menu.push({
           text: intl.formatMessage(messages.removeFromFollowers),
           action: this.props.onRemoveFromFollowers,
@@ -292,7 +275,7 @@ class Header extends ImmutablePureComponent {
         });
       }
 
-      if (account.getIn(['relationship', 'muting'])) {
+      if (account.relationship?.muting) {
         menu.push({
           text: intl.formatMessage(messages.unmute, { name: account.get('username') }),
           action: this.props.onMute,
@@ -306,7 +289,7 @@ class Header extends ImmutablePureComponent {
         });
       }
 
-      if (account.getIn(['relationship', 'blocking'])) {
+      if (account.relationship?.blocking) {
         menu.push({
           text: intl.formatMessage(messages.unblock, { name: account.get('username') }),
           action: this.props.onBlock,
@@ -332,7 +315,7 @@ class Header extends ImmutablePureComponent {
 
       menu.push(null);
 
-      if (account.getIn(['relationship', 'domain_blocking'])) {
+      if (account.relationship?.domain_blocking) {
         menu.push({
           text: intl.formatMessage(messages.unblockDomain, { domain }),
           action: this.props.onUnblockDomain,
@@ -463,7 +446,7 @@ class Header extends ImmutablePureComponent {
 
     if (!account || !me) return info;
 
-    if (me !== account.get('id') && account.getIn(['relationship', 'followed_by'])) {
+    if (me !== account.get('id') && account.relationship?.followed_by) {
       info.push(
         <Badge
           key='followed_by'
@@ -471,17 +454,17 @@ class Header extends ImmutablePureComponent {
           title={<FormattedMessage id='account.follows_you' defaultMessage='Follows you' />}
         />,
       );
-    } else if (me !== account.get('id') && account.getIn(['relationship', 'blocking'])) {
+    } else if (me !== account.get('id') && account.relationship?.blocking) {
       info.push(
         <Badge
           key='blocked'
           slug='opaque'
-          title={<FormattedMessage  id='account.blocked' defaultMessage='Blocked' />}
+          title={<FormattedMessage id='account.blocked' defaultMessage='Blocked' />}
         />,
       );
     }
 
-    if (me !== account.get('id') && account.getIn(['relationship', 'muting'])) {
+    if (me !== account.get('id') && account.relationship?.muting) {
       info.push(
         <Badge
           key='muted'
@@ -489,7 +472,7 @@ class Header extends ImmutablePureComponent {
           title={<FormattedMessage id='account.muted' defaultMessage='Muted' />}
         />,
       );
-    } else if (me !== account.get('id') && account.getIn(['relationship', 'domain_blocking'])) {
+    } else if (me !== account.get('id') && account.relationship?.domain_blocking) {
       info.push(
         <Badge
           key='domain_blocked'
@@ -578,11 +561,6 @@ class Header extends ImmutablePureComponent {
     const menu = this.makeMenu();
     const header = account.get('header', '');
 
-    // NOTE: Removing Subscription element
-    //   {features.accountSubscriptions && <div className='account__header__subscribe'>
-    //   <SubscriptionButton account={account} />
-    // </div>}
-
     return (
       <div className='-mt-4 -mx-4'>
         <div>
@@ -618,6 +596,8 @@ class Header extends ImmutablePureComponent {
 
             <div className='mt-6 flex justify-end w-full sm:pb-1'>
               <div className='mt-10 flex flex-row space-y-0 space-x-2'>
+                <SubscriptionButton account={account} />
+
                 {me && (
                   <Menu>
                     <MenuButton
