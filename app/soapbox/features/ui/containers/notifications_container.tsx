@@ -37,7 +37,7 @@ const SnackbarContainer: React.FC = () => {
     if (notification.action) {
       const { action } = notification;
       notification.action = (
-        <Button theme='ghost' onClick={action} text={notification.actionLabel} />
+        <Button theme='ghost' size='sm' onClick={action} text={notification.actionLabel} />
       );
     } else if (notification.actionLabel) {
       notification.action = (
