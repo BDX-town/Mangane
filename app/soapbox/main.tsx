@@ -47,6 +47,7 @@ function main() {
             action: () => {
               OfflinePluginRuntime.applyUpdate();
             },
+            dismissAfter: false,
           }));
         },
         onUpdated: function() {

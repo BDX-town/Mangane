@@ -19,6 +19,7 @@ type SnackbarOpts = {
   actionLabel?: SnackbarMessage,
   actionLink?: string,
   action?: () => void,
+  dismissAfter?: number | false,
 };
 
 export const show = (

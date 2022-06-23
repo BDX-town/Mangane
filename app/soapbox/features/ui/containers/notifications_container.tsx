@@ -1,5 +1,5 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
+import { useIntl, MessageDescriptor } from 'react-intl';
 import { NotificationStack, NotificationObject, StyleFactoryFn } from 'react-notification';
 import { useHistory } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ const SnackbarContainer: React.FC = () => {
   const alerts = useAppSelector(state => state.alerts);
 
   /** Apply i18n to the message if it's an object. */
-  const maybeFormatMessage = (message: any): string => {
+  const maybeFormatMessage = (message: MessageDescriptor | string): string => {
     switch (typeof message) {
       case 'string': return message;
       case 'object': return intl.formatMessage(message);
@@ -39,7 +39,7 @@ const SnackbarContainer: React.FC = () => {
       key: item.key,
       className: `notification-bar-${item.severity}`,
       activeClassName: 'snackbar--active',
-      dismissAfter: 6000,
+      dismissAfter: item.dismissAfter,
       style: false,
     };
 

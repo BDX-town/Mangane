@@ -14,6 +14,7 @@ const AlertRecord = ImmutableRecord({
   actionLabel: '',
   actionLink: '',
   action: () => {},
+  dismissAfter: 6000 as number | false,
 });
 
 import type { AnyAction } from 'redux';
