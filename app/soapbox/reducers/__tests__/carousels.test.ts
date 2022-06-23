@@ -12,6 +12,7 @@ describe('carousels reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {} as AnyAction)).toEqual({
       avatars: [],
+      error: false,
       isLoading: false,
     });
   });
@@ -26,7 +27,7 @@ describe('carousels reducer', () => {
 
   describe('CAROUSEL_AVATAR_SUCCESS', () => {
     it('sets the next state', () => {
-      const initialState = { isLoading: true, avatars: [] };
+      const initialState = { isLoading: true, avatars: [], error: false };
       const action = { type: CAROUSEL_AVATAR_SUCCESS, payload: [45] };
       const result = reducer(initialState, action);
 
