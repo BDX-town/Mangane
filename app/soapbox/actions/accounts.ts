@@ -656,22 +656,21 @@ const expandFollowingFail = (id: string, error: AxiosError) => ({
 
 const fetchRelationships = (accountIds: string[]) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     const loadedRelationships = getState().relationships;
     const newAccountIds = accountIds.filter(id => loadedRelationships.get(id, null) === null);
 
     if (newAccountIds.length === 0) {
-      return;
+      return null;
     }
 
     dispatch(fetchRelationshipsRequest(newAccountIds));
 
-    api(getState).get(`/api/v1/accounts/relationships?${newAccountIds.map(id => `id[]=${id}`).join('&')}`).then(response => {
-      dispatch(fetchRelationshipsSuccess(response.data));
-    }).catch(error => {
-      dispatch(fetchRelationshipsFail(error));
-    });
+    return api(getState)
+      .get(`/api/v1/accounts/relationships?${newAccountIds.map(id => `id[]=${id}`).join('&')}`)
+      .then(response => dispatch(fetchRelationshipsSuccess(response.data)))
+      .catch(error => dispatch(fetchRelationshipsFail(error)));
   };
 
 const fetchRelationshipsRequest = (ids: string[]) => ({

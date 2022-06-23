@@ -14,6 +14,7 @@ import {
   fetchAccountByUsername,
   fetchFollowers,
   fetchFollowing,
+  fetchRelationships,
   followAccount,
   muteAccount,
   removeFromFollowers,
@@ -1301,6 +1302,99 @@ describe('expandFollowing()', () => {
           { type: 'FOLLOWING_EXPAND_FAIL', id, error: new Error('Network Error') },
         ];
         await store.dispatch(expandFollowing(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('fetchRelationships()', () => {
+  const id = '1';
+
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {}).set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(fetchRelationships([id]));
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {})
+        .set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('without newAccountIds', () => {
+      beforeEach(() => {
+        const state = rootReducer(undefined, {})
+          .set('relationships', ImmutableMap({ [id]: {} }))
+          .set('me', '123');
+        store = mockStore(state);
+      });
+
+      it('should do nothing', async() => {
+        await store.dispatch(fetchRelationships([id]));
+        const actions = store.getActions();
+
+        expect(actions).toEqual([]);
+      });
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        const state = rootReducer(undefined, {})
+          .set('relationships', ImmutableMap({}))
+          .set('me', '123');
+        store = mockStore(state);
+
+        __stub((mock) => {
+          mock
+            .onGet(`/api/v1/accounts/relationships?${[id].map(id => `id[]=${id}`).join('&')}`)
+            .reply(200, []);
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'RELATIONSHIPS_FETCH_REQUEST', ids: [id], skipLoading: true },
+          {
+            type: 'RELATIONSHIPS_FETCH_SUCCESS',
+            relationships: [],
+            skipLoading: true,
+          },
+        ];
+        await store.dispatch(fetchRelationships([id]));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock
+            .onGet(`/api/v1/accounts/relationships?${[id].map(id => `id[]=${id}`).join('&')}`)
+            .networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'RELATIONSHIPS_FETCH_REQUEST', ids: [id], skipLoading: true },
+          { type: 'RELATIONSHIPS_FETCH_FAIL', skipLoading: true, error: new Error('Network Error') },
+        ];
+        await store.dispatch(fetchRelationships([id]));
         const actions = store.getActions();
 
         expect(actions).toEqual(expectedActions);
