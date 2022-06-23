@@ -15,29 +15,31 @@ export type SnackbarAction = {
   severity: SnackbarActionSeverity,
 };
 
-export const show = (
-  severity: SnackbarActionSeverity,
-  message: SnackbarMessage,
+type SnackbarOpts = {
   actionLabel?: SnackbarMessage,
   actionLink?: string,
   action?: () => void,
+};
+
+export const show = (
+  severity: SnackbarActionSeverity,
+  message: SnackbarMessage,
+  opts?: SnackbarOpts,
 ): SnackbarAction => ({
   type: ALERT_SHOW,
   message,
-  actionLabel,
-  actionLink,
   severity,
-  action,
+  ...opts,
 });
 
 export const info = (message: SnackbarMessage, actionLabel?: SnackbarMessage, actionLink?: string) =>
-  show('info', message, actionLabel, actionLink);
+  show('info', message, { actionLabel, actionLink });
 
 export const success = (message: SnackbarMessage, actionLabel?: SnackbarMessage, actionLink?: string) =>
-  show('success', message, actionLabel, actionLink);
+  show('success', message, { actionLabel, actionLink });
 
 export const error = (message: SnackbarMessage, actionLabel?: SnackbarMessage, actionLink?: string) =>
-  show('error', message, actionLabel, actionLink);
+  show('error', message, { actionLabel, actionLink });
 
 export default {
   info,

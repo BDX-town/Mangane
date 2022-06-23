@@ -4,6 +4,7 @@ import './precheck';
 import * as OfflinePluginRuntime from '@lcdp/offline-plugin/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { defineMessages } from 'react-intl';
 
 import snackbar from 'soapbox/actions/snackbar';
 import * as BuildConfig from 'soapbox/build_config';
@@ -14,6 +15,11 @@ import { default as Soapbox } from './containers/soapbox';
 import * as monitoring from './monitoring';
 import * as perf from './performance';
 import ready from './ready';
+
+const messages = defineMessages({
+  update: { id: 'sw.update', defaultMessage: 'Update' },
+  updateText: { id: 'sw.update_text', defaultMessage: 'An update is available.' },
+});
 
 function main() {
   perf.start('main()');
@@ -36,8 +42,11 @@ function main() {
       // https://github.com/NekR/offline-plugin/pull/201#issuecomment-285133572
       OfflinePluginRuntime.install({
         onUpdateReady: function() {
-          store.dispatch(snackbar.show('info', 'An update is available.', 'Update', undefined, () => {
-            OfflinePluginRuntime.applyUpdate();
+          store.dispatch(snackbar.show('info', messages.updateText, {
+            actionLabel: messages.update,
+            action: () => {
+              OfflinePluginRuntime.applyUpdate();
+            },
           }));
         },
         onUpdated: function() {
