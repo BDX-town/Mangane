@@ -5,7 +5,9 @@ import * as OfflinePluginRuntime from '@lcdp/offline-plugin/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import snackbar from 'soapbox/actions/snackbar';
 import * as BuildConfig from 'soapbox/build_config';
+import { store } from 'soapbox/store';
 import { printConsoleWarning } from 'soapbox/utils/console';
 
 import { default as Soapbox } from './containers/soapbox';
@@ -34,7 +36,9 @@ function main() {
       // https://github.com/NekR/offline-plugin/pull/201#issuecomment-285133572
       OfflinePluginRuntime.install({
         onUpdateReady: function() {
-          OfflinePluginRuntime.applyUpdate();
+          store.dispatch(snackbar.show('info', 'An update is available.', 'Update', undefined, () => {
+            OfflinePluginRuntime.applyUpdate();
+          }));
         },
         onUpdated: function() {
           window.location.reload();

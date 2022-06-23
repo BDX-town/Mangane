@@ -13,6 +13,7 @@ const AlertRecord = ImmutableRecord({
   severity: 'info',
   actionLabel: '',
   actionLink: '',
+  action: () => {},
 });
 
 import type { AnyAction } from 'redux';

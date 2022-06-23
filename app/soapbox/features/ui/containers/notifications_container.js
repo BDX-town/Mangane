@@ -4,6 +4,8 @@ import { NotificationStack } from 'react-notification';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { Button } from 'soapbox/components/ui';
+
 import { dismissAlert } from '../../../actions/alerts';
 import { getAlerts } from '../../../selectors';
 
@@ -33,7 +35,12 @@ const mapStateToProps = (state, { intl }) => {
       }
     });
 
-    if (notification.actionLabel) {
+    if (notification.action) {
+      const { action } = notification;
+      notification.action = (
+        <Button onClick={action} text={notification.actionLabel} />
+      );
+    } else if (notification.actionLabel) {
       notification.action = (
         <Link to={notification.actionLink}>
           {notification.actionLabel}

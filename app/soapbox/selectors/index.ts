@@ -186,6 +186,7 @@ const buildAlert = (item: any) => {
     title: item.title,
     actionLabel: item.actionLabel,
     actionLink: item.actionLink,
+    action: item.action,
     key: item.key,
     className: `notification-bar-${item.severity}`,
     activeClassName: 'snackbar--active',

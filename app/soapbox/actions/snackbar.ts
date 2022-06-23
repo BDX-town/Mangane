@@ -2,24 +2,32 @@ import { ALERT_SHOW } from './alerts';
 
 import type { MessageDescriptor } from 'react-intl';
 
-export type SnackbarActionSeverity = 'info' | 'success' | 'error'
+export type SnackbarActionSeverity = 'info' | 'success' | 'error';
 
-type SnackbarMessage = string | MessageDescriptor
+type SnackbarMessage = string | MessageDescriptor;
 
 export type SnackbarAction = {
-  type: typeof ALERT_SHOW
-  message: SnackbarMessage
-  actionLabel?: SnackbarMessage
-  actionLink?: string
-  severity: SnackbarActionSeverity
-}
+  type: typeof ALERT_SHOW,
+  message: SnackbarMessage,
+  actionLabel?: SnackbarMessage,
+  actionLink?: string,
+  action?: () => void,
+  severity: SnackbarActionSeverity,
+};
 
-export const show = (severity: SnackbarActionSeverity, message: SnackbarMessage, actionLabel?: SnackbarMessage, actionLink?: string): SnackbarAction => ({
+export const show = (
+  severity: SnackbarActionSeverity,
+  message: SnackbarMessage,
+  actionLabel?: SnackbarMessage,
+  actionLink?: string,
+  action?: () => void,
+): SnackbarAction => ({
   type: ALERT_SHOW,
   message,
   actionLabel,
   actionLink,
   severity,
+  action,
 });
 
 export const info = (message: SnackbarMessage, actionLabel?: SnackbarMessage, actionLink?: string) =>
