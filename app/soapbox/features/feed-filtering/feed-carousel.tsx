@@ -85,7 +85,7 @@ const FeedCarousel = () => {
 
   if (hasError) {
     return (
-      <Card variant='rounded' size='lg'>
+      <Card variant='rounded' size='lg' data-testid='feed-carousel-error'>
         <Text align='center'>
           <FormattedMessage id='common.error' defaultMessage="Something isn't right. Try reloading the page." />
         </Text>
@@ -94,12 +94,13 @@ const FeedCarousel = () => {
   }
 
   return (
-    <Card variant='rounded' size='lg' ref={cardRef} className='relative'>
+    <Card variant='rounded' size='lg' ref={cardRef} className='relative' data-testid='feed-carousel'>
       <div>
         {hasPrevPage && (
           <div>
             <div className='z-10 absolute left-5 top-1/2 -mt-4'>
               <button
+                data-testid='prev-page'
                 onClick={handlePrevPage}
                 className='bg-white/85 backdrop-blur rounded-full h-8 w-8 flex items-center justify-center'
               >
@@ -135,6 +136,7 @@ const FeedCarousel = () => {
           <div>
             <div className='z-10 absolute right-5 top-1/2 -mt-4'>
               <button
+                data-testid='next-page'
                 onClick={handleNextPage}
                 className='bg-white/85 backdrop-blur rounded-full h-8 w-8 flex items-center justify-center'
               >
