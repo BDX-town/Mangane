@@ -498,15 +498,18 @@ const fetchFollowers = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(fetchFollowersRequest(id));
 
-    api(getState).get(`/api/v1/accounts/${id}/followers`).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+    return api(getState)
+      .get(`/api/v1/accounts/${id}/followers`)
+      .then(response => {
+        const next = getLinks(response).refs.find(link => link.rel === 'next');
 
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(fetchFollowersSuccess(id, response.data, next ? next.uri : null));
-      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
-    }).catch(error => {
-      dispatch(fetchFollowersFail(id, error));
-    });
+        dispatch(importFetchedAccounts(response.data));
+        dispatch(fetchFollowersSuccess(id, response.data, next ? next.uri : null));
+        dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
+      })
+      .catch(error => {
+        dispatch(fetchFollowersFail(id, error));
+      });
   };
 
 const fetchFollowersRequest = (id: string) => ({

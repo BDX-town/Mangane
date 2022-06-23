@@ -10,6 +10,7 @@ import {
   createAccount,
   fetchAccount,
   fetchAccountByUsername,
+  fetchFollowers,
   followAccount,
   muteAccount,
   removeFromFollowers,
@@ -981,6 +982,63 @@ describe('removeFromFollowers()', () => {
           { type: 'ACCOUNT_REMOVE_FROM_FOLLOWERS_FAIL', id, error: new Error('Network Error') },
         ];
         await store.dispatch(removeFromFollowers(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('fetchFollowers()', () => {
+  const id = '1';
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {});
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet(`/api/v1/accounts/${id}/followers`).reply(200, [], {
+            link: `<https://example.com/api/v1/accounts/${id}/followers?since_id=1>; rel='prev'`,
+          });
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOWERS_FETCH_REQUEST', id },
+          { type: 'ACCOUNTS_IMPORT', accounts: [] },
+          {
+            type: 'FOLLOWERS_FETCH_SUCCESS',
+            id,
+            accounts: [],
+            next: null,
+          },
+        ];
+        await store.dispatch(fetchFollowers(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet(`/api/v1/accounts/${id}/followers`).networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOWERS_FETCH_REQUEST', id },
+          { type: 'FOLLOWERS_FETCH_FAIL', id, error: new Error('Network Error') },
+        ];
+        await store.dispatch(fetchFollowers(id));
         const actions = store.getActions();
 
         expect(actions).toEqual(expectedActions);
