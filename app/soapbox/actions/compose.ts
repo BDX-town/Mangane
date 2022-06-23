@@ -8,7 +8,7 @@ import { search as emojiSearch } from 'soapbox/features/emoji/emoji_mart_search_
 import { tagHistory } from 'soapbox/settings';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures, parseVersion } from 'soapbox/utils/features';
-import { formatBytes } from 'soapbox/utils/media';
+import { formatBytes, getVideoDuration } from 'soapbox/utils/media';
 import resizeImage from 'soapbox/utils/resize_image';
 
 import { showAlert, showAlertForError } from './alerts';
@@ -89,6 +89,7 @@ const COMPOSE_SET_STATUS = 'COMPOSE_SET_STATUS';
 const messages = defineMessages({
   exceededImageSizeLimit: { id: 'upload_error.image_size_limit', defaultMessage: 'Image exceeds the current file size limit ({limit})' },
   exceededVideoSizeLimit: { id: 'upload_error.video_size_limit', defaultMessage: 'Video exceeds the current file size limit ({limit})' },
+  exceededVideoDurationLimit: { id: 'upload_error.video_duration_limit', defaultMessage: 'Video exceeds the current duration limit ({limit} seconds)' },
   scheduleError: { id: 'compose.invalid_schedule', defaultMessage: 'You must schedule a post at least 5 minutes out.' },
   success: { id: 'compose.submit_success', defaultMessage: 'Your post was sent' },
   uploadErrorLimit: { id: 'upload_error.limit', defaultMessage: 'File upload limit exceeded.' },
@@ -313,6 +314,7 @@ const uploadCompose = (files: FileList, intl: IntlShape) =>
     const attachmentLimit = getState().instance.configuration.getIn(['statuses', 'max_media_attachments']) as number;
     const maxImageSize = getState().instance.configuration.getIn(['media_attachments', 'image_size_limit']) as number | undefined;
     const maxVideoSize = getState().instance.configuration.getIn(['media_attachments', 'video_size_limit']) as number | undefined;
+    const maxVideoDuration = getState().instance.configuration.getIn(['media_attachments', 'video_duration_limit']) as number | undefined;
 
     const media  = getState().compose.media_attachments;
     const progress = new Array(files.length).fill(0);
@@ -325,11 +327,13 @@ const uploadCompose = (files: FileList, intl: IntlShape) =>
 
     dispatch(uploadComposeRequest());
 
-    Array.from(files).forEach((f, i) => {
+    Array.from(files).forEach(async(f, i) => {
       if (media.size + i > attachmentLimit - 1) return;
 
       const isImage = f.type.match(/image.*/);
       const isVideo = f.type.match(/video.*/);
+      const videoDurationInSeconds = (isVideo && maxVideoDuration) ? await getVideoDuration(f) : 0;
+
       if (isImage && maxImageSize && (f.size > maxImageSize)) {
         const limit = formatBytes(maxImageSize);
         const message = intl.formatMessage(messages.exceededImageSizeLimit, { limit });
@@ -339,6 +343,11 @@ const uploadCompose = (files: FileList, intl: IntlShape) =>
       } else if (isVideo && maxVideoSize && (f.size > maxVideoSize)) {
         const limit = formatBytes(maxVideoSize);
         const message = intl.formatMessage(messages.exceededVideoSizeLimit, { limit });
+        dispatch(snackbar.error(message));
+        dispatch(uploadComposeFail(true));
+        return;
+      } else if (isVideo && maxVideoDuration && (videoDurationInSeconds > maxVideoDuration)) {
+        const message = intl.formatMessage(messages.exceededVideoDurationLimit, { limit: maxVideoDuration });
         dispatch(snackbar.error(message));
         dispatch(uploadComposeFail(true));
         return;
