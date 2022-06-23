@@ -8,6 +8,7 @@ import { normalizeAccount } from '../../normalizers';
 import {
   blockAccount,
   createAccount,
+  expandFollowers,
   fetchAccount,
   fetchAccountByUsername,
   fetchFollowers,
@@ -1039,6 +1040,93 @@ describe('fetchFollowers()', () => {
           { type: 'FOLLOWERS_FETCH_FAIL', id, error: new Error('Network Error') },
         ];
         await store.dispatch(fetchFollowers(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('expandFollowers()', () => {
+  const id = '1';
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootReducer(undefined, {})
+        .set('user_lists', ImmutableMap({
+          followers: ImmutableMap({
+            [id]: ImmutableMap({
+              next: 'next_url',
+            }),
+          }),
+        }))
+        .set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('when the url is null', () => {
+      beforeEach(() => {
+        const state = rootReducer(undefined, {})
+          .set('user_lists', ImmutableMap({
+            followers: ImmutableMap({
+              [id]: ImmutableMap({
+                next: null,
+              }),
+            }),
+          }))
+          .set('me', '123');
+        store = mockStore(state);
+      });
+
+      it('should do nothing', async() => {
+        await store.dispatch(expandFollowers(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual([]);
+      });
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet('next_url').reply(200, [], {
+            link: `<https://example.com/api/v1/accounts/${id}/followers?since_id=1>; rel='prev'`,
+          });
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOWERS_EXPAND_REQUEST', id },
+          { type: 'ACCOUNTS_IMPORT', accounts: [] },
+          {
+            type: 'FOLLOWERS_EXPAND_SUCCESS',
+            id,
+            accounts: [],
+            next: null,
+          },
+        ];
+        await store.dispatch(expandFollowers(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet('next_url').networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOWERS_EXPAND_REQUEST', id },
+          { type: 'FOLLOWERS_EXPAND_FAIL', id, error: new Error('Network Error') },
+        ];
+        await store.dispatch(expandFollowers(id));
         const actions = store.getActions();
 
         expect(actions).toEqual(expectedActions);

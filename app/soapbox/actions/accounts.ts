@@ -532,25 +532,28 @@ const fetchFollowersFail = (id: string, error: AxiosError) => ({
 
 const expandFollowers = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     const url = getState().user_lists.getIn(['followers', id, 'next']);
 
     if (url === null) {
-      return;
+      return null;
     }
 
     dispatch(expandFollowersRequest(id));
 
-    api(getState).get(url).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+    return api(getState)
+      .get(url)
+      .then(response => {
+        const next = getLinks(response).refs.find(link => link.rel === 'next');
 
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(expandFollowersSuccess(id, response.data, next ? next.uri : null));
-      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
-    }).catch(error => {
-      dispatch(expandFollowersFail(id, error));
-    });
+        dispatch(importFetchedAccounts(response.data));
+        dispatch(expandFollowersSuccess(id, response.data, next ? next.uri : null));
+        dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
+      })
+      .catch(error => {
+        dispatch(expandFollowersFail(id, error));
+      });
   };
 
 const expandFollowersRequest = (id: string) => ({
