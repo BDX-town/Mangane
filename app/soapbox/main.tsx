@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom';
 import { defineMessages } from 'react-intl';
 
 import snackbar from 'soapbox/actions/snackbar';
+import { setSwUpdating } from 'soapbox/actions/sw';
 import * as BuildConfig from 'soapbox/build_config';
 import { store } from 'soapbox/store';
 import { printConsoleWarning } from 'soapbox/utils/console';
@@ -45,6 +46,7 @@ function main() {
           store.dispatch(snackbar.show('info', messages.updateText, {
             actionLabel: messages.update,
             action: () => {
+              store.dispatch(setSwUpdating(true));
               OfflinePluginRuntime.applyUpdate();
             },
             dismissAfter: false,
