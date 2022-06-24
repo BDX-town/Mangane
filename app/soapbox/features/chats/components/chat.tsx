@@ -4,10 +4,10 @@ import { FormattedMessage } from 'react-intl';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display-name';
 import Icon from 'soapbox/components/icon';
+import { Counter } from 'soapbox/components/ui';
 import emojify from 'soapbox/features/emoji/emoji';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetChat } from 'soapbox/selectors';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 import type { Account as AccountEntity, Chat as ChatEntity } from 'soapbox/types/entities';
 
@@ -59,7 +59,11 @@ const Chat: React.FC<IChat> = ({ chatId, onClick }) => {
               {image ? <FormattedMessage id='chats.attachment_image' defaultMessage='Image' /> : <FormattedMessage id='chats.attachment' defaultMessage='Attachment' />}
             </span>
           )}
-          {unreadCount > 0 && <i className='icon-with-badge__badge'>{shortNumberFormat(unreadCount)}</i>}
+          {unreadCount > 0 && (
+            <div className='absolute top-1 right-0'>
+              <Counter count={unreadCount} />
+            </div>
+          )}
         </div>
       </div>
     </div>
