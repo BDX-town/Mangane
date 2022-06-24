@@ -8,7 +8,7 @@ import { fetchFilters } from './filters';
 import { updateNotificationsQueue, expandNotifications } from './notifications';
 import { updateStatus } from './statuses';
 import {
-  deleteFromTimelines,
+  // deleteFromTimelines,
   expandHomeTimeline,
   connectTimeline,
   disconnectTimeline,
