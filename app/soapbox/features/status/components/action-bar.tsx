@@ -6,7 +6,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
 import EmojiButtonWrapper from 'soapbox/components/emoji-button-wrapper';
-import { HStack, IconButton } from 'soapbox/components/ui';
+import { HStack, IconButton, Emoji, Text } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { isUserTouching } from 'soapbox/is_mobile';
 import { getReactForStatus } from 'soapbox/utils/emoji_reacts';
@@ -583,18 +583,35 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
 
         {features.emojiReacts ? (
           <EmojiButtonWrapper statusId={status.id}>
-            <IconButton
-              className={classNames({
-                'text-gray-400 hover:text-gray-600': !meEmojiReact,
-                'text-accent-300 hover:text-accent-300': Boolean(meEmojiReact),
-              })}
-              title={meEmojiTitle}
-              src={require('@tabler/icons/icons/heart.svg')}
-              iconClassName={classNames({
-                'fill-accent-300': Boolean(meEmojiReact),
-              })}
-              text={meEmojiTitle}
-            />
+            {meEmojiReact ? (
+              <button
+                // className copied from IconButton
+                // TODO: better abstraction
+                className='flex items-center space-x-2 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 dark:ring-offset-0 focus:ring-primary-500 bg-white dark:bg-transparent'
+                title={meEmojiTitle}
+              >
+                <span className='block w-6 h-6 flex items-center justify-center'>
+                  <Emoji className='w-full h-full p-0.5' emoji={meEmojiReact} />
+                </span>
+
+                <Text tag='span' theme='muted' size='sm'>
+                  {meEmojiTitle}
+                </Text>
+              </button>
+            ) : (
+              <IconButton
+                className={classNames({
+                  'text-gray-400 hover:text-gray-600': !meEmojiReact,
+                  'text-accent-300 hover:text-accent-300': Boolean(meEmojiReact),
+                })}
+                title={meEmojiTitle}
+                src={require('@tabler/icons/icons/heart.svg')}
+                iconClassName={classNames({
+                  'fill-accent-300': Boolean(meEmojiReact),
+                })}
+                text={meEmojiTitle}
+              />
+            )}
           </EmojiButtonWrapper>
         ) : (
           <IconButton
