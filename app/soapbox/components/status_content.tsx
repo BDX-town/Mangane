@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -156,14 +156,10 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     }
   };
 
-  const refresh = (): void => {
+  useEffect(() => {
     maybeSetCollapsed();
     maybeSetOnlyEmoji();
     updateStatusLinks();
-  };
-
-  useEffect(() => {
-    refresh();
   });
 
   const handleMouseDown: React.EventHandler<React.MouseEvent> = (e) => {
@@ -201,11 +197,15 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     }
   };
 
-  const getHtmlContent = (): string => {
+  const parsedHtml = useMemo((): string => {
     const { contentHtml: html } = status;
-    if (greentext) return addGreentext(html);
-    return html;
-  };
+
+    if (greentext) {
+      return addGreentext(html);
+    } else {
+      return html;
+    }
+  }, [status.contentHtml]);
 
   if (status.content.length === 0) {
     return null;
@@ -213,7 +213,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
 
   const isHidden = onExpandedToggle ? !expanded : hidden;
 
-  const content = { __html: getHtmlContent() };
+  const content = { __html: parsedHtml };
   const spoilerContent = { __html: status.spoilerHtml };
   const directionStyle: React.CSSProperties = { direction: 'ltr' };
   const className = classNames('status__content', {
@@ -303,4 +303,4 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
   }
 };
 
-export default StatusContent;
+export default React.memo(StatusContent);
