@@ -16,7 +16,7 @@ const HomeTimeline: React.FC = () => {
   const dispatch = useAppDispatch();
   const polling = useRef<NodeJS.Timer | null>(null);
 
-  const isPartial = useAppSelector(state => state.timelines.getIn(['home', 'isPartial']) === true);
+  const isPartial = useAppSelector(state => state.timelines.get('home')?.isPartial === true);
   const siteTitle = useAppSelector(state => state.instance.title);
 
   const handleLoadMore = (maxId: string) => {

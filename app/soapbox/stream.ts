@@ -87,7 +87,6 @@ export function connectStream(
   };
 }
 
-
 export default function getStream(
   streamingAPIBaseURL: string,
   accessToken: string,

@@ -171,7 +171,6 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
                   />
                 )}
 
-
                 {browser && (
                   <Stack>
                     <Text weight='semibold'><FormattedMessage id='alert.unexpected.browser' defaultMessage='Browser' /></Text>

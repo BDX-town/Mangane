@@ -58,7 +58,7 @@ const expandBlocks = () => (dispatch: React.Dispatch<AnyAction>, getState: () =>
   if (!isLoggedIn(getState)) return null;
   const nextLinkName = getNextLinkName(getState);
 
-  const url = getState().user_lists.getIn(['blocks', 'next']);
+  const url = getState().user_lists.blocks.next;
 
   if (url === null) {
     return null;

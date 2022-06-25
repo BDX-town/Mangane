@@ -26,7 +26,7 @@ const ListTimeline: React.FC = () => {
   // const history = useHistory();
 
   const list = useAppSelector((state) => state.lists.get(id));
-  // const hasUnread = useAppSelector((state) => state.timelines.getIn([`list:${props.params.id}`, 'unread']) > 0);
+  // const hasUnread = useAppSelector((state) => state.timelines.get(`list:${props.params.id}`)?.unread > 0);
 
   useEffect(() => {
     dispatch(fetchList(id));

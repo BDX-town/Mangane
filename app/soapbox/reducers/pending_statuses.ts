@@ -1,11 +1,11 @@
 import { List as ImmutableList, Map as ImmutableMap, Record as ImmutableRecord, fromJS } from 'immutable';
-import { AnyAction } from 'redux';
 
 import {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_SUCCESS,
 } from 'soapbox/actions/statuses';
 
+import type { AnyAction } from 'redux';
 import type { StatusVisibility } from 'soapbox/normalizers/status';
 
 const PendingStatusRecord = ImmutableRecord({

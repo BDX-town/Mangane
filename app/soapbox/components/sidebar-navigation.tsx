@@ -1,4 +1,3 @@
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -19,7 +18,7 @@ const SidebarNavigation = () => {
   const account = useOwnAccount();
   const notificationCount = useAppSelector((state) => state.notifications.get('unread'));
   const chatsCount = useAppSelector((state) => state.chats.items.reduce((acc, curr) => acc + Math.min(curr.unread || 0, 1), 0));
-  const followRequestsCount = useAppSelector((state) => state.user_lists.getIn(['follow_requests', 'items'], ImmutableOrderedSet()).count());
+  const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
 
   const features = getFeatures(instance);

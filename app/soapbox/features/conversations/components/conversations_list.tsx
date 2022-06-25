@@ -14,10 +14,10 @@ const ConversationsList: React.FC = () => {
   const dispatch = useAppDispatch();
   const ref = useRef<VirtuosoHandle>(null);
 
-  const conversations = useAppSelector((state) => state.conversations.get('items'));
-  const isLoading = useAppSelector((state) => state.conversations.get('isLoading', true));
+  const conversations = useAppSelector((state) => state.conversations.items);
+  const isLoading = useAppSelector((state) => state.conversations.isLoading);
 
-  const getCurrentIndex = (id: string) => conversations.findIndex((x: any) => x.get('id') === id);
+  const getCurrentIndex = (id: string) => conversations.findIndex(x => x.id === id);
 
   const handleMoveUp = (id: string) => {
     const elementIndex = getCurrentIndex(id) - 1;
@@ -60,8 +60,8 @@ const ConversationsList: React.FC = () => {
     >
       {conversations.map((item: any) => (
         <Conversation
-          key={item.get('id')}
-          conversationId={item.get('id')}
+          key={item.id}
+          conversationId={item.id}
           onMoveUp={handleMoveUp}
           onMoveDown={handleMoveDown}
         />

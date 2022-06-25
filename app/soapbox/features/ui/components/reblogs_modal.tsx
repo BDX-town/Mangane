@@ -15,7 +15,7 @@ interface IReblogsModal {
 
 const ReblogsModal: React.FC<IReblogsModal> = ({ onClose, statusId }) => {
   const dispatch = useAppDispatch();
-  const accountIds = useAppSelector((state) => state.user_lists.getIn(['reblogged_by', statusId]));
+  const accountIds = useAppSelector((state) => state.user_lists.reblogged_by.get(statusId)?.items);
 
   const fetchData = () => {
     dispatch(fetchReblogs(statusId));
@@ -43,13 +43,12 @@ const ReblogsModal: React.FC<IReblogsModal> = ({ onClose, statusId }) => {
         emptyMessage={emptyMessage}
         itemClassName='pb-3'
       >
-        {accountIds.map((id: string) =>
+        {accountIds.map((id) =>
           <AccountContainer key={id} id={id} />,
         )}
       </ScrollableList>
     );
   }
-
 
   return (
     <Modal

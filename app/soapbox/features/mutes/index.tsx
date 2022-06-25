@@ -21,8 +21,8 @@ const Mutes: React.FC = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const accountIds = useAppSelector((state) => state.user_lists.getIn(['mutes', 'items']));
-  const hasMore = useAppSelector((state) => !!state.user_lists.getIn(['mutes', 'next']));
+  const accountIds = useAppSelector((state) => state.user_lists.mutes.items);
+  const hasMore = useAppSelector((state) => !!state.user_lists.mutes.next);
 
   React.useEffect(() => {
     dispatch(fetchMutes());
@@ -47,7 +47,7 @@ const Mutes: React.FC = () => {
         emptyMessage={emptyMessage}
         itemClassName='pb-4'
       >
-        {accountIds.map((id: string) =>
+        {accountIds.map((id) =>
           <AccountContainer key={id} id={id} actionType='muting' />,
         )}
       </ScrollableList>

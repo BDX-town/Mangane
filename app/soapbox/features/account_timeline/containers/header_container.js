@@ -226,7 +226,6 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
       .catch(() => {});
   },
 
-
   onPromoteToAdmin(account) {
     const message = intl.formatMessage(messages.promotedToAdmin, { acct: account.get('acct') });
 

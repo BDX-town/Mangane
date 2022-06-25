@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 
 import {
   CONVERSATIONS_MOUNT,
@@ -11,21 +11,35 @@ import {
 } from '../actions/conversations';
 import compareId from '../compare_id';
 
-const initialState = ImmutableMap({
-  items: ImmutableList(),
-  isLoading: false,
-  hasMore: true,
-  mounted: false,
+import type { AnyAction } from 'redux';
+import type { APIEntity } from 'soapbox/types/entities';
+
+const ConversationRecord = ImmutableRecord({
+  id: '',
+  unread: false,
+  accounts: ImmutableList<string>(),
+  last_status: null as string | null,
+
 });
 
-const conversationToMap = item => ImmutableMap({
+const ReducerRecord = ImmutableRecord({
+  items: ImmutableList<Conversation>(),
+  isLoading: false,
+  hasMore: true,
+  mounted: 0,
+});
+
+type State = ReturnType<typeof ReducerRecord>;
+type Conversation = ReturnType<typeof ConversationRecord>;
+
+const conversationToMap = (item: APIEntity) => ConversationRecord({
   id: item.id,
   unread: item.unread,
-  accounts: ImmutableList(item.accounts.map(a => a.id)),
+  accounts: ImmutableList(item.accounts.map((a: APIEntity) => a.id)),
   last_status: item.last_status ? item.last_status.id : null,
 });
 
-const updateConversation = (state, item) => state.update('items', list => {
+const updateConversation = (state: State, item: APIEntity) => state.update('items', list => {
   const index   = list.findIndex(x => x.get('id') === item.id);
   const newItem = conversationToMap(item);
 
@@ -36,7 +50,7 @@ const updateConversation = (state, item) => state.update('items', list => {
   }
 });
 
-const expandNormalizedConversations = (state, conversations, next, isLoadingRecent) => {
+const expandNormalizedConversations = (state: State, conversations: APIEntity[], next: string | null, isLoadingRecent?: boolean) => {
   let items = ImmutableList(conversations.map(conversationToMap));
 
   return state.withMutations(mutable => {
@@ -52,7 +66,7 @@ const expandNormalizedConversations = (state, conversations, next, isLoadingRece
           const newItem = items.get(newItemIndex);
           items = items.delete(newItemIndex);
 
-          return newItem;
+          return newItem!;
         });
 
         list = list.concat(items);
@@ -75,7 +89,7 @@ const expandNormalizedConversations = (state, conversations, next, isLoadingRece
   });
 };
 
-export default function conversations(state = initialState, action) {
+export default function conversations(state = ReducerRecord(), action: AnyAction) {
   switch (action.type) {
     case CONVERSATIONS_FETCH_REQUEST:
       return state.set('isLoading', true);

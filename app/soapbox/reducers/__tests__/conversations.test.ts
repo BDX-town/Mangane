@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 
 import * as actions from 'soapbox/actions/conversations';
 
@@ -6,30 +6,30 @@ import reducer from '../conversations';
 
 describe('conversations reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap({
+    expect(reducer(undefined, {} as any)).toMatchObject({
       items: ImmutableList(),
       isLoading: false,
       hasMore: true,
-      mounted: false,
-    }));
+      mounted: 0,
+    });
   });
 
   it('should handle CONVERSATIONS_FETCH_REQUEST', () => {
-    const state = ImmutableMap({ isLoading: false });
+    const state = ImmutableRecord({ isLoading: false })();
     const action = {
       type: actions.CONVERSATIONS_FETCH_REQUEST,
     };
-    expect(reducer(state, action).toJS()).toMatchObject({
+    expect(reducer(state as any, action).toJS()).toMatchObject({
       isLoading: true,
     });
   });
 
   it('should handle CONVERSATIONS_FETCH_FAIL', () => {
-    const state = ImmutableMap({ isLoading: true });
+    const state = ImmutableRecord({ isLoading: true })();
     const action = {
       type: actions.CONVERSATIONS_FETCH_FAIL,
     };
-    expect(reducer(state, action).toJS()).toMatchObject({
+    expect(reducer(state as any, action).toJS()).toMatchObject({
       isLoading: false,
     });
   });

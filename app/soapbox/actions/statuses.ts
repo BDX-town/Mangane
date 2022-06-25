@@ -242,7 +242,6 @@ const fetchStatusWithContext = (id: string) =>
     }
   };
 
-
 const muteStatus = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;

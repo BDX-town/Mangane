@@ -82,7 +82,7 @@ const updateTimelineQueue = (timeline: string, statusId: string, accept: ((statu
 const dequeueTimeline = (timelineId: string, expandFunc?: (lastStatusId: string) => void, optionalExpandArgs?: any) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const queuedCount = state.timelines.getIn([timelineId, 'totalQueuedItemsCount'], 0);
+    const queuedCount = state.timelines.get(timelineId)?.totalQueuedItemsCount || 0;
 
     if (queuedCount <= 0) return;
 
@@ -136,16 +136,16 @@ const parseTags = (tags: Record<string, any[]> = {}, mode: 'any' | 'all' | 'none
 
 const expandTimeline = (timelineId: string, path: string, params: Record<string, any> = {}, done = noOp) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const timeline = getState().timelines.get(timelineId) || ImmutableMap();
+    const timeline = getState().timelines.get(timelineId) || {} as Record<string, any>;
     const isLoadingMore = !!params.max_id;
 
-    if (timeline.get('isLoading')) {
+    if (timeline.isLoading) {
       done();
       return dispatch(noOpAsync());
     }
 
-    if (!params.max_id && !params.pinned && timeline.get('items', ImmutableOrderedSet()).size > 0) {
-      params.since_id = timeline.getIn(['items', 0]);
+    if (!params.max_id && !params.pinned && (timeline.items || ImmutableOrderedSet()).size > 0) {
+      params.since_id = timeline.items || 0;
     }
 
     const isLoadingRecent = !!params.since_id;

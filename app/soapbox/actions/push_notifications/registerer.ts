@@ -38,7 +38,7 @@ const unsubscribe = ({ registration, subscription }: {
 
 const sendSubscriptionToBackend = (subscription: PushSubscription, me: Me) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const alerts = getState().push_notifications.get('alerts').toJS();
+    const alerts = getState().push_notifications.alerts.toJS();
     const params = { subscription, data: { alerts } };
 
     if (me) {
@@ -82,7 +82,7 @@ const register = () =>
           // We have a subscription, check if it is still valid
           const currentServerKey = (new Uint8Array(subscription.options.applicationServerKey!)).toString();
           const subscriptionServerKey = urlBase64ToUint8Array(vapidKey).toString();
-          const serverEndpoint = getState().push_notifications.getIn(['subscription', 'endpoint']);
+          const serverEndpoint = getState().push_notifications.subscription?.endpoint;
 
           // If the VAPID public key did not change and the endpoint corresponds
           // to the endpoint saved in the backend, the subscription is valid
@@ -136,7 +136,7 @@ const register = () =>
 const saveSettings = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState().push_notifications;
-    const alerts = state.get('alerts');
+    const alerts = state.alerts;
     const data = { alerts };
     const me = getState().me;
 

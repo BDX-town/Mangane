@@ -410,7 +410,6 @@ const unmuteAccountFail = (error: AxiosError) => ({
   error,
 });
 
-
 const subscribeAccount = (id: string, notifications?: boolean) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return null;
@@ -464,7 +463,6 @@ const unsubscribeAccountFail = (error: AxiosError) => ({
   type: ACCOUNT_UNSUBSCRIBE_FAIL,
   error,
 });
-
 
 const removeFromFollowers = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
@@ -532,7 +530,7 @@ const expandFollowers = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
-    const url = getState().user_lists.getIn(['followers', id, 'next']);
+    const url = getState().user_lists.followers.get(id)?.next as string;
 
     if (url === null) {
       return;
@@ -606,7 +604,7 @@ const expandFollowing = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
-    const url = getState().user_lists.getIn(['following', id, 'next']);
+    const url = getState().user_lists.following.get(id)!.next;
 
     if (url === null) {
       return;
@@ -713,7 +711,7 @@ const expandFollowRequests = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
-    const url = getState().user_lists.getIn(['follow_requests', 'next']);
+    const url = getState().user_lists.follow_requests.next;
 
     if (url === null) {
       return;
@@ -770,7 +768,6 @@ const authorizeFollowRequestFail = (id: string, error: AxiosError) => ({
   id,
   error,
 });
-
 
 const rejectFollowRequest = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {

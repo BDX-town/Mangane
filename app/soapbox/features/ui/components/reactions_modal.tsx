@@ -7,6 +7,7 @@ import ScrollableList from 'soapbox/components/scrollable_list';
 import { Emoji, Modal, Spinner, Tabs } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { ReactionRecord } from 'soapbox/reducers/user_lists';
 
 import type { Item } from 'soapbox/components/ui/tabs/tabs';
 
@@ -25,14 +26,10 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
   const dispatch = useAppDispatch();
   const intl = useIntl();
   const [reaction, setReaction] = useState(initialReaction);
-  const reactions = useAppSelector<ImmutableList<{
-    accounts: Array<string>,
-    count: number,
-    name: string,
-  }>>((state) => {
-    const favourites = state.user_lists.getIn(['favourited_by', statusId]);
-    const reactions = state.user_lists.getIn(['reactions', statusId]);
-    return favourites && reactions && ImmutableList(favourites.size ? [{ accounts: favourites, count: favourites.size, name: '👍' }] : []).concat(reactions || []);
+  const reactions = useAppSelector<ImmutableList<ReturnType<typeof ReactionRecord>> | undefined>((state) => {
+    const favourites = state.user_lists.favourited_by.get(statusId)?.items;
+    const reactions = state.user_lists.reactions.get(statusId)?.items;
+    return favourites && reactions && ImmutableList(favourites?.size ? [ReactionRecord({ accounts: favourites, count: favourites.size, name: '👍' })] : []).concat(reactions || []);
   });
 
   const fetchData = () => {
@@ -53,7 +50,7 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
       },
     ];
 
-    reactions.forEach(reaction => items.push(
+    reactions!.forEach(reaction => items.push(
       {
         text: <div className='flex items-center gap-1'>
           <Emoji className='w-4 h-4' emoji={reaction.name} />
@@ -73,7 +70,7 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
 
   const accounts = reactions && (reaction
     ? reactions.find(({ name }) => name === reaction)?.accounts.map(account => ({ id: account, reaction: reaction }))
-    : reactions.map(({ accounts, name }) => accounts.map(account => ({ id: account, reaction: name }))).flatten()) as Array<{ id: string, reaction: string }>;
+    : reactions.map(({ accounts, name }) => accounts.map(account => ({ id: account, reaction: name }))).flatten()) as ImmutableList<{ id: string, reaction: string }>;
 
   let body;
 
@@ -96,7 +93,6 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
       </ScrollableList>
     </>);
   }
-
 
   return (
     <Modal

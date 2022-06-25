@@ -15,7 +15,7 @@ interface IBirthdayPanel {
 const BirthdayPanel = ({ limit }: IBirthdayPanel) => {
   const dispatch = useDispatch();
 
-  const birthdays: ImmutableOrderedSet<string> = useAppSelector(state => state.user_lists.getIn(['birthday_reminders', state.me], ImmutableOrderedSet()));
+  const birthdays: ImmutableOrderedSet<string> = useAppSelector(state => state.user_lists.birthday_reminders.get(state.me as string)?.items || ImmutableOrderedSet());
   const birthdaysToRender = birthdays.slice(0, limit);
 
   React.useEffect(() => {

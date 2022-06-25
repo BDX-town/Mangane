@@ -269,7 +269,6 @@ export const fetchOwnAccounts = () =>
     });
   };
 
-
 export const register = (params: Record<string, any>) =>
   (dispatch: AppDispatch) => {
     params.fullname = params.username;

@@ -15,7 +15,7 @@ interface IFavouritesModal {
 const FavouritesModal: React.FC<IFavouritesModal> = ({ onClose, statusId }) => {
   const dispatch = useAppDispatch();
 
-  const accountIds = useAppSelector((state) => state.user_lists.getIn(['favourited_by', statusId]));
+  const accountIds = useAppSelector((state) => state.user_lists.favourited_by.get(statusId)?.items);
 
   const fetchData = () => {
     dispatch(fetchFavourites(statusId));
@@ -42,7 +42,7 @@ const FavouritesModal: React.FC<IFavouritesModal> = ({ onClose, statusId }) => {
         emptyMessage={emptyMessage}
         itemClassName='pb-3'
       >
-        {accountIds.map((id: string) =>
+        {accountIds.map((id) =>
           <AccountContainer key={id} id={id} />,
         )}
       </ScrollableList>

@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import { List as ImmutableList } from 'immutable';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -28,8 +27,8 @@ const Directory = () => {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
 
-  const accountIds = useAppSelector((state) => state.user_lists.getIn(['directory', 'items'], ImmutableList()));
-  const isLoading = useAppSelector((state) => state.user_lists.getIn(['directory', 'isLoading'], true));
+  const accountIds = useAppSelector((state) => state.user_lists.directory.items);
+  const isLoading = useAppSelector((state) => state.user_lists.directory.isLoading);
   const title = useAppSelector((state) => state.instance.get('title'));
   const features = useAppSelector((state) => getFeatures(state.instance));
 
@@ -69,7 +68,7 @@ const Directory = () => {
       </div>
 
       <div className={classNames('directory__list', { loading: isLoading })}>
-        {accountIds.map((accountId: string) => <AccountCard id={accountId} key={accountId} />)}
+        {accountIds.map((accountId) => <AccountCard id={accountId} key={accountId} />)}
       </div>
 
       <LoadMore onClick={handleLoadMore} visible={!isLoading} />

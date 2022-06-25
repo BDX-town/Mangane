@@ -162,7 +162,6 @@ const deleteStatusModal = (intl: IntlShape, statusId: string, afterConfirm = () 
     }));
   };
 
-
 export {
   deactivateUserModal,
   deleteUserModal,

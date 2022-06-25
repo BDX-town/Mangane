@@ -57,7 +57,7 @@ const expandMutes = () =>
     if (!isLoggedIn(getState)) return;
     const nextLinkName = getNextLinkName(getState);
 
-    const url = getState().user_lists.getIn(['mutes', 'next']);
+    const url = getState().user_lists.mutes.next;
 
     if (url === null) {
       return;
