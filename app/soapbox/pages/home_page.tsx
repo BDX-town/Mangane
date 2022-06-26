@@ -30,7 +30,7 @@ const HomePage: React.FC = ({ children }) => {
 
   const hasPatron = soapboxConfig.extensions.getIn(['patron', 'enabled']) === true;
   const hasCrypto = typeof soapboxConfig.cryptoAddresses.getIn([0, 'ticker']) === 'string';
-  const cryptoLimit = soapboxConfig.cryptoDonatePanel.get('limit');
+  const cryptoLimit = soapboxConfig.cryptoDonatePanel.get('limit', 0);
 
   const acct = account ? account.acct : '';
 
@@ -81,7 +81,7 @@ const HomePage: React.FC = ({ children }) => {
             {Component => <Component />}
           </BundleContainer>
         )}
-        {hasCrypto && cryptoLimit && cryptoLimit > 0 && (
+        {hasCrypto && cryptoLimit > 0 && (
           <BundleContainer fetchComponent={CryptoDonatePanel}>
             {Component => <Component limit={cryptoLimit} />}
           </BundleContainer>
