@@ -650,7 +650,7 @@ const UI: React.FC = ({ children }) => {
       className='floating-action-button'
       aria-label={intl.formatMessage(messages.publish)}
     >
-      <Icon src={require('icons/pen-plus.svg')} />
+      <Icon src={require('@tabler/icons/icons/pencil-plus.svg')} />
     </button>
   );
 
