@@ -1074,13 +1074,13 @@ describe('expandFollowers()', () => {
   describe('when logged in', () => {
     beforeEach(() => {
       const state = rootReducer(undefined, {})
-        .set('user_lists', ImmutableMap({
+        .set('user_lists', {
           followers: ImmutableMap({
-            [id]: ImmutableMap({
+            [id]: {
               next: 'next_url',
-            }),
+            },
           }),
-        }))
+        })
         .set('me', '123');
       store = mockStore(state);
     });
@@ -1088,13 +1088,13 @@ describe('expandFollowers()', () => {
     describe('when the url is null', () => {
       beforeEach(() => {
         const state = rootReducer(undefined, {})
-          .set('user_lists', ImmutableMap({
+          .set('user_lists', {
             followers: ImmutableMap({
-              [id]: ImmutableMap({
+              [id]: {
                 next: null,
-              }),
+              },
             }),
-          }))
+          })
           .set('me', '123');
         store = mockStore(state);
       });
@@ -1232,13 +1232,13 @@ describe('expandFollowing()', () => {
   describe('when logged in', () => {
     beforeEach(() => {
       const state = rootReducer(undefined, {})
-        .set('user_lists', ImmutableMap({
+        .set('user_lists', {
           following: ImmutableMap({
-            [id]: ImmutableMap({
+            [id]: {
               next: 'next_url',
-            }),
+            },
           }),
-        }))
+        })
         .set('me', '123');
       store = mockStore(state);
     });
@@ -1246,13 +1246,13 @@ describe('expandFollowing()', () => {
     describe('when the url is null', () => {
       beforeEach(() => {
         const state = rootReducer(undefined, {})
-          .set('user_lists', ImmutableMap({
+          .set('user_lists', {
             following: ImmutableMap({
-              [id]: ImmutableMap({
+              [id]: {
                 next: null,
-              }),
+              },
             }),
-          }))
+          })
           .set('me', '123');
         store = mockStore(state);
       });
@@ -1498,11 +1498,11 @@ describe('expandFollowRequests()', () => {
   describe('when logged in', () => {
     beforeEach(() => {
       const state = rootReducer(undefined, {})
-        .set('user_lists', ImmutableMap({
-          follow_requests: ImmutableMap({
+        .set('user_lists', {
+          follow_requests: {
             next: 'next_url',
-          }),
-        }))
+          },
+        })
         .set('me', '123');
       store = mockStore(state);
     });
@@ -1510,11 +1510,11 @@ describe('expandFollowRequests()', () => {
     describe('when the url is null', () => {
       beforeEach(() => {
         const state = rootReducer(undefined, {})
-          .set('user_lists', ImmutableMap({
-            follow_requests: ImmutableMap({
+          .set('user_lists', {
+            follow_requests: {
               next: null,
-            }),
-          }))
+            },
+          })
           .set('me', '123');
         store = mockStore(state);
       });
