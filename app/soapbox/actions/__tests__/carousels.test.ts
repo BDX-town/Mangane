@@ -15,7 +15,7 @@ describe('fetchCarouselAvatars()', () => {
 
     beforeEach(() => {
       avatars = [
-        { account_id: '1', username: 'jl', account_avatar: 'https://example.com/some.jpg' },
+        { account_id: '1', acct: 'jl', account_avatar: 'https://example.com/some.jpg' },
       ];
 
       __stub((mock) => {
