@@ -98,12 +98,12 @@ const SearchResults = () => {
 
     if (results.statuses && results.statuses.size > 0) {
       searchResults = results.statuses.map((statusId: string) => (
-      // @ts-ignore
+        // @ts-ignore
         <StatusContainer key={statusId} id={statusId} />
       ));
     } else if (!submitted && trendingStatuses && !trendingStatuses.isEmpty()) {
       searchResults = trendingStatuses.map((statusId: string) => (
-      // @ts-ignore
+        // @ts-ignore
         <StatusContainer key={statusId} id={statusId} />
       ));
     } else if (loaded) {
@@ -158,7 +158,10 @@ const SearchResults = () => {
           className={classNames({
             'divide-gray-200 dark:divide-slate-700 divide-solid divide-y': selectedFilter === 'statuses',
           })}
-          itemClassName={classNames({ 'pb-4': selectedFilter === 'accounts' })}
+          itemClassName={classNames({
+            'pb-4': selectedFilter === 'accounts',
+            'pb-3': selectedFilter === 'hashtags',
+          })}
         >
           {searchResults || []}
         </ScrollableList>
