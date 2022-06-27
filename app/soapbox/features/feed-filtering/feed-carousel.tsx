@@ -12,7 +12,7 @@ import PlaceholderAvatar from '../placeholder/components/placeholder_avatar';
 const CarouselItem = ({ avatar }: { avatar: any }) => {
   const dispatch = useAppDispatch();
 
-  const selectedAccountId = useAppSelector(state => state.timelines.getIn(['home', 'feedAccountId']));
+  const selectedAccountId = useAppSelector(state => state.timelines.get('home')?.feedAccountId);
   const isSelected = avatar.account_id === selectedAccountId;
 
   const handleClick = () =>
@@ -37,11 +37,11 @@ const CarouselItem = ({ avatar }: { avatar: any }) => {
               'ring-transparent': !isSelected,
               'ring-primary-600': isSelected,
             })}
-            alt={avatar.username}
+            alt={avatar.acct}
           />
         </div>
 
-        <Text theme='muted' size='sm' truncate align='center' className='leading-3'>{avatar.username}</Text>
+        <Text theme='muted' size='sm' truncate align='center' className='leading-3'>{avatar.acct}</Text>
       </Stack>
     </div>
   );

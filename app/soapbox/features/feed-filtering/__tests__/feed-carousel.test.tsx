@@ -86,10 +86,10 @@ describe('<FeedCarousel />', () => {
         __stub(mock => {
           mock.onGet('/api/v1/truth/carousels/avatars')
             .reply(200, [
-              { account_id: '1', username: 'a', account_avatar: 'https://example.com/some.jpg' },
-              { account_id: '2', username: 'b', account_avatar: 'https://example.com/some.jpg' },
-              { account_id: '3', username: 'c', account_avatar: 'https://example.com/some.jpg' },
-              { account_id: '4', username: 'd', account_avatar: 'https://example.com/some.jpg' },
+              { account_id: '1', acct: 'a', account_avatar: 'https://example.com/some.jpg' },
+              { account_id: '2', acct: 'b', account_avatar: 'https://example.com/some.jpg' },
+              { account_id: '3', acct: 'c', account_avatar: 'https://example.com/some.jpg' },
+              { account_id: '4', acct: 'd', account_avatar: 'https://example.com/some.jpg' },
             ]);
         });
 

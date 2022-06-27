@@ -19,7 +19,7 @@ const HomeTimeline: React.FC = () => {
   const polling = useRef<NodeJS.Timer | null>(null);
 
   const isPartial = useAppSelector(state => state.timelines.get('home')?.isPartial === true);
-  const currentAccountId = useAppSelector(state => state.timelines.getIn(['home', 'feedAccountId']));
+  const currentAccountId = useAppSelector(state => state.timelines.get('home')?.feedAccountId);
   const siteTitle = useAppSelector(state => state.instance.title);
 
   const handleLoadMore = (maxId: string) => {
