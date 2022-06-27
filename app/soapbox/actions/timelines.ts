@@ -145,7 +145,7 @@ const expandTimeline = (timelineId: string, path: string, params: Record<string,
     }
 
     if (!params.max_id && !params.pinned && (timeline.items || ImmutableOrderedSet()).size > 0) {
-      params.since_id = timeline.items || 0;
+      params.since_id = timeline.getIn(['items', 0]);
     }
 
     const isLoadingRecent = !!params.since_id;
