@@ -466,15 +466,14 @@ const unsubscribeAccountFail = (error: AxiosError) => ({
 
 const removeFromFollowers = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
-    dispatch(muteAccountRequest(id));
+    dispatch(removeFromFollowersRequest(id));
 
-    api(getState).post(`/api/v1/accounts/${id}/remove_from_followers`).then(response => {
-      dispatch(removeFromFollowersSuccess(response.data));
-    }).catch(error => {
-      dispatch(removeFromFollowersFail(id, error));
-    });
+    return api(getState)
+      .post(`/api/v1/accounts/${id}/remove_from_followers`)
+      .then(response => dispatch(removeFromFollowersSuccess(response.data)))
+      .catch(error => dispatch(removeFromFollowersFail(id, error)));
   };
 
 const removeFromFollowersRequest = (id: string) => ({
@@ -497,15 +496,18 @@ const fetchFollowers = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(fetchFollowersRequest(id));
 
-    api(getState).get(`/api/v1/accounts/${id}/followers`).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+    return api(getState)
+      .get(`/api/v1/accounts/${id}/followers`)
+      .then(response => {
+        const next = getLinks(response).refs.find(link => link.rel === 'next');
 
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(fetchFollowersSuccess(id, response.data, next ? next.uri : null));
-      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
-    }).catch(error => {
-      dispatch(fetchFollowersFail(id, error));
-    });
+        dispatch(importFetchedAccounts(response.data));
+        dispatch(fetchFollowersSuccess(id, response.data, next ? next.uri : null));
+        dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
+      })
+      .catch(error => {
+        dispatch(fetchFollowersFail(id, error));
+      });
   };
 
 const fetchFollowersRequest = (id: string) => ({
@@ -528,25 +530,28 @@ const fetchFollowersFail = (id: string, error: AxiosError) => ({
 
 const expandFollowers = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     const url = getState().user_lists.followers.get(id)?.next as string;
 
     if (url === null) {
-      return;
+      return null;
     }
 
     dispatch(expandFollowersRequest(id));
 
-    api(getState).get(url).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+    return api(getState)
+      .get(url)
+      .then(response => {
+        const next = getLinks(response).refs.find(link => link.rel === 'next');
 
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(expandFollowersSuccess(id, response.data, next ? next.uri : null));
-      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
-    }).catch(error => {
-      dispatch(expandFollowersFail(id, error));
-    });
+        dispatch(importFetchedAccounts(response.data));
+        dispatch(expandFollowersSuccess(id, response.data, next ? next.uri : null));
+        dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
+      })
+      .catch(error => {
+        dispatch(expandFollowersFail(id, error));
+      });
   };
 
 const expandFollowersRequest = (id: string) => ({
@@ -571,15 +576,18 @@ const fetchFollowing = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(fetchFollowingRequest(id));
 
-    api(getState).get(`/api/v1/accounts/${id}/following`).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+    return api(getState)
+      .get(`/api/v1/accounts/${id}/following`)
+      .then(response => {
+        const next = getLinks(response).refs.find(link => link.rel === 'next');
 
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(fetchFollowingSuccess(id, response.data, next ? next.uri : null));
-      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
-    }).catch(error => {
-      dispatch(fetchFollowingFail(id, error));
-    });
+        dispatch(importFetchedAccounts(response.data));
+        dispatch(fetchFollowingSuccess(id, response.data, next ? next.uri : null));
+        dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
+      })
+      .catch(error => {
+        dispatch(fetchFollowingFail(id, error));
+      });
   };
 
 const fetchFollowingRequest = (id: string) => ({
@@ -602,25 +610,28 @@ const fetchFollowingFail = (id: string, error: AxiosError) => ({
 
 const expandFollowing = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     const url = getState().user_lists.following.get(id)!.next;
 
     if (url === null) {
-      return;
+      return null;
     }
 
     dispatch(expandFollowingRequest(id));
 
-    api(getState).get(url).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+    return api(getState)
+      .get(url)
+      .then(response => {
+        const next = getLinks(response).refs.find(link => link.rel === 'next');
 
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(expandFollowingSuccess(id, response.data, next ? next.uri : null));
-      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
-    }).catch(error => {
-      dispatch(expandFollowingFail(id, error));
-    });
+        dispatch(importFetchedAccounts(response.data));
+        dispatch(expandFollowingSuccess(id, response.data, next ? next.uri : null));
+        dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
+      })
+      .catch(error => {
+        dispatch(expandFollowingFail(id, error));
+      });
   };
 
 const expandFollowingRequest = (id: string) => ({
@@ -643,22 +654,21 @@ const expandFollowingFail = (id: string, error: AxiosError) => ({
 
 const fetchRelationships = (accountIds: string[]) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     const loadedRelationships = getState().relationships;
     const newAccountIds = accountIds.filter(id => loadedRelationships.get(id, null) === null);
 
     if (newAccountIds.length === 0) {
-      return;
+      return null;
     }
 
     dispatch(fetchRelationshipsRequest(newAccountIds));
 
-    api(getState).get(`/api/v1/accounts/relationships?${newAccountIds.map(id => `id[]=${id}`).join('&')}`).then(response => {
-      dispatch(fetchRelationshipsSuccess(response.data));
-    }).catch(error => {
-      dispatch(fetchRelationshipsFail(error));
-    });
+    return api(getState)
+      .get(`/api/v1/accounts/relationships?${newAccountIds.map(id => `id[]=${id}`).join('&')}`)
+      .then(response => dispatch(fetchRelationshipsSuccess(response.data)))
+      .catch(error => dispatch(fetchRelationshipsFail(error)));
   };
 
 const fetchRelationshipsRequest = (ids: string[]) => ({
@@ -681,15 +691,18 @@ const fetchRelationshipsFail = (error: AxiosError) => ({
 
 const fetchFollowRequests = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     dispatch(fetchFollowRequestsRequest());
 
-    api(getState).get('/api/v1/follow_requests').then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(fetchFollowRequestsSuccess(response.data, next ? next.uri : null));
-    }).catch(error => dispatch(fetchFollowRequestsFail(error)));
+    return api(getState)
+      .get('/api/v1/follow_requests')
+      .then(response => {
+        const next = getLinks(response).refs.find(link => link.rel === 'next');
+        dispatch(importFetchedAccounts(response.data));
+        dispatch(fetchFollowRequestsSuccess(response.data, next ? next.uri : null));
+      })
+      .catch(error => dispatch(fetchFollowRequestsFail(error)));
   };
 
 const fetchFollowRequestsRequest = () => ({
@@ -709,21 +722,24 @@ const fetchFollowRequestsFail = (error: AxiosError) => ({
 
 const expandFollowRequests = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     const url = getState().user_lists.follow_requests.next;
 
     if (url === null) {
-      return;
+      return null;
     }
 
     dispatch(expandFollowRequestsRequest());
 
-    api(getState).get(url).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(expandFollowRequestsSuccess(response.data, next ? next.uri : null));
-    }).catch(error => dispatch(expandFollowRequestsFail(error)));
+    return api(getState)
+      .get(url)
+      .then(response => {
+        const next = getLinks(response).refs.find(link => link.rel === 'next');
+        dispatch(importFetchedAccounts(response.data));
+        dispatch(expandFollowRequestsSuccess(response.data, next ? next.uri : null));
+      })
+      .catch(error => dispatch(expandFollowRequestsFail(error)));
   };
 
 const expandFollowRequestsRequest = () => ({
@@ -743,11 +759,11 @@ const expandFollowRequestsFail = (error: AxiosError) => ({
 
 const authorizeFollowRequest = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     dispatch(authorizeFollowRequestRequest(id));
 
-    api(getState)
+    return api(getState)
       .post(`/api/v1/follow_requests/${id}/authorize`)
       .then(() => dispatch(authorizeFollowRequestSuccess(id)))
       .catch(error => dispatch(authorizeFollowRequestFail(id, error)));
