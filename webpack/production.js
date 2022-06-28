@@ -29,6 +29,7 @@ module.exports = merge(sharedConfig, {
       logLevel: 'silent',
     }),
     new OfflinePlugin({
+      autoUpdate: true,
       caches: {
         main: [':rest:'],
         additional: [
