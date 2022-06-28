@@ -115,7 +115,6 @@ export const SoapboxConfigRecord = ImmutableRecord({
   singleUserMode: false,
   singleUserModeProfile: '',
   linkFooterMessage: '',
-  guestExperience: true,
   links: ImmutableMap<string, string>(),
 }, 'SoapboxConfig');
 
