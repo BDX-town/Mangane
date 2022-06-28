@@ -114,7 +114,7 @@ module.exports = merge(sharedConfig, {
           ];
 
           if (pathname) {
-            return backendRoutes.some(p => pathname.startsWith(p));
+            return backendRoutes.some(path => pathname.startsWith(path));
           } else {
             return false;
           }
