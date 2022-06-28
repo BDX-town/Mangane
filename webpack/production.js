@@ -97,6 +97,7 @@ module.exports = merge(sharedConfig, {
             '/.well-known',
             '/admin',
             '/api',
+            '/auth',
             '/instance',
             '/main/ostatus',
             '/manifest.json',
