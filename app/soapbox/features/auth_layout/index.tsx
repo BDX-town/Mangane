@@ -4,7 +4,7 @@ import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-ro
 
 import LandingGradient from 'soapbox/components/landing-gradient';
 import SiteLogo from 'soapbox/components/site-logo';
-import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector, useFeatures, useSoapboxConfig, useOwnAccount } from 'soapbox/hooks';
 
 import { Button, Card, CardBody } from '../../components/ui';
 import LoginPage from '../auth_login/components/login_page';
@@ -25,6 +25,7 @@ const AuthLayout = () => {
   const history = useHistory();
   const { search } = useLocation();
 
+  const account = useOwnAccount();
   const siteTitle = useAppSelector(state => state.instance.title);
   const soapboxConfig = useSoapboxConfig();
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
@@ -67,9 +68,13 @@ const AuthLayout = () => {
               <Card variant='rounded' size='xl'>
                 <CardBody>
                   <Switch>
+                    {/* If already logged in, redirect home. */}
+                    {account && <Redirect from='/login' to='/' exact />}
+
                     <Route exact path='/verify' component={Verification} />
                     <Route exact path='/verify/email/:token' component={EmailPassthru} />
                     <Route exact path='/login/external' component={ExternalLoginForm} />
+                    <Route exact path='/login/add' component={LoginPage} />
                     <Route exact path='/login' component={LoginPage} />
                     <Route exact path='/signup' component={RegistrationForm} />
                     <Route exact path='/reset-password' component={PasswordReset} />
