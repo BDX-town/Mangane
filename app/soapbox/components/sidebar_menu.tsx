@@ -189,7 +189,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     <div className='border-t border-solid border-gray-200'>
                       {otherAccounts.map(account => renderAccount(account))}
 
-                      <NavLink className='flex py-2 space-x-1' to='/login' onClick={handleClose}>
+                      <NavLink className='flex py-2 space-x-1' to='/login/add' onClick={handleClose}>
                         <Icon className='dark:text-white' src={require('@tabler/icons/icons/plus.svg')} />
                         <Text>{intl.formatMessage(messages.addAccount)}</Text>
                       </NavLink>
