@@ -29,6 +29,7 @@ module.exports = merge(sharedConfig, {
       logLevel: 'silent',
     }),
     new OfflinePlugin({
+      autoUpdate: true,
       caches: {
         main: [':rest:'],
         additional: [
@@ -89,32 +90,34 @@ module.exports = merge(sharedConfig, {
         minify: true,
       },
       cacheMaps: [{
-        match: requestUrl => {
+        // NOTE: This function gets stringified by OfflinePlugin, so don't try
+        // moving it anywhere else or making it depend on anything outside it!
+        match: ({ pathname }) => {
           const backendRoutes = [
+            '/.well-known',
+            '/admin',
             '/api',
-            '/pleroma',
-            '/nodeinfo',
-            '/socket',
-            '/oauth',
-            '/.well-known/webfinger',
-            '/static',
+            '/auth',
             '/instance',
             '/main/ostatus',
+            '/manifest.json',
+            '/media',
+            '/nodeinfo',
+            '/oauth',
             '/ostatus_subscribe',
             '/pghero',
+            '/pleroma',
             '/sidekiq',
-            '/open-source',
+            '/socket',
+            '/static',
+            '/unsubscribe',
           ];
 
-          const isBackendRoute = ({ pathname }) => {
-            if (pathname) {
-              return backendRoutes.some(pathname.startsWith);
-            } else {
-              return false;
-            }
-          };
-
-          return isBackendRoute(requestUrl) && requestUrl;
+          if (pathname) {
+            return backendRoutes.some(path => pathname.startsWith(path));
+          } else {
+            return false;
+          }
         },
         requestTypes: ['navigate'],
       }],
