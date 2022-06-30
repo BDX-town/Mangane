@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
+import FeedCarousel from 'soapbox/features/feed-filtering/feed-carousel';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import {
   WhoToFollowPanel,
@@ -55,6 +56,8 @@ const HomePage: React.FC = ({ children }) => {
             </CardBody>
           </Card>
         )}
+
+        <FeedCarousel />
 
         {children}
 

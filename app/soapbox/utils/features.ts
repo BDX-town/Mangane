@@ -271,6 +271,9 @@ const getInstanceFeatures = (instance: Instance) => {
     /** Whether the instance federates. */
     federating: federation.get('enabled', true) === true, // Assume true unless explicitly false
 
+    /** Whether or not to show the Feed Carousel for suggested Statuses */
+    feedUserFiltering: v.software === TRUTHSOCIAL,
+
     /**
      * Can edit and manage timeline filters (aka "muted words").
      * @see {@link https://docs.joinmastodon.org/methods/accounts/filters/}

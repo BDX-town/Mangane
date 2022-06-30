@@ -14,6 +14,7 @@ import alerts from './alerts';
 import aliases from './aliases';
 import auth from './auth';
 import backups from './backups';
+import carousels from './carousels';
 import chat_message_lists from './chat_message_lists';
 import chat_messages from './chat_messages';
 import chats from './chats';
@@ -122,6 +123,7 @@ const reducers = {
   onboarding,
   rules,
   history,
+  carousels,
 };
 
 // Build a default state from all reducers: it has the key and `undefined`

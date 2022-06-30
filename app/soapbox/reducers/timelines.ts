@@ -29,6 +29,7 @@ import {
   TIMELINE_DEQUEUE,
   MAX_QUEUED_ITEMS,
   TIMELINE_SCROLL_TOP,
+  TIMELINE_REPLACE,
 } from '../actions/timelines';
 
 import type { AnyAction } from 'redux';
@@ -46,6 +47,7 @@ const TimelineRecord = ImmutableRecord({
   hasMore: true,
   items: ImmutableOrderedSet<string>(),
   queuedItems: ImmutableOrderedSet<string>(), //max= MAX_QUEUED_ITEMS
+  feedAccountId: null,
   totalQueuedItemsCount: 0, //used for queuedItems overflow for MAX_QUEUED_ITEMS+
   loadingFailed: false,
   isPartial: false,
@@ -345,6 +347,12 @@ export default function timelines(state: State = initialState, action: AnyAction
       return timelineDisconnect(state, action.timeline);
     case GROUP_REMOVE_STATUS_SUCCESS:
       return removeStatusFromGroup(state, action.groupId, action.id);
+    case TIMELINE_REPLACE:
+      return state
+        .update('home', TimelineRecord(), timeline => timeline.withMutations(timeline => {
+          timeline.set('items', ImmutableOrderedSet([]));
+        }))
+        .update('home', TimelineRecord(), timeline => timeline.set('feedAccountId', action.accountId));
     default:
       return state;
   }

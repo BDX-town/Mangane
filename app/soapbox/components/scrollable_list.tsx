@@ -7,7 +7,7 @@ import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { useSettings } from 'soapbox/hooks';
 
 import LoadMore from './load_more';
-import { Spinner, Text } from './ui';
+import { Card, Spinner, Text } from './ui';
 
 /** Custom Viruoso component context. */
 type Context = {
@@ -157,13 +157,13 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
       <div className='mt-2'>
         {alwaysPrepend && prepend}
 
-        <div className='bg-primary-50 dark:bg-slate-700 mt-2 rounded-lg text-center p-8'>
+        <Card variant='rounded' size='lg'>
           {isLoading ? (
             <Spinner />
           ) : (
             <Text>{emptyMessage}</Text>
           )}
-        </div>
+        </Card>
       </div>
     );
   };
