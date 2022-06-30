@@ -33,8 +33,13 @@ const Timeline: React.FC<ITimeline> = ({
   const isPartial = useAppSelector(state => (state.timelines.get(timelineId)?.isPartial || false) === true);
   const hasMore = useAppSelector(state => state.timelines.get(timelineId)?.hasMore === true);
   const totalQueuedItemsCount = useAppSelector(state => state.timelines.get(timelineId)?.totalQueuedItemsCount || 0);
+  const isFilteringFeed = useAppSelector(state => !!state.timelines.get(timelineId)?.feedAccountId);
 
   const handleDequeueTimeline = () => {
+    if (isFilteringFeed) {
+      return;
+    }
+
     dispatch(dequeueTimeline(timelineId, onLoadMore));
   };
 

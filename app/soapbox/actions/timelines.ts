@@ -26,6 +26,8 @@ const TIMELINE_EXPAND_FAIL    = 'TIMELINE_EXPAND_FAIL';
 const TIMELINE_CONNECT    = 'TIMELINE_CONNECT';
 const TIMELINE_DISCONNECT = 'TIMELINE_DISCONNECT';
 
+const TIMELINE_REPLACE = 'TIMELINE_REPLACE';
+
 const MAX_QUEUED_ITEMS = 40;
 
 const processTimelineUpdate = (timeline: string, status: APIEntity, accept: ((status: APIEntity) => boolean) | null) =>
@@ -134,6 +136,14 @@ const parseTags = (tags: Record<string, any[]> = {}, mode: 'any' | 'all' | 'none
   });
 };
 
+const replaceHomeTimeline = (
+  accountId: string | null,
+  { maxId }: Record<string, any> = {},
+) => (dispatch: AppDispatch, _getState: () => RootState) => {
+  dispatch({ type: TIMELINE_REPLACE, accountId });
+  dispatch(expandHomeTimeline({ accountId, maxId }));
+};
+
 const expandTimeline = (timelineId: string, path: string, params: Record<string, any> = {}, done = noOp) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const timeline = getState().timelines.get(timelineId) || {} as Record<string, any>;
@@ -163,8 +173,16 @@ const expandTimeline = (timelineId: string, path: string, params: Record<string,
     });
   };
 
-const expandHomeTimeline = ({ maxId }: Record<string, any> = {}, done = noOp) =>
-  expandTimeline('home', '/api/v1/timelines/home', { max_id: maxId }, done);
+const expandHomeTimeline = ({ accountId, maxId }: Record<string, any> = {}, done = noOp) => {
+  const endpoint = accountId ? `/api/v1/accounts/${accountId}/statuses` : '/api/v1/timelines/home';
+  const params: any = { max_id: maxId };
+  if (accountId) {
+    params.exclude_replies = true;
+    params.with_muted = true;
+  }
+
+  return expandTimeline('home', endpoint, params, done);
+};
 
 const expandPublicTimeline = ({ maxId, onlyMedia }: Record<string, any> = {}, done = noOp) =>
   expandTimeline(`public${onlyMedia ? ':media' : ''}`, '/api/v1/timelines/public', { max_id: maxId, only_media: !!onlyMedia }, done);
@@ -253,6 +271,7 @@ export {
   TIMELINE_EXPAND_FAIL,
   TIMELINE_CONNECT,
   TIMELINE_DISCONNECT,
+  TIMELINE_REPLACE,
   MAX_QUEUED_ITEMS,
   processTimelineUpdate,
   updateTimeline,
@@ -261,6 +280,7 @@ export {
   deleteFromTimelines,
   clearTimeline,
   expandTimeline,
+  replaceHomeTimeline,
   expandHomeTimeline,
   expandPublicTimeline,
   expandRemoteTimeline,

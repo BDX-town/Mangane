@@ -52,7 +52,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
     } else {
       setScrolled(false);
     }
-  }, 150, { trailing: true }), [autoload, threshold, autoloadThreshold]);
+  }, 150, { trailing: true }), [autoload, threshold, autoloadThreshold, onClick]);
 
   const scrollUp = () => {
     window.scrollTo({ top: 0 });
@@ -69,7 +69,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [onClick]);
 
   useEffect(() => {
     maybeUnload();

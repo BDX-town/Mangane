@@ -3,9 +3,9 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
-import { Column } from 'soapbox/components/ui';
+import { Column, Stack, Text } from 'soapbox/components/ui';
 import Timeline from 'soapbox/features/ui/components/timeline';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useFeatures } from 'soapbox/hooks';
 
 const messages = defineMessages({
   title: { id: 'column.home', defaultMessage: 'Home' },
@@ -14,13 +14,16 @@ const messages = defineMessages({
 const HomeTimeline: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const features = useFeatures();
+
   const polling = useRef<NodeJS.Timer | null>(null);
 
   const isPartial = useAppSelector(state => state.timelines.get('home')?.isPartial === true);
+  const currentAccountId = useAppSelector(state => state.timelines.get('home')?.feedAccountId);
   const siteTitle = useAppSelector(state => state.instance.title);
 
   const handleLoadMore = (maxId: string) => {
-    dispatch(expandHomeTimeline({ maxId }));
+    dispatch(expandHomeTimeline({ maxId, accountId: currentAccountId }));
   };
 
   // Mastodon generates the feed in Redis, and can return a partial timeline
@@ -43,7 +46,7 @@ const HomeTimeline: React.FC = () => {
   };
 
   const handleRefresh = () => {
-    return dispatch(expandHomeTimeline());
+    return dispatch(expandHomeTimeline({ maxId: null, accountId: currentAccountId }));
   };
 
   useEffect(() => {
@@ -62,7 +65,40 @@ const HomeTimeline: React.FC = () => {
         onRefresh={handleRefresh}
         timelineId='home'
         divideType='space'
-        emptyMessage={<FormattedMessage id='empty_column.home' defaultMessage='Your home timeline is empty! Visit {public} to get started and meet other users.' values={{ public: <Link to='/timeline/local'><FormattedMessage id='empty_column.home.local_tab' defaultMessage='the {site_title} tab' values={{ site_title: siteTitle }} /></Link> }} />}
+        emptyMessage={
+          <Stack space={1}>
+            <Text size='xl' weight='medium' align='center'>
+              <FormattedMessage
+                id='empty_column.home.title'
+                defaultMessage="You're not following anyone yet"
+              />
+            </Text>
+
+            <Text theme='muted' align='center'>
+              <FormattedMessage
+                id='empty_column.home.subtitle'
+                defaultMessage='{siteTitle} gets more interesting once you follow other users.'
+                values={{ siteTitle }}
+              />
+            </Text>
+
+            {features.federating && (
+              <Text theme='muted' align='center'>
+                <FormattedMessage
+                  id='empty_column.home'
+                  defaultMessage='Or you can visit {public} to get started and meet other users.'
+                  values={{
+                    public: (
+                      <Link to='/timeline/local' className='text-primary-600 dark:text-primary-400 hover:underline'>
+                        <FormattedMessage id='empty_column.home.local_tab' defaultMessage='the {site_title} tab' values={{ site_title: siteTitle }} />
+                      </Link>
+                    ),
+                  }}
+                />
+              </Text>
+            )}
+          </Stack>
+        }
       />
     </Column>
   );

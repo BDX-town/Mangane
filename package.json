@@ -202,6 +202,7 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/user-event": "^14.0.3",
     "@typescript-eslint/eslint-plugin": "^5.15.0",
     "@typescript-eslint/parser": "^5.15.0",

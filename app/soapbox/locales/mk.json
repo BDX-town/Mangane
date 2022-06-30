@@ -450,7 +450,7 @@
   "empty_column.follow_requests": "You don't have any follow requests yet. When you receive one, it will show up here.",
   "empty_column.group": "There is nothing in this group yet. When members of this group make new posts, they will appear here.",
   "empty_column.hashtag": "There is nothing in this hashtag yet.",
-  "empty_column.home": "Your home timeline is empty! Visit {public} to get started and meet other users.",
+  "empty_column.home": "Or you can visit {public} to get started and meet other users.",
   "empty_column.home.local_tab": "the {site_title} tab",
   "empty_column.list": "There is nothing in this list yet. When members of this list create new posts, they will appear here.",
   "empty_column.lists": "You don't have any lists yet. When you create one, it will show up here.",
