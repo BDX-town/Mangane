@@ -1,17 +1,17 @@
 import Portal from '@reach/portal';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Textarea from 'react-textarea-autosize';
 
 import AutosuggestAccount from '../features/compose/components/autosuggest_account';
 import { isRtl } from '../rtl';
 
-import AutosuggestEmoji from './autosuggest_emoji';
+import AutosuggestEmoji, { Emoji } from './autosuggest_emoji';
 
-const textAtCursorMatchesToken = (str, caretPosition) => {
+import type { List as ImmutableList } from 'immutable';
+
+const textAtCursorMatchesToken = (str: string, caretPosition: number) => {
   let word;
 
   const left = str.slice(0, caretPosition).search(/\S+$/);
@@ -36,25 +36,28 @@ const textAtCursorMatchesToken = (str, caretPosition) => {
   }
 };
 
-export default class AutosuggestTextarea extends ImmutablePureComponent {
+interface IAutosuggesteTextarea {
+  id?: string,
+  value: string,
+  suggestions: ImmutableList<string>,
+  disabled: boolean,
+  placeholder: string,
+  onSuggestionSelected: (tokenStart: number, token: string | null, value: string | undefined) => void,
+  onSuggestionsClearRequested: () => void,
+  onSuggestionsFetchRequested: (token: string | number) => void,
+  onChange: React.ChangeEventHandler<HTMLTextAreaElement>,
+  onKeyUp: React.KeyboardEventHandler<HTMLTextAreaElement>,
+  onKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement>,
+  onPaste: (files: FileList) => void,
+  autoFocus: boolean,
+  onFocus: () => void,
+  onBlur?: () => void,
+  condensed?: boolean,
+}
 
-  static propTypes = {
-    value: PropTypes.string,
-    suggestions: ImmutablePropTypes.list,
-    disabled: PropTypes.bool,
-    placeholder: PropTypes.string,
-    onSuggestionSelected: PropTypes.func.isRequired,
-    onSuggestionsClearRequested: PropTypes.func.isRequired,
-    onSuggestionsFetchRequested: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onKeyUp: PropTypes.func,
-    onKeyDown: PropTypes.func,
-    onPaste: PropTypes.func.isRequired,
-    autoFocus: PropTypes.bool,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
-    condensed: PropTypes.bool,
-  };
+class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> {
+
+  textarea: HTMLTextAreaElement | null = null;
 
   static defaultProps = {
     autoFocus: true,
@@ -68,7 +71,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     tokenStart: 0,
   };
 
-  onChange = (e) => {
+  onChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     const [tokenStart, token] = textAtCursorMatchesToken(e.target.value, e.target.selectionStart);
 
     if (token !== null && this.state.lastToken !== token) {
@@ -82,7 +85,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     this.props.onChange(e);
   }
 
-  onKeyDown = (e) => {
+  onKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
     const { suggestions, disabled } = this.props;
     const { selectedSuggestion, suggestionsHidden } = this.state;
 
@@ -91,7 +94,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
       return;
     }
 
-    if (e.which === 229 || e.isComposing) {
+    if (e.which === 229 || (e as any).isComposing) {
       // Ignore key events during text composition
       // e.key may be a name of the physical key even in this case (e.x. Safari / Chrome on Mac)
       return;
@@ -100,7 +103,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     switch (e.key) {
       case 'Escape':
         if (suggestions.size === 0 || suggestionsHidden) {
-          document.querySelector('.ui').parentElement.focus();
+          document.querySelector('.ui')?.parentElement?.focus();
         } else {
           e.preventDefault();
           this.setState({ suggestionsHidden: true });
@@ -156,14 +159,14 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     }
   }
 
-  onSuggestionClick = (e) => {
-    const suggestion = this.props.suggestions.get(e.currentTarget.getAttribute('data-index'));
+  onSuggestionClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    const suggestion = this.props.suggestions.get(e.currentTarget.getAttribute('data-index') as any);
     e.preventDefault();
     this.props.onSuggestionSelected(this.state.tokenStart, this.state.lastToken, suggestion);
-    this.textarea.focus();
+    this.textarea?.focus();
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: IAutosuggesteTextarea, nextState: any) {
     // Skip updating when only the lastToken changes so the
     // cursor doesn't jump around due to re-rendering unnecessarily
     const lastTokenUpdated = this.state.lastToken !== nextState.lastToken;
@@ -172,29 +175,29 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     if (lastTokenUpdated && !valueUpdated) {
       return false;
     } else {
-      return super.shouldComponentUpdate(nextProps, nextState);
+      return super.shouldComponentUpdate!(nextProps, nextState, undefined);
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps: IAutosuggesteTextarea, prevState: any) {
     const { suggestions } = this.props;
     if (suggestions !== prevProps.suggestions && suggestions.size > 0 && prevState.suggestionsHidden && prevState.focused) {
       this.setState({ suggestionsHidden: false });
     }
   }
 
-  setTextarea = (c) => {
+  setTextarea: React.Ref<HTMLTextAreaElement> = (c) => {
     this.textarea = c;
   }
 
-  onPaste = (e) => {
+  onPaste: React.ClipboardEventHandler<HTMLTextAreaElement> = (e) => {
     if (e.clipboardData && e.clipboardData.files.length === 1) {
       this.props.onPaste(e.clipboardData.files);
       e.preventDefault();
     }
   }
 
-  renderSuggestion = (suggestion, i) => {
+  renderSuggestion = (suggestion: string | Emoji, i: number) => {
     const { selectedSuggestion } = this.state;
     let inner, key;
 
@@ -212,7 +215,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     return (
       <div
         role='button'
-        tabIndex='0'
+        tabIndex={0}
         key={key}
         data-index={i}
         className={classNames({
@@ -272,7 +275,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
               onFocus={this.onFocus}
               onBlur={this.onBlur}
               onPaste={this.onPaste}
-              style={style}
+              style={style as any}
               aria-autocomplete='list'
             />
           </label>
@@ -297,3 +300,5 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
   }
 
 }
+
+export default AutosuggestTextarea;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { getSettings } from 'soapbox/actions/settings';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
@@ -11,8 +11,20 @@ import SidebarNavigationLink from './sidebar-navigation-link';
 
 import type { Menu } from 'soapbox/components/dropdown_menu';
 
+const messages = defineMessages({
+  follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
+  bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
+  lists: { id: 'column.lists', defaultMessage: 'Lists' },
+  developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
+  dashboard: { id: 'tabs_bar.dashboard', defaultMessage: 'Dashboard' },
+  all: { id: 'tabs_bar.all', defaultMessage: 'All' },
+  fediverse: { id: 'tabs_bar.fediverse', defaultMessage: 'Fediverse' },
+});
+
 /** Desktop sidebar with links to different views in the app. */
 const SidebarNavigation = () => {
+  const intl = useIntl();
+
   const instance = useAppSelector((state) => state.instance);
   const settings = useAppSelector((state) => getSettings(state));
   const account = useOwnAccount();
@@ -30,7 +42,7 @@ const SidebarNavigation = () => {
       if (account.locked || followRequestsCount > 0) {
         menu.push({
           to: '/follow_requests',
-          text: <FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' />,
+          text: intl.formatMessage(messages.follow_requests),
           icon: require('@tabler/icons/icons/user-plus.svg'),
           count: followRequestsCount,
         });
@@ -39,7 +51,7 @@ const SidebarNavigation = () => {
       if (features.bookmarks) {
         menu.push({
           to: '/bookmarks',
-          text: <FormattedMessage id='column.bookmarks' defaultMessage='Bookmarks' />,
+          text: intl.formatMessage(messages.bookmarks),
           icon: require('@tabler/icons/icons/bookmark.svg'),
         });
       }
@@ -47,7 +59,7 @@ const SidebarNavigation = () => {
       if (features.lists) {
         menu.push({
           to: '/lists',
-          text: <FormattedMessage id='column.lists' defaultMessage='Lists' />,
+          text: intl.formatMessage(messages.lists),
           icon: require('@tabler/icons/icons/list.svg'),
         });
       }
@@ -56,7 +68,7 @@ const SidebarNavigation = () => {
         menu.push({
           to: '/developers',
           icon: require('@tabler/icons/icons/code.svg'),
-          text: <FormattedMessage id='navigation.developers' defaultMessage='Developers' />,
+          text: intl.formatMessage(messages.developers),
         });
       }
 
@@ -64,7 +76,7 @@ const SidebarNavigation = () => {
         menu.push({
           to: '/soapbox/admin',
           icon: require('@tabler/icons/icons/dashboard.svg'),
-          text: <FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />,
+          text: intl.formatMessage(messages.dashboard),
           count: dashboardCount,
         });
       }
@@ -78,7 +90,7 @@ const SidebarNavigation = () => {
       menu.push({
         to: '/timeline/local',
         icon: features.federating ? require('@tabler/icons/icons/users.svg') : require('@tabler/icons/icons/world.svg'),
-        text: features.federating ? instance.title : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />,
+        text: features.federating ? instance.title : intl.formatMessage(messages.all),
       });
     }
 
@@ -86,7 +98,7 @@ const SidebarNavigation = () => {
       menu.push({
         to: '/timeline/fediverse',
         icon: require('icons/fediverse.svg'),
-        text: <FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />,
+        text: intl.formatMessage(messages.fediverse),
       });
     }
 

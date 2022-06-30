@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Icon from 'soapbox/components/icon';
+import Icon, { IIcon } from 'soapbox/components/icon';
 import { Counter } from 'soapbox/components/ui';
 
 interface IIconWithCounter extends React.HTMLAttributes<HTMLDivElement> {
@@ -12,7 +12,7 @@ interface IIconWithCounter extends React.HTMLAttributes<HTMLDivElement> {
 const IconWithCounter: React.FC<IIconWithCounter> = ({ icon, count, ...rest }) => {
   return (
     <div className='relative'>
-      <Icon id={icon} {...rest} />
+      <Icon id={icon} {...rest as IIcon} />
 
       {count > 0 && (
         <i className='absolute -top-2 -right-2'>
