@@ -11340,18 +11340,18 @@ tsutils@^3.21.0:
   dependencies:
     tslib "^1.8.1"
 
-twemoji-parser@13.0.0:
-  version "13.0.0"
-  resolved "https://registry.yarnpkg.com/twemoji-parser/-/twemoji-parser-13.0.0.tgz#bd9d1b98474f1651dc174696b45cabefdfa405af"
-  integrity sha512-zMaGdskpH8yKjT2RSE/HwE340R4Fm+fbie4AaqjDa4H/l07YUmAvxkSfNl6awVWNRRQ0zdzLQ8SAJZuY5MgstQ==
+twemoji-parser@14.0.0:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/twemoji-parser/-/twemoji-parser-14.0.0.tgz#13dabcb6d3a261d9efbf58a1666b182033bf2b62"
+  integrity sha512-9DUOTGLOWs0pFWnh1p6NF+C3CkQ96PWmEFwhOVmT3WbecRC+68AIqpsnJXygfkFcp4aXbOp8Dwbhh/HQgvoRxA==
 
-"twemoji@https://github.com/twitter/twemoji#v13.0.2":
-  version "13.0.2"
-  resolved "https://github.com/twitter/twemoji#3946e782ac81821b6a78e4b6c73d4e787b34bcf0"
+"twemoji@https://github.com/twitter/twemoji#v14.0.2":
+  version "14.0.2"
+  resolved "https://github.com/twitter/twemoji#7a3dad4a4da30497093dab22eafba135f02308e1"
   dependencies:
     fs-extra "^8.0.1"
     jsonfile "^5.0.0"
-    twemoji-parser "13.0.0"
+    twemoji-parser "14.0.0"
     universalify "^0.1.2"
 
 type-check@^0.4.0, type-check@~0.4.0:
