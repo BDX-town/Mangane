@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
