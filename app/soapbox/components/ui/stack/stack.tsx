@@ -4,6 +4,7 @@ import React from 'react';
 type SIZES = 0 | 0.5 | 1 | 1.5 | 2 | 3 | 4 | 5 | 10
 
 const spaces = {
+  0: 'space-y-0',
   '0.5': 'space-y-0.5',
   1: 'space-y-1',
   '1.5': 'space-y-1.5',
