@@ -9,10 +9,6 @@ import StatusContainer from 'soapbox/containers/status_container';
 import FeedSuggestions from 'soapbox/features/feed-suggestions/feed-suggestions';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
-import { useAppSelector } from 'soapbox/hooks';
-
-import { Button, Card, CardBody, CardTitle, HStack, Stack, Text } from './ui';
-import VerificationBadge from './verification_badge';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';

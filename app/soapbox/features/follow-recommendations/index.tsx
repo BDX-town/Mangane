@@ -27,10 +27,6 @@ const FollowRecommendations: React.FC = () => {
     return dispatch(fetchSuggestions({ limit: 20 }));
   }, 300);
 
-  const onDone = () => {
-    history.push('/');
-  };
-
   useEffect(() => {
     dispatch(fetchSuggestions({ limit: 20 }));
   }, []);
