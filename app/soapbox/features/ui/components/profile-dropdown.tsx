@@ -58,7 +58,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
 
   const renderAccount = (account: AccountEntity) => {
     return (
-      <Account account={account} showProfileHoverCard={false} hideActions />
+      <Account account={account} showProfileHoverCard={false} withLinkToProfile={false} hideActions />
     );
   };
 

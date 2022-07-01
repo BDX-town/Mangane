@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-type SIZES = 0.5 | 1 | 1.5 | 2 | 3 | 4 | 5 | 10
+type SIZES = 0 | 0.5 | 1 | 1.5 | 2 | 3 | 4 | 5 | 10
 
 const spaces = {
   '0.5': 'space-y-0.5',

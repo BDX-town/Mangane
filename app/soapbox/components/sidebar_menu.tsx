@@ -84,7 +84,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const getAccount = makeGetAccount();
   const instance = useAppSelector((state) => state.instance);
   const me = useAppSelector((state) => state.me);
-  const account = useAppSelector((state) =>  me ? getAccount(state, me) : null);
+  const account = useAppSelector((state) => me ? getAccount(state, me) : null);
   const otherAccounts: ImmutableList<AccountEntity> = useAppSelector((state) => getOtherAccounts(state));
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
   const settings = useAppSelector((state) => getSettings(state));
@@ -121,7 +121,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const renderAccount = (account: AccountEntity) => (
     <a href='#' className='block py-2' onClick={handleSwitchAccount(account)} key={account.id}>
       <div className='pointer-events-none'>
-        <Account account={account} showProfileHoverCard={false} withRelationship={false} />
+        <Account account={account} showProfileHoverCard={false} withRelationship={false} withLinkToProfile={false} />
       </div>
     </a>
   );
@@ -166,7 +166,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
               <Stack space={1}>
                 <Link to={`/@${account.acct}`} onClick={onClose}>
-                  <Account account={account} showProfileHoverCard={false} />
+                  <Account account={account} showProfileHoverCard={false} withLinkToProfile={false} />
                 </Link>
 
                 <Stack>

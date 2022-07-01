@@ -134,11 +134,11 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     this.didShowCard = Boolean(!this.props.muted && !this.props.hidden && this.props.status && this.props.status.card);
   }
 
-  getSnapshotBeforeUpdate(): ScrollPosition | undefined {
+  getSnapshotBeforeUpdate(): ScrollPosition | null {
     if (this.props.getScrollPosition) {
-      return this.props.getScrollPosition();
+      return this.props.getScrollPosition() || null;
     } else {
-      return undefined;
+      return null;
     }
   }
 
@@ -483,6 +483,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
                 hideActions={!reblogElement}
                 showEdit={!!status.edited_at}
                 showProfileHoverCard={this.props.hoverable}
+                withLinkToProfile={this.props.hoverable}
               />
             </div>
 

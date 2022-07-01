@@ -39,6 +39,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ status, hideActions, onCanc
         id={status.getIn(['account', 'id']) as string}
         timestamp={status.created_at}
         showProfileHoverCard={false}
+        withLinkToProfile={false}
       />
 
       <Text
