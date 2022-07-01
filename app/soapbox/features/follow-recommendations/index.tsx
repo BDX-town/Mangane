@@ -1,7 +1,6 @@
 import debounce from 'lodash/debounce';
 import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useHistory } from 'react-router-dom';
 
 import { fetchSuggestions } from 'soapbox/actions/suggestions';
 import ScrollableList from 'soapbox/components/scrollable_list';
@@ -13,7 +12,6 @@ import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 const FollowRecommendations: React.FC = () => {
   const dispatch = useAppDispatch();
   const features = useFeatures();
-  const history = useHistory();
 
   const suggestions = useAppSelector((state) => state.suggestions.items);
   const hasMore = useAppSelector((state) => !!state.suggestions.next);
