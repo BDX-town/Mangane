@@ -2,34 +2,45 @@ import { ALERT_SHOW } from './alerts';
 
 import type { MessageDescriptor } from 'react-intl';
 
-export type SnackbarActionSeverity = 'info' | 'success' | 'error'
+export type SnackbarActionSeverity = 'info' | 'success' | 'error';
 
-type SnackbarMessage = string | MessageDescriptor
+type SnackbarMessage = string | MessageDescriptor;
 
 export type SnackbarAction = {
-  type: typeof ALERT_SHOW
-  message: SnackbarMessage
-  actionLabel?: SnackbarMessage
-  actionLink?: string
-  severity: SnackbarActionSeverity
-}
+  type: typeof ALERT_SHOW,
+  message: SnackbarMessage,
+  actionLabel?: SnackbarMessage,
+  actionLink?: string,
+  action?: () => void,
+  severity: SnackbarActionSeverity,
+};
 
-export const show = (severity: SnackbarActionSeverity, message: SnackbarMessage, actionLabel?: SnackbarMessage, actionLink?: string): SnackbarAction => ({
+type SnackbarOpts = {
+  actionLabel?: SnackbarMessage,
+  actionLink?: string,
+  action?: () => void,
+  dismissAfter?: number | false,
+};
+
+export const show = (
+  severity: SnackbarActionSeverity,
+  message: SnackbarMessage,
+  opts?: SnackbarOpts,
+): SnackbarAction => ({
   type: ALERT_SHOW,
   message,
-  actionLabel,
-  actionLink,
   severity,
+  ...opts,
 });
 
 export const info = (message: SnackbarMessage, actionLabel?: SnackbarMessage, actionLink?: string) =>
-  show('info', message, actionLabel, actionLink);
+  show('info', message, { actionLabel, actionLink });
 
 export const success = (message: SnackbarMessage, actionLabel?: SnackbarMessage, actionLink?: string) =>
-  show('success', message, actionLabel, actionLink);
+  show('success', message, { actionLabel, actionLink });
 
 export const error = (message: SnackbarMessage, actionLabel?: SnackbarMessage, actionLink?: string) =>
-  show('error', message, actionLabel, actionLink);
+  show('error', message, { actionLabel, actionLink });
 
 export default {
   info,

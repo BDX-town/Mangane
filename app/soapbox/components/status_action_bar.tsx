@@ -644,7 +644,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
       <div className='pt-4 flex flex-row space-x-2'>
         <StatusActionButton
           title={replyTitle}
-          icon={require('@tabler/icons/icons/message-circle.svg')}
+          icon={require('@tabler/icons/icons/message-circle-2.svg')}
           onClick={this.handleReplyClick}
           count={replyCount}
         />

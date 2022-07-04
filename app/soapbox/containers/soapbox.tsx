@@ -5,6 +5,8 @@ import React, { useState, useEffect } from 'react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
+// @ts-ignore: it doesn't have types
+import { ScrollContext } from 'react-router-scroll-4';
 
 import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
@@ -78,6 +80,7 @@ const SoapboxMount = () => {
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
   const features = useFeatures();
+  const swUpdating = useAppSelector(state => state.meta.swUpdating);
 
   const locale = validLocale(settings.get('locale')) ? settings.get('locale') : 'en';
 
@@ -114,12 +117,18 @@ const SoapboxMount = () => {
     });
   }, []);
 
+  // @ts-ignore: I don't actually know what these should be, lol
+  const shouldUpdateScroll = (prevRouterProps, { location }) => {
+    return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
+  };
+
   /** Whether to display a loading indicator. */
   const showLoading = [
     me === null,
     me && !account,
     !isLoaded,
     localeLoading,
+    swUpdating,
   ].some(Boolean);
 
   const bodyClass = classNames('bg-white dark:bg-slate-900 text-base h-full', {
@@ -221,17 +230,19 @@ const SoapboxMount = () => {
       {helmet}
       <ErrorBoundary>
         <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
-          <>
-            {renderBody()}
+          <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
+            <>
+              {renderBody()}
 
-            <BundleContainer fetchComponent={NotificationsContainer}>
-              {(Component) => <Component />}
-            </BundleContainer>
+              <BundleContainer fetchComponent={NotificationsContainer}>
+                {(Component) => <Component />}
+              </BundleContainer>
 
-            <BundleContainer fetchComponent={ModalContainer}>
-              {Component => <Component />}
-            </BundleContainer>
-          </>
+              <BundleContainer fetchComponent={ModalContainer}>
+                {Component => <Component />}
+              </BundleContainer>
+            </>
+          </ScrollContext>
         </BrowserRouter>
       </ErrorBoundary>
     </IntlProvider>

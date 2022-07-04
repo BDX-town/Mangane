@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { expandSearch, setFilter } from 'soapbox/actions/search';
@@ -14,6 +14,8 @@ import PlaceholderHashtag from 'soapbox/features/placeholder/components/placehol
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
+import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
+import type { VirtuosoHandle } from 'react-virtuoso';
 import type { SearchFilter } from 'soapbox/reducers/search';
 
 const messages = defineMessages({
@@ -23,6 +25,8 @@ const messages = defineMessages({
 });
 
 const SearchResults = () => {
+  const node = useRef<VirtuosoHandle>(null);
+
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
@@ -60,6 +64,35 @@ const SearchResults = () => {
     return <Tabs items={items} activeItem={selectedFilter} />;
   };
 
+  const getCurrentIndex = (id: string): number => {
+    return resultsIds?.keySeq().findIndex(key => key === id);
+  };
+
+  const handleMoveUp = (id: string) => {
+    if (!resultsIds) return;
+
+    const elementIndex = getCurrentIndex(id) - 1;
+    selectChild(elementIndex);
+  };
+
+  const handleMoveDown = (id: string) => {
+    if (!resultsIds) return;
+
+    const elementIndex = getCurrentIndex(id) + 1;
+    selectChild(elementIndex);
+  };
+
+  const selectChild = (index: number) => {
+    node.current?.scrollIntoView({
+      index,
+      behavior: 'smooth',
+      done: () => {
+        const element = document.querySelector<HTMLDivElement>(`#search-results [data-index="${index}"] .focusable`);
+        element?.focus();
+      },
+    });
+  };
+
   useEffect(() => {
     dispatch(fetchTrendingStatuses());
   }, []);
@@ -69,6 +102,7 @@ const SearchResults = () => {
   let loaded;
   let noResultsMessage;
   let placeholderComponent = PlaceholderStatus as React.ComponentType;
+  let resultsIds: ImmutableOrderedSet<string>;
 
   if (selectedFilter === 'accounts') {
     hasMore = results.accountsHasMore;
@@ -98,14 +132,26 @@ const SearchResults = () => {
 
     if (results.statuses && results.statuses.size > 0) {
       searchResults = results.statuses.map((statusId: string) => (
-      // @ts-ignore
-        <StatusContainer key={statusId} id={statusId} />
+        // @ts-ignore
+        <StatusContainer
+          key={statusId}
+          id={statusId}
+          onMoveUp={handleMoveUp}
+          onMoveDown={handleMoveDown}
+        />
       ));
+      resultsIds = results.statuses;
     } else if (!submitted && trendingStatuses && !trendingStatuses.isEmpty()) {
       searchResults = trendingStatuses.map((statusId: string) => (
-      // @ts-ignore
-        <StatusContainer key={statusId} id={statusId} />
+        // @ts-ignore
+        <StatusContainer
+          key={statusId}
+          id={statusId}
+          onMoveUp={handleMoveUp}
+          onMoveDown={handleMoveDown}
+        />
       ));
+      resultsIds = trendingStatuses;
     } else if (loaded) {
       noResultsMessage = (
         <div className='empty-column-indicator'>
@@ -147,6 +193,8 @@ const SearchResults = () => {
 
       {noResultsMessage || (
         <ScrollableList
+          id='search-results'
+          ref={node}
           key={selectedFilter}
           scrollKey={`${selectedFilter}:${value}`}
           isLoading={submitted && !loaded}
@@ -158,7 +206,10 @@ const SearchResults = () => {
           className={classNames({
             'divide-gray-200 dark:divide-slate-700 divide-solid divide-y': selectedFilter === 'statuses',
           })}
-          itemClassName={classNames({ 'pb-4': selectedFilter === 'accounts' })}
+          itemClassName={classNames({
+            'pb-4': selectedFilter === 'accounts',
+            'pb-3': selectedFilter === 'hashtags',
+          })}
         >
           {searchResults || []}
         </ScrollableList>

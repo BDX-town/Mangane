@@ -178,30 +178,6 @@ export const makeGetStatus = () => {
   );
 };
 
-const getAlertsBase = (state: RootState) => state.alerts;
-
-const buildAlert = (item: any) => {
-  return {
-    message: item.message,
-    title: item.title,
-    actionLabel: item.actionLabel,
-    actionLink: item.actionLink,
-    key: item.key,
-    className: `notification-bar-${item.severity}`,
-    activeClassName: 'snackbar--active',
-    dismissAfter: 6000,
-    style: false,
-  };
-};
-
-type Alert = ReturnType<typeof buildAlert>;
-
-export const getAlerts = createSelector([getAlertsBase], (base): Alert[] => {
-  const arr: Alert[] = [];
-  base.forEach(item => arr.push(buildAlert(item)));
-  return arr;
-});
-
 export const makeGetNotification = () => {
   return createSelector([
     (_state: RootState, notification: Notification) => notification,

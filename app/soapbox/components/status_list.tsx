@@ -86,7 +86,7 @@ const StatusList: React.FC<IStatusList> = ({
       index,
       behavior: 'smooth',
       done: () => {
-        const element: HTMLElement | null = document.querySelector(`#status-list [data-index="${index}"] .focusable`);
+        const element = document.querySelector<HTMLDivElement>(`#status-list [data-index="${index}"] .focusable`);
         element?.focus();
       },
     });

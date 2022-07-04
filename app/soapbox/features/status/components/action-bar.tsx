@@ -563,7 +563,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
       <HStack justifyContent='between'>
         <IconButton
           title={intl.formatMessage(messages.reply)}
-          src={require('@tabler/icons/icons/message-circle.svg')}
+          src={require('@tabler/icons/icons/message-circle-2.svg')}
           className='text-gray-400 hover:text-gray-600'
           onClick={this.handleReplyClick}
           text={intl.formatMessage(messages.reply)}

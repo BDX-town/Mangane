@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -67,13 +66,13 @@ const Poll: React.FC<IPoll> = ({ id, status }): JSX.Element | null => {
   return (
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div onClick={e => e.stopPropagation()}>
-      {poll.multiple && (
+      {!showResults && poll.multiple && (
         <Text theme='muted' size='sm'>
           {intl.formatMessage(messages.multiple)}
         </Text>
       )}
 
-      <Stack space={4} className={classNames('mt-4')}>
+      <Stack space={4} className='mt-4'>
         <Stack space={2}>
           {poll.options.map((option, i) => (
             <PollOption
