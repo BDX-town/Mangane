@@ -148,9 +148,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/accounts
      * @see PATCH /api/v1/accounts/update_credentials
      */
-    // birthdays: v.software === PLEROMA && gte(v.version, '2.4.50'),
-    // FIXME: temporarily disabled until they can be deleted on the backend.
-    birthdays: false,
+    birthdays: v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
 
     /** Whether people who blocked you are visible through the API. */
     blockersVisible: features.includes('blockers_visible'),
