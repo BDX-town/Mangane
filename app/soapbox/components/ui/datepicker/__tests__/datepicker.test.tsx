@@ -56,26 +56,41 @@ describe('<Datepicker />', () => {
   it('calls the onChange function when the inputs change', async() => {
     const handler = jest.fn();
     render(<Datepicker onChange={handler} />);
+    const today = new Date();
+
+    /**
+     * A date with a different day, month, and year than today
+     * so this test will always pass!
+     */
+    const notToday = new Date(
+      today.getFullYear() - 1, // last year
+      (today.getMonth() + 2) % 11, // two months from now (mod 11 because it's 0-indexed)
+      (today.getDate() + 2) % 28, // 2 days from now (for timezone stuff)
+    );
+
+    const month = notToday.toLocaleString('en-us', { month: 'long' });
+    const year = String(notToday.getFullYear());
+    const day = String(notToday.getDate());
 
     expect(handler.mock.calls.length).toEqual(1);
 
     await userEvent.selectOptions(
       screen.getByTestId('datepicker-month'),
-      screen.getByRole('option', { name: 'February' }),
+      screen.getByRole('option', { name: month }),
     );
 
     expect(handler.mock.calls.length).toEqual(2);
 
     await userEvent.selectOptions(
       screen.getByTestId('datepicker-year'),
-      screen.getByRole('option', { name: '2020' }),
+      screen.getByRole('option', { name: year }),
     );
 
     expect(handler.mock.calls.length).toEqual(3);
 
     await userEvent.selectOptions(
       screen.getByTestId('datepicker-day'),
-      screen.getByRole('option', { name: '5' }),
+      screen.getByRole('option', { name: day }),
     );
 
     expect(handler.mock.calls.length).toEqual(4);
