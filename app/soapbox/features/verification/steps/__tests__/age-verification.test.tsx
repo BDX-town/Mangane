@@ -8,7 +8,7 @@ import { fireEvent, render, screen } from 'soapbox/jest/test-helpers';
 import AgeVerification from '../age-verification';
 
 describe('<AgeVerification />', () => {
-  let store;
+  let store: any;
 
   beforeEach(() => {
     store = {
