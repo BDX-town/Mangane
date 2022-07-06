@@ -52,7 +52,7 @@ $fluid-breakpoint: $maximum-width + 20px;
 
   .container {
     width: 100%;
-    max-width: 1440px;
+    max-width: 1280px;
 
     @media screen and (max-width: $no-gap-breakpoint) {
       padding: 0;
@@ -82,7 +82,7 @@ $fluid-breakpoint: $maximum-width + 20px;
 
     .header-container {
       display: flex;
-      width: 1440px;
+      width: 1280px;
       align-items: stretch;
       justify-content: center;
       flex-wrap: nowrap;
