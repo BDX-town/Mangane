@@ -1,9 +1,10 @@
+// @ts-ignore
 import { emojiIndex } from 'emoji-mart';
 import pick from 'lodash/pick';
 
 import { search } from '../emoji_mart_search_light';
 
-const trimEmojis = emoji => pick(emoji, ['id', 'unified', 'native', 'custom']);
+const trimEmojis = (emoji: any) => pick(emoji, ['id', 'unified', 'native', 'custom']);
 
 describe('emoji_index', () => {
   it('should give same result for emoji_index_light and emoji-mart', () => {
@@ -46,7 +47,7 @@ describe('emoji_index', () => {
   });
 
   it('can include/exclude categories', () => {
-    expect(search('flag', { include: ['people'] })).toEqual([]);
+    expect(search('flag', { include: ['people'] } as any)).toEqual([]);
     expect(emojiIndex.search('flag', { include: ['people'] })).toEqual([]);
   });
 
@@ -63,9 +64,8 @@ describe('emoji_index', () => {
         custom: true,
       },
     ];
-    search('', { custom });
+    search('', { custom } as any);
     emojiIndex.search('', { custom });
-    const expected = [];
     const lightExpected = [
       {
         id: 'mastodon',
@@ -73,7 +73,7 @@ describe('emoji_index', () => {
       },
     ];
     expect(search('masto').map(trimEmojis)).toEqual(lightExpected);
-    expect(emojiIndex.search('masto').map(trimEmojis)).toEqual(expected);
+    expect(emojiIndex.search('masto').map(trimEmojis)).toEqual([]);
   });
 
   it('(different behavior from emoji-mart) erases custom emoji if another is passed', () => {
@@ -89,11 +89,10 @@ describe('emoji_index', () => {
         custom: true,
       },
     ];
-    search('', { custom });
+    search('', { custom } as any);
     emojiIndex.search('', { custom });
-    const expected = [];
-    expect(search('masto', { custom: [] }).map(trimEmojis)).toEqual(expected);
-    expect(emojiIndex.search('masto').map(trimEmojis)).toEqual(expected);
+    expect(search('masto', { custom: [] } as any).map(trimEmojis)).toEqual([]);
+    expect(emojiIndex.search('masto').map(trimEmojis)).toEqual([]);
   });
 
   it('handles custom emoji', () => {
@@ -109,7 +108,7 @@ describe('emoji_index', () => {
         custom: true,
       },
     ];
-    search('', { custom });
+    search('', { custom } as any);
     emojiIndex.search('', { custom });
     const expected = [
       {
@@ -117,15 +116,15 @@ describe('emoji_index', () => {
         custom: true,
       },
     ];
-    expect(search('masto', { custom }).map(trimEmojis)).toEqual(expected);
+    expect(search('masto', { custom } as any).map(trimEmojis)).toEqual(expected);
     expect(emojiIndex.search('masto', { custom }).map(trimEmojis)).toEqual(expected);
   });
 
   it('should filter only emojis we care about, exclude pineapple', () => {
-    const emojisToShowFilter = emoji => emoji.unified !== '1F34D';
-    expect(search('apple', { emojisToShowFilter }).map((obj) => obj.id))
+    const emojisToShowFilter = (emoji: any) => emoji.unified !== '1F34D';
+    expect(search('apple', { emojisToShowFilter } as any).map((obj: any) => obj.id))
       .not.toContain('pineapple');
-    expect(emojiIndex.search('apple', { emojisToShowFilter }).map((obj) => obj.id))
+    expect(emojiIndex.search('apple', { emojisToShowFilter }).map((obj: any) => obj.id))
       .not.toContain('pineapple');
   });
 

@@ -18,7 +18,7 @@ jest.mock('../../../hooks/useDimensions', () => ({
 };
 
 describe('<FeedCarousel />', () => {
-  let store;
+  let store: any;
 
   describe('with "feedUserFiltering" disabled', () => {
     beforeEach(() => {
@@ -35,7 +35,7 @@ describe('<FeedCarousel />', () => {
     });
 
     it('should render nothing', () => {
-      render(<FeedCarousel />, null, store);
+      render(<FeedCarousel />, undefined, store);
 
       expect(screen.queryAllByTestId('feed-carousel')).toHaveLength(0);
     });
@@ -56,7 +56,7 @@ describe('<FeedCarousel />', () => {
     });
 
     it('should render the Carousel', () => {
-      render(<FeedCarousel />, null, store);
+      render(<FeedCarousel />, undefined, store);
 
       expect(screen.queryAllByTestId('feed-carousel')).toHaveLength(1);
     });
@@ -70,7 +70,7 @@ describe('<FeedCarousel />', () => {
       });
 
       it('renders the error message', () => {
-        render(<FeedCarousel />, null, store);
+        render(<FeedCarousel />, undefined, store);
 
         expect(screen.getByTestId('feed-carousel-error')).toBeInTheDocument();
       });
@@ -110,7 +110,7 @@ describe('<FeedCarousel />', () => {
 
       it('should render the correct prev/next buttons', async() => {
         const user = userEvent.setup();
-        render(<FeedCarousel />, null, store);
+        render(<FeedCarousel />, undefined, store);
 
         await waitFor(() => {
           expect(screen.getByTestId('next-page')).toBeInTheDocument();
