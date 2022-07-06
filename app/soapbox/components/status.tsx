@@ -474,18 +474,16 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
             {reblogElementMobile}
 
             <div className='mb-4'>
-              <HStack justifyContent='between' alignItems='start'>
-                <AccountContainer
-                  key={String(status.getIn(['account', 'id']))}
-                  id={String(status.getIn(['account', 'id']))}
-                  timestamp={status.created_at}
-                  timestampUrl={statusUrl}
-                  action={reblogElement}
-                  hideActions={!reblogElement}
-                  showEdit={!!status.edited_at}
-                  showProfileHoverCard={this.props.hoverable}
-                />
-              </HStack>
+              <AccountContainer
+                key={String(status.getIn(['account', 'id']))}
+                id={String(status.getIn(['account', 'id']))}
+                timestamp={status.created_at}
+                timestampUrl={statusUrl}
+                action={reblogElement}
+                hideActions={!reblogElement}
+                showEdit={!!status.edited_at}
+                showProfileHoverCard={this.props.hoverable}
+              />
             </div>
 
             <div className='status__content-wrapper'>

@@ -159,7 +159,7 @@ const Account = ({
   return (
     <div data-testid='account' className='flex-shrink-0 group block w-full' ref={overflowRef}>
       <HStack alignItems={actionAlignment} justifyContent='between'>
-        <HStack alignItems='center' space={3} grow>
+        <HStack alignItems='center' space={3}>
           <ProfilePopper
             condition={showProfileHoverCard}
             wrapper={(children) => <HoverRefWrapper className='relative' accountId={account.id} inline>{children}</HoverRefWrapper>}
