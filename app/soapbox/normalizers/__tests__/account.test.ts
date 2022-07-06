@@ -47,6 +47,13 @@ describe('normalizeAccount()', () => {
     expect(result.birthday).toEqual('1993-07-03');
   });
 
+  it('normalizes undefined birthday to empty string', () => {
+    const account = require('soapbox/__fixtures__/mastodon-account.json');
+    const result = normalizeAccount(account);
+
+    expect(result.birthday).toEqual('');
+  });
+
   it('normalizes Pleroma legacy fields', () => {
     const account = require('soapbox/__fixtures__/pleroma-2.2.2-account.json');
     const result = normalizeAccount(account);
