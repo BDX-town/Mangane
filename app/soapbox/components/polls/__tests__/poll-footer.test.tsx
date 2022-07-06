@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { __stub } from 'soapbox/api';
 import { normalizePoll } from 'soapbox/normalizers/poll';
 
-import { mockStore, render, rootReducer, screen } from '../../../jest/test-helpers';
+import { mockStore, render, screen, rootState } from '../../../jest/test-helpers';
 import PollFooter from '../poll-footer';
 
 let poll = normalizePoll({
@@ -36,7 +36,7 @@ describe('<PollFooter />', () => {
       });
 
       const user = userEvent.setup();
-      const store = mockStore(rootReducer(undefined, {} as any));
+      const store = mockStore(rootState);
       render(
         <Provider store={store}>
           <IntlProvider locale='en'>

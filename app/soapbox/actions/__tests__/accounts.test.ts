@@ -1,7 +1,7 @@
 import { Map as ImmutableMap } from 'immutable';
 
 import { __stub } from 'soapbox/api';
-import { mockStore, rootState, rootReducer } from 'soapbox/jest/test-helpers';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { ListRecord, ReducerRecord } from 'soapbox/reducers/user_lists';
 
 import { normalizeAccount, normalizeInstance, normalizeRelationship } from '../../normalizers';
@@ -74,7 +74,7 @@ describe('fetchAccount()', () => {
         avatar: 'test.jpg',
       });
 
-      const state = rootReducer(undefined, {} as any)
+      const state = rootState
         .set('accounts', ImmutableMap({
           [id]: account,
         }) as any);
