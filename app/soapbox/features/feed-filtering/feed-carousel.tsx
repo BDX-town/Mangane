@@ -41,7 +41,7 @@ const CarouselItem = ({ avatar }: { avatar: any }) => {
           />
         </div>
 
-        <Text theme='muted' size='sm' truncate align='center' className='leading-3'>{avatar.acct}</Text>
+        <Text theme='muted' size='sm' truncate align='center' className='leading-3 pb-0.5'>{avatar.acct}</Text>
       </Stack>
     </div>
   );
