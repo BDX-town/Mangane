@@ -84,8 +84,6 @@ interface IStatus extends RouteComponentProps {
   onMoveDown: (statusId: string, featured?: boolean) => void,
   getScrollPosition?: () => ScrollPosition | undefined,
   updateScrollBottom?: (bottom: number) => void,
-  cacheMediaWidth: () => void,
-  cachedMediaWidth: number,
   group: ImmutableMap<string, any>,
   displayMedia: string,
   allowedEmoji: ImmutableList<string>,
