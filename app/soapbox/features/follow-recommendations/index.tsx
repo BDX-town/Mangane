@@ -1,6 +1,6 @@
 import debounce from 'lodash/debounce';
 import React, { useEffect } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchSuggestions } from 'soapbox/actions/suggestions';
 import ScrollableList from 'soapbox/components/scrollable_list';
@@ -9,8 +9,13 @@ import AccountContainer from 'soapbox/containers/account_container';
 import Column from 'soapbox/features/ui/components/column';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 
+const messages = defineMessages({
+  heading: { id: 'followRecommendations.heading', defaultMessage: 'Suggested profiles' },
+});
+
 const FollowRecommendations: React.FC = () => {
   const dispatch = useAppDispatch();
+  const intl = useIntl();
   const features = useFeatures();
 
   const suggestions = useAppSelector((state) => state.suggestions.items);
@@ -31,7 +36,7 @@ const FollowRecommendations: React.FC = () => {
 
   if (suggestions.size === 0 && !isLoading) {
     return (
-      <Column label='Suggested profiles'>
+      <Column label={intl.formatMessage(messages.heading)}>
         <Text align='center'>
           <FormattedMessage id='empty_column.follow_recommendations' defaultMessage='Looks like no suggestions could be generated for you. You can try using search to look for people you might know or explore trending hashtags.' />
         </Text>
@@ -40,7 +45,7 @@ const FollowRecommendations: React.FC = () => {
   }
 
   return (
-    <Column label='Suggested profiles'>
+    <Column label={intl.formatMessage(messages.heading)}>
       <Stack space={4}>
         <ScrollableList
           isLoading={isLoading}

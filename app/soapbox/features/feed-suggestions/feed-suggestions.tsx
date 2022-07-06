@@ -1,4 +1,5 @@
 import React from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import VerificationBadge from 'soapbox/components/verification_badge';
@@ -8,6 +9,11 @@ import { Card, CardBody, CardTitle, HStack, Stack, Text } from '../../components
 import ActionButton from '../ui/components/action-button';
 
 import type { Account } from 'soapbox/types/entities';
+
+const messages = defineMessages({
+  heading: { id: 'feedSuggestions.heading', defaultMessage: 'Suggested profiles' },
+  viewAll: { id: 'feedSuggestions.viewAll', defaultMessage: 'View all' },
+});
 
 const SuggestionItem = ({ accountId }: { accountId: string }) => {
   const account = useAccount(accountId) as Account;
@@ -52,18 +58,19 @@ const SuggestionItem = ({ accountId }: { accountId: string }) => {
 };
 
 const FeedSuggestions = () => {
+  const intl = useIntl();
   const suggestedProfiles = useAppSelector((state) => state.suggestions.items);
 
   return (
     <Card size='lg' variant='rounded'>
       <HStack justifyContent='between' alignItems='center'>
-        <CardTitle title='Suggested profiles' />
+        <CardTitle title={intl.formatMessage(messages.heading)} />
 
         <Link
           to='/suggestions'
           className='text-primary-600 dark:text-primary-400 hover:underline'
         >
-          View all
+          {intl.formatMessage(messages.viewAll)}
         </Link>
       </HStack>
 
