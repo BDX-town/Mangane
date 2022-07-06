@@ -137,7 +137,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
         timestamp={status.created_at}
         withRelationship={false}
         showProfileHoverCard={!compose}
-        withLinkToProfile={false}
+        withLinkToProfile={!compose}
       />
 
       {renderReplyMentions()}
