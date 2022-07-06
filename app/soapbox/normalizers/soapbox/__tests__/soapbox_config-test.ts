@@ -32,6 +32,6 @@ describe('normalizeSoapboxConfig()', () => {
     const result = normalizeSoapboxConfig(require('soapbox/__fixtures__/spinster-soapbox.json'));
     expect(ImmutableRecord.isRecord(result.promoPanel)).toBe(true);
     expect(ImmutableRecord.isRecord(result.promoPanel.items.get(0))).toBe(true);
-    expect(result.promoPanel.items.get(2).icon).toBe('question-circle');
+    expect(result.promoPanel.items.get(2)?.icon).toBe('question-circle');
   });
 });

@@ -2,6 +2,8 @@ import { Record as ImmutableRecord, fromJS } from 'immutable';
 
 import { normalizeStatus } from '../status';
 
+import type { Poll, Card } from 'soapbox/types/entities';
+
 describe('normalizeStatus()', () => {
   it('adds base fields', () => {
     const status = {};
@@ -42,8 +44,8 @@ describe('normalizeStatus()', () => {
     const result = normalizeStatus(status).mentions;
 
     expect(result.size).toBe(1);
-    expect(result.get(0).toJS()).toMatchObject(expected);
-    expect(result.get(0).id).toEqual('106801667066418367');
+    expect(result.get(0)?.toJS()).toMatchObject(expected);
+    expect(result.get(0)?.id).toEqual('106801667066418367');
     expect(ImmutableRecord.isRecord(result.get(0))).toBe(true);
   });
 
@@ -101,8 +103,7 @@ describe('normalizeStatus()', () => {
     const result = normalizeStatus(status).media_attachments;
 
     expect(result.size).toBe(4);
-    expect(result.get(0).text_url).toBe(undefined);
-    expect(result.get(1).meta).toEqual(fromJS({}));
+    expect(result.get(1)?.meta).toEqual(fromJS({}));
     expect(result.getIn([1, 'pleroma', 'mime_type'])).toBe('application/x-nes-rom');
     expect(ImmutableRecord.isRecord(result.get(3))).toBe(true);
   });
@@ -147,6 +148,7 @@ describe('normalizeStatus()', () => {
   it('normalizes poll and poll options', () => {
     const status = { poll: { options: [{ title: 'Apples' }] } };
     const result = normalizeStatus(status);
+    const poll = result.poll as Poll;
 
     const expected = {
       options: [{ title: 'Apples', votes_count: 0 }],
@@ -159,46 +161,49 @@ describe('normalizeStatus()', () => {
       voted: false,
     };
 
-    expect(ImmutableRecord.isRecord(result.poll)).toBe(true);
-    expect(ImmutableRecord.isRecord(result.poll.options.get(0))).toBe(true);
-    expect(result.poll.toJS()).toMatchObject(expected);
-    expect(result.poll.expires_at instanceof Date).toBe(true);
+    expect(ImmutableRecord.isRecord(poll)).toBe(true);
+    expect(ImmutableRecord.isRecord(poll.options.get(0))).toBe(true);
+    expect(poll.toJS()).toMatchObject(expected);
+    expect(poll.expires_at instanceof Date).toBe(true);
   });
 
   it('normalizes a Pleroma logged-out poll', () => {
     const status = require('soapbox/__fixtures__/pleroma-status-with-poll.json');
     const result = normalizeStatus(status);
+    const poll = result.poll as Poll;
 
     // Adds logged-in fields
-    expect(result.poll.voted).toBe(false);
-    expect(result.poll.own_votes).toBe(null);
+    expect(poll.voted).toBe(false);
+    expect(poll.own_votes).toBe(null);
   });
 
   it('normalizes poll with emojis', () => {
     const status = require('soapbox/__fixtures__/pleroma-status-with-poll-with-emojis.json');
     const result = normalizeStatus(status);
+    const poll = result.poll as Poll;
 
     // Emojifies poll options
-    expect(result.poll.options.get(1).title_emojified)
+    expect(poll.options.get(1)?.title_emojified)
       .toEqual('Custom emoji <img draggable="false" class="emojione" alt=":gleason_excited:" title=":gleason_excited:" src="https://gleasonator.com/emoji/gleason_emojis/gleason_excited.png" /> ');
 
     // Parses emojis as Immutable.Record's
-    expect(ImmutableRecord.isRecord(result.poll.emojis.get(0))).toBe(true);
-    expect(result.poll.emojis.get(1).shortcode).toEqual('soapbox');
+    expect(ImmutableRecord.isRecord(poll.emojis.get(0))).toBe(true);
+    expect(poll.emojis.get(1)?.shortcode).toEqual('soapbox');
   });
 
   it('normalizes a card', () => {
     const status = require('soapbox/__fixtures__/status-with-card.json');
     const result = normalizeStatus(status);
+    const card = result.card as Card;
 
-    expect(ImmutableRecord.isRecord(result.card)).toBe(true);
-    expect(result.card.type).toEqual('link');
-    expect(result.card.provider_url).toEqual('https://soapbox.pub');
+    expect(ImmutableRecord.isRecord(card)).toBe(true);
+    expect(card.type).toEqual('link');
+    expect(card.provider_url).toEqual('https://soapbox.pub');
   });
 
   it('preserves Truth Social external_video_id', () => {
     const status = require('soapbox/__fixtures__/truthsocial-status-with-external-video.json');
     const result = normalizeStatus(status);
-    expect(result.media_attachments.get(0).external_video_id).toBe('vwfnq9');
+    expect(result.media_attachments.get(0)?.external_video_id).toBe('vwfnq9');
   });
 });
