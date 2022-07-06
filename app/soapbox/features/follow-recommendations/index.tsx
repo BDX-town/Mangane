@@ -61,6 +61,7 @@ const FollowRecommendations: React.FC = () => {
                 id={suggestedProfile.account}
                 withAccountNote
                 showProfileHoverCard={false}
+                actionAlignment='top'
               />
             ))
           ) : (
