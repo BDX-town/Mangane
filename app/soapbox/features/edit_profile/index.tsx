@@ -197,7 +197,7 @@ const EditProfile: React.FC = () => {
   const handleSubmit: React.FormEventHandler = (event) => {
     const promises = [];
 
-    promises.push(dispatch(patchMe(data)));
+    promises.push(dispatch(patchMe(data, true)));
 
     if (features.muteStrangers) {
       promises.push(

@@ -6,7 +6,7 @@ import api from '../api';
 import { loadCredentials } from './auth';
 import { importFetchedAccount } from './importer';
 
-import type { AxiosError } from 'axios';
+import type { AxiosError, AxiosRequestHeaders } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -62,16 +62,16 @@ const persistAuthAccount = (account: APIEntity, params: Record<string, any>) => 
   }
 };
 
-const patchMe = (params: Record<string, any>) =>
+const patchMe = (params: Record<string, any>, isFormData = false) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(patchMeRequest());
 
+    const headers: AxiosRequestHeaders = isFormData ? {
+      'Content-Type': 'multipart/form-data',
+    } : {};
+
     return api(getState)
-      .patch('/api/v1/accounts/update_credentials', params, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
+      .patch('/api/v1/accounts/update_credentials', params, { headers })
       .then(response => {
         persistAuthAccount(response.data, params);
         dispatch(patchMeSuccess(response.data));
