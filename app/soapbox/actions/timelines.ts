@@ -142,7 +142,7 @@ const replaceHomeTimeline = (
   { maxId }: Record<string, any> = {},
 ) => (dispatch: AppDispatch, _getState: () => RootState) => {
   dispatch({ type: TIMELINE_REPLACE, accountId });
-  dispatch(expandHomeTimeline({ accountId, maxId }));
+  dispatch(expandHomeTimeline({ accountId, maxId }, () => dispatch(insertSuggestionsIntoTimeline())));
 };
 
 const expandTimeline = (timelineId: string, path: string, params: Record<string, any> = {}, done = noOp) =>
