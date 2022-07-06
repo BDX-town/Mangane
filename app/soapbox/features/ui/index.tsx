@@ -9,6 +9,7 @@ import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
 import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin';
+import { fetchAnnouncements } from 'soapbox/actions/announcements';
 import { fetchChats } from 'soapbox/actions/chats';
 import { uploadCompose, resetCompose } from 'soapbox/actions/compose';
 import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
@@ -447,6 +448,8 @@ const UI: React.FC = ({ children }) => {
       // @ts-ignore
       .then(() => dispatch(fetchMarker(['notifications'])))
       .catch(console.error);
+
+    dispatch(fetchAnnouncements());
 
     if (features.chats) {
       dispatch(fetchChats());

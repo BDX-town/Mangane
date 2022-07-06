@@ -142,6 +142,11 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     accountWebsite: v.software === TRUTHSOCIAL,
 
+    announcements: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
+      v.software === PLEROMA && gte(v.version, '2.2.49'),
+    ]),
+
     /**
      * Set your birthday and view upcoming birthdays.
      * @see GET /api/v1/pleroma/birthdays
