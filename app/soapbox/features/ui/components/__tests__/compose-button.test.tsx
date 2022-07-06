@@ -1,5 +1,4 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
@@ -11,7 +10,7 @@ import rootReducer from 'soapbox/reducers';
 
 import ComposeButton from '../compose-button';
 
-const store = mockStore(rootReducer(ImmutableMap(), {}));
+const store = mockStore(rootReducer(undefined, {} as any));
 const renderComposeButton = () => {
   render(
     <Provider store={store}>
