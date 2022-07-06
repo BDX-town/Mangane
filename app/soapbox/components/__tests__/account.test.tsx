@@ -5,6 +5,8 @@ import { render, screen } from '../../jest/test-helpers';
 import { normalizeAccount } from '../../normalizers';
 import Account from '../account';
 
+import type { ReducerAccount } from 'soapbox/reducers/accounts';
+
 describe('<Account />', () => {
   it('renders account name and username', () => {
     const account = normalizeAccount({
@@ -12,7 +14,7 @@ describe('<Account />', () => {
       acct: 'justin-username',
       display_name: 'Justin L',
       avatar: 'test.jpg',
-    });
+    }) as ReducerAccount;
 
     const store = {
       accounts: ImmutableMap({
@@ -20,7 +22,7 @@ describe('<Account />', () => {
       }),
     };
 
-    render(<Account account={account} />, null, store);
+    render(<Account account={account} />, undefined, store);
     expect(screen.getByTestId('account')).toHaveTextContent('Justin L');
     expect(screen.getByTestId('account')).toHaveTextContent(/justin-username/i);
   });
@@ -33,7 +35,7 @@ describe('<Account />', () => {
         display_name: 'Justin L',
         avatar: 'test.jpg',
         verified: true,
-      });
+      }) as ReducerAccount;
 
       const store = {
         accounts: ImmutableMap({
@@ -41,7 +43,7 @@ describe('<Account />', () => {
         }),
       };
 
-      render(<Account account={account} />, null, store);
+      render(<Account account={account} />, undefined, store);
       expect(screen.getByTestId('verified-badge')).toBeInTheDocument();
     });
 
@@ -52,7 +54,7 @@ describe('<Account />', () => {
         display_name: 'Justin L',
         avatar: 'test.jpg',
         verified: false,
-      });
+      }) as ReducerAccount;
 
       const store = {
         accounts: ImmutableMap({
@@ -60,7 +62,7 @@ describe('<Account />', () => {
         }),
       };
 
-      render(<Account account={account} />, null, store);
+      render(<Account account={account} />, undefined, store);
       expect(screen.queryAllByTestId('verified-badge')).toHaveLength(0);
     });
   });

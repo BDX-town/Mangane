@@ -12,11 +12,13 @@ import '@testing-library/jest-dom';
 import NotificationsContainer from '../features/ui/containers/notifications_container';
 import { default as rootReducer } from '../reducers';
 
+import type { StateRecord } from 'soapbox/reducers';
+
 // Mock Redux
 // https://redux.js.org/recipes/writing-tests/
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
-let rootState = rootReducer(undefined, {} as Action);
+let rootState = rootReducer(undefined, {} as Action) as unknown as ReturnType<typeof StateRecord>;
 
 /** Apply actions to the state, one at a time. */
 const applyActions = (state: any, actions: any, reducer: any) => {

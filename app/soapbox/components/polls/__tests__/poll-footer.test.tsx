@@ -36,7 +36,7 @@ describe('<PollFooter />', () => {
       });
 
       const user = userEvent.setup();
-      const store = mockStore(rootReducer(undefined, {}));
+      const store = mockStore(rootReducer(undefined, {} as any));
       render(
         <Provider store={store}>
           <IntlProvider locale='en'>
