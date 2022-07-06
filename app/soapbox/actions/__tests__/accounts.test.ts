@@ -1,10 +1,10 @@
 import { Map as ImmutableMap } from 'immutable';
 
 import { __stub } from 'soapbox/api';
-import { mockStore } from 'soapbox/jest/test-helpers';
-import rootReducer from 'soapbox/reducers';
+import { mockStore, rootState, rootReducer } from 'soapbox/jest/test-helpers';
+import { ListRecord, ReducerRecord } from 'soapbox/reducers/user_lists';
 
-import { normalizeAccount } from '../../normalizers';
+import { normalizeAccount, normalizeInstance, normalizeRelationship } from '../../normalizers';
 import {
   authorizeFollowRequest,
   blockAccount,
@@ -28,7 +28,7 @@ import {
   unsubscribeAccount,
 } from '../accounts';
 
-let store;
+let store: ReturnType<typeof mockStore>;
 
 describe('createAccount()', () => {
   const params = {
@@ -37,7 +37,7 @@ describe('createAccount()', () => {
 
   describe('with a successful API request', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {});
+      const state = rootState;
       store = mockStore(state);
 
       __stub((mock) => {
@@ -74,10 +74,10 @@ describe('fetchAccount()', () => {
         avatar: 'test.jpg',
       });
 
-      const state = rootReducer(undefined, {})
+      const state = rootReducer(undefined, {} as any)
         .set('accounts', ImmutableMap({
           [id]: account,
-        }));
+        }) as any);
 
       store = mockStore(state);
 
@@ -98,7 +98,7 @@ describe('fetchAccount()', () => {
     const account = require('soapbox/__fixtures__/pleroma-account.json');
 
     beforeEach(() => {
-      const state = rootReducer(undefined, {});
+      const state = rootState;
       store = mockStore(state);
 
       __stub((mock) => {
@@ -125,7 +125,7 @@ describe('fetchAccount()', () => {
 
   describe('with an unsuccessful API request', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {});
+      const state = rootState;
       store = mockStore(state);
 
       __stub((mock) => {
@@ -155,7 +155,7 @@ describe('fetchAccount()', () => {
 describe('fetchAccountByUsername()', () => {
   const id = '123';
   const username = 'tiger';
-  let state, account;
+  let state, account: any;
 
   beforeEach(() => {
     account = normalizeAccount({
@@ -166,7 +166,7 @@ describe('fetchAccountByUsername()', () => {
       birthday: undefined,
     });
 
-    state = rootReducer(undefined, {})
+    state = rootState
       .set('accounts', ImmutableMap({
         [id]: account,
       }));
@@ -180,15 +180,15 @@ describe('fetchAccountByUsername()', () => {
 
   describe('when "accountByUsername" feature is enabled', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {})
-        .set('instance', {
+      const state = rootState
+        .set('instance', normalizeInstance({
           version: '2.7.2 (compatible; Pleroma 2.4.52-1337-g4779199e.gleasonator+soapbox)',
           pleroma: ImmutableMap({
             metadata: ImmutableMap({
               features: [],
             }),
           }),
-        })
+        }))
         .set('me', '123');
       store = mockStore(state);
     });
@@ -243,15 +243,15 @@ describe('fetchAccountByUsername()', () => {
 
   describe('when "accountLookup" feature is enabled', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {})
-        .set('instance', {
+      const state = rootState
+        .set('instance', normalizeInstance({
           version: '3.4.1 (compatible; TruthSocial 1.0.0)',
           pleroma: ImmutableMap({
             metadata: ImmutableMap({
               features: [],
             }),
           }),
-        })
+        }))
         .set('me', '123');
       store = mockStore(state);
     });
@@ -308,7 +308,7 @@ describe('fetchAccountByUsername()', () => {
 
   describe('when using the accountSearch function', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -373,12 +373,12 @@ describe('fetchAccountByUsername()', () => {
 describe('followAccount()', () => {
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
     it('should do nothing', async() => {
-      await store.dispatch(followAccount(1));
+      await store.dispatch(followAccount('1'));
       const actions = store.getActions();
 
       expect(actions).toEqual([]);
@@ -386,10 +386,10 @@ describe('followAccount()', () => {
   });
 
   describe('when logged in', () => {
-    const id = 1;
+    const id = '1';
 
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -460,12 +460,12 @@ describe('followAccount()', () => {
 describe('unfollowAccount()', () => {
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
     it('should do nothing', async() => {
-      await store.dispatch(unfollowAccount(1));
+      await store.dispatch(unfollowAccount('1'));
       const actions = store.getActions();
 
       expect(actions).toEqual([]);
@@ -473,10 +473,10 @@ describe('unfollowAccount()', () => {
   });
 
   describe('when logged in', () => {
-    const id = 1;
+    const id = '1';
 
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -489,7 +489,7 @@ describe('unfollowAccount()', () => {
 
       it('should dispatch the correct actions', async() => {
         const expectedActions = [
-          { type: 'ACCOUNT_UNFOLLOW_REQUEST', id: 1, skipLoading: true },
+          { type: 'ACCOUNT_UNFOLLOW_REQUEST', id: '1', skipLoading: true },
           {
             type: 'ACCOUNT_UNFOLLOW_SUCCESS',
             relationship: { success: true },
@@ -534,11 +534,11 @@ describe('unfollowAccount()', () => {
 });
 
 describe('blockAccount()', () => {
-  const id = 1;
+  const id = '1';
 
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -552,7 +552,7 @@ describe('blockAccount()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -601,11 +601,11 @@ describe('blockAccount()', () => {
 });
 
 describe('unblockAccount()', () => {
-  const id = 1;
+  const id = '1';
 
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -619,7 +619,7 @@ describe('unblockAccount()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -667,11 +667,11 @@ describe('unblockAccount()', () => {
 });
 
 describe('muteAccount()', () => {
-  const id = 1;
+  const id = '1';
 
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -685,7 +685,7 @@ describe('muteAccount()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -734,11 +734,11 @@ describe('muteAccount()', () => {
 });
 
 describe('unmuteAccount()', () => {
-  const id = 1;
+  const id = '1';
 
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -752,7 +752,7 @@ describe('unmuteAccount()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -800,11 +800,11 @@ describe('unmuteAccount()', () => {
 });
 
 describe('subscribeAccount()', () => {
-  const id = 1;
+  const id = '1';
 
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -818,7 +818,7 @@ describe('subscribeAccount()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -866,11 +866,11 @@ describe('subscribeAccount()', () => {
 });
 
 describe('unsubscribeAccount()', () => {
-  const id = 1;
+  const id = '1';
 
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -884,7 +884,7 @@ describe('unsubscribeAccount()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -936,7 +936,7 @@ describe('removeFromFollowers()', () => {
 
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -950,7 +950,7 @@ describe('removeFromFollowers()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -1002,7 +1002,7 @@ describe('fetchFollowers()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -1059,7 +1059,7 @@ describe('expandFollowers()', () => {
 
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -1073,28 +1073,28 @@ describe('expandFollowers()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {})
-        .set('user_lists', {
+      const state = rootState
+        .set('user_lists', ReducerRecord({
           followers: ImmutableMap({
-            [id]: {
+            [id]: ListRecord({
               next: 'next_url',
-            },
+            }),
           }),
-        })
+        }))
         .set('me', '123');
       store = mockStore(state);
     });
 
     describe('when the url is null', () => {
       beforeEach(() => {
-        const state = rootReducer(undefined, {})
-          .set('user_lists', {
+        const state = rootState
+          .set('user_lists', ReducerRecord({
             followers: ImmutableMap({
-              [id]: {
+              [id]: ListRecord({
                 next: null,
-              },
+              }),
             }),
-          })
+          }))
           .set('me', '123');
         store = mockStore(state);
       });
@@ -1160,7 +1160,7 @@ describe('fetchFollowing()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -1217,7 +1217,7 @@ describe('expandFollowing()', () => {
 
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -1231,28 +1231,28 @@ describe('expandFollowing()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {})
-        .set('user_lists', {
+      const state = rootState
+        .set('user_lists', ReducerRecord({
           following: ImmutableMap({
-            [id]: {
+            [id]: ListRecord({
               next: 'next_url',
-            },
+            }),
           }),
-        })
+        }))
         .set('me', '123');
       store = mockStore(state);
     });
 
     describe('when the url is null', () => {
       beforeEach(() => {
-        const state = rootReducer(undefined, {})
-          .set('user_lists', {
+        const state = rootState
+          .set('user_lists', ReducerRecord({
             following: ImmutableMap({
-              [id]: {
+              [id]: ListRecord({
                 next: null,
-              },
+              }),
             }),
-          })
+          }))
           .set('me', '123');
         store = mockStore(state);
       });
@@ -1318,7 +1318,7 @@ describe('fetchRelationships()', () => {
 
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -1332,15 +1332,15 @@ describe('fetchRelationships()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {})
+      const state = rootState
         .set('me', '123');
       store = mockStore(state);
     });
 
     describe('without newAccountIds', () => {
       beforeEach(() => {
-        const state = rootReducer(undefined, {})
-          .set('relationships', ImmutableMap({ [id]: {} }))
+        const state = rootState
+          .set('relationships', ImmutableMap({ [id]: normalizeRelationship({}) }))
           .set('me', '123');
         store = mockStore(state);
       });
@@ -1355,7 +1355,7 @@ describe('fetchRelationships()', () => {
 
     describe('with a successful API request', () => {
       beforeEach(() => {
-        const state = rootReducer(undefined, {})
+        const state = rootState
           .set('relationships', ImmutableMap({}))
           .set('me', '123');
         store = mockStore(state);
@@ -1409,7 +1409,7 @@ describe('fetchRelationships()', () => {
 describe('fetchFollowRequests()', () => {
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -1423,14 +1423,14 @@ describe('fetchFollowRequests()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {})
+      const state = rootState
         .set('me', '123');
       store = mockStore(state);
     });
 
     describe('with a successful API request', () => {
       beforeEach(() => {
-        const state = rootReducer(undefined, {})
+        const state = rootState
           .set('relationships', ImmutableMap({}))
           .set('me', '123');
         store = mockStore(state);
@@ -1483,7 +1483,7 @@ describe('fetchFollowRequests()', () => {
 describe('expandFollowRequests()', () => {
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -1497,24 +1497,24 @@ describe('expandFollowRequests()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {})
-        .set('user_lists', {
-          follow_requests: {
+      const state = rootState
+        .set('user_lists', ReducerRecord({
+          follow_requests: ListRecord({
             next: 'next_url',
-          },
-        })
+          }),
+        }))
         .set('me', '123');
       store = mockStore(state);
     });
 
     describe('when the url is null', () => {
       beforeEach(() => {
-        const state = rootReducer(undefined, {})
-          .set('user_lists', {
-            follow_requests: {
+        const state = rootState
+          .set('user_lists', ReducerRecord({
+            follow_requests: ListRecord({
               next: null,
-            },
-          })
+            }),
+          }))
           .set('me', '123');
         store = mockStore(state);
       });
@@ -1579,7 +1579,7 @@ describe('authorizeFollowRequest()', () => {
 
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -1593,7 +1593,7 @@ describe('authorizeFollowRequest()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
