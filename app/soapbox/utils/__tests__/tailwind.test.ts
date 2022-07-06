@@ -4,7 +4,7 @@ import { toTailwind, fromLegacyColors, expandPalette } from '../tailwind';
 
 describe('toTailwind()', () => {
   it('handles empty Soapbox config', () => {
-    const soapboxConfig = ImmutableMap();
+    const soapboxConfig = ImmutableMap<string, any>();
     const result = toTailwind(soapboxConfig);
     const expected = ImmutableMap({ colors: ImmutableMap() });
     expect(result).toEqual(expected);
