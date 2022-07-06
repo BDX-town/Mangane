@@ -1,6 +1,6 @@
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { render, RenderOptions } from '@testing-library/react';
-import { merge } from 'immutable';
+import { merge, Record as ImmutableRecord } from 'immutable';
 import React, { FC, ReactElement } from 'react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
@@ -17,7 +17,8 @@ import type { AppDispatch } from 'soapbox/store';
 
 // Mock Redux
 // https://redux.js.org/recipes/writing-tests/
-let rootState = rootReducer(undefined, {} as Action);
+const gg = rootReducer(undefined, {} as Action);
+const rootState = gg as unknown as ImmutableRecord<typeof gg>;
 const mockStore = configureMockStore<typeof rootState, AnyAction, AppDispatch>([thunk]);
 
 /** Apply actions to the state, one at a time. */
@@ -29,12 +30,13 @@ const createTestStore = (initialState: any) => createStore(rootReducer, initialS
 
 const TestApp: FC<any> = ({ children, storeProps, routerProps = {} }) => {
   let store: any;
+  let appState = rootState;
 
   if (storeProps) {
-    rootState = merge(rootState, storeProps);
-    store = createTestStore(rootState);
+    appState = merge(rootState, storeProps);
+    store = createTestStore(appState);
   } else {
-    store = createTestStore(rootState);
+    store = createTestStore(appState);
   }
 
   const props = {
