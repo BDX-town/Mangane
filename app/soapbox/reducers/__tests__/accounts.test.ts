@@ -23,7 +23,7 @@ describe('accounts reducer', () => {
       const action = { type: ACCOUNT_IMPORT, account };
       const result = reducer(undefined, action).get('106801667066418367');
 
-      expect(result.moved).toBe('107945464165013501');
+      expect(result?.moved).toBe('107945464165013501');
     });
   });
 });

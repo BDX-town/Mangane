@@ -4,7 +4,7 @@ import reducer from '../onboarding';
 
 describe('onboarding reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual({
+    expect(reducer(undefined, {} as any)).toEqual({
       needsOnboarding: false,
     });
   });
@@ -12,7 +12,7 @@ describe('onboarding reducer', () => {
   describe('ONBOARDING_START', () => {
     it('sets "needsOnboarding" to "true"', () => {
       const initialState = { needsOnboarding: false };
-      const action = { type: ONBOARDING_START };
+      const action = { type: ONBOARDING_START } as any;
       expect(reducer(initialState, action).needsOnboarding).toEqual(true);
     });
   });
@@ -20,7 +20,7 @@ describe('onboarding reducer', () => {
   describe('ONBOARDING_END', () => {
     it('sets "needsOnboarding" to "false"', () => {
       const initialState = { needsOnboarding: true };
-      const action = { type: ONBOARDING_END };
+      const action = { type: ONBOARDING_END } as any;
       expect(reducer(initialState, action).needsOnboarding).toEqual(false);
     });
   });
