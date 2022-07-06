@@ -1,3 +1,4 @@
+import { configureMockStore } from '@jedmao/redux-mock-store';
 import { render, RenderOptions } from '@testing-library/react';
 import { merge } from 'immutable';
 import React, { FC, ReactElement } from 'react';
@@ -5,20 +6,19 @@ import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { Action, applyMiddleware, createStore } from 'redux';
-import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import '@testing-library/jest-dom';
 
 import NotificationsContainer from '../features/ui/containers/notifications_container';
 import { default as rootReducer } from '../reducers';
 
-import type { StateRecord } from 'soapbox/reducers';
+import type { AnyAction } from 'redux';
+import type { AppDispatch } from 'soapbox/store';
 
 // Mock Redux
 // https://redux.js.org/recipes/writing-tests/
-const middlewares = [thunk];
-const mockStore = configureMockStore(middlewares);
-let rootState = rootReducer(undefined, {} as Action) as unknown as ReturnType<typeof StateRecord>;
+let rootState = rootReducer(undefined, {} as Action);
+const mockStore = configureMockStore<typeof rootState, AnyAction, AppDispatch>([thunk]);
 
 /** Apply actions to the state, one at a time. */
 const applyActions = (state: any, actions: any, reducer: any) => {

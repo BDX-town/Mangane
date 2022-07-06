@@ -1603,6 +1603,11 @@
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.3.tgz#e45e384e4b8ec16bce2fd903af78450f6bf7ec98"
   integrity sha512-ZXRY4jNvVgSVQ8DL3LTcakaAtXwTVUxE81hslsyD2AtoXW/wVob10HkOJ1X/pAlcI7D+2YoZKg5do8G/w6RYgA==
 
+"@jedmao/redux-mock-store@^3.0.5":
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/@jedmao/redux-mock-store/-/redux-mock-store-3.0.5.tgz#015fa4fc96bfc02b61ca221d9ea0476b78c70c97"
+  integrity sha512-zNcVCd5/ekSMdQWk64CqTPM24D9Lo59st9KvS+fljGpQXV4SliB7Vo0NFQIgvQJWPYeeobdngnrGy0XbCaARNw==
+
 "@jest/console@^27.5.1":
   version "27.5.1"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-27.5.1.tgz#260fe7239602fe5130a94f1aa386eff54b014bba"
@@ -10027,13 +10032,6 @@ redux-immutable@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/redux-immutable/-/redux-immutable-4.0.0.tgz#3a1a32df66366462b63691f0e1dc35e472bbc9f3"
   integrity sha1-Ohoy32Y2ZGK2NpHw4dw15HK7yfM=
-
-redux-mock-store@^1.5.4:
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/redux-mock-store/-/redux-mock-store-1.5.4.tgz#90d02495fd918ddbaa96b83aef626287c9ab5872"
-  integrity sha512-xmcA0O/tjCLXhh9Fuiq6pMrJCwFRaouA8436zcikdIpYWWCjU76CRk+i2bHx8EeiSiMGnB85/lZdU3wIJVXHTA==
-  dependencies:
-    lodash.isplainobject "^4.0.6"
 
 redux-thunk@^2.2.0:
   version "2.3.0"
