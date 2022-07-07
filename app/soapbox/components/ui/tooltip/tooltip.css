@@ -6,3 +6,7 @@
   @apply pointer-events-none absolute px-2.5 py-1.5 rounded shadow whitespace-nowrap text-xs font-medium bg-gray-800 text-white;
   z-index: 100;
 }
+
+[data-reach-tooltip-arrow] {
+  @apply absolute z-50 w-0 h-0 border-l-8 border-solid border-l-transparent border-r-8 border-r-transparent border-b-8 border-b-gray-800;
+}
