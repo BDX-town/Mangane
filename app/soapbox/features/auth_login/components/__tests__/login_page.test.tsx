@@ -12,7 +12,7 @@ describe('<LoginPage />', () => {
       }),
     };
 
-    render(<LoginPage />, null, store);
+    render(<LoginPage />, undefined, store);
 
     expect(screen.getByRole('heading')).toHaveTextContent('Sign In');
   });

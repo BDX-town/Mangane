@@ -1,18 +1,20 @@
 import { Map as ImmutableMap } from 'immutable';
 
 import { __stub } from 'soapbox/api';
-import { mockStore } from 'soapbox/jest/test-helpers';
-import rootReducer from 'soapbox/reducers';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers';
+import { ReducerRecord, EditRecord } from 'soapbox/reducers/account_notes';
 
-import { normalizeAccount } from '../../normalizers';
+import { normalizeAccount, normalizeRelationship } from '../../normalizers';
 import { changeAccountNoteComment, initAccountNoteModal, submitAccountNote } from '../account-notes';
 
+import type { Account } from 'soapbox/types/entities';
+
 describe('submitAccountNote()', () => {
-  let store;
+  let store: ReturnType<typeof mockStore>;
 
   beforeEach(() => {
-    const state = rootReducer(undefined, {})
-      .set('account_notes', { edit: { account: 1, comment: 'hello' } });
+    const state = rootState
+      .set('account_notes', ReducerRecord({ edit: EditRecord({ account: '1', comment: 'hello' }) }));
     store = mockStore(state);
   });
 
@@ -60,11 +62,11 @@ describe('submitAccountNote()', () => {
 });
 
 describe('initAccountNoteModal()', () => {
-  let store;
+  let store: ReturnType<typeof mockStore>;
 
   beforeEach(() => {
-    const state = rootReducer(undefined, {})
-      .set('relationships', ImmutableMap({ 1: { note: 'hello' } }));
+    const state = rootState
+      .set('relationships', ImmutableMap({ '1': normalizeRelationship({ note: 'hello' }) }));
     store = mockStore(state);
   });
 
@@ -75,7 +77,7 @@ describe('initAccountNoteModal()', () => {
       display_name: 'Justin L',
       avatar: 'test.jpg',
       verified: true,
-    });
+    }) as Account;
     const expectedActions = [
       { type: 'ACCOUNT_NOTE_INIT_MODAL', account, comment: 'hello' },
       { type: 'MODAL_OPEN', modalType: 'ACCOUNT_NOTE' },
@@ -88,10 +90,10 @@ describe('initAccountNoteModal()', () => {
 });
 
 describe('changeAccountNoteComment()', () => {
-  let store;
+  let store: ReturnType<typeof mockStore>;
 
   beforeEach(() => {
-    const state = rootReducer(undefined, {});
+    const state = rootState;
     store = mockStore(state);
   });
 

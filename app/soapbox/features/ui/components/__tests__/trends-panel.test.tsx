@@ -23,7 +23,7 @@ describe('<TrendsPanel />', () => {
       })(),
     };
 
-    render(<TrendsPanel limit={1} />, null, store);
+    render(<TrendsPanel limit={1} />, undefined, store);
     expect(screen.getByTestId('hashtag')).toHaveTextContent(/hashtag 1/i);
     expect(screen.getByTestId('hashtag')).toHaveTextContent(/180 people talking/i);
     expect(screen.getByTestId('sparklines')).toBeInTheDocument();
@@ -46,7 +46,7 @@ describe('<TrendsPanel />', () => {
       })(),
     };
 
-    render(<TrendsPanel limit={3} />, null, store);
+    render(<TrendsPanel limit={3} />, undefined, store);
     expect(screen.queryAllByTestId('hashtag')).toHaveLength(2);
   });
 
@@ -67,7 +67,7 @@ describe('<TrendsPanel />', () => {
       })(),
     };
 
-    render(<TrendsPanel limit={1} />, null, store);
+    render(<TrendsPanel limit={1} />, undefined, store);
     expect(screen.queryAllByTestId('hashtag')).toHaveLength(1);
   });
 
@@ -79,7 +79,7 @@ describe('<TrendsPanel />', () => {
       })(),
     };
 
-    render(<TrendsPanel limit={1} />, null, store);
+    render(<TrendsPanel limit={1} />, undefined, store);
     expect(screen.queryAllByTestId('hashtag')).toHaveLength(0);
   });
 });

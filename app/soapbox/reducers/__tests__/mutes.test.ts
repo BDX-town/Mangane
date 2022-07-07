@@ -9,7 +9,7 @@ import reducer from '../mutes';
 
 describe('mutes reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {}).toJS()).toEqual({
+    expect(reducer(undefined, {} as any).toJS()).toEqual({
       new: {
         isSubmitting: false,
         accountId: null,

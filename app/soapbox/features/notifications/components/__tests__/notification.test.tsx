@@ -33,10 +33,12 @@ describe('<Notification />', () => {
 
   describe('grouped notifications', () => {
     it('renders a grouped follow notification for more than 2', async() => {
-      const { notification, state } = normalize(require('soapbox/__fixtures__/notification-follow.json'));
-      const groupedNotification = { ...notification.toJS(), total_count: 5 };
+      const { notification, state } = normalize({
+        ...require('soapbox/__fixtures__/notification-follow.json'),
+        total_count: 5,
+      });
 
-      render(<Notification notification={groupedNotification} />, undefined, state);
+      render(<Notification notification={notification} />, undefined, state);
 
       expect(screen.getByTestId('notification')).toBeInTheDocument();
       expect(screen.getByTestId('account')).toContainHTML('neko@rdrama.cc');
@@ -44,10 +46,12 @@ describe('<Notification />', () => {
     });
 
     it('renders a grouped follow notification for 1', async() => {
-      const { notification, state } = normalize(require('soapbox/__fixtures__/notification-follow.json'));
-      const groupedNotification = { ...notification.toJS(), total_count: 2 };
+      const { notification, state } = normalize({
+        ...require('soapbox/__fixtures__/notification-follow.json'),
+        total_count: 2,
+      });
 
-      render(<Notification notification={groupedNotification} />, undefined, state);
+      render(<Notification notification={notification} />, undefined, state);
 
       expect(screen.getByTestId('notification')).toBeInTheDocument();
       expect(screen.getByTestId('account')).toContainHTML('neko@rdrama.cc');

@@ -10,13 +10,13 @@ import {
 
 import type { AnyAction } from 'redux';
 
-const EditRecord = ImmutableRecord({
+export const EditRecord = ImmutableRecord({
   isSubmitting: false,
-  account: null,
+  account: null as string | null,
   comment: '',
 });
 
-const ReducerRecord = ImmutableRecord({
+export const ReducerRecord = ImmutableRecord({
   edit: EditRecord(),
 });
 

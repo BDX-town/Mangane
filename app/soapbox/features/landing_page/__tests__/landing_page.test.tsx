@@ -17,7 +17,7 @@ describe('<LandingPage />', () => {
       },
     });
 
-    render(<LandingPage />, null, state);
+    render(<LandingPage />, undefined, state);
 
     expect(screen.queryByTestId('registrations-open')).toBeInTheDocument();
     expect(screen.queryByTestId('registrations-closed')).not.toBeInTheDocument();
@@ -34,7 +34,7 @@ describe('<LandingPage />', () => {
       },
     });
 
-    render(<LandingPage />, null, state);
+    render(<LandingPage />, undefined, state);
 
     expect(screen.queryByTestId('registrations-closed')).toBeInTheDocument();
     expect(screen.queryByTestId('registrations-open')).not.toBeInTheDocument();
@@ -59,7 +59,7 @@ describe('<LandingPage />', () => {
       },
     }], rootReducer);
 
-    render(<LandingPage />, null, state);
+    render(<LandingPage />, undefined, state);
 
     expect(screen.queryByTestId('registrations-pepe')).toBeInTheDocument();
     expect(screen.queryByTestId('registrations-open')).not.toBeInTheDocument();
@@ -81,7 +81,7 @@ describe('<LandingPage />', () => {
       },
     }], rootReducer);
 
-    render(<LandingPage />, null, state);
+    render(<LandingPage />, undefined, state);
 
     expect(screen.queryByTestId('registrations-closed')).toBeInTheDocument();
     expect(screen.queryByTestId('registrations-pepe')).not.toBeInTheDocument();

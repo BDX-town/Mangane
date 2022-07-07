@@ -4,14 +4,14 @@ import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { fetchCarouselAvatars } from '../carousels';
 
 describe('fetchCarouselAvatars()', () => {
-  let store;
+  let store: ReturnType<typeof mockStore>;
 
   beforeEach(() => {
     store = mockStore(rootState);
   });
 
   describe('with a successful API request', () => {
-    let avatars;
+    let avatars: Record<string, any>[];
 
     beforeEach(() => {
       avatars = [
