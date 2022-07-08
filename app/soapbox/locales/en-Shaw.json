@@ -706,7 +706,7 @@
   "notification.birthday": "{name} has a birthday today",
   "notification.birthday.more": "{count} more {count, plural, one {friend} other {friends}}",
   "notification.birthday_plural": "{name} and {more} have birthday today",
-  "notification.chat_mention": "{name} 𐑕𐑧𐑯𐑑 𐑿 𐑩 𐑥𐑧𐑕𐑦𐑡",
+  "notification.pleroma:chat_mention": "{name} 𐑕𐑧𐑯𐑑 𐑿 𐑩 𐑥𐑧𐑕𐑦𐑡",
   "notification.favourite": "{name} 𐑤𐑲𐑒𐑑 𐑘𐑹 𐑐𐑴𐑕𐑑",
   "notification.follow": "{name} 𐑓𐑪𐑤𐑴𐑛 𐑿",
   "notification.follow_request": "{name} 𐑣𐑨𐑟 𐑮𐑦𐑒𐑢𐑧𐑕𐑑𐑩𐑛 𐑑 𐑓𐑪𐑤𐑴 𐑿",

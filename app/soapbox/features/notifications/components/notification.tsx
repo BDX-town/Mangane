@@ -82,7 +82,7 @@ const messages: Record<string | number | symbol, MessageDescriptor> = defineMess
     defaultMessage: '{name} moved to {targetName}',
   },
   'pleroma:chat_mention': {
-    id: 'notification.chat_mention',
+    id: 'notification.pleroma:chat_mention',
     defaultMessage: '{name} sent you a message',
   },
   'pleroma:emoji_reaction': {

@@ -706,7 +706,7 @@
   "notification.birthday": "{name} oggi festeggia il compleanno",
   "notification.birthday.more": "{count} e {count, plural, un {friend} più {friends}}",
   "notification.birthday_plural": "{name} e {more} oggi festeggiano il compleanno",
-  "notification.chat_mention": "{name} ti ha spedito un messaggio",
+  "notification.pleroma:chat_mention": "{name} ti ha spedito un messaggio",
   "notification.favourite": "{name} ha apprezzato il contenuto",
   "notification.follow": "{name} adesso ti segue",
   "notification.follow_request": "{name} ha chiesto di seguirti",

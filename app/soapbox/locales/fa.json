@@ -706,7 +706,7 @@
   "notification.birthday": "{name} has a birthday today",
   "notification.birthday.more": "{count} more {count, plural, one {friend} other {friends}}",
   "notification.birthday_plural": "{name} and {more} have birthday today",
-  "notification.chat_mention": "{name} sent you a message",
+  "notification.pleroma:chat_mention": "{name} sent you a message",
   "notification.favourite": "‫{name}‬ نوشتهٔ شما را پسندید",
   "notification.follow": "‫{name}‬ پیگیر شما شد",
   "notification.follow_request": "{name} has requested to follow you",
