@@ -14,7 +14,7 @@ import type { ScrollPosition } from 'soapbox/components/status';
 import type { NotificationType } from 'soapbox/normalizers/notification';
 import type { Account, Status, Notification as NotificationEntity } from 'soapbox/types/entities';
 
-const notificationForScreenReader = (intl: ReturnType<typeof useIntl>, message: string, timestamp: Date) => {
+const notificationForScreenReader = (intl: IntlShape, message: string, timestamp: Date) => {
   const output = [message];
 
   output.push(intl.formatDate(timestamp, { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }));
@@ -281,25 +281,24 @@ const Notification: React.FC<INotificaton> = (props) => {
 
   const message: React.ReactNode = type && account && typeof account === 'object' ? buildMessage(intl, type, account, notification.total_count, targetName, instance.title) : null;
 
+  const ariaLabel = messages[type] ? (
+    notificationForScreenReader(
+      intl,
+      intl.formatMessage(messages[type],
+      {
+        name: account && typeof account === 'object' ? account.acct : '',
+        targetName,
+      }),
+      notification.created_at,
+    )
+  ) : '';
+
   return (
     <HotKeys handlers={getHandlers()} data-testid='notification'>
       <div
         className='notification focusable'
         tabIndex={0}
-        aria-label={
-          notificationForScreenReader(
-            intl,
-            intl.formatMessage({
-              id: type && messages[type].id,
-              defaultMessage: type && messages[type].defaultMessage,
-            },
-            {
-              name: account && typeof account === 'object' ? account.acct : '',
-              targetName,
-            }),
-            notification.created_at,
-          )
-        }
+        aria-label={ariaLabel}
       >
         <div className='p-4 focusable'>
           <div className='mb-2'>
