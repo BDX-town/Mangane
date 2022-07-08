@@ -9,9 +9,9 @@ import { HStack, Text, Emoji } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import StatusContainer from 'soapbox/containers/status_container';
 import { useAppSelector } from 'soapbox/hooks';
+import { NotificationType, validType } from 'soapbox/utils/notification';
 
 import type { ScrollPosition } from 'soapbox/components/status';
-import type { NotificationType } from 'soapbox/normalizers/notification';
 import type { Account, Status, Notification as NotificationEntity } from 'soapbox/types/entities';
 
 const notificationForScreenReader = (intl: IntlShape, message: string, timestamp: Date) => {
@@ -48,7 +48,7 @@ const icons: Record<NotificationType, string> = {
   user_approved: require('@tabler/icons/icons/user-plus.svg'),
 };
 
-const messages: Record<string | number | symbol, MessageDescriptor> = defineMessages({
+const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
   follow: {
     id: 'notification.follow',
     defaultMessage: '{name} followed you',
@@ -221,7 +221,7 @@ const Notification: React.FC<INotificaton> = (props) => {
           className='w-4 h-4 flex-none'
         />
       );
-    } else if (type) {
+    } else if (validType(type)) {
       return (
         <Icon
           src={icons[type]}
@@ -279,9 +279,9 @@ const Notification: React.FC<INotificaton> = (props) => {
 
   const targetName = notification.target && typeof notification.target === 'object' ? notification.target.acct : '';
 
-  const message: React.ReactNode = type && account && typeof account === 'object' ? buildMessage(intl, type, account, notification.total_count, targetName, instance.title) : null;
+  const message: React.ReactNode = validType(type) && account && typeof account === 'object' ? buildMessage(intl, type, account, notification.total_count, targetName, instance.title) : null;
 
-  const ariaLabel = messages[type] ? (
+  const ariaLabel = validType(type) ? (
     notificationForScreenReader(
       intl,
       intl.formatMessage(messages[type], {
