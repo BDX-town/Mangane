@@ -1,13 +1,22 @@
 import classNames from 'classnames';
+import { Map as ImmutableMap } from 'immutable';
 import React, { useEffect, useRef, useState } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
+import { TransitionMotion, spring } from 'react-motion';
 import { useHistory } from 'react-router-dom';
 import ReactSwipeableViews from 'react-swipeable-views';
+import { createSelector } from 'reselect';
 
 import { Card, HStack, Widget } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import EmojiPickerDropdown from 'soapbox/features/compose/containers/emoji_picker_dropdown_container';
+import unicodeMapping from 'soapbox/features/emoji/emoji_unicode_mapping_light';
+import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
+import { joinPublicPath } from 'soapbox/utils/static';
 
+import type { RootState } from 'soapbox/store';
 import type { Announcement as AnnouncementEntity, Mention as MentionEntity } from 'soapbox/types/entities';
+
+const customEmojiMap = createSelector([(state: RootState) => state.custom_emojis], items => items.reduce((map, emoji) => map.set(emoji.shortcode, emoji), ImmutableMap()));
 
 const AnnouncementContent = ({ announcement }: { announcement: AnnouncementEntity }) => {
   const history = useHistory();
@@ -82,7 +91,118 @@ const AnnouncementContent = ({ announcement }: { announcement: AnnouncementEntit
   );
 };
 
-const Announcement = ({ announcement }: { announcement: AnnouncementEntity }) => {
+const Emoji = ({ emoji, emojiMap, hovered }) => {
+  const autoPlayGif = useSettings().get('autoPlayGif');
+
+  if (unicodeMapping[emoji]) {
+    const { filename, shortCode } = unicodeMapping[emoji];
+    const title = shortCode ? `:${shortCode}:` : '';
+
+    return (
+      <img
+        draggable='false'
+        className='emojione'
+        alt={emoji}
+        title={title}
+        src={joinPublicPath(`/emoji/${filename}.svg`)}
+      />
+    );
+  } else if (emojiMap.get(emoji)) {
+    const filename  = (autoPlayGif || hovered) ? emojiMap.getIn([emoji, 'url']) : emojiMap.getIn([emoji, 'static_url']);
+    const shortCode = `:${emoji}:`;
+
+    return (
+      <img
+        draggable='false'
+        className='emojione custom-emoji'
+        alt={shortCode}
+        title={shortCode}
+        src={filename}
+      />
+    );
+  } else {
+    return null;
+  }
+};
+
+
+const Reaction = ({ announcementId, reaction, addReaction, removeReaction, emojiMap, style }) => {
+  const [hovered, setHovered] = useState(false);
+
+  const handleClick = () => {
+    if (reaction.get('me')) {
+      removeReaction(announcementId, reaction.get('name'));
+    } else {
+      addReaction(announcementId, reaction.get('name'));
+    }
+  };
+
+  const handleMouseEnter = () => setHovered(true);
+
+  const handleMouseLeave = () => setHovered(false);
+
+  let shortCode = reaction.get('name');
+
+  if (unicodeMapping[shortCode]) {
+    shortCode = unicodeMapping[shortCode].shortCode;
+  }
+
+  return (
+    <button className={classNames('reactions-bar__item', { active: reaction.get('me') })} onClick={handleClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} title={`:${shortCode}:`} style={style}>
+      <span className='reactions-bar__item__emoji'><Emoji hovered={hovered} emoji={reaction.get('name')} emojiMap={emojiMap} /></span>
+      <span className='reactions-bar__item__count'>
+        {reaction.get('count')}
+        {/* <AnimatedNumber value={reaction.get('count')} /> */}
+      </span>
+    </button>
+  );
+
+
+};
+
+const ReactionsBar = ({ announcementId, reactions, addReaction, removeReaction, emojiMap }) => {
+  const reduceMotion = useSettings().get('reduceMotion');
+
+  const handleEmojiPick = data => {
+    addReaction(announcementId, data.native.replace(/:/g, ''));
+  };
+
+  const willEnter = () => reduceMotion ? 1 : 0;
+
+  const willLeave = () => reduceMotion ? 0 : spring(0, { stiffness: 170, damping: 26 });
+
+  const visibleReactions = reactions.filter(x => x.get('count') > 0);
+
+  const styles = visibleReactions.map(reaction => ({
+    key: reaction.get('name'),
+    data: reaction,
+    style: { scale: reduceMotion ? 1 : spring(1, { stiffness: 150, damping: 13 }) },
+  })).toArray();
+
+  return (
+    <TransitionMotion styles={styles} willEnter={willEnter} willLeave={willLeave}>
+      {items => (
+        <div className={classNames('reactions-bar', { 'reactions-bar--empty': visibleReactions.isEmpty() })}>
+          {items.map(({ key, data, style }) => (
+            <Reaction
+              key={key}
+              reaction={data}
+              style={{ transform: `scale(${style.scale})`, position: style.scale < 0.5 ? 'absolute' : 'static' }}
+              announcementId={announcementId}
+              addReaction={addReaction}
+              removeReaction={removeReaction}
+              emojiMap={emojiMap}
+            />
+          ))}
+
+          {visibleReactions.size < 8 && <EmojiPickerDropdown onPickEmoji={handleEmojiPick} />}
+        </div>
+      )}
+    </TransitionMotion>
+  );
+};
+
+const Announcement = ({ announcement, addReaction, removeReaction, emojiMap }: { announcement: AnnouncementEntity }) => {
   const startsAt = announcement.starts_at && new Date(announcement.starts_at);
   const endsAt = announcement.ends_at && new Date(announcement.ends_at);
   const now = new Date();
@@ -102,19 +222,23 @@ const Announcement = ({ announcement }: { announcement: AnnouncementEntity }) =>
       {/* <ReactionsBar
         reactions={announcement.get('reactions')}
         announcementId={announcement.get('id')}
-        addReaction={this.props.addReaction}
-        removeReaction={this.props.removeReaction}
-        emojiMap={this.props.emojiMap}
+        addReaction={addReaction}
+        removeReaction={removeReaction}
+        emojiMap={emojiMap}
       /> */}
     </div>
   );
 };
 
 const AnnouncementsPanel = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  // const emojiMap = useAppSelector(state => customEmojiMap(state));
   const [index, setIndex] = useState(0);
 
   const announcements = useAppSelector((state) => state.announcements.items);
+
+  const addReaction = (id: string, name: string) => dispatch(addReaction(id, name));
+  const removeReaction = (id: string, name: string) => dispatch(removeReaction(id, name));
 
   if (announcements.size === 0) return null;
 
@@ -130,9 +254,9 @@ const AnnouncementsPanel = () => {
             <Announcement
               key={announcement.id}
               announcement={announcement}
-            // emojiMap={emojiMap}
-            // addReaction={addReaction}
-            // removeReaction={removeReaction}
+              // emojiMap={emojiMap}
+              addReaction={addReaction}
+              removeReaction={removeReaction}
             // selected={index === idx}
             // disabled={disableSwiping}
             />
