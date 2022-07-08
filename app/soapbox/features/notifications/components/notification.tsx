@@ -284,8 +284,7 @@ const Notification: React.FC<INotificaton> = (props) => {
   const ariaLabel = messages[type] ? (
     notificationForScreenReader(
       intl,
-      intl.formatMessage(messages[type],
-      {
+      intl.formatMessage(messages[type], {
         name: account && typeof account === 'object' ? account.acct : '',
         targetName,
       }),
