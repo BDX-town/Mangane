@@ -24,6 +24,9 @@ filenames.forEach(filename => {
     'notification.move': full['notification.move'] || '',
     'notification.user_approved': full['notification.user_approved'] || '',
 
+    'notification.pleroma:chat_mention': full['notification.pleroma:chat_mention'] || '',
+    'notification.pleroma:emoji_reaction': full['notification.pleroma:emoji_reaction'] || '',
+
     'status.show_more': full['status.show_more'] || '',
     'status.reblog': full['status.reblog'] || '',
     'status.favourite': full['status.favourite'] || '',
