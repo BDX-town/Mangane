@@ -180,7 +180,7 @@ export const verifyCredentials = (token: string, accountUrl?: string) => {
         return account;
       } else {
         if (getState().me === null) dispatch(fetchMeFail(error));
-        dispatch({ type: VERIFY_CREDENTIALS_FAIL, token, error, skipAlert: true });
+        dispatch({ type: VERIFY_CREDENTIALS_FAIL, token, error });
         throw error;
       }
     });
