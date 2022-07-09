@@ -57,7 +57,7 @@ class NotificationFilterBar extends React.PureComponent {
         name: 'mention',
       });
       items.push({
-        text: <Icon src={require('@tabler/icons/thumb-up.svg')} />,
+        text: <Icon src={require('@tabler/icons/heart.svg')} />,
         title: intl.formatMessage(messages.favourites),
         action: this.onClick('favourite'),
         name: 'favourite',
@@ -81,7 +81,7 @@ class NotificationFilterBar extends React.PureComponent {
         name: 'poll',
       });
       items.push({
-        text: <Icon src={require('@tabler/icons/home.svg')} />,
+        text: <Icon src={require('@tabler/icons/bell-ringing.svg')} />,
         title: intl.formatMessage(messages.statuses),
         action: this.onClick('status'),
         name: 'status',

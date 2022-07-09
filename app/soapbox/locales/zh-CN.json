@@ -706,7 +706,7 @@
   "notification.birthday": "{name} has a birthday today",
   "notification.birthday.more": "{count} more {count, plural, one {friend} other {friends}}",
   "notification.birthday_plural": "{name} and {more} have birthday today",
-  "notification.chat_mention": "{name} 回复了你",
+  "notification.pleroma:chat_mention": "{name} 回复了你",
   "notification.favourite": "{name} 赞了你的帖文",
   "notification.follow": "{name} 开始关注你",
   "notification.follow_request": "{name} 请求关注你",

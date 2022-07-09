@@ -9,12 +9,12 @@ import { HStack, Text, Emoji } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import StatusContainer from 'soapbox/containers/status_container';
 import { useAppSelector } from 'soapbox/hooks';
+import { NotificationType, validType } from 'soapbox/utils/notification';
 
 import type { ScrollPosition } from 'soapbox/components/status';
-import type { NotificationType } from 'soapbox/normalizers/notification';
 import type { Account, Status, Notification as NotificationEntity } from 'soapbox/types/entities';
 
-const notificationForScreenReader = (intl: ReturnType<typeof useIntl>, message: string, timestamp: Date) => {
+const notificationForScreenReader = (intl: IntlShape, message: string, timestamp: Date) => {
   const output = [message];
 
   output.push(intl.formatDate(timestamp, { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }));
@@ -48,7 +48,7 @@ const icons: Record<NotificationType, string> = {
   user_approved: require('@tabler/icons/user-plus.svg'),
 };
 
-const messages: Record<string | number | symbol, MessageDescriptor> = defineMessages({
+const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
   follow: {
     id: 'notification.follow',
     defaultMessage: '{name} followed you',
@@ -82,7 +82,7 @@ const messages: Record<string | number | symbol, MessageDescriptor> = defineMess
     defaultMessage: '{name} moved to {targetName}',
   },
   'pleroma:chat_mention': {
-    id: 'notification.chat_mention',
+    id: 'notification.pleroma:chat_mention',
     defaultMessage: '{name} sent you a message',
   },
   'pleroma:emoji_reaction': {
@@ -221,7 +221,7 @@ const Notification: React.FC<INotificaton> = (props) => {
           className='w-4 h-4 flex-none'
         />
       );
-    } else if (type) {
+    } else if (validType(type)) {
       return (
         <Icon
           src={icons[type]}
@@ -279,27 +279,25 @@ const Notification: React.FC<INotificaton> = (props) => {
 
   const targetName = notification.target && typeof notification.target === 'object' ? notification.target.acct : '';
 
-  const message: React.ReactNode = type && account && typeof account === 'object' ? buildMessage(intl, type, account, notification.total_count, targetName, instance.title) : null;
+  const message: React.ReactNode = validType(type) && account && typeof account === 'object' ? buildMessage(intl, type, account, notification.total_count, targetName, instance.title) : null;
+
+  const ariaLabel = validType(type) ? (
+    notificationForScreenReader(
+      intl,
+      intl.formatMessage(messages[type], {
+        name: account && typeof account === 'object' ? account.acct : '',
+        targetName,
+      }),
+      notification.created_at,
+    )
+  ) : '';
 
   return (
     <HotKeys handlers={getHandlers()} data-testid='notification'>
       <div
         className='notification focusable'
         tabIndex={0}
-        aria-label={
-          notificationForScreenReader(
-            intl,
-            intl.formatMessage({
-              id: type && messages[type].id,
-              defaultMessage: type && messages[type].defaultMessage,
-            },
-            {
-              name: account && typeof account === 'object' ? account.acct : '',
-              targetName,
-            }),
-            notification.created_at,
-          )
-        }
+        aria-label={ariaLabel}
       >
         <div className='p-4 focusable'>
           <div className='mb-2'>

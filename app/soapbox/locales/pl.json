@@ -749,7 +749,7 @@
   "notification.birthday": "{name} ma dziś urodziny",
   "notification.birthday.more": "{count} {count, plural, one {znajomy} other {więcej znajomych}}",
   "notification.birthday_plural": "{name} i {more} mają dziś urodziny",
-  "notification.chat_mention": "{name} wysłał(a) Ci wiadomośść",
+  "notification.pleroma:chat_mention": "{name} wysłał(a) Ci wiadomośść",
   "notification.favourite": "{name} dodał(a) Twój wpis do ulubionych",
   "notification.follow": "{name} zaczął(-ęła) Cię śledzić",
   "notification.follow_request": "{name} poprosił(a) Cię o możliwość śledzenia",
