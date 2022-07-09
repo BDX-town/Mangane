@@ -51,17 +51,17 @@ class Header extends ImmutablePureComponent {
       {
         text: intl.formatMessage(messages.edit),
         to: `/groups/${group.get('id')}/edit`,
-        icon: require('@tabler/icons/icons/edit.svg'),
+        icon: require('@tabler/icons/edit.svg'),
       },
       {
         text: intl.formatMessage(messages.removed_accounts),
         to: `/groups/${group.get('id')}/removed_accounts`,
-        icon: require('@tabler/icons/icons/trash.svg'),
+        icon: require('@tabler/icons/trash.svg'),
         destructive: true,
       },
     ];
 
-    return <DropdownMenuContainer items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} direction='right' />;
+    return <DropdownMenuContainer items={menu} src={require('@tabler/icons/dots-vertical.svg')} direction='right' />;
   }
 
   render() {

@@ -120,7 +120,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
               {logo ? (
                 <img className='h-12' src={logo} alt={siteTitle} />
               ) : (
-                <SvgIcon className='h-12 w-12' src={require('@tabler/icons/icons/home.svg')} alt={siteTitle} />
+                <SvgIcon className='h-12 w-12' src={require('@tabler/icons/home.svg')} alt={siteTitle} />
               )}
             </a>
           </div>

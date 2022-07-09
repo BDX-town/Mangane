@@ -145,9 +145,6 @@ module.exports = {
       'node_modules',
     ],
     alias: {
-      // Override tabler's package.json to allow importing .svg files directly
-      // https://stackoverflow.com/a/35990101/8811886
-      '@tabler': resolve('node_modules', '@tabler'),
       'icons': resolve('app', 'icons'),
       'custom': resolve('custom'),
     },

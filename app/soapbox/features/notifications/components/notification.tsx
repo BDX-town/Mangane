@@ -35,17 +35,17 @@ const buildLink = (account: Account): JSX.Element => (
 );
 
 const icons: Record<NotificationType, string> = {
-  follow: require('@tabler/icons/icons/user-plus.svg'),
-  follow_request: require('@tabler/icons/icons/user-plus.svg'),
-  mention: require('@tabler/icons/icons/at.svg'),
-  favourite: require('@tabler/icons/icons/heart.svg'),
-  reblog: require('@tabler/icons/icons/repeat.svg'),
-  status: require('@tabler/icons/icons/bell-ringing.svg'),
-  poll: require('@tabler/icons/icons/chart-bar.svg'),
-  move: require('@tabler/icons/icons/briefcase.svg'),
-  'pleroma:chat_mention': require('@tabler/icons/icons/messages.svg'),
-  'pleroma:emoji_reaction': require('@tabler/icons/icons/mood-happy.svg'),
-  user_approved: require('@tabler/icons/icons/user-plus.svg'),
+  follow: require('@tabler/icons/user-plus.svg'),
+  follow_request: require('@tabler/icons/user-plus.svg'),
+  mention: require('@tabler/icons/at.svg'),
+  favourite: require('@tabler/icons/heart.svg'),
+  reblog: require('@tabler/icons/repeat.svg'),
+  status: require('@tabler/icons/bell-ringing.svg'),
+  poll: require('@tabler/icons/chart-bar.svg'),
+  move: require('@tabler/icons/briefcase.svg'),
+  'pleroma:chat_mention': require('@tabler/icons/messages.svg'),
+  'pleroma:emoji_reaction': require('@tabler/icons/mood-happy.svg'),
+  user_approved: require('@tabler/icons/user-plus.svg'),
 };
 
 const messages: Record<NotificationType, MessageDescriptor> = defineMessages({

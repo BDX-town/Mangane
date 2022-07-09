@@ -30,14 +30,14 @@ const List: React.FC<IList> = ({ listId }) => {
   let button;
 
   if (added) {
-    button = <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/icons/x.svg')} title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
+    button = <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/x.svg')} title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
   } else {
-    button = <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/icons/plus.svg')} title={intl.formatMessage(messages.add)} onClick={onAdd} />;
+    button = <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/plus.svg')} title={intl.formatMessage(messages.add)} onClick={onAdd} />;
   }
 
   return (
     <div className='flex items-center gap-1.5 px-2 py-4 text-black dark:text-white'>
-      <Icon src={require('@tabler/icons/icons/list.svg')} fixedWidth />
+      <Icon src={require('@tabler/icons/list.svg')} fixedWidth />
       <span className='flex-grow'>
         {list.title}
       </span>

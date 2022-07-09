@@ -48,7 +48,7 @@ const Account: React.FC<IAccount> = ({ accountId, aliases }) => {
   if (!added && accountId !== me) {
     button = (
       <div className='account__relationship'>
-        <IconButton src={require('@tabler/icons/icons/plus.svg')} title={intl.formatMessage(messages.add)} onClick={handleOnAdd} />
+        <IconButton src={require('@tabler/icons/plus.svg')} title={intl.formatMessage(messages.add)} onClick={handleOnAdd} />
       </div>
     );
   }

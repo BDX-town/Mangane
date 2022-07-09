@@ -51,7 +51,7 @@ const WhoToFollowPanel = ({ limit }: IWhoToFollowPanel) => {
           key={suggestion.account}
           // @ts-ignore: TS thinks `id` is passed to <Account>, but it isn't
           id={suggestion.account}
-          actionIcon={require('@tabler/icons/icons/x.svg')}
+          actionIcon={require('@tabler/icons/x.svg')}
           actionTitle={intl.formatMessage(messages.dismissSuggestion)}
           onActionClick={handleDismiss}
         />
