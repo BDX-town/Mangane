@@ -1,6 +1,5 @@
 import { List as ImmutableList, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 
-
 import {
   ANNOUNCEMENTS_FETCH_REQUEST,
   ANNOUNCEMENTS_FETCH_SUCCESS,

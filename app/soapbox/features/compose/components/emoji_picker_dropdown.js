@@ -290,6 +290,7 @@ class EmojiPickerDropdown extends React.PureComponent {
     onPickEmoji: PropTypes.func.isRequired,
     onSkinTone: PropTypes.func.isRequired,
     skinTone: PropTypes.number.isRequired,
+    button: PropTypes.node,
   };
 
   state = {
@@ -352,20 +353,14 @@ class EmojiPickerDropdown extends React.PureComponent {
   }
 
   render() {
-    const { intl, onPickEmoji, onSkinTone, skinTone, frequentlyUsedEmojis } = this.props;
+    const { intl, onPickEmoji, onSkinTone, skinTone, frequentlyUsedEmojis, button } = this.props;
     const title = intl.formatMessage(messages.emoji);
     const { active, loading, placement } = this.state;
 
     return (
       <div className='relative' onKeyDown={this.handleKeyDown}>
-        <IconButton
+        <div
           ref={this.setTargetRef}
-          className={classNames({
-            'text-gray-400 hover:text-gray-600': true,
-            'pulse-loading': active && loading,
-          })}
-          alt='😀'
-          src={require('@tabler/icons/icons/mood-happy.svg')}
           title={title}
           aria-label={title}
           aria-expanded={active}
@@ -373,7 +368,16 @@ class EmojiPickerDropdown extends React.PureComponent {
           onClick={this.onToggle}
           onKeyDown={this.onToggle}
           tabIndex={0}
-        />
+        >
+          {button || <IconButton
+            className={classNames({
+              'text-gray-400 hover:text-gray-600': true,
+              'pulse-loading': active && loading,
+            })}
+            alt='😀'
+            src={require('@tabler/icons/icons/mood-happy.svg')}
+          />}
+        </div>
 
         <Overlay show={active} placement={placement} target={this.findTarget}>
           <EmojiPickerMenu

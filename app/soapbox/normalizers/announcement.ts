@@ -10,7 +10,9 @@ import {
   fromJS,
 } from 'immutable';
 
+import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
+import { makeEmojiMap } from 'soapbox/utils/normalizers';
 
 import { normalizeAnnouncementReaction } from './announcement_reaction';
 import { normalizeMention } from './mention';
@@ -32,6 +34,9 @@ export const AnnouncementRecord = ImmutableRecord({
   tags: ImmutableList<ImmutableMap<string, any>>(),
   emojis: ImmutableList<Emoji>(),
   updated_at: Date,
+
+  // Internal fields
+  contentHtml: '',
 });
 
 const normalizeMentions = (announcement: ImmutableMap<string, any>) => {
@@ -54,12 +59,20 @@ const normalizeEmojis = (announcement: ImmutableMap<string, any>) => {
   });
 };
 
+const normalizeContent = (announcement: ImmutableMap<string, any>) => {
+  const emojiMap   = makeEmojiMap(announcement.get('emojis'));
+  const contentHtml = emojify(announcement.get('content'), emojiMap);
+
+  return announcement.set('contentHtml', contentHtml);
+};
+
 export const normalizeAnnouncement = (announcement: Record<string, any>) => {
   return AnnouncementRecord(
     ImmutableMap(fromJS(announcement)).withMutations(announcement => {
       normalizeMentions(announcement);
       normalizeReactions(announcement);
       normalizeEmojis(announcement);
+      normalizeContent(announcement);
     }),
   );
 };
