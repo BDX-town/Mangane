@@ -33,6 +33,10 @@ module.exports = {
     '<rootDir>/node_modules',
     '<rootDir>/app',
   ],
+  'moduleNameMapper': {
+    // https://github.com/uuidjs/uuid/pull/616#issuecomment-1111012599
+    '^uuid$': require.resolve('uuid'),
+  },
   'testMatch': ['**/*/__tests__/**/?(*.|*-)+(test).(ts|js)?(x)'],
   'testEnvironment': 'jsdom',
   'transformIgnorePatterns': [
