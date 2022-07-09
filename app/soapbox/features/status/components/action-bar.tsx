@@ -389,7 +389,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
         menu.push({
           text: intl.formatMessage(status.bookmarked ? messages.unbookmark : messages.bookmark),
           action: this.handleBookmarkClick,
-          icon: require(status.bookmarked ? '@tabler/icons/bookmark-off.svg' : '@tabler/icons/bookmark.svg'),
+          icon: status.bookmarked ? require('@tabler/icons/bookmark-off.svg') : require('@tabler/icons/bookmark.svg'),
         });
       }
 
@@ -400,7 +400,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
           menu.push({
             text: intl.formatMessage(status.pinned ? messages.unpin : messages.pin),
             action: this.handlePinClick,
-            icon: require(mutingConversation ? '@tabler/icons/pinned-off.svg' : '@tabler/icons/pin.svg'),
+            icon: mutingConversation ? require('@tabler/icons/pinned-off.svg') : require('@tabler/icons/pin.svg'),
           });
 
           menu.push(null);
@@ -417,7 +417,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
         menu.push({
           text: intl.formatMessage(mutingConversation ? messages.unmuteConversation : messages.muteConversation),
           action: this.handleConversationMuteClick,
-          icon: require(mutingConversation ? '@tabler/icons/bell.svg' : '@tabler/icons/bell-off.svg'),
+          icon: mutingConversation ? require('@tabler/icons/bell.svg') : require('@tabler/icons/bell-off.svg'),
         });
         menu.push(null);
         menu.push({

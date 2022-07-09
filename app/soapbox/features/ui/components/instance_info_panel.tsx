@@ -43,7 +43,7 @@ const InstanceInfoPanel: React.FC<IInstanceInfoPanel> = ({ host }) => {
     <Widget
       title={remoteInstance.get('host')}
       onActionClick={handlePinHost}
-      actionIcon={require(pinned ? '@tabler/icons/pinned-off.svg' : '@tabler/icons/pin.svg')}
+      actionIcon={pinned ? require('@tabler/icons/pinned-off.svg') : require('@tabler/icons/pin.svg')}
       actionTitle={intl.formatMessage(pinned ? messages.unpinHost : messages.pinHost, { host })}
     />
   );
