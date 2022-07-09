@@ -372,14 +372,14 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
       menu.push({
         text: intl.formatMessage(messages.copy),
         action: this.handleCopy,
-        icon: require('@tabler/icons/icons/link.svg'),
+        icon: require('@tabler/icons/link.svg'),
       });
 
       if (features.embeds) {
         menu.push({
           text: intl.formatMessage(messages.embed),
           action: this.handleEmbed,
-          icon: require('@tabler/icons/icons/share.svg'),
+          icon: require('@tabler/icons/share.svg'),
         });
       }
     }
@@ -389,7 +389,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
         menu.push({
           text: intl.formatMessage(status.bookmarked ? messages.unbookmark : messages.bookmark),
           action: this.handleBookmarkClick,
-          icon: require(status.bookmarked ? '@tabler/icons/icons/bookmark-off.svg' : '@tabler/icons/icons/bookmark.svg'),
+          icon: status.bookmarked ? require('@tabler/icons/bookmark-off.svg') : require('@tabler/icons/bookmark.svg'),
         });
       }
 
@@ -400,7 +400,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
           menu.push({
             text: intl.formatMessage(status.pinned ? messages.unpin : messages.pin),
             action: this.handlePinClick,
-            icon: require(mutingConversation ? '@tabler/icons/icons/pinned-off.svg' : '@tabler/icons/icons/pin.svg'),
+            icon: mutingConversation ? require('@tabler/icons/pinned-off.svg') : require('@tabler/icons/pin.svg'),
           });
 
           menu.push(null);
@@ -408,7 +408,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
           menu.push({
             text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog_private),
             action: this.handleReblogClick,
-            icon: require('@tabler/icons/icons/repeat.svg'),
+            icon: require('@tabler/icons/repeat.svg'),
           });
 
           menu.push(null);
@@ -417,26 +417,26 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
         menu.push({
           text: intl.formatMessage(mutingConversation ? messages.unmuteConversation : messages.muteConversation),
           action: this.handleConversationMuteClick,
-          icon: require(mutingConversation ? '@tabler/icons/icons/bell.svg' : '@tabler/icons/icons/bell-off.svg'),
+          icon: mutingConversation ? require('@tabler/icons/bell.svg') : require('@tabler/icons/bell-off.svg'),
         });
         menu.push(null);
         menu.push({
           text: intl.formatMessage(messages.delete),
           action: this.handleDeleteClick,
-          icon: require('@tabler/icons/icons/trash.svg'),
+          icon: require('@tabler/icons/trash.svg'),
           destructive: true,
         });
         if (features.editStatuses) {
           menu.push({
             text: intl.formatMessage(messages.edit),
             action: this.handleEditClick,
-            icon: require('@tabler/icons/icons/edit.svg'),
+            icon: require('@tabler/icons/edit.svg'),
           });
         } else {
           menu.push({
             text: intl.formatMessage(messages.redraft),
             action: this.handleRedraftClick,
-            icon: require('@tabler/icons/icons/edit.svg'),
+            icon: require('@tabler/icons/edit.svg'),
             destructive: true,
           });
         }
@@ -444,20 +444,20 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
         menu.push({
           text: intl.formatMessage(messages.mention, { name: username }),
           action: this.handleMentionClick,
-          icon: require('@tabler/icons/icons/at.svg'),
+          icon: require('@tabler/icons/at.svg'),
         });
 
         // if (status.getIn(['account', 'pleroma', 'accepts_chat_messages'], false) === true) {
         //   menu.push({
         //     text: intl.formatMessage(messages.chat, { name: username }),
         //     action: this.handleChatClick,
-        //     icon: require('@tabler/icons/icons/messages.svg'),
+        //     icon: require('@tabler/icons/messages.svg'),
         //   });
         // } else {
         //   menu.push({
         //     text: intl.formatMessage(messages.direct, { name: username }),
         //     action: this.handleDirectClick,
-        //     icon: require('@tabler/icons/icons/mail.svg'),
+        //     icon: require('@tabler/icons/mail.svg'),
         //   });
         // }
 
@@ -465,17 +465,17 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
         menu.push({
           text: intl.formatMessage(messages.mute, { name: username }),
           action: this.handleMuteClick,
-          icon: require('@tabler/icons/icons/circle-x.svg'),
+          icon: require('@tabler/icons/circle-x.svg'),
         });
         menu.push({
           text: intl.formatMessage(messages.block, { name: username }),
           action: this.handleBlockClick,
-          icon: require('@tabler/icons/icons/ban.svg'),
+          icon: require('@tabler/icons/ban.svg'),
         });
         menu.push({
           text: intl.formatMessage(messages.report, { name: username }),
           action: this.handleReport,
-          icon: require('@tabler/icons/icons/flag.svg'),
+          icon: require('@tabler/icons/flag.svg'),
         });
       }
 
@@ -486,37 +486,37 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
           menu.push({
             text: intl.formatMessage(messages.admin_account, { name: username }),
             href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/`,
-            icon: require('@tabler/icons/icons/gavel.svg'),
+            icon: require('@tabler/icons/gavel.svg'),
           });
           menu.push({
             text: intl.formatMessage(messages.admin_status),
             href: `/pleroma/admin/#/statuses/${status.id}/`,
-            icon: require('@tabler/icons/icons/pencil.svg'),
+            icon: require('@tabler/icons/pencil.svg'),
           });
         }
 
         menu.push({
           text: intl.formatMessage(status.sensitive === false ? messages.markStatusSensitive : messages.markStatusNotSensitive),
           action: this.handleToggleStatusSensitivity,
-          icon: require('@tabler/icons/icons/alert-triangle.svg'),
+          icon: require('@tabler/icons/alert-triangle.svg'),
         });
 
         if (!ownAccount) {
           menu.push({
             text: intl.formatMessage(messages.deactivateUser, { name: username }),
             action: this.handleDeactivateUser,
-            icon: require('@tabler/icons/icons/user-off.svg'),
+            icon: require('@tabler/icons/user-off.svg'),
           });
           menu.push({
             text: intl.formatMessage(messages.deleteUser, { name: username }),
             action: this.handleDeleteUser,
-            icon: require('@tabler/icons/icons/user-minus.svg'),
+            icon: require('@tabler/icons/user-minus.svg'),
             destructive: true,
           });
           menu.push({
             text: intl.formatMessage(messages.deleteStatus),
             action: this.handleDeleteStatus,
-            icon: require('@tabler/icons/icons/trash.svg'),
+            icon: require('@tabler/icons/trash.svg'),
             destructive: true,
           });
         }
@@ -525,12 +525,12 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
 
     const canShare = ('share' in navigator) && status.visibility === 'public';
 
-    let reblogIcon = require('@tabler/icons/icons/repeat.svg');
+    let reblogIcon = require('@tabler/icons/repeat.svg');
 
     if (status.visibility === 'direct') {
-      reblogIcon = require('@tabler/icons/icons/mail.svg');
+      reblogIcon = require('@tabler/icons/mail.svg');
     } else if (status.visibility === 'private') {
-      reblogIcon = require('@tabler/icons/icons/lock.svg');
+      reblogIcon = require('@tabler/icons/lock.svg');
     }
 
     const reblog_disabled = (status.visibility === 'direct' || status.visibility === 'private');
@@ -538,11 +538,11 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
     const reblogMenu: Menu = [{
       text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog),
       action: this.handleReblogClick,
-      icon: require('@tabler/icons/icons/repeat.svg'),
+      icon: require('@tabler/icons/repeat.svg'),
     }, {
       text: intl.formatMessage(messages.quotePost),
       action: this.handleQuoteClick,
-      icon: require('@tabler/icons/icons/quote.svg'),
+      icon: require('@tabler/icons/quote.svg'),
     }];
 
     const reblogButton = (
@@ -563,7 +563,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
       <HStack justifyContent='between'>
         <IconButton
           title={intl.formatMessage(messages.reply)}
-          src={require('@tabler/icons/icons/message-circle-2.svg')}
+          src={require('@tabler/icons/message-circle-2.svg')}
           className='text-gray-400 hover:text-gray-600'
           onClick={this.handleReplyClick}
           text={intl.formatMessage(messages.reply)}
@@ -605,7 +605,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
                   'text-accent-300 hover:text-accent-300': Boolean(meEmojiReact),
                 })}
                 title={meEmojiTitle}
-                src={require('@tabler/icons/icons/heart.svg')}
+                src={require('@tabler/icons/heart.svg')}
                 iconClassName={classNames({
                   'fill-accent-300': Boolean(meEmojiReact),
                 })}
@@ -620,7 +620,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
               'text-accent-300 hover:text-accent-300': Boolean(meEmojiReact),
             })}
             title={meEmojiTitle}
-            src={require('@tabler/icons/icons/heart.svg')}
+            src={require('@tabler/icons/heart.svg')}
             iconClassName={classNames({
               'fill-accent-300': Boolean(meEmojiReact),
             })}
@@ -632,7 +632,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
         {canShare && (
           <IconButton
             title={intl.formatMessage(messages.share)}
-            src={require('@tabler/icons/icons/upload.svg')}
+            src={require('@tabler/icons/upload.svg')}
             className='text-gray-400 hover:text-gray-600'
             onClick={this.handleShare}
             text={intl.formatMessage(messages.share)}
@@ -640,7 +640,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
         )}
 
         <DropdownMenuContainer
-          src={require('@tabler/icons/icons/dots.svg')}
+          src={require('@tabler/icons/dots.svg')}
           items={menu}
           title='More'
         />

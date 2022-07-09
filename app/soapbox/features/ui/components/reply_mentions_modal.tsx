@@ -29,7 +29,7 @@ const ReplyMentionsModal: React.FC<IReplyMentionsModal> = ({ onClose }) => {
     <Modal
       title={<FormattedMessage id='navigation_bar.in_reply_to' defaultMessage='In reply to' />}
       onClose={onClickClose}
-      closeIcon={require('@tabler/icons/icons/arrow-left.svg')}
+      closeIcon={require('@tabler/icons/arrow-left.svg')}
       closePosition='left'
     >
       <div className='reply-mentions-modal__accounts'>

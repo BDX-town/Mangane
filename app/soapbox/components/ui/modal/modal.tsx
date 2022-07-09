@@ -59,7 +59,7 @@ const Modal: React.FC<IModal> = ({
   cancelAction,
   cancelText,
   children,
-  closeIcon = require('@tabler/icons/icons/x.svg'),
+  closeIcon = require('@tabler/icons/x.svg'),
   closePosition = 'right',
   confirmationAction,
   confirmationDisabled,

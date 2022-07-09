@@ -5,7 +5,7 @@ import SvgIcon from '../svg-icon';
 
 describe('<SvgIcon />', () => {
   it('renders loading element with default size', () => {
-    render(<SvgIcon className='text-primary-500' src={require('@tabler/icons/icons/code.svg')} />);
+    render(<SvgIcon className='text-primary-500' src={require('@tabler/icons/code.svg')} />);
 
     const svg = screen.getByTestId('svg-icon-loader');
     expect(svg.getAttribute('width')).toBe('24');

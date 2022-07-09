@@ -55,7 +55,7 @@ const ReactionsBar: React.FC<IReactionsBar> = ({ announcementId, reactions, addR
             />
           ))}
 
-          {visibleReactions.size < 8 && <EmojiPickerDropdown onPickEmoji={handleEmojiPick} button={<Icon className='h-4 w-4 text-gray-400 hover:text-gray-600 dark:hover:text-white' src={require('@tabler/icons/icons/plus.svg')} />} />}
+          {visibleReactions.size < 8 && <EmojiPickerDropdown onPickEmoji={handleEmojiPick} button={<Icon className='h-4 w-4 text-gray-400 hover:text-gray-600 dark:hover:text-white' src={require('@tabler/icons/plus.svg')} />} />}
         </div>
       )}
     </TransitionMotion>

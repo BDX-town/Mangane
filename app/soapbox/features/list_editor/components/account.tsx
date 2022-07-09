@@ -34,9 +34,9 @@ const Account: React.FC<IAccount> = ({ accountId }) => {
   let button;
 
   if (isAdded) {
-    button = <IconButton src={require('@tabler/icons/icons/x.svg')} title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
+    button = <IconButton src={require('@tabler/icons/x.svg')} title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
   } else {
-    button = <IconButton src={require('@tabler/icons/icons/plus.svg')} title={intl.formatMessage(messages.add)} onClick={onAdd} />;
+    button = <IconButton src={require('@tabler/icons/plus.svg')} title={intl.formatMessage(messages.add)} onClick={onAdd} />;
   }
 
   return (

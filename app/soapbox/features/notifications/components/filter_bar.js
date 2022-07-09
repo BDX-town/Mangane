@@ -51,19 +51,19 @@ class NotificationFilterBar extends React.PureComponent {
       });
     } else {
       items.push({
-        text: <Icon src={require('@tabler/icons/icons/at.svg')} />,
+        text: <Icon src={require('@tabler/icons/at.svg')} />,
         title: intl.formatMessage(messages.mentions),
         action: this.onClick('mention'),
         name: 'mention',
       });
       items.push({
-        text: <Icon src={require('@tabler/icons/icons/thumb-up.svg')} />,
+        text: <Icon src={require('@tabler/icons/heart.svg')} />,
         title: intl.formatMessage(messages.favourites),
         action: this.onClick('favourite'),
         name: 'favourite',
       });
       if (supportsEmojiReacts) items.push({
-        text: <Icon src={require('@tabler/icons/icons/mood-smile.svg')} />,
+        text: <Icon src={require('@tabler/icons/mood-smile.svg')} />,
         title: intl.formatMessage(messages.emoji_reacts),
         action: this.onClick('pleroma:emoji_reaction'),
         name: 'pleroma:emoji_reaction',
@@ -75,19 +75,19 @@ class NotificationFilterBar extends React.PureComponent {
         name: 'reblog',
       });
       items.push({
-        text: <Icon src={require('@tabler/icons/icons/chart-bar.svg')} />,
+        text: <Icon src={require('@tabler/icons/chart-bar.svg')} />,
         title: intl.formatMessage(messages.polls),
         action: this.onClick('poll'),
         name: 'poll',
       });
       items.push({
-        text: <Icon src={require('@tabler/icons/icons/home.svg')} />,
+        text: <Icon src={require('@tabler/icons/bell-ringing.svg')} />,
         title: intl.formatMessage(messages.statuses),
         action: this.onClick('status'),
         name: 'status',
       });
       items.push({
-        text: <Icon src={require('@tabler/icons/icons/user-plus.svg')} />,
+        text: <Icon src={require('@tabler/icons/user-plus.svg')} />,
         title: intl.formatMessage(messages.follows),
         action: this.onClick('follow'),
         name: 'follow',

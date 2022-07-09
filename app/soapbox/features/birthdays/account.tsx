@@ -51,7 +51,7 @@ const Account: React.FC<IAccount> = ({ accountId }) => {
             date: formattedBirthday,
           })}
         >
-          <Icon src={require('@tabler/icons/icons/ballon.svg')} />
+          <Icon src={require('@tabler/icons/ballon.svg')} />
           {formattedBirthday}
         </div>
       </div>

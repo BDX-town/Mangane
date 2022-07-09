@@ -32,7 +32,7 @@ const Developers = () => {
     <Column label={intl.formatMessage(messages.heading)}>
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2'>
         <Link to='/developers/apps/create' className='bg-gray-200 dark:bg-gray-600 p-4 rounded flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 transition-transform'>
-          <SvgIcon src={require('@tabler/icons/icons/apps.svg')} className='dark:text-gray-100' />
+          <SvgIcon src={require('@tabler/icons/apps.svg')} className='dark:text-gray-100' />
 
           <Text>
             <FormattedMessage id='developers.navigation.app_create_label' defaultMessage='Create an app' />
@@ -40,7 +40,7 @@ const Developers = () => {
         </Link>
 
         <Link to='/developers/settings_store' className='bg-gray-200 dark:bg-gray-600 p-4 rounded flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 transition-transform'>
-          <SvgIcon src={require('@tabler/icons/icons/code-plus.svg')} className='dark:text-gray-100' />
+          <SvgIcon src={require('@tabler/icons/code-plus.svg')} className='dark:text-gray-100' />
 
           <Text>
             <FormattedMessage id='developers.navigation.settings_store_label' defaultMessage='Settings store' />
@@ -48,7 +48,7 @@ const Developers = () => {
         </Link>
 
         <Link to='/developers/timeline' className='bg-gray-200 dark:bg-gray-600 p-4 rounded flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 transition-transform'>
-          <SvgIcon src={require('@tabler/icons/icons/home.svg')} className='dark:text-gray-100' />
+          <SvgIcon src={require('@tabler/icons/home.svg')} className='dark:text-gray-100' />
 
           <Text>
             <FormattedMessage id='developers.navigation.test_timeline_label' defaultMessage='Test timeline' />
@@ -56,7 +56,7 @@ const Developers = () => {
         </Link>
 
         <Link to='/error' className='bg-gray-200 dark:bg-gray-600 p-4 rounded flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 transition-transform'>
-          <SvgIcon src={require('@tabler/icons/icons/mood-sad.svg')} className='dark:text-gray-100' />
+          <SvgIcon src={require('@tabler/icons/mood-sad.svg')} className='dark:text-gray-100' />
 
           <Text>
             <FormattedMessage id='developers.navigation.intentional_error_label' defaultMessage='Trigger an error' />
@@ -64,7 +64,7 @@ const Developers = () => {
         </Link>
 
         <Link to='/error/network' className='bg-gray-200 dark:bg-gray-600 p-4 rounded flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 transition-transform'>
-          <SvgIcon src={require('@tabler/icons/icons/refresh.svg')} className='dark:text-gray-100' />
+          <SvgIcon src={require('@tabler/icons/refresh.svg')} className='dark:text-gray-100' />
 
           <Text>
             <FormattedMessage id='developers.navigation.network_error_label' defaultMessage='Network error' />
@@ -72,7 +72,7 @@ const Developers = () => {
         </Link>
 
         <button onClick={leaveDevelopers} className='bg-gray-200 dark:bg-gray-600 p-4 rounded flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 transition-transform'>
-          <SvgIcon src={require('@tabler/icons/icons/logout.svg')} className='dark:text-gray-100' />
+          <SvgIcon src={require('@tabler/icons/logout.svg')} className='dark:text-gray-100' />
 
           <Text>
             <FormattedMessage id='developers.navigation.leave_developers_label' defaultMessage='Leave developers' />

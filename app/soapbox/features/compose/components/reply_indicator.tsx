@@ -26,7 +26,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ status, hideActions, onCanc
   if (!hideActions && onCancel) {
     actions = {
       onActionClick: handleClick,
-      actionIcon: require('@tabler/icons/icons/x.svg'),
+      actionIcon: require('@tabler/icons/x.svg'),
       actionAlignment: 'top',
       actionTitle: 'Dismiss',
     };

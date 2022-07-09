@@ -375,7 +375,7 @@ class EmojiPickerDropdown extends React.PureComponent {
               'pulse-loading': active && loading,
             })}
             alt='😀'
-            src={require('@tabler/icons/icons/mood-happy.svg')}
+            src={require('@tabler/icons/mood-happy.svg')}
           />}
         </div>
 

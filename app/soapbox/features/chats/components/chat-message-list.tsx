@@ -219,7 +219,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chatId, chatMessageIds, a
       {
         text: intl.formatMessage(messages.delete),
         action: handleDeleteMessage(chatMessage.chat_id, chatMessage.id),
-        icon: require('@tabler/icons/icons/trash.svg'),
+        icon: require('@tabler/icons/trash.svg'),
         destructive: true,
       },
     ];
@@ -228,7 +228,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chatId, chatMessageIds, a
       menu.push({
         text: intl.formatMessage(messages.report),
         action: handleReportUser(chatMessage.account_id),
-        icon: require('@tabler/icons/icons/flag.svg'),
+        icon: require('@tabler/icons/flag.svg'),
       });
     }
 
@@ -251,7 +251,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chatId, chatMessageIds, a
           <div className='chat-message__menu'>
             <DropdownMenuContainer
               items={menu}
-              src={require('@tabler/icons/icons/dots.svg')}
+              src={require('@tabler/icons/dots.svg')}
               title={intl.formatMessage(messages.more)}
             />
           </div>

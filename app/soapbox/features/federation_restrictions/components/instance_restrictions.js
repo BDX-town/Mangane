@@ -51,7 +51,7 @@ class InstanceRestrictions extends ImmutablePureComponent {
     if (followers_only) {
       items.push((
         <Text key='followers_only'>
-          <Icon className='mr-2' src={require('@tabler/icons/icons/lock.svg')} />
+          <Icon className='mr-2' src={require('@tabler/icons/lock.svg')} />
           <FormattedMessage
             id='federation_restriction.followers_only'
             defaultMessage='Hidden except to followers'
@@ -61,7 +61,7 @@ class InstanceRestrictions extends ImmutablePureComponent {
     } else if (federated_timeline_removal) {
       items.push((
         <Text key='federated_timeline_removal'>
-          <Icon className='mr-2' src={require('@tabler/icons/icons/lock-open.svg')} />
+          <Icon className='mr-2' src={require('@tabler/icons/lock-open.svg')} />
           <FormattedMessage
             id='federation_restriction.federated_timeline_removal'
             defaultMessage='Fediverse timeline removal'
@@ -73,7 +73,7 @@ class InstanceRestrictions extends ImmutablePureComponent {
     if (fullMediaRemoval) {
       items.push((
         <Text key='full_media_removal'>
-          <Icon className='mr-2' src={require('@tabler/icons/icons/photo-off.svg')} />
+          <Icon className='mr-2' src={require('@tabler/icons/photo-off.svg')} />
           <FormattedMessage
             id='federation_restriction.full_media_removal'
             defaultMessage='Full media removal'
@@ -83,7 +83,7 @@ class InstanceRestrictions extends ImmutablePureComponent {
     } else if (partialMediaRemoval) {
       items.push((
         <Text key='partial_media_removal'>
-          <Icon className='mr-2' src={require('@tabler/icons/icons/photo-off.svg')} />
+          <Icon className='mr-2' src={require('@tabler/icons/photo-off.svg')} />
           <FormattedMessage
             id='federation_restriction.partial_media_removal'
             defaultMessage='Partial media removal'

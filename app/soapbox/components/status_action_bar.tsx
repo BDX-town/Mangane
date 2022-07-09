@@ -377,21 +377,21 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
     menu.push({
       text: intl.formatMessage(messages.open),
       action: this.handleOpen,
-      icon: require('@tabler/icons/icons/arrows-vertical.svg'),
+      icon: require('@tabler/icons/arrows-vertical.svg'),
     });
 
     if (publicStatus) {
       menu.push({
         text: intl.formatMessage(messages.copy),
         action: this.handleCopy,
-        icon: require('@tabler/icons/icons/link.svg'),
+        icon: require('@tabler/icons/link.svg'),
       });
 
       if (features.embeds) {
         menu.push({
           text: intl.formatMessage(messages.embed),
           action: this.handleEmbed,
-          icon: require('@tabler/icons/icons/share.svg'),
+          icon: require('@tabler/icons/share.svg'),
         });
       }
     }
@@ -404,7 +404,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
       menu.push({
         text: intl.formatMessage(status.bookmarked ? messages.unbookmark : messages.bookmark),
         action: this.handleBookmarkClick,
-        icon: require(status.bookmarked ? '@tabler/icons/icons/bookmark-off.svg' : '@tabler/icons/icons/bookmark.svg'),
+        icon: status.bookmarked ? require('@tabler/icons/bookmark-off.svg') : require('@tabler/icons/bookmark.svg'),
       });
     }
 
@@ -414,7 +414,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
       menu.push({
         text: intl.formatMessage(mutingConversation ? messages.unmuteConversation : messages.muteConversation),
         action: this.handleConversationMuteClick,
-        icon: require(mutingConversation ? '@tabler/icons/icons/bell.svg' : '@tabler/icons/icons/bell-off.svg'),
+        icon: mutingConversation ? require('@tabler/icons/bell.svg') : require('@tabler/icons/bell-off.svg'),
       });
       menu.push(null);
     }
@@ -424,14 +424,14 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
         menu.push({
           text: intl.formatMessage(status.pinned ? messages.unpin : messages.pin),
           action: this.handlePinClick,
-          icon: require(mutingConversation ? '@tabler/icons/icons/pinned-off.svg' : '@tabler/icons/icons/pin.svg'),
+          icon: mutingConversation ? require('@tabler/icons/pinned-off.svg') : require('@tabler/icons/pin.svg'),
         });
       } else {
         if (status.visibility === 'private') {
           menu.push({
             text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog_private),
             action: this.handleReblogClick,
-            icon: require('@tabler/icons/icons/repeat.svg'),
+            icon: require('@tabler/icons/repeat.svg'),
           });
         }
       }
@@ -439,20 +439,20 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
       menu.push({
         text: intl.formatMessage(messages.delete),
         action: this.handleDeleteClick,
-        icon: require('@tabler/icons/icons/trash.svg'),
+        icon: require('@tabler/icons/trash.svg'),
         destructive: true,
       });
       if (features.editStatuses) {
         menu.push({
           text: intl.formatMessage(messages.edit),
           action: this.handleEditClick,
-          icon: require('@tabler/icons/icons/edit.svg'),
+          icon: require('@tabler/icons/edit.svg'),
         });
       } else {
         menu.push({
           text: intl.formatMessage(messages.redraft),
           action: this.handleRedraftClick,
-          icon: require('@tabler/icons/icons/edit.svg'),
+          icon: require('@tabler/icons/edit.svg'),
           destructive: true,
         });
       }
@@ -460,20 +460,20 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
       menu.push({
         text: intl.formatMessage(messages.mention, { name: username }),
         action: this.handleMentionClick,
-        icon: require('@tabler/icons/icons/at.svg'),
+        icon: require('@tabler/icons/at.svg'),
       });
 
       // if (status.getIn(['account', 'pleroma', 'accepts_chat_messages'], false) === true) {
       //   menu.push({
       //     text: intl.formatMessage(messages.chat, { name: username }),
       //     action: this.handleChatClick,
-      //     icon: require('@tabler/icons/icons/messages.svg'),
+      //     icon: require('@tabler/icons/messages.svg'),
       //   });
       // } else {
       //   menu.push({
       //     text: intl.formatMessage(messages.direct, { name: username }),
       //     action: this.handleDirectClick,
-      //     icon: require('@tabler/icons/icons/mail.svg'),
+      //     icon: require('@tabler/icons/mail.svg'),
       //   });
       // }
 
@@ -481,17 +481,17 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
       menu.push({
         text: intl.formatMessage(messages.mute, { name: username }),
         action: this.handleMuteClick,
-        icon: require('@tabler/icons/icons/circle-x.svg'),
+        icon: require('@tabler/icons/circle-x.svg'),
       });
       menu.push({
         text: intl.formatMessage(messages.block, { name: username }),
         action: this.handleBlockClick,
-        icon: require('@tabler/icons/icons/ban.svg'),
+        icon: require('@tabler/icons/ban.svg'),
       });
       menu.push({
         text: intl.formatMessage(messages.report, { name: username }),
         action: this.handleReport,
-        icon: require('@tabler/icons/icons/flag.svg'),
+        icon: require('@tabler/icons/flag.svg'),
       });
     }
 
@@ -502,13 +502,13 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
         menu.push({
           text: intl.formatMessage(messages.admin_account, { name: username }),
           href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/`,
-          icon: require('@tabler/icons/icons/gavel.svg'),
+          icon: require('@tabler/icons/gavel.svg'),
           action: (event) => event.stopPropagation(),
         });
         menu.push({
           text: intl.formatMessage(messages.admin_status),
           href: `/pleroma/admin/#/statuses/${status.id}/`,
-          icon: require('@tabler/icons/icons/pencil.svg'),
+          icon: require('@tabler/icons/pencil.svg'),
           action: (event) => event.stopPropagation(),
         });
       }
@@ -516,25 +516,25 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
       menu.push({
         text: intl.formatMessage(status.sensitive === false ? messages.markStatusSensitive : messages.markStatusNotSensitive),
         action: this.handleToggleStatusSensitivity,
-        icon: require('@tabler/icons/icons/alert-triangle.svg'),
+        icon: require('@tabler/icons/alert-triangle.svg'),
       });
 
       if (!ownAccount) {
         menu.push({
           text: intl.formatMessage(messages.deactivateUser, { name: username }),
           action: this.handleDeactivateUser,
-          icon: require('@tabler/icons/icons/user-off.svg'),
+          icon: require('@tabler/icons/user-off.svg'),
         });
         menu.push({
           text: intl.formatMessage(messages.deleteUser, { name: username }),
           action: this.handleDeleteUser,
-          icon: require('@tabler/icons/icons/user-minus.svg'),
+          icon: require('@tabler/icons/user-minus.svg'),
           destructive: true,
         });
         menu.push({
           text: intl.formatMessage(messages.deleteStatus),
           action: this.handleDeleteStatus,
-          icon: require('@tabler/icons/icons/trash.svg'),
+          icon: require('@tabler/icons/trash.svg'),
           destructive: true,
         });
       }
@@ -545,13 +545,13 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
     //   menu.push({
     //     text: intl.formatMessage(messages.group_remove_account),
     //     action: this.handleGroupRemoveAccount,
-    //     icon: require('@tabler/icons/icons/user-x.svg'),
+    //     icon: require('@tabler/icons/user-x.svg'),
     //     destructive: true,
     //   });
     //   menu.push({
     //     text: intl.formatMessage(messages.group_remove_post),
     //     action: this.handleGroupRemovePost,
-    //     icon: require('@tabler/icons/icons/trash.svg'),
+    //     icon: require('@tabler/icons/trash.svg'),
     //     destructive: true,
     //   });
     // }
@@ -601,23 +601,23 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
     const meEmojiTitle = intl.formatMessage(reactMessages[meEmojiReact || ''] || messages.favourite);
 
     const menu = this._makeMenu(publicStatus);
-    let reblogIcon = require('@tabler/icons/icons/repeat.svg');
+    let reblogIcon = require('@tabler/icons/repeat.svg');
     let replyTitle;
 
     if (status.visibility === 'direct') {
-      reblogIcon = require('@tabler/icons/icons/mail.svg');
+      reblogIcon = require('@tabler/icons/mail.svg');
     } else if (status.visibility === 'private') {
-      reblogIcon = require('@tabler/icons/icons/lock.svg');
+      reblogIcon = require('@tabler/icons/lock.svg');
     }
 
     const reblogMenu = [{
       text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog),
       action: this.handleReblogClick,
-      icon: require('@tabler/icons/icons/repeat.svg'),
+      icon: require('@tabler/icons/repeat.svg'),
     }, {
       text: intl.formatMessage(messages.quotePost),
       action: this.handleQuoteClick,
-      icon: require('@tabler/icons/icons/quote.svg'),
+      icon: require('@tabler/icons/quote.svg'),
     }];
 
     const reblogButton = (
@@ -644,7 +644,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
       <div className='pt-4 flex flex-row space-x-2'>
         <StatusActionButton
           title={replyTitle}
-          icon={require('@tabler/icons/icons/message-circle-2.svg')}
+          icon={require('@tabler/icons/message-circle-2.svg')}
           onClick={this.handleReplyClick}
           count={replyCount}
         />
@@ -665,7 +665,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
           <EmojiButtonWrapper statusId={status.id}>
             <StatusActionButton
               title={meEmojiTitle}
-              icon={require('@tabler/icons/icons/heart.svg')}
+              icon={require('@tabler/icons/heart.svg')}
               filled
               color='accent'
               active={Boolean(meEmojiReact)}
@@ -676,7 +676,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
         ) : (
           <StatusActionButton
             title={intl.formatMessage(messages.favourite)}
-            icon={require('@tabler/icons/icons/heart.svg')}
+            icon={require('@tabler/icons/heart.svg')}
             color='accent'
             filled
             onClick={this.handleFavouriteClick}
@@ -688,7 +688,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
         {canShare && (
           <StatusActionButton
             title={intl.formatMessage(messages.share)}
-            icon={require('@tabler/icons/icons/upload.svg')}
+            icon={require('@tabler/icons/upload.svg')}
             onClick={this.handleShareClick}
           />
         )}
@@ -696,7 +696,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
         <DropdownMenuContainer items={menu} status={status}>
           <StatusActionButton
             title={intl.formatMessage(messages.more)}
-            icon={require('@tabler/icons/icons/dots.svg')}
+            icon={require('@tabler/icons/dots.svg')}
           />
         </DropdownMenuContainer>
       </div>

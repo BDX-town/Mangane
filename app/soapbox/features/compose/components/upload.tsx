@@ -12,13 +12,13 @@ import Motion from '../../ui/util/optional_motion';
 
 import type { Map as ImmutableMap } from 'immutable';
 
-const bookIcon = require('@tabler/icons/icons/book.svg');
-const fileAnalyticsIcon = require('@tabler/icons/icons/file-analytics.svg');
-const fileCodeIcon = require('@tabler/icons/icons/file-code.svg');
-const fileTextIcon = require('@tabler/icons/icons/file-text.svg');
-const fileZipIcon = require('@tabler/icons/icons/file-zip.svg');
-const defaultIcon = require('@tabler/icons/icons/paperclip.svg');
-const presentationIcon = require('@tabler/icons/icons/presentation.svg');
+const bookIcon = require('@tabler/icons/book.svg');
+const fileAnalyticsIcon = require('@tabler/icons/file-analytics.svg');
+const fileCodeIcon = require('@tabler/icons/file-code.svg');
+const fileTextIcon = require('@tabler/icons/file-text.svg');
+const fileZipIcon = require('@tabler/icons/file-zip.svg');
+const defaultIcon = require('@tabler/icons/paperclip.svg');
+const presentationIcon = require('@tabler/icons/presentation.svg');
 
 export const MIMETYPE_ICONS: Record<string, string> = {
   'application/x-freearc': fileZipIcon,
@@ -157,7 +157,7 @@ const Upload: React.FC<IUpload> = (props) => {
             <div className={classNames('compose-form__upload__actions', { active })}>
               <IconButton
                 onClick={handleUndoClick}
-                src={require('@tabler/icons/icons/x.svg')}
+                src={require('@tabler/icons/x.svg')}
                 text={<FormattedMessage id='upload_form.undo' defaultMessage='Delete' />}
               />
 
@@ -165,7 +165,7 @@ const Upload: React.FC<IUpload> = (props) => {
               {(mediaType !== 'unknown' && Boolean(props.media.get('url'))) && (
                 <IconButton
                   onClick={handleOpenModal}
-                  src={require('@tabler/icons/icons/zoom-in.svg')}
+                  src={require('@tabler/icons/zoom-in.svg')}
                   text={<FormattedMessage id='upload_form.preview' defaultMessage='Preview' />}
                 />
               )}

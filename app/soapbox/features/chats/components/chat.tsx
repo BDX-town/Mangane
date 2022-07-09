@@ -44,7 +44,7 @@ const Chat: React.FC<IChat> = ({ chatId, onClick }) => {
           {attachment && (
             <Icon
               className='chat__attachment-icon'
-              src={image ? require('@tabler/icons/icons/photo.svg') : require('@tabler/icons/icons/paperclip.svg')}
+              src={image ? require('@tabler/icons/photo.svg') : require('@tabler/icons/paperclip.svg')}
             />
           )}
           {content ? (

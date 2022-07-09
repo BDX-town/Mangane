@@ -33,7 +33,7 @@ const Success = () => {
 
   return (
     <Stack space={4} alignItems='center'>
-      <Icon src={require('@tabler/icons/icons/circle-check.svg')} className='text-primary-600 dark:text-primary-400 h-10 w-10' />
+      <Icon src={require('@tabler/icons/circle-check.svg')} className='text-primary-600 dark:text-primary-400 h-10 w-10' />
       <Text size='3xl' weight='semibold' align='center'>
         {intl.formatMessage(messages.emailConfirmedHeading)}
       </Text>
@@ -49,7 +49,7 @@ const GenericFail = () => {
 
   return (
     <Stack space={4} alignItems='center'>
-      <Icon src={require('@tabler/icons/icons/circle-x.svg')} className='text-danger-600 h-10 w-10' />
+      <Icon src={require('@tabler/icons/circle-x.svg')} className='text-danger-600 h-10 w-10' />
       <Text size='3xl' weight='semibold' align='center'>
         {intl.formatMessage(messages.genericFailHeading)}
       </Text>
@@ -65,7 +65,7 @@ const TokenNotFound = () => {
 
   return (
     <Stack space={4} alignItems='center'>
-      <Icon src={require('@tabler/icons/icons/circle-x.svg')} className='text-danger-600 h-10 w-10' />
+      <Icon src={require('@tabler/icons/circle-x.svg')} className='text-danger-600 h-10 w-10' />
       <Text size='3xl' weight='semibold' align='center'>
         {intl.formatMessage(messages.tokenNotFoundHeading)}
       </Text>
@@ -82,7 +82,7 @@ const TokenExpired = () => {
 
   return (
     <Stack space={4} alignItems='center'>
-      <Icon src={require('@tabler/icons/icons/circle-x.svg')} className='text-danger-600 h-10 w-10' />
+      <Icon src={require('@tabler/icons/circle-x.svg')} className='text-danger-600 h-10 w-10' />
       <Text size='3xl' weight='semibold' align='center'>
         {intl.formatMessage(messages.tokenExpiredHeading)}
       </Text>
