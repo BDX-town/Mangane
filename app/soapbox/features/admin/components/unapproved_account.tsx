@@ -52,8 +52,8 @@ const UnapprovedAccount: React.FC<IUnapprovedAccount> = ({ accountId }) => {
         <blockquote className='md'>{adminAccount?.invite_request || ''}</blockquote>
       </div>
       <div className='unapproved-account__actions'>
-        <IconButton src={require('@tabler/icons/icons/check.svg')} onClick={handleApprove} />
-        <IconButton src={require('@tabler/icons/icons/x.svg')} onClick={handleReject} />
+        <IconButton src={require('@tabler/icons/check.svg')} onClick={handleApprove} />
+        <IconButton src={require('@tabler/icons/x.svg')} onClick={handleReject} />
       </div>
     </div>
   );

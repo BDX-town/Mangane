@@ -24,7 +24,7 @@ const PollButton: React.FC<IPollButton> = ({ active, unavailable, disabled, onCl
 
   return (
     <ComposeFormButton
-      icon={require('@tabler/icons/icons/chart-bar.svg')}
+      icon={require('@tabler/icons/chart-bar.svg')}
       title={intl.formatMessage(active ? messages.remove_poll : messages.add_poll)}
       active={active}
       disabled={disabled}

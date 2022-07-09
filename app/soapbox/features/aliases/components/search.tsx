@@ -54,7 +54,7 @@ const Search: React.FC = () => {
         />
 
         <div role='button' tabIndex={0} className='search__icon' onClick={handleClear}>
-          <Icon src={require('@tabler/icons/icons/backspace.svg')} aria-label={intl.formatMessage(messages.search)} className={classNames('svg-icon--backspace', { active: hasValue })} />
+          <Icon src={require('@tabler/icons/backspace.svg')} aria-label={intl.formatMessage(messages.search)} className={classNames('svg-icon--backspace', { active: hasValue })} />
         </div>
       </label>
       <Button onClick={handleSubmit}>{intl.formatMessage(messages.searchTitle)}</Button>

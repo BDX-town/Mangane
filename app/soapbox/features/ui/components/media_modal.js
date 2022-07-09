@@ -121,13 +121,13 @@ class MediaModal extends ImmutablePureComponent {
 
     const leftNav  = media.size > 1 && (
       <button tabIndex='0' className='media-modal__nav media-modal__nav--left' onClick={this.handlePrevClick} aria-label={intl.formatMessage(messages.previous)}>
-        <Icon src={require('@tabler/icons/icons/arrow-left.svg')} />
+        <Icon src={require('@tabler/icons/arrow-left.svg')} />
       </button>
     );
 
     const rightNav = media.size > 1 && (
       <button tabIndex='0' className='media-modal__nav  media-modal__nav--right' onClick={this.handleNextClick} aria-label={intl.formatMessage(messages.next)}>
-        <Icon src={require('@tabler/icons/icons/arrow-right.svg')} />
+        <Icon src={require('@tabler/icons/arrow-right.svg')} />
       </button>
     );
 
@@ -252,7 +252,7 @@ class MediaModal extends ImmutablePureComponent {
         </div>
 
         <div className={navigationClassName}>
-          <IconButton className='media-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={onClose} />
+          <IconButton className='media-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/x.svg')} onClick={onClose} />
 
           {leftNav}
           {rightNav}

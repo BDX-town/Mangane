@@ -108,7 +108,7 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
                   })}
                   disabled={isSubmitting}
                 >
-                  <Icon src={require('@tabler/icons/icons/plus.svg')} className='text-white w-5 h-5' />
+                  <Icon src={require('@tabler/icons/plus.svg')} className='text-white w-5 h-5' />
                 </button>
 
                 <input type='file' className='hidden' ref={fileInput} onChange={handleFileChange} />

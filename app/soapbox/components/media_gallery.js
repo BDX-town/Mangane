@@ -149,7 +149,7 @@ class Item extends React.PureComponent {
       const attachmentIcon = (
         <Icon
           className='h-16 w-16 text-gray-800 dark:text-gray-200'
-          src={MIMETYPE_ICONS[attachment.getIn(['pleroma', 'mime_type'])] || require('@tabler/icons/icons/paperclip.svg')}
+          src={MIMETYPE_ICONS[attachment.getIn(['pleroma', 'mime_type'])] || require('@tabler/icons/paperclip.svg')}
         />
       );
 
@@ -602,7 +602,7 @@ class MediaGallery extends React.PureComponent {
             (visible || compact) ? (
               <Button
                 text={intl.formatMessage(messages.toggle_visible)}
-                icon={visible ? require('@tabler/icons/icons/eye-off.svg') : require('@tabler/icons/icons/eye.svg')}
+                icon={visible ? require('@tabler/icons/eye-off.svg') : require('@tabler/icons/eye.svg')}
                 onClick={this.handleOpen}
                 theme='transparent'
                 size='sm'
@@ -617,7 +617,7 @@ class MediaGallery extends React.PureComponent {
                     </Text>
                   </div>
 
-                  <Button type='button' theme='primary' size='sm' icon={require('@tabler/icons/icons/eye.svg')}>
+                  <Button type='button' theme='primary' size='sm' icon={require('@tabler/icons/eye.svg')}>
                     <FormattedMessage id='status.sensitive_warning.action' defaultMessage='Show content' />
                   </Button>
                 </div>

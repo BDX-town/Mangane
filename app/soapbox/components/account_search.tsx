@@ -70,8 +70,8 @@ const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, ...rest }) => {
         />
       </label>
       <div role='button' tabIndex={0} className='search__icon' onClick={handleClear}>
-        <Icon src={require('@tabler/icons/icons/search.svg')} className={classNames('svg-icon--search', { active: isEmpty() })} />
-        <Icon src={require('@tabler/icons/icons/backspace.svg')} className={classNames('svg-icon--backspace', { active: !isEmpty() })} aria-label={intl.formatMessage(messages.placeholder)} />
+        <Icon src={require('@tabler/icons/search.svg')} className={classNames('svg-icon--search', { active: isEmpty() })} />
+        <Icon src={require('@tabler/icons/backspace.svg')} className={classNames('svg-icon--backspace', { active: !isEmpty() })} aria-label={intl.formatMessage(messages.placeholder)} />
       </div>
     </div>
   );

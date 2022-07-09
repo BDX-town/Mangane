@@ -73,7 +73,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
         <HStack space={0.5} alignItems='center'>
           <IconButton
             className='text-success-600 cursor-pointer'
-            src={require('@tabler/icons/icons/repeat.svg')}
+            src={require('@tabler/icons/repeat.svg')}
             role='presentation'
             onClick={handleOpenReblogsModal}
           />
@@ -104,7 +104,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
               'text-accent-300': true,
               'cursor-default': !features.exposableReactions,
             })}
-            src={require('@tabler/icons/icons/heart.svg')}
+            src={require('@tabler/icons/heart.svg')}
             iconClassName='fill-accent-300'
             role='presentation'
             onClick={features.exposableReactions ? handleOpenFavouritesModal : undefined}

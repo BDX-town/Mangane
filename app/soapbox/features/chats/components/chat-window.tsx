@@ -98,7 +98,7 @@ const ChatWindow: React.FC<IChatWindow> = ({ idx, chatId, windowState }) => {
           @{getAcct(account, displayFqn)}
         </button>
         <div className='pane__close'>
-          <IconButton src={require('@tabler/icons/icons/x.svg')} title='Close chat' onClick={handleChatClose(chat.id)} />
+          <IconButton src={require('@tabler/icons/x.svg')} title='Close chat' onClick={handleChatClose(chat.id)} />
         </div>
       </HStack>
       <div className='pane__content'>

@@ -26,7 +26,7 @@ const BundleColumnError: React.FC<IBundleColumnError> = ({ onRetry }) => {
         <IconButton
           iconClassName='w-20 h-20'
           title={intl.formatMessage(messages.retry)}
-          src={require('@tabler/icons/icons/refresh.svg')}
+          src={require('@tabler/icons/refresh.svg')}
           onClick={handleRetry}
         />
 

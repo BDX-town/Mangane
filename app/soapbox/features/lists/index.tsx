@@ -93,12 +93,12 @@ const Lists: React.FC = () => {
       >
         {lists.map((list: any) => (
           <Link key={list.id} to={`/list/${list.id}`} className='flex items-center gap-1.5 p-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg'>
-            <Icon src={require('@tabler/icons/icons/list.svg')} fixedWidth />
+            <Icon src={require('@tabler/icons/list.svg')} fixedWidth />
             <span className='flex-grow'>
               {list.title}
             </span>
-            <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/icons/pencil.svg')} onClick={handleEditClick(list.id)} title={intl.formatMessage(messages.editList)} />
-            <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/icons/trash.svg')} onClick={handleDeleteClick(list.id)} title={intl.formatMessage(messages.deleteList)} />
+            <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/pencil.svg')} onClick={handleEditClick(list.id)} title={intl.formatMessage(messages.editList)} />
+            <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/trash.svg')} onClick={handleDeleteClick(list.id)} title={intl.formatMessage(messages.deleteList)} />
           </Link>
         ))}
       </ScrollableList>

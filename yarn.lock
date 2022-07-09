@@ -2284,10 +2284,10 @@
     remark "^13.0.0"
     unist-util-find-all-after "^3.0.2"
 
-"@tabler/icons@^1.71.0":
-  version "1.71.0"
-  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.71.0.tgz#74d771aa18487ea92af07c67048e411ada0f0427"
-  integrity sha512-hOeXAWSXGgT2S8O9QrRTomEq6YE1AtuXrcOy5DgGVI93xub1JnGSA3Z9gZzuND4pSJ+Ee+geI5u8hTYbfIsuGw==
+"@tabler/icons@^1.73.0":
+  version "1.73.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.73.0.tgz#26d81858baf41be939504e1f9b4b32835eda6fdb"
+  integrity sha512-MhAHFzVj79ZWlAIRD++7Mk55PZsdlEdkfkjO3DD257mqj8iJZQRAQtkx2UFJXVs2mMrcOUu1qtj4rlVC8BfnKA==
 
 "@tailwindcss/forms@^0.4.0":
   version "0.4.0"

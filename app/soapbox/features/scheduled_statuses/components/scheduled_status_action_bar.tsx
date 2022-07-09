@@ -34,7 +34,7 @@ const ScheduledStatusActionBar: React.FC<IScheduledStatusActionBar> = ({ status 
         dispatch(cancelScheduledStatus(status.id));
       } else {
         dispatch(openModal('CONFIRM', {
-          icon: require('@tabler/icons/icons/calendar-stats.svg'),
+          icon: require('@tabler/icons/calendar-stats.svg'),
           heading: intl.formatMessage(messages.deleteHeading),
           message: intl.formatMessage(messages.deleteMessage),
           confirm: intl.formatMessage(messages.deleteConfirm),
@@ -49,7 +49,7 @@ const ScheduledStatusActionBar: React.FC<IScheduledStatusActionBar> = ({ status 
       <IconButton
         title={intl.formatMessage(messages.cancel)}
         text={intl.formatMessage(messages.cancel)}
-        src={require('@tabler/icons/icons/x.svg')}
+        src={require('@tabler/icons/x.svg')}
         onClick={handleCancelClick}
       />
     </HStack>

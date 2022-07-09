@@ -67,7 +67,7 @@
     "@sentry/browser": "^7.2.0",
     "@sentry/react": "^7.2.0",
     "@sentry/tracing": "^7.2.0",
-    "@tabler/icons": "^1.71.0",
+    "@tabler/icons": "^1.73.0",
     "@tailwindcss/forms": "^0.4.0",
     "@tailwindcss/typography": "^0.5.1",
     "@testing-library/react": "^12.1.4",
