@@ -8,7 +8,7 @@ import { fetchInstance } from 'soapbox/actions/instance';
 import { openModal } from 'soapbox/actions/modals';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
-import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector, useFeatures, useSoapboxConfig, useOwnAccount } from 'soapbox/hooks';
 
 import Sonar from './sonar';
 
@@ -27,6 +27,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
+  const account = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
   const { links } = soapboxConfig;
@@ -67,7 +68,7 @@ const Header = () => {
       });
   };
 
-  if (shouldRedirect) return <Redirect to='/' />;
+  if (account && shouldRedirect) return <Redirect to='/' />;
   if (mfaToken) return <Redirect to={`/login?token=${encodeURIComponent(mfaToken)}`} />;
 
   return (

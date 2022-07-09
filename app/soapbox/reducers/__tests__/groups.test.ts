@@ -4,6 +4,6 @@ import reducer from '../groups';
 
 describe('groups reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap());
+    expect(reducer(undefined, {} as any)).toEqual(ImmutableMap());
   });
 });

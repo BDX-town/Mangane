@@ -19,7 +19,7 @@ describe('carousels reducer', () => {
 
   describe('CAROUSEL_AVATAR_REQUEST', () => {
     it('sets "isLoading" to "true"', () => {
-      const initialState = { isLoading: false, avatars: [] };
+      const initialState = { isLoading: false, avatars: [], error: false };
       const action = { type: CAROUSEL_AVATAR_REQUEST };
       expect(reducer(initialState, action).isLoading).toEqual(true);
     });
@@ -39,7 +39,7 @@ describe('carousels reducer', () => {
 
   describe('CAROUSEL_AVATAR_FAIL', () => {
     it('sets "isLoading" to "true"', () => {
-      const initialState = { isLoading: true, avatars: [] };
+      const initialState = { isLoading: true, avatars: [], error: false };
       const action = { type: CAROUSEL_AVATAR_FAIL };
       const result = reducer(initialState, action);
 

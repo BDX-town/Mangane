@@ -670,6 +670,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
               color='accent'
               active={Boolean(meEmojiReact)}
               count={emojiReactCount}
+              emoji={meEmojiReact}
             />
           </EmojiButtonWrapper>
         ) : (

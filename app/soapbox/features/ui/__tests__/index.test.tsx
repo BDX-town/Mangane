@@ -15,12 +15,12 @@ const TestableComponent = () => (
     <Route path='/login' exact><span data-testid='sign-in'>Sign in</span></Route>
 
     {/* WrappedRount will redirect to /login for logged out users... which will resolve to the route above! */}
-    <WrappedRoute path='/notifications' />
+    <WrappedRoute path='/notifications' component={() => null} />
   </Switch>
 );
 
 describe('<UI />', () => {
-  let store;
+  let store: any;
 
   beforeEach(() => {
     store = {

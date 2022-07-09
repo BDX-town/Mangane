@@ -9,7 +9,7 @@ import { normalizeAccount, normalizeStatus } from '../../../../../../normalizers
 import ReportModal from '../report-modal';
 
 describe('<ReportModal />', () => {
-  let store;
+  let store: any;
 
   beforeEach(() => {
     const rules = require('soapbox/__fixtures__/rules.json');

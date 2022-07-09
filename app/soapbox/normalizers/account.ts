@@ -24,7 +24,7 @@ export const AccountRecord = ImmutableRecord({
   acct: '',
   avatar: '',
   avatar_static: '',
-  birthday: undefined as string | undefined,
+  birthday: '',
   bot: false,
   created_at: new Date(),
   discoverable: false,
@@ -261,6 +261,12 @@ const normalizeDiscoverable = (account: ImmutableMap<string, any>) => {
   return account.set('discoverable', discoverable);
 };
 
+/** Normalize undefined/null birthday to empty string. */
+const fixBirthday = (account: ImmutableMap<string, any>) => {
+  const birthday = account.get('birthday');
+  return account.set('birthday', birthday || '');
+};
+
 export const normalizeAccount = (account: Record<string, any>) => {
   return AccountRecord(
     ImmutableMap(fromJS(account)).withMutations(account => {
@@ -280,6 +286,7 @@ export const normalizeAccount = (account: Record<string, any>) => {
       addStaffFields(account);
       fixUsername(account);
       fixDisplayName(account);
+      fixBirthday(account);
       addInternalFields(account);
     }),
   );

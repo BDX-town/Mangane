@@ -14,7 +14,7 @@ describe('<CtaBanner />', () => {
     it('renders empty', () => {
       const store = { me: true };
 
-      render(<CtaBanner />, null, store);
+      render(<CtaBanner />, undefined, store);
       expect(screen.queryAllByTestId('cta-banner')).toHaveLength(0);
     });
   });
@@ -23,7 +23,7 @@ describe('<CtaBanner />', () => {
     it('renders empty', () => {
       const store = { soapbox: ImmutableMap({ singleUserMode: true }) };
 
-      render(<CtaBanner />, null, store);
+      render(<CtaBanner />, undefined, store);
       expect(screen.queryAllByTestId('cta-banner')).toHaveLength(0);
     });
   });

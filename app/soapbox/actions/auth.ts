@@ -180,8 +180,8 @@ export const verifyCredentials = (token: string, accountUrl?: string) => {
         return account;
       } else {
         if (getState().me === null) dispatch(fetchMeFail(error));
-        dispatch({ type: VERIFY_CREDENTIALS_FAIL, token, error, skipAlert: true });
-        return error;
+        dispatch({ type: VERIFY_CREDENTIALS_FAIL, token, error });
+        throw error;
       }
     });
   };
@@ -214,14 +214,6 @@ export const logIn = (username: string, password: string) =>
     if ((error.response?.data as any).error === 'mfa_required') {
       // If MFA is required, throw the error and handle it in the component.
       throw error;
-    } else if ((error.response?.data as any).error === 'invalid_grant') {
-      // Mastodon returns this user-unfriendly error as a catch-all
-      // for everything from "bad request" to "wrong password".
-      // Assume our code is correct and it's a wrong password.
-      dispatch(snackbar.error(messages.invalidCredentials));
-    } else if ((error.response?.data as any).error) {
-      // If the backend returns an error, display it.
-      dispatch(snackbar.error((error.response?.data as any).error));
     } else {
       // Return "wrong password" message.
       dispatch(snackbar.error(messages.invalidCredentials));

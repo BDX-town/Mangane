@@ -4,7 +4,7 @@ import reducer from '../group_lists';
 
 describe('group_lists reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap({
+    expect(reducer(undefined, {} as any)).toEqual(ImmutableMap({
       featured: ImmutableList(),
       member: ImmutableList(),
       admin: ImmutableList(),

@@ -6,7 +6,7 @@ import CaptchaField, { NativeCaptchaField } from '../captcha';
 
 describe('<CaptchaField />', () => {
   it('renders null by default', () => {
-    render(<CaptchaField />);
+    render(<CaptchaField idempotencyKey='' value='' />);
 
     expect(screen.queryAllByRole('textbox')).toHaveLength(0);
   });
@@ -24,7 +24,9 @@ describe('<NativeCaptchaField />', () => {
     render(
       <NativeCaptchaField
         captcha={captcha}
-        onChange={() => {}} // eslint-disable-line react/jsx-no-bind
+        onChange={() => {}}
+        onClick={() => {}}
+        value=''
       />,
     );
 

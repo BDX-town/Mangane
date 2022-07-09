@@ -4,6 +4,8 @@ import { render, screen, rootState } from '../../jest/test-helpers';
 import { normalizeStatus, normalizeAccount } from '../../normalizers';
 import QuotedStatus from '../quoted-status';
 
+import type { ReducerStatus } from 'soapbox/reducers/statuses';
+
 describe('<QuotedStatus />', () => {
   it('renders content', () => {
     const account = normalizeAccount({
@@ -16,11 +18,11 @@ describe('<QuotedStatus />', () => {
       account,
       content: 'hello world',
       contentHtml: 'hello world',
-    });
+    }) as ReducerStatus;
 
-    const state = rootState.setIn(['accounts', '1', account]);
+    const state = rootState.setIn(['accounts', '1'], account);
 
-    render(<QuotedStatus status={status} />, null, state);
+    render(<QuotedStatus status={status} />, undefined, state);
     screen.getByText(/hello world/i);
     expect(screen.getByTestId('quoted-status')).toHaveTextContent(/hello world/i);
   });

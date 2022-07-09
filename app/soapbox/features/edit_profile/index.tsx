@@ -4,9 +4,19 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
-import BirthdayInput from 'soapbox/components/birthday_input';
 import List, { ListItem } from 'soapbox/components/list';
-import { Button, Column, Form, FormActions, FormGroup, Input, Textarea, HStack, Toggle, FileInput } from 'soapbox/components/ui';
+import {
+  Button,
+  Column,
+  FileInput,
+  Form,
+  FormActions,
+  FormGroup,
+  HStack,
+  Input,
+  Textarea,
+  Toggle,
+} from 'soapbox/components/ui';
 import Streamfield, { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
 import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
@@ -24,25 +34,6 @@ const hidesNetwork = (account: Account): boolean => {
   const { hide_followers, hide_follows, hide_followers_count, hide_follows_count } = account.pleroma.toJS();
   return Boolean(hide_followers && hide_follows && hide_followers_count && hide_follows_count);
 };
-
-/** Converts JSON objects to FormData. */
-// https://stackoverflow.com/a/60286175/8811886
-// @ts-ignore
-const toFormData = (f => f(f))(h => f => f(x => h(h)(f)(x)))(f => fd => pk => d => {
-  if (d instanceof Object) {
-    // eslint-disable-next-line consistent-return
-    Object.keys(d).forEach(k => {
-      const v = d[k];
-      if (pk) k = `${pk}[${k}]`;
-      if (v instanceof Object && !(v instanceof Date) && !(v instanceof File)) {
-        return f(fd)(k)(v);
-      } else {
-        fd.append(k, v);
-      }
-    });
-  }
-  return fd;
-})(new FormData())();
 
 const messages = defineMessages({
   heading: { id: 'column.edit_profile', defaultMessage: 'Edit profile' },
@@ -205,9 +196,8 @@ const EditProfile: React.FC = () => {
 
   const handleSubmit: React.FormEventHandler = (event) => {
     const promises = [];
-    const formData = toFormData(data);
 
-    promises.push(dispatch(patchMe(formData)));
+    promises.push(dispatch(patchMe(data, true)));
 
     if (features.muteStrangers) {
       promises.push(
@@ -240,10 +230,6 @@ const EditProfile: React.FC = () => {
     return e => {
       updateData(key, e.target.value);
     };
-  };
-
-  const handleBirthdayChange = (date: string) => {
-    updateData('birthday', date);
   };
 
   const handleHideNetworkChange: React.ChangeEventHandler<HTMLInputElement> = e => {
@@ -329,9 +315,12 @@ const EditProfile: React.FC = () => {
           <FormGroup
             labelText={<FormattedMessage id='edit_profile.fields.birthday_label' defaultMessage='Birthday' />}
           >
-            <BirthdayInput
+            <Input
+              type='text'
               value={data.birthday}
-              onChange={handleBirthdayChange}
+              onChange={handleTextChange('birthday')}
+              placeholder='YYYY-MM-DD'
+              pattern='\d{4}-\d{2}-\d{2}'
             />
           </FormGroup>
         )}

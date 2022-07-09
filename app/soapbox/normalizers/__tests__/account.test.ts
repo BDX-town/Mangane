@@ -47,6 +47,13 @@ describe('normalizeAccount()', () => {
     expect(result.birthday).toEqual('1993-07-03');
   });
 
+  it('normalizes undefined birthday to empty string', () => {
+    const account = require('soapbox/__fixtures__/mastodon-account.json');
+    const result = normalizeAccount(account);
+
+    expect(result.birthday).toEqual('');
+  });
+
   it('normalizes Pleroma legacy fields', () => {
     const account = require('soapbox/__fixtures__/pleroma-2.2.2-account.json');
     const result = normalizeAccount(account);
@@ -147,9 +154,9 @@ describe('normalizeAccount()', () => {
     const result = normalizeAccount(account);
     const field = result.fields.get(1);
 
-    expect(field.name_emojified).toBe('Soapbox <img draggable="false" class="emojione" alt=":ablobcatrainbow:" title=":ablobcatrainbow:" src="https://gleasonator.com/emoji/blobcat/ablobcatrainbow.png" />');
-    expect(field.value_emojified).toBe('<a href="https://soapbox.pub" rel="ugc">https://soapbox.pub</a> <img draggable="false" class="emojione" alt=":soapbox:" title=":soapbox:" src="https://gleasonator.com/emoji/Gleasonator/soapbox.png" />');
-    expect(field.value_plain).toBe('https://soapbox.pub :soapbox:');
+    expect(field?.name_emojified).toBe('Soapbox <img draggable="false" class="emojione" alt=":ablobcatrainbow:" title=":ablobcatrainbow:" src="https://gleasonator.com/emoji/blobcat/ablobcatrainbow.png" />');
+    expect(field?.value_emojified).toBe('<a href="https://soapbox.pub" rel="ugc">https://soapbox.pub</a> <img draggable="false" class="emojione" alt=":soapbox:" title=":soapbox:" src="https://gleasonator.com/emoji/Gleasonator/soapbox.png" />');
+    expect(field?.value_plain).toBe('https://soapbox.pub :soapbox:');
   });
 
   it('adds default avatar and banner to GoToSocial account', () => {

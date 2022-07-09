@@ -54,7 +54,7 @@ import {
 
 import type { APIEntity } from 'soapbox/types/entities';
 
-const ListRecord = ImmutableRecord({
+export const ListRecord = ImmutableRecord({
   next: null as string | null,
   items: ImmutableOrderedSet<string>(),
   isLoading: false,
@@ -72,7 +72,7 @@ const ReactionListRecord = ImmutableRecord({
   isLoading: false,
 });
 
-const ReducerRecord = ImmutableRecord({
+export const ReducerRecord = ImmutableRecord({
   followers: ImmutableMap<string, List>(),
   following: ImmutableMap<string, List>(),
   reblogged_by: ImmutableMap<string, List>(),
@@ -90,7 +90,7 @@ const ReducerRecord = ImmutableRecord({
 });
 
 type State = ReturnType<typeof ReducerRecord>;
-type List = ReturnType<typeof ListRecord>;
+export type List = ReturnType<typeof ListRecord>;
 type Reaction = ReturnType<typeof ReactionRecord>;
 type ReactionList = ReturnType<typeof ReactionListRecord>;
 type Items = ImmutableOrderedSet<string>;
