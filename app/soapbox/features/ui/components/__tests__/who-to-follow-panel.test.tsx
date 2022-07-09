@@ -24,7 +24,7 @@ describe('<WhoToFollow />', () => {
       },
     };
 
-    render(<WhoToFollowPanel limit={1} />, null, store);
+    render(<WhoToFollowPanel limit={1} />, undefined, store);
     expect(screen.getByTestId('account')).toHaveTextContent(/my name/i);
   });
 
@@ -58,7 +58,7 @@ describe('<WhoToFollow />', () => {
       },
     };
 
-    render(<WhoToFollowPanel limit={3} />, null, store);
+    render(<WhoToFollowPanel limit={3} />, undefined, store);
     expect(screen.queryAllByTestId('account')).toHaveLength(2);
   });
 
@@ -92,7 +92,7 @@ describe('<WhoToFollow />', () => {
       },
     };
 
-    render(<WhoToFollowPanel limit={1} />, null, store);
+    render(<WhoToFollowPanel limit={1} />, undefined, store);
     expect(screen.queryAllByTestId('account')).toHaveLength(1);
   });
 
@@ -117,7 +117,7 @@ describe('<WhoToFollow />', () => {
       },
     };
 
-    render(<WhoToFollowPanel limit={1} />, null, store);
+    render(<WhoToFollowPanel limit={1} />, undefined, store);
     expect(screen.queryAllByTestId('account')).toHaveLength(0);
   });
 });

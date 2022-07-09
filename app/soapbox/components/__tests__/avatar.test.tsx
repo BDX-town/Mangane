@@ -5,6 +5,8 @@ import { normalizeAccount } from 'soapbox/normalizers';
 import { render, screen } from '../../jest/test-helpers';
 import Avatar from '../avatar';
 
+import type { ReducerAccount } from 'soapbox/reducers/accounts';
+
 describe('<Avatar />', () => {
   const account = normalizeAccount({
     username: 'alice',
@@ -12,7 +14,7 @@ describe('<Avatar />', () => {
     display_name: 'Alice',
     avatar: '/animated/alice.gif',
     avatar_static: '/static/alice.jpg',
-  });
+  }) as ReducerAccount;
 
   const size = 100;
 

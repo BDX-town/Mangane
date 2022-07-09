@@ -321,7 +321,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         dispatch(deleteStatus(status.id, withRedraft));
       } else {
         dispatch(openModal('CONFIRM', {
-          icon: withRedraft ? require('@tabler/icons/icons/edit.svg') : require('@tabler/icons/icons/trash.svg'),
+          icon: withRedraft ? require('@tabler/icons/edit.svg') : require('@tabler/icons/trash.svg'),
           heading: intl.formatMessage(withRedraft ? messages.redraftHeading : messages.deleteHeading),
           message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
           confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
@@ -409,7 +409,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     if (!account || typeof account !== 'object') return;
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/icons/ban.svg'),
+      icon: require('@tabler/icons/ban.svg'),
       heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.acct }} />,
       message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.acct}</strong> }} />,
       confirm: intl.formatMessage(messages.blockConfirm),

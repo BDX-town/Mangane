@@ -44,7 +44,7 @@ const deactivateUserModal = (intl: IntlShape, accountId: string, afterConfirm = 
     const name = state.accounts.get(accountId)!.username;
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/icons/user-off.svg'),
+      icon: require('@tabler/icons/user-off.svg'),
       heading: intl.formatMessage(messages.deactivateUserHeading, { acct }),
       message: intl.formatMessage(messages.deactivateUserPrompt, { acct }),
       confirm: intl.formatMessage(messages.deactivateUserConfirm, { name }),
@@ -83,7 +83,7 @@ const deleteUserModal = (intl: IntlShape, accountId: string, afterConfirm = () =
     const checkbox = local ? intl.formatMessage(messages.deleteLocalUserCheckbox) : false;
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/icons/user-minus.svg'),
+      icon: require('@tabler/icons/user-minus.svg'),
       heading: intl.formatMessage(messages.deleteUserHeading, { acct }),
       message,
       confirm,
@@ -106,7 +106,7 @@ const rejectUserModal = (intl: IntlShape, accountId: string, afterConfirm = () =
     const name = state.accounts.get(accountId)!.username;
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/icons/user-off.svg'),
+      icon: require('@tabler/icons/user-off.svg'),
       heading: intl.formatMessage(messages.rejectUserHeading, { acct }),
       message: intl.formatMessage(messages.rejectUserPrompt, { acct }),
       confirm: intl.formatMessage(messages.rejectUserConfirm, { name }),
@@ -127,7 +127,7 @@ const toggleStatusSensitivityModal = (intl: IntlShape, statusId: string, sensiti
     const acct = state.accounts.get(accountId)!.acct;
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/icons/alert-triangle.svg'),
+      icon: require('@tabler/icons/alert-triangle.svg'),
       heading: intl.formatMessage(sensitive === false ? messages.markStatusSensitiveHeading : messages.markStatusNotSensitiveHeading),
       message: intl.formatMessage(sensitive === false ? messages.markStatusSensitivePrompt : messages.markStatusNotSensitivePrompt, { acct }),
       confirm: intl.formatMessage(sensitive === false ? messages.markStatusSensitiveConfirm : messages.markStatusNotSensitiveConfirm),
@@ -148,7 +148,7 @@ const deleteStatusModal = (intl: IntlShape, statusId: string, afterConfirm = () 
     const acct = state.accounts.get(accountId)!.acct;
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/icons/trash.svg'),
+      icon: require('@tabler/icons/trash.svg'),
       heading: intl.formatMessage(messages.deleteStatusHeading),
       message: intl.formatMessage(messages.deleteStatusPrompt, { acct }),
       confirm: intl.formatMessage(messages.deleteStatusConfirm),

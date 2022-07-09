@@ -54,7 +54,7 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick }) => {
         <div className='flex flex-row items-center text-gray-500 dark:text-gray-400'>
           {children}
 
-          <Icon src={require('@tabler/icons/icons/chevron-right.svg')} className='ml-1' />
+          <Icon src={require('@tabler/icons/chevron-right.svg')} className='ml-1' />
         </div>
       ) : renderChildren()}
     </Comp>

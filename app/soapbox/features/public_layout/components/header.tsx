@@ -8,7 +8,7 @@ import { fetchInstance } from 'soapbox/actions/instance';
 import { openModal } from 'soapbox/actions/modals';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
-import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector, useFeatures, useSoapboxConfig, useOwnAccount } from 'soapbox/hooks';
 
 import Sonar from './sonar';
 
@@ -27,6 +27,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
+  const account = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
   const { links } = soapboxConfig;
@@ -67,7 +68,7 @@ const Header = () => {
       });
   };
 
-  if (shouldRedirect) return <Redirect to='/' />;
+  if (account && shouldRedirect) return <Redirect to='/' />;
   if (mfaToken) return <Redirect to={`/login?token=${encodeURIComponent(mfaToken)}`} />;
 
   return (
@@ -81,7 +82,7 @@ const Header = () => {
 
             <IconButton
               title='Open Menu'
-              src={require('@tabler/icons/icons/menu-2.svg')}
+              src={require('@tabler/icons/menu-2.svg')}
               onClick={open}
               className='md:hidden mr-4 bg-transparent text-gray-400 hover:text-gray-600'
             />
@@ -145,7 +146,7 @@ const Header = () => {
               <Link to='/reset-password'>
                 <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
                   <IconButton
-                    src={require('@tabler/icons/icons/help.svg')}
+                    src={require('@tabler/icons/help.svg')}
                     className='bg-transparent text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 cursor-pointer'
                     iconClassName='w-5 h-5'
                   />

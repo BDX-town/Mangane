@@ -6,6 +6,7 @@ import EmojiSelector from '../emoji_selector';
 describe('<EmojiSelector />', () => {
   it('renders correctly', () => {
     const children = <EmojiSelector />;
+    // @ts-ignore
     children.__proto__.addEventListener = () => {};
 
     render(children);

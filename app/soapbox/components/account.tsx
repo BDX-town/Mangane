@@ -232,7 +232,7 @@ const Account = ({
                   <>
                     <Text tag='span' theme='muted' size='sm'>&middot;</Text>
 
-                    <Icon className='h-5 w-5 stroke-[1.35]' src={require('@tabler/icons/icons/pencil.svg')} />
+                    <Icon className='h-5 w-5 stroke-[1.35]' src={require('@tabler/icons/pencil.svg')} />
                   </>
                 ) : null}
               </HStack>

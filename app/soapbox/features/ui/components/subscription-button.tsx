@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import {
@@ -16,6 +16,7 @@ const messages = defineMessages({
   subscribe: { id: 'account.subscribe', defaultMessage: 'Subscribe to notifications from @{name}' },
   unsubscribe: { id: 'account.unsubscribe', defaultMessage: 'Unsubscribe to notifications from @{name}' },
   subscribeSuccess: { id: 'account.subscribe.success', defaultMessage: 'You have subscribed to this account.' },
+  subscribeSuccessNotice: { id: 'account.subscribe.successNotice', defaultMessage: 'You have subscribed to this account, but your web notifications are disabled. Please enable them to receive notifications from @{name}.' },
   unsubscribeSuccess: { id: 'account.unsubscribe.success', defaultMessage: 'You have unsubscribed from this account.' },
   subscribeFailure: { id: 'account.subscribe.failure', defaultMessage: 'An error occurred trying to subscribed to this account.' },
   unsubscribeFailure: { id: 'account.unsubscribe.failure', defaultMessage: 'An error occurred trying to unsubscribed to this account.' },
@@ -30,6 +31,14 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
   const features = useFeatures();
   const intl = useIntl();
 
+  const [hasWebNotificationsEnabled, setWebNotificationsEnabled] = useState<boolean>(true);
+
+  const checkWebNotifications = () => {
+    Notification.requestPermission()
+      .then((value) => setWebNotificationsEnabled(value === 'granted'))
+      .catch(() => null);
+  };
+
   const isFollowing = account.relationship?.following;
   const isRequested = account.relationship?.requested;
   const isSubscribed = features.accountNotifies ?
@@ -39,8 +48,13 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
     intl.formatMessage(messages.unsubscribe, { name: account.get('username') }) :
     intl.formatMessage(messages.subscribe, { name: account.get('username') });
 
-  const onSubscribeSuccess = () =>
-    dispatch(snackbar.success(intl.formatMessage(messages.subscribeSuccess)));
+  const onSubscribeSuccess = () => {
+    if (hasWebNotificationsEnabled) {
+      dispatch(snackbar.success(intl.formatMessage(messages.subscribeSuccess)));
+    } else {
+      dispatch(snackbar.info(intl.formatMessage(messages.subscribeSuccessNotice, { name: account.get('username') })));
+    }
+  };
 
   const onSubscribeFailure = () =>
     dispatch(snackbar.error(intl.formatMessage(messages.subscribeFailure)));
@@ -83,6 +97,12 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
     }
   };
 
+  useEffect(() => {
+    if (features.accountSubscriptions || features.accountNotifies) {
+      checkWebNotifications();
+    }
+  }, []);
+
   if (!features.accountSubscriptions && !features.accountNotifies) {
     return null;
   }
@@ -90,10 +110,10 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
   if (isRequested || isFollowing) {
     return (
       <IconButton
-        src={isSubscribed ? require('@tabler/icons/icons/bell-ringing.svg') : require('@tabler/icons/icons/bell.svg')}
+        src={isSubscribed ? require('@tabler/icons/bell-ringing.svg') : require('@tabler/icons/bell.svg')}
         onClick={handleToggle}
         title={title}
-        className='text-primary-700 bg-primary-100 dark:!bg-slate-700 dark:!text-white hover:bg-primary-200 p-2'
+        className='text-primary-700 bg-primary-100 dark:!bg-slate-700 dark:!text-white hover:bg-primary-200 disabled:hover:bg-primary-100 p-2'
         iconClassName='w-5 h-5'
       />
     );

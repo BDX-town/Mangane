@@ -5,6 +5,8 @@ const path = require('path');
 // Tries to do basically what Webpack does
 module.exports = {
   process(src, filename, config, options) {
-    return `module.exports = "https://soapbox.test/assets/${path.basename(filename)}";`;
+    return {
+      code: `module.exports = "https://soapbox.test/assets/${path.basename(filename)}";`,
+    };
   },
 };

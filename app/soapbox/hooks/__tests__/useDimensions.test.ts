@@ -6,7 +6,7 @@ let listener: ((rect: any) => void) | undefined = undefined;
 
 (window as any).ResizeObserver = class ResizeObserver {
 
-  constructor(ls) {
+  constructor(ls: any) {
     listener = ls;
   }
 
@@ -63,7 +63,7 @@ describe('useDimensions()', () => {
       disconnect() {
         disconnect();
       }
-    
+
     };
 
     const { result, unmount } = renderHook(() => useDimensions());

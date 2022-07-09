@@ -30,7 +30,7 @@ describe('<Datepicker />', () => {
     );
 
     let daySelect: HTMLElement;
-    daySelect = document.querySelector('[data-testid="datepicker-day"]');
+    daySelect = document.querySelector('[data-testid="datepicker-day"]') as HTMLElement;
     expect(queryAllByRole(daySelect, 'option')).toHaveLength(29);
 
     await userEvent.selectOptions(

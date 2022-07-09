@@ -1,5 +1,4 @@
-import { mockStore, mockWindowProperty } from 'soapbox/jest/test-helpers';
-import rootReducer from 'soapbox/reducers';
+import { mockStore, mockWindowProperty, rootState } from 'soapbox/jest/test-helpers';
 
 import { checkOnboardingStatus, startOnboarding, endOnboarding } from '../onboarding';
 
@@ -17,7 +16,7 @@ describe('checkOnboarding()', () => {
   it('does nothing if localStorage item is not set', async() => {
     mockGetItem = jest.fn().mockReturnValue(null);
 
-    const state = rootReducer(undefined, { onboarding: { needsOnboarding: false } });
+    const state = rootState.setIn(['onboarding', 'needsOnboarding'], false);
     const store = mockStore(state);
 
     await store.dispatch(checkOnboardingStatus());
@@ -30,7 +29,7 @@ describe('checkOnboarding()', () => {
   it('does nothing if localStorage item is invalid', async() => {
     mockGetItem = jest.fn().mockReturnValue('invalid');
 
-    const state = rootReducer(undefined, { onboarding: { needsOnboarding: false } });
+    const state = rootState.setIn(['onboarding', 'needsOnboarding'], false);
     const store = mockStore(state);
 
     await store.dispatch(checkOnboardingStatus());
@@ -43,7 +42,7 @@ describe('checkOnboarding()', () => {
   it('dispatches the correct action', async() => {
     mockGetItem = jest.fn().mockReturnValue('1');
 
-    const state = rootReducer(undefined, { onboarding: { needsOnboarding: false } });
+    const state = rootState.setIn(['onboarding', 'needsOnboarding'], false);
     const store = mockStore(state);
 
     await store.dispatch(checkOnboardingStatus());
@@ -66,7 +65,7 @@ describe('startOnboarding()', () => {
   });
 
   it('dispatches the correct action', async() => {
-    const state = rootReducer(undefined, { onboarding: { needsOnboarding: false } });
+    const state = rootState.setIn(['onboarding', 'needsOnboarding'], false);
     const store = mockStore(state);
 
     await store.dispatch(startOnboarding());
@@ -89,7 +88,7 @@ describe('endOnboarding()', () => {
   });
 
   it('dispatches the correct action', async() => {
-    const state = rootReducer(undefined, { onboarding: { needsOnboarding: false } });
+    const state = rootState.setIn(['onboarding', 'needsOnboarding'], false);
     const store = mockStore(state);
 
     await store.dispatch(endOnboarding());

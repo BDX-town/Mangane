@@ -200,7 +200,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_SENSITIVITY_CHANGE on Mark Sensitive click, don\'t toggle if spoiler active', () => {
-    const state = ReducerRecord({ spoiler: true, sensitive: true, idempotencyKey: null });
+    const state = ReducerRecord({ spoiler: true, sensitive: true, idempotencyKey: '' });
     const action = {
       type: actions.COMPOSE_SENSITIVITY_CHANGE,
     };
@@ -297,12 +297,12 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_SUBMIT_SUCCESS', () => {
-    const state = ReducerRecord({ default_privacy: null, privacy: 'public' });
+    const state = ReducerRecord({ default_privacy: 'public', privacy: 'private' });
     const action = {
       type: actions.COMPOSE_SUBMIT_SUCCESS,
     };
     expect(reducer(state, action).toJS()).toMatchObject({
-      privacy: null,
+      privacy: 'public',
     });
   });
 

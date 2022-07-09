@@ -2,6 +2,7 @@ import {
   Map as ImmutableMap,
   OrderedSet as ImmutableOrderedSet,
   fromJS,
+  is,
 } from 'immutable';
 
 import { STATUS_IMPORT } from 'soapbox/actions/importer';
@@ -111,7 +112,7 @@ describe('contexts reducer', () => {
         }) as ImmutableMap<string, ImmutableOrderedSet<string>>,
       });
 
-      expect(reducer(state, action)).toEqual(expected);
+      expect(is(reducer(state, action), expected)).toBe(true);
     });
   });
 });

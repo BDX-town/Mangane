@@ -109,7 +109,7 @@ const Registration = () => {
               value={username}
               onChange={handleInputChange}
               required
-              icon={require('@tabler/icons/icons/at.svg')}
+              icon={require('@tabler/icons/at.svg')}
             />
           </FormGroup>
 

@@ -13,7 +13,7 @@ describe('<LoginForm />', () => {
       }),
     };
 
-    render(<LoginForm handleSubmit={mockFn} isLoading={false} />, null, store);
+    render(<LoginForm handleSubmit={mockFn} isLoading={false} />, undefined, store);
 
     expect(screen.getByRole('heading')).toHaveTextContent(/sign in/i);
   });
@@ -26,7 +26,7 @@ describe('<LoginForm />', () => {
       }),
     };
 
-    render(<LoginForm handleSubmit={mockFn} isLoading={false} />, null, store);
+    render(<LoginForm handleSubmit={mockFn} isLoading={false} />, undefined, store);
 
     expect(screen.getByRole('heading')).toHaveTextContent(/sign in/i);
   });

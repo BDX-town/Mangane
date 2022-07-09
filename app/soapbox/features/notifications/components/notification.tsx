@@ -35,17 +35,17 @@ const buildLink = (account: Account): JSX.Element => (
 );
 
 const icons: Record<NotificationType, string> = {
-  follow: require('@tabler/icons/icons/user-plus.svg'),
-  follow_request: require('@tabler/icons/icons/user-plus.svg'),
-  mention: require('@tabler/icons/icons/at.svg'),
-  favourite: require('@tabler/icons/icons/heart.svg'),
-  reblog: require('@tabler/icons/icons/repeat.svg'),
-  status: require('@tabler/icons/icons/bell-ringing.svg'),
-  poll: require('@tabler/icons/icons/chart-bar.svg'),
-  move: require('@tabler/icons/icons/briefcase.svg'),
-  'pleroma:chat_mention': require('@tabler/icons/icons/messages.svg'),
-  'pleroma:emoji_reaction': require('@tabler/icons/icons/mood-happy.svg'),
-  user_approved: require('@tabler/icons/icons/user-plus.svg'),
+  follow: require('@tabler/icons/user-plus.svg'),
+  follow_request: require('@tabler/icons/user-plus.svg'),
+  mention: require('@tabler/icons/at.svg'),
+  favourite: require('@tabler/icons/heart.svg'),
+  reblog: require('@tabler/icons/repeat.svg'),
+  status: require('@tabler/icons/bell-ringing.svg'),
+  poll: require('@tabler/icons/chart-bar.svg'),
+  move: require('@tabler/icons/briefcase.svg'),
+  'pleroma:chat_mention': require('@tabler/icons/messages.svg'),
+  'pleroma:emoji_reaction': require('@tabler/icons/mood-happy.svg'),
+  user_approved: require('@tabler/icons/user-plus.svg'),
 };
 
 const messages: Record<string | number | symbol, MessageDescriptor> = defineMessages({
@@ -128,16 +128,14 @@ const buildMessage = (
 interface INotificaton {
   hidden?: boolean,
   notification: NotificationEntity,
-  onMoveUp: (notificationId: string) => void,
-  onMoveDown: (notificationId: string) => void,
-  onMention: (account: Account) => void,
-  onFavourite: (status: Status) => void,
-  onReblog: (status: Status, e?: KeyboardEvent) => void,
-  onToggleHidden: (status: Status) => void,
+  onMoveUp?: (notificationId: string) => void,
+  onMoveDown?: (notificationId: string) => void,
+  onMention?: (account: Account) => void,
+  onFavourite?: (status: Status) => void,
+  onReblog?: (status: Status, e?: KeyboardEvent) => void,
+  onToggleHidden?: (status: Status) => void,
   getScrollPosition?: () => ScrollPosition | undefined,
   updateScrollBottom?: (bottom: number) => void,
-  cacheMediaWidth: () => void,
-  cachedMediaWidth: number,
   siteTitle?: string,
 }
 
@@ -180,35 +178,39 @@ const Notification: React.FC<INotificaton> = (props) => {
   const handleMention = (e?: KeyboardEvent) => {
     e?.preventDefault();
 
-    if (account && typeof account === 'object') {
+    if (props.onMention && account && typeof account === 'object') {
       props.onMention(account);
     }
   };
 
   const handleHotkeyFavourite = (e?: KeyboardEvent) => {
-    if (status && typeof status === 'object') {
+    if (props.onFavourite && status && typeof status === 'object') {
       props.onFavourite(status);
     }
   };
 
   const handleHotkeyBoost = (e?: KeyboardEvent) => {
-    if (status && typeof status === 'object') {
+    if (props.onReblog && status && typeof status === 'object') {
       props.onReblog(status, e);
     }
   };
 
   const handleHotkeyToggleHidden = (e?: KeyboardEvent) => {
-    if (status && typeof status === 'object') {
+    if (props.onToggleHidden && status && typeof status === 'object') {
       props.onToggleHidden(status);
     }
   };
 
   const handleMoveUp = () => {
-    onMoveUp(notification.id);
+    if (onMoveUp) {
+      onMoveUp(notification.id);
+    }
   };
 
   const handleMoveDown = () => {
-    onMoveDown(notification.id);
+    if (onMoveDown) {
+      onMoveDown(notification.id);
+    }
   };
 
   const renderIcon = (): React.ReactNode => {
@@ -268,8 +270,6 @@ const Notification: React.FC<INotificaton> = (props) => {
             contextType='notifications'
             getScrollPosition={props.getScrollPosition}
             updateScrollBottom={props.updateScrollBottom}
-            cachedMediaWidth={props.cachedMediaWidth}
-            cacheMediaWidth={props.cacheMediaWidth}
           />
         ) : null;
       default:

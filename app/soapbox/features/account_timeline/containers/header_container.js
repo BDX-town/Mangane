@@ -96,7 +96,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
       dispatch(unblockAccount(account.get('id')));
     } else {
       dispatch(openModal('CONFIRM', {
-        icon: require('@tabler/icons/icons/ban.svg'),
+        icon: require('@tabler/icons/ban.svg'),
         heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.get('acct') }} />,
         message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
         confirm: intl.formatMessage(messages.blockConfirm),
@@ -164,7 +164,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onBlockDomain(domain) {
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/icons/ban.svg'),
+      icon: require('@tabler/icons/ban.svg'),
       heading: <FormattedMessage id='confirmations.domain_block.heading' defaultMessage='Block {domain}' values={{ domain }} />,
       message: <FormattedMessage id='confirmations.domain_block.message' defaultMessage='Are you really, really sure you want to block the entire {domain}? In most cases a few targeted blocks or mutes are sufficient and preferable. You will not see content from that domain in any public timelines or your notifications.' values={{ domain: <strong>{domain}</strong> }} />,
       confirm: intl.formatMessage(messages.blockDomainConfirm),

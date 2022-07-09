@@ -30,7 +30,7 @@ const DetailedCryptoAddress: React.FC<IDetailedCryptoAddress> = ({ address, tick
         <div className='crypto-address__title'>{title || ticker.toUpperCase()}</div>
         <div className='crypto-address__actions'>
           {explorerUrl && <a href={explorerUrl} target='_blank'>
-            <Icon src={require('@tabler/icons/icons/external-link.svg')} />
+            <Icon src={require('@tabler/icons/external-link.svg')} />
           </a>}
         </div>
       </div>

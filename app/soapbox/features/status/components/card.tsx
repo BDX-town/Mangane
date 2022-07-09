@@ -156,7 +156,7 @@ const Card: React.FC<ICard> = ({
     <div className='status-card__content cursor-default'>
       <span className='status-card__title'>{title}</span>
       <p className='status-card__description'>{trimmedDescription}</p>
-      <span className='status-card__host'><Icon src={require('@tabler/icons/icons/link.svg')} /> {card.provider_name}</span>
+      <span className='status-card__host'><Icon src={require('@tabler/icons/link.svg')} /> {card.provider_name}</span>
     </div>
   );
 
@@ -184,10 +184,10 @@ const Card: React.FC<ICard> = ({
     if (embedded) {
       embed = renderVideo();
     } else {
-      let iconVariant = require('@tabler/icons/icons/player-play.svg');
+      let iconVariant = require('@tabler/icons/player-play.svg');
 
       if (card.type === 'photo') {
-        iconVariant = require('@tabler/icons/icons/zoom-in.svg');
+        iconVariant = require('@tabler/icons/zoom-in.svg');
       }
 
       embed = (
@@ -214,7 +214,7 @@ const Card: React.FC<ICard> = ({
                     className='text-gray-400 hover:text-gray-600'
                   >
                     <Icon
-                      src={require('@tabler/icons/icons/external-link.svg')}
+                      src={require('@tabler/icons/external-link.svg')}
                       className='w-5 h-5 text-inherit'
                     />
                   </a>
@@ -242,7 +242,7 @@ const Card: React.FC<ICard> = ({
   } else {
     embed = (
       <div className='status-card__image status-card__image--empty'>
-        <Icon src={require('@tabler/icons/icons/file-text.svg')} />
+        <Icon src={require('@tabler/icons/file-text.svg')} />
       </div>
     );
   }

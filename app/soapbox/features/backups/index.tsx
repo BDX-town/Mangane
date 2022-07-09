@@ -33,7 +33,7 @@ const Backups = () => {
     return [{
       text: intl.formatMessage(messages.create),
       action: handleCreateBackup,
-      icon: require('@tabler/icons/icons/plus.svg'),
+      icon: require('@tabler/icons/plus.svg'),
     }];
   };
 

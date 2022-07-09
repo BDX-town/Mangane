@@ -31,7 +31,7 @@ const RestrictedInstance: React.FC<IRestrictedInstance> = ({ host }) => {
     >
       <a href='#' className='restricted-instance__header' onClick={toggleExpanded}>
         <div className='restricted-instance__icon'>
-          <Icon src={expanded ? require('@tabler/icons/icons/caret-down.svg') : require('@tabler/icons/icons/caret-right.svg')} />
+          <Icon src={expanded ? require('@tabler/icons/caret-down.svg') : require('@tabler/icons/caret-right.svg')} />
         </div>
         <div className='restricted-instance__host'>
           {remoteInstance.get('host')}

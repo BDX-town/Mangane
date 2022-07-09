@@ -26,7 +26,7 @@ const CarouselItem = ({ avatar }: { avatar: any }) => {
         <div className='block mx-auto relative w-14 h-14 rounded-full'>
           {isSelected && (
             <div className='absolute inset-0 bg-primary-600 bg-opacity-50 rounded-full flex items-center justify-center'>
-              <Icon src={require('@tabler/icons/icons/x.svg')} className='text-white h-6 w-6' />
+              <Icon src={require('@tabler/icons/x.svg')} className='text-white h-6 w-6' />
             </div>
           )}
 
@@ -104,7 +104,7 @@ const FeedCarousel = () => {
                 onClick={handlePrevPage}
                 className='bg-white/85 backdrop-blur rounded-full h-8 w-8 flex items-center justify-center'
               >
-                <Icon src={require('@tabler/icons/icons/chevron-left.svg')} className='text-black dark:text-white h-6 w-6' />
+                <Icon src={require('@tabler/icons/chevron-left.svg')} className='text-black dark:text-white h-6 w-6' />
               </button>
             </div>
           </div>
@@ -140,7 +140,7 @@ const FeedCarousel = () => {
                 onClick={handleNextPage}
                 className='bg-white/85 backdrop-blur rounded-full h-8 w-8 flex items-center justify-center'
               >
-                <Icon src={require('@tabler/icons/icons/chevron-right.svg')} className='text-black dark:text-white h-6 w-6' />
+                <Icon src={require('@tabler/icons/chevron-right.svg')} className='text-black dark:text-white h-6 w-6' />
               </button>
             </div>
           </div>

@@ -134,7 +134,6 @@ export const StateRecord = ImmutableRecord(
   }, {}),
 );
 
-// @ts-ignore: This type is fine but TS thinks it's wrong
 const appReducer = combineReducers(reducers, StateRecord);
 
 // Clear the state (mostly) when the user logs out

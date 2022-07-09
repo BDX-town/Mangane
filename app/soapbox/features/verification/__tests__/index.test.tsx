@@ -14,7 +14,7 @@ const TestableComponent = () => (
   </Switch>
 );
 
-const renderComponent = (store) => render(
+const renderComponent = (store: any) => render(
   <TestableComponent />,
   {},
   store,
@@ -22,7 +22,7 @@ const renderComponent = (store) => render(
 );
 
 describe('<Verification />', () => {
-  let store;
+  let store: any;
 
   beforeEach(() => {
     store = {
