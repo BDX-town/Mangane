@@ -1,5 +1,7 @@
 import api from '../api';
 
+import { importFetchedStatuses } from './importer';
+
 import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
@@ -34,6 +36,7 @@ export const fetchAnnouncements = (done = noOp) =>
 
     return api(getState).get('/api/v1/announcements').then(response => {
       dispatch(fetchAnnouncementsSuccess(response.data));
+      dispatch(importFetchedStatuses(response.data.map(({ statuses }: APIEntity) => statuses)));
     }).catch(error => {
       dispatch(fetchAnnouncementsFail(error));
     }).finally(() => {

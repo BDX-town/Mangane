@@ -29,7 +29,7 @@ export const AnnouncementRecord = ImmutableRecord({
   read: false,
   published_at: Date,
   reactions: ImmutableList<AnnouncementReaction>(),
-  // statuses,
+  statuses: ImmutableMap<string, string>(),
   mentions: ImmutableList<Mention>(),
   tags: ImmutableList<ImmutableMap<string, any>>(),
   emojis: ImmutableList<Emoji>(),
@@ -66,6 +66,14 @@ const normalizeContent = (announcement: ImmutableMap<string, any>) => {
   return announcement.set('contentHtml', contentHtml);
 };
 
+const normalizeStatuses = (announcement: ImmutableMap<string, any>) => {
+  const statuses = announcement
+    .get('statuses', ImmutableList())
+    .reduce((acc: ImmutableMap<string, string>, curr: ImmutableMap<string, any>) => acc.set(curr.get('url'), `/@${curr.getIn(['account', 'acct'])}/${curr.get('id')}`), ImmutableMap());
+
+  return announcement.set('statuses', statuses);
+};
+
 export const normalizeAnnouncement = (announcement: Record<string, any>) => {
   return AnnouncementRecord(
     ImmutableMap(fromJS(announcement)).withMutations(announcement => {
@@ -73,6 +81,7 @@ export const normalizeAnnouncement = (announcement: Record<string, any>) => {
       normalizeReactions(announcement);
       normalizeEmojis(announcement);
       normalizeContent(announcement);
+      normalizeStatuses(announcement);
     }),
   );
 };

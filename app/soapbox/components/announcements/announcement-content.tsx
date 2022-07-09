@@ -34,12 +34,12 @@ const AnnouncementContent: React.FC<IAnnouncementContent> = ({ announcement }) =
     }
   };
 
-  // const onStatusClick = (status, e: MouseEvent) => {
-  //   if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
-  //     e.preventDefault();
-  //     history.push(`/@${status.getIn(['account', 'acct'])}/${status.get('id')}`);
-  //   }
-  // };
+  const onStatusClick = (status: string, e: MouseEvent) => {
+    if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      history.push(status);
+    }
+  };
 
   const updateLinks = () => {
     if (!node.current) return;
@@ -63,13 +63,13 @@ const AnnouncementContent: React.FC<IAnnouncementContent> = ({ announcement }) =
         link.setAttribute('title', mention.acct);
       } else if (link.textContent?.charAt(0) === '#' || (link.previousSibling?.textContent?.charAt(link.previousSibling.textContent.length - 1) === '#')) {
         link.addEventListener('click', onHashtagClick.bind(link, link.text), false);
-      // } else {
-      //   const status = announcement.statuses.find(item => link.href === item.get('url'));
-      //   if (status) {
-      //     link.addEventListener('click', onStatusClick.bind(this, status), false);
-      //   }
-      //   link.setAttribute('title', link.href);
-      //   link.classList.add('unhandled-link');
+      } else {
+        const status = announcement.statuses.get(link.href);
+        if (status) {
+          link.addEventListener('click', onStatusClick.bind(this, status), false);
+        }
+        link.setAttribute('title', link.href);
+        link.classList.add('unhandled-link');
       }
     });
   };
