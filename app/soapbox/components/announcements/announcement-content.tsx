@@ -34,10 +34,12 @@ const AnnouncementContent: React.FC<IAnnouncementContent> = ({ announcement }) =
     }
   };
 
-  /** For regular links, just stop propogation */
-  const onLinkClick = (e: MouseEvent) => {
-    e.stopPropagation();
-  };
+  // const onStatusClick = (status, e: MouseEvent) => {
+  //   if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
+  //     e.preventDefault();
+  //     history.push(`/@${status.getIn(['account', 'acct'])}/${status.get('id')}`);
+  //   }
+  // };
 
   const updateLinks = () => {
     if (!node.current) return;
@@ -55,15 +57,19 @@ const AnnouncementContent: React.FC<IAnnouncementContent> = ({ announcement }) =
 
       const mention = announcement.mentions.find(mention => link.href === `${mention.url}`);
 
-      // Add event listeners on mentions and hashtags
+      // Add event listeners on mentions, hashtags and statuses
       if (mention) {
         link.addEventListener('click', onMentionClick.bind(link, mention), false);
         link.setAttribute('title', mention.acct);
       } else if (link.textContent?.charAt(0) === '#' || (link.previousSibling?.textContent?.charAt(link.previousSibling.textContent.length - 1) === '#')) {
         link.addEventListener('click', onHashtagClick.bind(link, link.text), false);
-      } else {
-        link.setAttribute('title', link.href);
-        link.addEventListener('click', onLinkClick.bind(link), false);
+      // } else {
+      //   const status = announcement.statuses.find(item => link.href === item.get('url'));
+      //   if (status) {
+      //     link.addEventListener('click', onStatusClick.bind(this, status), false);
+      //   }
+      //   link.setAttribute('title', link.href);
+      //   link.classList.add('unhandled-link');
       }
     });
   };
