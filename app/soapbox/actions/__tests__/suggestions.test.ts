@@ -1,28 +1,28 @@
 import { Map as ImmutableMap } from 'immutable';
 
 import { __stub } from 'soapbox/api';
-import { mockStore } from 'soapbox/jest/test-helpers';
-import rootReducer from 'soapbox/reducers';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers';
+import { normalizeInstance } from 'soapbox/normalizers';
 
 import {
   fetchSuggestions,
 } from '../suggestions';
 
-let store;
+let store: ReturnType<typeof mockStore>;
 let state;
 
 describe('fetchSuggestions()', () => {
   describe('with Truth Social software', () => {
     beforeEach(() => {
-      state = rootReducer(undefined, {})
-        .set('instance', {
+      state = rootState
+        .set('instance', normalizeInstance({
           version: '3.4.1 (compatible; TruthSocial 1.0.0)',
           pleroma: ImmutableMap({
             metadata: ImmutableMap({
               features: [],
             }),
           }),
-        })
+        }))
         .set('me', '123');
       store = mockStore(state);
     });
