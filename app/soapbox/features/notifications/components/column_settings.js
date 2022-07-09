@@ -60,7 +60,7 @@ class ColumnSettings extends React.PureComponent {
             <FormattedMessage id='notifications.column_settings.title' defaultMessage='Notification settings' />
           </h1>
           <div className='column-settings__close'>
-            <IconButton title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={onClose} />
+            <IconButton title={intl.formatMessage(messages.close)} src={require('@tabler/icons/x.svg')} onClick={onClose} />
           </div>
         </div>
 

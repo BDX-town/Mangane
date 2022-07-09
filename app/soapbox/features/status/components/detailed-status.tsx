@@ -120,9 +120,9 @@ class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedSt
     }
 
     if (status.visibility === 'direct') {
-      statusTypeIcon = <Icon src={require('@tabler/icons/icons/mail.svg')} />;
+      statusTypeIcon = <Icon src={require('@tabler/icons/mail.svg')} />;
     } else if (status.visibility === 'private') {
-      statusTypeIcon = <Icon src={require('@tabler/icons/icons/lock.svg')} />;
+      statusTypeIcon = <Icon src={require('@tabler/icons/lock.svg')} />;
     }
 
     return (

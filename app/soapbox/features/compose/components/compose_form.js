@@ -270,14 +270,14 @@ class ComposeForm extends ImmutablePureComponent {
     } else if (this.props.privacy === 'direct') {
       publishText = (
         <>
-          <Icon src={require('@tabler/icons/icons/mail.svg')} />
+          <Icon src={require('@tabler/icons/mail.svg')} />
           {intl.formatMessage(messages.message)}
         </>
       );
     } else if (this.props.privacy === 'private') {
       publishText = (
         <>
-          <Icon src={require('@tabler/icons/icons/lock.svg')} />
+          <Icon src={require('@tabler/icons/lock.svg')} />
           {intl.formatMessage(messages.publish)}
         </>
       );

@@ -12,7 +12,7 @@ export default class ClearColumnButton extends React.PureComponent {
 
   render() {
     return (
-      <button className='text-btn column-header__setting-btn' tabIndex='0' onClick={this.props.onClick}><Icon src={require('@tabler/icons/icons/eraser.svg')} /> <FormattedMessage id='notifications.clear' defaultMessage='Clear notifications' /></button>
+      <button className='text-btn column-header__setting-btn' tabIndex='0' onClick={this.props.onClick}><Icon src={require('@tabler/icons/eraser.svg')} /> <FormattedMessage id='notifications.clear' defaultMessage='Clear notifications' /></button>
     );
   }
 

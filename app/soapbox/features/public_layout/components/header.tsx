@@ -82,7 +82,7 @@ const Header = () => {
 
             <IconButton
               title='Open Menu'
-              src={require('@tabler/icons/icons/menu-2.svg')}
+              src={require('@tabler/icons/menu-2.svg')}
               onClick={open}
               className='md:hidden mr-4 bg-transparent text-gray-400 hover:text-gray-600'
             />
@@ -146,7 +146,7 @@ const Header = () => {
               <Link to='/reset-password'>
                 <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
                   <IconButton
-                    src={require('@tabler/icons/icons/help.svg')}
+                    src={require('@tabler/icons/help.svg')}
                     className='bg-transparent text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 cursor-pointer'
                     iconClassName='w-5 h-5'
                   />

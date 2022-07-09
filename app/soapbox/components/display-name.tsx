@@ -22,7 +22,7 @@ const DisplayName: React.FC<IDisplayName> = ({ account, children, withDate = fal
 
   const joinedAt = createdAt ? (
     <div className='account__joined-at'>
-      <Icon src={require('@tabler/icons/icons/clock.svg')} />
+      <Icon src={require('@tabler/icons/clock.svg')} />
       <RelativeTimestamp timestamp={createdAt} />
     </div>
   ) : null;

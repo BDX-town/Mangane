@@ -144,7 +144,7 @@ const ChatBox: React.FC<IChatBox> = ({ chatId, onSetInputRef, autosize }) => {
         </div>
         <div className='chat-box__remove-attachment'>
           <IconButton
-            src={require('@tabler/icons/icons/x.svg')}
+            src={require('@tabler/icons/x.svg')}
             onClick={handleRemoveFile}
           />
         </div>
@@ -155,7 +155,7 @@ const ChatBox: React.FC<IChatBox> = ({ chatId, onSetInputRef, autosize }) => {
   const renderActionButton = () => {
     return canSubmit() ? (
       <IconButton
-        src={require('@tabler/icons/icons/send.svg')}
+        src={require('@tabler/icons/send.svg')}
         title={intl.formatMessage(messages.send)}
         onClick={sendMessage}
       />

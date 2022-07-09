@@ -42,12 +42,12 @@ const CryptoAddress: React.FC<ICryptoAddress> = (props): JSX.Element => {
 
         <HStack alignItems='center' className='ml-auto'>
           <a className='text-gray-500 ml-1' href='#' onClick={handleModalClick}>
-            <Icon src={require('@tabler/icons/icons/qrcode.svg')} size={20} />
+            <Icon src={require('@tabler/icons/qrcode.svg')} size={20} />
           </a>
 
           {explorerUrl && (
             <a className='text-gray-500 ml-1' href={explorerUrl} target='_blank'>
-              <Icon src={require('@tabler/icons/icons/external-link.svg')} size={20} />
+              <Icon src={require('@tabler/icons/external-link.svg')} size={20} />
             </a>
           )}
         </HStack>

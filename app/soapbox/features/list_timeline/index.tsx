@@ -49,7 +49,7 @@ const ListTimeline: React.FC = () => {
 
   // const handleDeleteClick = () => {
   //   dispatch(openModal('CONFIRM', {
-  //     icon: require('@tabler/icons/icons/trash.svg'),
+  //     icon: require('@tabler/icons/trash.svg'),
   //     heading: intl.formatMessage(messages.deleteHeading),
   //     message: intl.formatMessage(messages.deleteMessage),
   //     confirm: intl.formatMessage(messages.deleteConfirm),

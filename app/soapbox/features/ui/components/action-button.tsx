@@ -122,7 +122,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
       return (
         <Button
           onClick={handleRemoteFollow}
-          icon={require('@tabler/icons/icons/plus.svg')}
+          icon={require('@tabler/icons/plus.svg')}
           text={intl.formatMessage(messages.follow)}
         />
       );
@@ -185,7 +185,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
           size='sm'
           disabled={blockedBy}
           theme={isFollowing ? 'secondary' : 'primary'}
-          icon={blockedBy ? require('@tabler/icons/icons/ban.svg') : (!isFollowing && require('@tabler/icons/icons/plus.svg'))}
+          icon={blockedBy ? require('@tabler/icons/ban.svg') : (!isFollowing && require('@tabler/icons/plus.svg'))}
           onClick={handleFollow}
         >
           {isFollowing ? (
