@@ -2,6 +2,7 @@ import React from 'react';
 import { FormattedDate } from 'react-intl';
 
 import { Stack, Text } from 'soapbox/components/ui';
+import { useFeatures } from 'soapbox/hooks';
 
 import AnnouncementContent from './announcement-content';
 import ReactionsBar from './reactions-bar';
@@ -17,6 +18,8 @@ interface IAnnouncement {
 }
 
 const Announcement: React.FC<IAnnouncement> = ({ announcement, addReaction, removeReaction, emojiMap }) => {
+  const features = useFeatures();
+
   const startsAt = announcement.starts_at && new Date(announcement.starts_at);
   const endsAt = announcement.ends_at && new Date(announcement.ends_at);
   const now = new Date();
@@ -26,35 +29,35 @@ const Announcement: React.FC<IAnnouncement> = ({ announcement, addReaction, remo
   const skipTime = announcement.all_day;
 
   return (
-    <div>
-      <Stack space={2}>
-        {hasTimeRange && (
-          <Text theme='muted'>
-            <FormattedDate
-              value={startsAt}
-              hour12={false}
-              year={(skipYear || startsAt.getFullYear() === now.getFullYear()) ? undefined : 'numeric'}
-              month='short'
-              day='2-digit'
-              hour={skipTime ? undefined : '2-digit'} minute={skipTime ? undefined : '2-digit'}
-            />
-            {' '}
-            -
-            {' '}
-            <FormattedDate
-              value={endsAt}
-              hour12={false}
-              year={(skipYear || endsAt.getFullYear() === now.getFullYear()) ? undefined : 'numeric'}
-              month={skipEndDate ? undefined : 'short'}
-              day={skipEndDate ? undefined : '2-digit'}
-              hour={skipTime ? undefined : '2-digit'}
-              minute={skipTime ? undefined : '2-digit'}
-            />
-          </Text>
-        )}
+    <Stack className='w-full' space={2}>
+      {hasTimeRange && (
+        <Text theme='muted'>
+          <FormattedDate
+            value={startsAt}
+            hour12={false}
+            year={(skipYear || startsAt.getFullYear() === now.getFullYear()) ? undefined : 'numeric'}
+            month='short'
+            day='2-digit'
+            hour={skipTime ? undefined : '2-digit'} minute={skipTime ? undefined : '2-digit'}
+          />
+          {' '}
+          -
+          {' '}
+          <FormattedDate
+            value={endsAt}
+            hour12={false}
+            year={(skipYear || endsAt.getFullYear() === now.getFullYear()) ? undefined : 'numeric'}
+            month={skipEndDate ? undefined : 'short'}
+            day={skipEndDate ? undefined : '2-digit'}
+            hour={skipTime ? undefined : '2-digit'}
+            minute={skipTime ? undefined : '2-digit'}
+          />
+        </Text>
+      )}
 
-        <AnnouncementContent announcement={announcement} />
+      <AnnouncementContent announcement={announcement} />
 
+      {features.announcementsReactions && (
         <ReactionsBar
           reactions={announcement.reactions}
           announcementId={announcement.id}
@@ -62,8 +65,8 @@ const Announcement: React.FC<IAnnouncement> = ({ announcement, addReaction, remo
           removeReaction={removeReaction}
           emojiMap={emojiMap}
         />
-      </Stack>
-    </div>
+      )}
+    </Stack>
   );
 };
 

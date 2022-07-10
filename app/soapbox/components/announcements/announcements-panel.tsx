@@ -45,7 +45,7 @@ const AnnouncementsPanel = () => {
             />
           )).reverse()}
         </ReactSwipeableViews>
-        {announcements.size > 2 && (
+        {announcements.size > 1 && (
           <HStack space={2} alignItems='center' justifyContent='center' className='relative'>
             {announcements.map((_, i) => (
               <button

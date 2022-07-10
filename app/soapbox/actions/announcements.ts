@@ -1,4 +1,5 @@
-import api from '../api';
+import api from 'soapbox/api';
+import { getFeatures } from 'soapbox/utils/features';
 
 import { importFetchedStatuses } from './importer';
 
@@ -32,6 +33,11 @@ const noOp = () => {};
 
 export const fetchAnnouncements = (done = noOp) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
+    const { instance } = getState();
+    const features = getFeatures(instance);
+
+    if (!features.announcements) return null;
+
     dispatch(fetchAnnouncementsRequest());
 
     return api(getState).get('/api/v1/announcements').then(response => {
