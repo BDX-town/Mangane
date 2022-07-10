@@ -40,17 +40,15 @@ const FederationRestrictions = () => {
 
   return (
     <Column icon='gavel' label={intl.formatMessage(messages.heading)}>
-      <div className='explanation-box'>
-        <Accordion
-          headline={intl.formatMessage(messages.boxTitle)}
-          expanded={explanationBoxExpanded}
-          onToggle={toggleExplanationBox}
-        >
-          {intl.formatMessage(messages.boxMessage, { siteTitle })}
-        </Accordion>
-      </div>
+      <Accordion
+        headline={intl.formatMessage(messages.boxTitle)}
+        expanded={explanationBoxExpanded}
+        onToggle={toggleExplanationBox}
+      >
+        {intl.formatMessage(messages.boxMessage, { siteTitle })}
+      </Accordion>
 
-      <div className='federation-restrictions'>
+      <div className='pt-4'>
         <ScrollableList emptyMessage={intl.formatMessage(emptyMessage, { siteTitle })}>
           {hosts.map((host) => <RestrictedInstance key={host} host={host} />)}
         </ScrollableList>

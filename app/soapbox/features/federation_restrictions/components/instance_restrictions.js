@@ -50,8 +50,8 @@ class InstanceRestrictions extends ImmutablePureComponent {
 
     if (followers_only) {
       items.push((
-        <Text key='followers_only'>
-          <Icon className='mr-2' src={require('@tabler/icons/lock.svg')} />
+        <Text key='followers_only' className='flex items-center gap-2' theme='muted'>
+          <Icon src={require('@tabler/icons/lock.svg')} />
           <FormattedMessage
             id='federation_restriction.followers_only'
             defaultMessage='Hidden except to followers'
@@ -60,8 +60,8 @@ class InstanceRestrictions extends ImmutablePureComponent {
       ));
     } else if (federated_timeline_removal) {
       items.push((
-        <Text key='federated_timeline_removal'>
-          <Icon className='mr-2' src={require('@tabler/icons/lock-open.svg')} />
+        <Text key='federated_timeline_removal' className='flex items-center gap-2' theme='muted'>
+          <Icon src={require('@tabler/icons/lock-open.svg')} />
           <FormattedMessage
             id='federation_restriction.federated_timeline_removal'
             defaultMessage='Fediverse timeline removal'
@@ -72,8 +72,8 @@ class InstanceRestrictions extends ImmutablePureComponent {
 
     if (fullMediaRemoval) {
       items.push((
-        <Text key='full_media_removal'>
-          <Icon className='mr-2' src={require('@tabler/icons/photo-off.svg')} />
+        <Text key='full_media_removal' className='flex items-center gap-2' theme='muted'>
+          <Icon src={require('@tabler/icons/photo-off.svg')} />
           <FormattedMessage
             id='federation_restriction.full_media_removal'
             defaultMessage='Full media removal'
@@ -82,8 +82,8 @@ class InstanceRestrictions extends ImmutablePureComponent {
       ));
     } else if (partialMediaRemoval) {
       items.push((
-        <Text key='partial_media_removal'>
-          <Icon className='mr-2' src={require('@tabler/icons/photo-off.svg')} />
+        <Text key='partial_media_removal' className='flex items-center gap-2' theme='muted'>
+          <Icon src={require('@tabler/icons/photo-off.svg')} />
           <FormattedMessage
             id='federation_restriction.partial_media_removal'
             defaultMessage='Partial media removal'
@@ -94,8 +94,8 @@ class InstanceRestrictions extends ImmutablePureComponent {
 
     if (!fullMediaRemoval && media_nsfw) {
       items.push((
-        <Text key='media_nsfw'>
-          <Icon className='mr-2' id='eye-slash' />
+        <Text key='media_nsfw' className='flex items-center gap-2' theme='muted'>
+          <Icon id='eye-slash' />
           <FormattedMessage
             id='federation_restriction.media_nsfw'
             defaultMessage='Attachments marked NSFW'
@@ -116,8 +116,8 @@ class InstanceRestrictions extends ImmutablePureComponent {
 
     if (remoteInstance.getIn(['federation', 'reject']) === true) {
       return (
-        <Text>
-          <Icon className='mr-2' id='times' />
+        <Text className='flex items-center gap-2' theme='muted'>
+          <Icon id='times' />
           <FormattedMessage
             id='remote_instance.federation_panel.restricted_message'
             defaultMessage='{siteTitle} blocks all activities from {host}.'
@@ -128,7 +128,7 @@ class InstanceRestrictions extends ImmutablePureComponent {
     } else if (hasRestrictions(remoteInstance)) {
       return [
         (
-          <Text>
+          <Text theme='muted'>
             <FormattedMessage
               id='remote_instance.federation_panel.some_restrictions_message'
               defaultMessage='{siteTitle} has placed some restrictions on {host}.'
@@ -140,8 +140,8 @@ class InstanceRestrictions extends ImmutablePureComponent {
       ];
     } else {
       return (
-        <Text>
-          <Icon className='mr-2' id='check' />
+        <Text className='flex items-center gap-2' theme='muted'>
+          <Icon id='check' />
           <FormattedMessage
             id='remote_instance.federation_panel.no_restrictions_message'
             defaultMessage='{siteTitle} has placed no restrictions on {host}.'
@@ -153,7 +153,11 @@ class InstanceRestrictions extends ImmutablePureComponent {
   }
 
   render() {
-    return <div className='instance-restrictions'>{this.renderContent()}</div>;
+    return (
+      <div className='py-1 pl-4 mb-4 border-solid border-l-[3px] border-gray-300 dark:border-gray-500'>
+        {this.renderContent()}
+      </div>
+    );
   }
 
 }
