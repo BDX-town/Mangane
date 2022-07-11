@@ -45,6 +45,7 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
                 // @ts-ignore: TS thinks `id` is passed to <Account>, but it isn't
                 id={suggestion.account}
                 showProfileHoverCard={false}
+                withLinkToProfile={false}
               />
             </div>
           ))}

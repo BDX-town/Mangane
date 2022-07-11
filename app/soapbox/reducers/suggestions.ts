@@ -10,7 +10,10 @@ import {
   SUGGESTIONS_V2_FETCH_REQUEST,
   SUGGESTIONS_V2_FETCH_SUCCESS,
   SUGGESTIONS_V2_FETCH_FAIL,
+  SUGGESTIONS_TRUTH_FETCH_SUCCESS,
 } from 'soapbox/actions/suggestions';
+
+import { SuggestedProfile } from '../actions/suggestions';
 
 import type { AnyAction } from 'redux';
 import type { APIEntity } from 'soapbox/types/entities';
@@ -53,6 +56,14 @@ const importSuggestions = (state: State, suggestions: APIEntities, next: string 
   });
 };
 
+const importTruthSuggestions = (state: State, suggestions: SuggestedProfile[], next: string | null) => {
+  return state.withMutations(state => {
+    state.update('items', items => items.concat(suggestions.map(x => ({ ...x, account: x.account_id })).map(suggestion => SuggestionRecord(suggestion))));
+    state.set('isLoading', false);
+    state.set('next', next);
+  });
+};
+
 const dismissAccount = (state: State, accountId: string) => {
   return state.update('items', items => items.filterNot(item => item.account === accountId));
 };
@@ -70,6 +81,8 @@ export default function suggestionsReducer(state: State = ReducerRecord(), actio
       return importAccounts(state, action.accounts);
     case SUGGESTIONS_V2_FETCH_SUCCESS:
       return importSuggestions(state, action.suggestions, action.next);
+    case SUGGESTIONS_TRUTH_FETCH_SUCCESS:
+      return importTruthSuggestions(state, action.suggestions, action.next);
     case SUGGESTIONS_FETCH_FAIL:
     case SUGGESTIONS_V2_FETCH_FAIL:
       return state.set('isLoading', false);

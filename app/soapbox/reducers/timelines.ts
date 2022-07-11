@@ -5,6 +5,7 @@ import {
   Record as ImmutableRecord,
   fromJS,
 } from 'immutable';
+import sample from 'lodash/sample';
 
 import {
   ACCOUNT_BLOCK_SUCCESS,
@@ -30,6 +31,7 @@ import {
   MAX_QUEUED_ITEMS,
   TIMELINE_SCROLL_TOP,
   TIMELINE_REPLACE,
+  TIMELINE_INSERT,
 } from '../actions/timelines';
 
 import type { AnyAction } from 'redux';
@@ -37,7 +39,7 @@ import type { StatusVisibility } from 'soapbox/normalizers/status';
 import type { APIEntity, Status } from 'soapbox/types/entities';
 
 const TRUNCATE_LIMIT = 40;
-const TRUNCATE_SIZE  = 20;
+const TRUNCATE_SIZE = 20;
 
 const TimelineRecord = ImmutableRecord({
   unread: 0,
@@ -115,7 +117,7 @@ const expandNormalizedTimeline = (state: State, timelineId: string, statuses: Im
 };
 
 const updateTimeline = (state: State, timelineId: string, statusId: string) => {
-  const top    = state.get(timelineId)?.top;
+  const top = state.get(timelineId)?.top;
   const oldIds = state.get(timelineId)?.items || ImmutableOrderedSet<string>();
   const unread = state.get(timelineId)?.unread || 0;
 
@@ -135,8 +137,8 @@ const updateTimeline = (state: State, timelineId: string, statusId: string) => {
 };
 
 const updateTimelineQueue = (state: State, timelineId: string, statusId: string) => {
-  const queuedIds   = state.get(timelineId)?.queuedItems || ImmutableOrderedSet<string>();
-  const listedIds   = state.get(timelineId)?.items || ImmutableOrderedSet<string>();
+  const queuedIds = state.get(timelineId)?.queuedItems || ImmutableOrderedSet<string>();
+  const listedIds = state.get(timelineId)?.items || ImmutableOrderedSet<string>();
   const queuedCount = state.get(timelineId)?.totalQueuedItemsCount || 0;
 
   if (queuedIds.includes(statusId)) return state;
@@ -353,6 +355,15 @@ export default function timelines(state: State = initialState, action: AnyAction
           timeline.set('items', ImmutableOrderedSet([]));
         }))
         .update('home', TimelineRecord(), timeline => timeline.set('feedAccountId', action.accountId));
+    case TIMELINE_INSERT:
+      return state.update(action.timeline, TimelineRecord(), timeline => timeline.withMutations(timeline => {
+        timeline.update('items', oldIds => {
+          const oldIdsArray = oldIds.toArray();
+          const positionInTimeline = sample([5, 6, 7, 8, 9]) as number;
+          oldIdsArray.splice(positionInTimeline, 0, `末suggestions-${oldIds.last()}`);
+          return ImmutableOrderedSet(oldIdsArray);
+        });
+      }));
     default:
       return state;
   }

@@ -455,7 +455,7 @@ export function WhoToFollowPanel() {
 }
 
 export function FollowRecommendations() {
-  return import(/* webpackChunkName: "features/follow_recommendations" */'../../follow_recommendations');
+  return import(/* webpackChunkName: "features/follow-recommendations" */'../../follow-recommendations');
 }
 
 export function Directory() {

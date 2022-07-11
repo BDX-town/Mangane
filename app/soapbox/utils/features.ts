@@ -578,6 +578,11 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Supports Truth suggestions.
+     */
+    truthSuggestions: v.software === TRUTHSOCIAL,
+
+    /**
      * Whether the backend allows adding users you don't follow to lists.
      * @see POST /api/v1/lists/:id/accounts
      */

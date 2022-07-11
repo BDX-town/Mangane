@@ -34,6 +34,12 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
   const [scrolled, setScrolled] = useState<boolean>(false);
   const autoload = settings.get('autoloadTimelines') === true;
 
+  const visible = count > 0 && scrolled;
+
+  const classes = classNames('left-1/2 -translate-x-1/2 fixed top-20 z-50', {
+    'hidden': !visible,
+  });
+
   const getScrollTop = (): number => {
     return (document.scrollingElement || document.documentElement).scrollTop;
   };
@@ -74,12 +80,6 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
   useEffect(() => {
     maybeUnload();
   }, [count]);
-
-  const visible = count > 0 && scrolled;
-
-  const classes = classNames('left-1/2 -translate-x-1/2 fixed top-20 z-50', {
-    'hidden': !visible,
-  });
 
   return (
     <div className={classes}>

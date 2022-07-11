@@ -49,6 +49,7 @@ const SelectedStatus = ({ statusId }: { statusId: string }) => {
       <AccountContainer
         id={status.account as any}
         showProfileHoverCard={false}
+        withLinkToProfile={false}
         timestamp={status.created_at}
         hideActions
       />

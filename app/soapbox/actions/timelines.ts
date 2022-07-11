@@ -12,21 +12,22 @@ import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity, Status } from 'soapbox/types/entities';
 
-const TIMELINE_UPDATE  = 'TIMELINE_UPDATE';
-const TIMELINE_DELETE  = 'TIMELINE_DELETE';
-const TIMELINE_CLEAR   = 'TIMELINE_CLEAR';
+const TIMELINE_UPDATE = 'TIMELINE_UPDATE';
+const TIMELINE_DELETE = 'TIMELINE_DELETE';
+const TIMELINE_CLEAR = 'TIMELINE_CLEAR';
 const TIMELINE_UPDATE_QUEUE = 'TIMELINE_UPDATE_QUEUE';
 const TIMELINE_DEQUEUE = 'TIMELINE_DEQUEUE';
 const TIMELINE_SCROLL_TOP = 'TIMELINE_SCROLL_TOP';
 
 const TIMELINE_EXPAND_REQUEST = 'TIMELINE_EXPAND_REQUEST';
 const TIMELINE_EXPAND_SUCCESS = 'TIMELINE_EXPAND_SUCCESS';
-const TIMELINE_EXPAND_FAIL    = 'TIMELINE_EXPAND_FAIL';
+const TIMELINE_EXPAND_FAIL = 'TIMELINE_EXPAND_FAIL';
 
-const TIMELINE_CONNECT    = 'TIMELINE_CONNECT';
+const TIMELINE_CONNECT = 'TIMELINE_CONNECT';
 const TIMELINE_DISCONNECT = 'TIMELINE_DISCONNECT';
 
 const TIMELINE_REPLACE = 'TIMELINE_REPLACE';
+const TIMELINE_INSERT = 'TIMELINE_INSERT';
 
 const MAX_QUEUED_ITEMS = 40;
 
@@ -110,9 +111,9 @@ const dequeueTimeline = (timelineId: string, expandFunc?: (lastStatusId: string)
 
 const deleteFromTimelines = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const accountId  = getState().statuses.get(id)?.account;
+    const accountId = getState().statuses.get(id)?.account;
     const references = getState().statuses.filter(status => status.get('reblog') === id).map(status => [status.get('id'), status.get('account')]);
-    const reblogOf   = getState().statuses.getIn([id, 'reblog'], null);
+    const reblogOf = getState().statuses.getIn([id, 'reblog'], null);
 
     dispatch({
       type: TIMELINE_DELETE,
@@ -127,7 +128,7 @@ const clearTimeline = (timeline: string) =>
   (dispatch: AppDispatch) =>
     dispatch({ type: TIMELINE_CLEAR, timeline });
 
-const noOp = () => {};
+const noOp = () => { };
 const noOpAsync = () => () => new Promise(f => f(undefined));
 
 const parseTags = (tags: Record<string, any[]> = {}, mode: 'any' | 'all' | 'none') => {
@@ -141,7 +142,7 @@ const replaceHomeTimeline = (
   { maxId }: Record<string, any> = {},
 ) => (dispatch: AppDispatch, _getState: () => RootState) => {
   dispatch({ type: TIMELINE_REPLACE, accountId });
-  dispatch(expandHomeTimeline({ accountId, maxId }));
+  dispatch(expandHomeTimeline({ accountId, maxId }, () => dispatch(insertSuggestionsIntoTimeline())));
 };
 
 const expandTimeline = (timelineId: string, path: string, params: Record<string, any> = {}, done = noOp) =>
@@ -214,9 +215,9 @@ const expandGroupTimeline = (id: string, { maxId }: Record<string, any> = {}, do
 const expandHashtagTimeline = (hashtag: string, { maxId, tags }: Record<string, any> = {}, done = noOp) => {
   return expandTimeline(`hashtag:${hashtag}`, `/api/v1/timelines/tag/${hashtag}`, {
     max_id: maxId,
-    any:    parseTags(tags, 'any'),
-    all:    parseTags(tags, 'all'),
-    none:   parseTags(tags, 'none'),
+    any: parseTags(tags, 'any'),
+    all: parseTags(tags, 'all'),
+    none: parseTags(tags, 'none'),
   }, done);
 };
 
@@ -259,6 +260,10 @@ const scrollTopTimeline = (timeline: string, top: boolean) => ({
   top,
 });
 
+const insertSuggestionsIntoTimeline = () => (dispatch: AppDispatch, getState: () => RootState) => {
+  dispatch({ type: TIMELINE_INSERT, timeline: 'home' });
+};
+
 export {
   TIMELINE_UPDATE,
   TIMELINE_DELETE,
@@ -272,6 +277,7 @@ export {
   TIMELINE_CONNECT,
   TIMELINE_DISCONNECT,
   TIMELINE_REPLACE,
+  TIMELINE_INSERT,
   MAX_QUEUED_ITEMS,
   processTimelineUpdate,
   updateTimeline,
@@ -298,4 +304,5 @@ export {
   connectTimeline,
   disconnectTimeline,
   scrollTopTimeline,
+  insertSuggestionsIntoTimeline,
 };
