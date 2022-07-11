@@ -102,6 +102,10 @@ const SettingsStore: React.FC = () => {
       </CardHeader>
 
       <List>
+        <ListItem label={<FormattedMessage id='preferences.notifications.advanced' defaultMessage='Show all notification categories' />}>
+          <SettingToggle settings={settings} settingPath={['notifications', 'quickFilter', 'advanced']} onChange={onToggleChange} />
+        </ListItem>
+
         <ListItem label={<FormattedMessage id='preferences.fields.unfollow_modal_label' defaultMessage='Show confirmation dialog before unfollowing someone' />}>
           <SettingToggle settings={settings} settingPath={['unfollowModal']} onChange={onToggleChange} />
         </ListItem>
