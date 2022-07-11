@@ -93,6 +93,10 @@ const FeedCarousel = () => {
     );
   }
 
+  if (avatars.length === 0) {
+    return null;
+  }
+
   return (
     <Card variant='rounded' size='lg' ref={cardRef} className='relative' data-testid='feed-carousel'>
       <div>

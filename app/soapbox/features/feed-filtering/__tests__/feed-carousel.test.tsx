@@ -56,9 +56,29 @@ describe('<FeedCarousel />', () => {
     });
 
     it('should render the Carousel', () => {
+      store.carousels = {
+        avatars: [
+          { account_id: '1', acct: 'a', account_avatar: 'https://example.com/some.jpg' },
+        ],
+      };
+
       render(<FeedCarousel />, undefined, store);
 
       expect(screen.queryAllByTestId('feed-carousel')).toHaveLength(1);
+    });
+
+    describe('with 0 avatars', () => {
+      beforeEach(() => {
+        store.carousels = {
+          avatars: [],
+        };
+      });
+
+      it('renders the error message', () => {
+        render(<FeedCarousel />, undefined, store);
+
+        expect(screen.queryAllByTestId('feed-carousel-error')).toHaveLength(0);
+      });
     });
 
     describe('with a failed request to the API', () => {
