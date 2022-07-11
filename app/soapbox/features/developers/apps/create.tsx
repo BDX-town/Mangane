@@ -1,4 +1,3 @@
-import { Map as ImmutableMap } from 'immutable';
 import React, { useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 
@@ -15,6 +14,15 @@ const messages = defineMessages({
   scopesPlaceholder: { id: 'app_create.scopes_placeholder', defaultMessage: 'e.g. \'read write follow\'' },
 });
 
+const BLANK_PARAMS = {
+  client_name: '',
+  redirect_uris: 'urn:ietf:wg:oauth:2.0:oob',
+  scopes: '',
+  website: '',
+};
+
+type Params = typeof BLANK_PARAMS;
+
 const CreateApp: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -23,18 +31,12 @@ const CreateApp: React.FC = () => {
   const [app, setApp] = useState<Record<string, any> | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setLoading] = useState(false);
-
-  const [params, setParams] = useState(ImmutableMap<string, string>({
-    client_name: '',
-    redirect_uris: 'urn:ietf:wg:oauth:2.0:oob',
-    scopes: '',
-    website: '',
-  }));
+  const [params, setParams] = useState<Params>(BLANK_PARAMS);
 
   const handleCreateApp = () => {
     const baseURL = getBaseURL(account!);
 
-    return dispatch(createApp(params.toJS() as Record<string, string>, baseURL))
+    return dispatch(createApp(params, baseURL))
       .then(app => {
         setApp(app);
         return app;
@@ -47,9 +49,9 @@ const CreateApp: React.FC = () => {
     const tokenParams = {
       client_id:     app!.client_id,
       client_secret: app!.client_secret,
-      redirect_uri:  params.get('redirect_uri'),
+      redirect_uri:  params.redirect_uris,
       grant_type:    'client_credentials',
-      scope:         params.get('scopes'),
+      scope:         params.scopes,
     };
 
     return dispatch(obtainOAuthToken(tokenParams, baseURL))
@@ -71,8 +73,7 @@ const CreateApp: React.FC = () => {
   };
 
   const setParam = (key: string, value: string) => {
-    const newParams = params.set(key, value);
-    setParams(newParams);
+    setParams({ ...params, [key]: value });
   };
 
   const handleParamChange = (key: string): React.ChangeEventHandler<HTMLInputElement> => {
@@ -85,13 +86,7 @@ const CreateApp: React.FC = () => {
     setApp(null);
     setToken(null);
     setLoading(false);
-
-    setParams(ImmutableMap({
-      client_name: '',
-      redirect_uris: 'urn:ietf:wg:oauth:2.0:oob',
-      scopes: '',
-      website: '',
-    }));
+    setParams(BLANK_PARAMS);
   };
 
   const handleReset = () => {
@@ -159,7 +154,7 @@ const CreateApp: React.FC = () => {
             type='text'
             placeholder={intl.formatMessage(messages.namePlaceholder)}
             onChange={handleParamChange('client_name')}
-            value={params.get('client_name')}
+            value={params.client_name}
             required
           />
         </FormGroup>
@@ -169,7 +164,7 @@ const CreateApp: React.FC = () => {
             type='text'
             placeholder='https://soapbox.pub'
             onChange={handleParamChange('website')}
-            value={params.get('website')}
+            value={params.website}
           />
         </FormGroup>
 
@@ -178,7 +173,7 @@ const CreateApp: React.FC = () => {
             type='text'
             placeholder='https://example.com'
             onChange={handleParamChange('redirect_uris')}
-            value={params.get('redirect_uris')}
+            value={params.redirect_uris}
             required
           />
         </FormGroup>
@@ -188,7 +183,7 @@ const CreateApp: React.FC = () => {
             type='text'
             placeholder={intl.formatMessage(messages.scopesPlaceholder)}
             onChange={handleParamChange('scopes')}
-            value={params.get('scopes')}
+            value={params.scopes}
             required
           />
         </FormGroup>
