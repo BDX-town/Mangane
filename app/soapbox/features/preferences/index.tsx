@@ -2,13 +2,12 @@ import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
-import { getSettings, changeSetting } from 'soapbox/actions/settings';
+import { changeSetting } from 'soapbox/actions/settings';
 import List, { ListItem } from 'soapbox/components/list';
 import { Form } from 'soapbox/components/ui';
 import { SelectDropdown } from 'soapbox/features/forms';
 import SettingToggle from 'soapbox/features/notifications/components/setting_toggle';
-import { useAppSelector } from 'soapbox/hooks';
-import { getFeatures } from 'soapbox/utils/features';
+import { useFeatures, useSettings } from 'soapbox/hooks';
 
 import ThemeToggle from '../ui/components/theme-toggle';
 
@@ -91,9 +90,8 @@ const messages = defineMessages({
 const Preferences = () => {
   const intl = useIntl();
   const dispatch = useDispatch();
-
-  const features = useAppSelector((state) => getFeatures(state.instance));
-  const settings = useAppSelector((state) => getSettings(state));
+  const features = useFeatures();
+  const settings = useSettings();
 
   const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>, path: string[]) => {
     dispatch(changeSetting(path, event.target.value, { showAlert: true }));
