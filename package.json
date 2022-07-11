@@ -174,7 +174,7 @@
     "react-swipeable-views": "^0.14.0",
     "react-textarea-autosize": "^8.3.4",
     "react-toggle": "^4.1.2",
-    "react-virtuoso": "^2.14.0",
+    "react-virtuoso": "^2.16.2",
     "redux": "^4.1.1",
     "redux-immutable": "^4.0.0",
     "redux-thunk": "^2.2.0",
