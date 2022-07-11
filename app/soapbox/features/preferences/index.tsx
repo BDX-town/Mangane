@@ -157,75 +157,28 @@ const Preferences = () => {
           />
         </ListItem>
 
-        {features.privacyScopes && <ListItem label={<FormattedMessage id='preferences.fields.privacy_label' defaultMessage='Default post privacy' />}>
-          <SelectDropdown
-            items={defaultPrivacyOptions}
-            defaultValue={settings.get('defaultPrivacy') as string | undefined}
-            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['defaultPrivacy'])}
-          />
-        </ListItem>}
+        {features.privacyScopes && (
+          <ListItem label={<FormattedMessage id='preferences.fields.privacy_label' defaultMessage='Default post privacy' />}>
+            <SelectDropdown
+              items={defaultPrivacyOptions}
+              defaultValue={settings.get('defaultPrivacy') as string | undefined}
+              onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['defaultPrivacy'])}
+            />
+          </ListItem>
+        )}
 
-        {features.richText && <ListItem label={<FormattedMessage id='preferences.fields.content_type_label' defaultMessage='Default post format' />}>
-          <SelectDropdown
-            items={defaultContentTypeOptions}
-            defaultValue={settings.get('defaultContentType') as string | undefined}
-            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['defaultContentType'])}
-          />
-        </ListItem>}
+        {features.richText && (
+          <ListItem label={<FormattedMessage id='preferences.fields.content_type_label' defaultMessage='Default post format' />}>
+            <SelectDropdown
+              items={defaultContentTypeOptions}
+              defaultValue={settings.get('defaultContentType') as string | undefined}
+              onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['defaultContentType'])}
+            />
+          </ListItem>
+        )}
       </List>
 
-      {/* <FieldsGroup>
-          <RadioGroup
-            label={<FormattedMessage id='preferences.fields.privacy_label' defaultMessage='Post privacy' />}
-            onChange={this.onDefaultPrivacyChange}
-          >
-            <RadioItem
-              label={<FormattedMessage id='preferences.options.privacy_public' defaultMessage='Public' />}
-              hint={<FormattedMessage id='preferences.hints.privacy_public' defaultMessage='Everyone can see' />}
-              checked={settings.get('defaultPrivacy') === 'public'}
-              value='public'
-            />
-            <RadioItem
-              label={<FormattedMessage id='preferences.options.privacy_unlisted' defaultMessage='Unlisted' />}
-              hint={<FormattedMessage id='preferences.hints.privacy_unlisted' defaultMessage='Everyone can see, but not listed on public timelines' />}
-              checked={settings.get('defaultPrivacy') === 'unlisted'}
-              value='unlisted'
-            />
-            <RadioItem
-              label={<FormattedMessage id='preferences.options.privacy_followers_only' defaultMessage='Followers-only' />}
-              hint={<FormattedMessage id='preferences.hints.privacy_followers_only' defaultMessage='Only show to followers' />}
-              checked={settings.get('defaultPrivacy') === 'private'}
-              value='private'
-            />
-          </RadioGroup>
-        </FieldsGroup> */}
-
-      {/* {features.richText && (
-        <FieldsGroup>
-          <RadioGroup
-            label={<FormattedMessage id='preferences.fields.content_type_label' defaultMessage='Post format' />}
-            onChange={onDefaultContentTypeChange}
-          >
-            <RadioItem
-              label={<FormattedMessage id='preferences.options.content_type_plaintext' defaultMessage='Plain text' />}
-              checked={settings.get('defaultContentType') === 'text/plain'}
-              value='text/plain'
-            />
-            <RadioItem
-              label={<FormattedMessage id='preferences.options.content_type_markdown' defaultMessage='Markdown' />}
-              hint={<FormattedMessage id='preferences.hints.content_type_markdown' defaultMessage='Warning: experimental!' />}
-              checked={settings.get('defaultContentType') === 'text/markdown'}
-              value='text/markdown'
-            />
-          </RadioGroup>
-        </FieldsGroup>
-      )} */}
-
       <List>
-        {/* <ListItem label={<FormattedMessage id='preferences.fields.unfollow_modal_label' defaultMessage='Show confirmation dialog before unfollowing someone' />}>
-          <SettingToggle settings={settings} settingPath={['unfollowModal']} onChange={onToggleChange} />
-        </ListItem> */}
-
         <ListItem label={<FormattedMessage id='preferences.fields.boost_modal_label' defaultMessage='Show confirmation dialog before reposting' />}>
           <SettingToggle settings={settings} settingPath={['boostModal']} onChange={onToggleChange} />
         </ListItem>
@@ -233,10 +186,6 @@ const Preferences = () => {
         <ListItem label={<FormattedMessage id='preferences.fields.delete_modal_label' defaultMessage='Show confirmation dialog before deleting a post' />}>
           <SettingToggle settings={settings} settingPath={['deleteModal']} onChange={onToggleChange} />
         </ListItem>
-
-        {/* <ListItem label={<FormattedMessage id='preferences.fields.missing_description_modal_label' defaultMessage='Show confirmation dialog before sending a post without media descriptions' />}>
-          <SettingToggle settings={settings} settingPath={['missingDescriptionModal']} onChange={onToggleChange} />
-        </ListItem> */}
       </List>
 
       <List>
@@ -248,10 +197,6 @@ const Preferences = () => {
           <SettingToggle settings={settings} settingPath={['expandSpoilers']} onChange={onToggleChange} />
         </ListItem>}
 
-        {/* <ListItem label={<FormattedMessage id='preferences.fields.reduce_motion_label' defaultMessage='Reduce motion in animations' />}>
-          <SettingToggle settings={settings} settingPath={['reduceMotion']} onChange={onToggleChange} />
-        </ListItem> */}
-
         <ListItem label={<FormattedMessage id='preferences.fields.autoload_timelines_label' defaultMessage='Automatically load new posts when scrolled to the top of the page' />}>
           <SettingToggle settings={settings} settingPath={['autoloadTimelines']} onChange={onToggleChange} />
         </ListItem>
@@ -259,32 +204,6 @@ const Preferences = () => {
         <ListItem label={<FormattedMessage id='preferences.fields.autoload_more_label' defaultMessage='Automatically load more items when scrolled to the bottom of the page' />}>
           <SettingToggle settings={settings} settingPath={['autoloadMore']} onChange={onToggleChange} />
         </ListItem>
-
-        {/* <ListItem label={<FormattedMessage id='preferences.fields.underline_links_label' defaultMessage='Always underline links in posts' />}>
-          <SettingToggle settings={settings} settingPath={['underlineLinks']} onChange={onToggleChange} />
-        </ListItem> */}
-
-        {/* <ListItem label={<FormattedMessage id='preferences.fields.system_font_label' defaultMessage="Use system's default font" />}>
-          <SettingToggle settings={settings} settingPath={['systemFont']} onChange={onToggleChange} />
-        </ListItem> */}
-
-        {/* <div className='dyslexic'>
-            <SettingsCheckbox
-              label={<FormattedMessage id='preferences.fields.dyslexic_font_label' defaultMessage='Dyslexic mode' />}
-              path={['dyslexicFont']}
-            />
-          </div> */}
-        {/* <SettingsCheckbox
-            label={<FormattedMessage id='preferences.fields.halloween_label' defaultMessage='Halloween mode' />}
-            hint={<FormattedMessage id='preferences.hints.halloween' defaultMessage='Beware: SPOOKY! Supports light/dark toggle.' />}
-            path={['halloween']}
-          /> */}
-        {/* <ListItem
-          label={<FormattedMessage id='preferences.fields.demetricator_label' defaultMessage='Use Demetricator' />}
-          hint={<FormattedMessage id='preferences.hints.demetricator' defaultMessage='Decrease social media anxiety by hiding all numbers from the site.' />}
-        >
-          <SettingToggle settings={settings} settingPath={['demetricator']} onChange={onToggleChange} />
-        </ListItem> */}
       </List>
     </Form>
   );
