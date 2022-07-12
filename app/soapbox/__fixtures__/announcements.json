@@ -1,0 +1,44 @@
+[
+  {
+    "id": "1",
+    "content": "<p>Updated to Soapbox v3.</p>",
+    "starts_at": null,
+    "ends_at": null,
+    "all_day": false,
+    "published_at": "2022-06-15T18:47:14.190Z",
+    "updated_at": "2022-06-15T18:47:18.339Z",
+    "read": true,
+    "mentions": [],
+    "statuses": [],
+    "tags": [],
+    "emojis": [],
+    "reactions": [
+      {
+        "name": "📈",
+        "count": 476,
+        "me": true
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "content": "<p>Rolled back to Soapbox v2 for now.</p>",
+    "starts_at": null,
+    "ends_at": null,
+    "all_day": false,
+    "published_at": "2022-07-13T11:11:50.628Z",
+    "updated_at": "2022-07-13T11:11:50.628Z",
+    "read": true,
+    "mentions": [],
+    "statuses": [],
+    "tags": [],
+    "emojis": [],
+    "reactions": [
+      {
+        "name": "📉",
+        "count": 420,
+        "me": false
+      }
+    ]
+  }
+]

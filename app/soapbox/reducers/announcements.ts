@@ -14,8 +14,7 @@ import {
   ANNOUNCEMENTS_DELETE,
   ANNOUNCEMENTS_DISMISS_SUCCESS,
 } from 'soapbox/actions/announcements';
-import { normalizeAnnouncementReaction } from 'soapbox/normalizers';
-import { normalizeAnnouncement } from 'soapbox/normalizers/announcement';
+import { normalizeAnnouncement, normalizeAnnouncementReaction } from 'soapbox/normalizers';
 
 import type { AnyAction } from 'redux';
 import type{ Announcement, AnnouncementReaction, APIEntity } from 'soapbox/types/entities';

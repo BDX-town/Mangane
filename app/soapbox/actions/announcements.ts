@@ -77,7 +77,7 @@ export const dismissAnnouncement = (announcementId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(dismissAnnouncementRequest(announcementId));
 
-    api(getState).post(`/api/v1/announcements/${announcementId}/dismiss`).then(() => {
+    return api(getState).post(`/api/v1/announcements/${announcementId}/dismiss`).then(() => {
       dispatch(dismissAnnouncementSuccess(announcementId));
     }).catch(error => {
       dispatch(dismissAnnouncementFail(announcementId, error));
@@ -108,6 +108,7 @@ export const addReaction = (announcementId: string, name: string) =>
 
     if (announcement) {
       const reaction = announcement.reactions.find(x => x.name === name);
+
       if (reaction && reaction.me) {
         alreadyAdded = true;
       }
@@ -117,7 +118,7 @@ export const addReaction = (announcementId: string, name: string) =>
       dispatch(addReactionRequest(announcementId, name, alreadyAdded));
     }
 
-    api(getState).put(`/api/v1/announcements/${announcementId}/reactions/${name}`).then(() => {
+    return api(getState).put(`/api/v1/announcements/${announcementId}/reactions/${name}`).then(() => {
       dispatch(addReactionSuccess(announcementId, name, alreadyAdded));
     }).catch(err => {
       if (!alreadyAdded) {
@@ -152,7 +153,7 @@ export const removeReaction = (announcementId: string, name: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(removeReactionRequest(announcementId, name));
 
-    api(getState).delete(`/api/v1/announcements/${announcementId}/reactions/${name}`).then(() => {
+    return api(getState).delete(`/api/v1/announcements/${announcementId}/reactions/${name}`).then(() => {
       dispatch(removeReactionSuccess(announcementId, name));
     }).catch(err => {
       dispatch(removeReactionFail(announcementId, name, err));
