@@ -116,6 +116,8 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
     activeItem = 'profile';
   }
 
+  const showTabs = !['following', 'followers', 'pins'].some(path => pathname.includes(path));
+
   return (
     <>
       <Layout.Main>
@@ -128,7 +130,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
               {Component => <Component username={username} account={account} />}
             </BundleContainer>
 
-            {account && (
+            {account && showTabs && (
               <Tabs items={tabItems} activeItem={activeItem} />
             )}
 
