@@ -24,10 +24,6 @@ const PhoneInput: React.FC<IPhoneInput> = (props) => {
   const [countryCode, setCountryCode] = useState<CountryCode>(defaultCountryCode);
   const [nationalNumber, setNationalNumber] = useState<string>('');
 
-  const handleCountryChange = (code: CountryCode) => {
-    setCountryCode(code);
-  };
-
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     // HACK: AsYouType is not meant to be used this way. But it works!
     const asYouType = new AsYouType({ defaultCallingCode: countryCode });
@@ -64,7 +60,7 @@ const PhoneInput: React.FC<IPhoneInput> = (props) => {
     <HStack alignItems='center'>
       <CountryCodeDropdown
         countryCode={countryCode}
-        onChange={handleCountryChange}
+        onChange={setCountryCode}
       />
 
       <Input
