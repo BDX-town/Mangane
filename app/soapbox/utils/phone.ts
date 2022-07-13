@@ -1,3 +1,14 @@
+/** List of supported E164 country codes. */
+const COUNTRY_CODES = [
+  1,
+  44,
+] as const;
+
+/** Supported E164 country code. */
+type CountryCode = typeof COUNTRY_CODES[number];
+
+/** Check whether a given value is a country code. */
+const isCountryCode = (value: any): value is CountryCode => COUNTRY_CODES.includes(value);
 
 function removeFormattingFromNumber(number = '') {
   if (number) {
@@ -7,17 +18,14 @@ function removeFormattingFromNumber(number = '') {
   return number;
 }
 
-function formatPhoneNumber(phoneNumber = '') {
+function formatPhoneNumber(countryCode: CountryCode, phoneNumber = '') {
   let formattedPhoneNumber = '';
-  let strippedPhone = removeFormattingFromNumber(phoneNumber);
-  if (strippedPhone.slice(0, 1) === '1') {
-    strippedPhone = strippedPhone.slice(1);
-  }
+  const strippedPhone = removeFormattingFromNumber(phoneNumber);
 
   for (let i = 0; i < strippedPhone.length && i < 10; i++) {
     const character = strippedPhone.charAt(i);
     if (i === 0) {
-      const prefix = '+1 (';
+      const prefix = `+${countryCode} (`;
       formattedPhoneNumber += prefix + character;
     } else if (i === 3) {
       formattedPhoneNumber += `) ${character}`;
@@ -30,4 +38,9 @@ function formatPhoneNumber(phoneNumber = '') {
   return formattedPhoneNumber;
 }
 
-export { formatPhoneNumber };
+export {
+  COUNTRY_CODES,
+  CountryCode,
+  isCountryCode,
+  formatPhoneNumber,
+};
