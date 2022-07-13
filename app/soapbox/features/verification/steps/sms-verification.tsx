@@ -5,9 +5,8 @@ import OtpInput from 'react-otp-input';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { confirmPhoneVerification, requestPhoneVerification } from 'soapbox/actions/verification';
-import { Button, Form, FormGroup, Input, Text } from 'soapbox/components/ui';
+import { Button, Form, FormGroup, PhoneInput, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { formatPhoneNumber } from 'soapbox/utils/phone';
 
 const Statuses = {
   IDLE: 'IDLE',
@@ -30,10 +29,8 @@ const SmsVerification = () => {
 
   const isValid = validPhoneNumberRegex.test(phone);
 
-  const onChange = React.useCallback((event) => {
-    const formattedPhone = formatPhoneNumber(event.target.value);
-
-    setPhone(formattedPhone);
+  const onChange = React.useCallback((phone: string) => {
+    setPhone(phone);
   }, []);
 
   const handleSubmit = React.useCallback((event) => {
@@ -147,8 +144,7 @@ const SmsVerification = () => {
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
         <Form onSubmit={handleSubmit}>
           <FormGroup labelText='Phone Number'>
-            <Input
-              type='text'
+            <PhoneInput
               value={phone}
               onChange={onChange}
               required
