@@ -34,7 +34,7 @@ const PhoneInput: React.FC<IPhoneInput> = (props) => {
   };
 
   return (
-    <HStack>
+    <HStack alignItems='center'>
       <CountryCodeDropdown
         countryCode={countryCode}
         onChange={handleCountryChange}

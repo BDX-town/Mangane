@@ -20,13 +20,13 @@ const CountryCodeDropdown: React.FC<ICountryCodeDropdown> = ({ countryCode, onCh
   };
 
   const menu: Menu = COUNTRY_CODES.map(code => ({
-    text: <>{code}</>,
+    text: <>+{code}</>,
     action: handleMenuItem(code),
   }));
 
   return (
     <DropdownMenu items={menu}>
-      <button className='p-4'>{countryCode}</button>
+      <button className='px-4'>+{countryCode}</button>
     </DropdownMenu>
   );
 };
