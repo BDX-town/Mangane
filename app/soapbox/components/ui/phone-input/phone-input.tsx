@@ -57,14 +57,18 @@ const PhoneInput: React.FC<IPhoneInput> = (props) => {
   }, [countryCode, nationalNumber]);
 
   return (
-    <HStack alignItems='center'>
-      <CountryCodeDropdown
-        countryCode={countryCode}
-        onChange={setCountryCode}
-      />
+    <HStack className='mt-1 shadow-sm'>
+      <div className='dark:bg-slate-800 border border-solid border-r-0 border-gray-300 dark:border-gray-600 flex items-center rounded-l-md'>
+        <CountryCodeDropdown
+          countryCode={countryCode}
+          onChange={setCountryCode}
+        />
+      </div>
 
       <Input
         type='text'
+        outerClassName='mt-0 shadow-none'
+        className='rounded-l-none'
         onChange={handleChange}
         value={nationalNumber}
         {...rest}
