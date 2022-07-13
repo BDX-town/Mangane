@@ -36,7 +36,7 @@ interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
   /** ID of the timeline in Redux. */
   timelineId?: string,
   /** Whether to display a gap or border between statuses in the list. */
-  divideType: 'space' | 'border',
+  divideType?: 'space' | 'border',
 }
 
 /** Feed of statuses, built atop ScrollableList. */
