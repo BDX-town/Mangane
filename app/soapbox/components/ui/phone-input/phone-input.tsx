@@ -1,4 +1,4 @@
-import { parsePhoneNumber } from 'libphonenumber-js';
+import { parsePhoneNumber, AsYouType } from 'libphonenumber-js';
 import React, { useState, useEffect } from 'react';
 
 import { CountryCode } from 'soapbox/utils/phone';
@@ -29,7 +29,15 @@ const PhoneInput: React.FC<IPhoneInput> = (props) => {
   };
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    setNationalNumber(target.value);
+    // HACK: AsYouType is not meant to be used this way. But it works!
+    const asYouType = new AsYouType({ defaultCallingCode: countryCode });
+    const formatted = asYouType.input(target.value);
+
+    if (formatted === nationalNumber && target.value !== nationalNumber) {
+      setNationalNumber(target.value);
+    } else {
+      setNationalNumber(formatted);
+    }
   };
 
   // When the internal state changes, update the external state.
