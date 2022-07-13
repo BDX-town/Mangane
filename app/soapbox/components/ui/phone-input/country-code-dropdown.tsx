@@ -26,7 +26,7 @@ const CountryCodeDropdown: React.FC<ICountryCodeDropdown> = ({ countryCode, onCh
 
   return (
     <DropdownMenu items={menu}>
-      <>{countryCode}</>
+      <button className='p-4'>{countryCode}</button>
     </DropdownMenu>
   );
 };
