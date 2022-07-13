@@ -9,12 +9,12 @@ import { HStack, Text, Emoji } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import StatusContainer from 'soapbox/containers/status_container';
 import { useAppSelector } from 'soapbox/hooks';
+import { NotificationType, validType } from 'soapbox/utils/notification';
 
 import type { ScrollPosition } from 'soapbox/components/status';
-import type { NotificationType } from 'soapbox/normalizers/notification';
 import type { Account, Status, Notification as NotificationEntity } from 'soapbox/types/entities';
 
-const notificationForScreenReader = (intl: ReturnType<typeof useIntl>, message: string, timestamp: Date) => {
+const notificationForScreenReader = (intl: IntlShape, message: string, timestamp: Date) => {
   const output = [message];
 
   output.push(intl.formatDate(timestamp, { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }));
@@ -35,20 +35,20 @@ const buildLink = (account: Account): JSX.Element => (
 );
 
 const icons: Record<NotificationType, string> = {
-  follow: require('@tabler/icons/icons/user-plus.svg'),
-  follow_request: require('@tabler/icons/icons/user-plus.svg'),
-  mention: require('@tabler/icons/icons/at.svg'),
-  favourite: require('@tabler/icons/icons/heart.svg'),
-  reblog: require('@tabler/icons/icons/repeat.svg'),
-  status: require('@tabler/icons/icons/bell-ringing.svg'),
-  poll: require('@tabler/icons/icons/chart-bar.svg'),
-  move: require('@tabler/icons/icons/briefcase.svg'),
-  'pleroma:chat_mention': require('@tabler/icons/icons/messages.svg'),
-  'pleroma:emoji_reaction': require('@tabler/icons/icons/mood-happy.svg'),
-  user_approved: require('@tabler/icons/icons/user-plus.svg'),
+  follow: require('@tabler/icons/user-plus.svg'),
+  follow_request: require('@tabler/icons/user-plus.svg'),
+  mention: require('@tabler/icons/at.svg'),
+  favourite: require('@tabler/icons/heart.svg'),
+  reblog: require('@tabler/icons/repeat.svg'),
+  status: require('@tabler/icons/bell-ringing.svg'),
+  poll: require('@tabler/icons/chart-bar.svg'),
+  move: require('@tabler/icons/briefcase.svg'),
+  'pleroma:chat_mention': require('@tabler/icons/messages.svg'),
+  'pleroma:emoji_reaction': require('@tabler/icons/mood-happy.svg'),
+  user_approved: require('@tabler/icons/user-plus.svg'),
 };
 
-const messages: Record<string | number | symbol, MessageDescriptor> = defineMessages({
+const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
   follow: {
     id: 'notification.follow',
     defaultMessage: '{name} followed you',
@@ -82,7 +82,7 @@ const messages: Record<string | number | symbol, MessageDescriptor> = defineMess
     defaultMessage: '{name} moved to {targetName}',
   },
   'pleroma:chat_mention': {
-    id: 'notification.chat_mention',
+    id: 'notification.pleroma:chat_mention',
     defaultMessage: '{name} sent you a message',
   },
   'pleroma:emoji_reaction': {
@@ -128,16 +128,14 @@ const buildMessage = (
 interface INotificaton {
   hidden?: boolean,
   notification: NotificationEntity,
-  onMoveUp: (notificationId: string) => void,
-  onMoveDown: (notificationId: string) => void,
-  onMention: (account: Account) => void,
-  onFavourite: (status: Status) => void,
-  onReblog: (status: Status, e?: KeyboardEvent) => void,
-  onToggleHidden: (status: Status) => void,
+  onMoveUp?: (notificationId: string) => void,
+  onMoveDown?: (notificationId: string) => void,
+  onMention?: (account: Account) => void,
+  onFavourite?: (status: Status) => void,
+  onReblog?: (status: Status, e?: KeyboardEvent) => void,
+  onToggleHidden?: (status: Status) => void,
   getScrollPosition?: () => ScrollPosition | undefined,
   updateScrollBottom?: (bottom: number) => void,
-  cacheMediaWidth: () => void,
-  cachedMediaWidth: number,
   siteTitle?: string,
 }
 
@@ -180,35 +178,39 @@ const Notification: React.FC<INotificaton> = (props) => {
   const handleMention = (e?: KeyboardEvent) => {
     e?.preventDefault();
 
-    if (account && typeof account === 'object') {
+    if (props.onMention && account && typeof account === 'object') {
       props.onMention(account);
     }
   };
 
   const handleHotkeyFavourite = (e?: KeyboardEvent) => {
-    if (status && typeof status === 'object') {
+    if (props.onFavourite && status && typeof status === 'object') {
       props.onFavourite(status);
     }
   };
 
   const handleHotkeyBoost = (e?: KeyboardEvent) => {
-    if (status && typeof status === 'object') {
+    if (props.onReblog && status && typeof status === 'object') {
       props.onReblog(status, e);
     }
   };
 
   const handleHotkeyToggleHidden = (e?: KeyboardEvent) => {
-    if (status && typeof status === 'object') {
+    if (props.onToggleHidden && status && typeof status === 'object') {
       props.onToggleHidden(status);
     }
   };
 
   const handleMoveUp = () => {
-    onMoveUp(notification.id);
+    if (onMoveUp) {
+      onMoveUp(notification.id);
+    }
   };
 
   const handleMoveDown = () => {
-    onMoveDown(notification.id);
+    if (onMoveDown) {
+      onMoveDown(notification.id);
+    }
   };
 
   const renderIcon = (): React.ReactNode => {
@@ -219,7 +221,7 @@ const Notification: React.FC<INotificaton> = (props) => {
           className='w-4 h-4 flex-none'
         />
       );
-    } else if (type) {
+    } else if (validType(type)) {
       return (
         <Icon
           src={icons[type]}
@@ -268,8 +270,6 @@ const Notification: React.FC<INotificaton> = (props) => {
             contextType='notifications'
             getScrollPosition={props.getScrollPosition}
             updateScrollBottom={props.updateScrollBottom}
-            cachedMediaWidth={props.cachedMediaWidth}
-            cacheMediaWidth={props.cacheMediaWidth}
           />
         ) : null;
       default:
@@ -279,27 +279,25 @@ const Notification: React.FC<INotificaton> = (props) => {
 
   const targetName = notification.target && typeof notification.target === 'object' ? notification.target.acct : '';
 
-  const message: React.ReactNode = type && account && typeof account === 'object' ? buildMessage(intl, type, account, notification.total_count, targetName, instance.title) : null;
+  const message: React.ReactNode = validType(type) && account && typeof account === 'object' ? buildMessage(intl, type, account, notification.total_count, targetName, instance.title) : null;
+
+  const ariaLabel = validType(type) ? (
+    notificationForScreenReader(
+      intl,
+      intl.formatMessage(messages[type], {
+        name: account && typeof account === 'object' ? account.acct : '',
+        targetName,
+      }),
+      notification.created_at,
+    )
+  ) : '';
 
   return (
     <HotKeys handlers={getHandlers()} data-testid='notification'>
       <div
         className='notification focusable'
         tabIndex={0}
-        aria-label={
-          notificationForScreenReader(
-            intl,
-            intl.formatMessage({
-              id: type && messages[type].id,
-              defaultMessage: type && messages[type].defaultMessage,
-            },
-            {
-              name: account && typeof account === 'object' ? account.acct : '',
-              targetName,
-            }),
-            notification.created_at,
-          )
-        }
+        aria-label={ariaLabel}
       >
         <div className='p-4 focusable'>
           <div className='mb-2'>

@@ -54,7 +54,7 @@ const AuthLayout = () => {
               <div className='relative z-10 ml-auto flex items-center'>
                 <Button
                   theme='link'
-                  icon={require('@tabler/icons/icons/user.svg')}
+                  icon={require('@tabler/icons/user.svg')}
                   to='/signup'
                 >
                   {intl.formatMessage(messages.register)}

@@ -15,14 +15,14 @@ describe('rules reducer', () => {
 
   describe('RULES_FETCH_REQUEST', () => {
     it('sets "needsOnboarding" to "true"', () => {
-      const action = { type: RULES_FETCH_REQUEST };
+      const action = { type: RULES_FETCH_REQUEST } as any;
       expect(reducer(initialState, action).isLoading).toEqual(true);
     });
   });
 
   describe('ONBOARDING_END', () => {
     it('sets "needsOnboarding" to "false"', () => {
-      const action = { type: RULES_FETCH_SUCCESS, payload: [{ id: '123' }] };
+      const action = { type: RULES_FETCH_SUCCESS, payload: [{ id: '123' }] } as any;
       const result = reducer(initialState, action);
       expect(result.isLoading).toEqual(false);
       expect(result.items[0].id).toEqual('123');

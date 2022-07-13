@@ -9,7 +9,7 @@ import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
 import RelativeTimestamp from './relative_timestamp';
-import { Avatar, Emoji, HStack, Icon, IconButton, Text } from './ui';
+import { Avatar, Emoji, HStack, Icon, IconButton, Stack, Text } from './ui';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
@@ -57,7 +57,9 @@ interface IAccount {
   timestamp?: string | Date,
   timestampUrl?: string,
   futureTimestamp?: boolean,
+  withAccountNote?: boolean,
   withDate?: boolean,
+  withLinkToProfile?: boolean,
   withRelationship?: boolean,
   showEdit?: boolean,
   emoji?: string,
@@ -78,7 +80,9 @@ const Account = ({
   timestamp,
   timestampUrl,
   futureTimestamp = false,
+  withAccountNote = false,
   withDate = false,
+  withLinkToProfile = true,
   withRelationship = true,
   showEdit = false,
   emoji,
@@ -154,12 +158,12 @@ const Account = ({
 
   if (withDate) timestamp = account.created_at;
 
-  const LinkEl: any = showProfileHoverCard ? Link : 'div';
+  const LinkEl: any = withLinkToProfile ? Link : 'div';
 
   return (
     <div data-testid='account' className='flex-shrink-0 group block w-full' ref={overflowRef}>
       <HStack alignItems={actionAlignment} justifyContent='between'>
-        <HStack alignItems='center' space={3} grow>
+        <HStack alignItems={withAccountNote ? 'top' : 'center'} space={3}>
           <ProfilePopper
             condition={showProfileHoverCard}
             wrapper={(children) => <HoverRefWrapper className='relative' accountId={account.id} inline>{children}</HoverRefWrapper>}
@@ -202,35 +206,45 @@ const Account = ({
               </LinkEl>
             </ProfilePopper>
 
-            <HStack alignItems='center' space={1} style={style}>
-              <Text theme='muted' size='sm' truncate>@{username}</Text>
+            <Stack space={withAccountNote ? 1 : 0}>
+              <HStack alignItems='center' space={1} style={style}>
+                <Text theme='muted' size='sm' truncate>@{username}</Text>
 
-              {account.favicon && (
-                <InstanceFavicon account={account} />
-              )}
+                {account.favicon && (
+                  <InstanceFavicon account={account} />
+                )}
 
-              {(timestamp) ? (
-                <>
-                  <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+                {(timestamp) ? (
+                  <>
+                    <Text tag='span' theme='muted' size='sm'>&middot;</Text>
 
-                  {timestampUrl ? (
-                    <Link to={timestampUrl} className='hover:underline'>
+                    {timestampUrl ? (
+                      <Link to={timestampUrl} className='hover:underline'>
+                        <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
+                      </Link>
+                    ) : (
                       <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
-                    </Link>
-                  ) : (
-                    <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
-                  )}
-                </>
-              ) : null}
+                    )}
+                  </>
+                ) : null}
 
-              {showEdit ? (
-                <>
-                  <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+                {showEdit ? (
+                  <>
+                    <Text tag='span' theme='muted' size='sm'>&middot;</Text>
 
-                  <Icon className='h-5 w-5 stroke-[1.35]' src={require('@tabler/icons/icons/pencil.svg')} />
-                </>
-              ) : null}
-            </HStack>
+                    <Icon className='h-5 w-5 stroke-[1.35]' src={require('@tabler/icons/pencil.svg')} />
+                  </>
+                ) : null}
+              </HStack>
+
+              {withAccountNote && (
+                <Text
+                  size='sm'
+                  dangerouslySetInnerHTML={{ __html: account.note_emojified }}
+                  className='mr-2'
+                />
+              )}
+            </Stack>
           </div>
         </HStack>
 

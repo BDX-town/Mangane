@@ -11,7 +11,7 @@ import reducer from '../alerts';
 
 describe('alerts reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableList());
+    expect(reducer(undefined, {} as any)).toEqual(ImmutableList());
   });
 
   describe('ALERT_SHOW', () => {

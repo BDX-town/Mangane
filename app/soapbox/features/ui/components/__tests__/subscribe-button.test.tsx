@@ -5,7 +5,9 @@ import { render, screen } from '../../../../jest/test-helpers';
 import { normalizeAccount, normalizeRelationship } from '../../../../normalizers';
 import SubscribeButton from '../subscription-button';
 
-let account = {
+import type { ReducerAccount } from 'soapbox/reducers/accounts';
+
+const justin = {
   id: '1',
   acct: 'justin-username',
   display_name: 'Justin L',
@@ -13,13 +15,13 @@ let account = {
 };
 
 describe('<SubscribeButton />', () => {
-  let store;
+  let store: any;
 
   describe('with "accountNotifies" disabled', () => {
     it('renders nothing', () => {
-      account = normalizeAccount({ ...account, relationship: normalizeRelationship({ following: true }) });
+      const account = normalizeAccount({ ...justin, relationship: normalizeRelationship({ following: true }) }) as ReducerAccount;
 
-      render(<SubscribeButton account={account} />, null, store);
+      render(<SubscribeButton account={account} />, undefined, store);
       expect(screen.queryAllByTestId('icon-button')).toHaveLength(0);
     });
   });

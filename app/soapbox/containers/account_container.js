@@ -38,7 +38,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
       if (account.relationship?.following || account.relationship?.requested) {
         if (unfollowModal) {
           dispatch(openModal('CONFIRM', {
-            icon: require('@tabler/icons/icons/minus.svg'),
+            icon: require('@tabler/icons/minus.svg'),
             heading: <FormattedMessage id='confirmations.unfollow.heading' defaultMessage='Unfollow {name}' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
             message: <FormattedMessage id='confirmations.unfollow.message' defaultMessage='Are you sure you want to unfollow {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
             confirm: intl.formatMessage(messages.unfollowConfirm),

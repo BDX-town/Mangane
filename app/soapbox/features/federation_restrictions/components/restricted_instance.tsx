@@ -24,20 +24,19 @@ const RestrictedInstance: React.FC<IRestrictedInstance> = ({ host }) => {
   };
 
   return (
-    <div className={classNames('restricted-instance', {
-      'restricted-instance--reject': remoteInstance.getIn(['federation', 'reject']),
-      'restricted-instance--expanded': expanded,
-    })}
-    >
-      <a href='#' className='restricted-instance__header' onClick={toggleExpanded}>
-        <div className='restricted-instance__icon'>
-          <Icon src={expanded ? require('@tabler/icons/icons/caret-down.svg') : require('@tabler/icons/icons/caret-right.svg')} />
-        </div>
-        <div className='restricted-instance__host'>
+    <div>
+      <a href='#' className='flex items-center gap-1 py-2.5 no-underline' onClick={toggleExpanded}>
+        <Icon src={expanded ? require('@tabler/icons/caret-down.svg') : require('@tabler/icons/caret-right.svg')} />
+        <div className={classNames({ 'line-through': remoteInstance.getIn(['federation', 'reject']) })}>
           {remoteInstance.get('host')}
         </div>
       </a>
-      <div className='restricted-instance__restrictions'>
+      <div
+        className={classNames({
+          'h-0 overflow-hidden': !expanded,
+          'h-auto': expanded,
+        })}
+      >
         <InstanceRestrictions remoteInstance={remoteInstance} />
       </div>
     </div>

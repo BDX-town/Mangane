@@ -47,6 +47,7 @@ const mapStateToProps = state => {
 
   return {
     showFilterBar: settings.getIn(['notifications', 'quickFilter', 'show']),
+    activeFilter: settings.getIn(['notifications', 'quickFilter', 'active']),
     notifications: getNotifications(state),
     isLoading: state.getIn(['notifications', 'isLoading'], true),
     isUnread: state.getIn(['notifications', 'unread']) > 0,
@@ -62,6 +63,7 @@ class Notifications extends React.PureComponent {
   static propTypes = {
     notifications: ImmutablePropTypes.list.isRequired,
     showFilterBar: PropTypes.bool.isRequired,
+    activeFilter: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     isLoading: PropTypes.bool,
@@ -143,8 +145,11 @@ class Notifications extends React.PureComponent {
   }
 
   render() {
-    const { intl, notifications, isLoading, hasMore, showFilterBar, totalQueuedNotificationsCount } = this.props;
-    const emptyMessage = <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />;
+    const { intl, notifications, isLoading, hasMore, showFilterBar, totalQueuedNotificationsCount, activeFilter } = this.props;
+
+    const emptyMessage = activeFilter === 'all'
+      ? <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />
+      : <FormattedMessage id='empty_column.notifications_filtered' defaultMessage="You don't have any notifications of this type yet." />;
 
     let scrollableContent = null;
 

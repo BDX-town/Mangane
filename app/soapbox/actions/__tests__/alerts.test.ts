@@ -1,11 +1,10 @@
 import { AxiosError } from 'axios';
 
-import { mockStore } from 'soapbox/jest/test-helpers';
-import rootReducer from 'soapbox/reducers';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 
 import { dismissAlert, showAlert, showAlertForError } from '../alerts';
 
-const buildError = (message: string, status: number) => new AxiosError<any>(message, String(status), null, null, {
+const buildError = (message: string, status: number) => new AxiosError<any>(message, String(status), undefined, null, {
   data: {
     error: message,
   },
@@ -15,10 +14,10 @@ const buildError = (message: string, status: number) => new AxiosError<any>(mess
   config: {},
 });
 
-let store;
+let store: ReturnType<typeof mockStore>;
 
 beforeEach(() => {
-  const state = rootReducer(undefined, {});
+  const state = rootState;
   store = mockStore(state);
 });
 
@@ -28,7 +27,7 @@ describe('dismissAlert()', () => {
     const expectedActions = [
       { type: 'ALERT_DISMISS', alert },
     ];
-    await store.dispatch(dismissAlert(alert));
+    await store.dispatch(dismissAlert(alert as any));
     const actions = store.getActions();
 
     expect(actions).toEqual(expectedActions);
@@ -70,11 +69,10 @@ describe('showAlert()', () => {
     it('dispatches the proper actions', async() => {
       const error = buildError('', 404);
 
-      const expectedActions = [];
       await store.dispatch(showAlertForError(error));
       const actions = store.getActions();
 
-      expect(actions).toEqual(expectedActions);
+      expect(actions).toEqual([]);
     });
   });
 
@@ -82,11 +80,10 @@ describe('showAlert()', () => {
     it('dispatches the proper actions', async() => {
       const error = buildError('', 410);
 
-      const expectedActions = [];
       await store.dispatch(showAlertForError(error));
       const actions = store.getActions();
 
-      expect(actions).toEqual(expectedActions);
+      expect(actions).toEqual([]);
     });
   });
 

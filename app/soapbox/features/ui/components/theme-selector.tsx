@@ -21,11 +21,11 @@ const ThemeSelector: React.FC<IThemeSelector> = ({ value, onChange }) => {
   const themeIconSrc = useMemo(() => {
     switch (value) {
       case 'system':
-        return require('@tabler/icons/icons/device-desktop.svg');
+        return require('@tabler/icons/device-desktop.svg');
       case 'light':
-        return require('@tabler/icons/icons/sun.svg');
+        return require('@tabler/icons/sun.svg');
       case 'dark':
-        return require('@tabler/icons/icons/moon.svg');
+        return require('@tabler/icons/moon.svg');
       default:
         return null;
     }
@@ -53,7 +53,7 @@ const ThemeSelector: React.FC<IThemeSelector> = ({ value, onChange }) => {
         </select>
 
         <div className='absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none'>
-          <Icon src={require('@tabler/icons/icons/chevron-down.svg')} className='h-4 w-4 text-gray-400' />
+          <Icon src={require('@tabler/icons/chevron-down.svg')} className='h-4 w-4 text-gray-400' />
         </div>
       </div>
     </label>

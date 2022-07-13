@@ -21,7 +21,7 @@ const Domain: React.FC<IDomain> = ({ domain }) => {
 
   // const onBlockDomain = () => {
   //   dispatch(openModal('CONFIRM', {
-  //     icon: require('@tabler/icons/icons/ban.svg'),
+  //     icon: require('@tabler/icons/ban.svg'),
   //     heading: <FormattedMessage id='confirmations.domain_block.heading' defaultMessage='Block {domain}' values={{ domain }} />,
   //     message: <FormattedMessage id='confirmations.domain_block.message' defaultMessage='Are you really, really sure you want to block the entire {domain}? In most cases a few targeted blocks or mutes are sufficient and preferable.' values={{ domain: <strong>{domain}</strong> }} />,
   //     confirm: intl.formatMessage(messages.blockDomainConfirm),
@@ -41,7 +41,7 @@ const Domain: React.FC<IDomain> = ({ domain }) => {
         </span>
 
         <div className='domain__buttons'>
-          <IconButton active src={require('@tabler/icons/icons/lock-open.svg')} title={intl.formatMessage(messages.unblockDomain, { domain })} onClick={handleDomainUnblock} />
+          <IconButton active src={require('@tabler/icons/lock-open.svg')} title={intl.formatMessage(messages.unblockDomain, { domain })} onClick={handleDomainUnblock} />
         </div>
       </div>
     </div>

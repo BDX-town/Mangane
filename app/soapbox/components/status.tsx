@@ -84,8 +84,6 @@ interface IStatus extends RouteComponentProps {
   onMoveDown: (statusId: string, featured?: boolean) => void,
   getScrollPosition?: () => ScrollPosition | undefined,
   updateScrollBottom?: (bottom: number) => void,
-  cacheMediaWidth: () => void,
-  cachedMediaWidth: number,
   group: ImmutableMap<string, any>,
   displayMedia: string,
   allowedEmoji: ImmutableList<string>,
@@ -134,11 +132,11 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     this.didShowCard = Boolean(!this.props.muted && !this.props.hidden && this.props.status && this.props.status.card);
   }
 
-  getSnapshotBeforeUpdate(): ScrollPosition | undefined {
+  getSnapshotBeforeUpdate(): ScrollPosition | null {
     if (this.props.getScrollPosition) {
-      return this.props.getScrollPosition();
+      return this.props.getScrollPosition() || null;
     } else {
-      return undefined;
+      return null;
     }
   }
 
@@ -346,7 +344,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
       prepend = (
         <div className='pt-4 px-4'>
           <HStack alignItems='center' space={1}>
-            <Icon src={require('@tabler/icons/icons/pinned.svg')} className='text-gray-600 dark:text-gray-400' />
+            <Icon src={require('@tabler/icons/pinned.svg')} className='text-gray-600 dark:text-gray-400' />
 
             <Text size='sm' theme='muted' weight='medium'>
               <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
@@ -365,7 +363,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
           onClick={(event) => event.stopPropagation()}
           className='hidden sm:flex items-center text-gray-500 text-xs font-medium space-x-1 hover:underline'
         >
-          <Icon src={require('@tabler/icons/icons/repeat.svg')} className='text-green-600' />
+          <Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />
 
           <HStack alignItems='center'>
             <FormattedMessage
@@ -388,7 +386,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
             onClick={(event) => event.stopPropagation()}
             className='flex items-center text-gray-500 text-xs font-medium space-x-1 hover:underline'
           >
-            <Icon src={require('@tabler/icons/icons/repeat.svg')} className='text-green-600' />
+            <Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />
 
             <span>
               <FormattedMessage
@@ -474,18 +472,17 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
             {reblogElementMobile}
 
             <div className='mb-4'>
-              <HStack justifyContent='between' alignItems='start'>
-                <AccountContainer
-                  key={String(status.getIn(['account', 'id']))}
-                  id={String(status.getIn(['account', 'id']))}
-                  timestamp={status.created_at}
-                  timestampUrl={statusUrl}
-                  action={reblogElement}
-                  hideActions={!reblogElement}
-                  showEdit={!!status.edited_at}
-                  showProfileHoverCard={this.props.hoverable}
-                />
-              </HStack>
+              <AccountContainer
+                key={String(status.getIn(['account', 'id']))}
+                id={String(status.getIn(['account', 'id']))}
+                timestamp={status.created_at}
+                timestampUrl={statusUrl}
+                action={reblogElement}
+                hideActions={!reblogElement}
+                showEdit={!!status.edited_at}
+                showProfileHoverCard={this.props.hoverable}
+                withLinkToProfile={this.props.hoverable}
+              />
             </div>
 
             <div className='status__content-wrapper'>

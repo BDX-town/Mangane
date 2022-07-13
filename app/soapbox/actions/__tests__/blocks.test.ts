@@ -1,8 +1,6 @@
-import { Record as ImmutableRecord } from 'immutable';
-
 import { __stub } from 'soapbox/api';
-import { mockStore } from 'soapbox/jest/test-helpers';
-import rootReducer from 'soapbox/reducers';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers';
+import { ListRecord, ReducerRecord as UserListsRecord } from 'soapbox/reducers/user_lists';
 
 import { expandBlocks, fetchBlocks } from '../blocks';
 
@@ -14,11 +12,11 @@ const account = {
 };
 
 describe('fetchBlocks()', () => {
-  let store;
+  let store: ReturnType<typeof mockStore>;
 
   describe('if logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -32,7 +30,7 @@ describe('fetchBlocks()', () => {
 
   describe('if logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '1234');
+      const state = rootState.set('me', '1234');
       store = mockStore(state);
     });
 
@@ -87,11 +85,11 @@ describe('fetchBlocks()', () => {
 });
 
 describe('expandBlocks()', () => {
-  let store;
+  let store: ReturnType<typeof mockStore>;
 
   describe('if logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -105,15 +103,15 @@ describe('expandBlocks()', () => {
 
   describe('if logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '1234');
+      const state = rootState.set('me', '1234');
       store = mockStore(state);
     });
 
     describe('without a url', () => {
       beforeEach(() => {
-        const state = rootReducer(undefined, {})
+        const state = rootState
           .set('me', '1234')
-          .set('user_lists', ImmutableRecord({ blocks: { next: null } })());
+          .set('user_lists', UserListsRecord({ blocks: ListRecord({ next: null }) }));
         store = mockStore(state);
       });
 
@@ -127,9 +125,9 @@ describe('expandBlocks()', () => {
 
     describe('with a url', () => {
       beforeEach(() => {
-        const state = rootReducer(undefined, {})
+        const state = rootState
           .set('me', '1234')
-          .set('user_lists', ImmutableRecord({ blocks: { next: 'example' } })());
+          .set('user_lists', UserListsRecord({ blocks: ListRecord({ next: 'example' }) }));
         store = mockStore(state);
       });
 

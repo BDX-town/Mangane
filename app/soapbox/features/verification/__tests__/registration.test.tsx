@@ -18,7 +18,7 @@ describe('<Registration />', () => {
         mock.onPost('/api/v1/pepe/accounts').reply(200, {});
         mock.onPost('/api/v1/apps').reply(200, {});
         mock.onPost('/oauth/token').reply(200, {});
-        mock.onPost('/api/v1/accounts/verify_credentials').reply(200, {});
+        mock.onGet('/api/v1/accounts/verify_credentials').reply(200, { id: '123' });
         mock.onGet('/api/v1/instance').reply(200, {});
       });
     });

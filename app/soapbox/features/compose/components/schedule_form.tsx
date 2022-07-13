@@ -72,7 +72,7 @@ const ScheduleForm: React.FC = () => {
         <IconButton
           iconClassName='w-4 h-4'
           className='bg-transparent text-gray-400 hover:text-gray-600'
-          src={require('@tabler/icons/icons/x.svg')}
+          src={require('@tabler/icons/x.svg')}
           onClick={handleRemove}
           title={intl.formatMessage(messages.remove)}
         />

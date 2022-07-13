@@ -19,6 +19,7 @@ import { expandNotifications } from 'soapbox/actions/notifications';
 import { register as registerPushNotifications } from 'soapbox/actions/push_notifications';
 import { fetchScheduledStatuses } from 'soapbox/actions/scheduled_statuses';
 import { connectUserStream } from 'soapbox/actions/streaming';
+import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
 import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
@@ -441,7 +442,9 @@ const UI: React.FC = ({ children }) => {
   const loadAccountData = () => {
     if (!account) return;
 
-    dispatch(expandHomeTimeline());
+    dispatch(expandHomeTimeline({}, () => {
+      dispatch(fetchSuggestionsForTimeline());
+    }));
 
     dispatch(expandNotifications())
       // @ts-ignore
@@ -631,7 +634,7 @@ const UI: React.FC = ({ children }) => {
       className='floating-action-button'
       aria-label={intl.formatMessage(messages.publish)}
     >
-      <Icon src={require('@tabler/icons/icons/pencil-plus.svg')} />
+      <Icon src={require('@tabler/icons/pencil-plus.svg')} />
     </button>
   );
 

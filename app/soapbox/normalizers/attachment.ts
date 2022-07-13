@@ -46,8 +46,18 @@ const normalizeUrls = (attachment: ImmutableMap<string, any>) => {
   return attachment.mergeWith(mergeDefined, base);
 };
 
+// Ensure meta is not null
+const normalizeMeta = (attachment: ImmutableMap<string, any>) => {
+  const meta = ImmutableMap().merge(attachment.get('meta'));
+
+  return attachment.set('meta', meta);
+};
+
 export const normalizeAttachment = (attachment: Record<string, any>) => {
   return AttachmentRecord(
-    normalizeUrls(ImmutableMap(fromJS(attachment))),
+    ImmutableMap(fromJS(attachment)).withMutations((attachment: ImmutableMap<string, any>) => {
+      normalizeUrls(attachment);
+      normalizeMeta(attachment);
+    }),
   );
 };

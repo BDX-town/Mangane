@@ -42,7 +42,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onClear() {
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/icons/eraser.svg'),
+      icon: require('@tabler/icons/eraser.svg'),
       heading: intl.formatMessage(messages.clearHeading),
       message: intl.formatMessage(messages.clearMessage),
       confirm: intl.formatMessage(messages.clearConfirm),

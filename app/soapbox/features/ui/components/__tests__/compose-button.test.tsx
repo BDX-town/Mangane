@@ -1,17 +1,15 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import '@testing-library/jest-dom';
 
 import { MODAL_OPEN } from 'soapbox/actions/modals';
-import { mockStore } from 'soapbox/jest/test-helpers';
-import rootReducer from 'soapbox/reducers';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 
 import ComposeButton from '../compose-button';
 
-const store = mockStore(rootReducer(ImmutableMap(), {}));
+const store = mockStore(rootState);
 const renderComposeButton = () => {
   render(
     <Provider store={store}>

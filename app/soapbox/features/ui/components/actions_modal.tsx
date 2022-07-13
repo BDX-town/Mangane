@@ -60,6 +60,7 @@ const ActionsModal: React.FC<IActionsModal> = ({ status, actions, onClick, onClo
                 key={status.account as string}
                 id={status.account as string}
                 showProfileHoverCard={false}
+                withLinkToProfile={false}
                 timestamp={status.created_at}
               />
               <StatusContent status={status} />

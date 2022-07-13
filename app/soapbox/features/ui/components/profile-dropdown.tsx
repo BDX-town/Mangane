@@ -58,7 +58,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
 
   const renderAccount = (account: AccountEntity) => {
     return (
-      <Account account={account} showProfileHoverCard={false} hideActions />
+      <Account account={account} showProfileHoverCard={false} withLinkToProfile={false} hideActions />
     );
   };
 
@@ -83,14 +83,14 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
     menu.push({
       text: intl.formatMessage(messages.add),
       to: '/login/add',
-      icon: require('@tabler/icons/icons/plus.svg'),
+      icon: require('@tabler/icons/plus.svg'),
     });
 
     menu.push({
       text: intl.formatMessage(messages.logout, { acct: account.acct }),
       to: '/logout',
       action: handleLogOut,
-      icon: require('@tabler/icons/icons/logout.svg'),
+      icon: require('@tabler/icons/logout.svg'),
     });
 
     return menu;

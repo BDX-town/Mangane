@@ -34,6 +34,12 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
   const [scrolled, setScrolled] = useState<boolean>(false);
   const autoload = settings.get('autoloadTimelines') === true;
 
+  const visible = count > 0 && scrolled;
+
+  const classes = classNames('left-1/2 -translate-x-1/2 fixed top-20 z-50', {
+    'hidden': !visible,
+  });
+
   const getScrollTop = (): number => {
     return (document.scrollingElement || document.documentElement).scrollTop;
   };
@@ -75,16 +81,10 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
     maybeUnload();
   }, [count]);
 
-  const visible = count > 0 && scrolled;
-
-  const classes = classNames('left-1/2 -translate-x-1/2 fixed top-20 z-50', {
-    'hidden': !visible,
-  });
-
   return (
     <div className={classes}>
       <a className='flex items-center bg-primary-600 hover:bg-primary-700 hover:scale-105 active:scale-100 transition-transform text-white rounded-full px-4 py-2 space-x-1.5 cursor-pointer whitespace-nowrap' onClick={handleClick}>
-        <Icon src={require('@tabler/icons/icons/arrow-bar-to-up.svg')} />
+        <Icon src={require('@tabler/icons/arrow-bar-to-up.svg')} />
 
         {(count > 0) && (
           <Text theme='inherit' size='sm'>

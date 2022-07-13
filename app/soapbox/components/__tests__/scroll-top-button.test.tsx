@@ -28,7 +28,7 @@ describe('<ScrollTopButton />', () => {
         message={messages.queue}
       />,
     );
-    expect(screen.getByText('Click to see 1 new post', { hidden: true })).toBeInTheDocument();
+    expect(screen.getByText('Click to see 1 new post')).toBeInTheDocument();
 
     render(
       <ScrollTopButton
@@ -38,6 +38,6 @@ describe('<ScrollTopButton />', () => {
         message={messages.queue}
       />,
     );
-    expect(screen.getByText('Click to see 9999999 new posts', { hidden: true })).toBeInTheDocument();
+    expect(screen.getByText('Click to see 9999999 new posts')).toBeInTheDocument();
   });
 });

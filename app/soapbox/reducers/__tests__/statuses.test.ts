@@ -1,7 +1,6 @@
 import {
   Map as ImmutableMap,
   Record as ImmutableRecord,
-  fromJS,
 } from 'immutable';
 
 import { STATUS_IMPORT } from 'soapbox/actions/importer';
@@ -11,12 +10,13 @@ import {
   STATUS_DELETE_REQUEST,
   STATUS_DELETE_FAIL,
 } from 'soapbox/actions/statuses';
+import { normalizeStatus } from 'soapbox/normalizers';
 
-import reducer from '../statuses';
+import reducer, { ReducerStatus } from '../statuses';
 
 describe('statuses reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap());
+    expect(reducer(undefined, {} as any)).toEqual(ImmutableMap());
   });
 
   describe('STATUS_IMPORT', () => {
@@ -35,7 +35,7 @@ describe('statuses reducer', () => {
       const expected = ['NEETzsche', 'alex', 'Lumeinshin', 'sneeden'];
 
       const result = reducer(undefined, action)
-        .getIn(['AFChectaqZjmOVkXZ2', 'mentions'])
+        .get('AFChectaqZjmOVkXZ2')?.mentions
         .map(mention => mention.get('username'))
         .toJS();
 
@@ -84,19 +84,18 @@ describe('statuses reducer', () => {
         remote_url: null,
       }];
 
-      expect(state.getIn(['017eeb0e-e5e7-98fe-6b2b-ad02349251fb', 'media_attachments']).toJS()).toMatchObject(expected);
+      expect(state.get('017eeb0e-e5e7-98fe-6b2b-ad02349251fb')?.media_attachments.toJS()).toMatchObject(expected);
     });
 
     it('fixes Pleroma attachments', () => {
       const status = require('soapbox/__fixtures__/pleroma-status-with-attachments.json');
       const action = { type: STATUS_IMPORT, status };
       const state = reducer(undefined, action);
-      const result = state.get('AGNkA21auFR5lnEAHw').media_attachments;
+      const result = state.get('AGNkA21auFR5lnEAHw')?.media_attachments;
 
-      expect(result.size).toBe(4);
-      expect(result.get(0).text_url).toBe(undefined);
-      expect(result.get(1).meta).toEqual(ImmutableMap());
-      expect(result.getIn([1, 'pleroma', 'mime_type'])).toBe('application/x-nes-rom');
+      expect(result?.size).toBe(4);
+      expect(result?.get(1)?.meta).toEqual(ImmutableMap());
+      expect(result?.getIn([1, 'pleroma', 'mime_type'])).toBe('application/x-nes-rom');
     });
 
     it('hides CWs', () => {
@@ -160,7 +159,9 @@ Promoting free speech, even for people and ideas you dislike`;
 
   describe('STATUS_CREATE_REQUEST', () => {
     it('increments the replies_count of its parent', () => {
-      const state = fromJS({ '123': { replies_count: 4 } });
+      const state = ImmutableMap({
+        '123': normalizeStatus({ replies_count: 4 }) as ReducerStatus,
+      });
 
       const action = {
         type: STATUS_CREATE_REQUEST,
@@ -174,7 +175,9 @@ Promoting free speech, even for people and ideas you dislike`;
 
   describe('STATUS_CREATE_FAIL', () => {
     it('decrements the replies_count of its parent', () => {
-      const state = fromJS({ '123': { replies_count: 5 } });
+      const state = ImmutableMap({
+        '123': normalizeStatus({ replies_count: 5 }) as ReducerStatus,
+      });
 
       const action = {
         type: STATUS_CREATE_FAIL,
@@ -188,7 +191,9 @@ Promoting free speech, even for people and ideas you dislike`;
 
   describe('STATUS_DELETE_REQUEST', () => {
     it('decrements the replies_count of its parent', () => {
-      const state = fromJS({ '123': { replies_count: 4 } });
+      const state = ImmutableMap({
+        '123': normalizeStatus({ replies_count: 4 }) as ReducerStatus,
+      });
 
       const action = {
         type: STATUS_DELETE_REQUEST,
@@ -200,7 +205,9 @@ Promoting free speech, even for people and ideas you dislike`;
     });
 
     it('gracefully does nothing if no parent', () => {
-      const state = fromJS({ '123': { replies_count: 4 } });
+      const state = ImmutableMap({
+        '123': normalizeStatus({ replies_count: 4 }) as ReducerStatus,
+      });
 
       const action = {
         type: STATUS_DELETE_REQUEST,
@@ -214,7 +221,9 @@ Promoting free speech, even for people and ideas you dislike`;
 
   describe('STATUS_DELETE_FAIL', () => {
     it('decrements the replies_count of its parent', () => {
-      const state = fromJS({ '123': { replies_count: 4 } });
+      const state = ImmutableMap({
+        '123': normalizeStatus({ replies_count: 4 }) as ReducerStatus,
+      });
 
       const action = {
         type: STATUS_DELETE_FAIL,
@@ -226,7 +235,9 @@ Promoting free speech, even for people and ideas you dislike`;
     });
 
     it('gracefully does nothing if no parent', () => {
-      const state = fromJS({ '123': { replies_count: 4 } });
+      const state = ImmutableMap({
+        '123': normalizeStatus({ replies_count: 4 }) as ReducerStatus,
+      });
 
       const action = {
         type: STATUS_DELETE_FAIL,
