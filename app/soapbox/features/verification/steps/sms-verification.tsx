@@ -22,14 +22,14 @@ const SmsVerification = () => {
 
   const isLoading = useAppSelector((state) => state.verification.isLoading) as boolean;
 
-  const [phone, setPhone] = React.useState('');
+  const [phone, setPhone] = React.useState<string>();
   const [status, setStatus] = React.useState(Statuses.IDLE);
   const [verificationCode, setVerificationCode] = React.useState('');
   const [requestedAnother, setAlreadyRequestedAnother] = React.useState(false);
 
-  const isValid = validPhoneNumberRegex.test(phone);
+  const isValid = phone ? validPhoneNumberRegex.test(phone) : false;
 
-  const onChange = React.useCallback((phone: string) => {
+  const onChange = React.useCallback((phone?: string) => {
     setPhone(phone);
   }, []);
 
@@ -49,7 +49,7 @@ const SmsVerification = () => {
       return;
     }
 
-    dispatch(requestPhoneVerification(phone)).then(() => {
+    dispatch(requestPhoneVerification(phone!)).then(() => {
       dispatch(
         snackbar.success(
           intl.formatMessage({

@@ -1,6 +1,7 @@
-import React from 'react';
+import { parsePhoneNumber } from 'libphonenumber-js';
+import React, { useState, useEffect } from 'react';
 
-import { CountryCode, formatPhoneNumber } from 'soapbox/utils/phone';
+import { CountryCode } from 'soapbox/utils/phone';
 
 import HStack from '../hstack/hstack';
 import Input from '../input/input';
@@ -8,30 +9,48 @@ import Input from '../input/input';
 import CountryCodeDropdown from './country-code-dropdown';
 
 interface IPhoneInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'required' | 'autoFocus'> {
-  /** Input phone number. */
+  /** E164 phone number. */
   value?: string,
-  /** E164 country code. */
-  countryCode?: CountryCode,
-  /** Change event handler taking the formatted input. */
-  onChange?: (phone: string) => void,
+  /** Change handler which receives the E164 phone string. */
+  onChange?: (phone: string | undefined) => void,
+  /** Country code that's selected on mount. */
+  defaultCountryCode?: CountryCode,
 }
 
 /** Internationalized phone input with country code picker. */
 const PhoneInput: React.FC<IPhoneInput> = (props) => {
-  const { countryCode = 1, value = '', onChange, ...rest } = props;
+  const { value, onChange, defaultCountryCode = '1', ...rest } = props;
+
+  const [countryCode, setCountryCode] = useState<CountryCode>(defaultCountryCode);
+  const [nationalNumber, setNationalNumber] = useState<string>('');
 
   const handleCountryChange = (code: CountryCode) => {
-    if (onChange) {
-      onChange(formatPhoneNumber(countryCode, value));
-    }
+    setCountryCode(code);
   };
 
-  /** Pass the formatted phone to the handler. */
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    if (onChange) {
-      onChange(formatPhoneNumber(countryCode, target.value));
-    }
+    setNationalNumber(target.value);
   };
+
+  // When the internal state changes, update the external state.
+  useEffect(() => {
+    if (onChange) {
+      try {
+        const opts = { defaultCallingCode: countryCode, extract: false } as any;
+        const result = parsePhoneNumber(nationalNumber, opts);
+
+        if (!result.isPossible()) {
+          throw result;
+        }
+
+        onChange(result.format('E.164'));
+      } catch (e) {
+        // The value returned is always a valid E164 string.
+        // If it's not valid, it'll return undefined.
+        onChange(undefined);
+      }
+    }
+  }, [countryCode, nationalNumber]);
 
   return (
     <HStack alignItems='center'>
@@ -43,7 +62,7 @@ const PhoneInput: React.FC<IPhoneInput> = (props) => {
       <Input
         type='text'
         onChange={handleChange}
-        value={value}
+        value={nationalNumber}
         {...rest}
       />
     </HStack>

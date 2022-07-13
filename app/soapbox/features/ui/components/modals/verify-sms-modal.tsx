@@ -31,13 +31,13 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
   const isLoading = useAppSelector((state) => state.verification.isLoading);
 
   const [status, setStatus] = useState<Statuses>(Statuses.IDLE);
-  const [phone, setPhone] = useState<string>('');
+  const [phone, setPhone] = useState<string>();
   const [verificationCode, setVerificationCode] = useState('');
   const [requestedAnother, setAlreadyRequestedAnother] = useState(false);
 
-  const isValid = validPhoneNumberRegex.test(phone);
+  const isValid = phone ? validPhoneNumberRegex.test(phone) : false;
 
-  const onChange = useCallback((phone: string) => {
+  const onChange = useCallback((phone?: string) => {
     setPhone(phone);
   }, []);
 
@@ -57,7 +57,7 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
       return;
     }
 
-    dispatch(reRequestPhoneVerification(phone)).then(() => {
+    dispatch(reRequestPhoneVerification(phone!)).then(() => {
       dispatch(
         snackbar.success(
           intl.formatMessage({
