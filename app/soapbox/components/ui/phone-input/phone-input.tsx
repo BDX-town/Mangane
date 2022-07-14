@@ -59,6 +59,10 @@ const PhoneInput: React.FC<IPhoneInput> = (props) => {
     }
   }, [countryCode, nationalNumber]);
 
+  useEffect(() => {
+    handleChange({ target: { value: nationalNumber } } as any);
+  }, [countryCode, nationalNumber]);
+
   return (
     <Input
       onChange={handleChange}
