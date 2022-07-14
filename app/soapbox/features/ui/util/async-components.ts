@@ -487,7 +487,7 @@ export function CreateApp() {
 }
 
 export function SettingsStore() {
-  return import(/* webpackChunkName: "features/developers" */'../../developers/settings_store');
+  return import(/* webpackChunkName: "features/developers" */'../../developers/settings-store');
 }
 
 export function TestTimeline() {

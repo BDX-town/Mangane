@@ -18,7 +18,7 @@ export const OAUTH_TOKEN_REVOKE_REQUEST = 'OAUTH_TOKEN_REVOKE_REQUEST';
 export const OAUTH_TOKEN_REVOKE_SUCCESS = 'OAUTH_TOKEN_REVOKE_SUCCESS';
 export const OAUTH_TOKEN_REVOKE_FAIL    = 'OAUTH_TOKEN_REVOKE_FAIL';
 
-export const obtainOAuthToken = (params: Record<string, string>, baseURL?: string) =>
+export const obtainOAuthToken = (params: Record<string, string | undefined>, baseURL?: string) =>
   (dispatch: AppDispatch) => {
     dispatch({ type: OAUTH_TOKEN_CREATE_REQUEST, params });
     return baseClient(null, baseURL).post('/oauth/token', params).then(({ data: token }) => {
