@@ -5,9 +5,8 @@ import OtpInput from 'react-otp-input';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { confirmPhoneVerification, requestPhoneVerification } from 'soapbox/actions/verification';
-import { Button, Form, FormGroup, Input, Text } from 'soapbox/components/ui';
+import { Button, Form, FormGroup, PhoneInput, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { formatPhoneNumber } from 'soapbox/utils/phone';
 
 const Statuses = {
   IDLE: 'IDLE',
@@ -15,25 +14,21 @@ const Statuses = {
   FAIL: 'FAIL',
 };
 
-const validPhoneNumberRegex = /^\+1\s\(\d{3}\)\s\d{3}-\d{4}/;
-
 const SmsVerification = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
   const isLoading = useAppSelector((state) => state.verification.isLoading) as boolean;
 
-  const [phone, setPhone] = React.useState('');
+  const [phone, setPhone] = React.useState<string>();
   const [status, setStatus] = React.useState(Statuses.IDLE);
   const [verificationCode, setVerificationCode] = React.useState('');
   const [requestedAnother, setAlreadyRequestedAnother] = React.useState(false);
 
-  const isValid = validPhoneNumberRegex.test(phone);
+  const isValid = !!phone;
 
-  const onChange = React.useCallback((event) => {
-    const formattedPhone = formatPhoneNumber(event.target.value);
-
-    setPhone(formattedPhone);
+  const onChange = React.useCallback((phone?: string) => {
+    setPhone(phone);
   }, []);
 
   const handleSubmit = React.useCallback((event) => {
@@ -52,7 +47,7 @@ const SmsVerification = () => {
       return;
     }
 
-    dispatch(requestPhoneVerification(phone)).then(() => {
+    dispatch(requestPhoneVerification(phone!)).then(() => {
       dispatch(
         snackbar.success(
           intl.formatMessage({
@@ -147,8 +142,7 @@ const SmsVerification = () => {
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
         <Form onSubmit={handleSubmit}>
           <FormGroup labelText='Phone Number'>
-            <Input
-              type='text'
+            <PhoneInput
               value={phone}
               onChange={onChange}
               required
@@ -164,4 +158,4 @@ const SmsVerification = () => {
   );
 };
 
-export { SmsVerification as default, validPhoneNumberRegex };
+export { SmsVerification as default };

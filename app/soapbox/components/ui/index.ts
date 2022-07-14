@@ -27,6 +27,7 @@ export {
   MenuList,
 } from './menu/menu';
 export { default as Modal } from './modal/modal';
+export { default as PhoneInput } from './phone-input/phone-input';
 export { default as ProgressBar } from './progress-bar/progress-bar';
 export { default as Select } from './select/select';
 export { default as Spinner } from './spinner/spinner';

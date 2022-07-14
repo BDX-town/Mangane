@@ -29,7 +29,7 @@ describe('<SmsVerification />', () => {
       await userEvent.type(screen.getByLabelText('Phone Number'), '+1 (555) 555-5555');
       await waitFor(() => {
         fireEvent.submit(
-          screen.getByRole('button'), {
+          screen.getByRole('button', { name: 'Next' }), {
             preventDefault: () => {},
           },
         );
@@ -56,7 +56,7 @@ describe('<SmsVerification />', () => {
       await userEvent.type(screen.getByLabelText('Phone Number'), '+1 (555) 555-5555');
       await waitFor(() => {
         fireEvent.submit(
-          screen.getByRole('button'), {
+          screen.getByRole('button', { name: 'Next' }), {
             preventDefault: () => {},
           },
         );
@@ -90,7 +90,7 @@ describe('<SmsVerification />', () => {
       await userEvent.type(screen.getByLabelText('Phone Number'), '+1 (555) 555-5555');
       await waitFor(() => {
         fireEvent.submit(
-          screen.getByRole('button'), {
+          screen.getByRole('button', { name: 'Next' }), {
             preventDefault: () => {},
           },
         );
