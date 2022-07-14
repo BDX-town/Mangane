@@ -1020,7 +1020,7 @@
   "status.unpin": "Deslliga del perfil",
   "status_list.queue_label": "Fes clic per veure {count, plural, one {post} other {posts}}",
   "statuses.quote_tombstone": "Post is unavailable.",
-  "statuses.tombstone": "One or more posts is unavailable.",
+  "statuses.tombstone": "One or more posts are unavailable.",
   "suggestions.dismiss": "Descartar suggeriment",
   "tabs_bar.all": "All",
   "tabs_bar.chats": "Xats",
