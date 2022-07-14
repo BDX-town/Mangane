@@ -1020,7 +1020,7 @@
   "status.unpin": "Odepnout z profilu",
   "status_list.queue_label": "Klikněte aby pro zobrazení {count} nových {count, plural, one {post} other {posts}}",
   "statuses.quote_tombstone": "Post is unavailable.",
-  "statuses.tombstone": "One or more posts is unavailable.",
+  "statuses.tombstone": "One or more posts are unavailable.",
   "suggestions.dismiss": "Odmítnout návrh",
   "tabs_bar.all": "All",
   "tabs_bar.chats": "Chaty",

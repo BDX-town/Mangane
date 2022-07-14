@@ -1020,7 +1020,7 @@
   "status.unpin": "சுயவிவரத்திலிருந்து நீக்கவும்",
   "status_list.queue_label": "Click to see {count} new {count, plural, one {post} other {posts}}",
   "statuses.quote_tombstone": "Post is unavailable.",
-  "statuses.tombstone": "One or more posts is unavailable.",
+  "statuses.tombstone": "One or more posts are unavailable.",
   "suggestions.dismiss": "பரிந்துரை விலக்க",
   "tabs_bar.all": "All",
   "tabs_bar.chats": "Chats",

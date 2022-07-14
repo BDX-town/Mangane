@@ -1020,7 +1020,7 @@
   "status.unpin": "Não fixar no perfil",
   "status_list.queue_label": "Clica para ver {count} novas {count, plural, one {publicação} other {publicações}}",
   "statuses.quote_tombstone": "Post is unavailable.",
-  "statuses.tombstone": "One or more posts is unavailable.",
+  "statuses.tombstone": "One or more posts are unavailable.",
   "suggestions.dismiss": "Dispensar a sugestão",
   "tabs_bar.all": "All",
   "tabs_bar.chats": "Chats",
