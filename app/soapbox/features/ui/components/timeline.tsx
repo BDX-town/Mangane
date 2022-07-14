@@ -9,8 +9,6 @@ import StatusList, { IStatusList } from 'soapbox/components/status_list';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetStatusIds } from 'soapbox/selectors';
 
-const getStatusIds = makeGetStatusIds();
-
 const messages = defineMessages({
   queue: { id: 'status_list.queue_label', defaultMessage: 'Click to see {count} new {count, plural, one {post} other {posts}}' },
 });
@@ -27,6 +25,7 @@ const Timeline: React.FC<ITimeline> = ({
   ...rest
 }) => {
   const dispatch = useAppDispatch();
+  const getStatusIds = useCallback(makeGetStatusIds, [])();
 
   const lastStatusId = useAppSelector(state => (state.timelines.get(timelineId)?.items || ImmutableOrderedSet()).last() as string | undefined);
   const statusIds = useAppSelector(state => getStatusIds(state, { type: timelineId }));
