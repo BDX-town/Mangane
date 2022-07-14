@@ -11,8 +11,8 @@ import ActionButton from '../ui/components/action-button';
 import type { Account } from 'soapbox/types/entities';
 
 const messages = defineMessages({
-  heading: { id: 'feedSuggestions.heading', defaultMessage: 'Suggested profiles' },
-  viewAll: { id: 'feedSuggestions.viewAll', defaultMessage: 'View all' },
+  heading: { id: 'feed_suggestions.heading', defaultMessage: 'Suggested profiles' },
+  viewAll: { id: 'feed_suggestions.view_all', defaultMessage: 'View all' },
 });
 
 const SuggestionItem = ({ accountId }: { accountId: string }) => {

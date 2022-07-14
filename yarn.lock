@@ -9841,10 +9841,10 @@ react-transition-group@^2.2.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react-virtuoso@^2.14.0:
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/react-virtuoso/-/react-virtuoso-2.14.0.tgz#1b6bd5ce67bed7f30eac58cb42ebe3a7b6aee353"
-  integrity sha512-Pk3TL0KkWQs2pswDG2tA9SKx8q/59UFShKrGvTdnpt0dYQKTl1Zjlbl2ItTOfqx9sFAqX/U5acCrIBPQIFSGUw==
+react-virtuoso@^2.16.2:
+  version "2.16.2"
+  resolved "https://registry.yarnpkg.com/react-virtuoso/-/react-virtuoso-2.16.2.tgz#f0a290931ee358c40661d751df2d8b9f32496f0a"
+  integrity sha512-aH6XpizVYCpIkBm6td1q63Lqeu7KG1iAmpYVnzjThhm5tHEo9FJpeHAU73FJaMplFrfMKBrNfmO7a7jTOeM56g==
   dependencies:
     "@virtuoso.dev/react-urx" "^0.2.12"
     "@virtuoso.dev/urx" "^0.2.12"
