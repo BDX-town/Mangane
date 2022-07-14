@@ -29,6 +29,8 @@ const PhoneInput: React.FC<IPhoneInput> = (props) => {
     const asYouType = new AsYouType({ defaultCallingCode: countryCode });
     const formatted = asYouType.input(target.value);
 
+    // If the new value is the same as before, we might be backspacing,
+    // so use the actual event value instead of the formatted value.
     if (formatted === nationalNumber && target.value !== nationalNumber) {
       setNationalNumber(target.value);
     } else {
@@ -43,6 +45,8 @@ const PhoneInput: React.FC<IPhoneInput> = (props) => {
         const opts = { defaultCallingCode: countryCode, extract: false } as any;
         const result = parsePhoneNumber(nationalNumber, opts);
 
+        // Throw if the number is invalid, but catch it below.
+        // We'll only ever call `onChange` with a valid E164 string or `undefined`.
         if (!result.isPossible()) {
           throw result;
         }
