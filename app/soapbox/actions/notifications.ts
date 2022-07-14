@@ -174,9 +174,9 @@ const excludeTypesFromFilter = (filter: string) => {
   return allTypes.filterNot(item => item === filter).toJS();
 };
 
-const noOp = () => {};
+const noOp = () => new Promise(f => f(undefined));
 
-const expandNotifications = ({ maxId }: Record<string, any> = {}, done = noOp) =>
+const expandNotifications = ({ maxId }: Record<string, any> = {}, done: () => any = noOp) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return dispatch(noOp);
 

@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
+import { mentionCompose } from 'soapbox/actions/compose';
+import { reblog, favourite, unreblog, unfavourite } from 'soapbox/actions/interactions';
+import { openModal } from 'soapbox/actions/modals';
+import { getSettings } from 'soapbox/actions/settings';
+import { hideStatus, revealStatus } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
 import Permalink from 'soapbox/components/permalink';
 import { HStack, Text, Emoji } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import StatusContainer from 'soapbox/containers/status_container';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { makeGetNotification } from 'soapbox/selectors';
 import { NotificationType, validType } from 'soapbox/utils/notification';
 
 import type { ScrollPosition } from 'soapbox/components/status';
 import type { Account, Status, Notification as NotificationEntity } from 'soapbox/types/entities';
+
+const getNotification = makeGetNotification();
 
 const notificationForScreenReader = (intl: IntlShape, message: string, timestamp: Date) => {
   const output = [message];
@@ -130,17 +138,17 @@ interface INotificaton {
   notification: NotificationEntity,
   onMoveUp?: (notificationId: string) => void,
   onMoveDown?: (notificationId: string) => void,
-  onMention?: (account: Account) => void,
-  onFavourite?: (status: Status) => void,
   onReblog?: (status: Status, e?: KeyboardEvent) => void,
-  onToggleHidden?: (status: Status) => void,
   getScrollPosition?: () => ScrollPosition | undefined,
   updateScrollBottom?: (bottom: number) => void,
-  siteTitle?: string,
 }
 
 const Notification: React.FC<INotificaton> = (props) => {
-  const { hidden = false, notification, onMoveUp, onMoveDown } = props;
+  const { hidden = false, onMoveUp, onMoveDown } = props;
+
+  const dispatch = useAppDispatch();
+
+  const notification = useAppSelector((state) => getNotification(state, props.notification));
 
   const history = useHistory();
   const intl = useIntl();
@@ -175,31 +183,52 @@ const Notification: React.FC<INotificaton> = (props) => {
     }
   };
 
-  const handleMention = (e?: KeyboardEvent) => {
+  const handleMention = useCallback((e?: KeyboardEvent) => {
     e?.preventDefault();
 
-    if (props.onMention && account && typeof account === 'object') {
-      props.onMention(account);
+    if (account && typeof account === 'object') {
+      dispatch(mentionCompose(account));
     }
-  };
+  }, [account]);
 
-  const handleHotkeyFavourite = (e?: KeyboardEvent) => {
-    if (props.onFavourite && status && typeof status === 'object') {
-      props.onFavourite(status);
+  const handleHotkeyFavourite = useCallback((e?: KeyboardEvent) => {
+    if (status && typeof status === 'object') {
+      if (status.favourited) {
+        dispatch(unfavourite(status));
+      } else {
+        dispatch(favourite(status));
+      }
     }
-  };
+  }, [status]);
 
-  const handleHotkeyBoost = (e?: KeyboardEvent) => {
-    if (props.onReblog && status && typeof status === 'object') {
-      props.onReblog(status, e);
+  const handleHotkeyBoost = useCallback((e?: KeyboardEvent) => {
+    if (status && typeof status === 'object') {
+      dispatch((_, getState) => {
+        const boostModal = getSettings(getState()).get('boostModal');
+        if (status.reblogged) {
+          dispatch(unreblog(status));
+        } else {
+          if (e?.shiftKey || !boostModal) {
+            dispatch(reblog(status));
+          } else {
+            dispatch(openModal('BOOST', { status, onReblog: (status: Status) => {
+              dispatch(reblog(status));
+            } }));
+          }
+        }
+      });
     }
-  };
+  }, [status]);
 
-  const handleHotkeyToggleHidden = (e?: KeyboardEvent) => {
-    if (props.onToggleHidden && status && typeof status === 'object') {
-      props.onToggleHidden(status);
+  const handleHotkeyToggleHidden = useCallback((e?: KeyboardEvent) => {
+    if (status && typeof status === 'object') {
+      if (status.hidden) {
+        dispatch(revealStatus(status.id));
+      } else {
+        dispatch(hideStatus(status.id));
+      }
     }
-  };
+  }, [status]);
 
   const handleMoveUp = () => {
     if (onMoveUp) {
