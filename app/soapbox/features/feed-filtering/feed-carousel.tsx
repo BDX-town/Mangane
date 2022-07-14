@@ -15,13 +15,24 @@ const CarouselItem = ({ avatar }: { avatar: any }) => {
   const selectedAccountId = useAppSelector(state => state.timelines.get('home')?.feedAccountId);
   const isSelected = avatar.account_id === selectedAccountId;
 
-  const handleClick = () =>
-    isSelected
-      ? dispatch(replaceHomeTimeline(null, { maxId: null }))
-      : dispatch(replaceHomeTimeline(avatar.account_id, { maxId: null }));
+  const [isLoading, setLoading] = useState<boolean>(false);
+
+  const handleClick = () => {
+    if (isLoading) {
+      return;
+    }
+
+    setLoading(true);
+
+    if (isSelected) {
+      dispatch(replaceHomeTimeline(null, { maxId: null }, () => setLoading(false)));
+    } else {
+      dispatch(replaceHomeTimeline(avatar.account_id, { maxId: null }, () => setLoading(false)));
+    }
+  };
 
   return (
-    <div onClick={handleClick} className='cursor-pointer' role='filter-feed-by-user'>
+    <div aria-disabled={isLoading} onClick={handleClick} className='cursor-pointer' role='filter-feed-by-user'>
       <Stack className='w-16 h-auto' space={3}>
         <div className='block mx-auto relative w-14 h-14 rounded-full'>
           {isSelected && (
