@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { changeSetting } from 'soapbox/actions/settings';
 import { connectPublicStream } from 'soapbox/actions/streaming';
 import { expandPublicTimeline } from 'soapbox/actions/timelines';
+import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { Column } from 'soapbox/components/ui';
 import Accordion from 'soapbox/features/ui/components/accordion';
@@ -91,14 +92,15 @@ const CommunityTimeline = () => {
           />
         </Accordion>
       </div>}
-      <Timeline
-        scrollKey={`${timelineId}_timeline`}
-        timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}
-        onLoadMore={handleLoadMore}
-        onRefresh={handleRefresh}
-        emptyMessage={<FormattedMessage id='empty_column.public' defaultMessage='There is nothing here! Write something publicly, or manually follow users from other servers to fill it up' />}
-        divideType='space'
-      />
+      <PullToRefresh onRefresh={handleRefresh}>
+        <Timeline
+          scrollKey={`${timelineId}_timeline`}
+          timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}
+          onLoadMore={handleLoadMore}
+          emptyMessage={<FormattedMessage id='empty_column.public' defaultMessage='There is nothing here! Write something publicly, or manually follow users from other servers to fill it up' />}
+          divideType='space'
+        />
+      </PullToRefresh>
     </Column>
   );
 };

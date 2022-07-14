@@ -14,6 +14,7 @@ import {
   dequeueNotifications,
 } from 'soapbox/actions/notifications';
 import { getSettings } from 'soapbox/actions/settings';
+import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import ScrollTopButton from 'soapbox/components/scroll-top-button';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { Column } from 'soapbox/components/ui';
@@ -185,7 +186,6 @@ class Notifications extends React.PureComponent {
         placeholderComponent={PlaceholderNotification}
         placeholderCount={20}
         onLoadMore={this.handleLoadOlder}
-        onRefresh={this.handleRefresh}
         onScrollToTop={this.handleScrollToTop}
         onScroll={this.handleScroll}
         className={classNames({
@@ -205,7 +205,9 @@ class Notifications extends React.PureComponent {
           count={totalQueuedNotificationsCount}
           message={messages.queue}
         />
-        {scrollContainer}
+        <PullToRefresh onRefresh={this.handleRefresh}>
+          {scrollContainer}
+        </PullToRefresh>
       </Column>
     );
   }
