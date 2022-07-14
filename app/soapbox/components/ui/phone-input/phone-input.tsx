@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 
 import { CountryCode } from 'soapbox/utils/phone';
 
-import HStack from '../hstack/hstack';
 import Input from '../input/input';
 
 import CountryCodeDropdown from './country-code-dropdown';
@@ -61,23 +60,17 @@ const PhoneInput: React.FC<IPhoneInput> = (props) => {
   }, [countryCode, nationalNumber]);
 
   return (
-    <HStack className='mt-1 shadow-sm'>
-      <div className='dark:bg-slate-800 border border-solid border-r-0 border-gray-300 dark:border-gray-600 flex items-center rounded-l-md'>
+    <Input
+      onChange={handleChange}
+      value={nationalNumber}
+      addon={
         <CountryCodeDropdown
           countryCode={countryCode}
           onChange={setCountryCode}
         />
-      </div>
-
-      <Input
-        type='text'
-        outerClassName='mt-0 shadow-none'
-        className='rounded-l-none'
-        onChange={handleChange}
-        value={nationalNumber}
-        {...rest}
-      />
-    </HStack>
+      }
+      {...rest}
+    />
   );
 };
 
