@@ -18,7 +18,7 @@ let id = 0;
 export interface MenuItem {
   action?: React.EventHandler<React.KeyboardEvent | React.MouseEvent>,
   middleClick?: React.EventHandler<React.MouseEvent>,
-  text: string | JSX.Element,
+  text: string,
   href?: string,
   to?: string,
   newTab?: boolean,
