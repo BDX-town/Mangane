@@ -14,8 +14,6 @@ const Statuses = {
   FAIL: 'FAIL',
 };
 
-const validPhoneNumberRegex = /^\+1\s\(\d{3}\)\s\d{3}-\d{4}/;
-
 const SmsVerification = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -27,7 +25,7 @@ const SmsVerification = () => {
   const [verificationCode, setVerificationCode] = React.useState('');
   const [requestedAnother, setAlreadyRequestedAnother] = React.useState(false);
 
-  const isValid = phone ? validPhoneNumberRegex.test(phone) : false;
+  const isValid = !!phone;
 
   const onChange = React.useCallback((phone?: string) => {
     setPhone(phone);
@@ -160,4 +158,4 @@ const SmsVerification = () => {
   );
 };
 
-export { SmsVerification as default, validPhoneNumberRegex };
+export { SmsVerification as default };

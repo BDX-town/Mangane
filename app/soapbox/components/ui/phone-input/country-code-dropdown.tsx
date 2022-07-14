@@ -27,7 +27,7 @@ const CountryCodeDropdown: React.FC<ICountryCodeDropdown> = ({ countryCode, onCh
 
   return (
     <DropdownMenu items={menu}>
-      <button className='px-4 items-center'>
+      <button type='button' className='px-4 items-center'>
         <HStack space={1} alignItems='center'>
           <div>+{countryCode}</div>
           <Icon className='w-4 h-4 stroke-primary-600' src={require('@tabler/icons/chevron-down.svg')} />

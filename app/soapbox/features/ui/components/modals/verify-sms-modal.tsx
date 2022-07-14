@@ -7,7 +7,6 @@ import { closeModal } from 'soapbox/actions/modals';
 import snackbar from 'soapbox/actions/snackbar';
 import { reConfirmPhoneVerification, reRequestPhoneVerification } from 'soapbox/actions/verification';
 import { FormGroup, PhoneInput, Modal, Stack, Text } from 'soapbox/components/ui';
-import { validPhoneNumberRegex } from 'soapbox/features/verification/steps/sms-verification';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { getAccessToken } from 'soapbox/utils/auth';
 
@@ -35,7 +34,7 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
   const [verificationCode, setVerificationCode] = useState('');
   const [requestedAnother, setAlreadyRequestedAnother] = useState(false);
 
-  const isValid = phone ? validPhoneNumberRegex.test(phone) : false;
+  const isValid = !!phone;
 
   const onChange = useCallback((phone?: string) => {
     setPhone(phone);
