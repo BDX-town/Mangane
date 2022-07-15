@@ -42,7 +42,7 @@ const CommunityTimeline = () => {
   }, [onlyMedia]);
 
   return (
-    <Column label={intl.formatMessage(messages.title)} transparent>
+    <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
       <SubNavigation message={intl.formatMessage(messages.title)} settings={ColumnSettings} />
       <Timeline
         scrollKey={`${timelineId}_timeline`}

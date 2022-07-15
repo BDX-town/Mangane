@@ -58,7 +58,7 @@ const HomeTimeline: React.FC = () => {
   }, [isPartial]);
 
   return (
-    <Column label={intl.formatMessage(messages.title)} transparent>
+    <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
       <Timeline
         scrollKey='home_timeline'
         onLoadMore={handleLoadMore}

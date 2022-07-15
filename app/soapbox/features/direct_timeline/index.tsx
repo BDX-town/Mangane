@@ -40,7 +40,7 @@ const DirectTimeline = () => {
   };
 
   return (
-    <Column label={intl.formatMessage(messages.title)} transparent>
+    <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
       <ColumnHeader
         icon='envelope'
         active={hasUnread}

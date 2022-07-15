@@ -118,7 +118,7 @@ class Followers extends ImmutablePureComponent {
     }
 
     return (
-      <Column label={intl.formatMessage(messages.heading)}>
+      <Column label={intl.formatMessage(messages.heading)} transparent>
         <ScrollableList
           scrollKey='followers'
           hasMore={hasMore}
