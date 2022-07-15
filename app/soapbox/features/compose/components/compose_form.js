@@ -11,7 +11,7 @@ import { length } from 'stringz';
 import AutosuggestInput from 'soapbox/components/autosuggest_input';
 import AutosuggestTextarea from 'soapbox/components/autosuggest_textarea';
 import Icon from 'soapbox/components/icon';
-import { Button } from 'soapbox/components/ui';
+import { Button, Stack } from 'soapbox/components/ui';
 import { isMobile } from 'soapbox/is_mobile';
 
 import PollForm from '../components/polls/poll-form';
@@ -290,7 +290,7 @@ class ComposeForm extends ImmutablePureComponent {
     }
 
     return (
-      <div className='w-full' ref={this.setForm} onClick={this.handleClick}>
+      <Stack className='w-full' space={1} ref={this.setForm} onClick={this.handleClick}>
         {scheduledStatusCount > 0 && (
           <Warning
             message={(
@@ -335,7 +335,7 @@ class ComposeForm extends ImmutablePureComponent {
             onSuggestionSelected={this.onSpoilerSuggestionSelected}
             searchTokens={[':']}
             id='cw-spoiler-input'
-            className='mb-2 border-none shadow-none px-0 py-2 text-base'
+            className='border-none shadow-none px-0 py-2 text-base'
             autoFocus
           />
         </div>
@@ -395,7 +395,7 @@ class ComposeForm extends ImmutablePureComponent {
             <Button theme='primary' text={publishText} onClick={this.handleSubmit} disabled={disabledButton} />
           </div>
         </div>
-      </div>
+      </Stack>
     );
   }
 

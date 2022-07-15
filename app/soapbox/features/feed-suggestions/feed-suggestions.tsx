@@ -60,6 +60,9 @@ const SuggestionItem = ({ accountId }: { accountId: string }) => {
 const FeedSuggestions = () => {
   const intl = useIntl();
   const suggestedProfiles = useAppSelector((state) => state.suggestions.items);
+  const isLoading = useAppSelector((state) => state.suggestions.isLoading);
+
+  if (!isLoading && suggestedProfiles.size === 0) return null;
 
   return (
     <Card size='lg' variant='rounded'>
