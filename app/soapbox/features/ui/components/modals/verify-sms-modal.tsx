@@ -6,11 +6,9 @@ import { verifyCredentials } from 'soapbox/actions/auth';
 import { closeModal } from 'soapbox/actions/modals';
 import snackbar from 'soapbox/actions/snackbar';
 import { reConfirmPhoneVerification, reRequestPhoneVerification } from 'soapbox/actions/verification';
-import { FormGroup, Input, Modal, Stack, Text } from 'soapbox/components/ui';
-import { validPhoneNumberRegex } from 'soapbox/features/verification/steps/sms-verification';
+import { FormGroup, PhoneInput, Modal, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { getAccessToken } from 'soapbox/utils/auth';
-import { formatPhoneNumber } from 'soapbox/utils/phone';
 
 interface IVerifySmsModal {
   onClose: (type: string) => void,
@@ -32,16 +30,14 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
   const isLoading = useAppSelector((state) => state.verification.isLoading);
 
   const [status, setStatus] = useState<Statuses>(Statuses.IDLE);
-  const [phone, setPhone] = useState<string>('');
+  const [phone, setPhone] = useState<string>();
   const [verificationCode, setVerificationCode] = useState('');
   const [requestedAnother, setAlreadyRequestedAnother] = useState(false);
 
-  const isValid = validPhoneNumberRegex.test(phone);
+  const isValid = !!phone;
 
-  const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const formattedPhone = formatPhoneNumber(event.target.value);
-
-    setPhone(formattedPhone);
+  const onChange = useCallback((phone?: string) => {
+    setPhone(phone);
   }, []);
 
   const handleSubmit = (event: React.MouseEvent) => {
@@ -60,7 +56,7 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
       return;
     }
 
-    dispatch(reRequestPhoneVerification(phone)).then(() => {
+    dispatch(reRequestPhoneVerification(phone!)).then(() => {
       dispatch(
         snackbar.success(
           intl.formatMessage({
@@ -141,8 +137,7 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
       case Statuses.READY:
         return (
           <FormGroup labelText='Phone Number'>
-            <Input
-              type='text'
+            <PhoneInput
               value={phone}
               onChange={onChange}
               required

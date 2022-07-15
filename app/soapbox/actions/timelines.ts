@@ -140,9 +140,15 @@ const parseTags = (tags: Record<string, any[]> = {}, mode: 'any' | 'all' | 'none
 const replaceHomeTimeline = (
   accountId: string | null,
   { maxId }: Record<string, any> = {},
+  done?: () => void,
 ) => (dispatch: AppDispatch, _getState: () => RootState) => {
   dispatch({ type: TIMELINE_REPLACE, accountId });
-  dispatch(expandHomeTimeline({ accountId, maxId }, () => dispatch(insertSuggestionsIntoTimeline())));
+  dispatch(expandHomeTimeline({ accountId, maxId }, () => {
+    dispatch(insertSuggestionsIntoTimeline());
+    if (done) {
+      done();
+    }
+  }));
 };
 
 const expandTimeline = (timelineId: string, path: string, params: Record<string, any> = {}, done = noOp) =>

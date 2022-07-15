@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -18,6 +17,8 @@ export interface IColumn {
   withHeader?: boolean,
   /** Extra class name for top <div> element. */
   className?: string,
+  /** Ref forwarded to column. */
+  ref?: React.Ref<HTMLDivElement>
 }
 
 /** A backdrop for the main section of the UI. */

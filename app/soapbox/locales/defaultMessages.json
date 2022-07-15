@@ -5747,7 +5747,7 @@
         "id": "confirmations.block.message"
       },
       {
-        "defaultMessage": "One or more posts is unavailable.",
+        "defaultMessage": "One or more posts are unavailable.",
         "id": "statuses.tombstone"
       }
     ],

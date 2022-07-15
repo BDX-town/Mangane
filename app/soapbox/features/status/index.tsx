@@ -49,6 +49,7 @@ import {
   fetchNext,
 } from 'soapbox/actions/statuses';
 import MissingIndicator from 'soapbox/components/missing_indicator';
+import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { textForScreenReader } from 'soapbox/components/status';
 import SubNavigation from 'soapbox/components/sub_navigation';
@@ -796,23 +797,24 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
           <SubNavigation message={intl.formatMessage(titleMessage, { username })} />
         </div>
 
-        <Stack space={2}>
-          <div ref={this.setRef} className='thread'>
-            <ScrollableList
-              id='thread'
-              ref={this.setScrollerRef}
-              onRefresh={this.handleRefresh}
-              hasMore={!!this.state.next}
-              onLoadMore={this.handleLoadMore}
-              placeholderComponent={() => <PlaceholderStatus thread />}
-              initialTopMostItemIndex={ancestorsIds.size}
-            >
-              {children}
-            </ScrollableList>
-          </div>
+        <PullToRefresh onRefresh={this.handleRefresh}>
+          <Stack space={2}>
+            <div ref={this.setRef} className='thread'>
+              <ScrollableList
+                id='thread'
+                ref={this.setScrollerRef}
+                hasMore={!!this.state.next}
+                onLoadMore={this.handleLoadMore}
+                placeholderComponent={() => <PlaceholderStatus thread />}
+                initialTopMostItemIndex={ancestorsIds.size}
+              >
+                {children}
+              </ScrollableList>
+            </div>
 
-          {!me && <ThreadLoginCta />}
-        </Stack>
+            {!me && <ThreadLoginCta />}
+          </Stack>
+        </PullToRefresh>
       </Column>
     );
   }

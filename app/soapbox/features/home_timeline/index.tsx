@@ -3,6 +3,7 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
+import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Column, Stack, Text } from 'soapbox/components/ui';
 import Timeline from 'soapbox/features/ui/components/timeline';
 import { useAppSelector, useAppDispatch, useFeatures } from 'soapbox/hooks';
@@ -59,47 +60,48 @@ const HomeTimeline: React.FC = () => {
 
   return (
     <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
-      <Timeline
-        scrollKey='home_timeline'
-        onLoadMore={handleLoadMore}
-        onRefresh={handleRefresh}
-        timelineId='home'
-        divideType='space'
-        emptyMessage={
-          <Stack space={1}>
-            <Text size='xl' weight='medium' align='center'>
-              <FormattedMessage
-                id='empty_column.home.title'
-                defaultMessage="You're not following anyone yet"
-              />
-            </Text>
-
-            <Text theme='muted' align='center'>
-              <FormattedMessage
-                id='empty_column.home.subtitle'
-                defaultMessage='{siteTitle} gets more interesting once you follow other users.'
-                values={{ siteTitle }}
-              />
-            </Text>
-
-            {features.federating && (
-              <Text theme='muted' align='center'>
+      <PullToRefresh onRefresh={handleRefresh}>
+        <Timeline
+          scrollKey='home_timeline'
+          onLoadMore={handleLoadMore}
+          timelineId='home'
+          divideType='space'
+          emptyMessage={
+            <Stack space={1}>
+              <Text size='xl' weight='medium' align='center'>
                 <FormattedMessage
-                  id='empty_column.home'
-                  defaultMessage='Or you can visit {public} to get started and meet other users.'
-                  values={{
-                    public: (
-                      <Link to='/timeline/local' className='text-primary-600 dark:text-primary-400 hover:underline'>
-                        <FormattedMessage id='empty_column.home.local_tab' defaultMessage='the {site_title} tab' values={{ site_title: siteTitle }} />
-                      </Link>
-                    ),
-                  }}
+                  id='empty_column.home.title'
+                  defaultMessage="You're not following anyone yet"
                 />
               </Text>
-            )}
-          </Stack>
-        }
-      />
+
+              <Text theme='muted' align='center'>
+                <FormattedMessage
+                  id='empty_column.home.subtitle'
+                  defaultMessage='{siteTitle} gets more interesting once you follow other users.'
+                  values={{ siteTitle }}
+                />
+              </Text>
+
+              {features.federating && (
+                <Text theme='muted' align='center'>
+                  <FormattedMessage
+                    id='empty_column.home'
+                    defaultMessage='Or you can visit {public} to get started and meet other users.'
+                    values={{
+                      public: (
+                        <Link to='/timeline/local' className='text-primary-600 dark:text-primary-400 hover:underline'>
+                          <FormattedMessage id='empty_column.home.local_tab' defaultMessage='the {site_title} tab' values={{ site_title: siteTitle }} />
+                        </Link>
+                      ),
+                    }}
+                  />
+                </Text>
+              )}
+            </Stack>
+          }
+        />
+      </PullToRefresh>
     </Column>
   );
 };

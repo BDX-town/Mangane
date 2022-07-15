@@ -1022,7 +1022,7 @@
   "status.unpin": "Non fissare in cima al profilo",
   "status_list.queue_label": "Click to see {count} new {count, plural, one {post} other {posts}}",
   "statuses.quote_tombstone": "Post is unavailable.",
-  "statuses.tombstone": "One or more posts is unavailable.",
+  "statuses.tombstone": "One or more posts are unavailable.",
   "suggestions.dismiss": "Elimina suggerimento",
   "tabs_bar.all": "Tutto",
   "tabs_bar.chats": "Chat",
