@@ -276,7 +276,10 @@ const getInstanceFeatures = (instance: Instance) => {
      * Can edit and manage timeline filters (aka "muted words").
      * @see {@link https://docs.joinmastodon.org/methods/accounts/filters/}
      */
-    filters: v.software !== TRUTHSOCIAL,
+    filters: any([
+      v.software === MASTODON && lt(v.compatVersion, '3.6.0'),
+      v.software === PLEROMA,
+    ]),
 
     /**
      * Allows setting the focal point of a media attachment.
