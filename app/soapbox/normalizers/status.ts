@@ -144,6 +144,11 @@ const fixQuote = (status: ImmutableMap<string, any>) => {
   });
 };
 
+// Workaround for not yet implemented filtering from Mastodon 3.6
+const fixFiltered = (status: ImmutableMap<string, any>) => {
+  status.delete('filtered');
+};
+
 export const normalizeStatus = (status: Record<string, any>) => {
   return StatusRecord(
     ImmutableMap(fromJS(status)).withMutations(status => {
@@ -155,6 +160,7 @@ export const normalizeStatus = (status: Record<string, any>) => {
       fixMentionsOrder(status);
       addSelfMention(status);
       fixQuote(status);
+      fixFiltered(status);
     }),
   );
 };
