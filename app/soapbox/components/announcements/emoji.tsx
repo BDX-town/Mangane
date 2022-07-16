@@ -27,7 +27,7 @@ const Emoji: React.FC<IEmoji> = ({ emoji, emojiMap, hovered }) => {
         className='emojione block m-0'
         alt={emoji}
         title={title}
-        src={joinPublicPath(`/emoji/${filename}.svg`)}
+        src={joinPublicPath(`packs/emoji/${filename}.svg`)}
       />
     );
   } else if (emojiMap.get(emoji as any)) {
