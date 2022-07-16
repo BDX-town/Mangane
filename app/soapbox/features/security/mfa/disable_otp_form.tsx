@@ -7,7 +7,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import { Button, Form, FormGroup, Input, FormActions, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
-const  messages = defineMessages({
+const messages = defineMessages({
   mfa_setup_disable_button: { id: 'column.mfa_disable_button', defaultMessage: 'Disable' },
   disableFail: { id: 'security.disable.fail', defaultMessage: 'Incorrect password. Try again.' },
   mfaDisableSuccess: { id: 'mfa.disable.success_message', defaultMessage: 'MFA disabled' },

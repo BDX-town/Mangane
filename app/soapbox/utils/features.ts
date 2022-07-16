@@ -143,6 +143,25 @@ const getInstanceFeatures = (instance: Instance) => {
     accountWebsite: v.software === TRUTHSOCIAL,
 
     /**
+     * Can display announcements set by admins.
+     * @see GET /api/v1/announcements
+     * @see POST /api/v1/announcements/:id/dismiss
+     * @see {@link https://docs.joinmastodon.org/methods/announcements/}
+     */
+    announcements: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
+      v.software === PLEROMA && gte(v.version, '2.2.49'),
+    ]),
+
+    /**
+     * Can emoji react to announcements set by admins.
+     * @see PUT /api/v1/announcements/:id/reactions/:name
+     * @see DELETE /api/v1/announcements/:id/reactions/:name
+     * @see {@link https://docs.joinmastodon.org/methods/announcements/}
+     */
+    announcementsReactions: v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
+
+    /**
      * Set your birthday and view upcoming birthdays.
      * @see GET /api/v1/pleroma/birthdays
      * @see POST /api/v1/accounts

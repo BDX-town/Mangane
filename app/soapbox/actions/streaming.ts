@@ -3,6 +3,12 @@ import messages from 'soapbox/locales/messages';
 
 import { connectStream } from '../stream';
 
+import {
+  deleteAnnouncement,
+  fetchAnnouncements,
+  updateAnnouncements,
+  updateReaction as updateAnnouncementsReaction,
+} from './announcements';
 import { updateConversations } from './conversations';
 import { fetchFilters } from './filters';
 import { updateNotificationsQueue, expandNotifications } from './notifications';
@@ -100,13 +106,24 @@ const connectTimelineStream = (
         case 'pleroma:follow_relationships_update':
           dispatch(updateFollowRelationships(JSON.parse(data.payload)));
           break;
+        case 'announcement':
+          dispatch(updateAnnouncements(JSON.parse(data.payload)));
+          break;
+        case 'announcement.reaction':
+          dispatch(updateAnnouncementsReaction(JSON.parse(data.payload)));
+          break;
+        case 'announcement.delete':
+          dispatch(deleteAnnouncement(data.payload));
+          break;
       }
     },
   };
 });
 
 const refreshHomeTimelineAndNotification = (dispatch: AppDispatch, done?: () => void) =>
-  dispatch(expandHomeTimeline({}, () => dispatch(expandNotifications({} as any, done))));
+  dispatch(expandHomeTimeline({}, () =>
+    dispatch(expandNotifications({}, () =>
+      dispatch(fetchAnnouncements(done))))));
 
 const connectUserStream      = () =>
   connectTimelineStream('home', 'user', refreshHomeTimelineAndNotification);

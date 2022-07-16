@@ -12,6 +12,7 @@ import {
   CryptoDonatePanel,
   BirthdayPanel,
   CtaBanner,
+  AnnouncementsPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useOwnAccount, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
@@ -72,6 +73,11 @@ const HomePage: React.FC = ({ children }) => {
         {!me && (
           <BundleContainer fetchComponent={SignUpPanel}>
             {Component => <Component />}
+          </BundleContainer>
+        )}
+        {me && features.announcements && (
+          <BundleContainer fetchComponent={AnnouncementsPanel}>
+            {Component => <Component key='announcements-panel' />}
           </BundleContainer>
         )}
         {features.trends && (
