@@ -69,7 +69,7 @@ const Notifications = () => {
   const handleLoadOlder = useCallback(debounce(() => {
     const last = notifications.last();
     dispatch(expandNotifications({ maxId: last && last.get('id') }));
-  }, 300, { leading: true }), []);
+  }, 300, { leading: true }), [notifications]);
 
   const handleScrollToTop = useCallback(debounce(() => {
     dispatch(scrollTopNotifications(true));
