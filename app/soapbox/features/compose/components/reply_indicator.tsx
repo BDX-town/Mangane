@@ -43,6 +43,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ status, hideActions, onCanc
       />
 
       <Text
+        className='break-words'
         size='sm'
         dangerouslySetInnerHTML={{ __html: status.contentHtml }}
         direction={isRtl(status.search_index) ? 'rtl' : 'ltr'}
