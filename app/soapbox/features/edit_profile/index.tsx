@@ -4,6 +4,7 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
+import BirthdayInput from 'soapbox/components/birthday_input';
 import List, { ListItem } from 'soapbox/components/list';
 import {
   Button,
@@ -25,7 +26,6 @@ import resizeImage from 'soapbox/utils/resize_image';
 import ProfilePreview from './components/profile-preview';
 
 import type { Account } from 'soapbox/types/entities';
-import BirthdayInput from 'soapbox/components/birthday_input';
 
 /**
  * Whether the user is hiding their follows and/or followers.
