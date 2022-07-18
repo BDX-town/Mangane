@@ -170,11 +170,8 @@ NODE_ENV=development
 
 # Contributing
 
-We welcome contributions to this project.  To contribute, first review the [Contributing doc](docs/contributing.md)
-
-Additional supporting documents include:
-* [Soapbox History](docs/history.md)
-* [Redux Store Map](docs/history.md)
+We welcome contributions to this project.
+To contribute, see [Contributing to Soapbox](docs/contributing.md).
 
 # Customization
 
