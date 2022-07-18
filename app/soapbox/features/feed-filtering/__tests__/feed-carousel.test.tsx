@@ -7,7 +7,7 @@ import { render, screen, waitFor } from '../../../jest/test-helpers';
 import FeedCarousel from '../feed-carousel';
 
 jest.mock('../../../hooks/useDimensions', () => ({
-  useDimensions: () => [null, { width: 200 }],
+  useDimensions: () => [{ scrollWidth: 190 }, null, { width: 100 }],
 }));
 
 (window as any).ResizeObserver = class ResizeObserver {
