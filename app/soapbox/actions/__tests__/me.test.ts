@@ -4,7 +4,7 @@ import { __stub } from 'soapbox/api';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 
 import {
-  fetchMe,
+  fetchMe, patchMe,
 } from '../me';
 
 jest.mock('../../storage/kv_store', () => ({
@@ -80,6 +80,36 @@ describe('fetchMe()', () => {
 
         expect(actions).toEqual(expectedActions);
       });
+    });
+  });
+});
+
+describe('patchMe()', () => {
+  beforeEach(() => {
+    const state = rootState;
+    store = mockStore(state);
+  });
+
+  describe('with a successful API response', () => {
+    beforeEach(() => {
+      __stub((mock) => {
+        mock.onPatch('/api/v1/accounts/update_credentials').reply(200, {});
+      });
+    });
+
+    it('dispatches the correct actions', async() => {
+      const expectedActions =  [
+        { type: 'ME_PATCH_REQUEST' },
+        { type: 'ACCOUNTS_IMPORT', accounts: [] },
+        {
+          type: 'ME_PATCH_SUCCESS',
+          me: {},
+        },
+      ];
+      await store.dispatch(patchMe({}));
+      const actions = store.getActions();
+
+      expect(actions).toEqual(expectedActions);
     });
   });
 });
