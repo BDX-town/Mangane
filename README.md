@@ -175,20 +175,21 @@ To contribute, see [Contributing to Soapbox](docs/contributing.md).
 
 # Customization
 
-Soapbox supports customization of the user interface, to allow per instance branding and other features.  Current customization features include:
+Soapbox supports customization of the user interface, to allow per-instance branding and other features.
+Some examples include:
 
-* Instance name
-* Site logo
-* Favicon
-* About page
-* Terms of Service page
-* Privacy Policy page
-* Copyright Policy (DMCA) page
-* Promo panel list items, e.g. blog site link
-* Soapbox extensions, e.g. Patron module
-* Default settings, e.g. default theme
+- Instance name
+- Site logo
+- Favicon
+- About page
+- Terms of Service page
+- Privacy Policy page
+- Copyright Policy (DMCA) page
+- Promo panel list items, e.g. blog site link
+- Soapbox extensions, e.g. Patron module
+- Default settings, e.g. default theme
 
-Customization details can be found in the [Customization doc](docs/customization.md)
+More details can be found in [Customizing Soapbox](docs/customization.md).
 
 # License & Credits
 
