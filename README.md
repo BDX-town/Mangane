@@ -31,6 +31,10 @@ It's not necessary to restart the Pleroma service.
 
 To remove Soapbox FE and revert to the default pleroma-fe, simply `rm /opt/pleroma/instance/static/index.html` (you can delete other stuff in there too, but be careful not to delete your own HTML files).
 
+## :elephant: Deploy on Mastodon
+
+See [Installing Soapbox over Mastodon](https://docs.soapbox.pub/frontend/administration/mastodon/).
+
 ## How does it work?
 
 Soapbox FE is a [single-page application (SPA)](https://en.wikipedia.org/wiki/Single-page_application) that runs entirely in the browser with JavaScript.
@@ -38,7 +42,23 @@ Soapbox FE is a [single-page application (SPA)](https://en.wikipedia.org/wiki/Si
 It has a single HTML file, `index.html`, responsible only for loading the required JavaScript and CSS.
 It interacts with the backend through [XMLHttpRequest (XHR)](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest).
 
-It incorporates much of the [Mastodon API](https://docs.joinmastodon.org/methods/) used by Pleroma and Mastodon, but requires many [Pleroma-specific features](https://docs.pleroma.social/backend/development/API/differences_in_mastoapi_responses/) in order to function.
+Here is a simplified example with Nginx:
+
+```nginx
+location /api {
+  proxy_pass http://backend;
+}
+
+location / {
+  root /opt/soapbox;
+  try_files $uri index.html;
+}
+```
+
+(See [`mastodon.conf`](https://gitlab.com/soapbox-pub/soapbox-fe/-/blob/develop/installation/mastodon.conf) for a full example.)
+
+Soapbox incorporates much of the [Mastodon API](https://docs.joinmastodon.org/methods/), [Pleroma API](https://api.pleroma.social/), and more.
+It detects features supported by the backend to provide the right experience for the backend.
 
 # Running locally
 
@@ -65,8 +85,9 @@ yarn dev
 
 It will serve at `http://localhost:3036` by default.
 
-It will proxy requests to the backend for you.
-For Pleroma running on `localhost:4000` (the default) no other changes are required, just start a local Pleroma server and it should begin working.
+You should see an input box - just enter the domain name of your instance to log in.
+
+Tip: you can even enter a local instance like `http://localhost:3000`!
 
 ### Troubleshooting: `ERROR: NODE_ENV must be set`
 
@@ -79,26 +100,10 @@ cp .env.example .env
 And ensure that it contains `NODE_ENV=development`.
 Try again.
 
-## Developing against a live backend
+### Troubleshooting: it's not working!
 
-You can also run Soapbox FE locally with a live production server as the backend.
-
-> **Note:** Whether or not this works depends on your production server. It does not seem to work with Cloudflare or VanwaNet.
-
-To do so, just copy the env file:
-
-```sh
-cp .env.example .env
-```
-
-And edit `.env`, setting the configuration like this:
-
-```sh
-BACKEND_URL="https://pleroma.example.com"
-PROXY_HTTPS_INSECURE=true
-```
-
-You will need to restart the local development server for the changes to take effect.
+Run `node -V` and compare your Node.js version with the version in [`.tool-versions`](https://gitlab.com/soapbox-pub/soapbox-fe/-/blob/develop/.tool-versions).
+If they don't match, try installing [asdf](https://asdf-vm.com/).
 
 ## Local Dev Configuration
 
