@@ -28,12 +28,14 @@ const ColorWithPicker: React.FC<IColorWithPicker> = ({ buttonId, value, onChange
     setPlacement(isMobile(window.innerWidth) ? 'bottom' : 'right');
   };
 
-  const onToggle: React.MouseEventHandler = () => {
+  const onToggle: React.MouseEventHandler = (e) => {
     if (active) {
       hidePicker();
     } else {
       showPicker();
     }
+
+    e.stopPropagation();
   };
 
   return (
