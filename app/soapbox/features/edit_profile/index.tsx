@@ -25,6 +25,7 @@ import resizeImage from 'soapbox/utils/resize_image';
 import ProfilePreview from './components/profile-preview';
 
 import type { Account } from 'soapbox/types/entities';
+import BirthdayInput from 'soapbox/components/birthday_input';
 
 /**
  * Whether the user is hiding their follows and/or followers.
@@ -232,6 +233,10 @@ const EditProfile: React.FC = () => {
     };
   };
 
+  const handleBirthdayChange = (date: string) => {
+    updateData('birthday', date);
+  };
+
   const handleHideNetworkChange: React.ChangeEventHandler<HTMLInputElement> = e => {
     const hide = e.target.checked;
 
@@ -315,12 +320,9 @@ const EditProfile: React.FC = () => {
           <FormGroup
             labelText={<FormattedMessage id='edit_profile.fields.birthday_label' defaultMessage='Birthday' />}
           >
-            <Input
-              type='text'
+            <BirthdayInput
               value={data.birthday}
-              onChange={handleTextChange('birthday')}
-              placeholder='YYYY-MM-DD'
-              pattern='\d{4}-\d{2}-\d{2}'
+              onChange={handleBirthdayChange}
             />
           </FormGroup>
         )}

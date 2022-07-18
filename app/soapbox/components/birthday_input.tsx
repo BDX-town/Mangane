@@ -109,7 +109,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
     );
   };
 
-  const handleChange = (date: Date) => onChange(new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0, 10));
+  const handleChange = (date: Date) => onChange(date ? new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0, 10) : '');
 
   return (
     <div className='mt-1 relative rounded-md shadow-sm'>
@@ -123,6 +123,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
           maxDate={maxDate}
           required={required}
           renderCustomHeader={renderCustomHeader}
+          isClearable={!required}
         />)}
       </BundleContainer>
     </div>
