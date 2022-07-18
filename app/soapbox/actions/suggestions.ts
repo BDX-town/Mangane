@@ -91,7 +91,7 @@ const fetchTruthSuggestions = (params: Record<string, any> = {}) =>
         const next = getLinks(response).refs.find(link => link.rel === 'next')?.uri;
 
         const accounts = suggestedProfiles.map(mapSuggestedProfileToAccount);
-        dispatch(importFetchedAccounts(accounts));
+        dispatch(importFetchedAccounts(accounts, { should_refetch: true }));
         dispatch({ type: SUGGESTIONS_TRUTH_FETCH_SUCCESS, suggestions: suggestedProfiles, next, skipLoading: true });
         return suggestedProfiles;
       })

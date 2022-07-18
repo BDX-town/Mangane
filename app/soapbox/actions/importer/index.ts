@@ -40,11 +40,16 @@ export function importFetchedAccount(account: APIEntity) {
   return importFetchedAccounts([account]);
 }
 
-export function importFetchedAccounts(accounts: APIEntity[]) {
+export function importFetchedAccounts(accounts: APIEntity[], args = { should_refetch: false }) {
+  const { should_refetch } = args;
   const normalAccounts: APIEntity[] = [];
 
   const processAccount = (account: APIEntity) => {
     if (!account.id) return;
+
+    if (should_refetch) {
+      account.should_refetch = true;
+    }
 
     normalAccounts.push(account);
 
