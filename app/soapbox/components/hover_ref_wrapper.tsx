@@ -1,12 +1,13 @@
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
 import React, { useRef } from 'react';
-import { useDispatch } from 'react-redux';
 
+import { fetchAccount } from 'soapbox/actions/accounts';
 import {
   openProfileHoverCard,
   closeProfileHoverCard,
 } from 'soapbox/actions/profile_hover_card';
+import { useAppDispatch } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is_mobile';
 
 const showProfileHoverCard = debounce((dispatch, ref, accountId) => {
@@ -21,12 +22,13 @@ interface IHoverRefWrapper {
 
 /** Makes a profile hover card appear when the wrapped element is hovered. */
 export const HoverRefWrapper: React.FC<IHoverRefWrapper> = ({ accountId, children, inline = false, className }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const ref = useRef<HTMLDivElement>(null);
   const Elem: keyof JSX.IntrinsicElements = inline ? 'span' : 'div';
 
   const handleMouseEnter = () => {
     if (!isMobile(window.innerWidth)) {
+      dispatch(fetchAccount(accountId));
       showProfileHoverCard(dispatch, ref, accountId);
     }
   };
