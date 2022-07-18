@@ -43,7 +43,7 @@ const CommunityTimeline = () => {
   }, [onlyMedia]);
 
   return (
-    <Column label={intl.formatMessage(messages.title)} transparent>
+    <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
       <SubNavigation message={intl.formatMessage(messages.title)} settings={ColumnSettings} />
       <PullToRefresh onRefresh={handleRefresh}>
         <Timeline
