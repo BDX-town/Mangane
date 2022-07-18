@@ -47,7 +47,11 @@ export function importFetchedAccounts(accounts: APIEntity[], args = { should_ref
   const processAccount = (account: APIEntity) => {
     if (!account.id) return;
 
-    normalAccounts.push({ should_refetch, ...account });
+    if (should_refetch) {
+      account.should_refetch = true;
+    }
+
+    normalAccounts.push(account);
 
     if (account.moved) {
       processAccount(account.moved);
