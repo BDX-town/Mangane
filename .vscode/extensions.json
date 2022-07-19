@@ -3,6 +3,7 @@
         "editorconfig.editorconfig",
         "dbaeumer.vscode-eslint",
         "bradlc.vscode-tailwindcss",
-        "stylelint.vscode-stylelint"
+        "stylelint.vscode-stylelint",
+        "wix.vscode-import-cost"
     ]
 }
