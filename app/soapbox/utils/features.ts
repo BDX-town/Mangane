@@ -126,7 +126,7 @@ const getInstanceFeatures = (instance: Instance) => {
     accountNotifies: any([
       v.software === MASTODON && gte(v.compatVersion, '3.3.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
-      // v.software === TRUTHSOCIAL,
+      v.software === TRUTHSOCIAL,
     ]),
 
     /**
@@ -276,6 +276,7 @@ const getInstanceFeatures = (instance: Instance) => {
     /** Whether the accounts who favourited or emoji-reacted to a status can be viewed through the API. */
     exposableReactions: any([
       v.software === MASTODON,
+      v.software === TRUTHSOCIAL,
       features.includes('exposable_reactions'),
     ]),
 
@@ -428,6 +429,7 @@ const getInstanceFeatures = (instance: Instance) => {
     polls: any([
       v.software === MASTODON && gte(v.version, '2.8.0'),
       v.software === PLEROMA,
+      v.software === TRUTHSOCIAL,
     ]),
 
     /**
