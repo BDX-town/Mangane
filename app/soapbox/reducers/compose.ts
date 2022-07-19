@@ -462,7 +462,7 @@ export default function compose(state = ReducerRecord({ idempotencyKey: uuid(), 
         map.set('content_type', action.contentType || 'text/plain');
         map.set('quote', action.status.get('quote'));
 
-        if (action.v?.software === PLEROMA && hasIntegerMediaIds(action.status)) {
+        if (action.v?.software === PLEROMA && !action.withRedraft && hasIntegerMediaIds(action.status)) {
           map.set('media_attachments', ImmutableList());
         } else {
           map.set('media_attachments', action.status.media_attachments);
