@@ -9,8 +9,8 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
   const account = useOwnAccount();
   const notificationCount = useAppSelector((state) => state.notifications.unread);
   const chatsCount = useAppSelector((state) => state.chats.items.reduce((acc, curr) => acc + Math.min(curr.unread || 0, 1), 0));
-  const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
   const features = getFeatures(useAppSelector((state) => state.instance));
+  const instance = useAppSelector((state) => state.instance);
 
   /** Conditionally render the supported messages link */
   const renderMessagesLink = (): React.ReactNode => {
@@ -49,12 +49,36 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
         exact
       />
 
-      <ThumbNavigationLink
-        src={require('@tabler/icons/search.svg')}
-        text={<FormattedMessage id='navigation.search' defaultMessage='Search' />}
-        to='/search'
-        exact
-      />
+      {
+        features.federating ? (
+          <ThumbNavigationLink
+            src={require('@tabler/icons/users.svg')}
+            text={instance.get('title')}
+            to='/timeline/local'
+            exact
+          />
+        ) : (
+          <ThumbNavigationLink
+            src={require('@tabler/icons/world.svg')}
+            text={<FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
+            to='/timeline/local'
+            exact
+          />
+        )
+      }
+
+      {
+        features.federating && (
+          <ThumbNavigationLink
+          src={require('icons/fediverse.svg')}
+          text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
+          to='/timeline/fediverse'
+          exact
+        />
+        )
+      }
+
+      {account && renderMessagesLink()}
 
       {account && (
         <ThumbNavigationLink
@@ -66,16 +90,6 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
         />
       )}
 
-      {account && renderMessagesLink()}
-
-      {(account && account.staff) && (
-        <ThumbNavigationLink
-          src={require('@tabler/icons/dashboard.svg')}
-          text={<FormattedMessage id='navigation.dashboard' defaultMessage='Dashboard' />}
-          to='/soapbox/admin'
-          count={dashboardCount}
-        />
-      )}
     </div>
   );
 };
