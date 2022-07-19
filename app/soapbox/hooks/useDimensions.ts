@@ -1,7 +1,7 @@
-import { Ref, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 type UseDimensionsRect = { width: number, height: number };
-type UseDimensionsResult = [Ref<HTMLDivElement>, any]
+type UseDimensionsResult = [Element | null, any, any]
 
 const defaultState: UseDimensionsRect = {
   width: 0,
@@ -9,7 +9,7 @@ const defaultState: UseDimensionsRect = {
 };
 
 const useDimensions = (): UseDimensionsResult => {
-  const [element, ref] = useState<Element | null>(null);
+  const [element, setRef] = useState<Element | null>(null);
   const [rect, setRect] = useState<UseDimensionsRect>(defaultState);
 
   const observer = useMemo(
@@ -32,7 +32,7 @@ const useDimensions = (): UseDimensionsResult => {
     };
   }, [element]);
 
-  return [ref, rect];
+  return [element, setRef, rect];
 };
 
 export { useDimensions };
