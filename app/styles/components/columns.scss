@@ -621,10 +621,12 @@
   top: 12px;
   right: 14px;
 
-  .react-toggle-track-check,
+  .react-toggle-track-check {
+    left: 6px;
+  }
+
   .react-toggle-track-x {
-    height: 16px;
-    color: white;
+    right: 8px;
   }
 }
 
