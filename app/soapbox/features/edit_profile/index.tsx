@@ -4,6 +4,7 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
+import BirthdayInput from 'soapbox/components/birthday_input';
 import List, { ListItem } from 'soapbox/components/list';
 import {
   Button,
@@ -232,6 +233,10 @@ const EditProfile: React.FC = () => {
     };
   };
 
+  const handleBirthdayChange = (date: string) => {
+    updateData('birthday', date);
+  };
+
   const handleHideNetworkChange: React.ChangeEventHandler<HTMLInputElement> = e => {
     const hide = e.target.checked;
 
@@ -315,12 +320,9 @@ const EditProfile: React.FC = () => {
           <FormGroup
             labelText={<FormattedMessage id='edit_profile.fields.birthday_label' defaultMessage='Birthday' />}
           >
-            <Input
-              type='text'
+            <BirthdayInput
               value={data.birthday}
-              onChange={handleTextChange('birthday')}
-              placeholder='YYYY-MM-DD'
-              pattern='\d{4}-\d{2}-\d{2}'
+              onChange={handleBirthdayChange}
             />
           </FormGroup>
         )}
