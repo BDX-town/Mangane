@@ -40,6 +40,7 @@ const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
               autoComplete='off'
               autoCorrect='off'
               autoCapitalize='off'
+              pattern='^[@a-zA-Z\d_-]+$'
               required
             />
           </FormGroup>

@@ -207,9 +207,19 @@ export const loadCredentials = (token: string, accountUrl: string) =>
     })
     .catch(() => dispatch(verifyCredentials(token, accountUrl)));
 
+/** Trim the username and strip the leading @. */
+const normalizeUsername = (username: string): string => {
+  const trimmed = username.trim();
+  if (trimmed[0] === '@') {
+    return trimmed.slice(1);
+  } else {
+    return trimmed;
+  }
+};
+
 export const logIn = (username: string, password: string) =>
   (dispatch: AppDispatch) => dispatch(getAuthApp()).then(() => {
-    return dispatch(createUserToken(username, password));
+    return dispatch(createUserToken(normalizeUsername(username), password));
   }).catch((error: AxiosError) => {
     if ((error.response?.data as any).error === 'mfa_required') {
       // If MFA is required, throw the error and handle it in the component.
