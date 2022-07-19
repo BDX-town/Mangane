@@ -135,7 +135,6 @@ const Header = () => {
                 autoComplete='off'
                 autoCorrect='off'
                 autoCapitalize='off'
-                pattern='^[@a-zA-Z\d_-]+$'
               />
 
               <Input
