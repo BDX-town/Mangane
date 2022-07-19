@@ -13,7 +13,6 @@ interface IPullable {
  */
 const Pullable: React.FC<IPullable> = ({ children }) =>(
   <PullToRefresh
-    pullingContent={undefined}
     // @ts-ignore
     refreshingContent={null}
   >
