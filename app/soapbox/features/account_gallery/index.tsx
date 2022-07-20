@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
@@ -66,8 +66,11 @@ const AccountGallery = () => {
   const isLoading = useAppSelector((state) => state.timelines.get(`account:${accountId}:media`)?.isLoading);
   const hasMore = useAppSelector((state) => state.timelines.get(`account:${accountId}:media`)?.hasMore);
 
-  const ref = useRef<HTMLDivElement>(null);
-  const [width] = useState(323);
+  const [width, setWidth] = useState(323);
+
+  const handleRef = (c: HTMLDivElement) => {
+    if (c) setWidth(c.offsetWidth);
+  };
 
   const handleScrollToBottom = () => {
     if (hasMore) {
@@ -138,7 +141,7 @@ const AccountGallery = () => {
 
   return (
     <Column label={`@${accountUsername}`} transparent withHeader={false}>
-      <div role='feed' className='account-gallery__container' ref={ref}>
+      <div role='feed' className='account-gallery__container' ref={handleRef}>
         {attachments.map((attachment, index) => attachment === null ? (
           <LoadMoreMedia key={'more:' + attachments.get(index + 1)?.id} maxId={index > 0 ? (attachments.get(index - 1)?.id || null) : null} onLoadMore={handleLoadMore} />
         ) : (

@@ -48,7 +48,7 @@ const OtpAuthForm: React.FC<IOtpAuthForm> = ({ mfa_token }) => {
 
   return (
     <div>
-      <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 border-solid -mx-4 sm:-mx-10'>
+      <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-600 border-solid -mx-4 sm:-mx-10'>
         <h1 className='text-center font-bold text-2xl'>
           <FormattedMessage id='login.otp_log_in' defaultMessage='OTP Login' />
         </h1>
