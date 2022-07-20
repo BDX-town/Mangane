@@ -110,7 +110,7 @@ const FeedCarousel = () => {
   }
 
   return (
-    <Card variant='rounded' size='lg' ref={setCardRef} className='relative' data-testid='feed-carousel'>
+    <Card variant='rounded' size='lg' className='relative' data-testid='feed-carousel'>
       <div>
         {hasPrevPage && (
           <div>
@@ -131,6 +131,7 @@ const FeedCarousel = () => {
           space={8}
           className='z-0 flex transition-all duration-200 ease-linear scroll'
           style={{ transform: `translateX(-${(currentPage - 1) * 100}%)` }}
+          ref={setCardRef}
         >
           {isLoading ? (
             new Array(pageSize).fill(0).map((_, idx) => (
