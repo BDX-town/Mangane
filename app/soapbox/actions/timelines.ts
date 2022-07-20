@@ -28,6 +28,7 @@ const TIMELINE_DISCONNECT = 'TIMELINE_DISCONNECT';
 
 const TIMELINE_REPLACE = 'TIMELINE_REPLACE';
 const TIMELINE_INSERT = 'TIMELINE_INSERT';
+const TIMELINE_CLEAR_FEED_ACCOUNT_ID = 'TIMELINE_CLEAR_FEED_ACCOUNT_ID';
 
 const MAX_QUEUED_ITEMS = 40;
 
@@ -270,6 +271,10 @@ const insertSuggestionsIntoTimeline = () => (dispatch: AppDispatch, getState: ()
   dispatch({ type: TIMELINE_INSERT, timeline: 'home' });
 };
 
+const clearFeedAccountId = () => (dispatch: AppDispatch, _getState: () => RootState) => {
+  dispatch({ type: TIMELINE_CLEAR_FEED_ACCOUNT_ID });
+};
+
 export {
   TIMELINE_UPDATE,
   TIMELINE_DELETE,
@@ -283,6 +288,7 @@ export {
   TIMELINE_CONNECT,
   TIMELINE_DISCONNECT,
   TIMELINE_REPLACE,
+  TIMELINE_CLEAR_FEED_ACCOUNT_ID,
   TIMELINE_INSERT,
   MAX_QUEUED_ITEMS,
   processTimelineUpdate,
@@ -311,4 +317,5 @@ export {
   disconnectTimeline,
   scrollTopTimeline,
   insertSuggestionsIntoTimeline,
+  clearFeedAccountId,
 };

@@ -32,6 +32,7 @@ import {
   TIMELINE_SCROLL_TOP,
   TIMELINE_REPLACE,
   TIMELINE_INSERT,
+  TIMELINE_CLEAR_FEED_ACCOUNT_ID,
 } from '../actions/timelines';
 
 import type { AnyAction } from 'redux';
@@ -358,12 +359,20 @@ export default function timelines(state: State = initialState, action: AnyAction
     case TIMELINE_INSERT:
       return state.update(action.timeline, TimelineRecord(), timeline => timeline.withMutations(timeline => {
         timeline.update('items', oldIds => {
-          const oldIdsArray = oldIds.toArray();
+
+          let oldIdsArray = oldIds.toArray();
+          const existingSuggestionId = oldIdsArray.find(key => key.includes('末suggestions'));
+
+          if (existingSuggestionId) {
+            oldIdsArray = oldIdsArray.slice(1);
+          }
           const positionInTimeline = sample([5, 6, 7, 8, 9]) as number;
           oldIdsArray.splice(positionInTimeline, 0, `末suggestions-${oldIds.last()}`);
           return ImmutableOrderedSet(oldIdsArray);
         });
       }));
+    case TIMELINE_CLEAR_FEED_ACCOUNT_ID:
+      return state.update('home', TimelineRecord(), timeline => timeline.set('feedAccountId', null));
     default:
       return state;
   }
