@@ -118,7 +118,7 @@ const FeedCarousel = () => {
               <button
                 data-testid='prev-page'
                 onClick={handlePrevPage}
-                className='bg-white/85 backdrop-blur rounded-full h-8 w-8 flex items-center justify-center'
+                className='bg-white/50 dark:bg-gray-900/50 backdrop-blur rounded-full h-8 w-8 flex items-center justify-center'
               >
                 <Icon src={require('@tabler/icons/chevron-left.svg')} className='text-black dark:text-white h-6 w-6' />
               </button>
@@ -155,7 +155,7 @@ const FeedCarousel = () => {
               <button
                 data-testid='next-page'
                 onClick={handleNextPage}
-                className='bg-white/85 backdrop-blur rounded-full h-8 w-8 flex items-center justify-center'
+                className='bg-white/50 dark:bg-gray-900/50 backdrop-blur rounded-full h-8 w-8 flex items-center justify-center'
               >
                 <Icon src={require('@tabler/icons/chevron-right.svg')} className='text-black dark:text-white h-6 w-6' />
               </button>
