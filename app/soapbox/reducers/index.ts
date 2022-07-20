@@ -12,6 +12,7 @@ import admin from './admin';
 import admin_log from './admin_log';
 import alerts from './alerts';
 import aliases from './aliases';
+import announcements from './announcements';
 import auth from './auth';
 import backups from './backups';
 import carousels from './carousels';
@@ -124,6 +125,7 @@ const reducers = {
   rules,
   history,
   carousels,
+  announcements,
 };
 
 // Build a default state from all reducers: it has the key and `undefined`

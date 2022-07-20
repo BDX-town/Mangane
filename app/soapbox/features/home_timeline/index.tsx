@@ -59,7 +59,7 @@ const HomeTimeline: React.FC = () => {
   }, [isPartial]);
 
   return (
-    <Column label={intl.formatMessage(messages.title)} transparent>
+    <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
       <PullToRefresh onRefresh={handleRefresh}>
         <Timeline
           scrollKey='home_timeline'

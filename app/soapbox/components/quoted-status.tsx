@@ -143,7 +143,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
       {renderReplyMentions()}
 
       <Text
-        className='break-words'
+        className='break-words status__content status__content--quote'
         size='sm'
         dangerouslySetInnerHTML={{ __html: status.contentHtml }}
       />

@@ -38,7 +38,7 @@ const TestTimeline: React.FC = () => {
   }, []);
 
   return (
-    <Column label={intl.formatMessage(messages.title)} transparent>
+    <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
       <SubNavigation message={intl.formatMessage(messages.title)} />
       <Timeline
         scrollKey={`${timelineId}_timeline`}

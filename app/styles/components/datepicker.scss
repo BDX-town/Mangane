@@ -3,7 +3,7 @@
 }
 
 .react-datepicker__input-container > input {
-  @apply dark:bg-slate-800 dark:text-white block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500;
+  @apply dark:bg-slate-800 dark:text-white block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md focus:ring-primary-500 focus:border-primary-500;
 
   &.has-error {
     @apply text-red-600 border-red-600;
@@ -131,4 +131,11 @@
 .react-datepicker__quarter-text--keyboard-selected,
 .react-datepicker__year-text--keyboard-selected {
   @apply bg-primary-50 hover:bg-primary-100 dark:bg-slate-700 dark:hover:bg-slate-600 text-primary-600 dark:text-primary-400;
+}
+
+.react-datepicker__close-icon::after {
+  @apply bg-transparent text-gray-600 dark:text-gray-400 text-base;
+  font-family: 'Font Awesome 5 Free';
+  content: "";
+  font-weight: 900;
 }

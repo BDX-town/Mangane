@@ -36,7 +36,7 @@ const PinnedStatuses = () => {
   }
 
   return (
-    <Column label={intl.formatMessage(messages.heading)}>
+    <Column label={intl.formatMessage(messages.heading)} transparent withHeader={false}>
       <StatusList
         statusIds={statusIds}
         scrollKey='pinned_statuses'

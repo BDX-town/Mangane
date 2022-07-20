@@ -2,6 +2,7 @@ import { defineMessages } from 'react-intl';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { isLoggedIn } from 'soapbox/utils/auth';
+import { getFeatures } from 'soapbox/utils/features';
 
 import api from '../api';
 
@@ -27,6 +28,12 @@ const messages = defineMessages({
 const fetchFilters = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
+
+    const state = getState();
+    const instance = state.instance;
+    const features = getFeatures(instance);
+
+    if (!features.filters) return;
 
     dispatch({
       type: FILTERS_FETCH_REQUEST,

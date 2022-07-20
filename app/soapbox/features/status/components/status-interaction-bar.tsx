@@ -139,7 +139,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
               return (
                 <HStack space={0.5} className='emoji-react p-1' alignItems='center' key={i}>
                   <Emoji
-                    className='emoji-react__emoji w-5 h-5 flex-none cursor-pointer'
+                    className={classNames('emoji-react__emoji w-5 h-5 flex-none', { 'cursor-pointer': features.exposableReactions })}
                     emoji={e.get('name')}
                     onClick={features.exposableReactions ? handleOpenReactionsModal(e) : undefined}
                   />

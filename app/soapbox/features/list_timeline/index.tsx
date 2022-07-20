@@ -85,7 +85,7 @@ const ListTimeline: React.FC = () => {
   );
 
   return (
-    <Column label={title} heading={title} transparent>
+    <Column label={title} heading={title} transparent withHeader={false}>
       {/* <HomeColumnHeader activeItem='lists' activeSubItem={id} active={hasUnread}>
         <div className='column-header__links'>
           <button className='text-btn column-header__setting-btn' tabIndex='0' onClick={handleEditClick}>

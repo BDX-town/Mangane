@@ -27,7 +27,7 @@ const SuggestionItem = ({ accountId }: { accountId: string }) => {
         <Stack space={3}>
           <img
             src={account.avatar}
-            className='mx-auto block w-16 h-16 min-w-[56px] rounded-full'
+            className='mx-auto block w-16 h-16 min-w-[56px] rounded-full object-cover'
             alt={account.acct}
           />
 

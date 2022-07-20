@@ -57,6 +57,7 @@ describe('fetchSuggestions()', () => {
               avatar_static: response[0].account_avatar,
               id: response[0].account_id,
               note: response[0].note,
+              should_refetch: true,
               verified: response[0].verified,
               display_name: response[0].display_name,
             }],

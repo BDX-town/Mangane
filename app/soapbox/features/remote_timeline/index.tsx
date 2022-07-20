@@ -65,7 +65,7 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
   }, [onlyMedia]);
 
   return (
-    <Column label={intl.formatMessage(messages.title)} heading={instance} transparent>
+    <Column label={intl.formatMessage(messages.title)} heading={instance} transparent withHeader={false}>
       {instance && <PinnedHostsPicker host={instance} />}
       {!pinned && <HStack className='mb-4 px-2' space={2}>
         <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/x.svg')} onClick={handleCloseClick} />

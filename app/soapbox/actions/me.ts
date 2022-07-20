@@ -41,13 +41,13 @@ const fetchMe = () =>
     const accountUrl = getMeUrl(state);
 
     if (!token) {
-      dispatch({ type: ME_FETCH_SKIP }); return noOp();
+      dispatch({ type: ME_FETCH_SKIP });
+      return noOp();
     }
 
     dispatch(fetchMeRequest());
-    return dispatch(loadCredentials(token, accountUrl)).catch(error => {
-      dispatch(fetchMeFail(error));
-    });
+    return dispatch(loadCredentials(token, accountUrl))
+      .catch(error => dispatch(fetchMeFail(error)));
   };
 
 /** Update the auth account in IndexedDB for Mastodon, etc. */

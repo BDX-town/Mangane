@@ -78,6 +78,17 @@
       padding: 5px;
     }
   }
+
+  &--quote {
+    ul,
+    ol {
+      @apply pl-4;
+    }
+
+    blockquote {
+      @apply pl-2;
+    }
+  }
 }
 
 .status__content > ul,

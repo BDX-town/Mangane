@@ -7,7 +7,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import { Button, FormActions, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
-const  messages = defineMessages({
+const messages = defineMessages({
   mfaCancelButton: { id: 'column.mfa_cancel', defaultMessage: 'Cancel' },
   mfaSetupButton: { id: 'column.mfa_setup', defaultMessage: 'Proceed to Setup' },
   codesFail: { id: 'security.codes.fail', defaultMessage: 'Failed to fetch backup codes' },

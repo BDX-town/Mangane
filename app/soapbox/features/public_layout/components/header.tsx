@@ -128,10 +128,13 @@ const Header = () => {
               <Input
                 required
                 value={username}
-                onChange={(event) => setUsername(event.target.value)}
+                onChange={(event) => setUsername(event.target.value.trim())}
                 type='text'
                 placeholder={intl.formatMessage(messages.username)}
                 className='max-w-[200px]'
+                autoComplete='off'
+                autoCorrect='off'
+                autoCapitalize='off'
               />
 
               <Input
@@ -141,6 +144,9 @@ const Header = () => {
                 type='password'
                 placeholder={intl.formatMessage(messages.password)}
                 className='max-w-[200px]'
+                autoComplete='off'
+                autoCorrect='off'
+                autoCapitalize='off'
               />
 
               <Link to='/reset-password'>

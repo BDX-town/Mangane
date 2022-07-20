@@ -44,7 +44,7 @@ const CarouselItem = ({ avatar }: { avatar: any }) => {
           <img
             src={avatar.account_avatar}
             className={classNames({
-              ' w-14 h-14 min-w-[56px] rounded-full ring-2 ring-offset-4 dark:ring-offset-slate-800': true,
+              'w-14 h-14 min-w-[56px] rounded-full ring-2 ring-offset-4 dark:ring-offset-slate-800': true,
               'ring-transparent': !isSelected,
               'ring-primary-600': isSelected,
             })}
@@ -62,7 +62,7 @@ const FeedCarousel = () => {
   const dispatch = useAppDispatch();
   const features = useFeatures();
 
-  const [cardRef, { width }] = useDimensions();
+  const [cardRef, setCardRef, { width }] = useDimensions();
 
   const [pageSize, setPageSize] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -70,7 +70,8 @@ const FeedCarousel = () => {
   const avatars = useAppSelector((state) => state.carousels.avatars);
   const isLoading = useAppSelector((state) => state.carousels.isLoading);
   const hasError = useAppSelector((state) => state.carousels.error);
-  const numberOfPages = Math.floor(avatars.length / pageSize);
+  const numberOfPages = Math.ceil(avatars.length / pageSize);
+  const widthPerAvatar = (cardRef?.scrollWidth || 0) / avatars.length;
 
   const hasNextPage = currentPage < numberOfPages && numberOfPages > 1;
   const hasPrevPage = currentPage > 1 && numberOfPages > 1;
@@ -80,9 +81,9 @@ const FeedCarousel = () => {
 
   useEffect(() => {
     if (width) {
-      setPageSize(Math.round(width / (80 + 15)));
+      setPageSize(Math.round(width / widthPerAvatar));
     }
-  }, [width]);
+  }, [width, widthPerAvatar]);
 
   useEffect(() => {
     if (features.feedUserFiltering) {
@@ -109,7 +110,7 @@ const FeedCarousel = () => {
   }
 
   return (
-    <Card variant='rounded' size='lg' ref={cardRef} className='relative' data-testid='feed-carousel'>
+    <Card variant='rounded' size='lg' className='relative' data-testid='feed-carousel'>
       <div>
         {hasPrevPage && (
           <div>
@@ -117,7 +118,7 @@ const FeedCarousel = () => {
               <button
                 data-testid='prev-page'
                 onClick={handlePrevPage}
-                className='bg-white/85 backdrop-blur rounded-full h-8 w-8 flex items-center justify-center'
+                className='bg-white/50 dark:bg-gray-900/50 backdrop-blur rounded-full h-8 w-8 flex items-center justify-center'
               >
                 <Icon src={require('@tabler/icons/chevron-left.svg')} className='text-black dark:text-white h-6 w-6' />
               </button>
@@ -130,6 +131,7 @@ const FeedCarousel = () => {
           space={8}
           className='z-0 flex transition-all duration-200 ease-linear scroll'
           style={{ transform: `translateX(-${(currentPage - 1) * 100}%)` }}
+          ref={setCardRef}
         >
           {isLoading ? (
             new Array(pageSize).fill(0).map((_, idx) => (
@@ -153,7 +155,7 @@ const FeedCarousel = () => {
               <button
                 data-testid='next-page'
                 onClick={handleNextPage}
-                className='bg-white/85 backdrop-blur rounded-full h-8 w-8 flex items-center justify-center'
+                className='bg-white/50 dark:bg-gray-900/50 backdrop-blur rounded-full h-8 w-8 flex items-center justify-center'
               >
                 <Icon src={require('@tabler/icons/chevron-right.svg')} className='text-black dark:text-white h-6 w-6' />
               </button>

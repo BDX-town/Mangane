@@ -126,7 +126,7 @@ const getInstanceFeatures = (instance: Instance) => {
     accountNotifies: any([
       v.software === MASTODON && gte(v.compatVersion, '3.3.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
-      // v.software === TRUTHSOCIAL,
+      v.software === TRUTHSOCIAL,
     ]),
 
     /**
@@ -141,6 +141,25 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see PATCH /api/v1/accounts/update_credentials
      */
     accountWebsite: v.software === TRUTHSOCIAL,
+
+    /**
+     * Can display announcements set by admins.
+     * @see GET /api/v1/announcements
+     * @see POST /api/v1/announcements/:id/dismiss
+     * @see {@link https://docs.joinmastodon.org/methods/announcements/}
+     */
+    announcements: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
+      v.software === PLEROMA && gte(v.version, '2.2.49'),
+    ]),
+
+    /**
+     * Can emoji react to announcements set by admins.
+     * @see PUT /api/v1/announcements/:id/reactions/:name
+     * @see DELETE /api/v1/announcements/:id/reactions/:name
+     * @see {@link https://docs.joinmastodon.org/methods/announcements/}
+     */
+    announcementsReactions: v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
 
     /**
      * Set your birthday and view upcoming birthdays.
@@ -257,6 +276,7 @@ const getInstanceFeatures = (instance: Instance) => {
     /** Whether the accounts who favourited or emoji-reacted to a status can be viewed through the API. */
     exposableReactions: any([
       v.software === MASTODON,
+      v.software === TRUTHSOCIAL,
       features.includes('exposable_reactions'),
     ]),
 
@@ -276,7 +296,10 @@ const getInstanceFeatures = (instance: Instance) => {
      * Can edit and manage timeline filters (aka "muted words").
      * @see {@link https://docs.joinmastodon.org/methods/accounts/filters/}
      */
-    filters: v.software !== TRUTHSOCIAL,
+    filters: any([
+      v.software === MASTODON && lt(v.compatVersion, '3.6.0'),
+      v.software === PLEROMA,
+    ]),
 
     /**
      * Allows setting the focal point of a media attachment.
@@ -406,6 +429,7 @@ const getInstanceFeatures = (instance: Instance) => {
     polls: any([
       v.software === MASTODON && gte(v.version, '2.8.0'),
       v.software === PLEROMA,
+      v.software === TRUTHSOCIAL,
     ]),
 
     /**

@@ -2,6 +2,8 @@ import {
   AdminAccountRecord,
   AdminReportRecord,
   AccountRecord,
+  AnnouncementRecord,
+  AnnouncementReactionRecord,
   AttachmentRecord,
   CardRecord,
   ChatRecord,
@@ -26,6 +28,8 @@ import type { Record as ImmutableRecord } from 'immutable';
 
 type AdminAccount = ReturnType<typeof AdminAccountRecord>;
 type AdminReport = ReturnType<typeof AdminReportRecord>;
+type Announcement = ReturnType<typeof AnnouncementRecord>;
+type AnnouncementReaction = ReturnType<typeof AnnouncementReactionRecord>;
 type Attachment = ReturnType<typeof AttachmentRecord>;
 type Card = ReturnType<typeof CardRecord>;
 type Chat = ReturnType<typeof ChatRecord>;
@@ -64,6 +68,8 @@ export {
   AdminAccount,
   AdminReport,
   Account,
+  Announcement,
+  AnnouncementReaction,
   Attachment,
   Card,
   Chat,

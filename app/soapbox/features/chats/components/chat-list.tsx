@@ -7,7 +7,7 @@ import { createSelector } from 'reselect';
 
 import { fetchChats, expandChats } from 'soapbox/actions/chats';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import { Text } from 'soapbox/components/ui';
+import { Card, Text } from 'soapbox/components/ui';
 import PlaceholderChat from 'soapbox/features/placeholder/components/placeholder_chat';
 import { useAppSelector } from 'soapbox/hooks';
 
@@ -53,6 +53,8 @@ const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false })
   const hasMore = useAppSelector(state => !!state.chats.next);
   const isLoading = useAppSelector(state => state.chats.isLoading);
 
+  const isEmpty = chatIds.size === 0;
+
   const handleLoadMore = useCallback(() => {
     if (hasMore && !isLoading) {
       dispatch(expandChats());
@@ -63,28 +65,30 @@ const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false })
     return dispatch(fetchChats()) as any;
   };
 
+  const renderEmpty = () => isLoading ? <PlaceholderChat /> : (
+    <Card className='mt-2' variant='rounded' size='lg'>
+      <Text>{intl.formatMessage(messages.emptyMessage)}</Text>
+    </Card>
+  );
+
   return (
     <PullToRefresh onRefresh={handleRefresh}>
-      <Virtuoso
-        className='chat-list'
-        useWindowScroll={useWindowScroll}
-        data={chatIds.toArray()}
-        endReached={handleLoadMore}
-        itemContent={(_index, chatId) => (
-          <Chat chatId={chatId} onClick={onClickChat} />
-        )}
-        components={{
-          ScrollSeekPlaceholder: () => <PlaceholderChat />,
-          Footer: () => hasMore ? <PlaceholderChat /> : null,
-          EmptyPlaceholder: () => {
-            if (isLoading) {
-              return <PlaceholderChat />;
-            } else {
-              return <Text>{intl.formatMessage(messages.emptyMessage)}</Text>;
-            }
-          },
-        }}
-      />
+      {isEmpty ? renderEmpty() : (
+        <Virtuoso
+          className='chat-list'
+          useWindowScroll={useWindowScroll}
+          data={chatIds.toArray()}
+          endReached={handleLoadMore}
+          itemContent={(_index, chatId) => (
+            <Chat chatId={chatId} onClick={onClickChat} />
+          )}
+          components={{
+            ScrollSeekPlaceholder: () => <PlaceholderChat />,
+            Footer: () => hasMore ? <PlaceholderChat /> : null,
+            EmptyPlaceholder: renderEmpty,
+          }}
+        />
+      )}
     </PullToRefresh>
   );
 };

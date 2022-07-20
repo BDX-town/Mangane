@@ -1,3 +1,4 @@
+import Portal from '@reach/portal';
 import classNames from 'classnames';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
@@ -176,7 +177,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     this.setState({ focused: true });
   }
 
-  onSuggestionClick: React.MouseEventHandler = (e) => {
+  onSuggestionClick: React.EventHandler<React.MouseEvent | React.TouchEvent> = (e) => {
     const index = Number(e.currentTarget?.getAttribute('data-index'));
     const suggestion = this.props.suggestions.get(index);
     this.props.onSuggestionSelected(this.state.tokenStart, this.state.lastToken, suggestion);
@@ -221,6 +222,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
           'bg-gray-100 dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-gray-700': i === selectedSuggestion,
         })}
         onMouseDown={this.onSuggestionClick}
+        onTouchEnd={this.onSuggestionClick}
       >
         {inner}
       </div>
@@ -267,8 +269,22 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     ));
   };
 
+  setPortalPosition() {
+    if (!this.input) {
+      return {};
+    }
+
+    const { top, height, left, width } = this.input.getBoundingClientRect();
+
+    if (this.props.resultsPosition === 'below') {
+      return { left, width, top: top + height };
+    }
+
+    return { left, width, top, transform: 'translate(0, -100%)' };
+  }
+
   render() {
-    const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength, menu, resultsPosition } = this.props;
+    const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength, menu } = this.props;
     const { suggestionsHidden } = this.state;
     const style: React.CSSProperties = { direction: 'ltr' };
 
@@ -278,8 +294,8 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
       style.direction = 'rtl';
     }
 
-    return (
-      <div className='relative w-full'>
+    return [
+      <div key='input' className='relative w-full'>
         <label className='sr-only'>{placeholder}</label>
 
         <input
@@ -303,14 +319,15 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
           maxLength={maxLength}
           data-testid='autosuggest-input'
         />
-
-        <div className={classNames({
-          'absolute w-full z-50 shadow bg-white dark:bg-slate-800 rounded-lg py-1': true,
-          'top-full': resultsPosition === 'below',
-          'bottom-full': resultsPosition === 'above',
-          hidden: !visible,
-          block: visible,
-        })}
+      </div>,
+      <Portal key='portal'>
+        <div
+          style={this.setPortalPosition()}
+          className={classNames({
+            'fixed w-full z-[1001] shadow bg-white dark:bg-slate-800 rounded-lg py-1': true,
+            hidden: !visible,
+            block: visible,
+          })}
         >
           <div className='space-y-0.5'>
             {suggestions.map(this.renderSuggestion)}
@@ -318,8 +335,8 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
 
           {this.renderMenu()}
         </div>
-      </div>
-    );
+      </Portal>,
+    ];
   }
 
 }
