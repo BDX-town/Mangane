@@ -311,6 +311,7 @@ class Audio extends React.PureComponent {
   }
 
   _initAudioContext() {
+    // eslint-disable-next-line compat/compat
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const context      = new AudioContext();
     const source       = context.createMediaElementSource(this.audio);

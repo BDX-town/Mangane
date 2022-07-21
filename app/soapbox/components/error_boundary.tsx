@@ -16,11 +16,12 @@ const goHome = () => location.href = '/';
 
 /** Unregister the ServiceWorker */
 // https://stackoverflow.com/a/49771828/8811886
-const unregisterSw = async() => {
-  if (!navigator.serviceWorker) return;
-  const registrations = await navigator.serviceWorker.getRegistrations();
-  const unregisterAll = registrations.map(r => r.unregister());
-  await Promise.all(unregisterAll);
+const unregisterSw = async(): Promise<void> => {
+  if (navigator.serviceWorker) {
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    const unregisterAll = registrations.map(r => r.unregister());
+    await Promise.all(unregisterAll);
+  }
 };
 
 const mapStateToProps = (state: RootState) => {

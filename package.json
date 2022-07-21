@@ -214,6 +214,7 @@
     "cross-env": "^7.0.3",
     "danger": "^11.0.7",
     "eslint": "^7.0.0",
+    "eslint-plugin-compat": "^4.0.2",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsdoc": "^39.2.9",
     "eslint-plugin-jsx-a11y": "^6.4.1",

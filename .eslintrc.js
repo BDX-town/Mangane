@@ -4,6 +4,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:import/typescript',
+    'plugin:compat/recommended',
   ],
 
   env: {
@@ -52,6 +53,14 @@ module.exports = {
         paths: ['app'],
       },
     },
+    polyfills: [
+      'es:all',
+      'fetch',
+      'IntersectionObserver',
+      'Promise',
+      'URL',
+      'URLSearchParams',
+    ],
   },
 
   rules: {
