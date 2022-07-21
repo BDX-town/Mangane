@@ -19,12 +19,12 @@ const SuggestionItem = ({ accountId }: { accountId: string }) => {
   const account = useAccount(accountId) as Account;
 
   return (
-    <Stack className='w-24 h-auto' space={3}>
+    <Stack space={3} className='p-4 md:p-0 rounded-md border border-solid border-gray-100 dark:border-slate-700 dark:md:border-transparent md:border-transparent w-52 shrink-0 md:shrink md:w-full'>
       <Link
         to={`/@${account.acct}`}
         title={account.acct}
       >
-        <Stack space={3}>
+        <Stack space={3} className='w-40 md:w-24 mx-auto'>
           <img
             src={account.avatar}
             className='mx-auto block w-16 h-16 min-w-[56px] rounded-full object-cover'
@@ -78,11 +78,7 @@ const FeedSuggestions = () => {
       </HStack>
 
       <CardBody>
-        <HStack
-          alignItems='center'
-          justifyContent='around'
-          space={8}
-        >
+        <HStack alignItems='center' className='overflow-x-auto lg:overflow-x-hidden space-x-4 md:space-x-0'>
           {suggestedProfiles.slice(0, 4).map((suggestedProfile) => (
             <SuggestionItem key={suggestedProfile.account} accountId={suggestedProfile.account} />
           ))}
