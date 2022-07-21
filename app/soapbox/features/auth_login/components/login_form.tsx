@@ -37,7 +37,6 @@ const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
               placeholder={intl.formatMessage(messages.username)}
               type='text'
               name='username'
-              autoComplete='off'
               autoCorrect='off'
               autoCapitalize='off'
               required

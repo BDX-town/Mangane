@@ -51,7 +51,6 @@ const ExternalLoginForm: React.FC = () => {
           type='text'
           name='host'
           onChange={handleHostChange}
-          autoComplete='off'
           autoCorrect='off'
           autoCapitalize='off'
           required

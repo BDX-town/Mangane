@@ -132,7 +132,6 @@ const Header = () => {
                 type='text'
                 placeholder={intl.formatMessage(messages.username)}
                 className='max-w-[200px]'
-                autoComplete='off'
                 autoCorrect='off'
                 autoCapitalize='off'
               />
