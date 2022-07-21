@@ -58,6 +58,8 @@ const messages = defineMessages({
   userSuggested: { id: 'admin.users.user_suggested_message', defaultMessage: '@{acct} was suggested' },
   userUnsuggested: { id: 'admin.users.user_unsuggested_message', defaultMessage: '@{acct} was unsuggested' },
   removeFromFollowersConfirm: { id: 'confirmations.remove_from_followers.confirm', defaultMessage: 'Remove' },
+  userEndorsed: { id: 'account.endorse.success', defaultMessage: 'You are now featuring @{acct} on your profile' },
+  userUnendorsed: { id: 'account.unendorse.success', defaultMessage: 'You are no longer featuring @{acct}' },
 });
 
 const makeMapStateToProps = () => {
@@ -144,9 +146,13 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onEndorseToggle(account) {
     if (account.relationship?.endorsed) {
-      dispatch(unpinAccount(account.get('id')));
+      dispatch(unpinAccount(account.get('id')))
+        .then(() => dispatch(snackbar.success(intl.formatMessage(messages.userUnendorsed, { acct: account.acct }))))
+        .catch(() => {});
     } else {
-      dispatch(pinAccount(account.get('id')));
+      dispatch(pinAccount(account.get('id')))
+        .then(() => dispatch(snackbar.success(intl.formatMessage(messages.userEndorsed, { acct: account.acct }))))
+        .catch(() => {});
     }
   },
 

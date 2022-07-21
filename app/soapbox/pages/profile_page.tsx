@@ -11,10 +11,11 @@ import {
   ProfileFieldsPanel,
   SignUpPanel,
   CtaBanner,
+  PinnedAccountsPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 import { findAccountByUsername } from 'soapbox/selectors';
-import { getAcct } from 'soapbox/utils/accounts';
+import { getAcct, isLocal } from 'soapbox/utils/accounts';
 
 import { Column, Layout, Tabs } from '../components/ui';
 import HeaderContainer from '../features/account_timeline/containers/header_container';
@@ -159,7 +160,11 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
             {Component => <Component account={account} />}
           </BundleContainer>
         )}
-        {features.suggestions && (
+        {(features.accountEndorsements && account && isLocal(account)) ? (
+          <BundleContainer fetchComponent={PinnedAccountsPanel}>
+            {Component => <Component account={account} limit={5} key='pinned-accounts-panel' />}
+          </BundleContainer>
+        ) : features.suggestions && (
           <BundleContainer fetchComponent={WhoToFollowPanel}>
             {Component => <Component limit={5} key='wtf-panel' />}
           </BundleContainer>

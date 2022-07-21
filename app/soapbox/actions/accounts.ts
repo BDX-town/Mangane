@@ -130,6 +130,8 @@ const maybeRedirectLogin = (error: AxiosError, history?: History) => {
   }
 };
 
+const noOp = () => new Promise(f => f(undefined));
+
 const createAccount = (params: Record<string, any>) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: ACCOUNT_CREATE_REQUEST, params });
@@ -815,11 +817,11 @@ const rejectFollowRequestFail = (id: string, error: AxiosError) => ({
 
 const pinAccount = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return dispatch(noOp);
 
     dispatch(pinAccountRequest(id));
 
-    api(getState).post(`/api/v1/accounts/${id}/pin`).then(response => {
+    return api(getState).post(`/api/v1/accounts/${id}/pin`).then(response => {
       dispatch(pinAccountSuccess(response.data));
     }).catch(error => {
       dispatch(pinAccountFail(error));
@@ -828,11 +830,11 @@ const pinAccount = (id: string) =>
 
 const unpinAccount = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return dispatch(noOp);
 
     dispatch(unpinAccountRequest(id));
 
-    api(getState).post(`/api/v1/accounts/${id}/unpin`).then(response => {
+    return api(getState).post(`/api/v1/accounts/${id}/unpin`).then(response => {
       dispatch(unpinAccountSuccess(response.data));
     }).catch(error => {
       dispatch(unpinAccountFail(error));
