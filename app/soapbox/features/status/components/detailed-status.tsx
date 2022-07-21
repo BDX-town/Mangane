@@ -127,7 +127,7 @@ class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedSt
 
     return (
       <div style={outerStyle}>
-        <div ref={this.setRef} className={classNames('detailed-status', { compact })}>
+        <div ref={this.setRef} className={classNames('detailed-status', { compact })} tabIndex={-1}>
           <div className='mb-4'>
             <AccountContainer
               key={account.id}

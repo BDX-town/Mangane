@@ -644,7 +644,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         offset: -80,
       });
 
-      setImmediate(() => this.status?.querySelector('a')?.focus());
+      setImmediate(() => this.status?.querySelector<HTMLDivElement>('.detailed-status')?.focus());
     }
   }
 
