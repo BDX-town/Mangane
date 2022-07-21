@@ -12,13 +12,19 @@ import type { Me } from 'soapbox/types/soapbox';
 const urlBase64ToUint8Array = (base64String: string) => {
   const padding = '='.repeat((4 - base64String.length % 4) % 4);
   const base64 = (base64String + padding)
-    .replace(/\-/g, '+')
+    .replace(/-/g, '+')
     .replace(/_/g, '/');
 
   return decodeBase64(base64);
 };
 
-const getRegistration = () => navigator.serviceWorker.ready;
+const getRegistration = () => {
+  if (navigator.serviceWorker) {
+    return navigator.serviceWorker.ready;
+  } else {
+    throw 'Your browser does not support Service Workers.';
+  }
+};
 
 const getPushSubscription = (registration: ServiceWorkerRegistration) =>
   registration.pushManager.getSubscription()
@@ -52,6 +58,7 @@ const sendSubscriptionToBackend = (subscription: PushSubscription, me: Me) =>
   };
 
 // Last one checks for payload support: https://web-push-book.gauntface.com/chapter-06/01-non-standards-browsers/#no-payload
+// eslint-disable-next-line compat/compat
 const supportsPushNotifications = ('serviceWorker' in navigator && 'PushManager' in window && 'getKey' in PushSubscription.prototype);
 
 const register = () =>
@@ -112,7 +119,6 @@ const register = () =>
         }
       })
       .catch(error => {
-        console.error(error);
         if (error.code === 20 && error.name === 'AbortError') {
           console.warn('Your browser supports Web Push Notifications, but does not seem to implement the VAPID protocol.');
         } else if (error.code === 5 && error.name === 'InvalidCharacterError') {
