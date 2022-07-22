@@ -83,44 +83,20 @@ const SoapboxMount = () => {
   const me = useAppSelector(state => state.me);
   const instance = useAppSelector(state => state.instance);
   const account = useOwnAccount();
-  const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
   const features = useFeatures();
-  const locale = useLocale();
 
   const waitlisted = account && !account.source.get('approved', true);
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && !waitlisted && needsOnboarding;
   const singleUserMode = soapboxConfig.singleUserMode && soapboxConfig.singleUserModeProfile;
 
-  const systemTheme = useSystemTheme();
-  const userTheme = settings.get('themeMode');
-  const darkMode = userTheme === 'dark' || (userTheme === 'system' && systemTheme === 'dark');
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
-
-  const themeCss = generateThemeCss(soapboxConfig);
 
   // @ts-ignore: I don't actually know what these should be, lol
   const shouldUpdateScroll = (prevRouterProps, { location }) => {
     return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
   };
-
-  const bodyClass = classNames('bg-white dark:bg-slate-900 text-base h-full', {
-    'no-reduce-motion': !settings.get('reduceMotion'),
-    'underline-links': settings.get('underlineLinks'),
-    'dyslexic': settings.get('dyslexicFont'),
-    'demetricator': settings.get('demetricator'),
-  });
-
-  const helmet = (
-    <Helmet>
-      <html lang={locale} className={classNames('h-full', { dark: darkMode })} />
-      <body className={bodyClass} />
-      {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
-      {darkMode && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
-      <meta name='theme-color' content={soapboxConfig.brandColor} />
-    </Helmet>
-  );
 
   /** Render the onboarding flow. */
   const renderOnboarding = () => (
@@ -193,7 +169,6 @@ const SoapboxMount = () => {
       <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
         <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
           <>
-            {helmet}
             {renderBody()}
 
             <BundleContainer fetchComponent={NotificationsContainer}>
@@ -266,13 +241,52 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
   );
 };
 
+interface ISoapboxHead {
+  children: React.ReactNode,
+}
+
+/** Injects metadata into site head with Helmet. */
+const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
+  const locale = useLocale();
+  const settings = useSettings();
+  const soapboxConfig = useSoapboxConfig();
+  const systemTheme = useSystemTheme();
+
+  const userTheme = settings.get('themeMode');
+  const darkMode = userTheme === 'dark' || (userTheme === 'system' && systemTheme === 'dark');
+  const themeCss = generateThemeCss(soapboxConfig);
+
+  const bodyClass = classNames('bg-white dark:bg-slate-900 text-base h-full', {
+    'no-reduce-motion': !settings.get('reduceMotion'),
+    'underline-links': settings.get('underlineLinks'),
+    'dyslexic': settings.get('dyslexicFont'),
+    'demetricator': settings.get('demetricator'),
+  });
+
+  return (
+    <>
+      <Helmet>
+        <html lang={locale} className={classNames('h-full', { dark: darkMode })} />
+        <body className={bodyClass} />
+        {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
+        {darkMode && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
+        <meta name='theme-color' content={soapboxConfig.brandColor} />
+      </Helmet>
+
+      {children}
+    </>
+  );
+};
+
 /** The root React node of the application. */
-const Soapbox = () => {
+const Soapbox: React.FC = () => {
   return (
     <Provider store={store}>
-      <SoapboxLoad>
-        <SoapboxMount />
-      </SoapboxLoad>
+      <SoapboxHead>
+        <SoapboxLoad>
+          <SoapboxMount />
+        </SoapboxLoad>
+      </SoapboxHead>
     </Provider>
   );
 };
