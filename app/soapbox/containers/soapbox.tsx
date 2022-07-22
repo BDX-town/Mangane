@@ -34,6 +34,7 @@ import {
   useSettings,
   useSystemTheme,
   useLocale,
+  useGdpr,
 } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
 import { useCachedLocationHandler } from 'soapbox/utils/redirect';
@@ -77,6 +78,7 @@ const loadInitial = () => {
 
 /** Highest level node with the Redux store. */
 const SoapboxMount = () => {
+  useGdpr();
   useCachedLocationHandler();
   const me = useAppSelector(state => state.me);
   const instance = useAppSelector(state => state.instance);

@@ -89,6 +89,7 @@ export const SoapboxConfigRecord = ImmutableRecord({
   customCss: ImmutableList<string>(),
   defaultSettings: ImmutableMap<string, any>(),
   extensions: ImmutableMap(),
+  gdpr: false,
   greentext: false,
   promoPanel: PromoPanelRecord(),
   navlinks: ImmutableMap({

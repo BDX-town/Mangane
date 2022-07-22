@@ -3,6 +3,7 @@ export { useAppDispatch } from './useAppDispatch';
 export { useAppSelector } from './useAppSelector';
 export { useDimensions } from './useDimensions';
 export { useFeatures } from './useFeatures';
+export { useGdpr } from './useGdpr';
 export { useLocale } from './useLocale';
 export { useOnScreen } from './useOnScreen';
 export { useOwnAccount } from './useOwnAccount';
