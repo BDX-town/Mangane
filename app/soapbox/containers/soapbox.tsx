@@ -25,7 +25,16 @@ import {
   WaitlistPage,
 } from 'soapbox/features/ui/util/async-components';
 import { createGlobals } from 'soapbox/globals';
-import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures, useSoapboxConfig, useSettings, useSystemTheme } from 'soapbox/hooks';
+import {
+  useAppSelector,
+  useAppDispatch,
+  useOwnAccount,
+  useFeatures,
+  useSoapboxConfig,
+  useSettings,
+  useSystemTheme,
+  useLocale,
+} from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
 import { useCachedLocationHandler } from 'soapbox/utils/redirect';
 import { generateThemeCss } from 'soapbox/utils/theme';
@@ -35,9 +44,6 @@ import { preload } from '../actions/preload';
 import ErrorBoundary from '../components/error_boundary';
 import UI from '../features/ui';
 import { store } from '../store';
-
-/** Ensure the given locale exists in our codebase */
-const validLocale = (locale: string): boolean => Object.keys(MESSAGES).includes(locale);
 
 // Configure global functions for developers
 createGlobals(store);
@@ -72,26 +78,18 @@ const loadInitial = () => {
 /** Highest level node with the Redux store. */
 const SoapboxMount = () => {
   useCachedLocationHandler();
-  const dispatch = useAppDispatch();
-
   const me = useAppSelector(state => state.me);
   const instance = useAppSelector(state => state.instance);
   const account = useOwnAccount();
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
   const features = useFeatures();
-  const swUpdating = useAppSelector(state => state.meta.swUpdating);
-
-  const locale = validLocale(settings.get('locale')) ? settings.get('locale') : 'en';
+  const locale = useLocale();
 
   const waitlisted = account && !account.source.get('approved', true);
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && !waitlisted && needsOnboarding;
   const singleUserMode = soapboxConfig.singleUserMode && soapboxConfig.singleUserModeProfile;
-
-  const [messages, setMessages] = useState<Record<string, string>>({});
-  const [localeLoading, setLocaleLoading] = useState(true);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   const systemTheme = useSystemTheme();
   const userTheme = settings.get('themeMode');
@@ -100,36 +98,10 @@ const SoapboxMount = () => {
 
   const themeCss = generateThemeCss(soapboxConfig);
 
-  // Load the user's locale
-  useEffect(() => {
-    MESSAGES[locale]().then(messages => {
-      setMessages(messages);
-      setLocaleLoading(false);
-    }).catch(() => { });
-  }, [locale]);
-
-  // Load initial data from the API
-  useEffect(() => {
-    dispatch(loadInitial()).then(() => {
-      setIsLoaded(true);
-    }).catch(() => {
-      setIsLoaded(true);
-    });
-  }, []);
-
   // @ts-ignore: I don't actually know what these should be, lol
   const shouldUpdateScroll = (prevRouterProps, { location }) => {
     return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
   };
-
-  /** Whether to display a loading indicator. */
-  const showLoading = [
-    me === null,
-    me && !account,
-    !isLoaded,
-    localeLoading,
-    swUpdating,
-  ].some(Boolean);
 
   const bodyClass = classNames('bg-white dark:bg-slate-900 text-base h-full', {
     'no-reduce-motion': !settings.get('reduceMotion'),
@@ -214,37 +186,80 @@ const SoapboxMount = () => {
     }
   };
 
+  return (
+    <ErrorBoundary>
+      <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
+        <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
+          <>
+            {helmet}
+            {renderBody()}
+
+            <BundleContainer fetchComponent={NotificationsContainer}>
+              {(Component) => <Component />}
+            </BundleContainer>
+
+            <BundleContainer fetchComponent={ModalContainer}>
+              {Component => <Component />}
+            </BundleContainer>
+          </>
+        </ScrollContext>
+      </BrowserRouter>
+    </ErrorBoundary>
+  );
+};
+
+interface ISoapboxLoad {
+  children: React.ReactNode,
+}
+
+/** Initial data loader. */
+const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
+  const dispatch = useAppDispatch();
+
+  const me = useAppSelector(state => state.me);
+  const account = useOwnAccount();
+  const swUpdating = useAppSelector(state => state.meta.swUpdating);
+  const locale = useLocale();
+
+  const [messages, setMessages] = useState<Record<string, string>>({});
+  const [localeLoading, setLocaleLoading] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  /** Whether to display a loading indicator. */
+  const showLoading = [
+    me === null,
+    me && !account,
+    !isLoaded,
+    localeLoading,
+    swUpdating,
+  ].some(Boolean);
+
+  // Load the user's locale
+  useEffect(() => {
+    MESSAGES[locale]().then(messages => {
+      setMessages(messages);
+      setLocaleLoading(false);
+    }).catch(() => { });
+  }, [locale]);
+
+  // Load initial data from the API
+  useEffect(() => {
+    dispatch(loadInitial()).then(() => {
+      setIsLoaded(true);
+    }).catch(() => {
+      setIsLoaded(true);
+    });
+  }, []);
+
   // intl is part of loading.
   // It's important nothing in here depends on intl.
   if (showLoading) {
-    return (
-      <>
-        {helmet}
-        <LoadingScreen />
-      </>
-    );
+    return <LoadingScreen />;
   }
 
   return (
     <IntlProvider locale={locale} messages={messages}>
-      {helmet}
-      <ErrorBoundary>
-        <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
-          <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
-            <>
-              {renderBody()}
-
-              <BundleContainer fetchComponent={NotificationsContainer}>
-                {(Component) => <Component />}
-              </BundleContainer>
-
-              <BundleContainer fetchComponent={ModalContainer}>
-                {Component => <Component />}
-              </BundleContainer>
-            </>
-          </ScrollContext>
-        </BrowserRouter>
-      </ErrorBoundary>
+      {children}
     </IntlProvider>
   );
 };
@@ -253,7 +268,9 @@ const SoapboxMount = () => {
 const Soapbox = () => {
   return (
     <Provider store={store}>
-      <SoapboxMount />
+      <SoapboxLoad>
+        <SoapboxMount />
+      </SoapboxLoad>
     </Provider>
   );
 };
