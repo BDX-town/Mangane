@@ -9,7 +9,7 @@ import { useAppSelector } from 'soapbox/hooks';
 const messages = defineMessages({
   label: { id: 'lists.new.title_placeholder', defaultMessage: 'New list title' },
   title: { id: 'lists.new.create', defaultMessage: 'Add list' },
-  create: { id: 'lists.new.create_title', defaultMessage: 'Create' },
+  create: { id: 'lists.new.create_title', defaultMessage: 'Add list' },
 });
 
 const NewListForm: React.FC = () => {
@@ -49,6 +49,7 @@ const NewListForm: React.FC = () => {
         <Button
           disabled={disabled}
           onClick={handleSubmit}
+          theme='primary'
         >
           {create}
         </Button>

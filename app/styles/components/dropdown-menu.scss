@@ -1,5 +1,5 @@
 .dropdown-menu {
-  @apply absolute bg-white dark:bg-slate-900 z-40 rounded-md shadow-lg py-1 w-56;
+  @apply absolute bg-white dark:bg-gray-900 z-40 rounded-md shadow-lg py-1 w-56 dark:ring-2 dark:ring-primary-700 focus:outline-none;
 
   &.left { transform-origin: 100% 50%; }
   &.top { transform-origin: 50% 100%; }
@@ -11,28 +11,28 @@
     border: 0 solid transparent;
 
     &.left {
-      @apply border-l-white dark:border-l-slate-900;
+      @apply border-l-white dark:border-l-gray-900;
       right: -5px;
       margin-top: -5px;
       border-width: 5px 0 5px 5px;
     }
 
     &.top {
-      @apply border-t-white dark:border-t-slate-900;
+      @apply border-t-white dark:border-t-gray-900;
       bottom: -5px;
       margin-left: -5px;
       border-width: 5px 5px 0;
     }
 
     &.bottom {
-      @apply border-b-white dark:border-b-slate-900;
+      @apply border-b-white dark:border-b-gray-900;
       top: -5px;
       margin-left: -5px;
       border-width: 0 5px 5px;
     }
 
     &.right {
-      @apply border-r-white dark:border-r-slate-900;
+      @apply border-r-white dark:border-r-gray-900;
       left: -5px;
       margin-top: -5px;
       border-width: 5px 5px 5px 0;
@@ -47,7 +47,7 @@
     @apply focus-within:ring-primary-500 focus-within:ring-2;
 
     a {
-      @apply flex px-4 py-2.5 text-sm text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 focus:bg-gray-100 dark:focus:bg-slate-800 cursor-pointer;
+      @apply flex px-4 py-2.5 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-gray-100 dark:focus:bg-primary-800 cursor-pointer;
 
       > .svg-icon:first-child {
         @apply h-5 w-5 mr-2.5 transition-none;
@@ -64,7 +64,7 @@
   }
 
   &__separator {
-    @apply block my-2 h-[1px] bg-gray-200 dark:bg-gray-600;
+    @apply block my-2 h-[1px] bg-gray-100 dark:bg-gray-800;
   }
 }
 // end .dropdown-menu

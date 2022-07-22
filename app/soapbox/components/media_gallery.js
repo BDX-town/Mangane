@@ -609,7 +609,7 @@ class MediaGallery extends React.PureComponent {
               />
             ) : (
               <button type='button' onClick={this.handleOpen} className='bg-transparent w-full h-full border-0'>
-                <div className='p-4 rounded-xl shadow-xl backdrop-blur-sm bg-white/75 dark:bg-slate-800/75 text-center inline-block space-y-4 max-w-[280px]'>
+                <div className='p-4 rounded-xl shadow-xl backdrop-blur-sm bg-white/75 dark:bg-gray-900/75 text-center inline-block space-y-4 max-w-[280px]'>
                   <div className='space-y-1'>
                     <Text weight='semibold'>{warning}</Text>
                     <Text size='sm'>

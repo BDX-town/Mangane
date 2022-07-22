@@ -16,7 +16,6 @@ interface IStatusInteractionBar {
 }
 
 const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.Element | null => {
-
   const me = useAppSelector(({ me }) => me);
   const { allowedEmoji } = useSoapboxConfig();
   const dispatch = useDispatch();
@@ -163,9 +162,9 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
 
   return (
     <HStack space={3}>
-      {features.emojiReacts ? getEmojiReacts() : getFavourites()}
-
       {getReposts()}
+      
+      {features.emojiReacts ? getEmojiReacts() : getFavourites()}
     </HStack>
   );
 };

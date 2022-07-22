@@ -45,7 +45,7 @@ const SelectedStatus = ({ statusId }: { statusId: string }) => {
   }
 
   return (
-    <Stack space={2} className='p-4 rounded-lg bg-gray-100 dark:bg-slate-700'>
+    <Stack space={2} className='p-4 rounded-lg bg-gray-100 dark:bg-gray-800'>
       <AccountContainer
         id={status.account as any}
         showProfileHoverCard={false}
@@ -123,7 +123,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
     switch (selectedStatusIds.size) {
       case 0:
         return (
-          <div className='bg-gray-100 dark:bg-slate-700 p-4 rounded-lg flex items-center justify-center w-full'>
+          <div className='bg-gray-100 dark:bg-gray-800 p-4 rounded-lg flex items-center justify-center w-full'>
             <Text theme='muted'>{intl.formatMessage(messages.blankslate)}</Text>
           </div>
         );

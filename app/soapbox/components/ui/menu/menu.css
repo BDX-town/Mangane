@@ -1,5 +1,5 @@
 [data-reach-menu-popover] {
-  @apply origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-slate-900 ring-1 ring-black ring-opacity-5 focus:outline-none;
+  @apply origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-900 dark:ring-2 dark:ring-primary-700 focus:outline-none;
 
   z-index: 1003;
 }
@@ -13,7 +13,7 @@ div:focus[data-reach-menu-list] {
 }
 
 [data-reach-menu-item][data-selected] {
-  @apply bg-gray-100 dark:bg-slate-700;
+  @apply bg-gray-100 dark:bg-gray-800;
 }
 
 [data-reach-menu-list] {
@@ -22,11 +22,11 @@ div:focus[data-reach-menu-list] {
 
 [data-reach-menu-item],
 [data-reach-menu-link] {
-  @apply block px-4 py-2.5 text-sm text-gray-700 dark:text-gray-400 cursor-pointer;
+  @apply block px-4 py-2.5 text-sm text-gray-700 dark:text-gray-500 cursor-pointer;
 }
 
 [data-reach-menu-link] {
-  @apply hover:bg-gray-100 dark:hover:bg-slate-700;
+  @apply hover:bg-gray-100 dark:hover:bg-gray-800;
 }
 
 [data-reach-menu-item][data-disabled],
@@ -35,5 +35,5 @@ div:focus[data-reach-menu-list] {
 }
 
 [data-reach-menu-popover] hr {
-  @apply my-1 mx-2 border-t border-gray-100 dark:border-slate-700;
+  @apply my-1 mx-2 border-t-2 border-gray-100 dark:border-gray-800;
 }

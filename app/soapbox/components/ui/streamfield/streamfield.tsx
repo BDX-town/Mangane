@@ -89,7 +89,7 @@ const Streamfield: React.FC<IStreamfield> = ({
           icon={require('@tabler/icons/plus.svg')}
           onClick={onAddItem}
           disabled={values.length >= maxItems}
-          theme='ghost'
+          theme='secondary'
           block
         >
           {intl.formatMessage(messages.add)}

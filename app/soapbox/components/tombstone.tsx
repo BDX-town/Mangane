@@ -19,7 +19,7 @@ const Tombstone: React.FC<ITombstone> = ({ id, onMoveUp, onMoveDown }) => {
 
   return (
     <HotKeys handlers={handlers}>
-      <div className='p-9 flex items-center justify-center sm:rounded-xl bg-gray-100 border border-solid border-gray-200 dark:bg-slate-900 dark:border-slate-700 focusable' tabIndex={0}>
+      <div className='p-9 flex items-center justify-center sm:rounded-xl bg-gray-100 border border-solid border-gray-200 dark:bg-gray-900 dark:border-gray-800 focusable' tabIndex={0}>
         <Text>
           <FormattedMessage id='statuses.tombstone' defaultMessage='One or more posts are unavailable.' />
         </Text>

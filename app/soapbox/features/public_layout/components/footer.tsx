@@ -31,8 +31,8 @@ const Footer = () => {
 
           return (
             <div key={idx} className='px-5 py-2'>
-              <Comp {...compProps} className='hover:underline'>
-                <Text tag='span' theme='primary' size='sm'>
+              <Comp {...compProps} className='text-primary-600 dark:text-primary-400 hover:underline'>
+                <Text tag='span' theme='inherit' size='sm'>
                   {(link.getIn(['titleLocales', locale]) || link.get('title')) as string}
                 </Text>
               </Comp>

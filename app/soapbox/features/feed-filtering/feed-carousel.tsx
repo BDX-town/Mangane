@@ -44,7 +44,7 @@ const CarouselItem = ({ avatar }: { avatar: any }) => {
           <img
             src={avatar.account_avatar}
             className={classNames({
-              'w-14 h-14 min-w-[56px] rounded-full ring-2 ring-offset-4 dark:ring-offset-slate-800': true,
+              'w-14 h-14 min-w-[56px] rounded-full ring-2 ring-offset-4 dark:ring-offset-primary-900': true,
               'ring-transparent': !isSelected,
               'ring-primary-600': isSelected,
             })}

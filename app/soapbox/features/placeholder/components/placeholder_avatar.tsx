@@ -23,12 +23,12 @@ const PlaceholderAvatar: React.FC<IPlaceholderAvatar> = ({ size, withText = fals
   return (
     <Stack space={3} className='animate-pulse text-center'>
       <div
-        className='block mx-auto rounded-full bg-slate-200 dark:bg-slate-700'
+        className='block mx-auto rounded-full bg-primary-50 dark:bg-primary-800'
         style={style}
       />
 
       {withText && (
-        <div style={{ width: size, height: 20 }} className='rounded-full bg-slate-200 dark:bg-slate-700' />
+        <div style={{ width: size, height: 20 }} className='rounded-full bg-primary-50 dark:bg-primary-800' />
       )}
     </Stack>
   );

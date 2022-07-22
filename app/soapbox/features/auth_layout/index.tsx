@@ -54,7 +54,7 @@ const AuthLayout = () => {
             {shouldShowRegisterLink && (
               <div className='relative z-10 ml-auto flex items-center'>
                 <Button
-                  theme='link'
+                  theme='tertiary'
                   icon={require('@tabler/icons/user.svg')}
                   to='/signup'
                 >

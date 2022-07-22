@@ -11,7 +11,7 @@ const ComposeButton = () => {
 
   return (
     <div className='mt-4'>
-      <Button icon={require('@tabler/icons/pencil-plus.svg')} block size='lg' onClick={onOpenCompose}>
+      <Button theme='accent' icon={require('@tabler/icons/pencil-plus.svg')} block size='lg' onClick={onOpenCompose}>
         <span><FormattedMessage id='navigation.compose' defaultMessage='Compose' /></span>
       </Button>
     </div>

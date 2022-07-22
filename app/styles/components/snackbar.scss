@@ -3,7 +3,7 @@
 }
 
 .notification-bar {
-  @apply max-w-sm w-full flex flex-row items-center bg-white dark:bg-slate-900 shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden;
+  @apply max-w-sm w-full flex flex-row items-center bg-white dark:bg-gray-900 shadow-lg rounded-lg pointer-events-auto dark:ring-2 dark:ring-gray-800 overflow-hidden;
 
   &::before {
     font-family: 'Font Awesome 5 Free';
@@ -44,11 +44,11 @@
 }
 
 .notification-bar-title {
-  @apply mb-1 text-sm font-medium text-gray-900 dark:text-gray-300;
+  @apply mb-1 text-sm font-medium text-gray-900 dark:text-gray-100;
 }
 
 .notification-bar-message {
-  @apply text-sm text-gray-700 dark:text-gray-400;
+  @apply text-sm text-gray-800 dark:text-gray-200;
 }
 
 .notification-bar-action a {

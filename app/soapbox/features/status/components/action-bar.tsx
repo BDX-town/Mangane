@@ -549,7 +549,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
       <IconButton
         disabled={reblog_disabled}
         className={classNames({
-          'text-gray-400 hover:text-gray-600': !status.reblogged,
+          'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': !status.reblogged,
           'text-success-600 hover:text-success-600': status.reblogged,
         })}
         title={reblog_disabled ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
@@ -564,7 +564,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
         <IconButton
           title={intl.formatMessage(messages.reply)}
           src={require('@tabler/icons/message-circle-2.svg')}
-          className='text-gray-400 hover:text-gray-600'
+          className='text-gray-600 hover:text-gray-700 dark:hover:text-gray-500'
           onClick={this.handleReplyClick}
           text={intl.formatMessage(messages.reply)}
         />
@@ -601,7 +601,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
             ) : (
               <IconButton
                 className={classNames({
-                  'text-gray-400 hover:text-gray-600': !meEmojiReact,
+                  'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': !meEmojiReact,
                   'text-accent-300 hover:text-accent-300': Boolean(meEmojiReact),
                 })}
                 title={meEmojiTitle}
@@ -616,7 +616,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
         ) : (
           <IconButton
             className={classNames({
-              'text-gray-400 hover:text-gray-600': !meEmojiReact,
+              'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': !meEmojiReact,
               'text-accent-300 hover:text-accent-300': Boolean(meEmojiReact),
             })}
             title={meEmojiTitle}
@@ -633,7 +633,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
           <IconButton
             title={intl.formatMessage(messages.share)}
             src={require('@tabler/icons/upload.svg')}
-            className='text-gray-400 hover:text-gray-600'
+            className='text-gray-600 hover:text-gray-700 dark:hover:text-gray-500'
             onClick={this.handleShare}
             text={intl.formatMessage(messages.share)}
           />

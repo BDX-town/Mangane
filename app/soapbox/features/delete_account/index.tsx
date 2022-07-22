@@ -3,7 +3,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { deleteAccount } from 'soapbox/actions/security';
 import snackbar from 'soapbox/actions/snackbar';
-import { Button, Card, CardBody, CardHeader, CardTitle, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
+import { Button, Card, CardBody, CardHeader, CardTitle, Form, FormActions, FormGroup, Input, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 
 const messages = defineMessages({
@@ -50,29 +50,32 @@ const DeleteAccount = () => {
       </CardHeader>
 
       <CardBody>
-        <p className='text-gray-400 mb-4'>
-          {intl.formatMessage(features.federating ? messages.deleteText : messages.localDeleteText)}
-        </p>
+        <Stack space={4}>
+          <Text theme='muted'>
 
-        <Form onSubmit={handleSubmit}>
-          <FormGroup labelText={intl.formatMessage(messages.passwordFieldLabel)}>
-            <Input
-              type='password'
-              name='password'
-              onChange={handleInputChange}
-              value={password}
-            />
-          </FormGroup>
+            {intl.formatMessage(features.federating ? messages.deleteText : messages.localDeleteText)}
+          </Text>
 
-          <FormActions>
-            <Button type='submit' theme='danger' disabled={isLoading}>
-              {intl.formatMessage(messages.deleteSubmit)}
-            </Button>
+          <Form onSubmit={handleSubmit}>
+            <FormGroup labelText={intl.formatMessage(messages.passwordFieldLabel)}>
+              <Input
+                type='password'
+                name='password'
+                onChange={handleInputChange}
+                value={password}
+              />
+            </FormGroup>
 
-          </FormActions>
-        </Form>
+            <FormActions>
+              <Button type='submit' theme='danger' disabled={isLoading}>
+                {intl.formatMessage(messages.deleteSubmit)}
+              </Button>
+
+            </FormActions>
+          </Form>
+        </Stack>
       </CardBody>
-    </Card>
+    </Card >
   );
 };
 

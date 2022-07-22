@@ -237,7 +237,7 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
     <div className={classNames('privacy-dropdown', placement, { active: open })} onKeyDown={handleKeyDown} ref={node}>
       <div className={classNames('privacy-dropdown__value', { active: valueOption && options.indexOf(valueOption) === 0 })}>
         <IconButton
-          className='text-gray-400 hover:text-gray-600'
+          className='text-gray-600 hover:text-gray-700 dark:hover:text-gray-500'
           src={valueOption?.icon}
           title={intl.formatMessage(messages.change_privacy)}
           onClick={handleToggle}

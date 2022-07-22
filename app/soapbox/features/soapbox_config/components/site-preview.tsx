@@ -27,11 +27,11 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
   const bodyClass = classNames(
     'site-preview',
     'relative flex justify-center align-center text-base',
-    'border border-solid border-gray-200 dark:border-slate-600',
+    'border border-solid border-gray-200 dark:border-gray-600',
     'h-40 rounded-lg overflow-hidden',
     {
       'bg-white': !dark,
-      'bg-slate-900': dark,
+      'bg-gray-900': dark,
     });
 
   return (
@@ -45,7 +45,7 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
 
       <div className={classNames('flex absolute inset-0 shadow z-10 h-12 lg:h-16', {
         'bg-white': !dark,
-        'bg-slate-800': dark,
+        'bg-gray-800': dark,
       })}
       >
         <SiteLogo alt='Logo' className='h-5 lg:h-6 w-auto self-center px-2' theme={dark ? 'dark' : 'light'} />

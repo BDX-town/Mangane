@@ -624,7 +624,7 @@
   "lists.edit": "Izmeni listu",
   "lists.edit.submit": "Change title",
   "lists.new.create": "Dodaj listu",
-  "lists.new.create_title": "Create",
+  "lists.new.create_title": "Add list",
   "lists.new.save_title": "Save Title",
   "lists.new.title_placeholder": "Naslov nove liste",
   "lists.search": "Pretraži među ljudima koje pratite",

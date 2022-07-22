@@ -624,7 +624,7 @@
   "lists.edit": "Lista szerkesztése",
   "lists.edit.submit": "Cím megváltoztatása",
   "lists.new.create": "Lista hozzáadása",
-  "lists.new.create_title": "Create",
+  "lists.new.create_title": "Add list",
   "lists.new.save_title": "Save Title",
   "lists.new.title_placeholder": "Új lista címe",
   "lists.search": "Keresés a követett személyek között",

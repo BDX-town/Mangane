@@ -23,7 +23,7 @@ interface IDashWidget {
 }
 
 const DashWidget: React.FC<IDashWidget> = ({ to, onClick, children }) => {
-  const className = 'bg-gray-200 dark:bg-gray-600 p-4 rounded flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 transition-transform';
+  const className = 'bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-800/75 p-4 rounded flex flex-col items-center justify-center space-y-2';
 
   if (to) {
     return <Link className={className} to={to}>{children}</Link>;
@@ -50,7 +50,7 @@ const Developers: React.FC = () => {
       <Column label={intl.formatMessage(messages.heading)}>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2'>
           <DashWidget to='/developers/apps/create'>
-            <SvgIcon src={require('@tabler/icons/apps.svg')} className='dark:text-gray-100' />
+            <SvgIcon src={require('@tabler/icons/apps.svg')} className='text-gray-700 dark:text-gray-600' />
 
             <Text>
               <FormattedMessage id='developers.navigation.app_create_label' defaultMessage='Create an app' />
@@ -58,7 +58,7 @@ const Developers: React.FC = () => {
           </DashWidget>
 
           <DashWidget to='/developers/settings_store'>
-            <SvgIcon src={require('@tabler/icons/code-plus.svg')} className='dark:text-gray-100' />
+            <SvgIcon src={require('@tabler/icons/code-plus.svg')} className='text-gray-700 dark:text-gray-600' />
 
             <Text>
               <FormattedMessage id='developers.navigation.settings_store_label' defaultMessage='Settings store' />
@@ -66,7 +66,7 @@ const Developers: React.FC = () => {
           </DashWidget>
 
           <DashWidget to='/developers/timeline'>
-            <SvgIcon src={require('@tabler/icons/home.svg')} className='dark:text-gray-100' />
+            <SvgIcon src={require('@tabler/icons/home.svg')} className='text-gray-700 dark:text-gray-600' />
 
             <Text>
               <FormattedMessage id='developers.navigation.test_timeline_label' defaultMessage='Test timeline' />
@@ -74,7 +74,7 @@ const Developers: React.FC = () => {
           </DashWidget>
 
           <DashWidget to='/error'>
-            <SvgIcon src={require('@tabler/icons/mood-sad.svg')} className='dark:text-gray-100' />
+            <SvgIcon src={require('@tabler/icons/mood-sad.svg')} className='text-gray-700 dark:text-gray-600' />
 
             <Text>
               <FormattedMessage id='developers.navigation.intentional_error_label' defaultMessage='Trigger an error' />
@@ -82,7 +82,7 @@ const Developers: React.FC = () => {
           </DashWidget>
 
           <DashWidget to='/error/network'>
-            <SvgIcon src={require('@tabler/icons/refresh.svg')} className='dark:text-gray-100' />
+            <SvgIcon src={require('@tabler/icons/refresh.svg')} className='text-gray-700 dark:text-gray-600' />
 
             <Text>
               <FormattedMessage id='developers.navigation.network_error_label' defaultMessage='Network error' />
@@ -90,7 +90,7 @@ const Developers: React.FC = () => {
           </DashWidget>
 
           <DashWidget onClick={leaveDevelopers}>
-            <SvgIcon src={require('@tabler/icons/logout.svg')} className='dark:text-gray-100' />
+            <SvgIcon src={require('@tabler/icons/logout.svg')} className='text-gray-700 dark:text-gray-600' />
 
             <Text>
               <FormattedMessage id='developers.navigation.leave_developers_label' defaultMessage='Leave developers' />

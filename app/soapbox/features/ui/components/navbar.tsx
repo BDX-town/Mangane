@@ -67,7 +67,7 @@ const Navbar = () => {
   if (mfaToken) return <Redirect to={`/login?token=${encodeURIComponent(mfaToken)}`} />;
 
   return (
-    <nav className='bg-white dark:bg-slate-800 shadow z-50 sticky top-0' ref={node}>
+    <nav className='bg-white dark:bg-primary-900 shadow z-50 sticky top-0' ref={node}>
       <div className='max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
         <div className='relative flex justify-between h-12 lg:h-16'>
           {account && (
@@ -86,7 +86,7 @@ const Navbar = () => {
             })}
           >
             <Link key='logo' to='/' data-preview-title-id='column.home' className='flex-shrink-0 flex items-center'>
-              <SiteLogo alt='Logo' className='h-5 lg:h-6 w-auto cursor-pointer' />
+              <SiteLogo alt='Logo' className='h-5 w-auto cursor-pointer' />
               <span className='hidden'><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
             </Link>
 
@@ -147,7 +147,7 @@ const Navbar = () => {
                 </Form>
 
                 <div className='space-x-1.5 lg:hidden'>
-                  <Button theme='secondary' to='/login' size='sm'>
+                  <Button theme='tertiary' to='/login' size='sm'>
                     <FormattedMessage id='account.login' defaultMessage='Log In' />
                   </Button>
 

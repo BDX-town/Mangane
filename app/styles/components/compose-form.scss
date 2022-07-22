@@ -80,62 +80,31 @@
       overflow: hidden;
 
       &__actions {
-        background: linear-gradient(180deg, rgba($base-shadow-color, 0.8) 0, rgba($base-shadow-color, 0.35) 80%, transparent);
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        opacity: 0;
-        transition: opacity 0.1s ease;
+        @apply bg-gradient-to-b from-gray-900/80 via-gray-900/50 to-transparent flex items-start justify-between opacity-0 transition-opacity duration-100 ease-linear;
+
+        &.active {
+          @apply opacity-100;
+        }
 
         .icon-button {
-          flex: 0 1 auto;
-          color: #fff;
-          font-size: 14px;
-          font-weight: 500;
-          padding: 10px;
-          font-family: inherit;
-
-          &:hover,
-          &:focus,
-          &:active {
-            color: var(--accent-color);
-          }
+          @apply text-gray-200 hover:text-white text-sm font-medium p-2.5 space-x-1 flex items-center;
         }
-        &.active { opacity: 1; }
       }
 
       &-description {
-        position: absolute;
-        z-index: 2;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        box-sizing: border-box;
-        background: linear-gradient(0deg, rgba($base-shadow-color, 0.8) 0, rgba($base-shadow-color, 0.35) 80%, transparent);
-        padding: 10px;
-        opacity: 0;
-        transition: opacity 0.1s ease;
+        @apply bg-gradient-to-b from-transparent via-gray-900/50 to-gray-900/80 absolute z-[2px] bottom-0 left-0 right-0 p-2.5 opacity-0 transition-opacity duration-100 ease-linear;
+
+        &.active {
+          @apply opacity-100;
+        }
 
         textarea {
-          background: transparent;
-          box-sizing: border-box;
-          color: #fff;
-          border: 1px solid #fff;
-          outline: none;
-          padding: 10px;
-          margin: 0;
-          width: 100%;
-          font-family: inherit;
-          font-size: 14px;
-          font-weight: 500;
-
-          &:focus { color: #fff; }
+          @apply bg-transparent text-white border-solid border border-white/25 p-2.5 rounded-md text-sm w-full m-0;
 
           &::placeholder {
-            color: rgba(255, 255, 255, 0.6);
+            @apply text-white/60;
           }
         }
-        &.active { opacity: 1; }
       }
 
       &-preview {
@@ -197,7 +166,7 @@
 } // end .compose-form
 
 .privacy-dropdown__dropdown {
-  @apply absolute bg-white dark:bg-slate-900 z-[1000] rounded-md shadow-lg ml-10 text-sm;
+  @apply absolute bg-white dark:bg-gray-900 z-[1000] rounded-md shadow-lg ml-10 text-sm;
 
   &.top {
     transform-origin: 50% 100%;
@@ -209,10 +178,10 @@
 }
 
 .privacy-dropdown__option {
-  @apply flex p-2.5 text-sm text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 cursor-pointer;
+  @apply flex p-2.5 text-sm text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer;
 
   &.active {
-    @apply bg-gray-100 dark:bg-slate-800;
+    @apply bg-gray-100 dark:bg-gray-800;
   }
 
   &:hover,
@@ -224,7 +193,7 @@
   }
 
   &.active {
-    @apply hover:bg-gray-200 dark:hover:bg-slate-700;
+    @apply hover:bg-gray-200 dark:hover:bg-gray-700;
   }
 }
 

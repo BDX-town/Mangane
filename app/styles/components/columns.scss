@@ -586,7 +586,7 @@
 
 .empty-column-indicator,
 .error-column {
-  @apply bg-primary-50 dark:bg-slate-700 text-gray-900 dark:text-gray-300 text-center p-10 flex flex-1 items-center justify-center min-h-[160px] rounded-lg;
+  @apply bg-primary-50 dark:bg-gray-700 text-gray-900 dark:text-gray-300 text-center p-10 flex flex-1 items-center justify-center min-h-[160px] rounded-lg;
 
   @supports (display: grid) { // hack to fix Chrome <57
     contain: strict;

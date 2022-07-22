@@ -33,7 +33,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ status, hideActions, onCanc
   }
 
   return (
-    <Stack space={2} className='p-4 rounded-lg bg-gray-100 dark:bg-slate-700'>
+    <Stack space={2} className='p-4 rounded-lg bg-gray-100 dark:bg-gray-800'>
       <AccountContainer
         {...actions}
         id={status.getIn(['account', 'id']) as string}

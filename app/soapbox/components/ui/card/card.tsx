@@ -34,7 +34,7 @@ const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant, size 
     {...filteredProps}
     className={classNames({
       'space-y-4': true,
-      'bg-white dark:bg-slate-800 text-black dark:text-white shadow-lg dark:shadow-inset overflow-hidden': variant === 'rounded',
+      'bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-none overflow-hidden': variant === 'rounded',
       [sizes[size]]: variant === 'rounded',
     }, className)}
   >

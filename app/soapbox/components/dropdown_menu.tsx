@@ -384,8 +384,8 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
           <IconButton
             disabled={disabled}
             className={classNames({
-              'text-gray-400 hover:text-gray-600': true,
-              'text-gray-600': open,
+              'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': true,
+              'text-gray-700 dark:text-gray-500': open,
             })}
             title={title}
             src={src}

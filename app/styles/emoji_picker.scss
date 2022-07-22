@@ -5,7 +5,7 @@
 }
 
 .emoji-mart {
-  @apply text-base inline-block text-gray-900 dark:text-gray-100 rounded bg-white dark:bg-slate-900 shadow-lg;
+  @apply text-base inline-block text-gray-900 dark:text-gray-100 rounded bg-white dark:bg-primary-900 shadow-lg;
 }
 
 .emoji-mart .emoji-mart-emoji {
@@ -13,7 +13,7 @@
 }
 
 .emoji-mart-bar {
-  @apply border-0 border-solid border-gray-200 dark:border-slate-700;
+  @apply border-0 border-solid border-gray-200 dark:border-gray-800;
 }
 
 .emoji-mart-bar:first-child {
@@ -33,7 +33,7 @@
 }
 
 .emoji-mart-anchor {
-  @apply relative block flex-auto text-gray-400 dark:text-gray-500 text-center overflow-hidden transition-colors py-3 px-1;
+  @apply relative block flex-auto text-gray-700 dark:text-gray-600 text-center overflow-hidden transition-colors py-3 px-1;
 }
 
 .emoji-mart-anchor:focus { outline: 0; }
@@ -73,11 +73,11 @@
 }
 
 .emoji-mart-search {
-  @apply relative mt-1.5 p-2.5 pr-12 bg-white dark:bg-slate-900;
+  @apply relative mt-1.5 p-2.5 pr-12 bg-white dark:bg-primary-900;
 }
 
 .emoji-mart-search input {
-  @apply text-sm pr-9 block w-full border-gray-300 dark:bg-slate-800 dark:border-gray-600 rounded-full focus:ring-primary-500 focus:border-primary-500;
+  @apply text-sm pr-9 block w-full border-gray-300 dark:bg-transparent dark:border-gray-800 rounded-full focus:ring-primary-500 focus:border-primary-500;
 
   &::-moz-focus-inner {
     border: 0;
@@ -112,7 +112,7 @@
 }
 
 .emoji-mart-search-icon svg {
-  @apply stroke-gray-400;
+  @apply fill-gray-700 dark:fill-gray-600;
 }
 
 .emoji-mart-search-icon:hover svg {
@@ -125,7 +125,7 @@
 }
 
 .emoji-mart-category .emoji-mart-emoji:hover::before {
-  @apply bg-gray-50 dark:bg-slate-800;
+  @apply bg-gray-50 dark:bg-primary-800;
   z-index: 0;
   content: "";
   position: absolute;
@@ -145,7 +145,7 @@
 }
 
 .emoji-mart-category-label span {
-  @apply bg-white dark:bg-slate-900;
+  @apply bg-white dark:bg-primary-900;
   display: block;
   width: 100%;
   font-weight: 500;
@@ -241,7 +241,7 @@
 }
 
 .emoji-picker-dropdown__modifiers__menu {
-  @apply absolute bg-white dark:bg-slate-900 rounded-3xl shadow overflow-hidden;
+  @apply absolute bg-white dark:bg-primary-900 rounded-3xl shadow overflow-hidden;
   z-index: 4;
   top: -4px;
   left: -8px;
@@ -252,7 +252,7 @@
     &:hover,
     &:focus,
     &:active {
-      @apply bg-gray-300 dark:bg-slate-600;
+      @apply bg-gray-300 dark:bg-primary-600;
     }
   }
 

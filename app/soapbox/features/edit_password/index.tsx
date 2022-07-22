@@ -95,7 +95,7 @@ const EditPassword = () => {
             </FormGroup>
 
             <FormActions>
-              <Button to='/settings' theme='ghost'>
+              <Button to='/settings' theme='tertiary'>
                 {intl.formatMessage(messages.cancel)}
               </Button>
 

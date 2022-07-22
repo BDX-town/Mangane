@@ -312,7 +312,7 @@ class EmojiPickerDropdown extends React.PureComponent {
 
       EmojiPickerAsync().then(EmojiMart => {
         EmojiPicker = EmojiMart.Picker;
-        Emoji       = EmojiMart.Emoji;
+        Emoji = EmojiMart.Emoji;
 
         this.setState({ loading: false });
       }).catch(() => {
@@ -371,7 +371,7 @@ class EmojiPickerDropdown extends React.PureComponent {
         >
           {button || <IconButton
             className={classNames({
-              'text-gray-400 hover:text-gray-600': true,
+              'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': true,
               'pulse-loading': active && loading,
             })}
             alt='😀'
