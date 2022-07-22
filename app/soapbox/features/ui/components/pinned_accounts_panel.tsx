@@ -38,7 +38,7 @@ const PinnedAccountsPanel: React.FC<IPinnedAccountsPanel> = ({ account, limit })
         id='pinned_accounts.title'
         defaultMessage='{name}’s choices'
         values={{
-          name: <span className='display-name__html' dangerouslySetInnerHTML={{ __html: account.display_name_html }} />,
+          name: <span dangerouslySetInnerHTML={{ __html: account.display_name_html }} />,
         }}
       />}
     >
