@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import { useSoapboxConfig, useSettings, useSystemTheme } from 'soapbox/hooks';
+import { useSoapboxConfig, useSettings, useTheme } from 'soapbox/hooks';
 
 interface ISiteLogo extends React.ComponentProps<'img'> {
   /** Extra class names for the <img> element. */
@@ -14,12 +14,7 @@ interface ISiteLogo extends React.ComponentProps<'img'> {
 const SiteLogo: React.FC<ISiteLogo> = ({ className, theme, ...rest }) => {
   const { logo, logoDarkMode } = useSoapboxConfig();
   const settings = useSettings();
-
-  const systemTheme = useSystemTheme();
-  const userTheme = settings.get('themeMode');
-  const darkMode = theme
-    ? theme === 'dark'
-    : (userTheme === 'dark' || (userTheme === 'system' && systemTheme === 'dark'));
+  const darkMode = useTheme() === 'dark';
 
   /** Soapbox logo. */
   const soapboxLogo = darkMode

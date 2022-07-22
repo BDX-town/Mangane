@@ -32,7 +32,7 @@ import {
   useFeatures,
   useSoapboxConfig,
   useSettings,
-  useSystemTheme,
+  useTheme,
   useLocale,
   useGdpr,
 } from 'soapbox/hooks';
@@ -250,10 +250,8 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
   const locale = useLocale();
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
-  const systemTheme = useSystemTheme();
 
-  const userTheme = settings.get('themeMode');
-  const darkMode = userTheme === 'dark' || (userTheme === 'system' && systemTheme === 'dark');
+  const darkMode = useTheme() === 'dark';
   const themeCss = generateThemeCss(soapboxConfig);
 
   const bodyClass = classNames('bg-white dark:bg-slate-900 text-base h-full', {
