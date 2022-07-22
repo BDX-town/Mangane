@@ -257,7 +257,14 @@ class Header extends ImmutablePureComponent {
           });
         }
 
-        // menu.push({ text: intl.formatMessage(account.relationship?.endorsed ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
+        if (features.accountEndorsements) {
+          menu.push({
+            text: intl.formatMessage(account.relationship?.endorsed ? messages.unendorse : messages.endorse),
+            action: this.props.onEndorseToggle,
+            icon: require('@tabler/icons/user-check.svg'),
+          });
+        }
+
         menu.push(null);
       } else if (features.lists && features.unrestrictedLists) {
         menu.push({
