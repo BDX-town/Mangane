@@ -258,7 +258,7 @@ const submitCompose = (routerHistory: History, force = false) =>
       return;
     }
 
-    const mentions: string[] | null = status.match(/(?:^|\s|\.)@([a-z0-9_]+(?:@[a-z0-9\.\-]+)?)/gi); // not a perfect regex
+    const mentions: string[] | null = status.match(/(?:^|\s)@([a-z\d_-]+(?:@[^@\s]+)?)/gi);
 
     if (mentions) {
       to = to.union(mentions.map(mention => mention.trim().slice(1)));
