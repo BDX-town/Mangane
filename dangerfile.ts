@@ -1,13 +1,32 @@
 import { danger, warn, message } from 'danger';
 
+// Docs changes
 const docs = danger.git.fileMatch('docs/**/*.md');
-const app = danger.git.fileMatch('app/**/*.(js|ts|tsx)');
-const tests = danger.git.fileMatch('**/__tests__/**');
 
 if (docs.edited) {
   message('Thanks - We :heart: our [documentarians](http://www.writethedocs.org/)!');
 }
 
-if (app.modified && !tests.modified) {
-  warn('You have app changes without tests.');
+// UI components
+const uiCode = danger.git.fileMatch('app/soapbox/components/ui/**');
+const uiTests = danger.git.fileMatch('app/soapbox/components/ui/**/__tests__/**');
+
+if (uiCode.modified && !uiTests.modified) {
+  warn('You have UI changes (`soapbox/components/ui`) without tests.');
+}
+
+// Actions
+const actionsCode = danger.git.fileMatch('app/soapbox/actions/**');
+const actionsTests = danger.git.fileMatch('app/soapbox/actions/**__tests__/**');
+
+if (actionsCode.modified && !actionsTests.modified) {
+  warn('You have actions changes (`soapbox/actions`) without tests.');
+}
+
+// Reducers
+const reducersCode = danger.git.fileMatch('app/soapbox/reducers/**');
+const reducersTests = danger.git.fileMatch('app/soapbox/reducers/**__tests__/**');
+
+if (reducersCode.modified && !reducersTests.modified) {
+  warn('You have reducer changes (`soapbox/reducers`) without tests.');
 }
