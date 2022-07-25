@@ -31,9 +31,7 @@
       "  );",
       "};",
       "",
-      "export {",
-      "  ${1:Component},",
-      "};"
+      "export default ${1:Component};"
     ],
     "description": "React component"
   },
