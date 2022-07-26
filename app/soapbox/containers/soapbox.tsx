@@ -13,6 +13,7 @@ import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig, getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchVerificationConfig } from 'soapbox/actions/verification';
 import * as BuildConfig from 'soapbox/build_config';
+import GdprBanner from 'soapbox/components/gdpr-banner';
 import Helmet from 'soapbox/components/helmet';
 import LoadingScreen from 'soapbox/components/loading-screen';
 import AuthLayout from 'soapbox/features/auth_layout';
@@ -25,7 +26,16 @@ import {
   WaitlistPage,
 } from 'soapbox/features/ui/util/async-components';
 import { createGlobals } from 'soapbox/globals';
-import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures, useSoapboxConfig, useSettings, useSystemTheme } from 'soapbox/hooks';
+import {
+  useAppSelector,
+  useAppDispatch,
+  useOwnAccount,
+  useFeatures,
+  useSoapboxConfig,
+  useSettings,
+  useTheme,
+  useLocale,
+} from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
 import { useCachedLocationHandler } from 'soapbox/utils/redirect';
 import { generateThemeCss } from 'soapbox/utils/theme';
@@ -35,9 +45,6 @@ import { preload } from '../actions/preload';
 import ErrorBoundary from '../components/error_boundary';
 import UI from '../features/ui';
 import { store } from '../store';
-
-/** Ensure the given locale exists in our codebase */
-const validLocale = (locale: string): boolean => Object.keys(MESSAGES).includes(locale);
 
 // Configure global functions for developers
 createGlobals(store);
@@ -72,81 +79,23 @@ const loadInitial = () => {
 /** Highest level node with the Redux store. */
 const SoapboxMount = () => {
   useCachedLocationHandler();
-  const dispatch = useAppDispatch();
-
   const me = useAppSelector(state => state.me);
   const instance = useAppSelector(state => state.instance);
   const account = useOwnAccount();
-  const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
   const features = useFeatures();
-  const swUpdating = useAppSelector(state => state.meta.swUpdating);
-
-  const locale = validLocale(settings.get('locale')) ? settings.get('locale') : 'en';
 
   const waitlisted = account && !account.source.get('approved', true);
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && !waitlisted && needsOnboarding;
   const singleUserMode = soapboxConfig.singleUserMode && soapboxConfig.singleUserModeProfile;
 
-  const [messages, setMessages] = useState<Record<string, string>>({});
-  const [localeLoading, setLocaleLoading] = useState(true);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  const systemTheme = useSystemTheme();
-  const userTheme = settings.get('themeMode');
-  const darkMode = userTheme === 'dark' || (userTheme === 'system' && systemTheme === 'dark');
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
-
-  const themeCss = generateThemeCss(soapboxConfig);
-
-  // Load the user's locale
-  useEffect(() => {
-    MESSAGES[locale]().then(messages => {
-      setMessages(messages);
-      setLocaleLoading(false);
-    }).catch(() => { });
-  }, [locale]);
-
-  // Load initial data from the API
-  useEffect(() => {
-    dispatch(loadInitial()).then(() => {
-      setIsLoaded(true);
-    }).catch(() => {
-      setIsLoaded(true);
-    });
-  }, []);
 
   // @ts-ignore: I don't actually know what these should be, lol
   const shouldUpdateScroll = (prevRouterProps, { location }) => {
     return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
   };
-
-  /** Whether to display a loading indicator. */
-  const showLoading = [
-    me === null,
-    me && !account,
-    !isLoaded,
-    localeLoading,
-    swUpdating,
-  ].some(Boolean);
-
-  const bodyClass = classNames('bg-white dark:bg-slate-900 text-base h-full', {
-    'no-reduce-motion': !settings.get('reduceMotion'),
-    'underline-links': settings.get('underlineLinks'),
-    'dyslexic': settings.get('dyslexicFont'),
-    'demetricator': settings.get('demetricator'),
-  });
-
-  const helmet = (
-    <Helmet>
-      <html lang={locale} className={classNames('h-full', { dark: darkMode })} />
-      <body className={bodyClass} />
-      {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
-      {darkMode && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
-      <meta name='theme-color' content={soapboxConfig.brandColor} />
-    </Helmet>
-  );
 
   /** Render the onboarding flow. */
   const renderOnboarding = () => (
@@ -214,46 +163,129 @@ const SoapboxMount = () => {
     }
   };
 
+  return (
+    <ErrorBoundary>
+      <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
+        <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
+          <>
+            {renderBody()}
+
+            <BundleContainer fetchComponent={NotificationsContainer}>
+              {(Component) => <Component />}
+            </BundleContainer>
+
+            <BundleContainer fetchComponent={ModalContainer}>
+              {Component => <Component />}
+            </BundleContainer>
+
+            <GdprBanner />
+          </>
+        </ScrollContext>
+      </BrowserRouter>
+    </ErrorBoundary>
+  );
+};
+
+interface ISoapboxLoad {
+  children: React.ReactNode,
+}
+
+/** Initial data loader. */
+const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
+  const dispatch = useAppDispatch();
+
+  const me = useAppSelector(state => state.me);
+  const account = useOwnAccount();
+  const swUpdating = useAppSelector(state => state.meta.swUpdating);
+  const locale = useLocale();
+
+  const [messages, setMessages] = useState<Record<string, string>>({});
+  const [localeLoading, setLocaleLoading] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  /** Whether to display a loading indicator. */
+  const showLoading = [
+    me === null,
+    me && !account,
+    !isLoaded,
+    localeLoading,
+    swUpdating,
+  ].some(Boolean);
+
+  // Load the user's locale
+  useEffect(() => {
+    MESSAGES[locale]().then(messages => {
+      setMessages(messages);
+      setLocaleLoading(false);
+    }).catch(() => { });
+  }, [locale]);
+
+  // Load initial data from the API
+  useEffect(() => {
+    dispatch(loadInitial()).then(() => {
+      setIsLoaded(true);
+    }).catch(() => {
+      setIsLoaded(true);
+    });
+  }, []);
+
   // intl is part of loading.
   // It's important nothing in here depends on intl.
   if (showLoading) {
-    return (
-      <>
-        {helmet}
-        <LoadingScreen />
-      </>
-    );
+    return <LoadingScreen />;
   }
 
   return (
     <IntlProvider locale={locale} messages={messages}>
-      {helmet}
-      <ErrorBoundary>
-        <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
-          <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
-            <>
-              {renderBody()}
-
-              <BundleContainer fetchComponent={NotificationsContainer}>
-                {(Component) => <Component />}
-              </BundleContainer>
-
-              <BundleContainer fetchComponent={ModalContainer}>
-                {Component => <Component />}
-              </BundleContainer>
-            </>
-          </ScrollContext>
-        </BrowserRouter>
-      </ErrorBoundary>
+      {children}
     </IntlProvider>
   );
 };
 
+interface ISoapboxHead {
+  children: React.ReactNode,
+}
+
+/** Injects metadata into site head with Helmet. */
+const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
+  const locale = useLocale();
+  const settings = useSettings();
+  const soapboxConfig = useSoapboxConfig();
+
+  const darkMode = useTheme() === 'dark';
+  const themeCss = generateThemeCss(soapboxConfig);
+
+  const bodyClass = classNames('bg-white dark:bg-slate-900 text-base h-full', {
+    'no-reduce-motion': !settings.get('reduceMotion'),
+    'underline-links': settings.get('underlineLinks'),
+    'dyslexic': settings.get('dyslexicFont'),
+    'demetricator': settings.get('demetricator'),
+  });
+
+  return (
+    <>
+      <Helmet>
+        <html lang={locale} className={classNames('h-full', { dark: darkMode })} />
+        <body className={bodyClass} />
+        {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
+        {darkMode && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
+        <meta name='theme-color' content={soapboxConfig.brandColor} />
+      </Helmet>
+
+      {children}
+    </>
+  );
+};
+
 /** The root React node of the application. */
-const Soapbox = () => {
+const Soapbox: React.FC = () => {
   return (
     <Provider store={store}>
-      <SoapboxMount />
+      <SoapboxHead>
+        <SoapboxLoad>
+          <SoapboxMount />
+        </SoapboxLoad>
+      </SoapboxHead>
     </Provider>
   );
 };
