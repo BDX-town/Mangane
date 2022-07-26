@@ -104,7 +104,7 @@ export const ReducerRecord = ImmutableRecord({
   suggestion_token: null as string | null,
   tagHistory: ImmutableList<string>(),
   text: '',
-  to: null as ImmutableOrderedSet<string> | null,
+  to: ImmutableOrderedSet<string>(),
 });
 
 type State = ReturnType<typeof ReducerRecord>;
@@ -145,24 +145,6 @@ function clearAll(state: State) {
     privacy: state.default_privacy,
     idempotencyKey: uuid(),
   });
-  // state.withMutations(map => {
-  //   map.set('id', null);
-  //   map.set('text', '');
-  //   map.set('to', ImmutableOrderedSet());
-  //   map.set('spoiler', false);
-  //   map.set('spoiler_text', '');
-  //   map.set('content_type', state.COMPOSE_SUBMIT_SUCCESS);
-  //   map.set('is_submitting', false);
-  //   map.set('is_changing_upload', false);
-  //   map.set('in_reply_to', null);
-  //   map.set('quote', null);
-  //   map.set('privacy', state.default_privacy);
-  //   map.set('sensitive', false);
-  //   map.set('media_attachments', ImmutableList());
-  //   map.set('poll', null);
-  //   map.set('idempotencyKey', uuid());
-  //   map.set('schedule', null);
-  // });
 }
 
 function appendMedia(state: State, media: APIEntity) {
@@ -369,7 +351,7 @@ export default function compose(state = ReducerRecord({ idempotencyKey: uuid(), 
     case COMPOSE_QUOTE:
       return state.withMutations(map => {
         map.set('quote', action.status.get('id'));
-        map.set('to', null);
+        map.set('to', ImmutableOrderedSet());
         map.set('text', '');
         map.set('privacy', privacyPreference(action.status.visibility, state.default_privacy));
         map.set('focusDate', new Date());
