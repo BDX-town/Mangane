@@ -13,6 +13,7 @@ import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig, getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchVerificationConfig } from 'soapbox/actions/verification';
 import * as BuildConfig from 'soapbox/build_config';
+import GdprBanner from 'soapbox/components/gdpr-banner';
 import Helmet from 'soapbox/components/helmet';
 import LoadingScreen from 'soapbox/components/loading-screen';
 import AuthLayout from 'soapbox/features/auth_layout';
@@ -34,7 +35,6 @@ import {
   useSettings,
   useTheme,
   useLocale,
-  useGdpr,
 } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
 import { useCachedLocationHandler } from 'soapbox/utils/redirect';
@@ -78,7 +78,6 @@ const loadInitial = () => {
 
 /** Highest level node with the Redux store. */
 const SoapboxMount = () => {
-  useGdpr();
   useCachedLocationHandler();
   const me = useAppSelector(state => state.me);
   const instance = useAppSelector(state => state.instance);
@@ -178,6 +177,8 @@ const SoapboxMount = () => {
             <BundleContainer fetchComponent={ModalContainer}>
               {Component => <Component />}
             </BundleContainer>
+
+            <GdprBanner />
           </>
         </ScrollContext>
       </BrowserRouter>
