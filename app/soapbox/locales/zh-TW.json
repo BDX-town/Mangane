@@ -829,6 +829,8 @@
   "registration.reason_hint": "This will help us review your application",
   "registration.sign_up": "Sign up",
   "registration.tos": "Terms of Service",
+  "registration.privacy": "Privacy Policy",
+  "registration.acceptance": "By registering, you agree to the {terms} and {privacy}.",
   "registration.username_unavailable": "Username is already taken.",
   "relative_time.days": "{number} 天",
   "relative_time.hours": "{number} 小時",
