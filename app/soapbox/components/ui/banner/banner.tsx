@@ -1,0 +1,28 @@
+import classNames from 'classnames';
+import React from 'react';
+
+interface IBanner {
+  theme: 'frosted' | 'opaque',
+  children: React.ReactNode,
+}
+
+/** Displays a sticky full-width banner at the bottom of the screen. */
+const Banner: React.FC<IBanner> = ({ theme, children }) => {
+  return (
+    <div
+      data-testid='banner'
+      className={classNames('fixed bottom-0 left-0 right-0 py-4 z-50', {
+        'backdrop-blur bg-primary-900/80': theme === 'frosted',
+        'bg-white dark:bg-slate-800 text-black dark:text-white shadow-lg dark:shadow-inset': theme === 'opaque',
+      })}
+    >
+      <div className='max-w-3xl md:max-w-7xl mx-auto lg:grid lg:grid-cols-12'>
+        <div className='col-span-9 col-start-4 xl:col-start-4 xl:col-span-6 md:px-8'>
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Banner;
