@@ -918,7 +918,7 @@
   "settings.save.success": "Your preferences have been saved!",
   "settings.security": "Security",
   "settings.settings": "Settings",
-  "signup_panel.subtitle": "Sign up now to discuss.",
+  "signup_panel.subtitle": "Sign up now to discuss what's happening.",
   "signup_panel.title": "New to {site_title}?",
   "snackbar.view": "View",
   "soapbox_config.authenticated_profile_hint": "Users must be logged-in to view replies and media on user profiles.",

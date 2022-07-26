@@ -21,7 +21,7 @@ const CtaBanner = () => {
             </Text>
 
             <Text theme='white' weight='medium' className='opacity-90'>
-              <FormattedMessage id='signup_panel.subtitle' defaultMessage='Sign up now to discuss.' />
+              <FormattedMessage id='signup_panel.subtitle' defaultMessage="Sign up now to discuss what's happening." />
             </Text>
           </Stack>
 
