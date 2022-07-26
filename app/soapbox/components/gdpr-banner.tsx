@@ -46,7 +46,7 @@ const GdprBanner: React.FC = () => {
           </Text>
         </Stack>
 
-        <HStack space={2} alignItems='center'>
+        <HStack space={2} alignItems='center' className='flex-none'>
           {soapbox.gdprUrl && (
             <a href={soapbox.gdprUrl} tabIndex={-1} className='inline-flex'>
               <Button theme='secondary'>
