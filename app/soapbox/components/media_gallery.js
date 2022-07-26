@@ -215,7 +215,7 @@ class Item extends React.PureComponent {
           alt={attachment.get('description')}
           title={attachment.get('description')}
         >
-          <span className='media-gallery__item__icons'><Icon id='volume-up' /></span>
+          <span className='media-gallery__item__icons'><Icon src={require('@tabler/icons/volume.svg')} /></span>
           <span className='media-gallery__file-extension__label'>{ext}</span>
         </a>
       );

@@ -216,7 +216,7 @@ const Filters = () => {
               </div>
             </div>
             <div className='filter__delete' role='button' tabIndex={0} onClick={handleFilterDelete} data-value={filter.id} aria-label={intl.formatMessage(messages.delete)}>
-              <Icon className='filter__delete-icon' id='times' />
+              <Icon className='filter__delete-icon' src={require('@tabler/icons/x.svg')} />
               <span className='filter__delete-label'><FormattedMessage id='filters.filters_list_delete' defaultMessage='Delete' /></span>
             </div>
           </div>

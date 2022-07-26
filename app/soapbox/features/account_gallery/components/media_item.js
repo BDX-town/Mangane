@@ -125,7 +125,7 @@ class MediaItem extends ImmutablePureComponent {
       const fileExtension = remoteURL.substr(fileExtensionLastIndex + 1).toUpperCase();
       thumbnail = (
         <div className='media-gallery__item-thumbnail'>
-          <span className='media-gallery__item__icons'><Icon id='volume-up' /></span>
+          <span className='media-gallery__item__icons'><Icon src={require('@tabler/icons/volume.svg')} /></span>
           <span className='media-gallery__file-extension__label'>{fileExtension}</span>
         </div>
       );
@@ -134,7 +134,7 @@ class MediaItem extends ImmutablePureComponent {
     if (!visible) {
       icon = (
         <span className='account-gallery__item__icons'>
-          <Icon id='eye-slash' />
+          <Icon src={require('@tabler/icons/eye-off.svg')} />
         </span>
       );
     }
