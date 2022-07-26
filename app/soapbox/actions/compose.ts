@@ -229,7 +229,7 @@ const validateSchedule = (state: RootState) => {
   return schedule.getTime() > fiveMinutesFromNow.getTime();
 };
 
-const submitCompose = (routerHistory: History, force = false) =>
+const submitCompose = (routerHistory?: History, force = false) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
     const state = getState();
