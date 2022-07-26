@@ -23,7 +23,10 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 100px;
+
+    .svg-icon {
+      @apply h-24 w-24;
+    }
   }
 
   &-overflow {
@@ -207,8 +210,8 @@ $media-compact-size: 50px;
       font-size: 20px;
     }
 
-    &__icons {
-      font-size: 30px;
+    &__icons .svg-icon {
+      @apply h-8 w-8;
     }
   }
 

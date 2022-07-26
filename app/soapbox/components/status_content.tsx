@@ -30,7 +30,7 @@ interface IReadMoreButton {
 const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
   <button className='status__content__read-more-button' onClick={onClick}>
     <FormattedMessage id='status.read_more' defaultMessage='Read more' />
-    <Icon id='angle-right' fixedWidth />
+    <Icon className='inline-block h-5 w-5' src={require('@tabler/icons/chevron-right.svg')} fixedWidth />
   </button>
 );
 

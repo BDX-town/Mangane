@@ -65,7 +65,7 @@ const ProfileField: React.FC<IProfileField> = ({ field }) => {
             </span>
           )}
 
-          <Text tag='span' dangerouslySetInnerHTML={{ __html: field.value_emojified }} />
+          <Text className='break-words overflow-hidden' tag='span' dangerouslySetInnerHTML={{ __html: field.value_emojified }} />
         </HStack>
       </dd>
     </dl>

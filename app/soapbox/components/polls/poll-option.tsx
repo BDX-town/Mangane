@@ -110,7 +110,8 @@ const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
 
   if (!poll) return null;
 
-  const percent = poll.votes_count === 0 ? 0 : (option.votes_count / poll.votes_count) * 100;
+  const pollVotesCount = poll.voters_count || poll.votes_count;
+  const percent = pollVotesCount === 0 ? 0 : (option.votes_count / pollVotesCount) * 100;
   const leading = poll.options.filterNot(other => other.title === option.title).every(other => option.votes_count >= other.votes_count);
   const voted = poll.own_votes?.includes(index);
   const message = intl.formatMessage(messages.votes, { votes: option.votes_count });
