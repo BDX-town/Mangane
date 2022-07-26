@@ -1,11 +1,11 @@
 import React from 'react';
 import { useIntl, MessageDescriptor } from 'react-intl';
-import { NotificationStack, NotificationObject, StyleFactoryFn } from 'react-notification';
 import { useHistory } from 'react-router-dom';
 
 import { dismissAlert } from 'soapbox/actions/alerts';
 import { Button } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { NotificationStack, NotificationObject, StyleFactoryFn } from 'soapbox/react-notification';
 
 import type { Alert } from 'soapbox/reducers/alerts';
 

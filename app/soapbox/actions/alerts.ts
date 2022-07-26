@@ -5,7 +5,7 @@ import { httpErrorMessages } from 'soapbox/utils/errors';
 import type { SnackbarActionSeverity } from './snackbar';
 import type { AnyAction } from '@reduxjs/toolkit';
 import type { AxiosError } from 'axios';
-import type { NotificationObject } from 'react-notification';
+import type { NotificationObject } from 'soapbox/react-notification';
 
 const messages = defineMessages({
   unexpectedTitle: { id: 'alert.unexpected.title', defaultMessage: 'Oops!' },

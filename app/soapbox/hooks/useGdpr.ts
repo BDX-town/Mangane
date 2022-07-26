@@ -11,6 +11,7 @@ const hasGdpr = !!localStorage.getItem('soapbox:gdpr');
 
 const messages = defineMessages({
   accept: { id: 'gdpr.accept', defaultMessage: 'Accept' },
+  learnMore: { id: 'gdpr.learn_more', defaultMessage: 'Learn more' },
   body: { id: 'gdpr.message', defaultMessage: '{siteTitle} uses session cookies, which are essential to the website\'s functioning.' },
 });
 
