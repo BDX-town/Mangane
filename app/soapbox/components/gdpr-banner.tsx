@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -10,6 +11,7 @@ const acceptedGdpr = !!localStorage.getItem('soapbox:gdpr');
 const GdprBanner: React.FC = () => {
   /** Track whether the banner has already been displayed once. */
   const [shown, setShown] = useState<boolean>(acceptedGdpr);
+  const [slideout, setSlideout] = useState(false);
 
   const soapbox = useSoapboxConfig();
   const isLoggedIn = useAppSelector(state => !!state.me);
@@ -17,7 +19,8 @@ const GdprBanner: React.FC = () => {
 
   const handleAccept = () => {
     localStorage.setItem('soapbox:gdpr', 'true');
-    setShown(true);
+    setSlideout(true);
+    setTimeout(() => setShown(true), 200);
   };
 
   const showBanner = soapbox.gdpr && !isLoggedIn && !shown;
@@ -27,7 +30,7 @@ const GdprBanner: React.FC = () => {
   }
 
   return (
-    <Banner theme='opaque'>
+    <Banner theme='opaque' className={classNames('transition-transform', { 'translate-y-full': slideout })}>
       <Stack space={2}>
         <Stack>
           <Text size='xl' weight='bold'>
