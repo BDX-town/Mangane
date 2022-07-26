@@ -109,7 +109,7 @@
 }
 
 .status__content__read-more-button {
-  @apply block text-gray-900 dark:text-gray-300 border-0 bg-transparent p-0 pt-2 hover:underline active:underline;
+  @apply flex items-center text-gray-900 dark:text-gray-300 border-0 bg-transparent p-0 pt-2 hover:underline active:underline;
 }
 
 .status-link {

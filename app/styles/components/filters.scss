@@ -87,14 +87,14 @@
     }
 
     .filter__delete {
-      @apply flex items-baseline h-5 m-2.5 cursor-pointer;
+      @apply flex items-center h-5 m-2.5 cursor-pointer;
 
       span.filter__delete-label {
         @apply text-gray-500 dark:text-gray-400 font-semibold;
       }
 
       .filter__delete-icon {
-        @apply px-1 mx-auto text-base text-gray-500 dark:text-gray-400;
+        @apply mx-1 text-gray-500 dark:text-gray-400;
       }
     }
   }

@@ -95,7 +95,7 @@ class InstanceRestrictions extends ImmutablePureComponent {
     if (!fullMediaRemoval && media_nsfw) {
       items.push((
         <Text key='media_nsfw' className='flex items-center gap-2' theme='muted'>
-          <Icon id='eye-slash' />
+          <Icon src={require('@tabler/icons/eye-off.svg')} />
           <FormattedMessage
             id='federation_restriction.media_nsfw'
             defaultMessage='Attachments marked NSFW'
@@ -117,7 +117,7 @@ class InstanceRestrictions extends ImmutablePureComponent {
     if (remoteInstance.getIn(['federation', 'reject']) === true) {
       return (
         <Text className='flex items-center gap-2' theme='muted'>
-          <Icon id='times' />
+          <Icon src={require('@tabler/icons/x.svg')} />
           <FormattedMessage
             id='remote_instance.federation_panel.restricted_message'
             defaultMessage='{siteTitle} blocks all activities from {host}.'
@@ -141,7 +141,7 @@ class InstanceRestrictions extends ImmutablePureComponent {
     } else {
       return (
         <Text className='flex items-center gap-2' theme='muted'>
-          <Icon id='check' />
+          <Icon src={require('@tabler/icons/check.svg')} />
           <FormattedMessage
             id='remote_instance.federation_panel.no_restrictions_message'
             defaultMessage='{siteTitle} has placed no restrictions on {host}.'

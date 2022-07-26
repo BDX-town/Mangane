@@ -13,8 +13,8 @@ import Motion from '../../ui/util/optional_motion';
 import type { Map as ImmutableMap } from 'immutable';
 
 const bookIcon = require('@tabler/icons/book.svg');
-const fileAnalyticsIcon = require('@tabler/icons/file-analytics.svg');
 const fileCodeIcon = require('@tabler/icons/file-code.svg');
+const fileSpreadsheetIcon = require('@tabler/icons/file-spreadsheet.svg');
 const fileTextIcon = require('@tabler/icons/file-text.svg');
 const fileZipIcon = require('@tabler/icons/file-zip.svg');
 const defaultIcon = require('@tabler/icons/paperclip.svg');
@@ -39,9 +39,9 @@ export const MIMETYPE_ICONS: Record<string, string> = {
   'application/xhtml+xml': fileCodeIcon,
   'application/xml': fileCodeIcon,
   'application/epub+zip': bookIcon,
-  'application/vnd.oasis.opendocument.spreadsheet': fileAnalyticsIcon,
-  'application/vnd.ms-excel': fileAnalyticsIcon,
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': fileAnalyticsIcon,
+  'application/vnd.oasis.opendocument.spreadsheet': fileSpreadsheetIcon,
+  'application/vnd.ms-excel': fileSpreadsheetIcon,
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': fileSpreadsheetIcon,
   'application/pdf': fileTextIcon,
   'application/vnd.oasis.opendocument.presentation': presentationIcon,
   'application/vnd.ms-powerpoint': presentationIcon,

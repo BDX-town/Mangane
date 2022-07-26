@@ -84,7 +84,7 @@ const Aliases = () => {
                 <Text tag='span'>{alias}</Text>
               </div>
               <div className='flex items-center' role='button' tabIndex={0} onClick={handleFilterDelete} data-value={alias} aria-label={intl.formatMessage(messages.delete)}>
-                <Icon className='pr-1.5 text-lg' id='times' />
+                <Icon className='mr-1.5' src={require('@tabler/icons/x.svg')} />
                 <Text weight='bold' theme='muted'><FormattedMessage id='aliases.aliases_list_delete' defaultMessage='Unlink alias' /></Text>
               </div>
             </HStack>

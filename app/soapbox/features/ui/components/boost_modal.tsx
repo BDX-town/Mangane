@@ -38,7 +38,7 @@ const BoostModal: React.FC<IBoostModal> = ({ status, onReblog, onClose }) => {
         <ReplyIndicator status={status} hideActions />
 
         <Text>
-          <FormattedMessage id='boost_modal.combo' defaultMessage='You can press {combo} to skip this next time' values={{ combo: <span>Shift + <Icon id='retweet' /></span> }} />
+          <FormattedMessage id='boost_modal.combo' defaultMessage='You can press {combo} to skip this next time' values={{ combo: <span>Shift + <Icon className='inline-block align-middle' src={require('@tabler/icons/repeat.svg')} /></span> }} />
         </Text>
       </Stack>
     </Modal>
