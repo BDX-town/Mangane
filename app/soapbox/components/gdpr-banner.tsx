@@ -44,9 +44,13 @@ const GdprBanner: React.FC = () => {
         </Stack>
 
         <HStack space={2} justifyContent='end'>
-          <Button theme='secondary' to='/login'>
-            <FormattedMessage id='gdpr.learn_more' defaultMessage='Learn more' />
-          </Button>
+          {soapbox.gdprUrl && (
+            <a href={soapbox.gdprUrl} tabIndex={-1} className='inline-flex'>
+              <Button theme='secondary'>
+                <FormattedMessage id='gdpr.learn_more' defaultMessage='Learn more' />
+              </Button>
+            </a>
+          )}
 
           <Button theme='accent' onClick={handleAccept}>
             <FormattedMessage id='gdpr.accept' defaultMessage='Accept' />
