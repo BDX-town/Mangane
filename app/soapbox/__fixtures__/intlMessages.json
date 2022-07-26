@@ -835,6 +835,7 @@
   "registration.fields.username_placeholder": "Username",
   "registration.lead": "With an account on {instance} you\"ll be able to follow people on any server in the fediverse.",
   "registration.sign_up": "Sign up",
+  "registration.tos": "Terms of Service",
   "registration.privacy": "Privacy Policy",
   "registration.acceptance": "By registering, you agree to the {terms} and {privacy}.",
   "registration.reason": "Reason for Joining",
