@@ -1,9 +1,10 @@
-import { Map as ImmutableMap } from 'immutable';
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { InstanceRecord } from 'soapbox/normalizers';
 
-import { uploadCompose } from '../compose';
+import { uploadCompose, submitCompose } from '../compose';
+import { STATUS_CREATE_REQUEST } from '../statuses';
 
 import type { IntlShape } from 'react-intl';
 
@@ -110,5 +111,28 @@ describe('uploadCompose()', () => {
 
       expect(actions).toEqual(expectedActions);
     });
+  });
+});
+
+describe('submitCompose()', () => {
+  it('inserts mentions from text', async() => {
+    const state = rootState
+      .set('me', '123')
+      .setIn(['compose', 'text'], '@alex hello @mkljczk@pl.fediverse.pl @gg@汉语/漢語.com alex@alexgleason.me');
+
+    const store = mockStore(state);
+    await store.dispatch(submitCompose());
+    const actions = store.getActions();
+
+    const statusCreateRequest = actions.find(action => action.type === STATUS_CREATE_REQUEST);
+    const to = statusCreateRequest!.params.to as ImmutableOrderedSet<string>;
+
+    const expected = [
+      'alex',
+      'mkljczk@pl.fediverse.pl',
+      'gg@汉语/漢語.com',
+    ];
+
+    expect(to.toJS()).toEqual(expected);
   });
 });
