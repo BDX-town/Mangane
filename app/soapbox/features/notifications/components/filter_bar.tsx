@@ -15,7 +15,6 @@ const messages = defineMessages({
   boosts: { id: 'notifications.filter.boosts', defaultMessage: 'Reposts' },
   polls: { id: 'notifications.filter.polls', defaultMessage: 'Poll results' },
   follows: { id: 'notifications.filter.follows', defaultMessage: 'Follows' },
-  moves: { id: 'notifications.filter.moves', defaultMessage: 'Moves' },
   emoji_reacts: { id: 'notifications.filter.emoji_reacts', defaultMessage: 'Emoji reacts' },
   statuses: { id: 'notifications.filter.statuses', defaultMessage: 'Updates from people you follow' },
 });
@@ -87,12 +86,6 @@ const NotificationFilterBar = () => {
       title: intl.formatMessage(messages.follows),
       action: onClick('follow'),
       name: 'follow',
-    });
-    items.push({
-      text: <Icon src={require('feather-icons/dist/icons/briefcase.svg')} />,
-      title: intl.formatMessage(messages.moves),
-      action: onClick('move'),
-      name: 'move',
     });
   }
 
