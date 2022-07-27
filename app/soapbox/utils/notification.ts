@@ -11,6 +11,7 @@ const NOTIFICATION_TYPES = [
   'pleroma:chat_mention',
   'pleroma:emoji_reaction',
   'user_approved',
+  'update',
 ] as const;
 
 type NotificationType = typeof NOTIFICATION_TYPES[number];

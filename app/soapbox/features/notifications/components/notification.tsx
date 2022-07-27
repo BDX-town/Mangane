@@ -54,6 +54,7 @@ const icons: Record<NotificationType, string> = {
   'pleroma:chat_mention': require('@tabler/icons/messages.svg'),
   'pleroma:emoji_reaction': require('@tabler/icons/mood-happy.svg'),
   user_approved: require('@tabler/icons/user-plus.svg'),
+  update: require('@tabler/icons/pencil.svg'),
 };
 
 const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
@@ -100,6 +101,10 @@ const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
   user_approved: {
     id: 'notification.user_approved',
     defaultMessage: 'Welcome to {instance}!',
+  },
+  update: {
+    id: 'notification.update',
+    defaultMessage: '{name} edited a post',
   },
 });
 
@@ -287,6 +292,7 @@ const Notification: React.FC<INotificaton> = (props) => {
       case 'reblog':
       case 'status':
       case 'poll':
+      case 'update':
       case 'pleroma:emoji_reaction':
         return status && typeof status === 'object' ? (
           // @ts-ignore
