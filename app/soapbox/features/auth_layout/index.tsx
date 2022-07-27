@@ -12,6 +12,7 @@ import PasswordReset from '../auth_login/components/password_reset';
 import PasswordResetConfirm from '../auth_login/components/password_reset_confirm';
 import RegistrationForm from '../auth_login/components/registration_form';
 import ExternalLoginForm from '../external_login/components/external-login-form';
+import Footer from '../public_layout/components/footer';
 import RegisterInvite from '../register_invite';
 import Verification from '../verification';
 import EmailPassthru from '../verification/email_passthru';
@@ -41,9 +42,9 @@ const AuthLayout = () => {
     <div className='h-full'>
       <LandingGradient />
 
-      <main className='relative min-h-full sm:flex sm:justify-center'>
-        <div className='w-full sm:max-w-lg md:max-w-2xl lg:max-w-6xl'>
-          <header className='flex justify-between relative py-12 px-2'>
+      <main className='relative h-full sm:flex sm:justify-center'>
+        <div className='w-full h-full flex flex-col sm:max-w-lg md:max-w-2xl lg:max-w-6xl'>
+          <header className='flex justify-between relative py-12 px-2 mb-auto'>
             <div className='relative z-0 flex-1 px-2 lg:flex lg:items-center lg:justify-center lg:absolute lg:inset-0'>
               <Link to='/' className='cursor-pointer'>
                 <SiteLogo alt={siteTitle} className='h-7' />
@@ -63,7 +64,7 @@ const AuthLayout = () => {
             )}
           </header>
 
-          <div className='flex flex-col h-full justify-center items-center'>
+          <div className='flex flex-col justify-center items-center'>
             <div className='pb-10 sm:mx-auto w-full sm:max-w-lg md:max-w-2xl'>
               <Card variant='rounded' size='xl'>
                 <CardBody>
@@ -87,6 +88,10 @@ const AuthLayout = () => {
                 </CardBody>
               </Card>
             </div>
+          </div>
+
+          <div className='mt-auto'>
+            <Footer />
           </div>
         </div>
       </main>
