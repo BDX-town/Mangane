@@ -11,6 +11,9 @@ module.exports = {
       xl: '1280px',
     },
     extend: {
+      boxShadow: {
+        '3xl': '0 25px 75px -15px rgba(0, 0, 0, 0.25)',
+      },
       fontSize: {
         base: '0.9375rem',
       },
