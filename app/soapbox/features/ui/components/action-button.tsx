@@ -9,9 +9,11 @@ import {
   unblockAccount,
   muteAccount,
   unmuteAccount,
+  authorizeFollowRequest,
+  rejectFollowRequest,
 } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
-import { Button } from 'soapbox/components/ui';
+import { Button, HStack } from 'soapbox/components/ui';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
@@ -28,13 +30,15 @@ const messages = defineMessages({
   unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
   unfollow: { id: 'account.unfollow', defaultMessage: 'Unfollow' },
   unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
+  authorize: { id: 'follow_request.authorize', defaultMessage: 'Authorize' },
+  reject: { id: 'follow_request.reject', defaultMessage: 'Reject' },
 });
 
 interface IActionButton {
   /** Target account for the action. */
   account: AccountEntity
   /** Type of action to prioritize, eg on Blocks and Mutes pages. */
-  actionType?: 'muting' | 'blocking'
+  actionType?: 'muting' | 'blocking' | 'follow_request'
   /** Displays shorter text on the "Awaiting approval" button. */
   small?: boolean
 }
@@ -75,6 +79,14 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
     }
   };
 
+  const handleAuthorize = () => {
+    dispatch(authorizeFollowRequest(account.id));
+  };
+
+  const handleReject = () => {
+    dispatch(rejectFollowRequest(account.id));
+  };
+
   const handleRemoteFollow = () => {
     dispatch(openModal('UNAUTHORIZED', {
       action: 'FOLLOW',
@@ -112,6 +124,27 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
         text={text}
         onClick={handleBlock}
       />
+    );
+  };
+
+  const followRequestAction = () => {
+    if (account.relationship?.followed_by) return null;
+
+    return (
+      <HStack space={2}>
+        <Button
+          theme='secondary'
+          size='sm'
+          text={intl.formatMessage(messages.authorize)}
+          onClick={handleAuthorize}
+        />
+        <Button
+          theme='danger'
+          size='sm'
+          text={intl.formatMessage(messages.reject)}
+          onClick={handleReject}
+        />
+      </HStack>
     );
   };
 
@@ -162,6 +195,8 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
         return mutingAction();
       } else if (actionType === 'blocking') {
         return blockingAction();
+      } else if (actionType === 'follow_request') {
+        return followRequestAction();
       }
     }
 

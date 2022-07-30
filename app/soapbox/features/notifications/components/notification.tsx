@@ -271,6 +271,14 @@ const Notification: React.FC<INotificaton> = (props) => {
     switch (type) {
       case 'follow':
       case 'follow_request':
+        return account && typeof account === 'object' ? (
+          <AccountContainer
+            id={account.id}
+            hidden={hidden}
+            avatarSize={48}
+            actionType='follow_request'
+          />
+        ) : null;
       case 'user_approved':
         return account && typeof account === 'object' ? (
           <AccountContainer
