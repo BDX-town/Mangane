@@ -133,7 +133,7 @@ const SidebarNavigation = () => {
         {
           features.federating ? (
             <SidebarNavigationLink
-              icon={require('@tabler/icons/users.svg')}
+              icon={require('icons/bdx.svg')}
               text={<>{instance.get('title')}</>}
               to='/timeline/local'
             />
