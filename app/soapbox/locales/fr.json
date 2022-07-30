@@ -273,7 +273,7 @@
   "compare_history_modal.header": "Edit history",
   "compose.character_counter.title": "Used {chars} out of {maxChars} characters",
   "compose.invalid_schedule": "You must schedule a post at least 5 minutes out.",
-  "compose.submit_success": "Your post was sent",
+  "compose.submit_success": "Publication envoyée",
   "compose_form.direct_message_warning": "Ce pouet sera uniquement envoyé aux personnes mentionnées. Cependant, l’administration de votre instance et des instances réceptrices pourront inspecter ce message.",
   "compose_form.hashtag_warning": "Ce pouet ne sera pas listé dans les recherches par hashtag car sa visibilité est réglée sur \"non listé\". Seuls les pouets avec une visibilité \"publique\" peuvent être recherchés par hashtag.",
   "compose_form.lock_disclaimer": "Votre compte n’est pas {locked}. Tout le monde peut vous suivre et voir vos pouets privés.",
