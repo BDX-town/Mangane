@@ -106,3 +106,9 @@ noscript {
 .greentext {
   color: #789922;
 }
+
+// Virtuoso empty placeholder fix.
+// https://gitlab.com/petyosi/soapbox-fe/-/commit/1e22c39934b60e5e186de804060ecfdf1955b506
+div[data-viewport-type="window"] {
+  position: static !important;
+}
