@@ -97,6 +97,12 @@ const ChatBox: React.FC<IChatBox> = ({ chatId, onSetInputRef, autosize }) => {
     setContent(e.target.value);
   };
 
+  const handlePaste: React.ClipboardEventHandler<HTMLTextAreaElement> = (e) => {
+    if (!canSubmit() && e.clipboardData && e.clipboardData.files.length === 1) {
+      handleFiles(e.clipboardData.files);
+    }
+  };
+
   const markRead = () => {
     dispatch(markChatRead(chatId));
   };
@@ -182,6 +188,7 @@ const ChatBox: React.FC<IChatBox> = ({ chatId, onSetInputRef, autosize }) => {
           placeholder={intl.formatMessage(messages.placeholder)}
           onKeyDown={handleKeyDown}
           onChange={handleContentChange}
+          onPaste={handlePaste}
           value={content}
           ref={setInputRef}
         />
