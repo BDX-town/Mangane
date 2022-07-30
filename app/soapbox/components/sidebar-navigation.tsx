@@ -19,7 +19,8 @@ const messages = defineMessages({
   dashboard: { id: 'tabs_bar.dashboard', defaultMessage: 'Dashboard' },
   all: { id: 'tabs_bar.all', defaultMessage: 'All' },
   fediverse: { id: 'tabs_bar.fediverse', defaultMessage: 'Fediverse' },
-  settings: { id: 'tabs_bar.settings', defaultMessage: 'Settings'}
+  settings: { id: 'tabs_bar.settings', defaultMessage: 'Settings'},
+  direct: { id: 'column.direct', defaultMessage: 'Direct messages' },
 });
 
 /** Desktop sidebar with links to different views in the app. */
@@ -48,6 +49,12 @@ const SidebarNavigation = () => {
           count: followRequestsCount,
         });
       }
+
+      menu.push({
+        to: '/messages',
+        text: intl.formatMessage(messages.direct),
+        icon: require('@tabler/icons/mail.svg'),
+      });
 
       if (features.bookmarks) {
         menu.push({
