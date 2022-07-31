@@ -1,13 +1,19 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { getSettings, changeSettingImmediate } from 'soapbox/actions/settings';
 import { useAppSelector } from 'soapbox/hooks';
 import classNames from 'classnames';
+import { defineMessages, useIntl } from 'react-intl';
+
 
 import Icon from './../../components/icon';
 
 import Step0 from './steps/step0';
+
+const messages = defineMessages({
+    next: { id: 'enlistment.next', defaultMessage: 'Next' },
+    pass: { id: 'enlistment.pass', defaultMessage: 'Ignore' },
+});
 
 const Steps: Array<React.FC> = [
     Step0,
@@ -16,6 +22,7 @@ const Steps: Array<React.FC> = [
 ];
 
 const Enlistment: React.FC = () => {
+    const intl = useIntl();
     const dispatch = useDispatch();
     const [step, setStep] = useState(0);
 
@@ -42,7 +49,9 @@ const Enlistment: React.FC = () => {
             <section className="bg-white dark:bg-slate-800 shadow">
                 <StepComponent />
                 <div className='enlistment__bar flex justify-between items-center p-4'>
-                        <a onClick={onPass} className="text-gray-200 hover:underline opacity-50 cursor-pointer">Passer</a>
+                        <a onClick={onPass} className="text-gray-200 hover:underline opacity-50 cursor-pointer">
+                            {intl.formatMessage(messages.pass)}
+                        </a>
                         <div className='circles flex items-center'>
                             {
                                 Steps.map((e, index) => (
@@ -59,7 +68,7 @@ const Enlistment: React.FC = () => {
                             className="flex items-center text-gray-200 hover:text-white"
                             onClick={onNext}
                         >
-                            Suivant
+                            {intl.formatMessage(messages.next)}
                             <Icon
                                 className="ml-1"
                                 src={require('@tabler/icons/arrow-right.svg')}

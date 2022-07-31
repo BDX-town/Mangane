@@ -17,6 +17,14 @@
         max-width: 700px;
         border-radius: 0.75rem;
 
+        .enlistment__step0 {
+            max-width: 500px;
+            .enlisted__step0__username {
+                background-color: rgb(var(--color-primary-600) / var(--tw-bg-opacity));
+            }
+
+        }
+
         .enlistment__bar {
             background-color: rgb(var(--color-primary-600) / var(--tw-bg-opacity));
             border-bottom-left-radius: 0.75rem;
