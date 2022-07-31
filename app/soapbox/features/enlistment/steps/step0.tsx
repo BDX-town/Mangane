@@ -13,14 +13,20 @@ const messages = defineMessages({
 const Step0: React.FC = () => {
     const intl = useIntl();
     const account = useOwnAccount();
-    const instance = useAppSelector((state) => state.instance);
+    const instance = useAppSelector((state: any) => state.instance);
 
     return (
         <div className="enlistment__step0 mx-auto py-10 px-5">
             <h3 className="text-2xl font-bold">
                 {intl.formatMessage(messages.title)}
             </h3>
-            <p className="mb-5" dangerouslySetInnerHTML={{ __html: intl.formatMessage(messages.body)}} />
+            <p className="mb-5">
+                <span dangerouslySetInnerHTML={{ __html: intl.formatMessage(messages.body)}} />
+                &nbsp;
+                <span className="font-bold">
+                    {instance.get("uri").replace(/https?:\/\//, '')}
+                </span>
+            </p>
 
             <h4 className="uppercase text-lg mb-2">
                 {intl.formatMessage(messages.username)}

@@ -9,6 +9,8 @@ import { defineMessages, useIntl } from 'react-intl';
 import Icon from './../../components/icon';
 
 import Step0 from './steps/step0';
+import Step1 from './steps/step1';
+import Step2 from './steps/step2';
 
 const messages = defineMessages({
     next: { id: 'enlistment.next', defaultMessage: 'Next' },
@@ -17,8 +19,8 @@ const messages = defineMessages({
 
 const Steps: Array<React.FC> = [
     Step0,
-    Step0,
-    Step0,
+    Step1,
+    Step2,
 ];
 
 const Enlistment: React.FC = () => {
@@ -29,6 +31,10 @@ const Enlistment: React.FC = () => {
     const StepComponent: React.FC = Steps[step];
 
     const done = useAppSelector(state => getSettings(state).get('enlisted') as boolean);
+
+    useEffect(() => {
+        setStep(0);
+    }, [done]);
 
     const onPass = useCallback(() => {
         dispatch(changeSettingImmediate(['enlisted'], true));
@@ -46,7 +52,7 @@ const Enlistment: React.FC = () => {
 
     return (
         <div className="component-enlistment">
-            <section className="bg-white dark:bg-slate-800 shadow">
+            <section className="bg-white dark:bg-slate-800 drop-shadow-2xl">
                 <StepComponent />
                 <div className='enlistment__bar flex justify-between items-center p-4'>
                         <a onClick={onPass} className="text-gray-200 hover:underline opacity-50 cursor-pointer">
