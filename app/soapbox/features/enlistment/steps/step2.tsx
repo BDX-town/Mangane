@@ -3,15 +3,14 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useOwnAccount, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
-    title1: { id: 'enlistment.step2.title1' },
-    title2: { id: 'enlistment.step2.title2' },
-    title3: { id: 'enlistment.step2.title3' },
-    col1: { id: 'enlistment.step2.col1' },
-    col2: { id: 'enlistment.step2.col2' },
-    col3: { id: 'enlistment.step2.col3' },
-    explanation1: { id: 'enlistment.step2.explanation1' },
-    explanation2: { id: 'enlistment.step2.explanation2' },
-    explanation3: { id: 'enlistment.step2.explanation3' },
+    title1: { id: 'enlistment.step2.title1', defaultMessage: "Home" },
+    title3: { id: 'enlistment.step2.title3', defaultMessage: "Découvrir" },
+    col1: { id: 'enlistment.step2.col1', defaultMessage: "Ici tu es en terrain connu : seules tes publications et celles des personnes que tu suis s’afficheront sur ce fil."},
+    col2: { id: 'enlistment.step2.col2', defaultMessage:  "Ici c’est un peu ton quartier : tu n’y trouveras que des publications venant de membres de cette instance, que tu les suives ou non."},
+    col3: { id: 'enlistment.step2.col3', defaultMessage: "Sors des sentiers battus et va explorer le reste du monde : ce fil affiche les publications de l’ensemble des instances connues."},
+    explanation1: { id: 'enlistment.step2.explanation1', defaultMessage: "Au départ ce sera un peu vide mais pas de souci on peut t’aider à le fournir !"},
+    explanation2: { id: 'enlistment.step2.explanation2', defaultMessage: "On l’appelle généralementfil “local”."},
+    explanation3: { id: 'enlistment.step2.explanation3', defaultMessage: "On l’appelle généralementfil “global” ou “fédéré”."},
 });
 
 const Step2: React.FC = () => {
