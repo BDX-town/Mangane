@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { getSettings, changeSettingImmediate } from 'soapbox/actions/settings';
+import { useAppSelector } from 'soapbox/hooks';
 import classNames from 'classnames';
 
 import Icon from './../../components/icon';
@@ -14,17 +16,26 @@ const Steps: Array<React.FC> = [
 ];
 
 const Enlistment: React.FC = () => {
+    const dispatch = useDispatch();
     const [step, setStep] = useState(0);
 
     const StepComponent: React.FC = Steps[step];
 
-    const onPass = useCallback(() => {
+    const done = useAppSelector(state => getSettings(state).get('enlisted') as boolean);
 
+    const onPass = useCallback(() => {
+        dispatch(changeSettingImmediate(['enlisted'], true));
     }, []);
 
     const onNext = useCallback(() => {
+        if(step + 1 >= Steps.length) {
+            dispatch(changeSettingImmediate(['enlisted'], true));
+            return;
+        }
         setStep(step + 1);
-    }, [step, setStep]);
+    }, [step, setStep, dispatch]);
+
+    if(done) return null;
 
     return (
         <div className="component-enlistment">

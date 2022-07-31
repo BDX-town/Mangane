@@ -771,6 +771,7 @@
   "poll.votes": "{votes, plural, one {# vote} other {# votes}}",
   "poll_button.add_poll": "Ajouter un sondage",
   "poll_button.remove_poll": "Supprimer le sondage",
+  "preferences.fields.enlisted": "Ignorer l'onboarding",
   "preferences.fields.auto_play_gif_label": "Jouer automatiquement les GIFs",
   "preferences.fields.autoload_more_label": "Charger automatiquement d'autres publications lors du scroll en bas de page",
   "preferences.fields.autoload_timelines_label": "Charger automatiquement les nouvelles publications lors du scroll en haut de page",
