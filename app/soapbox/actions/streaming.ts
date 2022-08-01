@@ -11,6 +11,7 @@ import {
 } from './announcements';
 import { updateConversations } from './conversations';
 import { fetchFilters } from './filters';
+import { MARKER_FETCH_SUCCESS } from './markers';
 import { updateNotificationsQueue, expandNotifications } from './notifications';
 import { updateStatus } from './statuses';
 import {
@@ -114,6 +115,9 @@ const connectTimelineStream = (
           break;
         case 'announcement.delete':
           dispatch(deleteAnnouncement(data.payload));
+          break;
+        case 'marker':
+          dispatch({ type: MARKER_FETCH_SUCCESS, marker: JSON.parse(data.payload) });
           break;
       }
     },
