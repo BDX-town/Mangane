@@ -55,7 +55,13 @@ const Ad: React.FC<IAd> = ({ card, impression }) => {
 
         {card.image && (
           <a href={card.url} className='rounded-[10px] overflow-hidden' target='_blank'>
-            <img className='w-full' src={card.image} alt='' />
+            <img
+              className='w-full'
+              width={card.width}
+              height={card.height}
+              src={card.image}
+              alt=''
+            />
           </a>
         )}
       </Stack>
