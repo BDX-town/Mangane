@@ -9,7 +9,7 @@ import { defineMessages } from 'react-intl';
 import api, { getLinks } from 'soapbox/api';
 import { getFilters, regexFromFilters } from 'soapbox/selectors';
 import { isLoggedIn } from 'soapbox/utils/auth';
-import { parseVersion, PLEROMA } from 'soapbox/utils/features';
+import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features';
 import { unescapeHTML } from 'soapbox/utils/html';
 import { joinPublicPath } from 'soapbox/utils/static';
 
@@ -167,7 +167,7 @@ const dequeueNotifications = () =>
     dispatch(markReadNotifications());
   };
 
-const excludeTypesFromSettings = (getState: () => RootState) => (getSettings(getState()).getIn(['notifications', 'shows']) as ImmutableMap<string, boolean>).filter(enabled => !enabled).keySeq().toJS();
+// const excludeTypesFromSettings = (getState: () => RootState) => (getSettings(getState()).getIn(['notifications', 'shows']) as ImmutableMap<string, boolean>).filter(enabled => !enabled).keySeq().toJS();
 
 const excludeTypesFromFilter = (filter: string) => {
   const allTypes = ImmutableList(['follow', 'follow_request', 'favourite', 'reblog', 'mention', 'status', 'poll', 'move', 'pleroma:emoji_reaction']);
@@ -180,8 +180,9 @@ const expandNotifications = ({ maxId }: Record<string, any> = {}, done: () => an
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return dispatch(noOp);
 
-    const activeFilter = getSettings(getState()).getIn(['notifications', 'quickFilter', 'active']) as string;
-    const notifications = getState().notifications;
+    const state = getState();
+    const activeFilter = getSettings(state).getIn(['notifications', 'quickFilter', 'active']) as string;
+    const notifications = state.notifications;
     const isLoadingMore = !!maxId;
 
     if (notifications.get('isLoading')) {
@@ -191,10 +192,18 @@ const expandNotifications = ({ maxId }: Record<string, any> = {}, done: () => an
 
     const params: Record<string, any> = {
       max_id: maxId,
-      exclude_types: activeFilter === 'all'
-        ? excludeTypesFromSettings(getState)
-        : excludeTypesFromFilter(activeFilter),
     };
+
+    if (activeFilter !== 'all') {
+      const instance = state.instance;
+      const features = getFeatures(instance);
+
+      if (features.notificationsIncludeTypes) {
+        params.types = [activeFilter];
+      } else {
+        params.exclude_types = excludeTypesFromFilter(activeFilter);
+      }
+    }
 
     if (!maxId && notifications.get('items').size > 0) {
       params.since_id = notifications.getIn(['items', 0, 'id']);
