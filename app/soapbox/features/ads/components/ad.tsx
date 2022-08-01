@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Stack, HStack, Card, Avatar, Text, Icon } from 'soapbox/components/ui';
@@ -7,12 +7,23 @@ import { useAppSelector } from 'soapbox/hooks';
 import type { Card as CardEntity } from 'soapbox/types/entities';
 
 interface IAd {
+  /** Embedded ad data in Card format (almost like OEmbed). */
   card: CardEntity,
+  /** Impression URL to fetch upon display. */
+  impression?: string,
 }
 
 /** Displays an ad in sponsored post format. */
-const Ad: React.FC<IAd> = ({ card }) => {
+const Ad: React.FC<IAd> = ({ card, impression }) => {
   const instance = useAppSelector(state => state.instance);
+
+  // Fetch the impression URL (if any) upon displaying the ad.
+  // It's common for ad providers to provide this.
+  useEffect(() => {
+    if (impression) {
+      fetch(impression);
+    }
+  }, [impression]);
 
   return (
     <Card className='p-5' variant='rounded'>
