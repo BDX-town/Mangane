@@ -8,7 +8,7 @@ type Avatar = {
   username: string
 }
 
-const getCarouselAvatars = async () => {
+const getCarouselAvatars = async() => {
   const { data } = await API.get('/api/v1/truth/carousels/avatars');
   return data;
 };
