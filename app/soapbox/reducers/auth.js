@@ -38,7 +38,7 @@ const getSessionUser = () => {
 };
 
 const sessionUser = getSessionUser();
-const localState = fromJS(JSON.parse(localStorage.getItem(STORAGE_KEY)));
+export const localState = fromJS(JSON.parse(localStorage.getItem(STORAGE_KEY)));
 
 // Checks if the user has an ID and access token
 const validUser = user => {

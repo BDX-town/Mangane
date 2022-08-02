@@ -15,7 +15,6 @@ import aliases from './aliases';
 import announcements from './announcements';
 import auth from './auth';
 import backups from './backups';
-import carousels from './carousels';
 import chat_message_lists from './chat_message_lists';
 import chat_messages from './chat_messages';
 import chats from './chats';
@@ -124,7 +123,6 @@ const reducers = {
   onboarding,
   rules,
   history,
-  carousels,
   announcements,
 };
 

@@ -17,6 +17,7 @@ import * as BuildConfig from 'soapbox/build_config';
 import GdprBanner from 'soapbox/components/gdpr-banner';
 import Helmet from 'soapbox/components/helmet';
 import LoadingScreen from 'soapbox/components/loading-screen';
+import { AuthProvider, useAuth } from 'soapbox/contexts/auth-context';
 import AuthLayout from 'soapbox/features/auth_layout';
 import PublicLayout from 'soapbox/features/public_layout';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
@@ -38,7 +39,7 @@ import {
   useLocale,
 } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
-import { queryClient } from 'soapbox/queries/client';
+import { queryClient, useAxiosInterceptors } from 'soapbox/queries/client';
 import { useCachedLocationHandler } from 'soapbox/utils/redirect';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
@@ -62,7 +63,7 @@ const loadInitial = () => {
   // @ts-ignore
   return async(dispatch, getState) => {
     // Await for authenticated fetch
-    await dispatch(fetchMe());
+    const account = await dispatch(fetchMe());
     // Await for feature detection
     await dispatch(loadInstance());
     // Await for configuration
@@ -75,12 +76,15 @@ const loadInitial = () => {
     if (pepeEnabled && !state.me) {
       await dispatch(fetchVerificationConfig());
     }
+
+    return account;
   };
 };
 
 /** Highest level node with the Redux store. */
 const SoapboxMount = () => {
   useCachedLocationHandler();
+
   const me = useAppSelector(state => state.me);
   const instance = useAppSelector(state => state.instance);
   const account = useOwnAccount();
@@ -195,6 +199,9 @@ interface ISoapboxLoad {
 /** Initial data loader. */
 const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
   const dispatch = useAppDispatch();
+  const { setAccount, token, baseApiUri } = useAuth();
+
+  useAxiosInterceptors(token, baseApiUri);
 
   const me = useAppSelector(state => state.me);
   const account = useOwnAccount();
@@ -224,7 +231,8 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
 
   // Load initial data from the API
   useEffect(() => {
-    dispatch(loadInitial()).then(() => {
+    dispatch(loadInitial()).then((account) => {
+      setAccount(account);
       setIsLoaded(true);
     }).catch(() => {
       setIsLoaded(true);
@@ -282,15 +290,17 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
 /** The root React node of the application. */
 const Soapbox: React.FC = () => {
   return (
-    <Provider store={store}>
+    <AuthProvider>
       <QueryClientProvider client={queryClient}>
-        <SoapboxHead>
-          <SoapboxLoad>
-            <SoapboxMount />
-          </SoapboxLoad>
-        </SoapboxHead>
+        <Provider store={store}>
+          <SoapboxHead>
+            <SoapboxLoad>
+              <SoapboxMount />
+            </SoapboxLoad>
+          </SoapboxHead>
+        </Provider>
       </QueryClientProvider>
-    </Provider>
+    </AuthProvider>
   );
 };
 
