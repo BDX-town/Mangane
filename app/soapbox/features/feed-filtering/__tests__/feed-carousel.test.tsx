@@ -137,9 +137,7 @@ describe('<FeedCarousel />', () => {
           expect(screen.queryAllByTestId('prev-page')).toHaveLength(0);
         });
 
-        await waitFor(() => {
-          user.click(screen.getByTestId('next-page'));
-        });
+        await user.click(screen.getByTestId('next-page'));
 
         await waitFor(() => {
           expect(screen.getByTestId('prev-page')).toBeInTheDocument();
