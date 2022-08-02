@@ -120,7 +120,6 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   // NOTE: We are doing some trickery to load a feed of placeholders
   // Virtuoso's `EmptyPlaceholder` unfortunately doesn't work for our use-case
   const data = showPlaceholder ? Array(placeholderCount).fill('') : elements;
-  const isEmpty = data.length === 0; // Yes, if it has placeholders it isn't "empty"
 
   // Add a placeholder at the bottom for loading
   // (Don't use Virtuoso's `Footer` component because it doesn't preserve its height)
@@ -216,8 +215,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
     return 0;
   }, [showLoading, initialTopMostItemIndex]);
 
-  /** Render the actual Virtuoso list. */
-  const renderFeed = (): JSX.Element => (
+  return (
     <Virtuoso
       ref={ref}
       id={id}
@@ -245,13 +243,6 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
       }}
     />
   );
-
-  // Conditionally render inner elements.
-  if (isEmpty) {
-    return renderEmpty();
-  } else {
-    return renderFeed();
-  }
 });
 
 export default ScrollableList;
