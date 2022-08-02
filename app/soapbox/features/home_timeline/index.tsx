@@ -90,6 +90,7 @@ const HomeTimeline: React.FC = () => {
           onLoadMore={handleLoadMore}
           timelineId='home'
           divideType='space'
+          showAds
           emptyMessage={
             <Stack space={1}>
               <Text size='xl' weight='medium' align='center'>
