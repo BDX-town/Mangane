@@ -1114,7 +1114,8 @@
   "enlistment.step0.username": "ton pseudo complet",
   "enlistment.step0.explanation": "C’est cet identifiant que tu peux partager sur le fediverse",
   "enlistment.step1.title": "Comment ça marche ?",
-  "enlistment.step1.left": "Ici tu es sur {title}. Si tu échanges avec des gens de la même instance que toi, tu peux les mentionners avec simplement <span class='font-bold'>@pseudo</span><br/><br />ex: <a href='{contact_url}'>{contact_name}</a>, si tu veux parler à l’admin de {title}",
+  "enlistment.step1.left": "Ici tu es sur {title}. Si tu échanges avec des gens de la même instance que toi, tu peux les mentionners avec simplement {username}{br}{br}ex: {contact}, si tu veux parler à l’admin de {title}",
+  "enlistment.step1.username": "@pseudo",
   "enlistment.step1.right": "Si tu échanges avec une personne d’une autre instance il faudra la mentionner avec son <span class='font-bold'>@pseudo@instance</span><br/><br/> ex: <a href='https://oslo.town/@matt'>@matt@oslo.town</a>, si tu veux parler à l’admin d’Oslo.town",
   "enlistment.step1.explanation": "Pas d’inquiétude cependant, lors de la rédaction d’un post, l’autosuggestion t’aidera à trouver la bonne mention ! Par ailleurs si tu réponds à un post, la mention sera automatiquement écrite de la bonne manière.",
   "enlistment.step2.title1": "Home",
@@ -1124,5 +1125,15 @@
   "enlistment.step2.col3": "Sors des sentiers battus et va explorer le reste du monde : ce fil affiche les publications de l’ensemble des instances connues.",
   "enlistment.step2.explanation1": "Au départ ce sera un peu vide mais pas de souci on peut t’aider à le fournir !",
   "enlistment.step2.explanation2": "On l’appelle généralementfil “local”.",
-  "enlistment.step2.explanation3": "On l’appelle généralementfil “global” ou “fédéré”."
+  "enlistment.step2.explanation3": "On l’appelle généralementfil “global” ou “fédéré”.",
+  "enlistment.step3.title": "Confidentialité",
+  "enlistment.step3.description": "Mangane offre un contrôle précis de qui peut voir tes publications et donc interagir avec toi. ",
+  "enlistment.step3.public-title": "Public",
+  "enlistment.step3.public-description": "La publication est affichée sur l'ensemble des fils, y compris sur les autres instances.",
+  "enlistment.step3.followers-title": "Abonné·e·s seulement",
+  "enlistment.step3.followers-description": "La publication n’est affichée sur aucun fil public et n’est visible que par les personnes qui te suivent",
+  "enlistment.step3.unlisted-title": "Non-listé",
+  "enlistment.step3.unlisted-description": "La publication est publique mais n’apparaît que dans les fils de vos abonnés ainsi que sur ton profil",
+  "enlistment.step3.direct-title": "Direct",
+  "enlistment.step3.direct-description": "La publication n'est visible que par les personnes mentionnées via @pseudo@instance"
 }

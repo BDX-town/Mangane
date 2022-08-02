@@ -3,10 +3,10 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useOwnAccount, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
-    title: { id: 'enlistment.step0.title', defaultMessage: "Bienvenue sur Mangane !"},
-    body: { id: 'enlistment.step0.body', defaultMessage: "C’est cet identifiant que tu peux partager sur le fediverse" },
-    username: { id: 'enlistment.step0.username', defaultMessage: "ton pseudo complet"},
-    explanation: { id: 'enlistment.step0.explanation', defaultMessage: "Pas d’inquiétude cependant, lors de la rédaction d’un post, l’autosuggestion t’aidera à trouver la bonne mention ! Par ailleurs si tu réponds à un post, la mention sera automatiquement écrite de la bonne manière."},
+    title: { id: 'enlistment.step0.title'},
+    body: { id: 'enlistment.step0.body'},
+    username: { id: 'enlistment.step0.username'},
+    explanation: { id: 'enlistment.step0.explanation'},
 });
 
 const Step0: React.FC = () => {

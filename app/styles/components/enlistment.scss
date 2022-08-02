@@ -17,23 +17,16 @@
         max-width: 1000px;
         border-radius: 0.75rem;
 
-        .enlistment__step0 {
+        .enlistment__step0, .enlistment__step1, .enlistment__step2, .enlistment__step3 {
             max-width: 700px;
             .enlisted__step0__username {
                 background-color: rgb(var(--color-primary-600) / var(--tw-bg-opacity));
             }
 
-        }
-
-        .enlistment__step1 {
-            max-width: 700px;
             a {
                 color: rgb(var(--color-primary-600) / var(--tw-bg-opacity));
             }
-        }
 
-        .enlistment__step2 {
-            max-width: 700px;
         }
 
         .enlistment__bar {
