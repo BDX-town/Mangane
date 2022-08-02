@@ -278,6 +278,7 @@ module.exports = {
       files: ['**/*.ts', '**/*.tsx'],
       rules: {
         'no-undef': 'off', // https://stackoverflow.com/a/69155899
+        'consistent-return': 'off',
       },
       parser: '@typescript-eslint/parser',
     },
