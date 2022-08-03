@@ -44,6 +44,7 @@ describe('compose reducer', () => {
         type: actions.COMPOSE_SET_STATUS,
         status: normalizeStatus(fromJS(require('soapbox/__fixtures__/pleroma-status-deleted.json'))),
         v: { software: 'Pleroma' },
+        withRedraft: true,
       };
 
       const result = reducer(undefined, action);
