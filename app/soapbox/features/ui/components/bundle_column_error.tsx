@@ -22,15 +22,15 @@ const BundleColumnError: React.FC<IBundleColumnError> = ({ onRetry }) => {
 
   return (
     <Column label={intl.formatMessage(messages.title)}>
-      <Stack space={4} alignItems='center' justifyContent='center' className='bg-primary-50 dark:bg-slate-700 p-10 min-h-[160px] rounded-lg'>
+      <Stack space={4} alignItems='center' justifyContent='center' className='p-10 min-h-[160px] rounded-lg'>
         <IconButton
-          iconClassName='w-20 h-20'
+          iconClassName='w-10 h-10'
           title={intl.formatMessage(messages.retry)}
           src={require('@tabler/icons/refresh.svg')}
           onClick={handleRetry}
         />
 
-        <Text align='center'>{intl.formatMessage(messages.body)}</Text>
+        <Text align='center' theme='muted'>{intl.formatMessage(messages.body)}</Text>
       </Stack>
     </Column>
   );

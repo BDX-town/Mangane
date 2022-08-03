@@ -19,7 +19,7 @@ const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, src, text,
 
   const isActive = (): boolean => {
     if (paths) {
-      return paths.some(path =>  pathname.startsWith(path));
+      return paths.some(path => pathname.startsWith(path));
     } else {
       return exact ? pathname === to : pathname.startsWith(to);
     }
@@ -34,8 +34,8 @@ const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, src, text,
           src={src}
           className={classNames({
             'h-5 w-5': true,
-            'text-gray-600 dark:text-gray-300': !active,
-            'text-primary-600': active,
+            'text-gray-600': !active,
+            'text-primary-500': active,
           })}
           count={count}
         />
@@ -44,13 +44,21 @@ const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, src, text,
           src={src}
           className={classNames({
             'h-5 w-5': true,
-            'text-gray-600 dark:text-gray-300': !active,
-            'text-primary-600': active,
+            'text-gray-600': !active,
+            'text-primary-500': active,
           })}
         />
       )}
 
-      <Text tag='span' size='xs'>
+      <Text
+        tag='span'
+        size='xs'
+        weight='medium'
+        className={classNames({
+          'text-gray-600': !active,
+          'text-primary-500': active,
+        })}
+      >
         {text}
       </Text>
     </NavLink>

@@ -361,7 +361,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         <NavLink
           to={`/@${status.getIn(['account', 'acct'])}`}
           onClick={(event) => event.stopPropagation()}
-          className='hidden sm:flex items-center text-gray-500 text-xs font-medium space-x-1 hover:underline'
+          className='hidden sm:flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 hover:underline'
         >
           <Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />
 
@@ -384,7 +384,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
           <NavLink
             to={`/@${status.getIn(['account', 'acct'])}`}
             onClick={(event) => event.stopPropagation()}
-            className='flex items-center text-gray-500 text-xs font-medium space-x-1 hover:underline'
+            className='flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 hover:underline'
           >
             <Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />
 

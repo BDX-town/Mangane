@@ -49,7 +49,8 @@ const DevelopersChallenge = () => {
             values={{ function: <span className='font-mono'>soapbox()</span> }}
           />
         </Text>
-        <Text tag='pre' family='mono'>
+
+        <Text tag='pre' family='mono' theme='muted'>
           {challenge}
         </Text>
 

@@ -1,9 +1,9 @@
 .react-datepicker {
-  @apply dark:bg-slate-900 dark:border-slate-700 p-4 font-sans text-xs text-gray-900 dark:text-gray-300 border border-solid border-gray-200 rounded-lg;
+  @apply dark:bg-gray-900 dark:border-gray-700 p-4 font-sans text-xs text-gray-900 dark:text-gray-300 border border-solid border-gray-200 rounded-lg;
 }
 
 .react-datepicker__input-container > input {
-  @apply dark:bg-slate-800 dark:text-white block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md focus:ring-primary-500 focus:border-primary-500;
+  @apply dark:bg-gray-800 dark:text-white block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md focus:ring-primary-500 focus:border-primary-500;
 
   &.has-error {
     @apply text-red-600 border-red-600;
@@ -12,11 +12,11 @@
 
 .react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::before,
 .react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::after {
-  @apply border-b-white dark:border-b-slate-900;
+  @apply border-b-white dark:border-b-gray-900;
 }
 
 .react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::before {
-  @apply border-b-gray-200 dark:border-b-slate-700;
+  @apply border-b-gray-200 dark:border-b-gray-700;
 }
 
 .react-datepicker__header:not(.react-datepicker__header--has-time-select) {
@@ -24,7 +24,7 @@
 }
 
 .react-datepicker__header {
-  @apply bg-white dark:bg-slate-900 border-b-0 py-1 px-0;
+  @apply bg-white dark:bg-gray-900 border-b-0 py-1 px-0;
   // border-top-left-radius: var(--border-radius-lg);
 }
 
@@ -39,7 +39,7 @@
 }
 
 .react-datepicker__navigation {
-  @apply top-4 h-8 w-8 rounded hover:bg-gray-50 dark:hover:bg-slate-900/50;
+  @apply top-4 h-8 w-8 rounded hover:bg-gray-50 dark:hover:bg-gray-900/50;
 }
 
 .react-datepicker__navigation-icon {
@@ -82,11 +82,11 @@
 }
 
 .react-datepicker__time {
-  @apply dark:bg-slate-900;
+  @apply dark:bg-gray-900;
 }
 
 .react-datepicker__time-container {
-  @apply dark:border-slate-700;
+  @apply dark:border-gray-700;
 }
 
 .react-datepicker__day-name,
@@ -108,7 +108,7 @@
 .react-datepicker__quarter-text:hover,
 .react-datepicker__year-text:hover,
 .react-datepicker__time-list-item:hover {
-  @apply bg-gray-100 dark:bg-slate-700 rounded;
+  @apply bg-gray-100 dark:bg-gray-700 rounded;
 }
 
 .react-datepicker__day--selected,
@@ -123,14 +123,14 @@
 .react-datepicker__year-text--selected,
 .react-datepicker__year-text--in-selecting-range,
 .react-datepicker__year-text--in-range {
-  @apply bg-primary-600 hover:bg-primary-700 dark:bg-slate-300 dark:hover:bg-slate-200 text-white dark:text-black rounded;
+  @apply bg-primary-600 hover:bg-primary-700 dark:bg-gray-300 dark:hover:bg-gray-200 text-white dark:text-black rounded;
 }
 
 .react-datepicker__day--keyboard-selected,
 .react-datepicker__month-text--keyboard-selected,
 .react-datepicker__quarter-text--keyboard-selected,
 .react-datepicker__year-text--keyboard-selected {
-  @apply bg-primary-50 hover:bg-primary-100 dark:bg-slate-700 dark:hover:bg-slate-600 text-primary-600 dark:text-primary-400;
+  @apply bg-primary-50 hover:bg-primary-100 dark:bg-gray-700 dark:hover:bg-gray-600 text-primary-600 dark:text-primary-400;
 }
 
 .react-datepicker__close-icon::after {

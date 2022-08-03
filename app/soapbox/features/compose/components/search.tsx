@@ -119,7 +119,7 @@ const Search = (props: ISearch) => {
 
       <div className='relative'>
         <Component
-          className='block w-full pl-3 pr-10 py-2 border border-gray-100 dark:border-slate-600 rounded-full leading-5 bg-gray-100 dark:text-white placeholder-gray-500 dark:placeholder-gray-300 dark:bg-slate-900 focus:bg-white focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+          className='block w-full pl-3 pr-10 py-2 border border-gray-200 dark:border-gray-800 rounded-full leading-5 bg-gray-200 dark:bg-gray-800 dark:text-white placeholder:text-gray-600 dark:placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 sm:text-sm'
           type='text'
           id='search'
           placeholder={intl.formatMessage(messages.placeholder)}
@@ -141,12 +141,12 @@ const Search = (props: ISearch) => {
         >
           <SvgIcon
             src={require('@tabler/icons/search.svg')}
-            className={classNames('h-4 w-4 text-gray-400', { hidden: hasValue })}
+            className={classNames('h-4 w-4 text-gray-600', { hidden: hasValue })}
           />
 
           <SvgIcon
             src={require('@tabler/icons/x.svg')}
-            className={classNames('h-4 w-4 text-gray-400', { hidden: !hasValue })}
+            className={classNames('h-4 w-4 text-gray-600', { hidden: !hasValue })}
             aria-label={intl.formatMessage(messages.placeholder)}
           />
         </div>

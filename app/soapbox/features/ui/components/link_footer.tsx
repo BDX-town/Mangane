@@ -19,7 +19,7 @@ interface IFooterLink {
 const FooterLink: React.FC<IFooterLink> = ({ children, className, ...rest }): JSX.Element => {
   return (
     <div>
-      <Link className={classNames('text-gray-400 hover:text-gray-500 hover:underline', className)} {...rest}>{children}</Link>
+      <Link className={classNames('text-gray-700 dark:text-gray-600 hover:text-gray-800 dark:hover:text-gray-500 hover:underline', className)} {...rest}>{children}</Link>
     </div>
   );
 };
@@ -38,7 +38,7 @@ const LinkFooter: React.FC = (): JSX.Element => {
 
   return (
     <div className='space-y-2'>
-      <div className='flex flex-wrap items-center divide-x-dot text-gray-400'>
+      <div className='flex flex-wrap items-center divide-x-dot text-gray-600'>
         {account && <>
           {features.profileDirectory && (
             <FooterLink to='/directory'><FormattedMessage id='navigation_bar.profile_directory' defaultMessage='Profile directory' /></FooterLink>

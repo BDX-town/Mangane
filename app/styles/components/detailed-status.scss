@@ -92,7 +92,7 @@
 }
 
 .thread {
-  @apply bg-white dark:bg-slate-800 p-4 shadow-xl dark:shadow-inset sm:p-6 sm:rounded-xl;
+  @apply bg-white dark:bg-primary-900 p-4 shadow-xl dark:shadow-none sm:p-6 sm:rounded-xl;
 
   &__status {
     @apply relative pb-4;
@@ -132,7 +132,7 @@
   // }
 
   &__connector {
-    @apply bg-gray-200 dark:bg-gray-600 absolute w-0.5 left-5 hidden;
+    @apply bg-gray-200 dark:bg-primary-800 absolute w-0.5 left-5 hidden;
 
     &--bottom {
       @apply block;

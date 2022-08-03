@@ -83,7 +83,7 @@ const EditEmail = () => {
             </FormGroup>
 
             <FormActions>
-              <Button to='/settings' theme='ghost'>{intl.formatMessage(messages.cancel)}</Button>
+              <Button to='/settings' theme='tertiary'>{intl.formatMessage(messages.cancel)}</Button>
               <Button type='submit' theme='primary' disabled={isLoading}>{intl.formatMessage(messages.submit)}</Button>
             </FormActions>
           </Form>

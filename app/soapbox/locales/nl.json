@@ -624,7 +624,7 @@
   "lists.edit": "Lijst bewerken",
   "lists.edit.submit": "Titel veranderen",
   "lists.new.create": "Lijst toevoegen",
-  "lists.new.create_title": "Create",
+  "lists.new.create_title": "Add list",
   "lists.new.save_title": "Save Title",
   "lists.new.title_placeholder": "Naam nieuwe lijst",
   "lists.search": "Zoek naar mensen die je volgt",

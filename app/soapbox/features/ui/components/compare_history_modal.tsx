@@ -36,7 +36,7 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
     body = <Spinner />;
   } else {
     body = (
-      <div className='divide-y divide-solid divide-gray-200 dark:divide-slate-700'>
+      <div className='divide-y divide-solid divide-gray-200 dark:divide-gray-800'>
         {versions?.map((version) => {
           const content = { __html: version.contentHtml };
           const spoilerContent = { __html: version.spoilerHtml };

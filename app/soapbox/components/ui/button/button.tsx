@@ -44,7 +44,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
     onClick,
     size = 'md',
     text,
-    theme = 'accent',
+    theme = 'secondary',
     to,
     type = 'button',
   } = props;

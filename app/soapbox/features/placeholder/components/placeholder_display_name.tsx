@@ -13,7 +13,7 @@ const PlaceholderDisplayName: React.FC<IPlaceholderDisplayName> = ({ minLength, 
   const acctLength = randomIntFromInterval(maxLength, minLength);
 
   return (
-    <div className='flex flex-col text-slate-200 dark:text-slate-700'>
+    <div className='flex flex-col text-primary-50 dark:text-primary-800'>
       <p>{generateText(length)}</p>
       <p>{generateText(acctLength)}</p>
     </div>

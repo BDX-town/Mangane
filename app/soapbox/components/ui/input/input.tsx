@@ -57,7 +57,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
       <div className={classNames('mt-1 relative rounded-md shadow-sm', outerClassName)}>
         {icon ? (
           <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-            <Icon src={icon} className='h-4 w-4 text-gray-400' aria-hidden='true' />
+            <Icon src={icon} className='h-4 w-4 text-gray-700 dark:text-gray-600' aria-hidden='true' />
           </div>
         ) : null}
 
@@ -72,7 +72,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
           type={revealed ? 'text' : type}
           ref={ref}
           className={classNames({
-            'dark:bg-slate-800 dark:text-white block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md focus:ring-primary-500 focus:border-primary-500':
+            'bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-600 dark:placeholder:text-gray-600 block w-full sm:text-sm border-gray-400 dark:border-gray-800 dark:ring-1 dark:ring-gray-800 rounded-md focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
               true,
             'pr-7': isPassword,
             'text-red-600 border-red-600': hasError,
@@ -94,7 +94,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
                 type='button'
                 onClick={togglePassword}
                 tabIndex={-1}
-                className='text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 h-full px-2 focus:ring-primary-500 focus:ring-2'
+                className='text-gray-700 dark:text-gray-600 hover:text-gray-500 dark:hover:text-gray-400 h-full px-2 focus:ring-primary-500 focus:ring-2'
               >
                 <SvgIcon
                   src={revealed ? require('@tabler/icons/eye-off.svg') : require('@tabler/icons/eye.svg')}

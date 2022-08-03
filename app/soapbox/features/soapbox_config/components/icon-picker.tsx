@@ -9,7 +9,7 @@ interface IIconPicker {
 
 const IconPicker: React.FC<IIconPicker> = ({ value, onChange }) => {
   return (
-    <div className='mt-1 relative rounded-md shadow-sm dark:bg-slate-800 border border-solid border-gray-300 dark:border-gray-600 rounded-md'>
+    <div className='mt-1 relative rounded-md shadow-sm dark:bg-gray-800 border border-solid border-gray-300 dark:border-gray-600'>
       <IconPickerDropdown value={value} onPickEmoji={onChange} />
     </div>
   );

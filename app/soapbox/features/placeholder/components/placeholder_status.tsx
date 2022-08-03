@@ -13,8 +13,8 @@ interface IPlaceholderStatus {
 const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ thread = false }) => (
   <div
     className={classNames({
-      'status-placeholder bg-white dark:bg-slate-800': true,
-      'shadow-xl dark:shadow-inset sm:rounded-xl px-4 py-6 sm:p-5': !thread,
+      'status-placeholder bg-white dark:bg-primary-900': true,
+      'shadow-xl dark:shadow-none sm:rounded-xl px-4 py-6 sm:p-5': !thread,
     })}
   >
     <div className='w-full animate-pulse overflow-hidden'>

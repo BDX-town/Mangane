@@ -1,5 +1,5 @@
 .thumb-navigation {
-  @apply fixed lg:hidden bottom-0 bg-white dark:bg-slate-800 border-t border-solid border-gray-200 dark:border-gray-700 left-0 right-0 shadow-2xl w-full flex z-50;
+  @apply fixed lg:hidden bottom-0 bg-white/90 dark:bg-primary-900/90 backdrop-blur-md border-t border-solid border-gray-200 dark:border-gray-800 left-0 right-0 shadow-2xl w-full flex z-50;
   padding-bottom: env(safe-area-inset-bottom); /* iOS PWA */
   overflow-x: auto;
   scrollbar-width: thin;

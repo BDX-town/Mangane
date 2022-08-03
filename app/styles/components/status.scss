@@ -37,7 +37,7 @@
 
   p > code,
   pre {
-    @apply bg-gray-100 dark:bg-slate-900;
+    @apply bg-gray-100 dark:bg-primary-900;
   }
 
   /* Inline code */
@@ -113,7 +113,7 @@
 }
 
 .status-link {
-  @apply hover:underline text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-500;
+  @apply hover:underline text-primary-600 dark:text-accent-blue hover:text-primary-800 dark:hover:text-accent-blue;
 }
 
 .status {
@@ -174,7 +174,7 @@
 }
 
 .status__wrapper {
-  @apply bg-white dark:bg-slate-800 px-4 py-6 shadow-xl dark:shadow-inset sm:p-5 sm:rounded-xl;
+  @apply bg-white dark:bg-primary-900 px-4 py-6 shadow-xl dark:shadow-none sm:p-5 sm:rounded-xl;
 }
 
 [column-type=filled] .status__wrapper,
@@ -183,20 +183,17 @@
 }
 
 .status-check-box {
-  border-bottom: 1px solid var(--background-color);
-  display: flex;
+  @apply flex items-center justify-between;
 
   .status-check-box__status {
-    margin: 10px 0 10px 10px;
-    flex: 1;
+    @apply py-2;
 
     .media-gallery {
       max-width: 250px;
     }
 
     .status__content {
-      padding: 0;
-      white-space: normal;
+      @apply p-0 text-gray-700 dark:text-gray-500 text-sm whitespace-normal;
     }
 
     .video-player,
@@ -251,7 +248,7 @@
   }
 
   a {
-    @apply text-primary-600 dark:text-primary-400 hover:underline;
+    @apply text-primary-600 dark:text-accent-blue hover:underline;
 
     .fa {
       color: var(--primary-text-color);
@@ -289,11 +286,11 @@
 }
 
 .status-card {
-  @apply flex text-sm border border-solid border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-200 mt-3 min-h-[150px] no-underline overflow-hidden;
+  @apply flex text-sm border border-solid border-gray-200 dark:border-gray-800 rounded-lg text-gray-800 dark:text-gray-200 mt-3 min-h-[150px] no-underline overflow-hidden;
 }
 
 a.status-card {
-  @apply cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 hover:no-underline;
+  @apply cursor-pointer hover:bg-gray-100 dark:hover:bg-primary-800/30 hover:no-underline;
 }
 
 .status-card-photo {
@@ -309,6 +306,7 @@ a.status-card {
 }
 
 .status-card__host {
+  @apply text-primary-600 dark:text-accent-blue;
   display: flex;
   margin-top: 10px;
   font-size: 13px;
@@ -358,7 +356,7 @@ a.status-card {
 }
 
 .status-card.compact {
-  @apply border-gray-200 dark:border-gray-700;
+  @apply border-gray-200 dark:border-gray-800;
 }
 
 .status-card__image-image {

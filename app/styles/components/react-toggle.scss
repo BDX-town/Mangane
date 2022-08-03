@@ -28,12 +28,12 @@
 }
 
 .react-toggle-track {
-  @apply bg-gray-300 dark:bg-slate-700 w-[50px] p-0 rounded-full transition-colors;
+  @apply bg-gray-500 dark:bg-gray-700 w-[50px] p-0 rounded-full transition-colors;
   height: var(--input-height);
 }
 
 .react-toggle--checked .react-toggle-track {
-  @apply bg-primary-600;
+  @apply bg-primary-600 dark:bg-accent-blue;
 }
 
 .react-toggle-track-check {
@@ -88,6 +88,6 @@
 }
 
 .react-toggle--checked .react-toggle-thumb {
-  @apply border-primary-600;
+  @apply border-primary-600 dark:border-accent-blue;
   left: 21px;
 }

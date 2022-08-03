@@ -64,7 +64,7 @@ const FundingPanel: React.FC = () => {
         <Text>{goalText}</Text>
       </div>
       <div>
-        <Button theme='ghost' onClick={handleDonateClick}>
+        <Button theme='secondary' onClick={handleDonateClick}>
           <FormattedMessage id='patron.donate' defaultMessage='Donate' />
         </Button>
       </div>

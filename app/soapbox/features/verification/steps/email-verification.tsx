@@ -39,12 +39,12 @@ const EmailSent: React.FC<IEmailSent> = ({ handleSubmit }) => {
     <div className='sm:pt-10 mx-auto flex flex-col items-center justify-center'>
       <Icon src={require('@tabler/icons/send.svg')} className='text-primary-600 dark:text-primary-400 h-12 w-12 mb-5' />
 
-      <div className='space-y-1 text-center mb-4'>
+      <div className='space-y-2 text-center mb-4'>
         <Text weight='bold' size='3xl'>We sent you an email</Text>
         <Text theme='muted'>Click on the link in the email to validate your email.</Text>
       </div>
 
-      <Button theme='ghost' onClick={handleSubmit}>Resend verification email</Button>
+      <Button theme='tertiary' onClick={handleSubmit}>Resend verification email</Button>
     </div>
   );
 };
@@ -108,7 +108,7 @@ const EmailVerification = () => {
 
   return (
     <div>
-      <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-600 border-solid -mx-4 sm:-mx-10'>
+      <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
         <h1 className='text-center font-bold text-2xl'>{intl.formatMessage({ id: 'email_verification.header', defaultMessage: 'Enter your email address' })}</h1>
       </div>
 

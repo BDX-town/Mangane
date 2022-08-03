@@ -19,18 +19,6 @@ import type {
 } from 'soapbox/types/soapbox';
 
 const DEFAULT_COLORS = ImmutableMap<string, any>({
-  gray: ImmutableMap({
-    50: '#f9fafb',
-    100: '#f3f4f6',
-    200: '#e5e7eb',
-    300: '#d1d5db',
-    400: '#9ca3af',
-    500: '#6b7280',
-    600: '#4b5563',
-    700: '#374151',
-    800: '#1f2937',
-    900: '#111827',
-  }),
   success: ImmutableMap({
     50: '#f0fdf4',
     100: '#dcfce7',
@@ -168,6 +156,7 @@ const maybeAddMissingColors = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMa
   const missing = ImmutableMap({
     'gradient-start': colors.getIn(['primary', '500']),
     'gradient-end': colors.getIn(['accent', '500']),
+    'accent-blue': colors.getIn(['primary', '600']),
   });
 
   return soapboxConfig.set('colors', missing.mergeDeep(colors));
