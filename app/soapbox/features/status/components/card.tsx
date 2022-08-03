@@ -236,7 +236,15 @@ const Card: React.FC<ICard> = ({
     );
   } else if (card.image) {
     embed = (
-      <div className='status-card__image'>
+      <div className={classnames(
+        'status-card__image',
+        'w-full rounded-l md:w-auto md:h-auto flex-none md:flex-auto',
+        {
+          'h-auto': horizontal,
+          'h-[200px]': !horizontal,
+        },
+      )}
+      >
         {canvas}
         {thumbnail}
       </div>

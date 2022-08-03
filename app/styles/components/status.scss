@@ -340,6 +340,7 @@ a.status-card {
   flex: 0 0 40%;
   background: var(--brand-color--med);
   position: relative;
+  overflow: hidden;
 
   & > .svg-icon {
     width: 40px;
@@ -378,10 +379,6 @@ a.status-card {
 
 .status-card--link {
   @apply flex flex-col md:flex-row;
-}
-
-.status-card--link .status-card__image {
-  @apply w-full rounded-l md:w-auto h-[200px] md:h-auto flex-none md:flex-auto;
 }
 
 .material-status {
