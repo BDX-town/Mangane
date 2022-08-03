@@ -165,7 +165,7 @@ const Card: React.FC<ICard> = ({
         <Text tag='span' theme='muted'>
           <Icon src={require('@tabler/icons/link.svg')} />
         </Text>
-        <Text tag='span' theme='muted'>
+        <Text tag='span' theme='muted' size='sm'>
           {card.provider_name}
         </Text>
       </HStack>
