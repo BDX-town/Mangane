@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
-import { HStack, Stack } from 'soapbox/components/ui';
+import { HStack, Stack, Text } from 'soapbox/components/ui';
 import { normalizeAttachment } from 'soapbox/normalizers';
 
 import type { Card as CardEntity, Attachment } from 'soapbox/types/entities';
@@ -147,22 +147,27 @@ const Card: React.FC<ICard> = ({
       rel='noopener'
       target='_blank'
     >
-      <strong>{trimmedTitle}</strong>
+      <span>{trimmedTitle}</span>
     </a>
   ) : (
-    <strong title={trimmedTitle}>{trimmedTitle}</strong>
+    <span title={trimmedTitle}>{trimmedTitle}</span>
   );
 
   const description = (
     <Stack space={2} className='flex-1 overflow-hidden p-4'>
       {trimmedTitle && (
-        <span className='block font-medium text-gray-800 dark:text-gray-200 no-underline'>{title}</span>
+        <Text weight='bold'>{title}</Text>
       )}
       {trimmedDescription && (
-        <p className='text-gray-500 dark:text-gray-400'>{trimmedDescription}</p>
+        <Text>{trimmedDescription}</Text>
       )}
-      <HStack>
-        <Icon src={require('@tabler/icons/link.svg')} /> {card.provider_name}
+      <HStack space={1} alignItems='center'>
+        <Text tag='span' theme='muted'>
+          <Icon src={require('@tabler/icons/link.svg')} />
+        </Text>
+        <Text tag='span' theme='muted'>
+          {card.provider_name}
+        </Text>
       </HStack>
     </Stack>
   );
