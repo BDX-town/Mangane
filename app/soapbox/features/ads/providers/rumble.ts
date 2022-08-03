@@ -32,7 +32,6 @@ const RumbleAdProvider: AdProvider = {
         impression: item.impression,
         card: normalizeCard({
           type: item.type === 1 ? 'link' : 'rich',
-          title: 'Sponsored post',
           image: item.asset,
           url: item.click,
         }),
