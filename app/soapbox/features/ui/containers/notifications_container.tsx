@@ -47,7 +47,7 @@ const SnackbarContainer: React.FC = () => {
       // HACK: it's a JSX.Element instead of a string!
       // react-notification displays it just fine.
       alert.action = (
-        <Button theme='ghost' size='sm' onClick={item.action} text={maybeFormatMessage(item.actionLabel)} />
+        <Button theme='tertiary' size='sm' onClick={item.action} text={maybeFormatMessage(item.actionLabel)} />
       ) as any;
     }
 

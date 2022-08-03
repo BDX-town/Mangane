@@ -165,7 +165,7 @@ const Notifications = () => {
       onScrollToTop={handleScrollToTop}
       onScroll={handleScroll}
       className={classNames({
-        'divide-y divide-gray-200 dark:divide-gray-600 divide-solid': notifications.size > 0,
+        'divide-y divide-gray-200 dark:divide-primary-800 divide-solid': notifications.size > 0,
         'space-y-2': notifications.size === 0,
       })}
     >

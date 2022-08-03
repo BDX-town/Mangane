@@ -25,8 +25,8 @@ interface IEmojiSelector {
 class EmojiSelector extends ImmutablePureComponent<IEmojiSelector> {
 
   static defaultProps: Partial<IEmojiSelector> = {
-    onReact: () => {},
-    onUnfocus: () => {},
+    onReact: () => { },
+    onUnfocus: () => { },
     visible: false,
   }
 
@@ -98,7 +98,7 @@ class EmojiSelector extends ImmutablePureComponent<IEmojiSelector> {
   }
 
   handlers = {
-    open: () => {},
+    open: () => { },
   };
 
   setRef = (c: HTMLDivElement): void => {
@@ -111,7 +111,7 @@ class EmojiSelector extends ImmutablePureComponent<IEmojiSelector> {
     return (
       <HotKeys handlers={this.handlers}>
         {/*<div
-          className={classNames('flex absolute bg-white dark:bg-slate-500 px-2 py-3 rounded-full shadow-md opacity-0 pointer-events-none duration-100 w-max', { 'opacity-100 pointer-events-auto z-[999]': visible || focused })}
+          className={classNames('flex absolute bg-white dark:bg-gray-500 px-2 py-3 rounded-full shadow-md opacity-0 pointer-events-none duration-100 w-max', { 'opacity-100 pointer-events-auto z-[999]': visible || focused })}
           onBlur={this.handleBlur}
           ref={this.setRef}
         >

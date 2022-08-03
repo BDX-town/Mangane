@@ -55,7 +55,7 @@ const ActionsModal: React.FC<IActionsModal> = ({ status, actions, onClick, onClo
       {({ top }) => (
         <div className='modal-root__modal actions-modal' style={{ top: `${top}%` }}>
           {status && (
-            <Stack space={2} className='p-4 bg-gray-50 dark:bg-slate-800 border-b border-solid border-gray-200 dark:border-gray-700'>
+            <Stack space={2} className='p-4 bg-gray-50 dark:bg-gray-800 border-b border-solid border-gray-200 dark:border-gray-700'>
               <AccountContainer
                 key={status.account as string}
                 id={status.account as string}

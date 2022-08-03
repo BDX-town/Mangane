@@ -1,5 +1,5 @@
 .sidebar-menu {
-  @apply flex inset-0 fixed flex-col w-80 bg-white dark:bg-slate-800 transition-all ease-linear -translate-x-80 z-1000;
+  @apply flex inset-0 fixed flex-col w-80 bg-white dark:bg-primary-900 transition-all ease-linear -translate-x-80 z-1000;
 
   @media (max-width: 400px) {
     width: 90vw;

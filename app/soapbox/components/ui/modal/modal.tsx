@@ -83,7 +83,7 @@ const Modal: React.FC<IModal> = ({
   }, [skipFocus, buttonRef]);
 
   return (
-    <div data-testid='modal' className={classNames('block w-full p-6 mx-auto text-left align-middle transition-all transform bg-white dark:bg-slate-800 text-black dark:text-white shadow-xl rounded-2xl pointer-events-auto', widths[width])}>
+    <div data-testid='modal' className={classNames('block w-full p-6 mx-auto text-left align-middle transition-all transform bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-xl rounded-2xl pointer-events-auto', widths[width])}>
       <div className='sm:flex sm:items-start w-full justify-between'>
         <div className='w-full'>
           {title && (
@@ -92,7 +92,7 @@ const Modal: React.FC<IModal> = ({
                 'flex-row-reverse': closePosition === 'left',
               })}
             >
-              <h3 className='flex-grow text-lg leading-6 font-medium text-gray-900 dark:text-white'>
+              <h3 className='flex-grow text-lg leading-6 font-bold text-gray-900 dark:text-white'>
                 {title}
               </h3>
 
@@ -120,7 +120,7 @@ const Modal: React.FC<IModal> = ({
           <div className='flex-grow'>
             {cancelAction && (
               <Button
-                theme='ghost'
+                theme='tertiary'
                 onClick={cancelAction}
               >
                 {cancelText || 'Cancel'}

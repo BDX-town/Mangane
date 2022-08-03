@@ -12,11 +12,11 @@
 
 [data-reach-tab] {
   @apply flex-1 flex justify-center items-center
-  py-4 px-1 text-center font-medium text-sm text-gray-500
-  dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200
-  focus:ring-primary-500 focus:ring-2;
+  py-4 px-1 text-center font-medium text-sm text-gray-700
+  dark:text-gray-600 hover:text-gray-800 dark:hover:text-gray-500
+  focus:ring-primary-300 focus:ring-2;
 }
 
 [data-reach-tab][data-selected] {
-  @apply text-gray-900 dark:text-white;
+  @apply text-gray-900 dark:text-gray-100;
 }

@@ -22,7 +22,7 @@ const ThreadLoginCta: React.FC = () => {
       </Stack>
 
       <Stack space={4} className='max-w-xs mx-auto'>
-        <Button theme='secondary' to='/login' block>
+        <Button theme='tertiary' to='/login' block>
           <FormattedMessage id='thread_login.login' defaultMessage='Log in' />
         </Button>
         <Button to='/signup' block>

@@ -58,7 +58,7 @@ const MuteModal = () => {
 
         <label>
           <HStack alignItems='center' space={2}>
-            <Text tag='span'>
+            <Text tag='span' theme='muted'>
               <FormattedMessage id='mute_modal.hide_notifications' defaultMessage='Hide notifications from this user?' />
             </Text>
 

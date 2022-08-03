@@ -45,7 +45,7 @@ const BioStep = ({ onNext }: { onNext: () => void }) => {
     <Card variant='rounded' size='xl'>
       <CardBody>
         <div>
-          <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-600 border-solid -mx-4 sm:-mx-10'>
+          <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
             <Stack space={2}>
               <Text size='2xl' align='center' weight='bold'>
                 <FormattedMessage id='onboarding.note.title' defaultMessage='Write a short bio' />
@@ -89,7 +89,7 @@ const BioStep = ({ onNext }: { onNext: () => void }) => {
                   )}
                 </Button>
 
-                <Button block theme='link' type='button' onClick={onNext}>
+                <Button block theme='tertiary' type='button' onClick={onNext}>
                   <FormattedMessage id='onboarding.skip' defaultMessage='Skip for now' />
                 </Button>
               </Stack>

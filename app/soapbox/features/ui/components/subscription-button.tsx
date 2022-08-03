@@ -93,8 +93,8 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
         src={isSubscribed ? require('@tabler/icons/bell-ringing.svg') : require('@tabler/icons/bell.svg')}
         onClick={handleToggle}
         title={title}
-        className='text-primary-700 bg-primary-100 dark:!bg-slate-700 dark:!text-white hover:bg-primary-200 disabled:hover:bg-primary-100 p-2'
-        iconClassName='w-5 h-5'
+        className='px-2 border border-solid bg-transparent border-gray-400 dark:border-gray-800 hover:border-primary-300 dark:hover:border-primary-700 focus:border-primary-500 text-gray-900 dark:text-gray-100 focus:ring-primary-500'
+        iconClassName='w-4 h-4'
       />
     );
   }

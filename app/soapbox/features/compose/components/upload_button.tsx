@@ -55,7 +55,7 @@ const UploadButton: React.FC<IUploadButton> = ({
     <div>
       <IconButton
         src={src}
-        className='text-gray-400 hover:text-gray-600'
+        className='text-gray-600 hover:text-gray-700 dark:hover:text-gray-500'
         title={intl.formatMessage(messages.upload)}
         disabled={disabled}
         onClick={handleClick}

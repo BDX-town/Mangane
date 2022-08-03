@@ -38,7 +38,7 @@ const HomePage: React.FC = ({ children }) => {
 
   return (
     <>
-      <Layout.Main className='pt-3 sm:pt-0 dark:divide-slate-700 space-y-3'>
+      <Layout.Main className='pt-3 sm:pt-0 dark:divide-gray-800 space-y-3'>
         {me && (
           <Card variant='rounded' ref={composeBlock}>
             <CardBody>

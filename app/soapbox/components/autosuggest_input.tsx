@@ -218,8 +218,8 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
         key={key}
         data-index={i}
         className={classNames({
-          'px-4 py-2.5 text-sm text-gray-700 dark:text-gray-400 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
-          'bg-gray-100 dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-gray-700': i === selectedSuggestion,
+          'px-4 py-2.5 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-gray-100 dark:focus:bg-primary-800 group': true,
+          'bg-gray-100 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800': i === selectedSuggestion,
         })}
         onMouseDown={this.onSuggestionClick}
         onTouchEnd={this.onSuggestionClick}
@@ -253,7 +253,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
 
     return menu.map((item, i) => (
       <a
-        className={classNames('flex items-center space-x-2 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-400 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700', { selected: suggestions.size - selectedSuggestion === i })}
+        className={classNames('flex items-center space-x-2 px-4 py-2.5 text-sm cursor-pointer text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-gray-100 dark:focus:bg-primary-800', { selected: suggestions.size - selectedSuggestion === i })}
         href='#'
         role='button'
         tabIndex={0}
@@ -301,7 +301,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
         <input
           type='text'
           className={classNames({
-            'block w-full sm:text-sm border-gray-300 dark:border-gray-600 dark:bg-slate-800 dark:text-white dark:placeholder:text-gray-500 focus:ring-primary-500 focus:border-primary-500': true,
+            'block w-full sm:text-sm border-gray-200 dark:border-gray-800 bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-600 dark:placeholder:text-gray-600 focus:border-gray-200 dark:focus-border-gray-800 focus:ring-primary-500 focus:ring-2': true,
           }, className)}
           ref={this.setInput}
           disabled={disabled}
@@ -324,7 +324,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
         <div
           style={this.setPortalPosition()}
           className={classNames({
-            'fixed w-full z-[1001] shadow bg-white dark:bg-slate-800 rounded-lg py-1': true,
+            'fixed w-full z-[1001] shadow bg-white dark:bg-gray-900 rounded-lg py-1 dark:ring-2 dark:ring-primary-700 focus:outline-none': true,
             hidden: !visible,
             block: visible,
           })}

@@ -8,13 +8,12 @@ import { fetchOwnAccounts, logOut, switchAccount } from 'soapbox/actions/auth';
 import { getSettings } from 'soapbox/actions/settings';
 import { closeSidebar } from 'soapbox/actions/sidebar';
 import Account from 'soapbox/components/account';
-import SiteLogo from 'soapbox/components/site-logo';
 import { Stack } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile_stats';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount, makeGetOtherAccounts } from 'soapbox/selectors';
 
-import { HStack, Icon, IconButton, Text } from './ui';
+import { Divider, HStack, Icon, IconButton, Text } from './ui';
 
 import type { List as ImmutableList } from 'immutable';
 import type { Account as AccountEntity } from 'soapbox/types/entities';
@@ -51,24 +50,24 @@ interface ISidebarLink {
 const SidebarLink: React.FC<ISidebarLink> = ({ href, to, icon, text, onClick }) => {
   const body = (
     <HStack space={2} alignItems='center'>
-      <div className='bg-primary-50 dark:bg-slate-700 relative rounded inline-flex p-2'>
-        <Icon src={icon} className='text-primary-600 h-5 w-5' />
+      <div className='bg-primary-50 dark:bg-gray-800 relative rounded-full inline-flex p-2'>
+        <Icon src={icon} className='text-primary-500 h-5 w-5' />
       </div>
 
-      <Text tag='span' weight='medium' theme='muted' className='group-hover:text-gray-800 dark:group-hover:text-gray-200'>{text}</Text>
+      <Text tag='span' weight='medium' theme='inherit'>{text}</Text>
     </HStack>
   );
 
   if (to) {
     return (
-      <NavLink className='group py-1 rounded-md' to={to} onClick={onClick}>
+      <NavLink className='group rounded-full text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800' to={to} onClick={onClick}>
         {body}
       </NavLink>
     );
   }
 
   return (
-    <a className='group py-1 rounded-md' href={href} target='_blank' onClick={onClick}>
+    <a className='group rounded-full text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800' href={href} target='_blank' onClick={onClick}>
       {body}
     </a>
   );
@@ -139,72 +138,37 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
     >
       <div
         className={classNames({
-          'fixed inset-0 bg-gray-600 bg-opacity-90 z-1000': true,
+          'fixed inset-0 bg-gray-500/90 dark:bg-gray-700/90 z-1000': true,
           'hidden': !sidebarOpen,
         })}
         role='button'
         onClick={handleClose}
-      />
+      >
+        <IconButton
+          title='close'
+          onClick={handleClose}
+          src={require('@tabler/icons/x.svg')}
+          ref={closeButtonRef}
+          iconClassName='h-6 w-6'
+          className='fixed top-5 right-5 text-gray-600 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
+        />
+      </div>
 
       <div className='sidebar-menu'>
         <div className='relative overflow-y-scroll overflow-auto h-full w-full'>
           <div className='p-4'>
             <Stack space={4}>
-              <HStack alignItems='center' justifyContent='between'>
-                <Link to='/' onClick={onClose}>
-                  <SiteLogo alt='Logo' className='h-5 w-auto cursor-pointer' />
-                </Link>
-
-                <IconButton
-                  title='close'
-                  onClick={handleClose}
-                  src={require('@tabler/icons/x.svg')}
-                  ref={closeButtonRef}
-                  className='text-gray-400 hover:text-gray-600'
-                />
-              </HStack>
-
-              <Stack space={1}>
-                <Link to={`/@${account.acct}`} onClick={onClose}>
-                  <Account account={account} showProfileHoverCard={false} withLinkToProfile={false} />
-                </Link>
-
-                <Stack>
-                  <button type='button' onClick={handleSwitcherClick} className='py-1'>
-                    <HStack alignItems='center' justifyContent='between'>
-                      <Text tag='span' size='sm' weight='medium'>
-                        <FormattedMessage id='profile_dropdown.switch_account' defaultMessage='Switch accounts' />
-                      </Text>
-
-                      <Icon
-                        src={require('@tabler/icons/chevron-down.svg')}
-                        className={classNames('text-black dark:text-white transition-transform', {
-                          'rotate-180': switcher,
-                        })}
-                      />
-                    </HStack>
-                  </button>
-
-                  {switcher && (
-                    <div className='border-t border-solid border-gray-200'>
-                      {otherAccounts.map(account => renderAccount(account))}
-
-                      <NavLink className='flex py-2 space-x-1' to='/login/add' onClick={handleClose}>
-                        <Icon className='dark:text-white' src={require('@tabler/icons/plus.svg')} />
-                        <Text>{intl.formatMessage(messages.addAccount)}</Text>
-                      </NavLink>
-                    </div>
-                  )}
-                </Stack>
-              </Stack>
+              <Link to={`/@${account.acct}`} onClick={onClose}>
+                <Account account={account} showProfileHoverCard={false} withLinkToProfile={false} />
+              </Link>
 
               <ProfileStats
                 account={account}
                 onClickHandler={handleClose}
               />
 
-              <Stack space={2}>
-                <hr />
+              <Stack space={4}>
+                <Divider />
 
                 <SidebarLink
                   to={`/@${account.acct}`}
@@ -241,7 +205,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                 )}
 
                 {features.publicTimeline && <>
-                  <hr className='dark:border-slate-700' />
+                  <Divider />
 
                   <SidebarLink
                     to='/timeline/local'
@@ -260,7 +224,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   )}
                 </>}
 
-                <hr />
+                <Divider />
 
                 <SidebarLink
                   to='/blocks'
@@ -319,7 +283,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   />
                 )}
 
-                <hr />
+                <Divider />
 
                 <SidebarLink
                   to='/logout'
@@ -327,6 +291,36 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   text={intl.formatMessage(messages.logout)}
                   onClick={onClickLogOut}
                 />
+
+                <Divider />
+
+                <Stack space={4}>
+                  <button type='button' onClick={handleSwitcherClick} className='py-1'>
+                    <HStack alignItems='center' justifyContent='between'>
+                      <Text tag='span'>
+                        <FormattedMessage id='profile_dropdown.switch_account' defaultMessage='Switch accounts' />
+                      </Text>
+
+                      <Icon
+                        src={require('@tabler/icons/chevron-down.svg')}
+                        className={classNames('w-4 h-4 text-gray-900 dark:text-gray-100 transition-transform', {
+                          'rotate-180': switcher,
+                        })}
+                      />
+                    </HStack>
+                  </button>
+
+                  {switcher && (
+                    <div className='border-t-2 border-gray-100 dark:border-gray-800 border-solid'>
+                      {otherAccounts.map(account => renderAccount(account))}
+
+                      <NavLink className='flex items-center py-2 space-x-1' to='/login/add' onClick={handleClose}>
+                        <Icon className='text-primary-500 w-4 h-4' src={require('@tabler/icons/plus.svg')} />
+                        <Text size='sm' weight='medium'>{intl.formatMessage(messages.addAccount)}</Text>
+                      </NavLink>
+                    </div>
+                  )}
+                </Stack>
               </Stack>
             </Stack>
           </div>

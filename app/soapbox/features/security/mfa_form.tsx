@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import { fetchMfa } from 'soapbox/actions/mfa';
-import { Card, CardBody, CardHeader, CardTitle, Column } from 'soapbox/components/ui';
+import { Card, CardBody, CardHeader, CardTitle, Column, Stack } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
 import DisableOtpForm from './mfa/disable_otp_form';
@@ -47,10 +47,10 @@ const MfaForm: React.FC = () => {
           {mfa.getIn(['settings', 'totp']) ? (
             <DisableOtpForm />
           ) : (
-            <>
+            <Stack space={4}>
               <EnableOtpForm displayOtpForm={displayOtpForm} handleSetupProceedClick={handleSetupProceedClick} />
               {displayOtpForm && <OtpConfirmForm />}
-            </>
+            </Stack>
           )}
         </CardBody>
       </Card>

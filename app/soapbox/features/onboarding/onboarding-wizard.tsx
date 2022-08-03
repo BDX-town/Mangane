@@ -97,7 +97,7 @@ const OnboardingWizard = () => {
                 onClick={() => handleDotClick(i)}
                 className={classNames({
                   'w-5 h-5 rounded-full focus:ring-primary-600 focus:ring-2 focus:ring-offset-2': true,
-                  'bg-gray-200 hover:bg-gray-300': i !== currentStep,
+                  'bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-700/75 hover:bg-gray-400': i !== currentStep,
                   'bg-primary-600': i === currentStep,
                 })}
               />

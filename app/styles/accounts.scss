@@ -161,16 +161,20 @@ a .account__avatar {
 }
 
 .account-gallery__item {
+  @apply rounded-lg m-1;
   border: 0;
   box-sizing: border-box;
   display: block;
   position: relative;
-  border-radius: 4px;
   overflow: hidden;
-  margin: 2px;
 
   a {
     background: var(--brand-color--faint);
+  }
+
+  video,
+  img {
+    @apply rounded-lg;
   }
 
   &__icons {

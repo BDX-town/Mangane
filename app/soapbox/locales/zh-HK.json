@@ -624,7 +624,7 @@
   "lists.edit": "編輯列表",
   "lists.edit.submit": "Change title",
   "lists.new.create": "新增列表",
-  "lists.new.create_title": "Create",
+  "lists.new.create_title": "Add list",
   "lists.new.save_title": "Save Title",
   "lists.new.title_placeholder": "新列表標題",
   "lists.search": "從你關注的用戶中搜索",

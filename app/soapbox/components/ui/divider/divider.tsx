@@ -8,7 +8,7 @@ interface IDivider {
 const Divider = ({ text }: IDivider) => (
   <div className='relative' data-testid='divider'>
     <div className='absolute inset-0 flex items-center' aria-hidden='true'>
-      <div className='w-full border-t-2 border-gray-100 dark:border-slate-700 border-solid' />
+      <div className='w-full border-t-2 border-gray-100 dark:border-gray-800 border-solid' />
     </div>
 
     {text && (

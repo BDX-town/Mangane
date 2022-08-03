@@ -624,7 +624,7 @@
   "lists.edit": "Edit list",
   "lists.edit.submit": "Change title",
   "lists.new.create": "Add list",
-  "lists.new.create_title": "Create",
+  "lists.new.create_title": "Add list",
   "lists.new.save_title": "Save Title",
   "lists.new.title_placeholder": "New list title",
   "lists.search": "Search among people you follow",

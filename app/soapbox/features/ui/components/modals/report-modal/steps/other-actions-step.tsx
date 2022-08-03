@@ -61,14 +61,14 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
           <FormGroup labelText={intl.formatMessage(messages.addAdditionalStatuses)}>
             {showAdditionalStatuses ? (
               <Stack space={2}>
-                <div className='bg-gray-100 dark:bg-slate-600 rounded-lg p-4'>
+                <div className='divide-y divide-gray-200 dark:divide-gray-800 divide-solid'>
                   {statusIds.map((statusId) => <StatusCheckBox id={statusId} key={statusId} />)}
                 </div>
 
                 <div>
                   <Button
                     icon={require('@tabler/icons/arrows-minimize.svg')}
-                    theme='secondary'
+                    theme='tertiary'
                     size='sm'
                     onClick={() => setShowAdditionalStatuses(false)}
                   >
@@ -79,7 +79,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
             ) : (
               <Button
                 icon={require('@tabler/icons/plus.svg')}
-                theme='secondary'
+                theme='tertiary'
                 size='sm'
                 onClick={() => setShowAdditionalStatuses(true)}
               >

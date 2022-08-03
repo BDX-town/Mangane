@@ -68,7 +68,7 @@ class ModalRoot extends React.PureComponent {
 
   handleKeyUp = (e) => {
     if ((e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27)
-         && !!this.props.children) {
+      && !!this.props.children) {
       this.handleOnClose();
     }
   }
@@ -212,7 +212,7 @@ class ModalRoot extends React.PureComponent {
         <div
           role='presentation'
           id='modal-overlay'
-          className='fixed inset-0 bg-gray-600 bg-opacity-90'
+          className='fixed inset-0 bg-gray-500/90 dark:bg-gray-700/90'
           onClick={this.handleOnClose}
         />
 
