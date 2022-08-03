@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
-import { HStack } from 'soapbox/components/ui';
+import { HStack, Stack } from 'soapbox/components/ui';
 import { normalizeAttachment } from 'soapbox/normalizers';
 
 import type { Card as CardEntity, Attachment } from 'soapbox/types/entities';
@@ -142,7 +142,6 @@ const Card: React.FC<ICard> = ({
   const title = interactive ? (
     <a
       onClick={(e) => e.stopPropagation()}
-      className='status-card__title'
       href={card.url}
       title={trimmedTitle}
       rel='noopener'
@@ -151,15 +150,21 @@ const Card: React.FC<ICard> = ({
       <strong>{trimmedTitle}</strong>
     </a>
   ) : (
-    <strong className='status-card__title' title={trimmedTitle}>{trimmedTitle}</strong>
+    <strong title={trimmedTitle}>{trimmedTitle}</strong>
   );
 
   const description = (
-    <div className='status-card__content cursor-default'>
-      <span className='status-card__title'>{title}</span>
-      <p className='status-card__description'>{trimmedDescription}</p>
-      <span className='status-card__host'><Icon src={require('@tabler/icons/link.svg')} /> {card.provider_name}</span>
-    </div>
+    <Stack space={2} className='flex-1 overflow-hidden p-4'>
+      {trimmedTitle && (
+        <span className='block font-medium text-gray-800 dark:text-gray-200 no-underline'>{title}</span>
+      )}
+      {trimmedDescription && (
+        <p className='text-gray-500 dark:text-gray-400'>{trimmedDescription}</p>
+      )}
+      <HStack>
+        <Icon src={require('@tabler/icons/link.svg')} /> {card.provider_name}
+      </HStack>
+    </Stack>
   );
 
   let embed: React.ReactNode = '';

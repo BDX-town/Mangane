@@ -308,18 +308,6 @@ a.status-card {
   }
 }
 
-.status-card__title {
-  @apply block font-medium mb-2 text-gray-800 dark:text-gray-200 no-underline;
-}
-
-.status-card__content {
-  @apply flex-1 overflow-hidden p-4;
-}
-
-.status-card__description {
-  @apply text-gray-500 dark:text-gray-400;
-}
-
 .status-card__host {
   display: flex;
   margin-top: 10px;
