@@ -51,6 +51,7 @@ interface ICard {
   compact?: boolean,
   defaultWidth?: number,
   cacheWidth?: (width: number) => void,
+  horizontal?: boolean,
 }
 
 const Card: React.FC<ICard> = ({
@@ -61,6 +62,7 @@ const Card: React.FC<ICard> = ({
   compact = false,
   cacheWidth,
   onOpenMedia,
+  horizontal,
 }): JSX.Element => {
   const [width, setWidth] = useState(defaultWidth);
   const [embedded, setEmbedded] = useState(false);
@@ -132,7 +134,7 @@ const Card: React.FC<ICard> = ({
   };
 
   const interactive = card.type !== 'link';
-  const horizontal  = interactive || embedded;
+  horizontal        = typeof horizontal === 'boolean' ? horizontal : interactive || embedded;
   const className   = classnames('status-card', { horizontal, compact, interactive }, `status-card--${card.type}`);
   const ratio       = getRatio(card);
   const height      = (compact && !embedded) ? (width / (16 / 9)) : (width / ratio);

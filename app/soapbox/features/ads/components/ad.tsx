@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Stack, HStack, Card, Avatar, Text, Icon } from 'soapbox/components/ui';
+import StatusCard from 'soapbox/features/status/components/card';
 import { useAppSelector } from 'soapbox/hooks';
 
 import type { Card as CardEntity } from 'soapbox/types/entities';
@@ -53,17 +54,7 @@ const Ad: React.FC<IAd> = ({ card, impression }) => {
           </Stack>
         </HStack>
 
-        {card.image && (
-          <a href={card.url} className='rounded-[10px] overflow-hidden' target='_blank'>
-            <img
-              className='w-full'
-              width={card.width}
-              height={card.height}
-              src={card.image}
-              alt=''
-            />
-          </a>
-        )}
+        <StatusCard card={card} onOpenMedia={() => {}} horizontal />
       </Stack>
     </Card>
   );
