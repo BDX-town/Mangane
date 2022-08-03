@@ -1,4 +1,5 @@
 import { configureMockStore } from '@jedmao/redux-mock-store';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { render, RenderOptions } from '@testing-library/react';
 import { merge } from 'immutable';
 import React, { FC, ReactElement } from 'react';
@@ -8,6 +9,8 @@ import { MemoryRouter } from 'react-router-dom';
 import { Action, applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import '@testing-library/jest-dom';
+
+import { queryClient } from 'soapbox/queries/client';
 
 import NotificationsContainer from '../features/ui/containers/notifications_container';
 import { default as rootReducer } from '../reducers';
@@ -45,13 +48,15 @@ const TestApp: FC<any> = ({ children, storeProps, routerProps = {} }) => {
 
   return (
     <Provider store={props.store}>
-      <IntlProvider locale={props.locale}>
-        <MemoryRouter {...routerProps}>
-          {children}
+      <QueryClientProvider client={queryClient}>
+        <IntlProvider locale={props.locale}>
+          <MemoryRouter {...routerProps}>
+            {children}
 
-          <NotificationsContainer />
-        </MemoryRouter>
-      </IntlProvider>
+            <NotificationsContainer />
+          </MemoryRouter>
+        </IntlProvider>
+      </QueryClientProvider>
     </Provider>
   );
 };

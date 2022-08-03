@@ -1,5 +1,6 @@
 'use strict';
 
+import { QueryClientProvider } from '@tanstack/react-query';
 import classNames from 'classnames';
 import React, { useState, useEffect } from 'react';
 import { IntlProvider } from 'react-intl';
@@ -37,6 +38,7 @@ import {
   useLocale,
 } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
+import { queryClient } from 'soapbox/queries/client';
 import { useCachedLocationHandler } from 'soapbox/utils/redirect';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
@@ -281,11 +283,13 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
 const Soapbox: React.FC = () => {
   return (
     <Provider store={store}>
-      <SoapboxHead>
-        <SoapboxLoad>
-          <SoapboxMount />
-        </SoapboxLoad>
-      </SoapboxHead>
+      <QueryClientProvider client={queryClient}>
+        <SoapboxHead>
+          <SoapboxLoad>
+            <SoapboxMount />
+          </SoapboxLoad>
+        </SoapboxHead>
+      </QueryClientProvider>
     </Provider>
   );
 };

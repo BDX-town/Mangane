@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
-import { HStack } from 'soapbox/components/ui';
+import { HStack, Stack, Text } from 'soapbox/components/ui';
 import { normalizeAttachment } from 'soapbox/normalizers';
 
 import type { Card as CardEntity, Attachment } from 'soapbox/types/entities';
@@ -51,6 +51,7 @@ interface ICard {
   compact?: boolean,
   defaultWidth?: number,
   cacheWidth?: (width: number) => void,
+  horizontal?: boolean,
 }
 
 const Card: React.FC<ICard> = ({
@@ -61,6 +62,7 @@ const Card: React.FC<ICard> = ({
   compact = false,
   cacheWidth,
   onOpenMedia,
+  horizontal,
 }): JSX.Element => {
   const [width, setWidth] = useState(defaultWidth);
   const [embedded, setEmbedded] = useState(false);
@@ -132,7 +134,7 @@ const Card: React.FC<ICard> = ({
   };
 
   const interactive = card.type !== 'link';
-  const horizontal = interactive || embedded;
+  horizontal = typeof horizontal === 'boolean' ? horizontal : interactive || embedded;
   const className = classnames('status-card', { horizontal, compact, interactive }, `status-card--${card.type}`);
   const ratio = getRatio(card);
   const height = (compact && !embedded) ? (width / (16 / 9)) : (width / ratio);
@@ -140,24 +142,34 @@ const Card: React.FC<ICard> = ({
   const title = interactive ? (
     <a
       onClick={(e) => e.stopPropagation()}
-      className='status-card__title'
       href={card.url}
       title={trimmedTitle}
       rel='noopener'
       target='_blank'
     >
-      <strong>{trimmedTitle}</strong>
+      <span>{trimmedTitle}</span>
     </a>
   ) : (
-    <strong className='status-card__title' title={trimmedTitle}>{trimmedTitle}</strong>
+    <span title={trimmedTitle}>{trimmedTitle}</span>
   );
 
   const description = (
-    <div className='status-card__content'>
-      <span className='status-card__title'>{title}</span>
-      <p className='status-card__description'>{trimmedDescription}</p>
-      <span className='status-card__host'><Icon src={require('@tabler/icons/link.svg')} /> {card.provider_name}</span>
-    </div>
+    <Stack space={2} className='flex-1 overflow-hidden p-4'>
+      {trimmedTitle && (
+        <Text weight='bold'>{title}</Text>
+      )}
+      {trimmedDescription && (
+        <Text>{trimmedDescription}</Text>
+      )}
+      <HStack space={1} alignItems='center'>
+        <Text tag='span' theme='muted'>
+          <Icon src={require('@tabler/icons/link.svg')} />
+        </Text>
+        <Text tag='span' theme='muted' size='sm'>
+          {card.provider_name}
+        </Text>
+      </HStack>
+    </Stack>
   );
 
   let embed: React.ReactNode = '';
@@ -234,7 +246,15 @@ const Card: React.FC<ICard> = ({
     );
   } else if (card.image) {
     embed = (
-      <div className='status-card__image'>
+      <div className={classnames(
+        'status-card__image',
+        'w-full rounded-l md:w-auto md:h-auto flex-none md:flex-auto',
+        {
+          'h-auto': horizontal,
+          'h-[200px]': !horizontal,
+        },
+      )}
+      >
         {canvas}
         {thumbnail}
       </div>

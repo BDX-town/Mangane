@@ -6,13 +6,17 @@ import { FormattedMessage } from 'react-intl';
 import LoadGap from 'soapbox/components/load_gap';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import StatusContainer from 'soapbox/containers/status_container';
+import Ad from 'soapbox/features/ads/components/ad';
 import FeedSuggestions from 'soapbox/features/feed-suggestions/feed-suggestions';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
+import { useSoapboxConfig } from 'soapbox/hooks';
+import useAds from 'soapbox/queries/ads';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
 import type { IScrollableList } from 'soapbox/components/scrollable_list';
+import type { Ad as AdEntity } from 'soapbox/features/ads/providers';
 
 interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
   /** Unique key to preserve the scroll position when navigating back. */
@@ -37,6 +41,8 @@ interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
   timelineId?: string,
   /** Whether to display a gap or border between statuses in the list. */
   divideType?: 'space' | 'border',
+  /** Whether to display ads. */
+  showAds?: boolean,
 }
 
 /** Feed of statuses, built atop ScrollableList. */
@@ -49,8 +55,12 @@ const StatusList: React.FC<IStatusList> = ({
   timelineId,
   isLoading,
   isPartial,
+  showAds = false,
   ...other
 }) => {
+  const { data: ads } = useAds();
+  const soapboxConfig = useSoapboxConfig();
+  const adsInterval = Number(soapboxConfig.extensions.getIn(['ads', 'interval'], 40)) || 0;
   const node = useRef<VirtuosoHandle>(null);
 
   const getFeaturedStatusCount = () => {
@@ -123,6 +133,15 @@ const StatusList: React.FC<IStatusList> = ({
     );
   };
 
+  const renderAd = (ad: AdEntity) => {
+    return (
+      <Ad
+        card={ad.card}
+        impression={ad.impression}
+      />
+    );
+  };
+
   const renderPendingStatus = (statusId: string) => {
     const idempotencyKey = statusId.replace(/^末pending-/, '');
 
@@ -156,17 +175,27 @@ const StatusList: React.FC<IStatusList> = ({
 
   const renderStatuses = (): React.ReactNode[] => {
     if (isLoading || statusIds.size > 0) {
-      return statusIds.toArray().map((statusId, index) => {
+      return statusIds.toList().reduce((acc, statusId, index) => {
+        const adIndex = ads ? Math.floor((index + 1) / adsInterval) % ads.length : 0;
+        const ad = ads ? ads[adIndex] : undefined;
+        const showAd = (index + 1) % adsInterval === 0;
+
         if (statusId === null) {
-          return renderLoadGap(index);
+          acc.push(renderLoadGap(index));
         } else if (statusId.startsWith('末suggestions-')) {
-          return renderFeedSuggestions();
+          acc.push(renderFeedSuggestions());
         } else if (statusId.startsWith('末pending-')) {
-          return renderPendingStatus(statusId);
+          acc.push(renderPendingStatus(statusId));
         } else {
-          return renderStatus(statusId);
+          acc.push(renderStatus(statusId));
         }
-      });
+
+        if (showAds && ad && showAd) {
+          acc.push(renderAd(ad));
+        }
+
+        return acc;
+      }, [] as React.ReactNode[]);
     } else {
       return [];
     }

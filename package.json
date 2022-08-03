@@ -70,6 +70,7 @@
     "@tabler/icons": "^1.73.0",
     "@tailwindcss/forms": "^0.4.0",
     "@tailwindcss/typography": "^0.5.1",
+    "@tanstack/react-query": "^4.0.10",
     "@testing-library/react": "^12.1.4",
     "@types/escape-html": "^1.0.1",
     "@types/http-link-header": "^1.0.3",
