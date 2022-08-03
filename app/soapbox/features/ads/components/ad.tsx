@@ -1,11 +1,16 @@
 import React, { useEffect } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { Stack, HStack, Card, Avatar, Text, Icon } from 'soapbox/components/ui';
+import { Stack, HStack, Card, Tooltip, Avatar, Text, Icon } from 'soapbox/components/ui';
+import IconButton from 'soapbox/components/ui/icon-button/icon-button';
 import StatusCard from 'soapbox/features/status/components/card';
 import { useAppSelector } from 'soapbox/hooks';
 
 import type { Card as CardEntity } from 'soapbox/types/entities';
+
+const messages = defineMessages({
+  tooltip: { id: 'sponsored.tooltip', defaultMessage: '{siteTitle} displays ads to help fund our service.' },
+});
 
 interface IAd {
   /** Embedded ad data in Card format (almost like OEmbed). */
@@ -16,6 +21,7 @@ interface IAd {
 
 /** Displays an ad in sponsored post format. */
 const Ad: React.FC<IAd> = ({ card, impression }) => {
+  const intl = useIntl();
   const instance = useAppSelector(state => state.instance);
 
   // Fetch the impression URL (if any) upon displaying the ad.
@@ -32,7 +38,7 @@ const Ad: React.FC<IAd> = ({ card, impression }) => {
         <HStack alignItems='center' space={3}>
           <Avatar src={instance.thumbnail} size={42} />
 
-          <Stack>
+          <Stack grow>
             <HStack space={1}>
               <Text size='sm' weight='semibold' truncate>
                 {instance.title}
@@ -51,6 +57,15 @@ const Ad: React.FC<IAd> = ({ card, impression }) => {
                 </Text>
               </HStack>
             </Stack>
+          </Stack>
+
+          <Stack justifyContent='center'>
+            <Tooltip text={intl.formatMessage(messages.tooltip, { siteTitle: instance.title })}>
+              <IconButton
+                iconClassName='stroke-gray-600 w-6 h-6'
+                src={require('@tabler/icons/info-circle.svg')}
+              />
+            </Tooltip>
           </Stack>
         </HStack>
 

@@ -32,11 +32,13 @@ interface IStack extends React.HTMLAttributes<HTMLDivElement> {
   justifyContent?: 'center',
   /** Extra class names on the <div> element. */
   className?: string,
+  /** Whether to let the flexbox grow. */
+  grow?: boolean,
 }
 
 /** Vertical stack of child elements. */
 const Stack: React.FC<IStack> = (props) => {
-  const { space, alignItems, justifyContent, className, ...filteredProps } = props;
+  const { space, alignItems, justifyContent, className, grow, ...filteredProps } = props;
 
   return (
     <div
@@ -48,6 +50,7 @@ const Stack: React.FC<IStack> = (props) => {
         [alignItemsOptions[alignItems]]: typeof alignItems !== 'undefined',
         // @ts-ignore
         [justifyContentOptions[justifyContent]]: typeof justifyContent !== 'undefined',
+        'flex-grow': grow,
       }, className)}
     />
   );
