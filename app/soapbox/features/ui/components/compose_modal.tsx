@@ -11,6 +11,7 @@ import ComposeFormContainer from '../../compose/containers/compose_form_containe
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
   confirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
+  discardConfirm: { id: 'confirmations.discard_edit.confirm', defaultMessage: 'Discard' },
 });
 
 interface IComposeModal {
@@ -31,9 +32,13 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose }) => {
     if (composeText) {
       dispatch(openModal('CONFIRM', {
         icon: require('@tabler/icons/trash.svg'),
-        heading: <FormattedMessage id='confirmations.delete.heading' defaultMessage='Delete post' />,
-        message: <FormattedMessage id='confirmations.delete.message' defaultMessage='Are you sure you want to delete this post?' />,
-        confirm: intl.formatMessage(messages.confirm),
+        heading: statusId
+          ? <FormattedMessage id='confirmations.discard_edit.heading' defaultMessage='Discard post changes' />
+          : <FormattedMessage id='confirmations.delete.heading' defaultMessage='Delete post' />,
+        message: statusId
+          ? <FormattedMessage id='confirmations.discard_edit.message' defaultMessage='Are you sure you want to discard changes to this post?' />
+          : <FormattedMessage id='confirmations.delete.message' defaultMessage='Are you sure you want to delete this post?' />,
+        confirm: intl.formatMessage(statusId ? messages.discardConfirm : messages.confirm),
         onConfirm: () => {
           dispatch(closeModal('COMPOSE'));
           dispatch(cancelReplyCompose());
