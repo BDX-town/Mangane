@@ -24,3 +24,17 @@ That includes the logo, default theme, and more.
 
 If using Pleroma, these settings are exposed through the API under GET `/api/pleroma/frontend_configurations`.
 Otherwise, the settings need to be uploaded manually and made available at GET `/instance/soapbox.json`.
+
+## About pages
+
+It is possible to create arbitrary HTML pages under `/about/:page` on your website.
+
+In your Soapbox installation directory (probably on your server), find the `instance` folder.
+For Pleroma, this will be located under `/opt/pleroma/instance/static/instance`.
+This directory contains files that are loaded on-demand by the browser, including about pages.
+
+Just create a file like `instance/about/hello.html` on your server and it will become available under `/about/hello` on your instance.
+If you create a file called `index.html`, it will be treated as the root (available under `/about`), and you can create subfolders too.
+
+For convenience, Soapbox ships with sample files under `instance/about.example`.
+Simply rename that directory to `about` and start editing!
