@@ -283,6 +283,7 @@
   "compare_history_modal.header": "Historia edycji",
   "compose.character_counter.title": "Wykorzystano {chars} z {maxChars} znaków",
   "compose.invalid_schedule": "Musisz zaplanować wpis przynajmniej 5 minut wcześniej.",
+  "compose.edit_success": "Twój wpis został zedytowany",
   "compose.submit_success": "Twój wpis został wysłany",
   "compose_form.direct_message_warning": "Ten wpis będzie widoczny tylko dla wszystkich wspomnianych użytkowników.",
   "compose_form.hashtag_warning": "Ten wpis nie będzie widoczny pod podanymi hashtagami, ponieważ jest oznaczony jako niewidoczny. Tylko publiczne wpisy mogą zostać znalezione z użyciem hashtagów.",

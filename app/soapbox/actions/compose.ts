@@ -92,6 +92,7 @@ const messages = defineMessages({
   exceededVideoDurationLimit: { id: 'upload_error.video_duration_limit', defaultMessage: 'Video exceeds the current duration limit ({limit} seconds)' },
   scheduleError: { id: 'compose.invalid_schedule', defaultMessage: 'You must schedule a post at least 5 minutes out.' },
   success: { id: 'compose.submit_success', defaultMessage: 'Your post was sent' },
+  editSuccess: { id: 'compose.edit_success', defaultMessage: 'Your post was edited' },
   uploadErrorLimit: { id: 'upload_error.limit', defaultMessage: 'File upload limit exceeded.' },
   uploadErrorPoll: { id: 'upload_error.poll', defaultMessage: 'File upload not allowed with polls.' },
   view: { id: 'snackbar.view', defaultMessage: 'View' },
@@ -203,12 +204,12 @@ const directComposeById = (accountId: string) =>
     dispatch(openModal('COMPOSE'));
   };
 
-const handleComposeSubmit = (dispatch: AppDispatch, getState: () => RootState, data: APIEntity, status: string) => {
+const handleComposeSubmit = (dispatch: AppDispatch, getState: () => RootState, data: APIEntity, status: string, edit?: boolean) => {
   if (!dispatch || !getState) return;
 
   dispatch(insertIntoTagHistory(data.tags || [], status));
   dispatch(submitComposeSuccess({ ...data }));
-  dispatch(snackbar.success(messages.success, messages.view, `/@${data.account.acct}/posts/${data.id}`));
+  dispatch(snackbar.success(edit ? messages.editSuccess : messages.success, messages.view, `/@${data.account.acct}/posts/${data.id}`));
 };
 
 const needsDescriptions = (state: RootState) => {
@@ -287,7 +288,7 @@ const submitCompose = (routerHistory?: History, force = false) =>
       if (!statusId && data.visibility === 'direct' && getState().conversations.mounted <= 0 && routerHistory) {
         routerHistory.push('/messages');
       }
-      handleComposeSubmit(dispatch, getState, data, status);
+      handleComposeSubmit(dispatch, getState, data, status, !!statusId);
     }).catch(function(error) {
       dispatch(submitComposeFail(error));
     });
