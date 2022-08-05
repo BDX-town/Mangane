@@ -946,7 +946,7 @@ const fetchBirthdayReminders = (month: number, day: number) =>
 
     dispatch({ type: BIRTHDAY_REMINDERS_FETCH_REQUEST, day, month, id: me });
 
-    api(getState).get('/api/v1/pleroma/birthdays', { params: { day, month } }).then(response => {
+    return api(getState).get('/api/v1/pleroma/birthdays', { params: { day, month } }).then(response => {
       dispatch(importFetchedAccounts(response.data));
       dispatch({
         type: BIRTHDAY_REMINDERS_FETCH_SUCCESS,
