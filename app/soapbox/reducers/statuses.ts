@@ -202,9 +202,9 @@ export default function statuses(state = initialState, action: AnyAction): State
     case STATUSES_IMPORT:
       return importStatuses(state, action.statuses, action.expandSpoilers);
     case STATUS_CREATE_REQUEST:
-      return incrementReplyCount(state, action.params);
+      return action.editing ? state : incrementReplyCount(state, action.params);
     case STATUS_CREATE_FAIL:
-      return decrementReplyCount(state, action.params);
+      return action.editing ? state : decrementReplyCount(state, action.params);
     case FAVOURITE_REQUEST:
       return simulateFavourite(state, action.status.id, true);
     case UNFAVOURITE_REQUEST:

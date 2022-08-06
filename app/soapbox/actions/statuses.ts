@@ -49,7 +49,7 @@ const statusExists = (getState: () => RootState, statusId: string) => {
 
 const createStatus = (params: Record<string, any>, idempotencyKey: string, statusId: string | null) => {
   return (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch({ type: STATUS_CREATE_REQUEST, params, idempotencyKey });
+    dispatch({ type: STATUS_CREATE_REQUEST, params, idempotencyKey, editing: !!statusId });
 
     return api(getState).request({
       url: statusId === null ? '/api/v1/statuses' : `/api/v1/statuses/${statusId}`,
@@ -84,7 +84,7 @@ const createStatus = (params: Record<string, any>, idempotencyKey: string, statu
 
       return status;
     }).catch(error => {
-      dispatch({ type: STATUS_CREATE_FAIL, error, params, idempotencyKey });
+      dispatch({ type: STATUS_CREATE_FAIL, error, params, idempotencyKey, editing: !!statusId });
       throw error;
     });
   };
