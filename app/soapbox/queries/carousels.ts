@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import API from './client';
+import API from 'soapbox/queries/client';
 
 type Avatar = {
   account_id: string
@@ -13,17 +13,15 @@ const getCarouselAvatars = async() => {
   return data;
 };
 
-export default function useCarouselAvatars(): { data: Avatar[], isFetching: boolean, isError: boolean, isSuccess: boolean } {
-  const { data, isFetching, isError, isSuccess } = useQuery<Avatar[]>(['carouselAvatars'], getCarouselAvatars, {
+export default function useCarouselAvatars() {
+  const result = useQuery<Avatar[]>(['carouselAvatars'], getCarouselAvatars, {
     placeholderData: [],
   });
 
-  const avatars = data as Avatar[];
+  const avatars = result.data;
 
   return {
-    data: avatars,
-    isFetching,
-    isError,
-    isSuccess,
+    ...result,
+    data: avatars || [],
   };
 }

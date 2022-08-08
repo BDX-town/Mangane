@@ -1,6 +1,7 @@
 import { configureMockStore } from '@jedmao/redux-mock-store';
-import { QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, RenderOptions } from '@testing-library/react';
+import MockAdapter from 'axios-mock-adapter';
 import { merge } from 'immutable';
 import React, { FC, ReactElement } from 'react';
 import { IntlProvider } from 'react-intl';
@@ -10,7 +11,7 @@ import { Action, applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import '@testing-library/jest-dom';
 
-import { queryClient } from 'soapbox/queries/client';
+import API from 'soapbox/queries/client';
 
 import NotificationsContainer from '../features/ui/containers/notifications_container';
 import { default as rootReducer } from '../reducers';
@@ -28,8 +29,26 @@ const applyActions = (state: any, actions: any, reducer: any) => {
   return actions.reduce((state: any, action: any) => reducer(state, action), state);
 };
 
-const createTestStore = (initialState: any) => createStore(rootReducer, initialState, applyMiddleware(thunk));
+const mock = new MockAdapter(API, { onNoMatch: 'throwException' });
+const queryClient = new QueryClient({
+  logger: {
+    // eslint-disable-next-line no-console
+    log: console.log,
+    warn: console.warn,
+    error: () => { },
+  },
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+  },
+});
 
+beforeEach(() => {
+  mock.reset();
+});
+
+const createTestStore = (initialState: any) => createStore(rootReducer, initialState, applyMiddleware(thunk));
 const TestApp: FC<any> = ({ children, storeProps, routerProps = {} }) => {
   let store: ReturnType<typeof createTestStore>;
   let appState = rootState;
@@ -71,6 +90,12 @@ const customRender = (
   ...options,
 });
 
+const queryWrapper: React.FC = ({ children }) => (
+  <QueryClientProvider client={queryClient}>
+    {children}
+  </QueryClientProvider>
+);
+
 const mockWindowProperty = (property: any, value: any) => {
   const { [property]: originalProperty } = window;
   delete window[property];
@@ -97,4 +122,6 @@ export {
   rootReducer,
   mockWindowProperty,
   createTestStore,
+  mock,
+  queryWrapper,
 };
