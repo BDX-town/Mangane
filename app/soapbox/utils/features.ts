@@ -537,6 +537,16 @@ const getInstanceFeatures = (instance: Instance) => {
     scopes: v.software === PLEROMA ? 'read write follow push admin' : 'read write follow push',
 
     /**
+     * Ability to search statuses from the given account.
+     * @see {@link https://docs.joinmastodon.org/methods/search/}
+     * @see POST /api/v2/search
+     */
+    searchFromAccount: any([
+      v.software === MASTODON && gte(v.version, '2.8.0'),
+      v.software === PLEROMA && gte(v.version, '1.0.0'),
+    ]),
+
+    /**
      * Ability to manage account security settings.
      * @see POST /api/pleroma/change_password
      * @see POST /api/pleroma/change_email

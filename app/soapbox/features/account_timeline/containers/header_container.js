@@ -36,6 +36,7 @@ import { openModal } from 'soapbox/actions/modals';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport } from 'soapbox/actions/reports';
+import { setSearchAccount } from 'soapbox/actions/search';
 import { getSettings } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
 import { makeGetAccount } from 'soapbox/selectors';
@@ -289,6 +290,13 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
       } else {
         dispatch(removeFromFollowers(account.get('id')));
       }
+    });
+  },
+
+  onSearch(account, router) {
+    dispatch((dispatch) => {
+      dispatch(setSearchAccount(account.id));
+      router.push('/search');
     });
   },
 });

@@ -22,6 +22,8 @@ const SEARCH_EXPAND_REQUEST = 'SEARCH_EXPAND_REQUEST';
 const SEARCH_EXPAND_SUCCESS = 'SEARCH_EXPAND_SUCCESS';
 const SEARCH_EXPAND_FAIL    = 'SEARCH_EXPAND_FAIL';
 
+const SEARCH_ACCOUNT_SET = 'SEARCH_ACCOUNT_SET';
+
 const changeSearch = (value: string) =>
   (dispatch: AppDispatch) => {
     // If backspaced all the way, clear the search
@@ -43,6 +45,7 @@ const submitSearch = (filter?: SearchFilter) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const value = getState().search.value;
     const type = filter || getState().search.filter || 'accounts';
+    const accountId = getState().search.accountId;
 
     // An empty search doesn't return any results
     if (value.length === 0) {
@@ -51,13 +54,17 @@ const submitSearch = (filter?: SearchFilter) =>
 
     dispatch(fetchSearchRequest(value));
 
+    const params: Record<string, any> = {
+      q: value,
+      resolve: true,
+      limit: 20,
+      type,
+    };
+
+    if (accountId) params.account_id = accountId;
+
     api(getState).get('/api/v2/search', {
-      params: {
-        q: value,
-        resolve: true,
-        limit: 20,
-        type,
-      },
+      params,
     }).then(response => {
       if (response.data.accounts) {
         dispatch(importFetchedAccounts(response.data.accounts));
@@ -151,6 +158,11 @@ const showSearch = () => ({
   type: SEARCH_SHOW,
 });
 
+const setSearchAccount = (accountId: string) => ({
+  type: SEARCH_ACCOUNT_SET,
+  accountId,
+});
+
 export {
   SEARCH_CHANGE,
   SEARCH_CLEAR,
@@ -162,6 +174,7 @@ export {
   SEARCH_EXPAND_REQUEST,
   SEARCH_EXPAND_SUCCESS,
   SEARCH_EXPAND_FAIL,
+  SEARCH_ACCOUNT_SET,
   changeSearch,
   clearSearch,
   submitSearch,
@@ -174,4 +187,5 @@ export {
   expandSearchSuccess,
   expandSearchFail,
   showSearch,
+  setSearchAccount,
 };

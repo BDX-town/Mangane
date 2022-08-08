@@ -2,11 +2,12 @@ import classNames from 'classnames';
 import React, { useEffect, useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { expandSearch, setFilter } from 'soapbox/actions/search';
+import { clearSearch, expandSearch, setFilter } from 'soapbox/actions/search';
 import { fetchTrendingStatuses } from 'soapbox/actions/trending_statuses';
 import Hashtag from 'soapbox/components/hashtag';
+import IconButton from 'soapbox/components/icon_button';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import { Tabs } from 'soapbox/components/ui';
+import { HStack, Tabs, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import StatusContainer from 'soapbox/containers/status_container';
 import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder_account';
@@ -37,8 +38,12 @@ const SearchResults = () => {
   const trends = useAppSelector((state) => state.trends.items);
   const submitted = useAppSelector((state) => state.search.submitted);
   const selectedFilter = useAppSelector((state) => state.search.filter);
+  const filterByAccount = useAppSelector((state) => state.search.accountId);
+  const account = useAppSelector((state) => state.accounts.get(filterByAccount)?.acct);
 
   const handleLoadMore = () => dispatch(expandSearch(selectedFilter));
+
+  const handleClearSearch = () => dispatch(clearSearch());
 
   const selectFilter = (newActiveFilter: SearchFilter) => dispatch(setFilter(newActiveFilter));
 
@@ -189,7 +194,18 @@ const SearchResults = () => {
 
   return (
     <>
-      {renderFilterBar()}
+      {filterByAccount ? (
+        <HStack className='mb-4 pb-4 px-2 border-solid border-b border-gray-200 dark:border-gray-800' space={2}>
+          <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/x.svg')} onClick={handleClearSearch} />
+          <Text>
+            <FormattedMessage
+              id='search_results.filter_message'
+              defaultMessage='You are searching for posts from @{acct}.'
+              values={{ acct: account }}
+            />
+          </Text>
+        </HStack>
+      ) : renderFilterBar()}
 
       {noResultsMessage || (
         <ScrollableList

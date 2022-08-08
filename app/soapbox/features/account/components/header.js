@@ -64,6 +64,7 @@ const messages = defineMessages({
   demoteToUser: { id: 'admin.users.actions.demote_to_user', defaultMessage: 'Demote @{name} to a regular user' },
   suggestUser: { id: 'admin.users.actions.suggest_user', defaultMessage: 'Suggest @{name}' },
   unsuggestUser: { id: 'admin.users.actions.unsuggest_user', defaultMessage: 'Unsuggest @{name}' },
+  search: { id: 'account.search', defaultMessage: 'Search from @{name}' },
 });
 
 const mapStateToProps = state => {
@@ -271,6 +272,14 @@ class Header extends ImmutablePureComponent {
           text: intl.formatMessage(messages.add_or_remove_from_list),
           action: this.props.onAddToList,
           icon: require('@tabler/icons/list.svg'),
+        });
+      }
+
+      if (features.searchFromAccount) {
+        menu.push({
+          text: intl.formatMessage(messages.search, { name: account.get('username') }),
+          action: this.props.onSearch,
+          icon: require('@tabler/icons/search.svg'),
         });
       }
 
