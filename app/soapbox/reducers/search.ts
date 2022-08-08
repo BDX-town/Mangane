@@ -17,6 +17,7 @@ import {
   SEARCH_FILTER_SET,
   SEARCH_EXPAND_REQUEST,
   SEARCH_EXPAND_SUCCESS,
+  SEARCH_ACCOUNT_SET,
 } from '../actions/search';
 
 import type { AnyAction } from 'redux';
@@ -41,6 +42,7 @@ const ReducerRecord = ImmutableRecord({
   hidden: false,
   results: ResultsRecord(),
   filter: 'accounts' as SearchFilter,
+  accountId: null as string | null,
 });
 
 type State = ReturnType<typeof ReducerRecord>;
@@ -120,6 +122,8 @@ export default function search(state = ReducerRecord(), action: AnyAction) {
       return state.setIn(['results', `${action.searchType}Loaded`], false);
     case SEARCH_EXPAND_SUCCESS:
       return paginateResults(state, action.searchType, action.results, action.searchTerm);
+    case SEARCH_ACCOUNT_SET:
+      return ReducerRecord({ accountId: action.accountId, filter: 'statuses' });
     default:
       return state;
   }

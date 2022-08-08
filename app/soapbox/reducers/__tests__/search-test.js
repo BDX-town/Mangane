@@ -27,6 +27,7 @@ describe('search reducer', () => {
         hashtagsLoaded: false,
       },
       filter: 'accounts',
+      accountId: null,
     });
   });
 
@@ -68,6 +69,7 @@ describe('search reducer', () => {
           hashtagsLoaded: false,
         },
         filter: 'accounts',
+        accountId: null,
       };
 
       expect(reducer(state, action).toJS()).toEqual(expected);

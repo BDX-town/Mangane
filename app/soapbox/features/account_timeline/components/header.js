@@ -26,6 +26,7 @@ class Header extends ImmutablePureComponent {
     onEndorseToggle: PropTypes.func.isRequired,
     onAddToList: PropTypes.func.isRequired,
     onRemoveFromFollowers: PropTypes.func.isRequired,
+    onSearch: PropTypes.func.isRequired,
     username: PropTypes.string,
     history: PropTypes.object,
   };
@@ -146,6 +147,10 @@ class Header extends ImmutablePureComponent {
     this.props.onRemoveFromFollowers(this.props.account);
   }
 
+  handleSearch = () => {
+    this.props.onSearch(this.props.account, this.props.history);
+  }
+
   render() {
     const { account } = this.props;
     const moved = (account) ? account.get('moved') : false;
@@ -183,6 +188,7 @@ class Header extends ImmutablePureComponent {
           onUnsuggestUser={this.handleUnsuggestUser}
           onShowNote={this.handleShowNote}
           onRemoveFromFollowers={this.handleRemoveFromFollowers}
+          onSearch={this.handleSearch}
           username={this.props.username}
         />
       </>
