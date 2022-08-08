@@ -7,6 +7,7 @@ import 'intl-pluralrules';
 import { defineMessages } from 'react-intl';
 
 import api, { getLinks } from 'soapbox/api';
+import compareId from 'soapbox/compare_id';
 import { getFilters, regexFromFilters } from 'soapbox/selectors';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features';
@@ -304,23 +305,22 @@ const markReadNotifications = () =>
     if (!isLoggedIn(getState)) return;
 
     const state = getState();
-    const instance = state.instance;
-    const topNotificationId = state.notifications.get('items').first(ImmutableMap()).get('id');
-    const lastReadId = state.notifications.get('lastRead');
-    const v = parseVersion(instance.version);
+    const topNotificationId: string | undefined = state.notifications.get('items').first(ImmutableMap()).get('id');
+    const lastReadId: string | -1 = state.notifications.get('lastRead');
+    const v = parseVersion(state.instance.version);
 
-    if (!(topNotificationId && topNotificationId > lastReadId)) return;
+    if (topNotificationId && (lastReadId === -1 || compareId(topNotificationId, lastReadId) > 0)) {
+      const marker = {
+        notifications: {
+          last_read_id: topNotificationId,
+        },
+      };
 
-    const marker = {
-      notifications: {
-        last_read_id: topNotificationId,
-      },
-    };
+      dispatch(saveMarker(marker));
 
-    dispatch(saveMarker(marker));
-
-    if (v.software === PLEROMA) {
-      dispatch(markReadPleroma(topNotificationId));
+      if (v.software === PLEROMA) {
+        dispatch(markReadPleroma(topNotificationId));
+      }
     }
   };
 

@@ -11,7 +11,7 @@ if (docs.edited) {
 const uiCode = danger.git.fileMatch('app/soapbox/components/ui/**');
 const uiTests = danger.git.fileMatch('app/soapbox/components/ui/**/__tests__/**');
 
-if (uiCode.modified && !uiTests.modified) {
+if (uiCode.edited && !uiTests.edited) {
   warn('You have UI changes (`soapbox/components/ui`) without tests.');
 }
 
@@ -19,7 +19,7 @@ if (uiCode.modified && !uiTests.modified) {
 const actionsCode = danger.git.fileMatch('app/soapbox/actions/**');
 const actionsTests = danger.git.fileMatch('app/soapbox/actions/**__tests__/**');
 
-if (actionsCode.modified && !actionsTests.modified) {
+if (actionsCode.edited && !actionsTests.edited) {
   warn('You have actions changes (`soapbox/actions`) without tests.');
 }
 
@@ -27,6 +27,6 @@ if (actionsCode.modified && !actionsTests.modified) {
 const reducersCode = danger.git.fileMatch('app/soapbox/reducers/**');
 const reducersTests = danger.git.fileMatch('app/soapbox/reducers/**__tests__/**');
 
-if (reducersCode.modified && !reducersTests.modified) {
+if (reducersCode.edited && !reducersTests.edited) {
   warn('You have reducer changes (`soapbox/reducers`) without tests.');
 }
