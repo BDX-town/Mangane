@@ -5,13 +5,14 @@ import { fetchPoll, vote } from 'soapbox/actions/polls';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import RelativeTimestamp from '../relative_timestamp';
-import { Button, HStack, Stack, Text } from '../ui';
+import { Button, HStack, Stack, Text, Tooltip } from '../ui';
 
 import type { Selected } from './poll';
 import type { Poll as PollEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   closed: { id: 'poll.closed', defaultMessage: 'Closed' },
+  nonAnonymous: { id: 'poll.non_anonymous.label', defaultMessage: 'Other instances may display the options you voted for' },
 });
 
 interface IPollFooter {
@@ -54,6 +55,18 @@ const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX
       )}
 
       <HStack space={1.5} alignItems='center'>
+        {poll.pleroma.get('non_anonymous') && (
+          <>
+            <Tooltip text={intl.formatMessage(messages.nonAnonymous)}>
+              <Text theme='muted' weight='medium'>
+                <FormattedMessage id='poll.non_anonymous' defaultMessage='Public poll' />
+              </Text>
+            </Tooltip>
+
+            <Text theme='muted'>&middot;</Text>
+          </>
+        )}
+
         {showResults && (
           <>
             <button className='text-gray-600 underline' onClick={handleRefresh} data-testid='poll-refresh'>

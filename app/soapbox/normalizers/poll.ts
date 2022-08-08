@@ -29,6 +29,7 @@ export const PollRecord = ImmutableRecord({
   votes_count: 0,
   own_votes: null as ImmutableList<number> | null,
   voted: false,
+  pleroma: ImmutableMap<string, any>(),
 });
 
 // Sub-entity of Poll
