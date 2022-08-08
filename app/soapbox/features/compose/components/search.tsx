@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { Map as ImmutableMap } from 'immutable';
 import debounce from 'lodash/debounce';
-import * as React from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -9,8 +9,9 @@ import { useHistory } from 'react-router-dom';
 import {
   changeSearch,
   clearSearch,
-  submitSearch,
+  setSearchAccount,
   showSearch,
+  submitSearch,
 } from 'soapbox/actions/search';
 import AutosuggestAccountInput from 'soapbox/components/autosuggest_account_input';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
@@ -53,9 +54,9 @@ const Search = (props: ISearch) => {
   const value = useAppSelector((state) => state.search.value);
   const submitted = useAppSelector((state) => state.search.submitted);
 
-  const debouncedSubmit = debounce(() => {
+  const debouncedSubmit = useCallback(debounce(() => {
     dispatch(submitSearch());
-  }, 900);
+  }, 900), []);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -76,10 +77,13 @@ const Search = (props: ISearch) => {
   };
 
   const handleSubmit = () => {
-    dispatch(submitSearch());
-
     if (openInRoute) {
+      dispatch(setSearchAccount(null));
+      dispatch(submitSearch());
+
       history.push('/search');
+    } else {
+      dispatch(submitSearch());
     }
   };
 
