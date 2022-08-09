@@ -7,12 +7,12 @@ import { blockAccount } from 'soapbox/actions/accounts';
 import { showAlertForError } from 'soapbox/actions/alerts';
 import { launchChat } from 'soapbox/actions/chats';
 import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose';
-import { bookmark, favourite, pin, reblog, unbookmark, unfavourite, unpin, unreblog } from 'soapbox/actions/interactions';
+import { toggleBookmark, toggleFavourite, togglePin, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { deactivateUserModal, deleteStatusModal, deleteUserModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport } from 'soapbox/actions/reports';
-import { deleteStatus, editStatus, muteStatus, unmuteStatus } from 'soapbox/actions/statuses';
+import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses';
 import EmojiButtonWrapper from 'soapbox/components/emoji-button-wrapper';
 import StatusActionButton from 'soapbox/components/status-action-button';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
@@ -142,11 +142,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({ status, withDismiss = fal
 
   const handleFavouriteClick: React.EventHandler<React.MouseEvent> = (e) => {
     if (me) {
-      if (status.get('favourited')) {
-        dispatch(unfavourite(status));
-      } else {
-        dispatch(favourite(status));
-      }
+      toggleFavourite(status);
     } else {
       onOpenUnauthorizedModal('FAVOURITE');
     }
@@ -156,20 +152,11 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({ status, withDismiss = fal
 
   const handleBookmarkClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-
-    if (status.get('bookmarked')) {
-      dispatch(unbookmark(status));
-    } else {
-      dispatch(bookmark(status));
-    }
+    dispatch(toggleBookmark(status));
   };
 
   const modalReblog = () => {
-    if (status.get('reblogged')) {
-      dispatch(unreblog(status));
-    } else {
-      dispatch(reblog(status));
-    }
+    dispatch(toggleReblog(status));
   };
 
   const handleReblogClick: React.EventHandler<React.MouseEvent> = e => {
@@ -241,12 +228,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({ status, withDismiss = fal
 
   const handlePinClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-
-    if (status.get('pinned')) {
-      dispatch(unpin(status));
-    } else {
-      dispatch(pin(status));
-    }
+    dispatch(togglePin(status));
   };
 
   const handleMentionClick: React.EventHandler<React.MouseEvent> = (e) => {
@@ -307,12 +289,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({ status, withDismiss = fal
 
   const handleConversationMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-
-    if (status.get('muted')) {
-      dispatch(unmuteStatus(status.id));
-    } else {
-      dispatch(muteStatus(status.id));
-    }
+    dispatch(toggleMuteStatus(status));
   };
 
   const handleCopy: React.EventHandler<React.MouseEvent> = (e) => {
