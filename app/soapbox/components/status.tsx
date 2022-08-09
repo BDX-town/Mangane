@@ -14,9 +14,9 @@ import QuotedStatus from 'soapbox/features/status/containers/quoted_status_conta
 import { useAppDispatch, useSettings } from 'soapbox/hooks';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status';
 
+import StatusActionBar from './status-action-bar';
 import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
-import StatusActionBar from './status-action-bar';
 import StatusContent from './status_content';
 import { HStack, Text } from './ui';
 
