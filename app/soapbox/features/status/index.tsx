@@ -629,7 +629,6 @@ const Thread: React.FC<IThread> = (props) => {
           // FIXME: no "reblogged by" text is added for the screen reader
           aria-label={textForScreenReader(intl, status)}
         >
-          {/* @ts-ignore */}
           <DetailedStatus
             status={status}
             onOpenVideo={handleOpenVideo}

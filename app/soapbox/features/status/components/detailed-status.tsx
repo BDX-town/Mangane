@@ -1,5 +1,4 @@
-import classNames from 'classnames';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
@@ -9,7 +8,6 @@ import StatusContent from 'soapbox/components/status_content';
 import { HStack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
-import scheduleIdleTask from 'soapbox/features/ui/util/schedule_idle_task';
 
 import StatusInteractionBar from './status-interaction-bar';
 
@@ -21,11 +19,6 @@ interface IDetailedStatus {
   onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void,
   onOpenVideo: (media: ImmutableList<AttachmentEntity>, start: number) => void,
   onToggleHidden: (status: StatusEntity) => void,
-  measureHeight: boolean,
-  /** @deprecated Unused. */
-  onHeightChange?: () => void,
-  domain: string,
-  compact: boolean,
   showMedia: boolean,
   onOpenCompareHistoryModal: (status: StatusEntity) => void,
   onToggleMediaVisibility: () => void,
@@ -36,14 +29,10 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   onToggleHidden,
   onOpenCompareHistoryModal,
   onToggleMediaVisibility,
-  measureHeight,
   showMedia,
-  compact,
 }) => {
   const intl = useIntl();
-
   const node = useRef<HTMLDivElement>(null);
-  const [height, setHeight] = useState<number>();
 
   const handleExpandedToggle = () => {
     onToggleHidden(status);
@@ -52,16 +41,6 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   const handleOpenCompareHistoryModal = () => {
     onOpenCompareHistoryModal(status);
   };
-
-  useEffect(() => {
-    if (measureHeight && node.current) {
-      scheduleIdleTask(() => {
-        if (node.current) {
-          setHeight(Math.ceil(node.current.scrollHeight) + 1);
-        }
-      });
-    }
-  }, [node.current, height]);
 
   const getActualStatus = () => {
     if (!status) return undefined;
@@ -73,13 +52,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   const { account } = actualStatus;
   if (!account || typeof account !== 'object') return null;
 
-  const outerStyle: React.CSSProperties = { boxSizing: 'border-box' };
-
   let statusTypeIcon = null;
-
-  if (measureHeight) {
-    outerStyle.height = `${height}px`;
-  }
 
   let quote;
 
@@ -102,8 +75,8 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   }
 
   return (
-    <div style={outerStyle}>
-      <div ref={node} className={classNames('detailed-actualStatus', { compact })} tabIndex={-1}>
+    <div className='border-box'>
+      <div ref={node} className='detailed-actualStatus' tabIndex={-1}>
         <div className='mb-4'>
           <AccountContainer
             key={account.id}
