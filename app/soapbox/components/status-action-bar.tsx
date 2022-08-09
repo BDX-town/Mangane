@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
@@ -82,7 +83,8 @@ interface IStatusActionBar {
   status: Status,
   withDismiss?: boolean,
   withLabels?: boolean,
-  expandable?: boolean
+  expandable?: boolean,
+  space?: 'expand' | 'compact',
 }
 
 const StatusActionBar: React.FC<IStatusActionBar> = ({
@@ -90,6 +92,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   withDismiss = false,
   withLabels = false,
   expandable = true,
+  space = 'compact',
 }) => {
   const intl = useIntl();
   const history = useHistory();
@@ -584,7 +587,12 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const canShare = ('share' in navigator) && status.visibility === 'public';
 
   return (
-    <div className='pt-4 flex flex-row space-x-2'>
+    <div
+      className={classNames('flex flex-row', {
+        'justify-between': space === 'expand',
+        'space-x-2': space === 'compact',
+      })}
+    >
       <StatusActionButton
         title={replyTitle}
         icon={require('@tabler/icons/message-circle-2.svg')}

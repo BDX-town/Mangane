@@ -373,7 +373,9 @@ const Status: React.FC<IStatus> = (props) => {
             {quote}
 
             {!hideActionBar && (
-              <StatusActionBar status={actualStatus} />
+              <div className='pt-4'>
+                <StatusActionBar status={actualStatus} />
+              </div>
             )}
           </div>
         </div>
