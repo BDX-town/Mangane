@@ -484,7 +484,7 @@ const Thread: React.FC<IThread> = (props) => {
 
           <hr className='mb-2 border-t-2 dark:border-primary-800' />
 
-          <StatusActionBar status={status} />
+          <StatusActionBar status={status} withLabels expandable={false} />
         </div>
       </HotKeys>
 

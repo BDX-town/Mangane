@@ -81,9 +81,16 @@ const messages = defineMessages({
 interface IStatusActionBar {
   status: Status,
   withDismiss?: boolean,
+  withLabels?: boolean,
+  expandable?: boolean
 }
 
-const StatusActionBar: React.FC<IStatusActionBar> = ({ status, withDismiss = false }) => {
+const StatusActionBar: React.FC<IStatusActionBar> = ({
+  status,
+  withDismiss = false,
+  withLabels = false,
+  expandable = true,
+}) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
@@ -337,11 +344,13 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({ status, withDismiss = fal
 
     const menu: Menu = [];
 
-    menu.push({
-      text: intl.formatMessage(messages.open),
-      action: handleOpen,
-      icon: require('@tabler/icons/arrows-vertical.svg'),
-    });
+    if (expandable) {
+      menu.push({
+        text: intl.formatMessage(messages.open),
+        action: handleOpen,
+        icon: require('@tabler/icons/arrows-vertical.svg'),
+      });
+    }
 
     if (publicStatus) {
       menu.push({
@@ -562,6 +571,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({ status, withDismiss = fal
       active={status.reblogged}
       onClick={handleReblogClick}
       count={reblogCount}
+      text={withLabels ? intl.formatMessage(messages.reblog) : undefined}
     />
   );
 
@@ -580,6 +590,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({ status, withDismiss = fal
         icon={require('@tabler/icons/message-circle-2.svg')}
         onClick={handleReplyClick}
         count={replyCount}
+        text={withLabels ? intl.formatMessage(messages.reply) : undefined}
       />
 
       {(features.quotePosts && me) ? (
@@ -604,6 +615,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({ status, withDismiss = fal
             active={Boolean(meEmojiReact)}
             count={emojiReactCount}
             emoji={meEmojiReact}
+            text={withLabels ? meEmojiTitle : undefined}
           />
         </EmojiButtonWrapper>
       ) : (
@@ -615,6 +627,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({ status, withDismiss = fal
           onClick={handleFavouriteClick}
           active={Boolean(meEmojiReact)}
           count={favouriteCount}
+          text={withLabels ? meEmojiTitle : undefined}
         />
       )}
 
