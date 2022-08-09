@@ -324,7 +324,7 @@
         }
       }
 
-      button {
+      button[type="button"] {
         @apply w-full justify-center;
       }
     }
