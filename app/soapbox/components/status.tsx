@@ -16,7 +16,7 @@ import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'so
 
 import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
-import StatusActionBar from './status_action_bar';
+import StatusActionBar from './status-action-bar';
 import StatusContent from './status_content';
 import { HStack, Text } from './ui';
 
