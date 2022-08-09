@@ -3,7 +3,7 @@ import { isIntegerId } from 'soapbox/utils/numbers';
 import type { Status as StatusEntity } from 'soapbox/types/entities';
 
 /** Get the initial visibility of media attachments from user settings. */
-export const defaultMediaVisibility = (status: StatusEntity | undefined, displayMedia: string): boolean => {
+export const defaultMediaVisibility = (status: StatusEntity | undefined | null, displayMedia: string): boolean => {
   if (!status) return false;
 
   if (status.reblog && typeof status.reblog === 'object') {
