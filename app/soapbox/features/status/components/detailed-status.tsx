@@ -1,7 +1,6 @@
 import classNames from 'classnames';
-import React from 'react';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { FormattedDate, FormattedMessage, injectIntl, WrappedComponentProps as IntlProps } from 'react-intl';
+import React, { useEffect, useRef, useState } from 'react';
+import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
 import StatusMedia from 'soapbox/components/status-media';
@@ -17,13 +16,14 @@ import StatusInteractionBar from './status-interaction-bar';
 import type { List as ImmutableList } from 'immutable';
 import type { Attachment as AttachmentEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
-interface IDetailedStatus extends IntlProps {
+interface IDetailedStatus {
   status: StatusEntity,
   onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void,
   onOpenVideo: (media: ImmutableList<AttachmentEntity>, start: number) => void,
   onToggleHidden: (status: StatusEntity) => void,
   measureHeight: boolean,
-  onHeightChange: () => void,
+  /** @deprecated Unused. */
+  onHeightChange?: () => void,
   domain: string,
   compact: boolean,
   showMedia: boolean,
@@ -31,171 +31,139 @@ interface IDetailedStatus extends IntlProps {
   onToggleMediaVisibility: () => void,
 }
 
-interface IDetailedStatusState {
-  height: number | null,
-}
+const DetailedStatus: React.FC<IDetailedStatus> = ({
+  status,
+  onToggleHidden,
+  onOpenCompareHistoryModal,
+  onToggleMediaVisibility,
+  measureHeight,
+  showMedia,
+  compact,
+}) => {
+  const intl = useIntl();
 
-class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedStatusState> {
+  const node = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState<number>();
 
-  state = {
-    height: null,
+  const handleExpandedToggle = () => {
+    onToggleHidden(status);
   };
 
-  node: HTMLDivElement | null = null;
+  const handleOpenCompareHistoryModal = () => {
+    onOpenCompareHistoryModal(status);
+  };
 
-  handleExpandedToggle = () => {
-    this.props.onToggleHidden(this.props.status);
-  }
-
-  handleOpenCompareHistoryModal = () => {
-    this.props.onOpenCompareHistoryModal(this.props.status);
-  }
-
-  _measureHeight(heightJustChanged = false) {
-    if (this.props.measureHeight && this.node) {
-      scheduleIdleTask(() => this.node && this.setState({ height: Math.ceil(this.node.scrollHeight) + 1 }));
-
-      if (this.props.onHeightChange && heightJustChanged) {
-        this.props.onHeightChange();
-      }
+  useEffect(() => {
+    if (measureHeight && node.current) {
+      scheduleIdleTask(() => {
+        if (node.current) {
+          setHeight(Math.ceil(node.current.scrollHeight) + 1);
+        }
+      });
     }
-  }
+  }, [node.current, height]);
 
-  setRef: React.RefCallback<HTMLDivElement> = c => {
-    this.node = c;
-    this._measureHeight();
-  }
-
-  componentDidUpdate(prevProps: IDetailedStatus, prevState: IDetailedStatusState) {
-    this._measureHeight(prevState.height !== this.state.height);
-  }
-
-  // handleModalLink = e => {
-  //   e.preventDefault();
-  //
-  //   let href;
-  //
-  //   if (e.target.nodeName !== 'A') {
-  //     href = e.target.parentNode.href;
-  //   } else {
-  //     href = e.target.href;
-  //   }
-  //
-  //   window.open(href, 'soapbox-intent', 'width=445,height=600,resizable=no,menubar=no,status=no,scrollbars=yes');
-  // }
-
-  getActualStatus = () => {
-    const { status } = this.props;
+  const getActualStatus = () => {
     if (!status) return undefined;
     return status.reblog && typeof status.reblog === 'object' ? status.reblog : status;
+  };
+
+  const actualStatus = getActualStatus();
+  if (!actualStatus) return null;
+  const { account } = actualStatus;
+  if (!account || typeof account !== 'object') return null;
+
+  const outerStyle: React.CSSProperties = { boxSizing: 'border-box' };
+
+  let statusTypeIcon = null;
+
+  if (measureHeight) {
+    outerStyle.height = `${height}px`;
   }
 
-  render() {
-    const status = this.getActualStatus();
-    if (!status) return null;
-    const { account } = status;
-    if (!account || typeof account !== 'object') return null;
+  let quote;
 
-    const outerStyle: React.CSSProperties = { boxSizing: 'border-box' };
-    const { compact } = this.props;
-
-    let statusTypeIcon = null;
-
-    if (this.props.measureHeight) {
-      outerStyle.height = `${this.state.height}px`;
-    }
-
-    let quote;
-
-    if (status.quote) {
-      if (status.pleroma.get('quote_visible', true) === false) {
-        quote = (
-          <div className='quoted-status-tombstone'>
-            <p><FormattedMessage id='statuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
-          </div>
-        );
-      } else {
-        quote = <QuotedStatus statusId={status.quote as string} />;
-      }
-    }
-
-    if (status.visibility === 'direct') {
-      statusTypeIcon = <Icon src={require('@tabler/icons/mail.svg')} />;
-    } else if (status.visibility === 'private') {
-      statusTypeIcon = <Icon src={require('@tabler/icons/lock.svg')} />;
-    }
-
-    return (
-      <div style={outerStyle}>
-        <div ref={this.setRef} className={classNames('detailed-status', { compact })} tabIndex={-1}>
-          <div className='mb-4'>
-            <AccountContainer
-              key={account.id}
-              id={account.id}
-              timestamp={status.created_at}
-              avatarSize={42}
-              hideActions
-            />
-          </div>
-
-          {/* status.group && (
-            <div className='status__meta'>
-              Posted in <NavLink to={`/groups/${status.getIn(['group', 'id'])}`}>{status.getIn(['group', 'title'])}</NavLink>
-            </div>
-          )*/}
-
-          <StatusReplyMentions status={status} />
-
-          <StatusContent
-            status={status}
-            expanded={!status.hidden}
-            onExpandedToggle={this.handleExpandedToggle}
-          />
-
-          <StatusMedia
-            status={status}
-            showMedia={this.props.showMedia}
-            onToggleVisibility={this.props.onToggleMediaVisibility}
-          />
-
-          {quote}
-
-          <HStack justifyContent='between' alignItems='center' className='py-2'>
-            <StatusInteractionBar status={status} />
-
-            <div className='detailed-status__timestamp'>
-              {statusTypeIcon}
-
-              <span>
-                <a href={status.url} target='_blank' rel='noopener' className='hover:underline'>
-                  <Text tag='span' theme='muted' size='sm'>
-                    <FormattedDate value={new Date(status.created_at)} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
-                  </Text>
-                </a>
-
-                {status.edited_at && (
-                  <>
-                    {' · '}
-                    <div
-                      className='inline hover:underline'
-                      onClick={this.handleOpenCompareHistoryModal}
-                      role='button'
-                      tabIndex={0}
-                    >
-                      <Text tag='span' theme='muted' size='sm'>
-                        <FormattedMessage id='status.edited' defaultMessage='Edited {date}' values={{ date: this.props.intl.formatDate(new Date(status.edited_at), { hour12: false, month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }) }} />
-                      </Text>
-                    </div>
-                  </>
-                )}
-              </span>
-            </div>
-          </HStack>
+  if (actualStatus.quote) {
+    if (actualStatus.pleroma.get('quote_visible', true) === false) {
+      quote = (
+        <div className='quoted-actualStatus-tombstone'>
+          <p><FormattedMessage id='actualStatuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
         </div>
-      </div>
-    );
+      );
+    } else {
+      quote = <QuotedStatus statusId={actualStatus.quote as string} />;
+    }
   }
 
-}
+  if (actualStatus.visibility === 'direct') {
+    statusTypeIcon = <Icon src={require('@tabler/icons/mail.svg')} />;
+  } else if (actualStatus.visibility === 'private') {
+    statusTypeIcon = <Icon src={require('@tabler/icons/lock.svg')} />;
+  }
 
-export default injectIntl(DetailedStatus);
+  return (
+    <div style={outerStyle}>
+      <div ref={node} className={classNames('detailed-actualStatus', { compact })} tabIndex={-1}>
+        <div className='mb-4'>
+          <AccountContainer
+            key={account.id}
+            id={account.id}
+            timestamp={actualStatus.created_at}
+            avatarSize={42}
+            hideActions
+          />
+        </div>
+
+        <StatusReplyMentions status={actualStatus} />
+
+        <StatusContent
+          status={actualStatus}
+          expanded={!actualStatus.hidden}
+          onExpandedToggle={handleExpandedToggle}
+        />
+
+        <StatusMedia
+          status={actualStatus}
+          showMedia={showMedia}
+          onToggleVisibility={onToggleMediaVisibility}
+        />
+
+        {quote}
+
+        <HStack justifyContent='between' alignItems='center' className='py-2'>
+          <StatusInteractionBar status={actualStatus} />
+
+          <div className='detailed-actualStatus__timestamp'>
+            {statusTypeIcon}
+
+            <span>
+              <a href={actualStatus.url} target='_blank' rel='noopener' className='hover:underline'>
+                <Text tag='span' theme='muted' size='sm'>
+                  <FormattedDate value={new Date(actualStatus.created_at)} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
+                </Text>
+              </a>
+
+              {actualStatus.edited_at && (
+                <>
+                  {' · '}
+                  <div
+                    className='inline hover:underline'
+                    onClick={handleOpenCompareHistoryModal}
+                    role='button'
+                    tabIndex={0}
+                  >
+                    <Text tag='span' theme='muted' size='sm'>
+                      <FormattedMessage id='actualStatus.edited' defaultMessage='Edited {date}' values={{ date: intl.formatDate(new Date(actualStatus.edited_at), { hour12: false, month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }) }} />
+                    </Text>
+                  </div>
+                </>
+              )}
+            </span>
+          </div>
+        </HStack>
+      </div>
+    </div>
+  );
+};
+
+export default DetailedStatus;
