@@ -60,6 +60,10 @@
 
 .react-datepicker__navigation--next {
   right: 16px;
+
+  &--with-time:not(.react-datepicker__navigation--next--with-today-button) {
+    right: 100px;
+  }
 }
 
 .react-datepicker__year-read-view--down-arrow,
