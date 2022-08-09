@@ -24,7 +24,7 @@ const AuthToken: React.FC<IAuthToken> = ({ token }) => {
   };
 
   return (
-    <div className='p-4 rounded-lg bg-gray-100 dark:bg-gray-700'>
+    <div className='p-4 rounded-lg bg-gray-100 dark:bg-primary-800'>
       <Stack space={2}>
         <Stack>
           <Text size='md' weight='medium'>{token.app_name}</Text>
