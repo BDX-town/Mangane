@@ -104,6 +104,8 @@ const Status: React.FC<IStatus> = (props) => {
   const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
   const [emojiSelectorFocused, setEmojiSelectorFocused] = useState(false);
 
+  const actualStatus = getActualStatus(status);
+
   // Track height changes we know about to compensate scrolling.
   useEffect(() => {
     didShowCard.current = Boolean(!muted && !hidden && status?.card);
@@ -121,16 +123,16 @@ const Status: React.FC<IStatus> = (props) => {
     if (onClick) {
       onClick();
     } else {
-      history.push(`/@${_properStatus().getIn(['account', 'acct'])}/posts/${_properStatus().id}`);
+      history.push(`/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`);
     }
   };
 
   const handleExpandedToggle = (): void => {
-    onToggleHidden(_properStatus());
+    onToggleHidden(actualStatus);
   };
 
   const handleHotkeyOpenMedia = (e?: KeyboardEvent): void => {
-    const status = _properStatus();
+    const status = actualStatus;
     const firstAttachment = status.media_attachments.first();
 
     e?.preventDefault();
@@ -146,28 +148,28 @@ const Status: React.FC<IStatus> = (props) => {
 
   const handleHotkeyReply = (e?: KeyboardEvent): void => {
     e?.preventDefault();
-    onReply(_properStatus());
+    onReply(actualStatus);
   };
 
   const handleHotkeyFavourite = (): void => {
-    onFavourite(_properStatus());
+    onFavourite(actualStatus);
   };
 
   const handleHotkeyBoost = (e?: KeyboardEvent): void => {
-    onReblog(_properStatus(), e);
+    onReblog(actualStatus, e);
   };
 
   const handleHotkeyMention = (e?: KeyboardEvent): void => {
     e?.preventDefault();
-    onMention(_properStatus().account);
+    onMention(actualStatus.account);
   };
 
   const handleHotkeyOpen = (): void => {
-    history.push(`/@${_properStatus().getIn(['account', 'acct'])}/posts/${_properStatus().id}`);
+    history.push(`/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`);
   };
 
   const handleHotkeyOpenProfile = (): void => {
-    history.push(`/@${_properStatus().getIn(['account', 'acct'])}`);
+    history.push(`/@${actualStatus.getIn(['account', 'acct'])}`);
   };
 
   const handleHotkeyMoveUp = (e?: KeyboardEvent): void => {
@@ -179,7 +181,7 @@ const Status: React.FC<IStatus> = (props) => {
   };
 
   const handleHotkeyToggleHidden = (): void => {
-    onToggleHidden(_properStatus());
+    onToggleHidden(actualStatus);
   };
 
   const handleHotkeyToggleSensitive = (): void => {
@@ -200,12 +202,7 @@ const Status: React.FC<IStatus> = (props) => {
     firstEmoji?.focus();
   };
 
-  const _properStatus = (): StatusEntity => {
-    return getActualStatus(status);
-  };
-
   if (!status) return null;
-  const actualStatus = _properStatus();
   let prepend, rebloggedByText, reblogElement, reblogElementMobile;
 
   if (hidden) {
