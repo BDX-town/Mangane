@@ -44,7 +44,7 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
               target='_blank'
               className='p-3 space-x-3 flex items-center rounded-md dark:hover:bg-gray-900/50 hover:bg-gray-50'
             >
-              <Icon src={require('@tabler/icons/lifebuoy.svg')} className='flex-shrink-0 h-6 w-6 text-gray-400 dark:text-gray-200' />
+              <Icon src={require('@tabler/icons/lifebuoy.svg')} className='flex-shrink-0 h-6 w-6 text-gray-600 dark:text-gray-700' />
 
               <Text weight='medium'>
                 {intl.formatMessage(messages.helpCenter)}

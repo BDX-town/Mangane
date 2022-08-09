@@ -84,7 +84,7 @@ const Header = () => {
               title='Open Menu'
               src={require('@tabler/icons/menu-2.svg')}
               onClick={open}
-              className='md:hidden mr-4 bg-transparent text-gray-400 hover:text-gray-600'
+              className='md:hidden mr-4 bg-transparent text-gray-700 dark:text-gray-600 hover:text-gray-600'
             />
 
             <Link to='/' className='z-10'>
