@@ -142,13 +142,13 @@ const getDescendantsIds = createSelector([
 type DisplayMedia = 'default' | 'hide_all' | 'show_all';
 type RouteParams = { statusId: string };
 
-interface IStatus {
+interface IThread {
   params: RouteParams,
   onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void,
   onOpenVideo: (video: AttachmentEntity, time: number) => void,
 }
 
-const Status: React.FC<IStatus> = (props) => {
+const Thread: React.FC<IThread> = (props) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
@@ -719,4 +719,4 @@ const Status: React.FC<IStatus> = (props) => {
   );
 };
 
-export default Status;
+export default Thread;
