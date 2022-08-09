@@ -81,7 +81,6 @@ const loadInitial = () => {
 /** Highest level node with the Redux store. */
 const SoapboxMount = () => {
   useCachedLocationHandler();
-
   const me = useAppSelector(state => state.me);
   const instance = useAppSelector(state => state.instance);
   const account = useOwnAccount();

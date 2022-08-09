@@ -1,6 +1,5 @@
 'use strict';
 
-import { QueryClientProvider } from '@tanstack/react-query';
 import debounce from 'lodash/debounce';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
@@ -36,7 +35,6 @@ import HomePage from 'soapbox/pages/home_page';
 import ProfilePage from 'soapbox/pages/profile_page';
 import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
 import StatusPage from 'soapbox/pages/status_page';
-import { queryClient } from 'soapbox/queries/client';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
@@ -650,53 +648,51 @@ const UI: React.FC = ({ children }) => {
   };
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <HotKeys keyMap={keyMap} handlers={me ? handlers : undefined} ref={setHotkeysRef} attach={window} focused>
-        <div ref={node} style={style}>
-          <BackgroundShapes />
+    <HotKeys keyMap={keyMap} handlers={me ? handlers : undefined} ref={setHotkeysRef} attach={window} focused>
+      <div ref={node} style={style}>
+        <BackgroundShapes />
 
-          <div className='z-10 flex flex-col'>
-            <Navbar />
+        <div className='z-10 flex flex-col'>
+          <Navbar />
 
-            <Layout>
-              <Layout.Sidebar>
-                {!standalone && <SidebarNavigation />}
-              </Layout.Sidebar>
+          <Layout>
+            <Layout.Sidebar>
+              {!standalone && <SidebarNavigation />}
+            </Layout.Sidebar>
 
-              <SwitchingColumnsArea>
-                {children}
-              </SwitchingColumnsArea>
-            </Layout>
+            <SwitchingColumnsArea>
+              {children}
+            </SwitchingColumnsArea>
+          </Layout>
 
-            {me && floatingActionButton}
+          {me && floatingActionButton}
 
-            <BundleContainer fetchComponent={UploadArea}>
-              {Component => <Component active={draggingOver} onClose={closeUploadModal} />}
-            </BundleContainer>
+          <BundleContainer fetchComponent={UploadArea}>
+            {Component => <Component active={draggingOver} onClose={closeUploadModal} />}
+          </BundleContainer>
 
-            {me && (
-              <BundleContainer fetchComponent={SidebarMenu}>
-                {Component => <Component />}
-              </BundleContainer>
-            )}
-            {me && features.chats && !mobile && (
-              <BundleContainer fetchComponent={ChatPanes}>
-                {Component => <Component />}
-              </BundleContainer>
-            )}
-            <ThumbNavigation />
-
-            <BundleContainer fetchComponent={ProfileHoverCard}>
+          {me && (
+            <BundleContainer fetchComponent={SidebarMenu}>
               {Component => <Component />}
             </BundleContainer>
-
-            <BundleContainer fetchComponent={StatusHoverCard}>
+          )}
+          {me && features.chats && !mobile && (
+            <BundleContainer fetchComponent={ChatPanes}>
               {Component => <Component />}
             </BundleContainer>
-          </div>
+          )}
+          <ThumbNavigation />
+
+          <BundleContainer fetchComponent={ProfileHoverCard}>
+            {Component => <Component />}
+          </BundleContainer>
+
+          <BundleContainer fetchComponent={StatusHoverCard}>
+            {Component => <Component />}
+          </BundleContainer>
         </div>
-      </HotKeys>
-    </QueryClientProvider>
+      </div>
+    </HotKeys>
   );
 };
 
