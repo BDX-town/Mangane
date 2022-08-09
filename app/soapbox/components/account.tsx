@@ -117,7 +117,7 @@ const Account = ({
           src={actionIcon}
           title={actionTitle}
           onClick={handleAction}
-          className='bg-transparent text-gray-400 hover:text-gray-600'
+          className='bg-transparent text-gray-600 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-500'
           iconClassName='w-4 h-4'
         />
       );
