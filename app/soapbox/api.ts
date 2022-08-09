@@ -41,7 +41,7 @@ const maybeParseJSON = (data: string) => {
   }
 };
 
-export const getAuthBaseURL = createSelector([
+const getAuthBaseURL = createSelector([
   (state: RootState, me: string | false | null) => state.accounts.getIn([me, 'url']),
   (state: RootState, _me: string | false | null) => state.auth.get('me'),
 ], (accountUrl, authUserUrl) => {
