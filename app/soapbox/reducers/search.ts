@@ -123,6 +123,7 @@ export default function search(state = ReducerRecord(), action: AnyAction) {
     case SEARCH_EXPAND_SUCCESS:
       return paginateResults(state, action.searchType, action.results, action.searchTerm);
     case SEARCH_ACCOUNT_SET:
+      if (!action.accountId) return state.set('accountId', null);
       return ReducerRecord({ accountId: action.accountId, filter: 'statuses' });
     default:
       return state;

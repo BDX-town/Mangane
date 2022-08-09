@@ -158,7 +158,7 @@ const showSearch = () => ({
   type: SEARCH_SHOW,
 });
 
-const setSearchAccount = (accountId: string) => ({
+const setSearchAccount = (accountId: string | null) => ({
   type: SEARCH_ACCOUNT_SET,
   accountId,
 });
