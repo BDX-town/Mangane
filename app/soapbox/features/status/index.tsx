@@ -49,6 +49,7 @@ import {
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import ScrollableList from 'soapbox/components/scrollable_list';
+import StatusActionBar from 'soapbox/components/status_action_bar';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import Tombstone from 'soapbox/components/tombstone';
 import { Column, Stack } from 'soapbox/components/ui';
@@ -58,7 +59,6 @@ import { useAppDispatch, useAppSelector, useSettings, useSoapboxConfig } from 's
 import { makeGetStatus } from 'soapbox/selectors';
 import { defaultMediaVisibility, textForScreenReader } from 'soapbox/utils/status';
 
-import ActionBar from './components/action-bar';
 import DetailedStatus from './components/detailed-status';
 import ThreadLoginCta from './components/thread-login-cta';
 import ThreadStatus from './components/thread-status';
@@ -480,7 +480,7 @@ const Thread: React.FC<IThread> = (props) => {
     e.preventDefault();
   };
 
-  const handleEmojiSelectorUnfocus: React.EventHandler<React.KeyboardEvent> = () => {
+  const handleEmojiSelectorUnfocus = () => {
     setEmojiSelectorFocused(false);
   };
 
@@ -640,7 +640,7 @@ const Thread: React.FC<IThread> = (props) => {
 
           <hr className='mb-2 border-t-2 dark:border-primary-800' />
 
-          <ActionBar
+          <StatusActionBar
             status={status}
             onReply={handleReplyClick}
             onFavourite={handleFavouriteClick}
