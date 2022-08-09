@@ -1,5 +1,6 @@
 import { isIntegerId } from 'soapbox/utils/numbers';
 
+import type { IntlShape } from 'react-intl';
 import type { Status as StatusEntity } from 'soapbox/types/entities';
 
 /** Get the initial visibility of media attachments from user settings. */
@@ -35,4 +36,25 @@ export const shouldHaveCard = (status: StatusEntity): boolean => {
 // https://gitlab.com/soapbox-pub/soapbox-fe/-/merge_requests/1087
 export const hasIntegerMediaIds = (status: StatusEntity): boolean => {
   return status.media_attachments.some(({ id }) => isIntegerId(id));
+};
+
+/** Sanitize status text for use with screen readers. */
+export const textForScreenReader = (intl: IntlShape, status: StatusEntity, rebloggedByText?: string): string => {
+  const { account } = status;
+  if (!account || typeof account !== 'object') return '';
+
+  const displayName = account.display_name;
+
+  const values = [
+    displayName.length === 0 ? account.acct.split('@')[0] : displayName,
+    status.spoiler_text && status.hidden ? status.spoiler_text : status.search_index.slice(status.spoiler_text.length),
+    intl.formatDate(status.created_at, { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }),
+    status.getIn(['account', 'acct']),
+  ];
+
+  if (rebloggedByText) {
+    values.push(rebloggedByText);
+  }
+
+  return values.join(', ');
 };

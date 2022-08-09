@@ -1,13 +1,13 @@
 import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
-import { useIntl, FormattedMessage, IntlShape, defineMessages } from 'react-intl';
+import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { NavLink, useHistory } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
-import { defaultMediaVisibility } from 'soapbox/utils/status';
+import { defaultMediaVisibility, textForScreenReader } from 'soapbox/utils/status';
 
 import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
@@ -28,26 +28,6 @@ export type ScrollPosition = { height: number, top: number };
 const messages = defineMessages({
   reblogged_by: { id: 'status.reblogged_by', defaultMessage: '{name} reposted' },
 });
-
-export const textForScreenReader = (intl: IntlShape, status: StatusEntity, rebloggedByText?: string): string => {
-  const { account } = status;
-  if (!account || typeof account !== 'object') return '';
-
-  const displayName = account.display_name;
-
-  const values = [
-    displayName.length === 0 ? account.acct.split('@')[0] : displayName,
-    status.spoiler_text && status.hidden ? status.spoiler_text : status.search_index.slice(status.spoiler_text.length),
-    intl.formatDate(status.created_at, { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }),
-    status.getIn(['account', 'acct']),
-  ];
-
-  if (rebloggedByText) {
-    values.push(rebloggedByText);
-  }
-
-  return values.join(', ');
-};
 
 interface IStatus {
   id?: string,

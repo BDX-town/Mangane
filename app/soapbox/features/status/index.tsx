@@ -49,7 +49,6 @@ import {
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import { textForScreenReader } from 'soapbox/components/status';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import Tombstone from 'soapbox/components/tombstone';
 import { Column, Stack } from 'soapbox/components/ui';
@@ -57,7 +56,7 @@ import PlaceholderStatus from 'soapbox/features/placeholder/components/placehold
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import { useAppDispatch, useAppSelector, useSettings, useSoapboxConfig } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
-import { defaultMediaVisibility } from 'soapbox/utils/status';
+import { defaultMediaVisibility, textForScreenReader } from 'soapbox/utils/status';
 
 import ActionBar from './components/action-bar';
 import DetailedStatus from './components/detailed-status';
