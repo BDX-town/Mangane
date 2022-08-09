@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import API from 'soapbox/queries/client';
+import { useApi } from 'soapbox/hooks';
 
 type Avatar = {
   account_id: string
@@ -8,12 +8,14 @@ type Avatar = {
   username: string
 }
 
-const getCarouselAvatars = async() => {
-  const { data } = await API.get('/api/v1/truth/carousels/avatars');
-  return data;
-};
-
 export default function useCarouselAvatars() {
+  const api = useApi();
+
+  const getCarouselAvatars = async() => {
+    const { data } = await api.get('/api/v1/truth/carousels/avatars');
+    return data;
+  };
+
   const result = useQuery<Avatar[]>(['carouselAvatars'], getCarouselAvatars, {
     placeholderData: [],
   });

@@ -11,8 +11,6 @@ import { Action, applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import '@testing-library/jest-dom';
 
-import API from 'soapbox/queries/client';
-
 import NotificationsContainer from '../features/ui/containers/notifications_container';
 import { default as rootReducer } from '../reducers';
 
@@ -29,7 +27,7 @@ const applyActions = (state: any, actions: any, reducer: any) => {
   return actions.reduce((state: any, action: any) => reducer(state, action), state);
 };
 
-const mock = new MockAdapter(API, { onNoMatch: 'throwException' });
+const mock = new MockAdapter(undefined as any, { onNoMatch: 'throwException' });
 const queryClient = new QueryClient({
   logger: {
     // eslint-disable-next-line no-console

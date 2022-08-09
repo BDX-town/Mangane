@@ -13,7 +13,6 @@ import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig, getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchVerificationConfig } from 'soapbox/actions/verification';
-import { getAuthBaseURL } from 'soapbox/api';
 import * as BuildConfig from 'soapbox/build_config';
 import GdprBanner from 'soapbox/components/gdpr-banner';
 import Helmet from 'soapbox/components/helmet';
@@ -39,8 +38,7 @@ import {
   useLocale,
 } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
-import { queryClient, useAxiosInterceptors } from 'soapbox/queries/client';
-import { getAccessToken } from 'soapbox/utils/auth';
+import { queryClient } from 'soapbox/queries/client';
 import { useCachedLocationHandler } from 'soapbox/utils/redirect';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
@@ -202,11 +200,7 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
   const me = useAppSelector(state => state.me);
   const account = useOwnAccount();
   const swUpdating = useAppSelector(state => state.meta.swUpdating);
-  const accessToken = useAppSelector((state) => getAccessToken(state));
-  const baseURL = useAppSelector((state) => me ? getAuthBaseURL(state, me) : '');
   const locale = useLocale();
-
-  useAxiosInterceptors(accessToken, baseURL);
 
   const [messages, setMessages] = useState<Record<string, string>>({});
   const [localeLoading, setLocaleLoading] = useState(true);
@@ -289,15 +283,15 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
 /** The root React node of the application. */
 const Soapbox: React.FC = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
         <SoapboxHead>
           <SoapboxLoad>
             <SoapboxMount />
           </SoapboxLoad>
         </SoapboxHead>
-      </Provider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </Provider>
   );
 };
 
