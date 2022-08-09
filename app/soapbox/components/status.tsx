@@ -102,7 +102,6 @@ const Status: React.FC<IStatus> = (props) => {
   const node = useRef<HTMLDivElement>(null);
 
   const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
-  const [emojiSelectorFocused, setEmojiSelectorFocused] = useState(false);
 
   const actualStatus = getActualStatus(status);
 
@@ -192,12 +191,7 @@ const Status: React.FC<IStatus> = (props) => {
     _expandEmojiSelector();
   };
 
-  const handleEmojiSelectorUnfocus = (): void => {
-    setEmojiSelectorFocused(false);
-  };
-
   const _expandEmojiSelector = (): void => {
-    setEmojiSelectorFocused(true);
     const firstEmoji: HTMLDivElement | null | undefined = node.current?.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
     firstEmoji?.focus();
   };
@@ -397,13 +391,7 @@ const Status: React.FC<IStatus> = (props) => {
             {quote}
 
             {!hideActionBar && (
-              // @ts-ignore
-              <StatusActionBar
-                emojiSelectorFocused={emojiSelectorFocused}
-                handleEmojiSelectorUnfocus={handleEmojiSelectorUnfocus}
-                {...props}
-                status={actualStatus}
-              />
+              <StatusActionBar status={actualStatus} />
             )}
           </div>
         </div>

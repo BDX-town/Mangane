@@ -1,19 +1,26 @@
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
-import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
+import { blockAccount } from 'soapbox/actions/accounts';
+import { showAlertForError } from 'soapbox/actions/alerts';
+import { launchChat } from 'soapbox/actions/chats';
+import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose';
+import { bookmark, favourite, pin, reblog, unbookmark, unfavourite, unpin, unreblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
+import { deactivateUserModal, deleteStatusModal, deleteUserModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
+import { initMuteModal } from 'soapbox/actions/mutes';
+import { initReport } from 'soapbox/actions/reports';
+import { deleteStatus, editStatus, muteStatus, unmuteStatus } from 'soapbox/actions/statuses';
 import EmojiButtonWrapper from 'soapbox/components/emoji-button-wrapper';
 import StatusActionButton from 'soapbox/components/status-action-button';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
-import { useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
 
-import type { History } from 'history';
 import type { Menu } from 'soapbox/components/dropdown_menu';
-import type { Status } from 'soapbox/types/entities';
+import type { Account, Status } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -59,74 +66,42 @@ const messages = defineMessages({
   reactionCry: { id: 'status.reactions.cry', defaultMessage: 'Sad' },
   reactionWeary: { id: 'status.reactions.weary', defaultMessage: 'Weary' },
   quotePost: { id: 'status.quote', defaultMessage: 'Quote post' },
+  deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
+  deleteHeading: { id: 'confirmations.delete.heading', defaultMessage: 'Delete post' },
+  deleteMessage: { id: 'confirmations.delete.message', defaultMessage: 'Are you sure you want to delete this post?' },
+  redraftConfirm: { id: 'confirmations.redraft.confirm', defaultMessage: 'Delete & redraft' },
+  redraftMessage: { id: 'confirmations.redraft.message', defaultMessage: 'Are you sure you want to delete this post and re-draft it? Favorites and reposts will be lost, and replies to the original post will be orphaned.' },
+  blockConfirm: { id: 'confirmations.block.confirm', defaultMessage: 'Block' },
+  replyConfirm: { id: 'confirmations.reply.confirm', defaultMessage: 'Reply' },
+  redraftHeading: { id: 'confirmations.redraft.heading', defaultMessage: 'Delete & redraft' },
+  replyMessage: { id: 'confirmations.reply.message', defaultMessage: 'Replying now will overwrite the message you are currently composing. Are you sure you want to proceed?' },
+  blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
 });
 
 interface IStatusActionBar {
   status: Status,
-  onReply: (status: Status) => void,
-  onFavourite: (status: Status) => void,
-  onEmojiReact: (status: Status, emoji: string) => void,
-  onBookmark: (status: Status) => void,
-  onReblog: (status: Status, e: React.MouseEvent) => void,
-  onQuote: (status: Status) => void,
-  onDelete: (status: Status, redraft?: boolean) => void,
-  onEdit: (status: Status) => void,
-  onDirect: (account: any) => void,
-  onChat: (account: any, history: History) => void,
-  onMention: (account: any) => void,
-  onMute: (account: any) => void,
-  onBlock: (status: Status) => void,
-  onReport: (status: Status) => void,
-  onEmbed: (status: Status) => void,
-  onDeactivateUser: (status: Status) => void,
-  onDeleteUser: (status: Status) => void,
-  onToggleStatusSensitivity: (status: Status) => void,
-  onDeleteStatus: (status: Status) => void,
-  onMuteConversation: (status: Status) => void,
-  onPin: (status: Status) => void,
   withDismiss?: boolean,
-  withGroupAdmin?: boolean,
-  allowedEmoji: ImmutableList<string>,
-  emojiSelectorFocused: boolean,
-  handleEmojiSelectorUnfocus: () => void,
-  handleEmojiSelectorExpand?: React.EventHandler<React.KeyboardEvent>,
 }
 
-const StatusActionBar: React.FC<IStatusActionBar> = ({
-  status,
-  onReply,
-  onFavourite,
-  allowedEmoji,
-  onBookmark,
-  onReblog,
-  onQuote,
-  onDelete,
-  onEdit,
-  onPin,
-  onMention,
-  onDirect,
-  onChat,
-  onMute,
-  onBlock,
-  onEmbed,
-  onReport,
-  onMuteConversation,
-  onDeactivateUser,
-  onDeleteUser,
-  onDeleteStatus,
-  onToggleStatusSensitivity,
-  withDismiss,
-}) => {
+const StatusActionBar: React.FC<IStatusActionBar> = ({ status, withDismiss = false }) => {
   const intl = useIntl();
   const history = useHistory();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const me = useAppSelector(state => state.me);
   const features = useFeatures();
+  const settings = useSettings();
+  const soapboxConfig = useSoapboxConfig();
+
+  const { allowedEmoji } = soapboxConfig;
 
   const account = useOwnAccount();
   const isStaff = account ? account.staff : false;
   const isAdmin = account ? account.admin : false;
+
+  if (!status) {
+    return null;
+  }
 
   const onOpenUnauthorizedModal = (action?: string) => {
     dispatch(openModal('UNAUTHORIZED', {
@@ -137,7 +112,18 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleReplyClick: React.MouseEventHandler = (e) => {
     if (me) {
-      onReply(status);
+      dispatch((_, getState) => {
+        const state = getState();
+        if (state.compose.text.trim().length !== 0) {
+          dispatch(openModal('CONFIRM', {
+            message: intl.formatMessage(messages.replyMessage),
+            confirm: intl.formatMessage(messages.replyConfirm),
+            onConfirm: () => dispatch(replyCompose(status)),
+          }));
+        } else {
+          dispatch(replyCompose(status));
+        }
+      });
     } else {
       onOpenUnauthorizedModal('REPLY');
     }
@@ -156,7 +142,11 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleFavouriteClick: React.EventHandler<React.MouseEvent> = (e) => {
     if (me) {
-      onFavourite(status);
+      if (status.get('favourited')) {
+        dispatch(unfavourite(status));
+      } else {
+        dispatch(favourite(status));
+      }
     } else {
       onOpenUnauthorizedModal('FAVOURITE');
     }
@@ -166,14 +156,32 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleBookmarkClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    onBookmark(status);
+
+    if (status.get('bookmarked')) {
+      dispatch(unbookmark(status));
+    } else {
+      dispatch(bookmark(status));
+    }
+  };
+
+  const modalReblog = () => {
+    if (status.get('reblogged')) {
+      dispatch(unreblog(status));
+    } else {
+      dispatch(reblog(status));
+    }
   };
 
   const handleReblogClick: React.EventHandler<React.MouseEvent> = e => {
     e.stopPropagation();
 
     if (me) {
-      onReblog(status, e);
+      const boostModal = settings.get('boostModal');
+      if ((e && e.shiftKey) || !boostModal) {
+        modalReblog();
+      } else {
+        dispatch(openModal('BOOST', { status, onReblog: modalReblog }));
+      }
     } else {
       onOpenUnauthorizedModal('REBLOG');
     }
@@ -183,54 +191,101 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     e.stopPropagation();
 
     if (me) {
-      onQuote(status);
+      dispatch((_, getState) => {
+        const state = getState();
+        if (state.compose.text.trim().length !== 0) {
+          dispatch(openModal('CONFIRM', {
+            message: intl.formatMessage(messages.replyMessage),
+            confirm: intl.formatMessage(messages.replyConfirm),
+            onConfirm: () => dispatch(quoteCompose(status)),
+          }));
+        } else {
+          dispatch(quoteCompose(status));
+        }
+      });
     } else {
       onOpenUnauthorizedModal('REBLOG');
     }
   };
 
+  const doDeleteStatus = (withRedraft = false) => {
+    dispatch((_, getState) => {
+      const deleteModal = settings.get('deleteModal');
+      if (!deleteModal) {
+        dispatch(deleteStatus(status.id, withRedraft));
+      } else {
+        dispatch(openModal('CONFIRM', {
+          icon: withRedraft ? require('@tabler/icons/edit.svg') : require('@tabler/icons/trash.svg'),
+          heading: intl.formatMessage(withRedraft ? messages.redraftHeading : messages.deleteHeading),
+          message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
+          confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
+          onConfirm: () => dispatch(deleteStatus(status.id, withRedraft)),
+        }));
+      }
+    });
+  };
+
   const handleDeleteClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    onDelete(status);
+    doDeleteStatus();
   };
 
   const handleRedraftClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    onDelete(status, true);
+    doDeleteStatus(true);
   };
 
   const handleEditClick: React.EventHandler<React.MouseEvent> = () => {
-    onEdit(status);
+    dispatch(editStatus(status.id));
   };
 
   const handlePinClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    onPin(status);
+
+    if (status.get('pinned')) {
+      dispatch(unpin(status));
+    } else {
+      dispatch(pin(status));
+    }
   };
 
   const handleMentionClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    onMention(status.account);
+    dispatch(mentionCompose(status.account as Account));
   };
 
   const handleDirectClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    onDirect(status.account);
+    dispatch(directCompose(status.account as Account));
   };
 
   const handleChatClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    onChat(status.account, history);
+    const account = status.account as Account;
+    dispatch(launchChat(account.id, history));
   };
 
   const handleMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    onMute(status.account);
+    dispatch(initMuteModal(status.account as Account));
   };
 
   const handleBlockClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    onBlock(status);
+
+    const account = status.get('account') as Account;
+    dispatch(openModal('CONFIRM', {
+      icon: require('@tabler/icons/ban.svg'),
+      heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.get('acct') }} />,
+      message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
+      confirm: intl.formatMessage(messages.blockConfirm),
+      onConfirm: () => dispatch(blockAccount(account.id)),
+      secondary: intl.formatMessage(messages.blockAndReport),
+      onSecondary: () => {
+        dispatch(blockAccount(account.id));
+        dispatch(initReport(account, status));
+      },
+    }));
   };
 
   const handleOpen: React.EventHandler<React.MouseEvent> = (e) => {
@@ -239,17 +294,25 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleEmbed = () => {
-    onEmbed(status);
+    dispatch(openModal('EMBED', {
+      url: status.get('url'),
+      onError: (error: any) => dispatch(showAlertForError(error)),
+    }));
   };
 
   const handleReport: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    onReport(status);
+    dispatch(initReport(status.account as Account, status));
   };
 
   const handleConversationMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    onMuteConversation(status);
+
+    if (status.get('muted')) {
+      dispatch(unmuteStatus(status.id));
+    } else {
+      dispatch(muteStatus(status.id));
+    }
   };
 
   const handleCopy: React.EventHandler<React.MouseEvent> = (e) => {
@@ -275,22 +338,22 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleDeactivateUser: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    onDeactivateUser(status);
+    dispatch(deactivateUserModal(intl, status.getIn(['account', 'id']) as string));
   };
 
   const handleDeleteUser: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    onDeleteUser(status);
+    dispatch(deleteUserModal(intl, status.getIn(['account', 'id']) as string));
   };
 
   const handleDeleteStatus: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    onDeleteStatus(status);
+    dispatch(deleteStatusModal(intl, status.id));
   };
 
   const handleToggleStatusSensitivity: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    onToggleStatusSensitivity(status);
+    dispatch(toggleStatusSensitivityModal(intl, status.id, status.sensitive));
   };
 
   const _makeMenu = (publicStatus: boolean) => {

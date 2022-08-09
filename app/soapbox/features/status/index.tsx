@@ -3,46 +3,25 @@ import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immuta
 import { debounce } from 'lodash';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
-import { blockAccount } from 'soapbox/actions/accounts';
-import { launchChat } from 'soapbox/actions/chats';
 import {
   replyCompose,
   mentionCompose,
-  directCompose,
-  quoteCompose,
 } from 'soapbox/actions/compose';
-import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
 import {
   favourite,
   unfavourite,
   reblog,
   unreblog,
-  bookmark,
-  unbookmark,
-  pin,
-  unpin,
 } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
-import {
-  deactivateUserModal,
-  deleteUserModal,
-  deleteStatusModal,
-  toggleStatusSensitivityModal,
-} from 'soapbox/actions/moderation';
-import { initMuteModal } from 'soapbox/actions/mutes';
-import { initReport } from 'soapbox/actions/reports';
 import { getSettings } from 'soapbox/actions/settings';
 import {
-  muteStatus,
-  unmuteStatus,
-  deleteStatus,
   hideStatus,
   revealStatus,
-  editStatus,
   fetchStatusWithContext,
   fetchNext,
 } from 'soapbox/actions/statuses';
@@ -55,7 +34,7 @@ import Tombstone from 'soapbox/components/tombstone';
 import { Column, Stack } from 'soapbox/components/ui';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
-import { useAppDispatch, useAppSelector, useSettings, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
 import { defaultMediaVisibility, textForScreenReader } from 'soapbox/utils/status';
 
@@ -63,7 +42,6 @@ import DetailedStatus from './components/detailed-status';
 import ThreadLoginCta from './components/thread-login-cta';
 import ThreadStatus from './components/thread-status';
 
-import type { History } from 'history';
 import type { VirtuosoHandle } from 'react-virtuoso';
 import type { RootState } from 'soapbox/store';
 import type {
@@ -153,12 +131,10 @@ const Thread: React.FC<IThread> = (props) => {
   const dispatch = useAppDispatch();
 
   const settings = useSettings();
-  const soapboxConfig = useSoapboxConfig();
 
   const me = useAppSelector(state => state.me);
   const status = useAppSelector(state => getStatus(state, { id: props.params.statusId }));
   const displayMedia = settings.get('displayMedia') as DisplayMedia;
-  const allowedEmoji = soapboxConfig.allowedEmoji;
   const askReplyConfirmation = useAppSelector(state => state.compose.text.trim().length !== 0);
 
   const { ancestorsIds, descendantsIds } = useAppSelector(state => {
@@ -181,7 +157,6 @@ const Thread: React.FC<IThread> = (props) => {
   });
 
   const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
-  const [emojiSelectorFocused, setEmojiSelectorFocused] = useState(false);
   const [isLoaded, setIsLoaded] = useState<boolean>(!!status);
   const [next, setNext] = useState<string>();
 
@@ -210,8 +185,11 @@ const Thread: React.FC<IThread> = (props) => {
     setShowMedia(!showMedia);
   };
 
-  const handleEmojiReactClick = (status: StatusEntity, emoji: string) => {
-    dispatch(simpleEmojiReact(status, emoji));
+  const handleHotkeyReact = () => {
+    if (statusRef.current) {
+      const firstEmoji: HTMLButtonElement | null = statusRef.current.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
+      firstEmoji?.focus();
+    }
   };
 
   const handleFavouriteClick = (status: StatusEntity) => {
@@ -219,22 +197,6 @@ const Thread: React.FC<IThread> = (props) => {
       dispatch(unfavourite(status));
     } else {
       dispatch(favourite(status));
-    }
-  };
-
-  const handlePin = (status: StatusEntity) => {
-    if (status.pinned) {
-      dispatch(unpin(status));
-    } else {
-      dispatch(pin(status));
-    }
-  };
-
-  const handleBookmark = (status: StatusEntity) => {
-    if (status.bookmarked) {
-      dispatch(unbookmark(status));
-    } else {
-      dispatch(bookmark(status));
     }
   };
 
@@ -269,47 +231,6 @@ const Thread: React.FC<IThread> = (props) => {
     });
   };
 
-  const handleQuoteClick = (status: StatusEntity) => {
-    if (askReplyConfirmation) {
-      dispatch(openModal('CONFIRM', {
-        message: intl.formatMessage(messages.replyMessage),
-        confirm: intl.formatMessage(messages.replyConfirm),
-        onConfirm: () => dispatch(quoteCompose(status)),
-      }));
-    } else {
-      dispatch(quoteCompose(status));
-    }
-  };
-
-  const handleDeleteClick = (status: StatusEntity, withRedraft = false) => {
-    dispatch((_, getState) => {
-      const deleteModal = getSettings(getState()).get('deleteModal');
-      if (!deleteModal) {
-        dispatch(deleteStatus(status.id, withRedraft));
-      } else {
-        dispatch(openModal('CONFIRM', {
-          icon: withRedraft ? require('@tabler/icons/edit.svg') : require('@tabler/icons/trash.svg'),
-          heading: intl.formatMessage(withRedraft ? messages.redraftHeading : messages.deleteHeading),
-          message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
-          confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
-          onConfirm: () => dispatch(deleteStatus(status.id, withRedraft)),
-        }));
-      }
-    });
-  };
-
-  const handleEditClick = (status: StatusEntity) => {
-    dispatch(editStatus(status.id));
-  };
-
-  const handleDirectClick = (account: AccountEntity) => {
-    dispatch(directCompose(account));
-  };
-
-  const handleChatClick = (account: AccountEntity, router: History) => {
-    dispatch(launchChat(account.id, router));
-  };
-
   const handleMentionClick = (account: AccountEntity) => {
     dispatch(mentionCompose(account));
   };
@@ -337,66 +258,12 @@ const Thread: React.FC<IThread> = (props) => {
     }
   };
 
-  const handleMuteClick = (account: AccountEntity) => {
-    dispatch(initMuteModal(account));
-  };
-
-  const handleConversationMuteClick = (status: StatusEntity) => {
-    if (status.muted) {
-      dispatch(unmuteStatus(status.id));
-    } else {
-      dispatch(muteStatus(status.id));
-    }
-  };
-
   const handleToggleHidden = (status: StatusEntity) => {
     if (status.hidden) {
       dispatch(revealStatus(status.id));
     } else {
       dispatch(hideStatus(status.id));
     }
-  };
-
-  const handleBlockClick = (status: StatusEntity) => {
-    const { account } = status;
-    if (!account || typeof account !== 'object') return;
-
-    dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/ban.svg'),
-      heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.acct }} />,
-      message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.acct}</strong> }} />,
-      confirm: intl.formatMessage(messages.blockConfirm),
-      onConfirm: () => dispatch(blockAccount(account.id)),
-      secondary: intl.formatMessage(messages.blockAndReport),
-      onSecondary: () => {
-        dispatch(blockAccount(account.id));
-        dispatch(initReport(account, status));
-      },
-    }));
-  };
-
-  const handleReport = (status: StatusEntity) => {
-    dispatch(initReport(status.account as AccountEntity, status));
-  };
-
-  const handleEmbed = (status: StatusEntity) => {
-    dispatch(openModal('EMBED', { url: status.url }));
-  };
-
-  const handleDeactivateUser = (status: StatusEntity) => {
-    dispatch(deactivateUserModal(intl, status.getIn(['account', 'id']) as string));
-  };
-
-  const handleDeleteUser = (status: StatusEntity) => {
-    dispatch(deleteUserModal(intl, status.getIn(['account', 'id']) as string));
-  };
-
-  const handleToggleStatusSensitivity = (status: StatusEntity) => {
-    dispatch(toggleStatusSensitivityModal(intl, status.id, status.sensitive));
-  };
-
-  const handleDeleteStatus = (status: StatusEntity) => {
-    dispatch(deleteStatusModal(intl, status.id));
   };
 
   const handleHotkeyMoveUp = () => {
@@ -439,10 +306,6 @@ const Thread: React.FC<IThread> = (props) => {
     handleToggleMediaVisibility();
   };
 
-  const handleHotkeyReact = () => {
-    _expandEmojiSelector();
-  };
-
   const handleMoveUp = (id: string) => {
     if (id === status?.id) {
       _selectChild(ancestorsIds.size - 1);
@@ -470,25 +333,6 @@ const Thread: React.FC<IThread> = (props) => {
       } else {
         _selectChild(index + 1);
       }
-    }
-  };
-
-  const handleEmojiSelectorExpand: React.EventHandler<React.KeyboardEvent> = e => {
-    if (e.key === 'Enter') {
-      _expandEmojiSelector();
-    }
-    e.preventDefault();
-  };
-
-  const handleEmojiSelectorUnfocus = () => {
-    setEmojiSelectorFocused(false);
-  };
-
-  const _expandEmojiSelector = () => {
-    if (statusRef.current) {
-      setEmojiSelectorFocused(true);
-      const firstEmoji: HTMLButtonElement | null = statusRef.current.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
-      firstEmoji?.focus();
     }
   };
 
@@ -640,34 +484,7 @@ const Thread: React.FC<IThread> = (props) => {
 
           <hr className='mb-2 border-t-2 dark:border-primary-800' />
 
-          <StatusActionBar
-            status={status}
-            onReply={handleReplyClick}
-            onFavourite={handleFavouriteClick}
-            onEmojiReact={handleEmojiReactClick}
-            onReblog={handleReblogClick}
-            onQuote={handleQuoteClick}
-            onDelete={handleDeleteClick}
-            onEdit={handleEditClick}
-            onDirect={handleDirectClick}
-            onChat={handleChatClick}
-            onMention={handleMentionClick}
-            onMute={handleMuteClick}
-            onMuteConversation={handleConversationMuteClick}
-            onBlock={handleBlockClick}
-            onReport={handleReport}
-            onPin={handlePin}
-            onBookmark={handleBookmark}
-            onEmbed={handleEmbed}
-            onDeactivateUser={handleDeactivateUser}
-            onDeleteUser={handleDeleteUser}
-            onToggleStatusSensitivity={handleToggleStatusSensitivity}
-            onDeleteStatus={handleDeleteStatus}
-            allowedEmoji={allowedEmoji}
-            emojiSelectorFocused={emojiSelectorFocused}
-            handleEmojiSelectorExpand={handleEmojiSelectorExpand}
-            handleEmojiSelectorUnfocus={handleEmojiSelectorUnfocus}
-          />
+          <StatusActionBar status={status} />
         </div>
       </HotKeys>
 
