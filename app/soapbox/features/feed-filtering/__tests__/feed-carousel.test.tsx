@@ -2,7 +2,9 @@ import userEvent from '@testing-library/user-event';
 import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
 
-import { mock, render, screen, waitFor } from '../../../jest/test-helpers';
+import { __stub } from 'soapbox/api';
+
+import { render, screen, waitFor } from '../../../jest/test-helpers';
 import FeedCarousel from '../feed-carousel';
 
 jest.mock('../../../hooks/useDimensions', () => ({
@@ -56,13 +58,15 @@ describe('<FeedCarousel />', () => {
 
     describe('with avatars', () => {
       beforeEach(() => {
-        mock.onGet('/api/v1/truth/carousels/avatars')
-          .reply(200, [
-            { account_id: '1', acct: 'a', account_avatar: 'https://example.com/some.jpg' },
-            { account_id: '2', acct: 'b', account_avatar: 'https://example.com/some.jpg' },
-            { account_id: '3', acct: 'c', account_avatar: 'https://example.com/some.jpg' },
-            { account_id: '4', acct: 'd', account_avatar: 'https://example.com/some.jpg' },
-          ]);
+        __stub((mock) => {
+          mock.onGet('/api/v1/truth/carousels/avatars')
+            .reply(200, [
+              { account_id: '1', acct: 'a', account_avatar: 'https://example.com/some.jpg' },
+              { account_id: '2', acct: 'b', account_avatar: 'https://example.com/some.jpg' },
+              { account_id: '3', acct: 'c', account_avatar: 'https://example.com/some.jpg' },
+              { account_id: '4', acct: 'd', account_avatar: 'https://example.com/some.jpg' },
+            ]);
+        });
       });
 
       it('should render the Carousel', async() => {
@@ -76,7 +80,7 @@ describe('<FeedCarousel />', () => {
 
     describe('with 0 avatars', () => {
       beforeEach(() => {
-        mock.onGet('/api/v1/truth/carousels/avatars').reply(200, []);
+        __stub((mock) => mock.onGet('/api/v1/truth/carousels/avatars').reply(200, []));
       });
 
       it('renders nothing', async() => {
@@ -90,7 +94,7 @@ describe('<FeedCarousel />', () => {
 
     describe('with a failed request to the API', () => {
       beforeEach(() => {
-        mock.onGet('/api/v1/truth/carousels/avatars').networkError();
+        __stub((mock) => mock.onGet('/api/v1/truth/carousels/avatars').networkError());
       });
 
       it('renders the error message', async() => {
@@ -104,13 +108,15 @@ describe('<FeedCarousel />', () => {
 
     describe('with multiple pages of avatars', () => {
       beforeEach(() => {
-        mock.onGet('/api/v1/truth/carousels/avatars')
-          .reply(200, [
-            { account_id: '1', acct: 'a', account_avatar: 'https://example.com/some.jpg' },
-            { account_id: '2', acct: 'b', account_avatar: 'https://example.com/some.jpg' },
-            { account_id: '3', acct: 'c', account_avatar: 'https://example.com/some.jpg' },
-            { account_id: '4', acct: 'd', account_avatar: 'https://example.com/some.jpg' },
-          ]);
+        __stub((mock) => {
+          mock.onGet('/api/v1/truth/carousels/avatars')
+            .reply(200, [
+              { account_id: '1', acct: 'a', account_avatar: 'https://example.com/some.jpg' },
+              { account_id: '2', acct: 'b', account_avatar: 'https://example.com/some.jpg' },
+              { account_id: '3', acct: 'c', account_avatar: 'https://example.com/some.jpg' },
+              { account_id: '4', acct: 'd', account_avatar: 'https://example.com/some.jpg' },
+            ]);
+        });
 
         Element.prototype.getBoundingClientRect = jest.fn(() => {
           return {

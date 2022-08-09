@@ -1,7 +1,7 @@
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, RenderOptions } from '@testing-library/react';
-import MockAdapter from 'axios-mock-adapter';
+import { renderHook, RenderHookOptions } from '@testing-library/react-hooks';
 import { merge } from 'immutable';
 import React, { FC, ReactElement } from 'react';
 import { IntlProvider } from 'react-intl';
@@ -27,7 +27,7 @@ const applyActions = (state: any, actions: any, reducer: any) => {
   return actions.reduce((state: any, action: any) => reducer(state, action), state);
 };
 
-const mock = new MockAdapter(undefined as any, { onNoMatch: 'throwException' });
+/** React Query client for tests. */
 const queryClient = new QueryClient({
   logger: {
     // eslint-disable-next-line no-console
@@ -40,10 +40,6 @@ const queryClient = new QueryClient({
       retry: false,
     },
   },
-});
-
-beforeEach(() => {
-  mock.reset();
 });
 
 const createTestStore = (initialState: any) => createStore(rootReducer, initialState, applyMiddleware(thunk));
@@ -88,11 +84,17 @@ const customRender = (
   ...options,
 });
 
-const queryWrapper: React.FC = ({ children }) => (
-  <QueryClientProvider client={queryClient}>
-    {children}
-  </QueryClientProvider>
-);
+/** Like renderHook, but with access to the Redux store. */
+const customRenderHook = <T extends {}>(
+  callback: (props?: any) => any,
+  options?: Omit<RenderHookOptions<T>, 'wrapper'>,
+  store?: any,
+) => {
+  return renderHook(callback, {
+    wrapper: ({ children }) => <TestApp children={children} storeProps={store} />,
+    ...options,
+  });
+};
 
 const mockWindowProperty = (property: any, value: any) => {
   const { [property]: originalProperty } = window;
@@ -114,12 +116,11 @@ const mockWindowProperty = (property: any, value: any) => {
 export * from '@testing-library/react';
 export {
   customRender as render,
+  customRenderHook as renderHook,
   mockStore,
   applyActions,
   rootState,
   rootReducer,
   mockWindowProperty,
   createTestStore,
-  mock,
-  queryWrapper,
 };
