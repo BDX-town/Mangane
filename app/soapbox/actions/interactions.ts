@@ -170,9 +170,9 @@ const unfavourite = (status: StatusEntity) =>
 const toggleFavourite = (status: StatusEntity) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (status.favourited) {
-      dispatch(favourite(status));
-    } else {
       dispatch(unfavourite(status));
+    } else {
+      dispatch(favourite(status));
     }
   };
 

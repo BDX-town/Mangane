@@ -152,7 +152,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleFavouriteClick: React.EventHandler<React.MouseEvent> = (e) => {
     if (me) {
-      toggleFavourite(status);
+      dispatch(toggleFavourite(status));
     } else {
       onOpenUnauthorizedModal('FAVOURITE');
     }
