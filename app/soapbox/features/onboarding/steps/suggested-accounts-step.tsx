@@ -1,49 +1,43 @@
 import debounce from 'lodash/debounce';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
-import { fetchSuggestions } from 'soapbox/actions/suggestions';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { Button, Card, CardBody, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
-import { useAppSelector } from 'soapbox/hooks';
+import useOnboardingSuggestions from 'soapbox/queries/suggestions';
 
 const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
-  const dispatch = useDispatch();
+  const { data, fetchNextPage, hasNextPage, isFetching } = useOnboardingSuggestions();
 
-  const suggestions = useAppSelector((state) => state.suggestions.items);
-  const hasMore = useAppSelector((state) => !!state.suggestions.next);
-  const isLoading = useAppSelector((state) => state.suggestions.isLoading);
 
   const handleLoadMore = debounce(() => {
-    if (isLoading) {
+    if (isFetching) {
       return null;
     }
 
-    return dispatch(fetchSuggestions());
+    return fetchNextPage();
   }, 300);
 
-  React.useEffect(() => {
-    dispatch(fetchSuggestions({ limit: 20 }));
-  }, []);
-
   const renderSuggestions = () => {
+    if (!data) {
+      return null;
+    }
+
     return (
       <div className='sm:pt-4 sm:pb-10 flex flex-col'>
         <ScrollableList
-          isLoading={isLoading}
+          isLoading={isFetching}
           scrollKey='suggestions'
           onLoadMore={handleLoadMore}
-          hasMore={hasMore}
+          hasMore={hasNextPage}
           useWindowScroll={false}
           style={{ height: 320 }}
         >
-          {suggestions.map((suggestion) => (
-            <div key={suggestion.account} className='py-2'>
+          {data.map((suggestion) => (
+            <div key={suggestion.account.id} className='py-2'>
               <AccountContainer
-                // @ts-ignore: TS thinks `id` is passed to <Account>, but it isn't
-                id={suggestion.account}
+                id={suggestion.account.id}
                 showProfileHoverCard={false}
                 withLinkToProfile={false}
               />
@@ -65,7 +59,7 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
   };
 
   const renderBody = () => {
-    if (suggestions.isEmpty()) {
+    if (!data || data.length === 0) {
       return renderEmpty();
     } else {
       return renderSuggestions();
