@@ -103,8 +103,8 @@ export const SoapboxConfigRecord = ImmutableRecord({
   cryptoDonatePanel: ImmutableMap({
     limit: 1,
   }),
-  aboutPages: ImmutableMap(),
-  mobilePages: ImmutableMap(),
+  aboutPages: ImmutableMap<string, ImmutableMap<string, unknown>>(),
+  mobilePages: ImmutableMap<string, ImmutableMap<string, unknown>>(),
   authenticatedProfile: true,
   singleUserMode: false,
   singleUserModeProfile: '',
