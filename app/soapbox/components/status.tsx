@@ -7,7 +7,7 @@ import { NavLink, useHistory } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
-import { defaultMediaVisibility, textForScreenReader } from 'soapbox/utils/status';
+import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status';
 
 import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
@@ -201,11 +201,7 @@ const Status: React.FC<IStatus> = (props) => {
   };
 
   const _properStatus = (): StatusEntity => {
-    if (status.reblog && typeof status.reblog === 'object') {
-      return status.reblog;
-    } else {
-      return status;
-    }
+    return getActualStatus(status);
   };
 
   if (!status) return null;

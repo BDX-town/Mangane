@@ -8,6 +8,7 @@ import StatusContent from 'soapbox/components/status_content';
 import { HStack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
+import { getActualStatus } from 'soapbox/utils/status';
 
 import StatusInteractionBar from './status-interaction-bar';
 
@@ -42,12 +43,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
     onOpenCompareHistoryModal(status);
   };
 
-  const getActualStatus = () => {
-    if (!status) return undefined;
-    return status.reblog && typeof status.reblog === 'object' ? status.reblog : status;
-  };
-
-  const actualStatus = getActualStatus();
+  const actualStatus = getActualStatus(status);
   if (!actualStatus) return null;
   const { account } = actualStatus;
   if (!account || typeof account !== 'object') return null;
