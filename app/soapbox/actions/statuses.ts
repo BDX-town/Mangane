@@ -297,6 +297,14 @@ const revealStatus = (ids: string[] | string) => {
   };
 };
 
+const toggleStatusHidden = (status: Status) => {
+  if (status.hidden) {
+    return revealStatus(status.id);
+  } else {
+    return hideStatus(status.id);
+  }
+};
+
 export {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_SUCCESS,
@@ -336,4 +344,5 @@ export {
   toggleMuteStatus,
   hideStatus,
   revealStatus,
+  toggleStatusHidden,
 };

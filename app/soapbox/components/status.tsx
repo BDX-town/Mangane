@@ -4,9 +4,14 @@ import { HotKeys } from 'react-hotkeys';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { NavLink, useHistory } from 'react-router-dom';
 
+import { mentionCompose, replyComposeWithConfirmation } from 'soapbox/actions/compose';
+import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions';
+import { openModal } from 'soapbox/actions/modals';
+import { toggleStatusHidden } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
+import { useAppDispatch, useSettings } from 'soapbox/hooks';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status';
 
 import StatusMedia from './status-media';
@@ -15,10 +20,9 @@ import StatusActionBar from './status_action_bar';
 import StatusContent from './status_content';
 import { HStack, Text } from './ui';
 
-import type { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import type { Map as ImmutableMap } from 'immutable';
 import type {
   Account as AccountEntity,
-  Attachment as AttachmentEntity,
   Status as StatusEntity,
 } from 'soapbox/types/entities';
 
@@ -29,44 +33,18 @@ const messages = defineMessages({
   reblogged_by: { id: 'status.reblogged_by', defaultMessage: '{name} reposted' },
 });
 
-interface IStatus {
+export interface IStatus {
   id?: string,
-  contextType?: string,
   status: StatusEntity,
-  account: AccountEntity,
-  otherAccounts: ImmutableList<AccountEntity>,
-  onClick: () => void,
-  onReply: (status: StatusEntity) => void,
-  onFavourite: (status: StatusEntity) => void,
-  onReblog: (status: StatusEntity, e?: KeyboardEvent) => void,
-  onQuote: (status: StatusEntity) => void,
-  onDelete: (status: StatusEntity) => void,
-  onEdit: (status: StatusEntity) => void,
-  onDirect: (status: StatusEntity) => void,
-  onChat: (status: StatusEntity) => void,
-  onMention: (account: StatusEntity['account']) => void,
-  onPin: (status: StatusEntity) => void,
-  onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void,
-  onOpenVideo: (media: ImmutableMap<string, any> | AttachmentEntity, startTime: number) => void,
-  onOpenAudio: (media: ImmutableMap<string, any>, startTime: number) => void,
-  onBlock: (status: StatusEntity) => void,
-  onEmbed: (status: StatusEntity) => void,
-  onHeightChange: (status: StatusEntity) => void,
-  onToggleHidden: (status: StatusEntity) => void,
-  onShowHoverProfileCard: (status: StatusEntity) => void,
-  muted: boolean,
-  hidden: boolean,
-  unread: boolean,
-  onMoveUp: (statusId: string, featured?: boolean) => void,
-  onMoveDown: (statusId: string, featured?: boolean) => void,
-  getScrollPosition?: () => ScrollPosition | undefined,
-  updateScrollBottom?: (bottom: number) => void,
-  group: ImmutableMap<string, any>,
-  displayMedia: string,
-  allowedEmoji: ImmutableList<string>,
-  focusable: boolean,
+  onClick?: () => void,
+  muted?: boolean,
+  hidden?: boolean,
+  unread?: boolean,
+  onMoveUp?: (statusId: string, featured?: boolean) => void,
+  onMoveDown?: (statusId: string, featured?: boolean) => void,
+  group?: ImmutableMap<string, any>,
+  focusable?: boolean,
   featured?: boolean,
-  withDismiss?: boolean,
   hideActionBar?: boolean,
   hoverable?: boolean,
 }
@@ -76,15 +54,7 @@ const Status: React.FC<IStatus> = (props) => {
     status,
     focusable = true,
     hoverable = true,
-    onToggleHidden,
-    displayMedia,
-    onOpenMedia,
-    onOpenVideo,
     onClick,
-    onReply,
-    onFavourite,
-    onReblog,
-    onMention,
     onMoveUp,
     onMoveDown,
     muted,
@@ -94,10 +64,12 @@ const Status: React.FC<IStatus> = (props) => {
     group,
     hideActionBar,
   } = props;
-
   const intl = useIntl();
   const history = useHistory();
+  const dispatch = useAppDispatch();
 
+  const settings = useSettings();
+  const displayMedia = settings.get('displayMedia') as string;
   const didShowCard = useRef(false);
   const node = useRef<HTMLDivElement>(null);
 
@@ -127,7 +99,7 @@ const Status: React.FC<IStatus> = (props) => {
   };
 
   const handleExpandedToggle = (): void => {
-    onToggleHidden(actualStatus);
+    dispatch(toggleStatusHidden(actualStatus));
   };
 
   const handleHotkeyOpenMedia = (e?: KeyboardEvent): void => {
@@ -138,29 +110,35 @@ const Status: React.FC<IStatus> = (props) => {
 
     if (firstAttachment) {
       if (firstAttachment.type === 'video') {
-        onOpenVideo(firstAttachment, 0);
+        dispatch(openModal('VIDEO', { media: firstAttachment, time: 0 }));
       } else {
-        onOpenMedia(status.media_attachments, 0);
+        dispatch(openModal('MEDIA', { media: status.media_attachments, index: 0 }));
       }
     }
   };
 
   const handleHotkeyReply = (e?: KeyboardEvent): void => {
     e?.preventDefault();
-    onReply(actualStatus);
+    dispatch(replyComposeWithConfirmation(actualStatus, intl));
   };
 
   const handleHotkeyFavourite = (): void => {
-    onFavourite(actualStatus);
+    toggleFavourite(actualStatus);
   };
 
   const handleHotkeyBoost = (e?: KeyboardEvent): void => {
-    onReblog(actualStatus, e);
+    const modalReblog = () => dispatch(toggleReblog(actualStatus));
+    const boostModal = settings.get('boostModal');
+    if ((e && e.shiftKey) || !boostModal) {
+      modalReblog();
+    } else {
+      dispatch(openModal('BOOST', { status: actualStatus, onReblog: modalReblog }));
+    }
   };
 
   const handleHotkeyMention = (e?: KeyboardEvent): void => {
     e?.preventDefault();
-    onMention(actualStatus.account);
+    dispatch(mentionCompose(actualStatus.account as AccountEntity));
   };
 
   const handleHotkeyOpen = (): void => {
@@ -172,15 +150,19 @@ const Status: React.FC<IStatus> = (props) => {
   };
 
   const handleHotkeyMoveUp = (e?: KeyboardEvent): void => {
-    onMoveUp(status.id, featured);
+    if (onMoveUp) {
+      onMoveUp(status.id, featured);
+    }
   };
 
   const handleHotkeyMoveDown = (e?: KeyboardEvent): void => {
-    onMoveDown(status.id, featured);
+    if (onMoveDown) {
+      onMoveDown(status.id, featured);
+    }
   };
 
   const handleHotkeyToggleHidden = (): void => {
-    onToggleHidden(actualStatus);
+    dispatch(toggleStatusHidden(actualStatus));
   };
 
   const handleHotkeyToggleSensitive = (): void => {

@@ -155,14 +155,11 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({ status, withDismiss = fal
     dispatch(toggleBookmark(status));
   };
 
-  const modalReblog = () => {
-    dispatch(toggleReblog(status));
-  };
-
   const handleReblogClick: React.EventHandler<React.MouseEvent> = e => {
     e.stopPropagation();
 
     if (me) {
+      const modalReblog = () => dispatch(toggleReblog(status));
       const boostModal = settings.get('boostModal');
       if ((e && e.shiftKey) || !boostModal) {
         modalReblog();
