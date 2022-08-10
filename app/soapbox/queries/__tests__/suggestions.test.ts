@@ -4,7 +4,7 @@ import { renderHook, waitFor } from 'soapbox/jest/test-helpers';
 import useOnboardingSuggestions from '../suggestions';
 
 describe('useCarouselAvatars', () => {
-  describe('with a successul query', () => {
+  describe('with a successful query', () => {
     beforeEach(() => {
       __stub((mock) => {
         mock.onGet('/api/v2/suggestions')
@@ -26,7 +26,7 @@ describe('useCarouselAvatars', () => {
     });
   });
 
-  describe('with an unsuccessul query', () => {
+  describe('with an unsuccessful query', () => {
     beforeEach(() => {
       __stub((mock) => {
         mock.onGet('/api/v2/suggestions').networkError();

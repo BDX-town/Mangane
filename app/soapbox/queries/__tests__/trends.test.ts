@@ -4,7 +4,7 @@ import { renderHook, waitFor } from 'soapbox/jest/test-helpers';
 import useTrends from '../trends';
 
 describe('useTrends', () => {
-  describe('with a successul query', () => {
+  describe('with a successful query', () => {
     beforeEach(() => {
       __stub((mock) => {
         mock.onGet('/api/v1/trends')
@@ -24,7 +24,7 @@ describe('useTrends', () => {
     });
   });
 
-  describe('with an unsuccessul query', () => {
+  describe('with an unsuccessful query', () => {
     beforeEach(() => {
       __stub((mock) => {
         mock.onGet('/api/v1/trends').networkError();
