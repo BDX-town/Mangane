@@ -12,6 +12,7 @@ import Step0 from './steps/step0';
 import Step1 from './steps/step1';
 import Step2 from './steps/step2';
 import Step3 from './steps/step3';
+import Step4 from './steps/step4';
 
 const messages = defineMessages({
     next: { id: 'enlistment.next', defaultMessage: 'Next' },
@@ -23,6 +24,7 @@ const Steps: Array<React.FC> = [
     Step1,
     Step2,
     Step3,
+    Step4,
 ];
 
 const Enlistment: React.FC = () => {
