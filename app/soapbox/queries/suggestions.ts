@@ -3,8 +3,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import { importFetchedAccounts } from 'soapbox/actions/importer';
 import { getLinks } from 'soapbox/api';
-import { useAppDispatch } from 'soapbox/hooks';
-import API from 'soapbox/queries/client';
+import { useApi, useAppDispatch } from 'soapbox/hooks';
 
 type Account = {
   acct: string
@@ -36,10 +35,14 @@ type Suggestion = {
   account: Account
 }
 
-const getV2Suggestions = async(dispatch: any, pageParam: any): Promise<{ data: Suggestion[], link: string | null, hasMore: boolean }> => {
-  return dispatch(async() => {
+
+export default function useOnboardingSuggestions() {
+  const api = useApi();
+  const dispatch = useAppDispatch();
+
+  const getV2Suggestions = async(pageParam: any): Promise<{ data: Suggestion[], link: string | undefined, hasMore: boolean }> => {
     const link = pageParam?.link || '/api/v2/suggestions';
-    const response = await API.get<Suggestion[]>(link);
+    const response = await api.get<Suggestion[]>(link);
     const hasMore = !!response.headers.link;
     const nextLink = getLinks(response).refs.find(link => link.rel === 'next')?.uri;
 
@@ -53,13 +56,9 @@ const getV2Suggestions = async(dispatch: any, pageParam: any): Promise<{ data: S
       link: nextLink,
       hasMore,
     };
-  });
-};
+  };
 
-export default function useOnboardingSuggestions() {
-  const dispatch = useAppDispatch();
-
-  const result = useInfiniteQuery(['suggestions', 'v2'], ({ pageParam }) => getV2Suggestions(dispatch, pageParam), {
+  const result = useInfiniteQuery(['suggestions', 'v2'], ({ pageParam }) => getV2Suggestions(pageParam), {
     keepPreviousData: true,
     getNextPageParam: (config) => {
       if (config.hasMore) {
