@@ -11,7 +11,7 @@ export default function useTrends() {
   const dispatch = useAppDispatch();
 
   const getTrends = async() => {
-    const { data } = await api.get<Tag[]>('/api/v1/trends');
+    const { data } = await api.get<any[]>('/api/v1/trends');
 
     dispatch(fetchTrendsSuccess(data));
 
@@ -19,7 +19,7 @@ export default function useTrends() {
     return normalizedData;
   };
 
-  const result = useQuery<Tag[]>(['trends'], getTrends, {
+  const result = useQuery<ReadonlyArray<Tag>>(['trends'], getTrends, {
     placeholderData: [],
     staleTime: 600000, // 10 minutes
   });
