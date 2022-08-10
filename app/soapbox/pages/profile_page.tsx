@@ -19,9 +19,6 @@ import { getAcct, isLocal } from 'soapbox/utils/accounts';
 
 import { Column, Layout, Tabs } from '../components/ui';
 import HeaderContainer from '../features/account_timeline/containers/header_container';
-import { makeGetAccount } from '../selectors';
-
-const getAccount = makeGetAccount();
 
 interface IProfilePage {
   params?: {
@@ -34,42 +31,11 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
   const history = useHistory();
   const username = params?.username || '';
 
-  const { accountId, account, realAccount } = useAppSelector(state => {
-    const { accounts } = state;
-    const accountFetchError = (((state.accounts.getIn([-1, 'username']) || '') as string).toLowerCase() === username.toLowerCase());
-
-    let accountId: string | -1 | null = -1;
-    let account = null;
-    if (accountFetchError) {
-      accountId = null;
-    } else {
-      account = findAccountByUsername(state, username);
-      accountId = account ? account.id : -1;
-    }
-
-    let realAccount;
-    if (!account) {
-      const maybeAccount = accounts.get(username);
-      if (maybeAccount) {
-        realAccount = maybeAccount;
-      }
-    }
-
-    return {
-      account: typeof accountId === 'string' ? getAccount(state, accountId) : account,
-      accountId,
-      realAccount,
-    };
-  });
+  const account = useAppSelector(state => username ? findAccountByUsername(state, username) : undefined);
 
   const me = useAppSelector(state => state.me);
   const features = useFeatures();
   const { displayFqn } = useSoapboxConfig();
-
-  // Redirect from a user ID
-  if (realAccount) {
-    return <Redirect to={`/@${realAccount.acct}`} />;
-  }
 
   // Fix case of username
   if (account && account.acct !== username) {
@@ -125,7 +91,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
         <Column label={account ? `@${getAcct(account, displayFqn)}` : ''} withHeader={false}>
           <div className='space-y-4'>
             {/* @ts-ignore */}
-            <HeaderContainer accountId={accountId} username={username} />
+            <HeaderContainer accountId={account?.id} username={username} />
 
             <BundleContainer fetchComponent={ProfileInfoPanel}>
               {Component => <Component username={username} account={account} />}
