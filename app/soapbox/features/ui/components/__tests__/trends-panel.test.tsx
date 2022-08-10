@@ -2,10 +2,14 @@ import React from 'react';
 
 import { __stub } from 'soapbox/api';
 
-import { render, screen, waitFor } from '../../../../jest/test-helpers';
+import { queryClient, render, screen, waitFor } from '../../../../jest/test-helpers';
 import TrendsPanel from '../trends-panel';
 
 describe('<TrendsPanel />', () => {
+  beforeEach(() => {
+    queryClient.clear();
+  });
+
   describe('with hashtags', () => {
     beforeEach(() => {
       __stub((mock) => {
