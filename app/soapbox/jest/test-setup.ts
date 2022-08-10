@@ -2,9 +2,14 @@
 
 import { __clear as clearApiMocks } from '../__mocks__/api';
 
+import { queryClient } from './test-helpers';
+
 // API mocking
 jest.mock('soapbox/api');
-afterEach(() => clearApiMocks());
+afterEach(() => {
+  clearApiMocks();
+  queryClient.clear();
+});
 
 // Mock IndexedDB
 // https://dev.to/andyhaskell/testing-your-indexeddb-code-with-jest-2o17
