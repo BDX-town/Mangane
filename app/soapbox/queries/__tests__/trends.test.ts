@@ -1,9 +1,13 @@
 import { __stub } from 'soapbox/api';
-import { renderHook, waitFor } from 'soapbox/jest/test-helpers';
+import { queryClient, renderHook, waitFor } from 'soapbox/jest/test-helpers';
 
 import useTrends from '../trends';
 
 describe('useTrends', () => {
+  beforeEach(() => {
+    queryClient.clear();
+  });
+
   describe('with a successful query', () => {
     beforeEach(() => {
       __stub((mock) => {
