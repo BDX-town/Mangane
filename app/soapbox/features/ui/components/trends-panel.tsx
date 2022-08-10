@@ -12,21 +12,13 @@ interface ITrendsPanel {
 const TrendsPanel = ({ limit }: ITrendsPanel) => {
   const { data: trends, isFetching } = useTrends();
 
-  const sortedTrends = React.useMemo(() => {
-    return trends?.sort((a, b) => {
-      const num_a = Number(a.getIn(['history', 0, 'accounts']));
-      const num_b = Number(b.getIn(['history', 0, 'accounts']));
-      return num_b - num_a;
-    }).slice(0, limit);
-  }, [trends, limit]);
-
   if (trends?.length === 0 || isFetching) {
     return null;
   }
 
   return (
     <Widget title={<FormattedMessage id='trends.title' defaultMessage='Trends' />}>
-      {sortedTrends?.slice(0, limit).map((hashtag) => (
+      {trends?.slice(0, limit).map((hashtag) => (
         <Hashtag key={hashtag.name} hashtag={hashtag} />
       ))}
     </Widget>
