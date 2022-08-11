@@ -81,11 +81,11 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
 
   let activeItem;
   const pathname = history.location.pathname.replace(`@${username}/`, '');
-  if (pathname.includes('with_replies')) {
+  if (pathname.endsWith('/with_replies')) {
     activeItem = 'replies';
-  } else if (pathname.includes('media')) {
+  } else if (pathname.endsWith('/media')) {
     activeItem = 'media';
-  } else if (pathname.includes('favorites')) {
+  } else if (pathname.endsWith('/favorites')) {
     activeItem = 'likes';
   } else {
     activeItem = 'profile';
