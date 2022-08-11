@@ -92,7 +92,10 @@ module.exports = merge(sharedConfig, {
       cacheMaps: [{
         // NOTE: This function gets stringified by OfflinePlugin, so don't try
         // moving it anywhere else or making it depend on anything outside it!
-        match: ({ pathname }) => {
+        // https://github.com/NekR/offline-plugin/blob/master/docs/cache-maps.md
+        match: (url) => {
+          const { pathname } = url;
+
           const backendRoutes = [
             '/.well-known',
             '/activities',
@@ -119,10 +122,8 @@ module.exports = merge(sharedConfig, {
             '/unsubscribe',
           ];
 
-          if (pathname) {
-            return backendRoutes.some(path => pathname.startsWith(path)) || pathname.endsWith('/embed');
-          } else {
-            return false;
+          if (backendRoutes.some(path => pathname.startsWith(path)) || pathname.endsWith('/embed')) {
+            return url;
           }
         },
         requestTypes: ['navigate'],
