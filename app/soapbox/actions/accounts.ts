@@ -227,7 +227,12 @@ const fetchAccountFail = (id: string | null, error: AxiosError) => ({
   skipAlert: true,
 });
 
-const followAccount = (id: string, options = { reblogs: true }) =>
+type FollowAccountOpts = {
+  reblogs?: boolean,
+  notify?: boolean
+};
+
+const followAccount = (id: string, options?: FollowAccountOpts) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return null;
 
