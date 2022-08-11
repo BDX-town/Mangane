@@ -120,7 +120,7 @@ module.exports = merge(sharedConfig, {
           ];
 
           if (pathname) {
-            return backendRoutes.some(path => pathname.startsWith(path));
+            return backendRoutes.some(path => pathname.startsWith(path)) || pathname.endsWith('/embed');
           } else {
             return false;
           }
