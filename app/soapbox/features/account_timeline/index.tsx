@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -28,6 +28,7 @@ const AccountTimeline: React.FC<IAccountTimeline> = ({ params, withReplies = fal
   const soapboxConfig = useSoapboxConfig();
 
   const account = useAppSelector(state => findAccountByUsername(state, params.username));
+  const [accountLoading, setAccountLoading] = useState<boolean>(!account);
 
   const path = withReplies ? `${account?.id}:with_replies` : account?.id;
   const showPins = settings.getIn(['account_timeline', 'shows', 'pinned']) === true && !withReplies;
@@ -43,7 +44,9 @@ const AccountTimeline: React.FC<IAccountTimeline> = ({ params, withReplies = fal
   const accountUsername = account?.username || params.username;
 
   useEffect(() => {
-    dispatch(fetchAccountByUsername(params.username, history));
+    dispatch(fetchAccountByUsername(params.username, history))
+      .then(() => setAccountLoading(false))
+      .catch(() => setAccountLoading(false));
   }, [params.username]);
 
   useEffect(() => {
@@ -70,7 +73,7 @@ const AccountTimeline: React.FC<IAccountTimeline> = ({ params, withReplies = fal
     }
   };
 
-  if (!account && isLoading) {
+  if (!account && accountLoading) {
     return <Spinner />;
   } else if (!account) {
     return <MissingIndicator nested />;
