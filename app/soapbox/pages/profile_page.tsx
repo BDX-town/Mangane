@@ -2,6 +2,8 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Redirect, useHistory } from 'react-router-dom';
 
+import { Column, Layout, Tabs } from 'soapbox/components/ui';
+import Header from 'soapbox/features/account/components/header';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
@@ -16,9 +18,6 @@ import {
 import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 import { findAccountByUsername } from 'soapbox/selectors';
 import { getAcct, isLocal } from 'soapbox/utils/accounts';
-
-import { Column, Layout, Tabs } from '../components/ui';
-import HeaderContainer from '../features/account_timeline/containers/header_container';
 
 interface IProfilePage {
   params?: {
@@ -90,8 +89,9 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
       <Layout.Main>
         <Column label={account ? `@${getAcct(account, displayFqn)}` : ''} withHeader={false}>
           <div className='space-y-4'>
-            {/* @ts-ignore */}
-            <HeaderContainer accountId={account?.id} username={username} />
+            {account && (
+              <Header account={account} />
+            )}
 
             <BundleContainer fetchComponent={ProfileInfoPanel}>
               {Component => <Component username={username} account={account} />}

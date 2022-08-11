@@ -22,6 +22,7 @@ import Badge from 'soapbox/components/badge';
 import StillImage from 'soapbox/components/still_image';
 import { HStack, IconButton, Menu, MenuButton, MenuItem, MenuList, MenuLink, MenuDivider } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
+import MovedNote from 'soapbox/features/account_timeline/components/moved_note';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
 import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
@@ -725,6 +726,10 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   return (
     <div className='-mt-4 -mx-4'>
+      {(account.moved && typeof account.moved === 'object') && (
+        <MovedNote from={account} to={account.moved} />
+      )}
+
       <div>
         <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50'>
           {account.header && (
