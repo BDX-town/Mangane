@@ -16,7 +16,7 @@ import {
   PinnedAccountsPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
-import { findAccountByUsername } from 'soapbox/selectors';
+import { findAccountByUsername, makeGetAccount } from 'soapbox/selectors';
 import { getAcct, isLocal } from 'soapbox/utils/accounts';
 
 interface IProfilePage {
@@ -25,12 +25,21 @@ interface IProfilePage {
   },
 }
 
+const getAccount = makeGetAccount();
+
 /** Page to display a user's profile. */
 const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
   const history = useHistory();
   const username = params?.username || '';
 
-  const account = useAppSelector(state => username ? findAccountByUsername(state, username) : undefined);
+  const account = useAppSelector(state => {
+    if (username) {
+      const account = findAccountByUsername(state, username);
+      if (account) {
+        return getAccount(state, account.id) || undefined;
+      }
+    }
+  });
 
   const me = useAppSelector(state => state.me);
   const features = useFeatures();
@@ -82,7 +91,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
     activeItem = 'profile';
   }
 
-  const showTabs = !['following', 'followers', 'pins'].some(path => pathname.includes(path));
+  const showTabs = !['/following', '/followers', '/pins'].some(path => pathname.endsWith(path));
 
   return (
     <>
