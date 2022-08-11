@@ -96,7 +96,7 @@ const messages = defineMessages({
 });
 
 interface IHeader {
-  account: Account,
+  account?: Account,
 }
 
 const Header: React.FC<IHeader> = ({ account }) => {
@@ -106,6 +106,26 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const features = useFeatures();
   const ownAccount = useOwnAccount();
+
+  if (!account) {
+    return (
+      <div className='-mt-4 -mx-4'>
+        <div>
+          <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50' />
+        </div>
+
+        <div className='px-4 sm:px-6'>
+          <div className='-mt-12 flex items-end space-x-5'>
+            <div className='flex relative'>
+              <div
+                className='h-24 w-24 bg-gray-400 rounded-full ring-4 ring-white dark:ring-gray-800'
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const onBlock = () => {
     if (account.relationship?.blocking) {
@@ -700,26 +720,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
       />
     );
   };
-
-  if (!account) {
-    return (
-      <div className='-mt-4 -mx-4'>
-        <div>
-          <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50' />
-        </div>
-
-        <div className='px-4 sm:px-6'>
-          <div className='-mt-12 flex items-end space-x-5'>
-            <div className='flex relative'>
-              <div
-                className='h-24 w-24 bg-gray-400 rounded-full ring-4 ring-white dark:ring-gray-800'
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   const info = makeInfo();
   const menu = makeMenu();

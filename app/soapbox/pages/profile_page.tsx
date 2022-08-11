@@ -98,9 +98,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
       <Layout.Main>
         <Column label={account ? `@${getAcct(account, displayFqn)}` : ''} withHeader={false}>
           <div className='space-y-4'>
-            {account && (
-              <Header account={account} />
-            )}
+            <Header account={account} />
 
             <BundleContainer fetchComponent={ProfileInfoPanel}>
               {Component => <Component username={username} account={account} />}
