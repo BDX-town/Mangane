@@ -51,7 +51,7 @@ class MediaItem extends ImmutablePureComponent {
 
   hoverToPlay = () => {
     const { autoPlayGif } = this.props;
-    return !autoPlayGif && ['gifv', 'video'].indexOf(this.props.attachment.get('type')) !== -1;
+    return !autoPlayGif && ['gifv', 'video'].includes(this.props.attachment.get('type'));
   }
 
   handleClick = e => {
@@ -93,7 +93,7 @@ class MediaItem extends ImmutablePureComponent {
           style={{ objectPosition: `${x}% ${y}%` }}
         />
       );
-    } else if (['gifv', 'video'].indexOf(attachment.get('type')) !== -1) {
+    } else if (['gifv', 'video'].includes(attachment.get('type'))) {
       const conditionalAttributes = {};
       if (isIOS()) {
         conditionalAttributes.playsInline = '1';

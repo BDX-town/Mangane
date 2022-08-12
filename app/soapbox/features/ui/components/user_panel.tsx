@@ -28,7 +28,7 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
 
   if (!account) return null;
   const displayNameHtml = { __html: account.get('display_name_html') };
-  const acct = account.get('acct').indexOf('@') === -1 && domain ? `${account.get('acct')}@${domain}` : account.get('acct');
+  const acct = !account.get('acct').includes('@') && domain ? `${account.get('acct')}@${domain}` : account.get('acct');
   const header = account.get('header');
   const verified = account.get('verified');
 
