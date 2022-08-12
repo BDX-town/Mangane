@@ -369,6 +369,8 @@ const Thread: React.FC<IThread> = (props) => {
         key={id}
         id={id}
         focusedStatusId={status!.id}
+        onMoveUp={handleMoveUp}
+        onMoveDown={handleMoveDown}
       />
     );
   };
