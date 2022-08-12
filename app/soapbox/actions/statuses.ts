@@ -10,7 +10,7 @@ import { openModal } from './modals';
 import { deleteFromTimelines } from './timelines';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity, Status } from 'soapbox/types/entities';
 
 const STATUS_CREATE_REQUEST = 'STATUS_CREATE_REQUEST';
 const STATUS_CREATE_SUCCESS = 'STATUS_CREATE_SUCCESS';
@@ -266,6 +266,15 @@ const unmuteStatus = (id: string) =>
     });
   };
 
+const toggleMuteStatus = (status: Status) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    if (status.muted) {
+      dispatch(unmuteStatus(status.id));
+    } else {
+      dispatch(muteStatus(status.id));
+    }
+  };
+
 const hideStatus = (ids: string[] | string) => {
   if (!Array.isArray(ids)) {
     ids = [ids];
@@ -286,6 +295,14 @@ const revealStatus = (ids: string[] | string) => {
     type: STATUS_REVEAL,
     ids,
   };
+};
+
+const toggleStatusHidden = (status: Status) => {
+  if (status.hidden) {
+    return revealStatus(status.id);
+  } else {
+    return hideStatus(status.id);
+  }
 };
 
 export {
@@ -324,6 +341,8 @@ export {
   fetchStatusWithContext,
   muteStatus,
   unmuteStatus,
+  toggleMuteStatus,
   hideStatus,
   revealStatus,
+  toggleStatusHidden,
 };

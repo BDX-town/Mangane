@@ -37,6 +37,8 @@ const queryClient = new QueryClient({
   },
   defaultOptions: {
     queries: {
+      staleTime: 0,
+      cacheTime: Infinity,
       retry: false,
     },
   },
@@ -123,4 +125,5 @@ export {
   rootReducer,
   mockWindowProperty,
   createTestStore,
+  queryClient,
 };

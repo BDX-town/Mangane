@@ -54,6 +54,10 @@
     padding: 8px 12px;
     margin-bottom: 20px;
     word-break: break-all;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   /* Markdown images */

@@ -94,6 +94,15 @@ const unreblog = (status: StatusEntity) =>
     });
   };
 
+const toggleReblog = (status: StatusEntity) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    if (status.reblogged) {
+      dispatch(unreblog(status));
+    } else {
+      dispatch(reblog(status));
+    }
+  };
+
 const reblogRequest = (status: StatusEntity) => ({
   type: REBLOG_REQUEST,
   status: status,
@@ -158,6 +167,16 @@ const unfavourite = (status: StatusEntity) =>
     });
   };
 
+const toggleFavourite = (status: StatusEntity) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    if (status.favourited) {
+      dispatch(unfavourite(status));
+    } else {
+      dispatch(favourite(status));
+    }
+  };
+
+
 const favouriteRequest = (status: StatusEntity) => ({
   type: FAVOURITE_REQUEST,
   status: status,
@@ -220,6 +239,15 @@ const unbookmark = (status: StatusEntity) =>
     }).catch(error => {
       dispatch(unbookmarkFail(status, error));
     });
+  };
+
+const toggleBookmark = (status: StatusEntity) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    if (status.bookmarked) {
+      dispatch(unbookmark(status));
+    } else {
+      dispatch(bookmark(status));
+    }
   };
 
 const bookmarkRequest = (status: StatusEntity) => ({
@@ -394,6 +422,15 @@ const unpin = (status: StatusEntity) =>
     });
   };
 
+const togglePin = (status: StatusEntity) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    if (status.pinned) {
+      dispatch(unpin(status));
+    } else {
+      dispatch(pin(status));
+    }
+  };
+
 const unpinRequest = (status: StatusEntity) => ({
   type: UNPIN_REQUEST,
   status,
@@ -488,6 +525,7 @@ export {
   REMOTE_INTERACTION_FAIL,
   reblog,
   unreblog,
+  toggleReblog,
   reblogRequest,
   reblogSuccess,
   reblogFail,
@@ -496,6 +534,7 @@ export {
   unreblogFail,
   favourite,
   unfavourite,
+  toggleFavourite,
   favouriteRequest,
   favouriteSuccess,
   favouriteFail,
@@ -504,6 +543,7 @@ export {
   unfavouriteFail,
   bookmark,
   unbookmark,
+  toggleBookmark,
   bookmarkRequest,
   bookmarkSuccess,
   bookmarkFail,
@@ -530,6 +570,7 @@ export {
   unpinRequest,
   unpinSuccess,
   unpinFail,
+  togglePin,
   remoteInteraction,
   remoteInteractionRequest,
   remoteInteractionSuccess,
