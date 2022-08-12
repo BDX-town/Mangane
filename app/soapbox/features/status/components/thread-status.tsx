@@ -9,6 +9,8 @@ import { useAppSelector } from 'soapbox/hooks';
 interface IThreadStatus {
   id: string,
   focusedStatusId: string,
+  onMoveUp: (id: string) => void,
+  onMoveDown: (id: string) => void,
 }
 
 /** Status with reply-connector in threads. */
