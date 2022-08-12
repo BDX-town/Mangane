@@ -78,7 +78,6 @@ module.exports = {
     'space-infix-ops': 'error',
     'space-in-parens': ['error', 'never'],
     'keyword-spacing': 'error',
-    'consistent-return': 'error',
     'dot-notation': 'error',
     eqeqeq: 'error',
     indent: ['error', 2, {
@@ -278,7 +277,6 @@ module.exports = {
       files: ['**/*.ts', '**/*.tsx'],
       rules: {
         'no-undef': 'off', // https://stackoverflow.com/a/69155899
-        'consistent-return': 'off',
       },
       parser: '@typescript-eslint/parser',
     },

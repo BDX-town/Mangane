@@ -104,7 +104,7 @@ const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
   },
   update: {
     id: 'notification.update',
-    defaultMessage: '{name} edited a post',
+    defaultMessage: '{name} edited a post you interacted with',
   },
 });
 
