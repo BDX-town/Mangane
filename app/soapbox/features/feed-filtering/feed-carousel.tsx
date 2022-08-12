@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { replaceHomeTimeline } from 'soapbox/actions/timelines';
-import { useAppDispatch, useAppSelector, useDimensions, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useDimensions } from 'soapbox/hooks';
 import useCarouselAvatars from 'soapbox/queries/carousels';
 
 import { Card, HStack, Icon, Stack, Text } from '../../components/ui';
@@ -59,8 +59,6 @@ const CarouselItem = ({ avatar }: { avatar: any }) => {
 };
 
 const FeedCarousel = () => {
-  const features = useFeatures();
-
   const { data: avatars, isFetching, isError } = useCarouselAvatars();
 
   const [cardRef, setCardRef, { width }] = useDimensions();
@@ -82,10 +80,6 @@ const FeedCarousel = () => {
       setPageSize(Math.round(width / widthPerAvatar));
     }
   }, [width, widthPerAvatar]);
-
-  if (!features.feedUserFiltering) {
-    return null;
-  }
 
   if (isError) {
     return (
