@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { prepareRequest } from 'soapbox/actions/consumer-auth';
 import { Button, Card, CardBody, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import RegistrationForm from 'soapbox/features/auth_login/components/registration_form';
-import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
+import { capitalize } from 'soapbox/utils/strings';
 
 const LandingPage = () => {
+  const dispatch = useAppDispatch();
   const features = useFeatures();
   const soapboxConfig = useSoapboxConfig();
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
@@ -40,6 +43,29 @@ const LandingPage = () => {
     return <RegistrationForm />;
   };
 
+  /** Display login button for external provider. */
+  const renderProvider = () => {
+    const { authProvider } = soapboxConfig;
+
+    return (
+      <Stack space={3}>
+        <Stack>
+          <Text size='2xl' weight='bold' align='center'>
+            <FormattedMessage id='registrations.get_started' defaultMessage="Let's get started!" />
+          </Text>
+        </Stack>
+
+        <Button onClick={() => dispatch(prepareRequest(authProvider))} theme='primary' block>
+          <FormattedMessage
+            id='oauth_consumer.tooltip'
+            defaultMessage='Sign in with {provider}'
+            values={{ provider: capitalize(authProvider) }}
+          />
+        </Button>
+      </Stack>
+    );
+  };
+
   /** Pepe API registrations are open */
   const renderPepe = () => {
     return (
@@ -47,7 +73,9 @@ const LandingPage = () => {
         <VerificationBadge className='h-16 w-16 mx-auto' />
 
         <Stack>
-          <Text size='2xl' weight='bold' align='center'>Let&apos;s get started!</Text>
+          <Text size='2xl' weight='bold' align='center'>
+            <FormattedMessage id='registrations.get_started' defaultMessage="Let's get started!" />
+          </Text>
           <Text theme='muted' align='center'>Social Media Without Discrimination</Text>
         </Stack>
 
@@ -58,7 +86,9 @@ const LandingPage = () => {
 
   // Render registration flow depending on features
   const renderBody = () => {
-    if (pepeEnabled && pepeOpen) {
+    if (soapboxConfig.authProvider) {
+      return renderProvider();
+    } else if (pepeEnabled && pepeOpen) {
       return renderPepe();
     } else if (features.accountCreation && instance.registrations) {
       return renderOpen();

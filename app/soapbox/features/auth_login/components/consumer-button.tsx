@@ -4,6 +4,7 @@ import { useIntl, defineMessages } from 'react-intl';
 import { prepareRequest } from 'soapbox/actions/consumer-auth';
 import { IconButton, Tooltip } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
+import { capitalize } from 'soapbox/utils/strings';
 
 const messages = defineMessages({
   tooltip: { id: 'oauth_consumer.tooltip', defaultMessage: 'Sign in with {provider}' },
@@ -18,12 +19,6 @@ const BRAND_ICONS: Record<string, string> = {
   slack: require('@tabler/icons/brand-slack.svg'),
   github: require('@tabler/icons/brand-github.svg'),
 };
-
-/** Capitalize the first letter of a string. */
-// https://stackoverflow.com/a/1026087
-function capitalize(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
 
 interface IConsumerButton {
   provider: string,
