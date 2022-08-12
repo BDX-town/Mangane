@@ -85,8 +85,8 @@ export function search(value, { emojisToShowFilter, maxResults, include, exclude
       pool = {};
 
       data.categories.forEach(category => {
-        const isIncluded = include && include.length ? include.indexOf(category.name.toLowerCase()) > -1 : true;
-        const isExcluded = exclude && exclude.length ? exclude.indexOf(category.name.toLowerCase()) > -1 : false;
+        const isIncluded = include && include.length ? include.includes(category.name.toLowerCase()) : true;
+        const isExcluded = exclude && exclude.length ? exclude.includes(category.name.toLowerCase()) : false;
         if (!isIncluded || isExcluded) {
           return;
         }
@@ -95,8 +95,8 @@ export function search(value, { emojisToShowFilter, maxResults, include, exclude
       });
 
       if (custom.length) {
-        const customIsIncluded = include && include.length ? include.indexOf('custom') > -1 : true;
-        const customIsExcluded = exclude && exclude.length ? exclude.indexOf('custom') > -1 : false;
+        const customIsIncluded = include && include.length ? include.includes('custom') : true;
+        const customIsExcluded = exclude && exclude.length ? exclude.includes('custom') : false;
         if (customIsIncluded && !customIsExcluded) {
           addCustomToPool(custom, pool);
         }

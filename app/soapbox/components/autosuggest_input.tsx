@@ -30,7 +30,7 @@ const textAtCursorMatchesToken = (str: string, caretPosition: number, searchToke
     word = str.slice(left, right + caretPosition);
   }
 
-  if (!word || word.trim().length < 3 || searchTokens.indexOf(word[0]) === -1) {
+  if (!word || word.trim().length < 3 || !searchTokens.includes(word[0])) {
     return [null, null];
   }
 

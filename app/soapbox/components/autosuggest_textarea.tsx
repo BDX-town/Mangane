@@ -23,7 +23,7 @@ const textAtCursorMatchesToken = (str: string, caretPosition: number) => {
     word = str.slice(left, right + caretPosition);
   }
 
-  if (!word || word.trim().length < 3 || ['@', ':', '#'].indexOf(word[0]) === -1) {
+  if (!word || word.trim().length < 3 || !['@', ':', '#'].includes(word[0])) {
     return [null, null];
   }
 

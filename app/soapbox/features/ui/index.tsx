@@ -352,7 +352,7 @@ const UI: React.FC = ({ children }) => {
   const handleDragEnter = (e: DragEvent) => {
     e.preventDefault();
 
-    if (e.target && dragTargets.current.indexOf(e.target) === -1) {
+    if (e.target && !dragTargets.current.includes(e.target)) {
       dragTargets.current.push(e.target);
     }
 
