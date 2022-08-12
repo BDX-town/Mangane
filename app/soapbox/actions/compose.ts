@@ -96,6 +96,8 @@ const messages = defineMessages({
   uploadErrorLimit: { id: 'upload_error.limit', defaultMessage: 'File upload limit exceeded.' },
   uploadErrorPoll: { id: 'upload_error.poll', defaultMessage: 'File upload not allowed with polls.' },
   view: { id: 'snackbar.view', defaultMessage: 'View' },
+  replyConfirm: { id: 'confirmations.reply.confirm', defaultMessage: 'Reply' },
+  replyMessage: { id: 'confirmations.reply.message', defaultMessage: 'Replying now will overwrite the message you are currently composing. Are you sure you want to proceed?' },
 });
 
 const COMPOSE_PANEL_BREAKPOINT = 600 + (285 * 1) + (10 * 1);
@@ -142,6 +144,20 @@ const replyCompose = (status: Status) =>
     });
 
     dispatch(openModal('COMPOSE'));
+  };
+
+const replyComposeWithConfirmation = (status: Status, intl: IntlShape) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const state = getState();
+    if (state.compose.text.trim().length !== 0) {
+      dispatch(openModal('CONFIRM', {
+        message: intl.formatMessage(messages.replyMessage),
+        confirm: intl.formatMessage(messages.replyConfirm),
+        onConfirm: () => dispatch(replyCompose(status)),
+      }));
+    } else {
+      dispatch(replyCompose(status));
+    }
   };
 
 const cancelReplyCompose = () => ({
@@ -739,6 +755,7 @@ export {
   setComposeToStatus,
   changeCompose,
   replyCompose,
+  replyComposeWithConfirmation,
   cancelReplyCompose,
   quoteCompose,
   cancelQuoteCompose,
