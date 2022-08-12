@@ -1,7 +1,9 @@
 import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
+import { prepareRequest } from 'soapbox/actions/consumer-auth';
 import { IconButton, Tooltip } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
 
 const messages = defineMessages({
   tooltip: { id: 'oauth_consumer.tooltip', defaultMessage: 'Sign in with {provider}' },
@@ -30,7 +32,13 @@ interface IConsumerButton {
 /** OAuth consumer button for logging in with a third-party service. */
 const ConsumerButton: React.FC<IConsumerButton> = ({ provider }) => {
   const intl = useIntl();
+  const dispatch = useAppDispatch();
+
   const icon = BRAND_ICONS[provider] || require('@tabler/icons/key.svg');
+
+  const handleClick = () => {
+    dispatch(prepareRequest(provider));
+  };
 
   return (
     <Tooltip text={intl.formatMessage(messages.tooltip, { provider: capitalize(provider) })}>
@@ -38,6 +46,7 @@ const ConsumerButton: React.FC<IConsumerButton> = ({ provider }) => {
         className='p-2.5 border border-solid bg-transparent border-gray-400 dark:border-gray-800 hover:border-primary-300 dark:hover:border-primary-700 focus:border-primary-500 text-gray-900 dark:text-gray-100 focus:ring-primary-500'
         iconClassName='w-6 h-6'
         src={icon}
+        onClick={handleClick}
       />
     </Tooltip>
   );
