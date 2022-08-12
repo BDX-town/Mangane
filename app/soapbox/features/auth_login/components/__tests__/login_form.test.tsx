@@ -1,5 +1,6 @@
-import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
+
+import { normalizeInstance } from 'soapbox/normalizers';
 
 import { fireEvent, render, screen } from '../../../../jest/test-helpers';
 import LoginForm from '../login_form';
@@ -8,7 +9,7 @@ describe('<LoginForm />', () => {
   it('renders for Pleroma', () => {
     const mockFn = jest.fn();
     const store = {
-      instance: ImmutableMap({
+      instance: normalizeInstance({
         version: '2.7.2 (compatible; Pleroma 2.3.0)',
       }),
     };
@@ -21,7 +22,7 @@ describe('<LoginForm />', () => {
   it('renders for Mastodon', () => {
     const mockFn = jest.fn();
     const store = {
-      instance: ImmutableMap({
+      instance: normalizeInstance({
         version: '3.0.0',
       }),
     };
