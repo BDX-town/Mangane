@@ -1,7 +1,8 @@
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
-import { HStack } from 'soapbox/components/ui';
+import { Card, HStack, Text } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
 import ConsumerButton from './consumer-button';
@@ -15,11 +16,16 @@ const ConsumersList: React.FC<IConsumersList> = () => {
 
   if (providers.size > 0) {
     return (
-      <HStack space={2}>
-        {providers.map(provider => (
-          <ConsumerButton provider={provider} />
-        ))}
-      </HStack>
+      <Card className='p-4 sm:rounded-xl bg-gray-50'>
+        <Text size='xs' theme='muted'>
+          <FormattedMessage id='oauth_consumers.title' defaultMessage='Other ways to sign in' />
+        </Text>
+        <HStack space={2}>
+          {providers.map(provider => (
+            <ConsumerButton provider={provider} />
+          ))}
+        </HStack>
+      </Card>
     );
   } else {
     return null;

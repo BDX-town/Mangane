@@ -31,7 +31,7 @@ const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
         <h1 className='text-center font-bold text-2xl'><FormattedMessage id='login_form.header' defaultMessage='Sign In' /></h1>
       </div>
 
-      <Stack className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto' space={3}>
+      <Stack className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto' space={5}>
         <Form onSubmit={handleSubmit}>
           <FormGroup labelText={intl.formatMessage(messages.username)}>
             <Input
