@@ -1,8 +1,12 @@
+import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Button, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
+import { Button, Form, FormActions, FormGroup, HStack, Input, Stack } from 'soapbox/components/ui';
+import { useAppSelector } from 'soapbox/hooks';
+
+import ConsumerButton from './consumer-button';
 
 const messages = defineMessages({
   username: {
@@ -22,6 +26,7 @@ interface ILoginForm {
 
 const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
   const intl = useIntl();
+  const providers = useAppSelector(state => ImmutableList<string>(state.instance.pleroma.get('oauth_consumer_strategies')));
 
   return (
     <div>
@@ -29,7 +34,7 @@ const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
         <h1 className='text-center font-bold text-2xl'><FormattedMessage id='login_form.header' defaultMessage='Sign In' /></h1>
       </div>
 
-      <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
+      <Stack className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto' space={3}>
         <Form onSubmit={handleSubmit}>
           <FormGroup labelText={intl.formatMessage(messages.username)}>
             <Input
@@ -76,7 +81,15 @@ const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
             </Button>
           </FormActions>
         </Form>
-      </div>
+
+        {(providers.size > 0) && (
+          <HStack space={2}>
+            {providers.map(provider => (
+              <ConsumerButton provider={provider} />
+            ))}
+          </HStack>
+        )}
+      </Stack>
     </div>
   );
 };
