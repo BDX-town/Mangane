@@ -76,10 +76,14 @@ const LandingPage = () => {
           <Text size='2xl' weight='bold' align='center'>
             <FormattedMessage id='registrations.get_started' defaultMessage="Let's get started!" />
           </Text>
-          <Text theme='muted' align='center'>Social Media Without Discrimination</Text>
+          <Text theme='muted' align='center'>
+            <FormattedMessage id='registrations.tagline' defaultMessage='Social Media Without Discrimination' />
+          </Text>
         </Stack>
 
-        <Button to='/verify' theme='primary' block>Create an account</Button>
+        <Button to='/verify' theme='primary' block>
+          <FormattedMessage id='registrations.create_account' defaultMessage='Create an account' />
+        </Button>
       </Stack>
     );
   };
