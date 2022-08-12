@@ -1,12 +1,10 @@
-import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Button, Form, FormActions, FormGroup, HStack, Input, Stack } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { Button, Form, FormActions, FormGroup, Input, Stack } from 'soapbox/components/ui';
 
-import ConsumerButton from './consumer-button';
+import ConsumersList from './consumers-list';
 
 const messages = defineMessages({
   username: {
@@ -26,7 +24,6 @@ interface ILoginForm {
 
 const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
   const intl = useIntl();
-  const providers = useAppSelector(state => ImmutableList<string>(state.instance.pleroma.get('oauth_consumer_strategies')));
 
   return (
     <div>
@@ -82,13 +79,7 @@ const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
           </FormActions>
         </Form>
 
-        {(providers.size > 0) && (
-          <HStack space={2}>
-            {providers.map(provider => (
-              <ConsumerButton provider={provider} />
-            ))}
-          </HStack>
-        )}
+        <ConsumersList />
       </Stack>
     </div>
   );
