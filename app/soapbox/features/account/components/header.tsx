@@ -403,7 +403,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
           action: onChat,
           icon: require('@tabler/icons/messages.svg'),
         });
-      } else {
+      } else if (features.privacyScopes) {
         menu.push({
           text: intl.formatMessage(messages.direct, { name: account.username }),
           action: onDirect,
