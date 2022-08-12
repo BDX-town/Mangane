@@ -20,7 +20,7 @@ const REPORT_BLOCK_CHANGE   = 'REPORT_BLOCK_CHANGE';
 
 const REPORT_RULE_CHANGE    = 'REPORT_RULE_CHANGE';
 
-const initReport = (account: Account, status: Status) =>
+const initReport = (account: Account, status?: Status) =>
   (dispatch: AppDispatch) => {
     dispatch({
       type: REPORT_INIT,
