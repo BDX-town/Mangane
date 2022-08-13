@@ -22,18 +22,12 @@ const getStatus = makeGetStatus();
  * Legacy Status wrapper accepting a status ID instead of the full entity.
  * @deprecated Use the Status component directly.
  */
-const StatusContainer: React.FC<IStatusContainer> = ({ id, onMoveUp, onMoveDown, withDismiss }) => {
+const StatusContainer: React.FC<IStatusContainer> = (props) => {
+  const { id, ...rest } = props;
   const status = useAppSelector(state => getStatus(state, { id }));
 
   if (status) {
-    return (
-      <Status
-        status={status}
-        onMoveUp={onMoveUp}
-        onMoveDown={onMoveDown}
-        withDismiss={withDismiss}
-      />
-    );
+    return <Status status={status} {...rest} />;
   } else {
     return null;
   }
