@@ -4,6 +4,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:import/typescript',
+    'plugin:compat/recommended',
   ],
 
   env: {
@@ -21,6 +22,7 @@ module.exports = {
 
   plugins: [
     'react',
+    'jsdoc',
     'jsx-a11y',
     'import',
     'promise',
@@ -51,6 +53,14 @@ module.exports = {
         paths: ['app'],
       },
     },
+    polyfills: [
+      'es:all',
+      'fetch',
+      'IntersectionObserver',
+      'Promise',
+      'URL',
+      'URLSearchParams',
+    ],
   },
 
   rules: {
@@ -65,11 +75,13 @@ module.exports = {
     ],
     'comma-style': ['warn', 'last'],
     'space-before-function-paren': ['error', 'never'],
+    'space-infix-ops': 'error',
     'space-in-parens': ['error', 'never'],
-    'consistent-return': 'error',
+    'keyword-spacing': 'error',
     'dot-notation': 'error',
     eqeqeq: 'error',
     indent: ['error', 2, {
+      SwitchCase: 1, // https://stackoverflow.com/a/53055584/8811886
       ignoredNodes: ['TemplateLiteral'],
     }],
     'jsx-quotes': ['error', 'prefer-single'],
@@ -254,6 +266,7 @@ module.exports = {
         alphabetize: { order: 'asc' },
       },
     ],
+    '@typescript-eslint/no-duplicate-imports': 'error',
 
     'promise/catch-or-return': 'error',
 
@@ -266,6 +279,24 @@ module.exports = {
         'no-undef': 'off', // https://stackoverflow.com/a/69155899
       },
       parser: '@typescript-eslint/parser',
+    },
+    {
+      // Only enforce JSDoc comments on UI components for now.
+      // https://www.npmjs.com/package/eslint-plugin-jsdoc
+      files: ['app/soapbox/components/ui/**/*'],
+      rules: {
+        'jsdoc/require-jsdoc': ['error', {
+          publicOnly: true,
+          require: {
+            ArrowFunctionExpression: true,
+            ClassDeclaration: true,
+            ClassExpression: true,
+            FunctionDeclaration: true,
+            FunctionExpression: true,
+            MethodDefinition: true,
+          },
+        }],
+      },
     },
   ],
 };

@@ -25,8 +25,8 @@ const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
 
   return (
     <div>
-      <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 border-solid -mx-4 sm:-mx-10'>
-        <h1 className='text-center font-bold text-2xl'>{intl.formatMessage({ id: 'login_form.header', defaultMessage: 'Sign In' })}</h1>
+      <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
+        <h1 className='text-center font-bold text-2xl'><FormattedMessage id='login_form.header' defaultMessage='Sign In' /></h1>
       </div>
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
@@ -37,7 +37,6 @@ const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
               placeholder={intl.formatMessage(messages.username)}
               type='text'
               name='username'
-              autoComplete='off'
               autoCorrect='off'
               autoCapitalize='off'
               required

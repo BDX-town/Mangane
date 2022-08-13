@@ -4,9 +4,10 @@ import { useDispatch } from 'react-redux';
 
 import { authorizeFollowRequest, rejectFollowRequest } from 'soapbox/actions/accounts';
 import Avatar from 'soapbox/components/avatar';
-import DisplayName from 'soapbox/components/display_name';
+import DisplayName from 'soapbox/components/display-name';
 import IconButton from 'soapbox/components/icon_button';
 import Permalink from 'soapbox/components/permalink';
+import { Text } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
@@ -42,17 +43,17 @@ const AccountAuthorize: React.FC<IAccountAuthorize> = ({ id }) => {
   return (
     <div className='account-authorize__wrapper'>
       <div className='account-authorize'>
-        <Permalink href={`/@${account.acct}`} to={`/@${account.acct}`} className='detailed-status__display-name'>
+        <Permalink href={`/@${account.acct}`} to={`/@${account.acct}`}>
           <div className='account-authorize__avatar'><Avatar account={account} size={48} /></div>
           <DisplayName account={account} />
         </Permalink>
 
-        <div className='account__header__content' dangerouslySetInnerHTML={content} />
+        <Text className='account__header__content' dangerouslySetInnerHTML={content} />
       </div>
 
       <div className='account--panel'>
-        <div className='account--panel__button'><IconButton title={intl.formatMessage(messages.authorize)} src={require('@tabler/icons/icons/check.svg')} onClick={onAuthorize} /></div>
-        <div className='account--panel__button'><IconButton title={intl.formatMessage(messages.reject)} src={require('@tabler/icons/icons/x.svg')} onClick={onReject} /></div>
+        <div className='account--panel__button'><IconButton title={intl.formatMessage(messages.authorize)} src={require('@tabler/icons/check.svg')} onClick={onAuthorize} /></div>
+        <div className='account--panel__button'><IconButton title={intl.formatMessage(messages.reject)} src={require('@tabler/icons/x.svg')} onClick={onReject} /></div>
       </div>
     </div>
   );

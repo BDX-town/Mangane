@@ -1,5 +1,6 @@
 select {
   @apply pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
 }
 
 .form-error::before,
@@ -291,29 +292,6 @@ code {
     width: auto;
   }
 
-  .check_boxes {
-    .checkbox {
-      label {
-        font-family: inherit;
-        font-size: 14px;
-        color: var(--primary-text-color);
-        display: inline-block;
-        width: auto;
-        position: relative;
-        padding-top: 5px;
-        padding-left: 25px;
-        flex: 1 1 auto;
-      }
-
-      input[type=checkbox] {
-        position: absolute;
-        left: 0;
-        top: 5px;
-        margin: 0;
-      }
-    }
-  }
-
   fieldset[disabled] {
     input[type=text],
     input[type=number],
@@ -333,7 +311,7 @@ code {
   input[type=password],
   textarea,
   .rfipbtn {
-    @apply border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-black dark:text-white;
+    @apply border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white;
     box-sizing: border-box;
     font-size: 16px;
     color: var(--primary-text-color);
@@ -701,31 +679,6 @@ code {
 
   input[type="text"] {
     border-radius: 0 0 4px 4px;
-  }
-}
-
-.authtokens {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-gap: 20px;
-}
-
-.authtoken {
-  &__app-name {
-    font-size: 16px;
-    font-weight: bold;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  &__valid-until {
-    font-size: 14px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  &__revoke {
-    margin-top: 10px;
   }
 }
 

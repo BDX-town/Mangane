@@ -1,6 +1,5 @@
 import classNames from 'classnames';
-import { is } from 'immutable';
-import { Map as ImmutableMap } from 'immutable';
+import { Map as ImmutableMap, is } from 'immutable';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -150,7 +149,7 @@ class Item extends React.PureComponent {
       const attachmentIcon = (
         <Icon
           className='h-16 w-16 text-gray-800 dark:text-gray-200'
-          src={MIMETYPE_ICONS[attachment.getIn(['pleroma', 'mime_type'])] || require('@tabler/icons/icons/paperclip.svg')}
+          src={MIMETYPE_ICONS[attachment.getIn(['pleroma', 'mime_type'])] || require('@tabler/icons/paperclip.svg')}
         />
       );
 
@@ -216,7 +215,7 @@ class Item extends React.PureComponent {
           alt={attachment.get('description')}
           title={attachment.get('description')}
         >
-          <span className='media-gallery__item__icons'><Icon id='volume-up' /></span>
+          <span className='media-gallery__item__icons'><Icon src={require('@tabler/icons/volume.svg')} /></span>
           <span className='media-gallery__file-extension__label'>{ext}</span>
         </a>
       );
@@ -337,7 +336,7 @@ class MediaGallery extends React.PureComponent {
     const aspectRatio = media.getIn([0, 'meta', 'original', 'aspect']);
 
     const getHeight = () => {
-      if (!aspectRatio) return width*9/16;
+      if (!aspectRatio) return width * 9 / 16;
       if (isPanoramic(aspectRatio)) return Math.floor(width / maximumAspectRatio);
       if (isPortrait(aspectRatio))  return Math.floor(width / minimumAspectRatio);
       return Math.floor(width / aspectRatio);
@@ -603,23 +602,23 @@ class MediaGallery extends React.PureComponent {
             (visible || compact) ? (
               <Button
                 text={intl.formatMessage(messages.toggle_visible)}
-                icon={visible ? require('@tabler/icons/icons/eye-off.svg') : require('@tabler/icons/icons/eye.svg')}
+                icon={visible ? require('@tabler/icons/eye-off.svg') : require('@tabler/icons/eye.svg')}
                 onClick={this.handleOpen}
                 theme='transparent'
                 size='sm'
               />
             ) : (
               <button type='button' onClick={this.handleOpen} className='bg-transparent w-full h-full border-0'>
-                <div className='p-4 rounded-xl shadow-xl backdrop-blur-sm bg-white/75 dark:bg-slate-800/75 text-center inline-block space-y-4 max-w-[280px]'>
+                <div className='p-4 rounded-xl shadow-xl backdrop-blur-sm bg-white/75 dark:bg-gray-900/75 text-center inline-block space-y-4 max-w-[280px]'>
                   <div className='space-y-1'>
                     <Text weight='semibold'>{warning}</Text>
                     <Text size='sm'>
-                      {intl.formatMessage({ id: 'status.sensitive_warning.subtitle', defaultMessage: 'This content may not be suitable for all audiences.' })}
+                      <FormattedMessage id='status.sensitive_warning.subtitle' defaultMessage='This content may not be suitable for all audiences.' />
                     </Text>
                   </div>
 
-                  <Button type='button' theme='primary' size='sm' icon={require('@tabler/icons/icons/eye.svg')}>
-                    {intl.formatMessage({ id: 'status.sensitive_warning.action', defaultMessage: 'Show content' })}
+                  <Button type='button' theme='primary' size='sm' icon={require('@tabler/icons/eye.svg')}>
+                    <FormattedMessage id='status.sensitive_warning.action' defaultMessage='Show content' />
                   </Button>
                 </div>
               </button>

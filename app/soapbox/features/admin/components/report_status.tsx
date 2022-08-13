@@ -10,8 +10,7 @@ import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch } from 'soapbox/hooks';
 
-import type { Map as ImmutableMap } from 'immutable';
-import type { Status, Attachment } from 'soapbox/types/entities';
+import type { AdminReport, Attachment, Status } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   viewStatus: { id: 'admin.reports.actions.view_status', defaultMessage: 'View post' },
@@ -20,7 +19,7 @@ const messages = defineMessages({
 
 interface IReportStatus {
   status: Status,
-  report?: ImmutableMap<string, any>,
+  report?: AdminReport,
 }
 
 const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
@@ -40,12 +39,12 @@ const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
 
     return [{
       text: intl.formatMessage(messages.viewStatus, { acct: `@${acct}` }),
-      to: `/@${acct}/posts/${status.get('id')}`,
-      icon: require('@tabler/icons/icons/pencil.svg'),
+      to: `/@${acct}/posts/${status.id}`,
+      icon: require('@tabler/icons/pencil.svg'),
     }, {
       text: intl.formatMessage(messages.deleteStatus, { acct: `@${acct}` }),
       action: handleDeleteStatus,
-      icon: require('@tabler/icons/icons/trash.svg'),
+      icon: require('@tabler/icons/trash.svg'),
       destructive: true,
     }];
   };
@@ -124,7 +123,7 @@ const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
       <div className='admin-report__status-actions'>
         <DropdownMenu
           items={menu}
-          src={require('@tabler/icons/icons/dots-vertical.svg')}
+          src={require('@tabler/icons/dots-vertical.svg')}
         />
       </div>
     </div>

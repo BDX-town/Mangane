@@ -52,92 +52,6 @@
     padding: 0 5px;
   }
 
-  &__subtitle {
-    display: block;
-    padding: 0 15px;
-    color: var(--primary-text-color--faint);
-  }
-
-  &__form {
-    display: block;
-    padding: 15px;
-
-    &.button {
-      width: 100%;
-    }
-  }
-
-  .wtf-panel-list-item {
-    display: block;
-    padding-bottom: 10px;
-
-    &:not(:first-of-type) {
-      margin-top: 12px;
-    }
-
-    &:not(:last-of-type) {
-      border-bottom: 1px solid var(--brand-color--med);
-    }
-
-    &__content {
-      display: flex;
-      flex-direction: row;
-      min-height: 46px;
-      margin-left: 58px;
-    }
-
-    &__account-block {
-      display: flex;
-      position: relative;
-      align-items: baseline;
-      padding-right: 10px;
-
-      &__avatar {
-        height: 46px;
-        width: 46px;
-        background-color: #f00;
-        left: -58px;
-        position: absolute;
-      }
-
-      &__name {
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: column;
-        margin-top: 6px;
-
-        &__name {
-          color: var(--primary-text-color);
-          font-size: 14px;
-          font-weight: bold;
-          line-height: 16px;
-          margin-bottom: 2px;
-          max-height: 32px; //2 lines of text
-          overflow: hidden;
-        }
-
-        &__username {
-          color: var(--highlight-text-color);
-          font-size: 12px;
-          line-height: 14px;
-        }
-      }
-    }
-
-    &__follow-block {
-      margin-left: auto;
-      padding-top: 6px;
-
-      &__button {
-        display: flex;
-      }
-
-      &__icon {
-        color: var(--primary-text-color);
-      }
-    }
-  }
-
   &__expand-btn {
     @apply border-gray-300 dark:border-gray-600;
     display: block;
@@ -156,17 +70,4 @@
     color: var(--primary-text-color);
     text-decoration: none;
   }
-
-  &__menu {
-    margin-left: auto;
-
-    > div {
-      height: 18px;
-    }
-  }
-}
-
-.column .sub-navigation ~ .wtf-panel {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
 }

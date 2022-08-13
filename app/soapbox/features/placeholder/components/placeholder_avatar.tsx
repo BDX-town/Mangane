@@ -1,11 +1,14 @@
 import * as React from 'react';
 
+import { Stack } from 'soapbox/components/ui';
+
 interface IPlaceholderAvatar {
-  size: number,
+  size: number
+  withText?: boolean
 }
 
 /** Fake avatar to display while data is loading. */
-const PlaceholderAvatar: React.FC<IPlaceholderAvatar> = ({ size }) => {
+const PlaceholderAvatar: React.FC<IPlaceholderAvatar> = ({ size, withText = false }) => {
   const style = React.useMemo(() => {
     if (!size) {
       return {};
@@ -18,10 +21,16 @@ const PlaceholderAvatar: React.FC<IPlaceholderAvatar> = ({ size }) => {
   }, [size]);
 
   return (
-    <div
-      className='rounded-full bg-slate-200 dark:bg-slate-700'
-      style={style}
-    />
+    <Stack space={3} className='animate-pulse text-center'>
+      <div
+        className='block mx-auto rounded-full bg-primary-50 dark:bg-primary-800'
+        style={style}
+      />
+
+      {withText && (
+        <div style={{ width: size, height: 20 }} className='rounded-full bg-primary-50 dark:bg-primary-800' />
+      )}
+    </Stack>
   );
 };
 

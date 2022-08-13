@@ -59,13 +59,22 @@ function hslToHex(color: Hsl): string {
   return `#${f(0)}${f(8)}${f(4)}`;
 }
 
-// Generate accent color from brand color
+/** Generate accent color from brand color. */
 export const generateAccent = (brandColor: string): string | null => {
   const rgb = hexToRgb(brandColor);
   if (!rgb) return null;
 
   const { h } = rgbToHsl(rgb);
   return hslToHex({ h: h - 15, s: 86, l: 44 });
+};
+
+/** Generate neutral color from brand color. */
+export const generateNeutral = (brandColor: string): string | null => {
+  const rgb = hexToRgb(brandColor);
+  if (!rgb) return null;
+
+  const { h } = rgbToHsl(rgb);
+  return hslToHex({ h, s: 20, l: 55 });
 };
 
 const parseShades = (obj: Record<string, any>, color: string, shades: Record<string, any>): void => {

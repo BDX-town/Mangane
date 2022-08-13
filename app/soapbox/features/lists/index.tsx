@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -9,11 +8,8 @@ import { deleteList, fetchLists } from 'soapbox/actions/lists';
 import { openModal } from 'soapbox/actions/modals';
 import Icon from 'soapbox/components/icon';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import { IconButton, Spinner } from 'soapbox/components/ui';
-import { CardHeader, CardTitle } from 'soapbox/components/ui';
+import { Column, IconButton, Spinner } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
-
-import Column from '../ui/components/column';
 
 import NewListForm from './components/new_list_form';
 
@@ -78,32 +74,27 @@ const Lists: React.FC = () => {
   const emptyMessage = <FormattedMessage id='empty_column.lists' defaultMessage="You don't have any lists yet. When you create one, it will show up here." />;
 
   return (
-    <Column icon='list-ul' label={intl.formatMessage(messages.heading)}>
-      <br />
-      <CardHeader>
-        <CardTitle title={intl.formatMessage(messages.add)} />
-      </CardHeader>
-      <NewListForm />
-      <br />
-      <CardHeader>
-        <CardTitle title={intl.formatMessage(messages.subheading)} />
-      </CardHeader>
-      <ScrollableList
-        scrollKey='lists'
-        emptyMessage={emptyMessage}
-        itemClassName='py-2'
-      >
-        {lists.map((list: any) => (
-          <Link key={list.get('id')} to={`/list/${list.get('id')}`} className='flex items-center gap-1.5 p-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg'>
-            <Icon src={require('@tabler/icons/icons/list.svg')} fixedWidth />
-            <span className='flex-grow'>
-              {list.get('title')}
-            </span>
-            <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/icons/pencil.svg')} onClick={handleEditClick(list.get('id'))} title={intl.formatMessage(messages.editList)} />
-            <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/icons/trash.svg')} onClick={handleDeleteClick(list.get('id'))} title={intl.formatMessage(messages.deleteList)} />
-          </Link>
-        ))}
-      </ScrollableList>
+    <Column label={intl.formatMessage(messages.heading)}>
+      <div className='space-y-4'>
+        <NewListForm />
+
+        <ScrollableList
+          scrollKey='lists'
+          emptyMessage={emptyMessage}
+          itemClassName='py-2'
+        >
+          {lists.map((list: any) => (
+            <Link key={list.id} to={`/list/${list.id}`} className='flex items-center gap-1.5 p-2 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg'>
+              <Icon src={require('@tabler/icons/list.svg')} fixedWidth />
+              <span className='flex-grow'>
+                {list.title}
+              </span>
+              <IconButton iconClassName='h-5 w-5 text-gray-700 dark:text-gray-600 hover:text-gray-800 dark:hover:text-gray-500' src={require('@tabler/icons/pencil.svg')} onClick={handleEditClick(list.id)} title={intl.formatMessage(messages.editList)} />
+              <IconButton iconClassName='h-5 w-5 text-gray-700 dark:text-gray-600 hover:text-gray-800 dark:hover:text-gray-500' src={require('@tabler/icons/trash.svg')} onClick={handleDeleteClick(list.id)} title={intl.formatMessage(messages.deleteList)} />
+            </Link>
+          ))}
+        </ScrollableList>
+      </div>
     </Column>
   );
 };

@@ -1,17 +1,27 @@
 'use strict';
 
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
-import { Switch, useHistory } from 'react-router-dom';
-import { Redirect } from 'react-router-dom';
+import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
+import { fetchFollowRequests } from 'soapbox/actions/accounts';
+import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin';
+import { fetchAnnouncements } from 'soapbox/actions/announcements';
 import { fetchChats } from 'soapbox/actions/chats';
+import { uploadCompose, resetCompose } from 'soapbox/actions/compose';
 import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
+import { fetchFilters } from 'soapbox/actions/filters';
 import { fetchMarker } from 'soapbox/actions/markers';
+import { openModal } from 'soapbox/actions/modals';
+import { expandNotifications } from 'soapbox/actions/notifications';
 import { register as registerPushNotifications } from 'soapbox/actions/push_notifications';
+import { fetchScheduledStatuses } from 'soapbox/actions/scheduled_statuses';
+import { connectUserStream } from 'soapbox/actions/streaming';
+import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
+import { expandHomeTimeline } from 'soapbox/actions/timelines';
 import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb_navigation';
@@ -21,24 +31,12 @@ import AdminPage from 'soapbox/pages/admin_page';
 import DefaultPage from 'soapbox/pages/default_page';
 // import GroupsPage from 'soapbox/pages/groups_page';
 // import GroupPage from 'soapbox/pages/group_page';
-import EmptyPage from 'soapbox/pages/default_page';
 import HomePage from 'soapbox/pages/home_page';
 import ProfilePage from 'soapbox/pages/profile_page';
 import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
 import StatusPage from 'soapbox/pages/status_page';
-import { getAccessToken } from 'soapbox/utils/auth';
-import { getVapidKey } from 'soapbox/utils/auth';
+import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
-
-import { fetchFollowRequests } from '../../actions/accounts';
-import { fetchReports, fetchUsers, fetchConfig } from '../../actions/admin';
-import { uploadCompose, resetCompose } from '../../actions/compose';
-import { fetchFilters } from '../../actions/filters';
-import { openModal } from '../../actions/modals';
-import { expandNotifications } from '../../actions/notifications';
-import { fetchScheduledStatuses } from '../../actions/scheduled_statuses';
-import { connectUserStream } from '../../actions/streaming';
-import { expandHomeTimeline } from '../../actions/timelines';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
 
 import BackgroundShapes from './components/background_shapes';
@@ -84,7 +82,7 @@ import {
   EmailConfirmation,
   DeleteAccount,
   SoapboxConfig,
-  ExportData,
+  // ExportData,
   ImportData,
   // Backups,
   MfaForm,
@@ -104,9 +102,8 @@ import {
   Directory,
   SidebarMenu,
   UploadArea,
-  NotificationsContainer,
-  ModalContainer,
   ProfileHoverCard,
+  StatusHoverCard,
   Share,
   NewStatus,
   IntentionalError,
@@ -115,12 +112,15 @@ import {
   SettingsStore,
   TestTimeline,
   LogoutPage,
+  AuthTokenList,
 } from './util/async-components';
 import { WrappedRoute } from './util/react_router_helpers';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
-import '../../components/status';
+import 'soapbox/components/status';
+
+const EmptyPage = HomePage;
 
 const isMobile = (width: number): boolean => width <= 1190;
 
@@ -158,8 +158,8 @@ const keyMap = {
 };
 
 const SwitchingColumnsArea: React.FC = ({ children }) => {
-  const history = useHistory();
   const features = useFeatures();
+  const { search } = useLocation();
 
   const { authenticatedProfile, cryptoAddresses } = useSoapboxConfig();
   const hasCrypto = cryptoAddresses.size > 0;
@@ -185,9 +185,8 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.federating && <WrappedRoute path='/timeline/:instance' exact page={RemoteInstancePage} component={RemoteTimeline} content={children} />}
 
       {features.conversations && <WrappedRoute path='/conversations' page={DefaultPage} component={Conversations} content={children} />}
-      {features.directTimeline ? (
-        <WrappedRoute path='/messages' page={DefaultPage} component={DirectTimeline} content={children} />
-      ) : (
+      {features.directTimeline && <WrappedRoute path='/messages' page={DefaultPage} component={DirectTimeline} content={children} />}
+      {(features.conversations && !features.directTimeline) && (
         <WrappedRoute path='/messages' page={DefaultPage} component={Conversations} content={children} />
       )}
 
@@ -235,7 +234,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <Redirect from='/settings/otp_authentication' to='/settings/mfa' />
       <Redirect from='/settings/applications' to='/developers' />
       <Redirect from='/auth/edit' to='/settings' />
-      <Redirect from='/auth/confirmation' to={`/email-confirmation${history.location.search}`} />
+      <Redirect from='/auth/confirmation' to={`/email-confirmation${search}`} />
       <Redirect from='/auth/reset_password' to='/reset-password' />
       <Redirect from='/auth/edit_password' to='/edit-password' />
       <Redirect from='/auth/sign_in' to='/login' />
@@ -250,7 +249,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <Redirect from='/auth/external' to='/login/external' />
       <Redirect from='/auth/mfa' to='/settings/mfa' />
       <Redirect from='/auth/password/new' to='/reset-password' />
-      <Redirect from='/auth/password/edit' to='/edit-password' />
+      <Redirect from='/auth/password/edit' to={`/edit-password${search}`} />
 
       <WrappedRoute path='/tags/:id' publicRoute page={DefaultPage} component={HashtagTimeline} content={children} />
 
@@ -260,7 +259,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
 
       <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
 
-      <WrappedRoute path='/search' publicRoute page={DefaultPage} component={Search} content={children} />
+      <WrappedRoute path='/search' page={DefaultPage} component={Search} content={children} />
       {features.suggestions && <WrappedRoute path='/suggestions' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />}
       {features.profileDirectory && <WrappedRoute path='/directory' publicRoute page={DefaultPage} component={Directory} content={children} />}
 
@@ -278,25 +277,27 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/@:username/following' publicRoute={!authenticatedProfile} component={Following} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/media' publicRoute={!authenticatedProfile} component={AccountGallery} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/tagged/:tag' exact component={AccountTimeline} page={ProfilePage} content={children} />
-      <WrappedRoute path='/@:username/favorites' component={FavouritedStatuses} page={ProfilePage} content={children}  />
+      <WrappedRoute path='/@:username/favorites' component={FavouritedStatuses} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/pins' component={PinnedStatuses} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact page={StatusPage} component={Status} content={children} />
       <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
 
       <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />
-      <WrappedRoute path='/statuses/:statusId' exact component={Status} content={children} />
+      <WrappedRoute path='/statuses/:statusId' exact page={StatusPage} component={Status} content={children} />
       {features.scheduledStatuses && <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />}
 
       <WrappedRoute path='/settings/profile' page={DefaultPage} component={EditProfile} content={children} />
-      <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} />
-      <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />
-      {features.accountAliasesAPI && <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />}
+      {/* FIXME: this could DDoS our API? :\ */}
+      {/* <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} /> */}
+      {features.importData && <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />}
+      {features.accountAliases && <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />}
       {features.accountMoving && <WrappedRoute path='/settings/migration' page={DefaultPage} component={Migration} content={children} />}
       <WrappedRoute path='/settings/email' page={DefaultPage} component={EditEmail} content={children} />
       <WrappedRoute path='/settings/password' page={DefaultPage} component={EditPassword} content={children} />
       <WrappedRoute path='/settings/account' page={DefaultPage} component={DeleteAccount} content={children} />
       <WrappedRoute path='/settings/media_display' page={DefaultPage} component={MediaDisplay} content={children} />
       <WrappedRoute path='/settings/mfa' page={DefaultPage} component={MfaForm} exact />
+      <WrappedRoute path='/settings/tokens' page={DefaultPage} component={AuthTokenList} content={children} />
       <WrappedRoute path='/settings' page={DefaultPage} component={Settings} content={children} />
       {/* <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} /> */}
       <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
@@ -343,7 +344,7 @@ const UI: React.FC = ({ children }) => {
   const features = useFeatures();
   const vapidKey = useAppSelector(state => getVapidKey(state));
 
-  const dropdownMenuIsOpen = useAppSelector(state => state.dropdown_menu.get('openId') !== null);
+  const dropdownMenuIsOpen = useAppSelector(state => state.dropdown_menu.openId !== null);
   const accessToken = useAppSelector(state => getAccessToken(state));
   const streamingUrl = useAppSelector(state => state.instance.urls.get('streaming_api'));
   const standalone = useAppSelector(isStandalone);
@@ -351,7 +352,7 @@ const UI: React.FC = ({ children }) => {
   const handleDragEnter = (e: DragEvent) => {
     e.preventDefault();
 
-    if (e.target && dragTargets.current.indexOf(e.target) === -1) {
+    if (e.target && !dragTargets.current.includes(e.target)) {
       dragTargets.current.push(e.target);
     }
 
@@ -442,19 +443,23 @@ const UI: React.FC = ({ children }) => {
   const loadAccountData = () => {
     if (!account) return;
 
-    dispatch(expandHomeTimeline());
+    dispatch(expandHomeTimeline({}, () => {
+      dispatch(fetchSuggestionsForTimeline());
+    }));
 
     dispatch(expandNotifications())
       // @ts-ignore
       .then(() => dispatch(fetchMarker(['notifications'])))
       .catch(console.error);
 
+    dispatch(fetchAnnouncements());
+
     if (features.chats) {
       dispatch(fetchChats());
     }
 
     if (account.staff) {
-      dispatch(fetchReports({ state: 'open' }));
+      dispatch(fetchReports({ resolved: false }));
       dispatch(fetchUsers(['local', 'need_approval']));
     }
 
@@ -478,7 +483,7 @@ const UI: React.FC = ({ children }) => {
     document.addEventListener('drop', handleDrop, false);
     document.addEventListener('dragleave', handleDragLeave, false);
 
-    if ('serviceWorker' in  navigator) {
+    if ('serviceWorker' in navigator) {
       navigator.serviceWorker.addEventListener('message', handleServiceWorkerPostMessage);
     }
 
@@ -632,7 +637,7 @@ const UI: React.FC = ({ children }) => {
       className='floating-action-button'
       aria-label={intl.formatMessage(messages.publish)}
     >
-      <Icon src={require('icons/pen-plus.svg')} />
+      <Icon src={require('@tabler/icons/pencil-plus.svg')} />
     </button>
   );
 
@@ -662,14 +667,6 @@ const UI: React.FC = ({ children }) => {
 
           {me && floatingActionButton}
 
-          <BundleContainer fetchComponent={NotificationsContainer}>
-            {Component => <Component />}
-          </BundleContainer>
-
-          <BundleContainer fetchComponent={ModalContainer}>
-            {Component => <Component />}
-          </BundleContainer>
-
           <BundleContainer fetchComponent={UploadArea}>
             {Component => <Component active={draggingOver} onClose={closeUploadModal} />}
           </BundleContainer>
@@ -687,6 +684,10 @@ const UI: React.FC = ({ children }) => {
           <ThumbNavigation />
 
           <BundleContainer fetchComponent={ProfileHoverCard}>
+            {Component => <Component />}
+          </BundleContainer>
+
+          <BundleContainer fetchComponent={StatusHoverCard}>
             {Component => <Component />}
           </BundleContainer>
         </div>

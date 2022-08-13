@@ -1,4 +1,4 @@
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -6,20 +6,20 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
-import MissingIndicator from 'soapbox/components/missing_indicator';
-import { Spinner } from 'soapbox/components/ui';
-import { findAccountByUsername } from 'soapbox/selectors';
-import { getFollowDifference } from 'soapbox/utils/accounts';
-import { getFeatures } from 'soapbox/utils/features';
-
 import {
   fetchAccount,
   fetchFollowers,
   expandFollowers,
   fetchAccountByUsername,
-} from '../../actions/accounts';
-import ScrollableList from '../../components/scrollable_list';
-import AccountContainer from '../../containers/account_container';
+} from 'soapbox/actions/accounts';
+import MissingIndicator from 'soapbox/components/missing_indicator';
+import ScrollableList from 'soapbox/components/scrollable_list';
+import { Spinner } from 'soapbox/components/ui';
+import AccountContainer from 'soapbox/containers/account_container';
+import { findAccountByUsername } from 'soapbox/selectors';
+import { getFollowDifference } from 'soapbox/utils/accounts';
+import { getFeatures } from 'soapbox/utils/features';
+
 import Column from '../ui/components/column';
 
 const messages = defineMessages({
@@ -48,8 +48,8 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
     accountId,
     unavailable,
     isAccount: !!state.getIn(['accounts', accountId]),
-    accountIds: state.getIn(['user_lists', 'followers', accountId, 'items']),
-    hasMore: !!state.getIn(['user_lists', 'followers', accountId, 'next']),
+    accountIds: state.user_lists.followers.get(accountId)?.items,
+    hasMore: !!state.user_lists.followers.get(accountId)?.next,
     diffCount,
   };
 };
@@ -118,7 +118,7 @@ class Followers extends ImmutablePureComponent {
     }
 
     return (
-      <Column label={intl.formatMessage(messages.heading)} withHeader={false} transparent>
+      <Column label={intl.formatMessage(messages.heading)} transparent>
         <ScrollableList
           scrollKey='followers'
           hasMore={hasMore}

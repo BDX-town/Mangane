@@ -52,7 +52,7 @@ $fluid-breakpoint: $maximum-width + 20px;
 
   .container {
     width: 100%;
-    max-width: 1440px;
+    max-width: 1280px;
 
     @media screen and (max-width: $no-gap-breakpoint) {
       padding: 0;
@@ -82,7 +82,7 @@ $fluid-breakpoint: $maximum-width + 20px;
 
     .header-container {
       display: flex;
-      width: 1440px;
+      width: 1280px;
       align-items: stretch;
       justify-content: center;
       flex-wrap: nowrap;
@@ -230,158 +230,6 @@ $fluid-breakpoint: $maximum-width + 20px;
         opacity: 0.9;
         color: #fff;
         text-decoration: none;
-      }
-    }
-  }
-
-  .beta-page {
-    .app-cta {
-      display: flex;
-      align-items: center;
-      margin: 40px auto;
-
-      @media screen and (max-width: 768px) {
-        flex-direction: column;
-      }
-
-      .copy {
-        flex: 2;
-        background: white;
-        border: 1px solid #eee;
-        padding: 80px;
-        border-radius: 10px;
-
-        @media screen and (max-width: 768px) {
-          padding: 60px 20px 20px 20px;
-          order: 1;
-          text-align: center;
-        }
-      }
-
-      .icon {
-        border-radius: 10px;
-        transform: scale(1.25);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex: 1;
-        padding: 40px;
-        background: linear-gradient(to bottom, $color-4-light, $color-4);
-        box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.1);
-
-        @media screen and (max-width: 768px) {
-          order: 0;
-          transform: scale(0.75);
-          margin-bottom: -60px;
-        }
-
-        img {
-          border-radius: 16px;
-          box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.1);
-        }
-      }
-
-      h1 {
-        margin: 0 0 20px 0;
-        font-size: 80px;
-        line-height: 90px;
-        font-weight: 600;
-        background: -webkit-linear-gradient(135deg, $color-9, $color-4-light, $color-2-light);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-
-        @media screen and (max-width: 767px) {
-          margin-bottom: 30px;
-          text-align: center;
-          font-size: 50px;
-          line-height: 55px;
-        }
-      }
-    }
-  }
-
-  .beta-header {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    .hand-wave {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 200px;
-      height: 200px;
-      background: white;
-      border-radius: 50%;
-      margin-bottom: 20px;
-
-      @media screen and (max-width: $fluid-breakpoint) {
-        width: 120px;
-        height: 120px;
-      }
-
-      img {
-        animation: 1s ease-in wave;
-        max-width: 140px;
-
-        @media screen and (max-width: $fluid-breakpoint) {
-          width: 80px;
-          height: 80px;
-        }
-      }
-    }
-
-    .message {
-      margin: 40px 0;
-      padding: 20px;
-      width: 100%;
-      background: lighten($color-4-light, 30%);
-      border-radius: 10px;
-
-      p {
-        color: $color-4;
-        text-align: center;
-        font-size: 20px;
-        font-weight: 500;
-      }
-
-      span {
-        font-style: italic;
-        font-weight: 600;
-      }
-    }
-
-    .group {
-      display: flex;
-      align-items: center;
-
-      @media screen and (max-width: $fluid-breakpoint) {
-        display: block;
-      }
-
-      .logo {
-        padding: 0 40px;
-        border-right: 10px solid transparentize($color-3, 0.9);
-
-        @media screen and (max-width: $fluid-breakpoint) {
-          border-right: none;
-        }
-      }
-
-      .text {
-        padding: 0 40px;
-        font-weight: 600;
-        font-size: 80px;
-        font-style: italic;
-        color: $color-4-dark;
-
-        @media screen and (max-width: $fluid-breakpoint) {
-          padding: 0;
-          font-weight: 600;
-          font-size: 40px;
-          text-align: center;
-        }
       }
     }
   }

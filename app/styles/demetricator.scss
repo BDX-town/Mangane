@@ -1,21 +1,5 @@
 body.demetricator {
-  .user-panel .user-panel-stats-item__value,
-  .account__header__extra__links a > span:first-of-type,
-  .detailed-status__link,
-  .icon-with-badge__badge,
-  .icon-with-counter__counter,
-  .trends__item__count,
-  .sidebar-menu-profile__stats,
-  .profile-stat__value {
+  .icon-with-badge__badge {
     display: none;
-  }
-
-  .account__header__bar {
-    min-height: 50px;
-    @media (min-width: 896px) { height: 50px; }
-  }
-
-  .svg-icon--unread svg {
-    transform: rotate(0);
   }
 }

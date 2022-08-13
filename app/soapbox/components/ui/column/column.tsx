@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -7,7 +6,7 @@ import { useSoapboxConfig } from 'soapbox/hooks';
 
 import { Card, CardBody, CardHeader, CardTitle } from '../card/card';
 
-interface IColumn {
+export interface IColumn {
   /** Route the back button goes to. */
   backHref?: string,
   /** Column title text. */
@@ -18,6 +17,8 @@ interface IColumn {
   withHeader?: boolean,
   /** Extra class name for top <div> element. */
   className?: string,
+  /** Ref forwarded to column. */
+  ref?: React.Ref<HTMLDivElement>
 }
 
 /** A backdrop for the main section of the UI. */
@@ -40,25 +41,19 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
     }
   };
 
-  const renderChildren = () => {
-    if (transparent) {
-      return <div className={classNames('text-black dark:text-white', className)}>{children}</div>;
-    }
+  const renderChildren = () => (
+    <Card variant={transparent ? undefined : 'rounded'} className={className}>
+      {withHeader ? (
+        <CardHeader onBackClick={handleBackClick}>
+          <CardTitle title={label} />
+        </CardHeader>
+      ) : null}
 
-    return (
-      <Card variant='rounded' className={className}>
-        {withHeader ? (
-          <CardHeader onBackClick={handleBackClick}>
-            <CardTitle title={label} />
-          </CardHeader>
-        ) : null}
-
-        <CardBody>
-          {children}
-        </CardBody>
-      </Card>
-    );
-  };
+      <CardBody>
+        {children}
+      </CardBody>
+    </Card>
+  );
 
   return (
     <div role='region' className='relative' ref={ref} aria-label={label} column-type={transparent ? 'transparent' : 'filled'}>

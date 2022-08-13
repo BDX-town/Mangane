@@ -1,678 +1,387 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
-import { NavLink, withRouter, RouteComponentProps } from 'react-router-dom';
+import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
+import { NavLink, useHistory } from 'react-router-dom';
 
+import { mentionCompose, replyComposeWithConfirmation } from 'soapbox/actions/compose';
+import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions';
+import { openModal } from 'soapbox/actions/modals';
+import { toggleStatusHidden } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
-import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
+import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
+import { useAppDispatch, useSettings } from 'soapbox/hooks';
+import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status';
 
-import AccountContainer from '../containers/account_container';
-import Card from '../features/status/components/card';
-import Bundle from '../features/ui/components/bundle';
-import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
-
-import AttachmentThumbs from './attachment_thumbs';
-import StatusActionBar from './status_action_bar';
+import StatusActionBar from './status-action-bar';
+import StatusMedia from './status-media';
+import StatusReplyMentions from './status-reply-mentions';
 import StatusContent from './status_content';
-import StatusReplyMentions from './status_reply_mentions';
 import { HStack, Text } from './ui';
 
-import type { History } from 'history';
-import type { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import type { Map as ImmutableMap } from 'immutable';
 import type {
   Account as AccountEntity,
-  Attachment as AttachmentEntity,
   Status as StatusEntity,
 } from 'soapbox/types/entities';
 
 // Defined in components/scrollable_list
 export type ScrollPosition = { height: number, top: number };
 
-export const textForScreenReader = (intl: IntlShape, status: StatusEntity, rebloggedByText?: string): string => {
-  const { account } = status;
-  if (!account || typeof account !== 'object') return '';
+const messages = defineMessages({
+  reblogged_by: { id: 'status.reblogged_by', defaultMessage: '{name} reposted' },
+});
 
-  const displayName = account.display_name;
-
-  const values = [
-    displayName.length === 0 ? account.acct.split('@')[0] : displayName,
-    status.spoiler_text && status.hidden ? status.spoiler_text : status.search_index.slice(status.spoiler_text.length),
-    intl.formatDate(status.created_at, { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }),
-    status.getIn(['account', 'acct']),
-  ];
-
-  if (rebloggedByText) {
-    values.push(rebloggedByText);
-  }
-
-  return values.join(', ');
-};
-
-export const defaultMediaVisibility = (status: StatusEntity, displayMedia: string): boolean => {
-  if (!status) return false;
-
-  if (status.reblog && typeof status.reblog === 'object') {
-    status = status.reblog;
-  }
-
-  return (displayMedia !== 'hide_all' && !status.sensitive || displayMedia === 'show_all');
-};
-
-interface IStatus extends RouteComponentProps {
-  intl: IntlShape,
+export interface IStatus {
+  id?: string,
   status: StatusEntity,
-  account: AccountEntity,
-  otherAccounts: ImmutableList<AccountEntity>,
-  onClick: () => void,
-  onReply: (status: StatusEntity, history: History) => void,
-  onFavourite: (status: StatusEntity) => void,
-  onReblog: (status: StatusEntity, e?: KeyboardEvent) => void,
-  onQuote: (status: StatusEntity) => void,
-  onDelete: (status: StatusEntity) => void,
-  onEdit: (status: StatusEntity) => void,
-  onDirect: (status: StatusEntity) => void,
-  onChat: (status: StatusEntity) => void,
-  onMention: (account: StatusEntity['account'], history: History) => void,
-  onPin: (status: StatusEntity) => void,
-  onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void,
-  onOpenVideo: (media: ImmutableMap<string, any> | AttachmentEntity, startTime: number) => void,
-  onOpenAudio: (media: ImmutableMap<string, any>, startTime: number) => void,
-  onBlock: (status: StatusEntity) => void,
-  onEmbed: (status: StatusEntity) => void,
-  onHeightChange: (status: StatusEntity) => void,
-  onToggleHidden: (status: StatusEntity) => void,
-  onShowHoverProfileCard: (status: StatusEntity) => void,
-  muted: boolean,
-  hidden: boolean,
-  unread: boolean,
-  onMoveUp: (statusId: string, featured?: string) => void,
-  onMoveDown: (statusId: string, featured?: string) => void,
-  getScrollPosition?: () => ScrollPosition | undefined,
-  updateScrollBottom?: (bottom: number) => void,
-  cacheMediaWidth: () => void,
-  cachedMediaWidth: number,
-  group: ImmutableMap<string, any>,
-  displayMedia: string,
-  allowedEmoji: ImmutableList<string>,
-  focusable: boolean,
-  history: History,
-  featured?: string,
+  onClick?: () => void,
+  muted?: boolean,
+  hidden?: boolean,
+  unread?: boolean,
+  onMoveUp?: (statusId: string, featured?: boolean) => void,
+  onMoveDown?: (statusId: string, featured?: boolean) => void,
+  group?: ImmutableMap<string, any>,
+  focusable?: boolean,
+  featured?: boolean,
+  hideActionBar?: boolean,
+  hoverable?: boolean,
 }
 
-interface IStatusState {
-  showMedia: boolean,
-  statusId?: string,
-  emojiSelectorFocused: boolean,
-  mediaWrapperWidth?: number,
-}
+const Status: React.FC<IStatus> = (props) => {
+  const {
+    status,
+    focusable = true,
+    hoverable = true,
+    onClick,
+    onMoveUp,
+    onMoveDown,
+    muted,
+    hidden,
+    featured,
+    unread,
+    group,
+    hideActionBar,
+  } = props;
+  const intl = useIntl();
+  const history = useHistory();
+  const dispatch = useAppDispatch();
 
-class Status extends ImmutablePureComponent<IStatus, IStatusState> {
+  const settings = useSettings();
+  const displayMedia = settings.get('displayMedia') as string;
+  const didShowCard = useRef(false);
+  const node = useRef<HTMLDivElement>(null);
 
-  static defaultProps = {
-    focusable: true,
+  const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
+
+  const actualStatus = getActualStatus(status);
+
+  // Track height changes we know about to compensate scrolling.
+  useEffect(() => {
+    didShowCard.current = Boolean(!muted && !hidden && status?.card);
+  }, []);
+
+  useEffect(() => {
+    setShowMedia(defaultMediaVisibility(status, displayMedia));
+  }, [status.id]);
+
+  const handleToggleMediaVisibility = (): void => {
+    setShowMedia(!showMedia);
   };
 
-  didShowCard = false;
-  node?: HTMLDivElement = undefined;
-  height?: number = undefined;
-
-  // Avoid checking props that are functions (and whose equality will always
-  // evaluate to false. See react-immutable-pure-component for usage.
-  updateOnProps: any[] = [
-    'status',
-    'account',
-    'muted',
-    'hidden',
-  ];
-
-  state: IStatusState = {
-    showMedia: defaultMediaVisibility(this.props.status, this.props.displayMedia),
-    statusId: undefined,
-    emojiSelectorFocused: false,
-  };
-
-  // Track height changes we know about to compensate scrolling
-  componentDidMount(): void {
-    this.didShowCard = Boolean(!this.props.muted && !this.props.hidden && this.props.status && this.props.status.card);
-  }
-
-  getSnapshotBeforeUpdate(): ScrollPosition | undefined {
-    if (this.props.getScrollPosition) {
-      return this.props.getScrollPosition();
+  const handleClick = (): void => {
+    if (onClick) {
+      onClick();
     } else {
-      return undefined;
+      history.push(`/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`);
     }
-  }
-
-  static getDerivedStateFromProps(nextProps: IStatus, prevState: IStatusState) {
-    if (nextProps.status && nextProps.status.id !== prevState.statusId) {
-      return {
-        showMedia: defaultMediaVisibility(nextProps.status, nextProps.displayMedia),
-        statusId: nextProps.status.id,
-      };
-    } else {
-      return null;
-    }
-  }
-
-  // Compensate height changes
-  componentDidUpdate(_prevProps: IStatus, _prevState: IStatusState, snapshot?: ScrollPosition): void {
-    const doShowCard: boolean  = Boolean(!this.props.muted && !this.props.hidden && this.props.status && this.props.status.card);
-
-    if (doShowCard && !this.didShowCard) {
-      this.didShowCard = true;
-
-      if (snapshot && this.props.updateScrollBottom) {
-        if (this.node && this.node.offsetTop < snapshot.top) {
-          this.props.updateScrollBottom(snapshot.height - snapshot.top);
-        }
-      }
-    }
-  }
-
-  componentWillUnmount(): void {
-    // FIXME: Run this code only when a status is being deleted.
-    //
-    // const { getScrollPosition, updateScrollBottom } = this.props;
-    //
-    // if (this.node && getScrollPosition && updateScrollBottom) {
-    //   const position = getScrollPosition();
-    //   if (position && this.node.offsetTop < position.top) {
-    //     requestAnimationFrame(() => {
-    //       updateScrollBottom(position.height - position.top);
-    //     });
-    //   }
-    // }
-  }
-
-  handleToggleMediaVisibility = (): void => {
-    this.setState({ showMedia: !this.state.showMedia });
-  }
-
-  handleClick = (): void => {
-    if (this.props.onClick) {
-      this.props.onClick();
-      return;
-    }
-
-    if (!this.props.history) {
-      return;
-    }
-
-    this.props.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}/posts/${this._properStatus().id}`);
-  }
-
-  handleExpandClick: React.EventHandler<React.MouseEvent> = (e) => {
-    if (e.button === 0) {
-      if (!this.props.history) {
-        return;
-      }
-
-      this.props.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}/posts/${this._properStatus().id}`);
-    }
-  }
-
-  handleExpandedToggle = (): void => {
-    this.props.onToggleHidden(this._properStatus());
   };
 
-  renderLoadingMediaGallery(): JSX.Element {
-    return <div className='media_gallery' style={{ height: '285px' }} />;
-  }
+  const handleExpandedToggle = (): void => {
+    dispatch(toggleStatusHidden(actualStatus));
+  };
 
-  renderLoadingVideoPlayer(): JSX.Element {
-    return <div className='media-spoiler-video' style={{ height: '285px' }} />;
-  }
-
-  renderLoadingAudioPlayer(): JSX.Element {
-    return <div className='media-spoiler-audio' style={{ height: '285px' }} />;
-  }
-
-  handleOpenVideo = (media: ImmutableMap<string, any>, startTime: number): void => {
-    this.props.onOpenVideo(media, startTime);
-  }
-
-  handleOpenAudio = (media: ImmutableMap<string, any>, startTime: number): void => {
-    this.props.onOpenAudio(media, startTime);
-  }
-
-  handleHotkeyOpenMedia = (e?: KeyboardEvent): void => {
-    const { onOpenMedia, onOpenVideo } = this.props;
-    const status = this._properStatus();
+  const handleHotkeyOpenMedia = (e?: KeyboardEvent): void => {
+    const status = actualStatus;
     const firstAttachment = status.media_attachments.first();
 
     e?.preventDefault();
 
     if (firstAttachment) {
       if (firstAttachment.type === 'video') {
-        onOpenVideo(firstAttachment, 0);
+        dispatch(openModal('VIDEO', { media: firstAttachment, time: 0 }));
       } else {
-        onOpenMedia(status.media_attachments, 0);
+        dispatch(openModal('MEDIA', { media: status.media_attachments, index: 0 }));
       }
     }
-  }
+  };
 
-  handleHotkeyReply = (e?: KeyboardEvent): void => {
+  const handleHotkeyReply = (e?: KeyboardEvent): void => {
     e?.preventDefault();
-    this.props.onReply(this._properStatus(), this.props.history);
-  }
+    dispatch(replyComposeWithConfirmation(actualStatus, intl));
+  };
 
-  handleHotkeyFavourite = (): void => {
-    this.props.onFavourite(this._properStatus());
-  }
+  const handleHotkeyFavourite = (): void => {
+    toggleFavourite(actualStatus);
+  };
 
-  handleHotkeyBoost = (e?: KeyboardEvent): void => {
-    this.props.onReblog(this._properStatus(), e);
-  }
-
-  handleHotkeyMention = (e?: KeyboardEvent): void => {
-    e?.preventDefault();
-    this.props.onMention(this._properStatus().account, this.props.history);
-  }
-
-  handleHotkeyOpen = (): void => {
-    this.props.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}/posts/${this._properStatus().id}`);
-  }
-
-  handleHotkeyOpenProfile = (): void => {
-    this.props.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}`);
-  }
-
-  handleHotkeyMoveUp = (e?: KeyboardEvent): void => {
-    // FIXME: what's going on here?
-    // this.props.onMoveUp(this.props.status.id, e?.target?.getAttribute('data-featured'));
-  }
-
-  handleHotkeyMoveDown = (e?: KeyboardEvent): void => {
-    // FIXME: what's going on here?
-    // this.props.onMoveDown(this.props.status.id, e?.target?.getAttribute('data-featured'));
-  }
-
-  handleHotkeyToggleHidden = (): void => {
-    this.props.onToggleHidden(this._properStatus());
-  }
-
-  handleHotkeyToggleSensitive = (): void => {
-    this.handleToggleMediaVisibility();
-  }
-
-  handleHotkeyReact = (): void => {
-    this._expandEmojiSelector();
-  }
-
-  handleEmojiSelectorExpand: React.EventHandler<React.KeyboardEvent> = e => {
-    if (e.key === 'Enter') {
-      this._expandEmojiSelector();
+  const handleHotkeyBoost = (e?: KeyboardEvent): void => {
+    const modalReblog = () => dispatch(toggleReblog(actualStatus));
+    const boostModal = settings.get('boostModal');
+    if ((e && e.shiftKey) || !boostModal) {
+      modalReblog();
+    } else {
+      dispatch(openModal('BOOST', { status: actualStatus, onReblog: modalReblog }));
     }
-    e.preventDefault();
-  }
+  };
 
-  handleEmojiSelectorUnfocus = (): void => {
-    this.setState({ emojiSelectorFocused: false });
-  }
+  const handleHotkeyMention = (e?: KeyboardEvent): void => {
+    e?.preventDefault();
+    dispatch(mentionCompose(actualStatus.account as AccountEntity));
+  };
 
-  _expandEmojiSelector = (): void => {
-    this.setState({ emojiSelectorFocused: true });
-    const firstEmoji: HTMLDivElement | null | undefined = this.node?.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
+  const handleHotkeyOpen = (): void => {
+    history.push(`/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`);
+  };
+
+  const handleHotkeyOpenProfile = (): void => {
+    history.push(`/@${actualStatus.getIn(['account', 'acct'])}`);
+  };
+
+  const handleHotkeyMoveUp = (e?: KeyboardEvent): void => {
+    if (onMoveUp) {
+      onMoveUp(status.id, featured);
+    }
+  };
+
+  const handleHotkeyMoveDown = (e?: KeyboardEvent): void => {
+    if (onMoveDown) {
+      onMoveDown(status.id, featured);
+    }
+  };
+
+  const handleHotkeyToggleHidden = (): void => {
+    dispatch(toggleStatusHidden(actualStatus));
+  };
+
+  const handleHotkeyToggleSensitive = (): void => {
+    handleToggleMediaVisibility();
+  };
+
+  const handleHotkeyReact = (): void => {
+    _expandEmojiSelector();
+  };
+
+  const _expandEmojiSelector = (): void => {
+    const firstEmoji: HTMLDivElement | null | undefined = node.current?.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
     firstEmoji?.focus();
   };
 
-  _properStatus(): StatusEntity {
-    const { status } = this.props;
+  if (!status) return null;
+  let prepend, rebloggedByText, reblogElement, reblogElementMobile;
 
-    if (status.reblog && typeof status.reblog === 'object') {
-      return status.reblog;
-    } else {
-      return status;
-    }
+  if (hidden) {
+    return (
+      <div ref={node}>
+        {actualStatus.getIn(['account', 'display_name']) || actualStatus.getIn(['account', 'username'])}
+        {actualStatus.content}
+      </div>
+    );
   }
 
-  handleRef = (c: HTMLDivElement): void => {
-    this.node = c;
-  }
-
-  setRef = (c: HTMLDivElement): void => {
-    if (c) {
-      this.setState({ mediaWrapperWidth: c.offsetWidth });
-    }
-  }
-
-  render() {
-    let media = null;
-    const poll = null;
-    let prepend, rebloggedByText, reblogElement, reblogElementMobile;
-
-    const { intl, hidden, featured, unread, group } = this.props;
-
-    // FIXME: why does this need to reassign status and account??
-    let { status, account, ...other } = this.props; // eslint-disable-line prefer-const
-
-    if (!status) return null;
-
-    if (hidden) {
-      return (
-        <div ref={this.handleRef}>
-          {status.getIn(['account', 'display_name']) || status.getIn(['account', 'username'])}
-          {status.content}
-        </div>
-      );
-    }
-
-    if (status.filtered || status.getIn(['reblog', 'filtered'])) {
-      const minHandlers = this.props.muted ? undefined : {
-        moveUp: this.handleHotkeyMoveUp,
-        moveDown: this.handleHotkeyMoveDown,
-      };
-
-      return (
-        <HotKeys handlers={minHandlers}>
-          <div className={classNames('status__wrapper', 'status__wrapper--filtered', { focusable: this.props.focusable })} tabIndex={this.props.focusable ? 0 : undefined} ref={this.handleRef}>
-            <FormattedMessage id='status.filtered' defaultMessage='Filtered' />
-          </div>
-        </HotKeys>
-      );
-    }
-
-    if (featured) {
-      prepend = (
-        <div className='pt-4 px-4'>
-          <HStack alignItems='center' space={1}>
-            <Icon src={require('@tabler/icons/icons/pinned.svg')} className='text-gray-600 dark:text-gray-400' />
-
-            <Text size='sm' theme='muted' weight='medium'>
-              <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
-            </Text>
-          </HStack>
-        </div>
-      );
-    }
-
-    if (status.reblog && typeof status.reblog === 'object') {
-      const displayNameHtml = { __html: String(status.getIn(['account', 'display_name_html'])) };
-
-      reblogElement = (
-        <NavLink
-          to={`/@${status.getIn(['account', 'acct'])}`}
-          onClick={(event) => event.stopPropagation()}
-          className='hidden sm:flex items-center text-gray-500 text-xs font-medium space-x-1 hover:underline'
-        >
-          <Icon src={require('@tabler/icons/icons/repeat.svg')} className='text-green-600' />
-
-          <HStack alignItems='center'>
-            <FormattedMessage
-              id='status.reblogged_by'
-              defaultMessage='{name} reposted'
-              values={{
-                name: <bdi className='max-w-[100px] truncate pr-1'>
-                  <strong className='text-gray-800 dark:text-gray-200' dangerouslySetInnerHTML={displayNameHtml} />
-                </bdi>,
-              }}
-            />
-          </HStack>
-        </NavLink>
-      );
-
-      reblogElementMobile = (
-        <div className='pb-5 -mt-2 sm:hidden truncate'>
-          <NavLink
-            to={`/@${status.getIn(['account', 'acct'])}`}
-            onClick={(event) => event.stopPropagation()}
-            className='flex items-center text-gray-500 text-xs font-medium space-x-1 hover:underline'
-          >
-            <Icon src={require('@tabler/icons/icons/repeat.svg')} className='text-green-600' />
-
-            <span>
-              <FormattedMessage
-                id='status.reblogged_by'
-                defaultMessage='{name} reposted'
-                values={{
-                  name: <bdi>
-                    <strong className='text-gray-800 dark:text-gray-200' dangerouslySetInnerHTML={displayNameHtml} />
-                  </bdi>,
-                }}
-              />
-            </span>
-          </NavLink>
-        </div>
-      );
-
-      rebloggedByText = intl.formatMessage({
-        id: 'status.reblogged_by',
-        defaultMessage: '{name} reposted',
-      }, {
-        name: String(status.getIn(['account', 'acct'])),
-      });
-
-      // @ts-ignore what the FUCK
-      account = status.account;
-      status = status.reblog;
-    }
-
-    const size = status.media_attachments.size;
-    const firstAttachment = status.media_attachments.first();
-
-    if (size > 0 && firstAttachment) {
-      if (this.props.muted) {
-        media = (
-          <AttachmentThumbs
-            media={status.media_attachments}
-            onClick={this.handleClick}
-            sensitive={status.sensitive}
-          />
-        );
-      } else if (size === 1 && firstAttachment.type === 'video') {
-        const video = firstAttachment;
-
-        if (video.external_video_id && status.card) {
-          const { mediaWrapperWidth } = this.state;
-
-          const getHeight = (): number => {
-            const width = Number(video.meta.getIn(['original', 'width']));
-            const height = Number(video.meta.getIn(['original', 'height']));
-            return Number(mediaWrapperWidth) / (width / height);
-          };
-
-          const height = getHeight();
-
-          media = (
-            <div className='status-card horizontal compact interactive status-card--video'>
-              <div
-                ref={this.setRef}
-                className='status-card__image status-card-video'
-                style={height ? { height } : undefined}
-                dangerouslySetInnerHTML={{ __html: status.card.html }}
-              />
-            </div>
-          );
-        } else {
-          media = (
-            <Bundle fetchComponent={Video} loading={this.renderLoadingVideoPlayer} >
-              {(Component: any) => (
-                <Component
-                  preview={video.preview_url}
-                  blurhash={video.blurhash}
-                  src={video.url}
-                  alt={video.description}
-                  aspectRatio={video.meta.getIn(['original', 'aspect'])}
-                  width={this.props.cachedMediaWidth}
-                  height={285}
-                  inline
-                  sensitive={status.sensitive}
-                  onOpenVideo={this.handleOpenVideo}
-                  cacheWidth={this.props.cacheMediaWidth}
-                  visible={this.state.showMedia}
-                  onToggleVisibility={this.handleToggleMediaVisibility}
-                />
-              )}
-            </Bundle>
-          );
-        }
-      } else if (size === 1 && firstAttachment.type === 'audio') {
-        const attachment = firstAttachment;
-
-        media = (
-          <Bundle fetchComponent={Audio} loading={this.renderLoadingAudioPlayer} >
-            {(Component: any) => (
-              <Component
-                src={attachment.url}
-                alt={attachment.description}
-                poster={attachment.preview_url !== attachment.url ? attachment.preview_url : status.getIn(['account', 'avatar_static'])}
-                backgroundColor={attachment.meta.getIn(['colors', 'background'])}
-                foregroundColor={attachment.meta.getIn(['colors', 'foreground'])}
-                accentColor={attachment.meta.getIn(['colors', 'accent'])}
-                duration={attachment.meta.getIn(['original', 'duration'], 0)}
-                width={this.props.cachedMediaWidth}
-                height={263}
-                cacheWidth={this.props.cacheMediaWidth}
-              />
-            )}
-          </Bundle>
-        );
-      } else {
-        media = (
-          <Bundle fetchComponent={MediaGallery} loading={this.renderLoadingMediaGallery}>
-            {(Component: any) => (
-              <Component
-                media={status.media_attachments}
-                sensitive={status.sensitive}
-                height={285}
-                onOpenMedia={this.props.onOpenMedia}
-                cacheWidth={this.props.cacheMediaWidth}
-                defaultWidth={this.props.cachedMediaWidth}
-                visible={this.state.showMedia}
-                onToggleVisibility={this.handleToggleMediaVisibility}
-              />
-            )}
-          </Bundle>
-        );
-      }
-    } else if (status.spoiler_text.length === 0 && !status.quote && status.card) {
-      media = (
-        <Card
-          onOpenMedia={this.props.onOpenMedia}
-          card={status.card}
-          compact
-          cacheWidth={this.props.cacheMediaWidth}
-          defaultWidth={this.props.cachedMediaWidth}
-        />
-      );
-    } else if (status.expectsCard) {
-      media = (
-        <PlaceholderCard />
-      );
-    }
-
-    let quote;
-
-    if (status.quote) {
-      if (status.pleroma.get('quote_visible', true) === false) {
-        quote = (
-          <div className='quoted-status-tombstone'>
-            <p><FormattedMessage id='statuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
-          </div>
-        );
-      } else {
-        quote = <QuotedStatus statusId={status.quote} />;
-      }
-    }
-
-    const handlers = this.props.muted ? undefined : {
-      reply: this.handleHotkeyReply,
-      favourite: this.handleHotkeyFavourite,
-      boost: this.handleHotkeyBoost,
-      mention: this.handleHotkeyMention,
-      open: this.handleHotkeyOpen,
-      openProfile: this.handleHotkeyOpenProfile,
-      moveUp: this.handleHotkeyMoveUp,
-      moveDown: this.handleHotkeyMoveDown,
-      toggleHidden: this.handleHotkeyToggleHidden,
-      toggleSensitive: this.handleHotkeyToggleSensitive,
-      openMedia: this.handleHotkeyOpenMedia,
-      react: this.handleHotkeyReact,
+  if (status.filtered || actualStatus.filtered) {
+    const minHandlers = muted ? undefined : {
+      moveUp: handleHotkeyMoveUp,
+      moveDown: handleHotkeyMoveDown,
     };
 
-    const statusUrl = `/@${status.getIn(['account', 'acct'])}/posts/${status.id}`;
-    // const favicon = status.getIn(['account', 'pleroma', 'favicon']);
-    // const domain = getDomain(status.account);
-
     return (
-      <HotKeys handlers={handlers} data-testid='status'>
-        <div
-          className='status cursor-pointer'
-          tabIndex={this.props.focusable && !this.props.muted ? 0 : undefined}
-          data-featured={featured ? 'true' : null}
-          aria-label={textForScreenReader(intl, status, rebloggedByText)}
-          ref={this.handleRef}
-          onClick={() => this.props.history.push(statusUrl)}
-          role='link'
-        >
-          {prepend}
-
-          <div
-            className={classNames({
-              'status__wrapper': true,
-              [`status-${status.visibility}`]: true,
-              'status-reply': !!status.in_reply_to_id,
-              muted: this.props.muted,
-              read: unread === false,
-            })}
-            data-id={status.id}
-          >
-            {reblogElementMobile}
-
-            <div className='mb-4'>
-              <HStack justifyContent='between' alignItems='start'>
-                <AccountContainer
-                  key={String(status.getIn(['account', 'id']))}
-                  id={String(status.getIn(['account', 'id']))}
-                  timestamp={status.created_at}
-                  timestampUrl={statusUrl}
-                  action={reblogElement}
-                  hideActions={!reblogElement}
-                  showEdit={!!status.edited_at}
-                />
-              </HStack>
-            </div>
-
-            <div className='status__content-wrapper'>
-              {!group && status.group && (
-                <div className='status__meta'>
-                  Posted in <NavLink to={`/groups/${status.getIn(['group', 'id'])}`}>{String(status.getIn(['group', 'title']))}</NavLink>
-                </div>
-              )}
-
-              <StatusReplyMentions status={this._properStatus()} />
-
-              <StatusContent
-                status={status}
-                onClick={this.handleClick}
-                expanded={!status.hidden}
-                onExpandedToggle={this.handleExpandedToggle}
-                collapsable
-              />
-
-              {media}
-              {poll}
-              {quote}
-
-              <StatusActionBar
-                status={status}
-                // @ts-ignore what?
-                account={account}
-                emojiSelectorFocused={this.state.emojiSelectorFocused}
-                handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
-                {...other}
-              />
-            </div>
-          </div>
+      <HotKeys handlers={minHandlers}>
+        <div className={classNames('status__wrapper', 'status__wrapper--filtered', { focusable })} tabIndex={focusable ? 0 : undefined} ref={node}>
+          <FormattedMessage id='status.filtered' defaultMessage='Filtered' />
         </div>
       </HotKeys>
     );
   }
 
-}
+  if (featured) {
+    prepend = (
+      <div className='pt-4 px-4'>
+        <HStack alignItems='center' space={1}>
+          <Icon src={require('@tabler/icons/pinned.svg')} className='text-gray-600 dark:text-gray-400' />
 
-export default withRouter(injectIntl(Status));
+          <Text size='sm' theme='muted' weight='medium'>
+            <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
+          </Text>
+        </HStack>
+      </div>
+    );
+  }
+
+  if (status.reblog && typeof status.reblog === 'object') {
+    const displayNameHtml = { __html: String(status.getIn(['account', 'display_name_html'])) };
+
+    reblogElement = (
+      <NavLink
+        to={`/@${status.getIn(['account', 'acct'])}`}
+        onClick={(event) => event.stopPropagation()}
+        className='hidden sm:flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 hover:underline'
+      >
+        <Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />
+
+        <HStack alignItems='center'>
+          <FormattedMessage
+            id='status.reblogged_by'
+            defaultMessage='{name} reposted'
+            values={{
+              name: <bdi className='max-w-[100px] truncate pr-1'>
+                <strong className='text-gray-800 dark:text-gray-200' dangerouslySetInnerHTML={displayNameHtml} />
+              </bdi>,
+            }}
+          />
+        </HStack>
+      </NavLink>
+    );
+
+    reblogElementMobile = (
+      <div className='pb-5 -mt-2 sm:hidden truncate'>
+        <NavLink
+          to={`/@${status.getIn(['account', 'acct'])}`}
+          onClick={(event) => event.stopPropagation()}
+          className='flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 hover:underline'
+        >
+          <Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />
+
+          <span>
+            <FormattedMessage
+              id='status.reblogged_by'
+              defaultMessage='{name} reposted'
+              values={{
+                name: <bdi>
+                  <strong className='text-gray-800 dark:text-gray-200' dangerouslySetInnerHTML={displayNameHtml} />
+                </bdi>,
+              }}
+            />
+          </span>
+        </NavLink>
+      </div>
+    );
+
+    rebloggedByText = intl.formatMessage(
+      messages.reblogged_by,
+      { name: String(status.getIn(['account', 'acct'])) },
+    );
+  }
+
+  let quote;
+
+  if (actualStatus.quote) {
+    if (actualStatus.pleroma.get('quote_visible', true) === false) {
+      quote = (
+        <div className='quoted-status-tombstone'>
+          <p><FormattedMessage id='statuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
+        </div>
+      );
+    } else {
+      quote = <QuotedStatus statusId={actualStatus.quote as string} />;
+    }
+  }
+
+  const handlers = muted ? undefined : {
+    reply: handleHotkeyReply,
+    favourite: handleHotkeyFavourite,
+    boost: handleHotkeyBoost,
+    mention: handleHotkeyMention,
+    open: handleHotkeyOpen,
+    openProfile: handleHotkeyOpenProfile,
+    moveUp: handleHotkeyMoveUp,
+    moveDown: handleHotkeyMoveDown,
+    toggleHidden: handleHotkeyToggleHidden,
+    toggleSensitive: handleHotkeyToggleSensitive,
+    openMedia: handleHotkeyOpenMedia,
+    react: handleHotkeyReact,
+  };
+
+  const statusUrl = `/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`;
+
+  return (
+    <HotKeys handlers={handlers} data-testid='status'>
+      <div
+        className={classNames('status cursor-pointer', { focusable })}
+        tabIndex={focusable && !muted ? 0 : undefined}
+        data-featured={featured ? 'true' : null}
+        aria-label={textForScreenReader(intl, actualStatus, rebloggedByText)}
+        ref={node}
+        onClick={() => history.push(statusUrl)}
+        role='link'
+      >
+        {prepend}
+
+        <div
+          className={classNames('status__wrapper', `status-${actualStatus.visibility}`, {
+            'status-reply': !!status.in_reply_to_id,
+            muted,
+            read: unread === false,
+          })}
+          data-id={status.id}
+        >
+          {reblogElementMobile}
+
+          <div className='mb-4'>
+            <AccountContainer
+              key={String(actualStatus.getIn(['account', 'id']))}
+              id={String(actualStatus.getIn(['account', 'id']))}
+              timestamp={actualStatus.created_at}
+              timestampUrl={statusUrl}
+              action={reblogElement}
+              hideActions={!reblogElement}
+              showEdit={!!actualStatus.edited_at}
+              showProfileHoverCard={hoverable}
+              withLinkToProfile={hoverable}
+            />
+          </div>
+
+          <div className='status__content-wrapper'>
+            {!group && actualStatus.group && (
+              <div className='status__meta'>
+                Posted in <NavLink to={`/groups/${actualStatus.getIn(['group', 'id'])}`}>{String(actualStatus.getIn(['group', 'title']))}</NavLink>
+              </div>
+            )}
+
+            <StatusReplyMentions
+              status={actualStatus}
+              hoverable={hoverable}
+            />
+
+            <StatusContent
+              status={actualStatus}
+              onClick={handleClick}
+              expanded={!status.hidden}
+              onExpandedToggle={handleExpandedToggle}
+              collapsable
+            />
+
+            <StatusMedia
+              status={actualStatus}
+              muted={muted}
+              onClick={handleClick}
+              showMedia={showMedia}
+              onToggleVisibility={handleToggleMediaVisibility}
+            />
+
+            {quote}
+
+            {!hideActionBar && (
+              <div className='pt-4'>
+                <StatusActionBar status={actualStatus} />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </HotKeys>
+  );
+};
+
+export default Status;

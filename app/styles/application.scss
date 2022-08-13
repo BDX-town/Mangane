@@ -13,13 +13,11 @@
 @import 'fonts';
 @import 'reset';
 @import 'basics';
-@import 'containers';
 @import 'footer';
 @import 'accounts';
 @import 'boost';
 @import 'loading';
 @import 'ui';
-@import 'polls';
 // @import 'introduction';
 @import 'emoji_picker';
 @import 'about';
@@ -36,47 +34,32 @@
 // COMPONENTS
 @import 'components/buttons';
 @import 'components/inputs';
-@import 'components/tabs-bar';
 @import 'components/dropdown-menu';
 @import 'components/modal';
 @import 'components/account-header';
-@import 'components/user-panel';
 @import 'components/compose-form';
-// @import 'components/group-card';
-// @import 'components/group-detail';
-// @import 'components/group-form';
-// @import 'components/group-sidebar-panel';
 @import 'components/sidebar-menu';
-@import 'components/hotkeys-modal';
 @import 'components/emoji-reacts';
 @import 'components/status';
-@import 'components/reply-indicator';
 @import 'components/reply-mentions';
 @import 'components/detailed-status';
-@import 'components/list-forms';
 @import 'components/media-gallery';
 @import 'components/notification';
 @import 'components/display-name';
 @import 'components/columns';
 @import 'components/search';
 @import 'components/react-toggle';
-@import 'components/getting-started';
-@import 'components/promo-panel';
 @import 'components/still-image';
-@import 'components/theme-toggle';
 @import 'components/trends';
 @import 'components/wtf-panel';
 @import 'components/profile-media-panel';
 @import 'components/profile-info-panel';
 @import 'components/setting-toggle';
 @import 'components/spoiler-button';
-@import 'components/media-spoiler';
-@import 'components/error-boundary';
 @import 'components/video-player';
 @import 'components/audio-player';
 @import 'components/profile_hover_card';
 @import 'components/filters';
-@import 'components/mfa_form';
 @import 'components/snackbar';
 @import 'components/accordion';
 @import 'components/server-info';
@@ -84,12 +67,8 @@
 @import 'components/backups';
 @import 'components/crypto-donate';
 @import 'components/remote-timeline';
-@import 'components/federation-restrictions';
 @import 'components/aliases';
 @import 'components/icon';
-@import 'components/profile-stats';
-@import 'components/progress-circle';
-@import 'components/register-invite';
 @import 'components/radio-button';
 @import 'components/directory';
 
@@ -106,6 +85,44 @@
 @layer utilities {
   .shadow-inset {
     box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%);
+  }
+
+  .d-screen {
+    height: 100vh; // Backwards compatibility
+    /* stylelint-disable-next-line unit-no-unknown */
+    height: 100dvh;
+  }
+
+  .bg-gradient-light {
+    background: linear-gradient(
+      115deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0) 20%,
+      rgba(var(--color-gradient-start) / 0.1) 35%,
+      rgba(var(--color-gradient-end) / 0.1) 70%,
+      rgba(0, 0, 0, 0) 80%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+
+  .bg-gradient-dark {
+    background: linear-gradient(
+      115deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0) 30%,
+      rgba(var(--color-gradient-start) / 0.1) 45%,
+      rgba(var(--color-gradient-start) / 0.2) 55%,
+      rgba(0, 0, 0, 0) 70%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+
+  .bg-gradient-sm {
+    background: linear-gradient(
+      112deg,
+      rgba(var(--color-gradient-start) / 0.1) 0%,
+      rgba(var(--color-gradient-end) / 0.1) 50%
+    );
   }
 }
 

@@ -3,7 +3,7 @@ import {
   OrderedMap as ImmutableOrderedMap,
   Record as ImmutableRecord,
 } from 'immutable';
-import { take } from 'lodash';
+import take from 'lodash/take';
 
 import intlMessages from 'soapbox/__fixtures__/intlMessages.json';
 import notification from 'soapbox/__fixtures__/notification.json';
@@ -274,6 +274,7 @@ describe('notifications reducer', () => {
             status: '9vvNxoo5EFbbnfdXQu',
             emoji: '😢',
             chat_message: null,
+            total_count: null,
           })],
           ['10743', ImmutableMap({
             id: '10743',
@@ -284,6 +285,7 @@ describe('notifications reducer', () => {
             status: '9vvNxoo5EFbbnfdXQu',
             emoji: null,
             chat_message: null,
+            total_count: null,
           })],
           ['10741', ImmutableMap({
             id: '10741',
@@ -294,6 +296,7 @@ describe('notifications reducer', () => {
             status: '9vvNxoo5EFbbnfdXQu',
             emoji: null,
             chat_message: null,
+            total_count: null,
           })],
           ['10734', ImmutableMap({
             id: '10734',
@@ -339,6 +342,7 @@ describe('notifications reducer', () => {
             status: '9vvNxoo5EFbbnfdXQu',
             emoji: '😢',
             chat_message: null,
+            total_count: null,
           })],
           ['10743', ImmutableMap({
             id: '10743',
@@ -349,6 +353,7 @@ describe('notifications reducer', () => {
             status: '9vvNxoo5EFbbnfdXQu',
             emoji: null,
             chat_message: null,
+            total_count: null,
           })],
           ['10741', ImmutableMap({
             id: '10741',
@@ -359,6 +364,7 @@ describe('notifications reducer', () => {
             status: '9vvNxoo5EFbbnfdXQu',
             emoji: null,
             chat_message: null,
+            total_count: null,
           })],
         ]),
         unread: 1,

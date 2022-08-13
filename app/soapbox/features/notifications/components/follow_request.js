@@ -5,7 +5,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 
 import Avatar from 'soapbox/components/avatar';
-import DisplayName from 'soapbox/components/display_name';
+import DisplayName from 'soapbox/components/display-name';
 import IconButton from 'soapbox/components/icon_button';
 import Permalink from 'soapbox/components/permalink';
 
@@ -49,8 +49,8 @@ class FollowRequest extends ImmutablePureComponent {
           </Permalink>
 
           <div className='account__relationship'>
-            <IconButton title={intl.formatMessage(messages.authorize)} src={require('@tabler/icons/icons/check.svg')} onClick={onAuthorize} />
-            <IconButton title={intl.formatMessage(messages.reject)} src={require('@tabler/icons/icons/x.svg')} onClick={onReject} />
+            <IconButton title={intl.formatMessage(messages.authorize)} src={require('@tabler/icons/check.svg')} onClick={onAuthorize} />
+            <IconButton title={intl.formatMessage(messages.reject)} src={require('@tabler/icons/x.svg')} onClick={onReject} />
           </div>
         </div>
       </div>

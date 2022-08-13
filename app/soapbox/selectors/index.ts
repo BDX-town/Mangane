@@ -14,7 +14,7 @@ import { shouldFilter } from 'soapbox/utils/timelines';
 
 import type { ReducerChat } from 'soapbox/reducers/chats';
 import type { RootState } from 'soapbox/store';
-import type { Notification } from 'soapbox/types/entities';
+import type { Filter as FilterEntity, Notification } from 'soapbox/types/entities';
 
 const normalizeId = (id: any): string => typeof id === 'string' ? id : '';
 
@@ -22,7 +22,7 @@ const getAccountBase         = (state: RootState, id: string) => state.accounts.
 const getAccountCounters     = (state: RootState, id: string) => state.accounts_counters.get(id);
 const getAccountRelationship = (state: RootState, id: string) => state.relationships.get(id);
 const getAccountMoved        = (state: RootState, id: string) => state.accounts.get(state.accounts.get(id)?.moved || '');
-const getAccountMeta         = (state: RootState, id: string) => state.accounts_meta.get(id, ImmutableMap());
+const getAccountMeta         = (state: RootState, id: string) => state.accounts_meta.get(id);
 const getAccountAdminData    = (state: RootState, id: string) => state.admin.users.get(id);
 const getAccountPatron       = (state: RootState, id: string) => {
   const url = state.accounts.get(id)?.url;
@@ -42,10 +42,12 @@ export const makeGetAccount = () => {
     if (!base) return null;
 
     return base.withMutations(map => {
-      map.merge(counters);
-      map.merge(meta);
-      map.set('pleroma', meta.get('pleroma', ImmutableMap()).merge(base.get('pleroma', ImmutableMap()))); // Lol, thanks Pleroma
-      map.set('relationship', relationship);
+      if (counters) map.merge(counters);
+      if (meta) {
+        map.merge(meta);
+        map.set('pleroma', meta.pleroma.merge(base.get('pleroma', ImmutableMap()))); // Lol, thanks Pleroma
+      }
+      if (relationship) map.set('relationship', relationship);
       map.set('moved', moved || null);
       map.set('patron', patron || null);
       map.setIn(['pleroma', 'admin'], admin);
@@ -85,35 +87,35 @@ export const findAccountByUsername = (state: RootState, username: string) => {
 
 const toServerSideType = (columnType: string): string => {
   switch (columnType) {
-  case 'home':
-  case 'notifications':
-  case 'public':
-  case 'thread':
-    return columnType;
-  default:
-    if (columnType.indexOf('list:') > -1) {
-      return 'home';
-    } else {
-      return 'public'; // community, account, hashtag
-    }
+    case 'home':
+    case 'notifications':
+    case 'public':
+    case 'thread':
+      return columnType;
+    default:
+      if (columnType.includes('list:')) {
+        return 'home';
+      } else {
+        return 'public'; // community, account, hashtag
+      }
   }
 };
 
 type FilterContext = { contextType?: string };
 
 export const getFilters = (state: RootState, query: FilterContext) => {
-  return state.filters.filter((filter): boolean => {
+  return state.filters.filter((filter) => {
     return query?.contextType
-      && filter.get('context').includes(toServerSideType(query.contextType))
-      && (filter.get('expires_at') === null
-      || Date.parse(filter.get('expires_at')) > new Date().getTime());
+      && filter.context.includes(toServerSideType(query.contextType))
+      && (filter.expires_at === null
+      || Date.parse(filter.expires_at) > new Date().getTime());
   });
 };
 
 const escapeRegExp = (string: string) =>
   string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 
-export const regexFromFilters = (filters: ImmutableList<ImmutableMap<string, any>>) => {
+export const regexFromFilters = (filters: ImmutableList<FilterEntity>) => {
   if (filters.size === 0) return null;
 
   return new RegExp(filters.map(filter => {
@@ -176,30 +178,6 @@ export const makeGetStatus = () => {
   );
 };
 
-const getAlertsBase = (state: RootState) => state.alerts;
-
-const buildAlert = (item: any) => {
-  return {
-    message: item.message,
-    title: item.title,
-    actionLabel: item.actionLabel,
-    actionLink: item.actionLink,
-    key: item.key,
-    className: `notification-bar-${item.severity}`,
-    activeClassName: 'snackbar--active',
-    dismissAfter: 6000,
-    style: false,
-  };
-};
-
-type Alert = ReturnType<typeof buildAlert>;
-
-export const getAlerts = createSelector([getAlertsBase], (base): Alert[] => {
-  const arr: Alert[] = [];
-  base.forEach(item => arr.push(buildAlert(item)));
-  return arr;
-});
-
 export const makeGetNotification = () => {
   return createSelector([
     (_state: RootState, notification: Notification) => notification,
@@ -219,7 +197,7 @@ export const makeGetNotification = () => {
 };
 
 export const getAccountGallery = createSelector([
-  (state: RootState, id: string) => state.timelines.getIn([`account:${id}:media`, 'items'], ImmutableList()),
+  (state: RootState, id: string) => state.timelines.get(`account:${id}:media`)?.items || ImmutableOrderedSet<string>(),
   (state: RootState)       => state.statuses,
   (state: RootState)       => state.accounts,
 ], (statusIds, statuses, accounts) => {
@@ -242,8 +220,8 @@ type APIChat = { id: string, last_message: string };
 export const makeGetChat = () => {
   return createSelector(
     [
-      (state: RootState, { id }: APIChat) => state.chats.getIn(['items', id]) as ReducerChat,
-      (state: RootState, { id }: APIChat) => state.accounts.get(state.chats.getIn(['items', id, 'account'])),
+      (state: RootState, { id }: APIChat) => state.chats.items.get(id) as ReducerChat,
+      (state: RootState, { id }: APIChat) => state.accounts.get(state.chats.items.getIn([id, 'account'])),
       (state: RootState, { last_message }: APIChat) => state.chat_messages.get(last_message),
     ],
 
@@ -266,15 +244,26 @@ export const makeGetReport = () => {
   return createSelector(
     [
       (state: RootState, id: string) => state.admin.reports.get(id),
-      (state: RootState, id: string) => ImmutableList(fromJS(state.admin.reports.getIn([id, 'statuses']))).map(
+      (state: RootState, id: string) => state.accounts.get(state.admin.reports.get(id)?.account || ''),
+      (state: RootState, id: string) => state.accounts.get(state.admin.reports.get(id)?.target_account || ''),
+      // (state: RootState, id: string) => state.accounts.get(state.admin.reports.get(id)?.action_taken_by_account || ''),
+      // (state: RootState, id: string) => state.accounts.get(state.admin.reports.get(id)?.assigned_account || ''),
+      (state: RootState, id: string) => ImmutableList(fromJS(state.admin.reports.get(id)?.statuses)).map(
         statusId => state.statuses.get(normalizeId(statusId)))
         .filter((s: any) => s)
         .map((s: any) => getStatus(state, s.toJS())),
     ],
 
-    (report, statuses) => {
+    (report, account, targetAccount, statuses) => {
       if (!report) return null;
-      return report.set('statuses', statuses);
+      return report.withMutations((report) => {
+        // @ts-ignore
+        report.set('account', account);
+        // @ts-ignore
+        report.set('target_account', targetAccount);
+        // @ts-ignore
+        report.set('statuses', statuses);
+      });
     },
   );
 };
@@ -352,9 +341,9 @@ type ColumnQuery = { type: string, prefix?: string };
 
 export const makeGetStatusIds = () => createSelector([
   (state: RootState, { type, prefix }: ColumnQuery) => getSettings(state).get(prefix || type, ImmutableMap()),
-  (state: RootState, { type }: ColumnQuery) => state.timelines.getIn([type, 'items'], ImmutableOrderedSet()),
-  (state: RootState)           => state.statuses,
-], (columnSettings, statusIds: string[], statuses) => {
+  (state: RootState, { type }: ColumnQuery) => state.timelines.get(type)?.items || ImmutableOrderedSet(),
+  (state: RootState) => state.statuses,
+], (columnSettings, statusIds: ImmutableOrderedSet<string>, statuses) => {
   return statusIds.filter((id: string) => {
     const status = statuses.get(id);
     if (!status) return true;

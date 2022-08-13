@@ -1,13 +1,12 @@
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
+import { openModal } from 'soapbox/actions/modals';
+import { clearNotifications, setFilter } from 'soapbox/actions/notifications';
+import { changeAlerts as changePushNotifications } from 'soapbox/actions/push_notifications';
+import { getSettings, changeSetting } from 'soapbox/actions/settings';
 import { getFeatures } from 'soapbox/utils/features';
 
-import { openModal } from '../../../actions/modals';
-import { setFilter } from '../../../actions/notifications';
-import { clearNotifications } from '../../../actions/notifications';
-import { changeAlerts as changePushNotifications } from '../../../actions/push_notifications';
-import { getSettings, changeSetting } from '../../../actions/settings';
 import ColumnSettings from '../components/column_settings';
 
 const messages = defineMessages({
@@ -43,7 +42,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onClear() {
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/icons/eraser.svg'),
+      icon: require('@tabler/icons/eraser.svg'),
       heading: intl.formatMessage(messages.clearHeading),
       message: intl.formatMessage(messages.clearMessage),
       confirm: intl.formatMessage(messages.clearConfirm),

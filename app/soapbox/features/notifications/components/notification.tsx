@@ -1,31 +1,34 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import Icon from '../../../components/icon';
-import Permalink from '../../../components/permalink';
-import { HStack, Text, Emoji } from '../../../components/ui';
-import AccountContainer from '../../../containers/account_container';
-import StatusContainer from '../../../containers/status_container';
+import { mentionCompose } from 'soapbox/actions/compose';
+import { reblog, favourite, unreblog, unfavourite } from 'soapbox/actions/interactions';
+import { openModal } from 'soapbox/actions/modals';
+import { getSettings } from 'soapbox/actions/settings';
+import { hideStatus, revealStatus } from 'soapbox/actions/statuses';
+import Icon from 'soapbox/components/icon';
+import Permalink from 'soapbox/components/permalink';
+import { HStack, Text, Emoji } from 'soapbox/components/ui';
+import AccountContainer from 'soapbox/containers/account_container';
+import StatusContainer from 'soapbox/containers/status_container';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { makeGetNotification } from 'soapbox/selectors';
+import { NotificationType, validType } from 'soapbox/utils/notification';
 
-import type { History } from 'history';
 import type { ScrollPosition } from 'soapbox/components/status';
-import type { NotificationType } from 'soapbox/normalizers/notification';
 import type { Account, Status, Notification as NotificationEntity } from 'soapbox/types/entities';
 
-const notificationForScreenReader = (intl: ReturnType<typeof useIntl>, message: string, timestamp: Date) => {
+const getNotification = makeGetNotification();
+
+const notificationForScreenReader = (intl: IntlShape, message: string, timestamp: Date) => {
   const output = [message];
 
   output.push(intl.formatDate(timestamp, { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }));
 
   return output.join(', ');
 };
-
-// Workaround for dynamic messages (https://github.com/formatjs/babel-plugin-react-intl/issues/119#issuecomment-326202499)
-function FormattedMessageFixed(props: any) {
-  return <FormattedMessage {...props} />;
-}
 
 const buildLink = (account: Account): JSX.Element => (
   <bdi>
@@ -40,19 +43,21 @@ const buildLink = (account: Account): JSX.Element => (
 );
 
 const icons: Record<NotificationType, string> = {
-  follow: require('@tabler/icons/icons/user-plus.svg'),
-  follow_request: require('@tabler/icons/icons/user-plus.svg'),
-  mention: require('@tabler/icons/icons/at.svg'),
-  favourite: require('@tabler/icons/icons/heart.svg'),
-  reblog: require('@tabler/icons/icons/repeat.svg'),
-  status: require('@tabler/icons/icons/bell-ringing.svg'),
-  poll: require('@tabler/icons/icons/chart-bar.svg'),
-  move: require('@tabler/icons/icons/briefcase.svg'),
-  'pleroma:chat_mention': require('@tabler/icons/icons/messages.svg'),
-  'pleroma:emoji_reaction': require('@tabler/icons/icons/mood-happy.svg'),
+  follow: require('@tabler/icons/user-plus.svg'),
+  follow_request: require('@tabler/icons/user-plus.svg'),
+  mention: require('@tabler/icons/at.svg'),
+  favourite: require('@tabler/icons/heart.svg'),
+  reblog: require('@tabler/icons/repeat.svg'),
+  status: require('@tabler/icons/bell-ringing.svg'),
+  poll: require('@tabler/icons/chart-bar.svg'),
+  move: require('@tabler/icons/briefcase.svg'),
+  'pleroma:chat_mention': require('@tabler/icons/messages.svg'),
+  'pleroma:emoji_reaction': require('@tabler/icons/mood-happy.svg'),
+  user_approved: require('@tabler/icons/user-plus.svg'),
+  update: require('@tabler/icons/pencil.svg'),
 };
 
-const messages: Record<NotificationType, { id: string, defaultMessage: string }> = {
+const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
   follow: {
     id: 'notification.follow',
     defaultMessage: '{name} followed you',
@@ -86,48 +91,73 @@ const messages: Record<NotificationType, { id: string, defaultMessage: string }>
     defaultMessage: '{name} moved to {targetName}',
   },
   'pleroma:chat_mention': {
-    id: 'notification.chat_mention',
+    id: 'notification.pleroma:chat_mention',
     defaultMessage: '{name} sent you a message',
   },
   'pleroma:emoji_reaction': {
     id: 'notification.pleroma:emoji_reaction',
     defaultMessage: '{name} reacted to your post',
   },
-};
+  user_approved: {
+    id: 'notification.user_approved',
+    defaultMessage: 'Welcome to {instance}!',
+  },
+  update: {
+    id: 'notification.update',
+    defaultMessage: '{name} edited a post you interacted with',
+  },
+});
 
-const buildMessage = (type: NotificationType, account: Account, targetName?: string): JSX.Element => {
+const buildMessage = (
+  intl: IntlShape,
+  type: NotificationType,
+  account: Account,
+  totalCount: number | null,
+  targetName: string,
+  instanceTitle: string,
+): React.ReactNode => {
   const link = buildLink(account);
+  const name = intl.formatMessage({
+    id: 'notification.name',
+    defaultMessage: '{link}{others}',
+  }, {
+    link,
+    others: totalCount && totalCount > 0 ? (
+      <FormattedMessage
+        id='notification.others'
+        defaultMessage=' + {count} {count, plural, one {other} other {others}}'
+        values={{ count: totalCount - 1 }}
+      />
+    ) : '',
+  });
 
-  return (
-    <FormattedMessageFixed
-      id={messages[type].id}
-      defaultMessage={messages[type].defaultMessage}
-      values={{ name: link, targetName }}
-    />
-  );
+  return intl.formatMessage(messages[type], {
+    name,
+    targetName,
+    instance: instanceTitle,
+  });
 };
 
 interface INotificaton {
   hidden?: boolean,
   notification: NotificationEntity,
-  onMoveUp: (notificationId: string) => void,
-  onMoveDown: (notificationId: string) => void,
-  onMention: (account: Account, history: History) => void,
-  onFavourite: (status: Status) => void,
-  onReblog: (status: Status, e?: KeyboardEvent) => void,
-  onToggleHidden: (status: Status) => void,
+  onMoveUp?: (notificationId: string) => void,
+  onMoveDown?: (notificationId: string) => void,
+  onReblog?: (status: Status, e?: KeyboardEvent) => void,
   getScrollPosition?: () => ScrollPosition | undefined,
   updateScrollBottom?: (bottom: number) => void,
-  cacheMediaWidth: () => void,
-  cachedMediaWidth: number,
-  siteTitle?: string,
 }
 
 const Notification: React.FC<INotificaton> = (props) => {
-  const { hidden = false, notification, onMoveUp, onMoveDown } = props;
+  const { hidden = false, onMoveUp, onMoveDown } = props;
+
+  const dispatch = useAppDispatch();
+
+  const notification = useAppSelector((state) => getNotification(state, props.notification));
 
   const history = useHistory();
   const intl = useIntl();
+  const instance = useAppSelector((state) => state.instance);
 
   const type = notification.type;
   const { account, status } = notification;
@@ -158,38 +188,63 @@ const Notification: React.FC<INotificaton> = (props) => {
     }
   };
 
-  const handleMention = (e?: KeyboardEvent) => {
+  const handleMention = useCallback((e?: KeyboardEvent) => {
     e?.preventDefault();
 
     if (account && typeof account === 'object') {
-      props.onMention(account, history);
+      dispatch(mentionCompose(account));
     }
-  };
+  }, [account]);
 
-  const handleHotkeyFavourite = (e?: KeyboardEvent) => {
+  const handleHotkeyFavourite = useCallback((e?: KeyboardEvent) => {
     if (status && typeof status === 'object') {
-      props.onFavourite(status);
+      if (status.favourited) {
+        dispatch(unfavourite(status));
+      } else {
+        dispatch(favourite(status));
+      }
     }
-  };
+  }, [status]);
 
-  const handleHotkeyBoost = (e?: KeyboardEvent) => {
+  const handleHotkeyBoost = useCallback((e?: KeyboardEvent) => {
     if (status && typeof status === 'object') {
-      props.onReblog(status, e);
+      dispatch((_, getState) => {
+        const boostModal = getSettings(getState()).get('boostModal');
+        if (status.reblogged) {
+          dispatch(unreblog(status));
+        } else {
+          if (e?.shiftKey || !boostModal) {
+            dispatch(reblog(status));
+          } else {
+            dispatch(openModal('BOOST', { status, onReblog: (status: Status) => {
+              dispatch(reblog(status));
+            } }));
+          }
+        }
+      });
     }
-  };
+  }, [status]);
 
-  const handleHotkeyToggleHidden = (e?: KeyboardEvent) => {
+  const handleHotkeyToggleHidden = useCallback((e?: KeyboardEvent) => {
     if (status && typeof status === 'object') {
-      props.onToggleHidden(status);
+      if (status.hidden) {
+        dispatch(revealStatus(status.id));
+      } else {
+        dispatch(hideStatus(status.id));
+      }
     }
-  };
+  }, [status]);
 
   const handleMoveUp = () => {
-    onMoveUp(notification.id);
+    if (onMoveUp) {
+      onMoveUp(notification.id);
+    }
   };
 
   const handleMoveDown = () => {
-    onMoveDown(notification.id);
+    if (onMoveDown) {
+      onMoveDown(notification.id);
+    }
   };
 
   const renderIcon = (): React.ReactNode => {
@@ -200,7 +255,7 @@ const Notification: React.FC<INotificaton> = (props) => {
           className='w-4 h-4 flex-none'
         />
       );
-    } else if (type) {
+    } else if (validType(type)) {
       return (
         <Icon
           src={icons[type]}
@@ -214,72 +269,78 @@ const Notification: React.FC<INotificaton> = (props) => {
 
   const renderContent = () => {
     switch (type) {
-    case 'follow':
-    case 'follow_request':
-      return account && typeof account === 'object' ? (
-        <AccountContainer
-          id={account.id}
-          hidden={hidden}
-          avatarSize={48}
-        />
-      ) : null;
-    case 'move':
-      return account && typeof account === 'object' && notification.target && typeof notification.target === 'object' ? (
-        <AccountContainer
-          id={notification.target.id}
-          hidden={hidden}
-          avatarSize={48}
-        />
-      ) : null;
-    case 'favourite':
-    case 'mention':
-    case 'reblog':
-    case 'status':
-    case 'poll':
-    case 'pleroma:emoji_reaction':
-      return status && typeof status === 'object' ? (
-        <StatusContainer
+      case 'follow':
+      case 'user_approved':
+        return account && typeof account === 'object' ? (
+          <AccountContainer
+            id={account.id}
+            hidden={hidden}
+            avatarSize={48}
+          />
+        ) : null;
+      case 'follow_request':
+        return account && typeof account === 'object' ? (
+          <AccountContainer
+            id={account.id}
+            hidden={hidden}
+            avatarSize={48}
+            actionType='follow_request'
+          />
+        ) : null;
+      case 'move':
+        return account && typeof account === 'object' && notification.target && typeof notification.target === 'object' ? (
+          <AccountContainer
+            id={notification.target.id}
+            hidden={hidden}
+            avatarSize={48}
+          />
+        ) : null;
+      case 'favourite':
+      case 'mention':
+      case 'reblog':
+      case 'status':
+      case 'poll':
+      case 'update':
+      case 'pleroma:emoji_reaction':
+        return status && typeof status === 'object' ? (
           // @ts-ignore
-          id={status.id}
-          withDismiss
-          hidden={hidden}
-          onMoveDown={handleMoveDown}
-          onMoveUp={handleMoveUp}
-          contextType='notifications'
-          getScrollPosition={props.getScrollPosition}
-          updateScrollBottom={props.updateScrollBottom}
-          cachedMediaWidth={props.cachedMediaWidth}
-          cacheMediaWidth={props.cacheMediaWidth}
-        />
-      ) : null;
-    default:
-      return null;
+          <StatusContainer
+            id={status.id}
+            withDismiss
+            hidden={hidden}
+            onMoveDown={handleMoveDown}
+            onMoveUp={handleMoveUp}
+            contextType='notifications'
+            getScrollPosition={props.getScrollPosition}
+            updateScrollBottom={props.updateScrollBottom}
+          />
+        ) : null;
+      default:
+        return null;
     }
   };
 
   const targetName = notification.target && typeof notification.target === 'object' ? notification.target.acct : '';
 
-  const message: React.ReactNode = type && account && typeof account === 'object' ? buildMessage(type, account, targetName) : null;
+  const message: React.ReactNode = validType(type) && account && typeof account === 'object' ? buildMessage(intl, type, account, notification.total_count, targetName, instance.title) : null;
+
+  const ariaLabel = validType(type) ? (
+    notificationForScreenReader(
+      intl,
+      intl.formatMessage(messages[type], {
+        name: account && typeof account === 'object' ? account.acct : '',
+        targetName,
+      }),
+      notification.created_at,
+    )
+  ) : '';
 
   return (
     <HotKeys handlers={getHandlers()} data-testid='notification'>
       <div
         className='notification focusable'
         tabIndex={0}
-        aria-label={
-          notificationForScreenReader(
-            intl,
-            intl.formatMessage({
-              id: type && messages[type].id,
-              defaultMessage: type && messages[type].defaultMessage,
-            },
-            {
-              name: account && typeof account === 'object' ? account.acct : '',
-              targetName,
-            }),
-            notification.created_at,
-          )
-        }
+        aria-label={ariaLabel}
       >
         <div className='p-4 focusable'>
           <div className='mb-2'>
@@ -291,6 +352,7 @@ const Notification: React.FC<INotificaton> = (props) => {
                   theme='muted'
                   size='sm'
                   truncate
+                  data-testid='message'
                 >
                   {message}
                 </Text>

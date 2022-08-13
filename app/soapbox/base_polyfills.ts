@@ -37,7 +37,7 @@ if (!HTMLCanvasElement.prototype.toBlob) {
       const dataURL = this.toDataURL(type, quality);
       let data;
 
-      if (dataURL.indexOf(BASE64_MARKER) >= 0) {
+      if (dataURL.includes(BASE64_MARKER)) {
         const [, base64] = dataURL.split(BASE64_MARKER);
         data = decodeBase64(base64);
       } else {

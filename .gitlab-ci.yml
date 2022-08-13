@@ -1,27 +1,41 @@
-image: node:16
+image: node:18
 
 variables:
   NODE_ENV: test
 
-cache:
+cache: &cache
   key:
     files:
       - yarn.lock
   paths:
-    - node_modules
+    - node_modules/
+  policy: pull
 
 stages:
-  - lint
+  - deps
   - test
-  - build
   - deploy
 
-before_script:
-  - env
-  - yarn
+deps:
+  stage: deps
+  script: yarn install --ignore-scripts
+  only:
+    changes:
+      - yarn.lock
+  cache:
+    <<: *cache
+    policy: push
+
+danger:
+  stage: test
+  script:
+    # https://github.com/danger/danger-js/issues/1029#issuecomment-998915436
+    - export CI_MERGE_REQUEST_IID=${CI_OPEN_MERGE_REQUESTS#*!}
+    - npx danger ci
+  allow_failure: true
 
 lint-js:
-  stage: lint
+  stage: test
   script: yarn lint:js
   only:
     changes:
@@ -33,7 +47,7 @@ lint-js:
       - ".eslintrc.js"
 
 lint-sass:
-  stage: lint
+  stage: test
   script: yarn lint:sass
   only:
     changes:
@@ -43,25 +57,43 @@ lint-sass:
 
 jest:
   stage: test
-  script: yarn test:coverage
+  script: yarn test:coverage --runInBand
   only:
     changes:
       - "**/*.js"
       - "**/*.json"
       - "app/soapbox/**/*"
       - "webpack/**/*"
+      - "custom/**/*"
       - "jest.config.js"
       - "package.json"
       - "yarn.lock"
+      - ".gitlab-ci.yml"
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  artifacts:
+    reports:
+      junit: junit.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: .coverage/cobertura-coverage.xml
+
+nginx-test:
+  stage: test
+  image: nginx:latest
+  before_script: cp installation/mastodon.conf /etc/nginx/conf.d/default.conf
+  script: nginx -t
+  only:
+    changes:
+      - "installation/mastodon.conf"
 
 build-production:
-  stage: build
+  stage: test
   script: yarn build
   variables:
     NODE_ENV: production
   artifacts:
     paths:
-    - static
+     - static
 
 docs-deploy:
   stage: deploy
@@ -86,6 +118,15 @@ docs-deploy:
 #   before_script:
 #     - yarn
 #     - yarn build
+
+review:
+  stage: deploy
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    url: https://$CI_COMMIT_REF_SLUG.git.soapbox.pub
+  script:
+    - npx -y surge static $CI_COMMIT_REF_SLUG.git.soapbox.pub
+  allow_failure: true
 
 pages:
   stage: deploy

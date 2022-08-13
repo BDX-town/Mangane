@@ -54,16 +54,16 @@ const selectUnits = delta => {
 
 const getUnitDelay = units => {
   switch (units) {
-  case 'second':
-    return SECOND;
-  case 'minute':
-    return MINUTE;
-  case 'hour':
-    return HOUR;
-  case 'day':
-    return DAY;
-  default:
-    return MAX_DELAY;
+    case 'second':
+      return SECOND;
+    case 'minute':
+      return MINUTE;
+    case 'hour':
+      return HOUR;
+    case 'day':
+      return DAY;
+    default:
+      return MAX_DELAY;
   }
 };
 
@@ -120,6 +120,7 @@ class RelativeTimestamp extends React.Component {
     intl: PropTypes.object.isRequired,
     timestamp: PropTypes.string.isRequired,
     year: PropTypes.number.isRequired,
+    theme: PropTypes.string,
     futureDate: PropTypes.bool,
   };
 
@@ -129,6 +130,7 @@ class RelativeTimestamp extends React.Component {
 
   static defaultProps = {
     year: (new Date()).getFullYear(),
+    theme: 'inherit',
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -173,13 +175,13 @@ class RelativeTimestamp extends React.Component {
   }
 
   render() {
-    const { timestamp, intl, year, futureDate, ...textProps } = this.props;
+    const { timestamp, intl, year, futureDate, theme, ...textProps } = this.props;
 
     const date         = new Date(timestamp);
     const relativeTime = futureDate ? timeRemainingString(intl, date, this.state.now) : timeAgoString(intl, date, this.state.now, year);
 
     return (
-      <Text {...textProps} color='inherit' tag='time' title={intl.formatDate(date, dateFormatOptions)}>
+      <Text {...textProps} theme={theme} tag='time' title={intl.formatDate(date, dateFormatOptions)}>
         {relativeTime}
       </Text>
     );

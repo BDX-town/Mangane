@@ -1,15 +1,16 @@
 import classNames from 'classnames';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
-import Poll from 'soapbox/components/poll';
 import { useSoapboxConfig } from 'soapbox/hooks';
 import { addGreentext } from 'soapbox/utils/greentext';
 import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich_content';
 
 import { isRtl } from '../rtl';
+
+import Poll from './polls/poll';
 
 import type { Status, Mention } from 'soapbox/types/entities';
 
@@ -29,7 +30,7 @@ interface IReadMoreButton {
 const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
   <button className='status__content__read-more-button' onClick={onClick}>
     <FormattedMessage id='status.read_more' defaultMessage='Read more' />
-    <Icon id='angle-right' fixedWidth />
+    <Icon className='inline-block h-5 w-5' src={require('@tabler/icons/chevron-right.svg')} fixedWidth />
   </button>
 );
 
@@ -45,7 +46,7 @@ const SpoilerButton: React.FC<ISpoilerButton> = ({ onClick, hidden, tabIndex }) 
     tabIndex={tabIndex}
     className={classNames(
       'inline-block rounded-md px-1.5 py-0.5 ml-[0.5em]',
-      'text-black dark:text-white',
+      'text-gray-900 dark:text-gray-100',
       'font-bold text-[11px] uppercase',
       'bg-primary-100 dark:bg-primary-900',
       'hover:bg-primary-300 dark:hover:bg-primary-600',
@@ -155,14 +156,10 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     }
   };
 
-  const refresh = (): void => {
+  useEffect(() => {
     maybeSetCollapsed();
     maybeSetOnlyEmoji();
     updateStatusLinks();
-  };
-
-  useEffect(() => {
-    refresh();
   });
 
   const handleMouseDown: React.EventHandler<React.MouseEvent> = (e) => {
@@ -174,8 +171,8 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     const target = e.target as HTMLElement;
     const parentNode = target.parentNode as HTMLElement;
 
-    const [ startX, startY ] = startXY.current;
-    const [ deltaX, deltaY ] = [Math.abs(e.clientX - startX), Math.abs(e.clientY - startY)];
+    const [startX, startY] = startXY.current;
+    const [deltaX, deltaY] = [Math.abs(e.clientX - startX), Math.abs(e.clientY - startY)];
 
     if (target.localName === 'button' || target.localName === 'a' || (parentNode && (parentNode.localName === 'button' || parentNode.localName === 'a'))) {
       return;
@@ -200,11 +197,15 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     }
   };
 
-  const getHtmlContent = (): string => {
+  const parsedHtml = useMemo((): string => {
     const { contentHtml: html } = status;
-    if (greentext) return addGreentext(html);
-    return html;
-  };
+
+    if (greentext) {
+      return addGreentext(html);
+    } else {
+      return html;
+    }
+  }, [status.contentHtml]);
 
   if (status.content.length === 0) {
     return null;
@@ -212,7 +213,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
 
   const isHidden = onExpandedToggle ? !expanded : hidden;
 
-  const content = { __html: getHtmlContent() };
+  const content = { __html: parsedHtml };
   const spoilerContent = { __html: status.spoilerHtml };
   const directionStyle: React.CSSProperties = { direction: 'ltr' };
   const className = classNames('status__content', {
@@ -273,11 +274,12 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
       output.push(<ReadMoreButton onClick={onClick} key='read-more' />);
     }
 
-    if (status.poll && typeof status.poll === 'string') {
+    const hasPoll = status.poll && typeof status.poll === 'string';
+    if (hasPoll) {
       output.push(<Poll id={status.poll} key='poll' status={status.url} />);
     }
 
-    return <>{output}</>;
+    return <div className={classNames({ 'bg-gray-100 dark:bg-primary-800 rounded-md p-4': hasPoll })}>{output}</div>;
   } else {
     const output = [
       <div
@@ -301,4 +303,4 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
   }
 };
 
-export default StatusContent;
+export default React.memo(StatusContent);

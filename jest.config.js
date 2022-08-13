@@ -22,27 +22,32 @@ module.exports = {
     'app/soapbox/**/*.tsx',
     '!app/soapbox/features/emoji/emoji_compressed.js',
     '!app/soapbox/locales/locale-data/*.js',
-    '!app/soapbox/service_worker/entry.js',
+    '!app/soapbox/service_worker/entry.ts',
     '!app/soapbox/jest/test-setup.ts',
     '!app/soapbox/jest/test-helpers.ts',
   ],
   'coverageDirectory': '<rootDir>/.coverage/',
   'coverageReporters': ['html', 'text', 'text-summary', 'cobertura'],
+  'reporters': ['default', 'jest-junit'],
   'moduleDirectories': [
     '<rootDir>/node_modules',
     '<rootDir>/app',
   ],
+  'moduleNameMapper': {
+    // https://github.com/uuidjs/uuid/pull/616#issuecomment-1111012599
+    '^uuid$': require.resolve('uuid'),
+  },
   'testMatch': ['**/*/__tests__/**/?(*.|*-)+(test).(ts|js)?(x)'],
   'testEnvironment': 'jsdom',
   'transformIgnorePatterns': [
     // FIXME: react-sticky-box doesn't provide a CJS build, so transform it for now
     // https://github.com/codecks-io/react-sticky-box/issues/79
-    `/node_modules/(?!(react-sticky-box|.+\\.(${ASSET_EXTS})))`,
+    `/node_modules/(?!(react-sticky-box|.+\\.(${ASSET_EXTS})$))`,
     // Ignore node_modules, except static assets
-    // `/node_modules/(?!.+\\.(${ASSET_EXTS}))`,
+    // `/node_modules/(?!.+\\.(${ASSET_EXTS})$)`,
   ],
   'transform': {
     '\\.[jt]sx?$': 'babel-jest',
-    [`.+\\.(${ASSET_EXTS})$`]: '<rootDir>/jest/assetTransformer.js',
+    [`\\.(${ASSET_EXTS})$`]: '<rootDir>/jest/assetTransformer.js',
   },
 };

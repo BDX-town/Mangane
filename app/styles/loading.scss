@@ -132,19 +132,18 @@
   color: var(--primary-text-color);
   background-color: transparent;
   border: 0;
-  font-size: inherit;
-  text-align: center;
-  line-height: inherit;
   margin: 0;
   padding: 15px;
   box-sizing: border-box;
   width: 100%;
-  clear: both;
-  text-decoration: none;
 
   &:hover,
   &:focus {
     background: var(--brand-color--faint);
+  }
+
+  .svg-icon {
+    @apply mx-auto;
   }
 }
 

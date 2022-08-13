@@ -1,9 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
 
-type SIZES = 0.5 | 1 | 1.5 | 2 | 3 | 4 | 5 | 10
+type SIZES = 0 | 0.5 | 1 | 1.5 | 2 | 3 | 4 | 5 | 10
 
 const spaces = {
+  0: 'space-y-0',
   '0.5': 'space-y-0.5',
   1: 'space-y-1',
   '1.5': 'space-y-1.5',
@@ -31,11 +32,13 @@ interface IStack extends React.HTMLAttributes<HTMLDivElement> {
   justifyContent?: 'center',
   /** Extra class names on the <div> element. */
   className?: string,
+  /** Whether to let the flexbox grow. */
+  grow?: boolean,
 }
 
 /** Vertical stack of child elements. */
 const Stack: React.FC<IStack> = (props) => {
-  const { space, alignItems, justifyContent, className, ...filteredProps } = props;
+  const { space, alignItems, justifyContent, className, grow, ...filteredProps } = props;
 
   return (
     <div
@@ -47,6 +50,7 @@ const Stack: React.FC<IStack> = (props) => {
         [alignItemsOptions[alignItems]]: typeof alignItems !== 'undefined',
         // @ts-ignore
         [justifyContentOptions[justifyContent]]: typeof justifyContent !== 'undefined',
+        'flex-grow': grow,
       }, className)}
     />
   );

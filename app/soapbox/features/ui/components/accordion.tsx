@@ -14,7 +14,7 @@ const messages = defineMessages({
 
 interface IAccordion {
   headline: React.ReactNode,
-  children?: string | React.ReactNode,
+  children?: React.ReactNode,
   menu?: Menu,
   expanded?: boolean,
   onToggle?: (value: boolean) => void,
@@ -32,7 +32,7 @@ const Accordion: React.FC<IAccordion> = ({ headline, children, menu, expanded = 
     <div className={classNames('accordion', { 'accordion--expanded': expanded })}>
       {menu && (
         <div className='accordion__menu'>
-          <DropdownMenu items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} />
+          <DropdownMenu items={menu} src={require('@tabler/icons/dots-vertical.svg')} />
         </div>
       )}
       <button

@@ -3,7 +3,7 @@
 }
 
 .dashcounter {
-  @apply bg-gray-200 dark:bg-gray-600 p-4 rounded flex flex-col items-center space-y-2 hover:-translate-y-1 transition-transform cursor-pointer;
+  @apply bg-gray-200 dark:bg-gray-800 p-4 rounded flex flex-col items-center space-y-2 hover:-translate-y-1 transition-transform cursor-pointer;
 }
 
 .dashwidgets {
@@ -53,40 +53,6 @@
       height: 24px;
       width: 24px;
     }
-  }
-}
-
-.page--admin .slist .item-list article:nth-child(2n-1) {
-  .unapproved-account,
-  .logentry {
-    background-color: hsla(var(--accent-color_hsl), 0.07);
-  }
-}
-
-.page--admin {
-  @media screen and (max-width: 895px) {
-    .columns-area__panels {
-      flex-direction: column;
-      align-items: center;
-
-      &__pane--left {
-        display: block;
-        width: 100%;
-        max-width: 600px;
-        padding: 10px 0;
-        box-sizing: border-box;
-
-        .columns-area__panels__pane__inner {
-          width: auto;
-        }
-      }
-    }
-  }
-
-  blockquote.md {
-    padding: 5px 0 5px 15px;
-    border-left: 3px solid hsla(var(--primary-text-color_hsl), 0.4);
-    color: var(--primary-text-color--faint);
   }
 }
 

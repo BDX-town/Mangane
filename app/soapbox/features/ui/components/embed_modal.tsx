@@ -5,8 +5,10 @@ import api from 'soapbox/api';
 import { Modal, Stack, Text, Input } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
+import type { RootState } from 'soapbox/store';
+
 const fetchEmbed = (url: string) => {
-  return (dispatch: any, getState: any) => {
+  return (dispatch: any, getState: () => RootState) => {
     return api(getState).get('/api/oembed', { params: { url } });
   };
 };

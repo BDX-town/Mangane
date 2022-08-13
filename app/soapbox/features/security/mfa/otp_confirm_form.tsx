@@ -1,16 +1,15 @@
-import QRCode from 'qrcode.react';
+import { QRCodeCanvas as QRCode } from 'qrcode.react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import snackbar from 'soapbox/actions/snackbar';
-import { useAppDispatch } from 'soapbox/hooks';
-
 import {
   setupMfa,
   confirmMfa,
-} from '../../../actions/mfa';
-import { Button, Form, FormActions, FormGroup, Input, Stack, Text } from '../../../components/ui';
+} from 'soapbox/actions/mfa';
+import snackbar from 'soapbox/actions/snackbar';
+import { Button, Form, FormActions, FormGroup, Input, Stack, Text } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
 
 const messages = defineMessages({
   mfaCancelButton: { id: 'column.mfa_cancel', defaultMessage: 'Cancel' },
@@ -27,7 +26,7 @@ const OtpConfirmForm: React.FC = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
 
-  const [state, setState] = useState<{password: string, isLoading: boolean, code: string, qrCodeURI: string, confirmKey: string}>({
+  const [state, setState] = useState<{ password: string, isLoading: boolean, code: string, qrCodeURI: string, confirmKey: string }>({
     password: '',
     isLoading: false,
     code: '',
@@ -37,7 +36,7 @@ const OtpConfirmForm: React.FC = () => {
 
   useEffect(() => {
     dispatch(setupMfa('totp')).then((data: any) => {
-      setState((prevState) => ({ ...prevState, qrCodeURI: data.provisioning_uri, confirmKey: data.key  }));
+      setState((prevState) => ({ ...prevState, qrCodeURI: data.provisioning_uri, confirmKey: data.key }));
     }).catch(() => {
       dispatch(snackbar.error(intl.formatMessage(messages.qrFail)));
     });
@@ -65,8 +64,6 @@ const OtpConfirmForm: React.FC = () => {
 
   return (
     <Stack space={4}>
-      <hr className='mt-4 dark:border-slate-700' />
-
       <Form onSubmit={handleSubmit}>
         <Stack>
           <Text weight='semibold' size='lg'>
@@ -119,7 +116,7 @@ const OtpConfirmForm: React.FC = () => {
         <FormActions>
           <Button
             type='button'
-            theme='ghost'
+            theme='tertiary'
             text={intl.formatMessage(messages.mfaCancelButton)}
             onClick={() => history.push('../auth/edit')}
             disabled={state.isLoading}

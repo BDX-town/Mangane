@@ -1,5 +1,5 @@
 import { Set as ImmutableSet, OrderedSet as ImmutableOrderedSet, is } from 'immutable';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -34,6 +34,7 @@ class UserIndex extends ImmutablePureComponent {
     pageSize: 50,
     page: 0,
     query: '',
+    nextLink: undefined,
   }
 
   clearState = callback => {
@@ -45,11 +46,11 @@ class UserIndex extends ImmutablePureComponent {
   }
 
   fetchNextPage = () => {
-    const { filters, page, query, pageSize } = this.state;
+    const { filters, page, query, pageSize, nextLink } = this.state;
     const nextPage = page + 1;
 
-    this.props.dispatch(fetchUsers(filters, nextPage, query, pageSize))
-      .then(({ users, count }) => {
+    this.props.dispatch(fetchUsers(filters, nextPage, query, pageSize, nextLink))
+      .then(({ users, count, next }) => {
         const newIds = users.map(user => user.id);
 
         this.setState({
@@ -57,9 +58,10 @@ class UserIndex extends ImmutablePureComponent {
           accountIds: this.state.accountIds.union(newIds),
           total: count,
           page: nextPage,
+          nextLink: next,
         });
       })
-      .catch(() => {});
+      .catch(() => { });
   }
 
   componentDidMount() {
@@ -97,7 +99,7 @@ class UserIndex extends ImmutablePureComponent {
   render() {
     const { intl } = this.props;
     const { accountIds, isLoading } = this.state;
-    const hasMore = accountIds.count() < this.state.total;
+    const hasMore = accountIds.count() < this.state.total && this.state.nextLink !== false;
 
     const showLoading = isLoading && accountIds.isEmpty();
 

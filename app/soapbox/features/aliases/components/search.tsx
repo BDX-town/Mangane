@@ -17,7 +17,7 @@ const Search: React.FC = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const value = useAppSelector(state => state.aliases.getIn(['suggestions', 'value'])) as string;
+  const value = useAppSelector(state => state.aliases.suggestions.value);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(changeAliasesSuggestions(e.target.value));
@@ -40,23 +40,23 @@ const Search: React.FC = () => {
   const hasValue = value.length > 0;
 
   return (
-    <div className='aliases_search search'>
-      <label>
+    <div className='flex items-center gap-1'>
+      <label className='flex-grow relative'>
         <span style={{ display: 'none' }}>{intl.formatMessage(messages.search)}</span>
 
         <input
-          className='search__input'
+          className='block w-full sm:text-sm dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500 focus:ring-primary-500 focus:border-primary-500 rounded-full'
           type='text'
           value={value}
           onChange={handleChange}
           onKeyUp={handleKeyUp}
           placeholder={intl.formatMessage(messages.search)}
         />
-      </label>
 
-      <div role='button' tabIndex={0} className='search__icon' onClick={handleClear}>
-        <Icon src={require('@tabler/icons/icons/backspace.svg')} aria-label={intl.formatMessage(messages.search)} className={classNames('svg-icon--backspace', { active: hasValue })} />
-      </div>
+        <div role='button' tabIndex={0} className='search__icon' onClick={handleClear}>
+          <Icon src={require('@tabler/icons/backspace.svg')} aria-label={intl.formatMessage(messages.search)} className={classNames('svg-icon--backspace', { active: hasValue })} />
+        </div>
+      </label>
       <Button onClick={handleSubmit}>{intl.formatMessage(messages.searchTitle)}</Button>
     </div>
   );

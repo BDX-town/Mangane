@@ -11,7 +11,7 @@ interface IBirthdaysModal {
 }
 
 const BirthdaysModal = ({ onClose }: IBirthdaysModal) => {
-  const accountIds = useAppSelector<string[]>(state => state.user_lists.getIn(['birthday_reminders', state.me]));
+  const accountIds = useAppSelector(state => state.user_lists.birthday_reminders.get(state.me as string)?.items);
 
   const onClickClose = () => {
     onClose('BIRTHDAYS');
@@ -22,11 +22,11 @@ const BirthdaysModal = ({ onClose }: IBirthdaysModal) => {
   if (!accountIds) {
     body = <Spinner />;
   } else {
-    const emptyMessage = <FormattedMessage id='status.reblogs.empty' defaultMessage='No one has reposted this post yet. When someone does, they will show up here.' />;
+    const emptyMessage = <FormattedMessage id='birthdays_modal.empty' defaultMessage='None of your friends have birthday today.' />;
 
     body = (
       <ScrollableList
-        scrollKey='reblogs'
+        scrollKey='birthdays'
         emptyMessage={emptyMessage}
         itemClassName='pb-3'
       >
@@ -36,7 +36,6 @@ const BirthdaysModal = ({ onClose }: IBirthdaysModal) => {
       </ScrollableList>
     );
   }
-
 
   return (
     <Modal

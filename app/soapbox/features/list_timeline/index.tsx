@@ -1,7 +1,5 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { fetchList } from 'soapbox/actions/lists';
@@ -11,9 +9,9 @@ import { expandListTimeline } from 'soapbox/actions/timelines';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import { Button, Spinner } from 'soapbox/components/ui';
 import Column from 'soapbox/features/ui/components/column';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
-import StatusListContainer from '../ui/containers/status_list_container';
+import Timeline from '../ui/components/timeline';
 
 // const messages = defineMessages({
 //   deleteHeading: { id: 'confirmations.delete_list.heading', defaultMessage: 'Delete list' },
@@ -22,28 +20,24 @@ import StatusListContainer from '../ui/containers/status_list_container';
 // });
 
 const ListTimeline: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   // const intl = useIntl();
   // const history = useHistory();
 
   const list = useAppSelector((state) => state.lists.get(id));
-  // const hasUnread = useAppSelector((state) => state.timelines.getIn([`list:${props.params.id}`, 'unread']) > 0);
+  // const hasUnread = useAppSelector((state) => state.timelines.get(`list:${props.params.id}`)?.unread > 0);
 
   useEffect(() => {
-    const disconnect = handleConnect(id);
+    dispatch(fetchList(id));
+    dispatch(expandListTimeline(id));
+
+    const disconnect = dispatch(connectListStream(id));
 
     return () => {
       disconnect();
     };
   }, [id]);
-
-  const handleConnect = (id: string) => {
-    dispatch(fetchList(id));
-    dispatch(expandListTimeline(id));
-
-    return dispatch(connectListStream(id));
-  };
 
   const handleLoadMore = (maxId: string) => {
     dispatch(expandListTimeline(id, { maxId }));
@@ -55,7 +49,7 @@ const ListTimeline: React.FC = () => {
 
   // const handleDeleteClick = () => {
   //   dispatch(openModal('CONFIRM', {
-  //     icon: require('@tabler/icons/icons/trash.svg'),
+  //     icon: require('@tabler/icons/trash.svg'),
   //     heading: intl.formatMessage(messages.deleteHeading),
   //     message: intl.formatMessage(messages.deleteMessage),
   //     confirm: intl.formatMessage(messages.deleteConfirm),
@@ -66,7 +60,7 @@ const ListTimeline: React.FC = () => {
   //   }));
   // };
 
-  const title  = list ? list.get('title') : id;
+  const title  = list ? list.title : id;
 
   if (typeof list === 'undefined') {
     return (
@@ -91,7 +85,7 @@ const ListTimeline: React.FC = () => {
   );
 
   return (
-    <Column label={title} heading={title} transparent>
+    <Column label={title} heading={title} transparent withHeader={false}>
       {/* <HomeColumnHeader activeItem='lists' activeSubItem={id} active={hasUnread}>
         <div className='column-header__links'>
           <button className='text-btn column-header__setting-btn' tabIndex='0' onClick={handleEditClick}>
@@ -111,7 +105,7 @@ const ListTimeline: React.FC = () => {
         </div>
       </HomeColumnHeader> */}
 
-      <StatusListContainer
+      <Timeline
         scrollKey='list_timeline'
         timelineId={`list:${id}`}
         onLoadMore={handleLoadMore}

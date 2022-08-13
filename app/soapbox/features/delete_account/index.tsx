@@ -3,13 +3,14 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { deleteAccount } from 'soapbox/actions/security';
 import snackbar from 'soapbox/actions/snackbar';
-import { Button, Card, CardBody, CardHeader, CardTitle, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { Button, Card, CardBody, CardHeader, CardTitle, Form, FormActions, FormGroup, Input, Stack, Text } from 'soapbox/components/ui';
+import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 
 const messages = defineMessages({
   passwordFieldLabel: { id: 'security.fields.password.label', defaultMessage: 'Password' },
   deleteHeader: { id: 'security.headers.delete', defaultMessage: 'Delete Account' },
   deleteText: { id: 'security.text.delete', defaultMessage: 'To delete your account, enter your password then click Delete Account. This is a permanent action that cannot be undone. Your account will be destroyed from this server, and a deletion request will be sent to other servers. It\'s not guaranteed that all servers will purge your account.' },
+  localDeleteText: { id: 'security.text.delete.local', defaultMessage: 'To delete your account, enter your password then click Delete Account. This is a permanent action that cannot be undone.' },
   deleteSubmit: { id: 'security.submit.delete', defaultMessage: 'Delete Account' },
   deleteAccountSuccess: { id: 'security.delete_account.success', defaultMessage: 'Account successfully deleted.' },
   deleteAccountFail: { id: 'security.delete_account.fail', defaultMessage: 'Account deletion failed.' },
@@ -18,6 +19,7 @@ const messages = defineMessages({
 const DeleteAccount = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const features = useFeatures();
 
   const [password, setPassword] = React.useState('');
   const [isLoading, setLoading] = React.useState(false);
@@ -30,7 +32,7 @@ const DeleteAccount = () => {
 
   const handleSubmit = React.useCallback(() => {
     setLoading(true);
-    dispatch(deleteAccount(intl, password)).then(() => {
+    dispatch(deleteAccount(password)).then(() => {
       setPassword('');
       dispatch(snackbar.success(intl.formatMessage(messages.deleteAccountSuccess)));
     }).finally(() => {
@@ -48,29 +50,32 @@ const DeleteAccount = () => {
       </CardHeader>
 
       <CardBody>
-        <p className='text-gray-400 mb-4'>
-          {intl.formatMessage(messages.deleteText)}
-        </p>
+        <Stack space={4}>
+          <Text theme='muted'>
 
-        <Form onSubmit={handleSubmit}>
-          <FormGroup labelText={intl.formatMessage(messages.passwordFieldLabel)}>
-            <Input
-              type='password'
-              name='password'
-              onChange={handleInputChange}
-              value={password}
-            />
-          </FormGroup>
+            {intl.formatMessage(features.federating ? messages.deleteText : messages.localDeleteText)}
+          </Text>
 
-          <FormActions>
-            <Button type='submit' theme='danger' disabled={isLoading}>
-              {intl.formatMessage(messages.deleteSubmit)}
-            </Button>
+          <Form onSubmit={handleSubmit}>
+            <FormGroup labelText={intl.formatMessage(messages.passwordFieldLabel)}>
+              <Input
+                type='password'
+                name='password'
+                onChange={handleInputChange}
+                value={password}
+              />
+            </FormGroup>
 
-          </FormActions>
-        </Form>
+            <FormActions>
+              <Button type='submit' theme='danger' disabled={isLoading}>
+                {intl.formatMessage(messages.deleteSubmit)}
+              </Button>
+
+            </FormActions>
+          </Form>
+        </Stack>
       </CardBody>
-    </Card>
+    </Card >
   );
 };
 

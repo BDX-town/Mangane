@@ -4,13 +4,11 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { logOut, switchAccount } from 'soapbox/actions/auth';
-import { fetchOwnAccounts } from 'soapbox/actions/auth';
+import { fetchOwnAccounts, logOut, switchAccount } from 'soapbox/actions/auth';
+import Account from 'soapbox/components/account';
 import { Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
-
-import Account from '../../../components/account';
 
 import ThemeToggle from './theme-toggle';
 
@@ -45,7 +43,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
   const otherAccounts = useAppSelector((state) => authUsers.map((authUser: any) => getAccount(state, authUser.get('id'))));
 
   const handleLogOut = () => {
-    dispatch(logOut(intl));
+    dispatch(logOut());
   };
 
   const handleSwitchAccount = (account: AccountEntity) => {
@@ -60,7 +58,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
 
   const renderAccount = (account: AccountEntity) => {
     return (
-      <Account account={account} showProfileHoverCard={false} hideActions />
+      <Account account={account} showProfileHoverCard={false} withLinkToProfile={false} hideActions />
     );
   };
 
@@ -84,15 +82,15 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
 
     menu.push({
       text: intl.formatMessage(messages.add),
-      to: '/login',
-      icon: require('@tabler/icons/icons/plus.svg'),
+      to: '/login/add',
+      icon: require('@tabler/icons/plus.svg'),
     });
 
     menu.push({
       text: intl.formatMessage(messages.logout, { acct: account.acct }),
       to: '/logout',
       action: handleLogOut,
-      icon: require('@tabler/icons/icons/logout.svg'),
+      icon: require('@tabler/icons/logout.svg'),
     });
 
     return menu;
@@ -112,7 +110,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
         {menu.map((menuItem, idx) => {
           if (menuItem.toggle) {
             return (
-              <div className='flex flex-row items-center justify-between px-4 py-1 text-sm text-gray-700 dark:text-gray-400'>
+              <div key={idx} className='flex flex-row items-center justify-between px-4 py-1 text-sm text-gray-700 dark:text-gray-400'>
                 <span>{menuItem.text}</span>
 
                 {menuItem.toggle}

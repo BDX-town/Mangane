@@ -1,4 +1,4 @@
-import { Map as ImmutableMap } from 'immutable';
+import { Map as ImmutableMap, Record as ImmutableRecord } from 'immutable';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ const TestableComponent = () => (
   </Switch>
 );
 
-const renderComponent = (store) => render(
+const renderComponent = (store: any) => render(
   <TestableComponent />,
   {},
   store,
@@ -22,17 +22,21 @@ const renderComponent = (store) => render(
 );
 
 describe('<Verification />', () => {
-  let store;
+  let store: any;
 
   beforeEach(() => {
     store = {
-      verification: ImmutableMap({
-        instance: {
+      verification: ImmutableRecord({
+        instance: ImmutableMap({
           isReady: true,
           registrations: true,
-        },
+        }),
+        ageMinimum: null,
+        currentChallenge: null,
+        isLoading: false,
         isComplete: false,
-      }),
+        token: null,
+      })(),
     };
 
     __stub(mock => {

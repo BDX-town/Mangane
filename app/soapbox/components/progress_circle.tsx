@@ -22,7 +22,7 @@ const ProgressCircle: React.FC<IProgressCircle> = ({ progress, radius = 12, stro
         viewBox={`0 0 ${actualRadius * 2} ${actualRadius * 2}`}
       >
         <circle
-          className='stroke-gray-400'
+          className='stroke-gray-500 dark:stroke-white/20'
           cx={actualRadius}
           cy={actualRadius}
           r={radius}
@@ -30,8 +30,8 @@ const ProgressCircle: React.FC<IProgressCircle> = ({ progress, radius = 12, stro
           strokeWidth={stroke}
         />
         <circle
-          className={classNames('stroke-primary-800', {
-            'stroke-danger-600': progress > 1,
+          className={classNames('stroke-primary-500', {
+            'stroke-secondary-500': progress > 1,
           })}
           style={{
             strokeDashoffset: dashoffset,

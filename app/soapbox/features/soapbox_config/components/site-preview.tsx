@@ -3,7 +3,9 @@ import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { defaultSettings } from 'soapbox/actions/settings';
+import SiteLogo from 'soapbox/components/site-logo';
 import BackgroundShapes from 'soapbox/features/ui/components/background_shapes';
+import { useSystemTheme } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
@@ -17,16 +19,19 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
   const soapboxConfig = useMemo(() => normalizeSoapboxConfig(soapbox), [soapbox]);
   const settings = defaultSettings.mergeDeep(soapboxConfig.defaultSettings);
 
-  const dark = settings.get('themeMode') === 'dark';
+  const userTheme = settings.get('themeMode');
+  const systemTheme = useSystemTheme();
+
+  const dark = userTheme === 'dark' || (userTheme === 'system' && systemTheme === 'dark');
 
   const bodyClass = classNames(
     'site-preview',
     'relative flex justify-center align-center text-base',
-    'border border-solid border-gray-200 dark:border-slate-600',
+    'border border-solid border-gray-200 dark:border-gray-600',
     'h-40 rounded-lg overflow-hidden',
     {
       'bg-white': !dark,
-      'bg-slate-900': dark,
+      'bg-gray-900': dark,
     });
 
   return (
@@ -40,10 +45,10 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
 
       <div className={classNames('flex absolute inset-0 shadow z-10 h-12 lg:h-16', {
         'bg-white': !dark,
-        'bg-slate-800': dark,
+        'bg-gray-800': dark,
       })}
       >
-        <img alt='Logo' className='h-5 lg:h-6 self-center px-2' src={soapboxConfig.logo} />
+        <SiteLogo alt='Logo' className='h-5 lg:h-6 w-auto self-center px-2' theme={dark ? 'dark' : 'light'} />
       </div>
     </div>
   );

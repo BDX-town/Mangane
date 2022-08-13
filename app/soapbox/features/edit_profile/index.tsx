@@ -4,13 +4,24 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
+import BirthdayInput from 'soapbox/components/birthday_input';
 import List, { ListItem } from 'soapbox/components/list';
+import {
+  Button,
+  Column,
+  FileInput,
+  Form,
+  FormActions,
+  FormGroup,
+  HStack,
+  Input,
+  Textarea,
+  Toggle,
+} from 'soapbox/components/ui';
+import Streamfield, { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
 import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
 import resizeImage from 'soapbox/utils/resize_image';
-
-import { Button, Column, Form, FormActions, FormGroup, Input, Textarea, HStack, Toggle } from '../../components/ui';
-import Streamfield, { StreamfieldComponent } from '../../components/ui/streamfield/streamfield';
 
 import ProfilePreview from './components/profile-preview';
 
@@ -24,25 +35,6 @@ const hidesNetwork = (account: Account): boolean => {
   const { hide_followers, hide_follows, hide_followers_count, hide_follows_count } = account.pleroma.toJS();
   return Boolean(hide_followers && hide_follows && hide_followers_count && hide_follows_count);
 };
-
-/** Converts JSON objects to FormData. */
-// https://stackoverflow.com/a/60286175/8811886
-// @ts-ignore
-const toFormData = (f => f(f))(h => f => f(x => h(h)(f)(x)))(f => fd => pk => d => {
-  if (d instanceof Object) {
-    // eslint-disable-next-line consistent-return
-    Object.keys(d).forEach(k => {
-      const v = d[k];
-      if (pk) k = `${pk}[${k}]`;
-      if (v instanceof Object && !(v instanceof Date) && !(v instanceof File)) {
-        return f(fd)(k)(v);
-      } else {
-        fd.append(k, v);
-      }
-    });
-  }
-  return fd;
-})(new FormData())();
 
 const messages = defineMessages({
   heading: { id: 'column.edit_profile', defaultMessage: 'Edit profile' },
@@ -179,8 +171,8 @@ const EditProfile: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const account   = useOwnAccount();
-  const features  = useFeatures();
+  const account = useOwnAccount();
+  const features = useFeatures();
   const maxFields = useAppSelector(state => state.instance.pleroma.getIn(['metadata', 'fields_limits', 'max_fields'], 4) as number);
 
   const [isLoading, setLoading] = useState(false);
@@ -205,9 +197,8 @@ const EditProfile: React.FC = () => {
 
   const handleSubmit: React.FormEventHandler = (event) => {
     const promises = [];
-    const formData = toFormData(data);
 
-    promises.push(dispatch(patchMe(formData)));
+    promises.push(dispatch(patchMe(data, true)));
 
     if (features.muteStrangers) {
       promises.push(
@@ -240,6 +231,10 @@ const EditProfile: React.FC = () => {
     return e => {
       updateData(key, e.target.value);
     };
+  };
+
+  const handleBirthdayChange = (date: string) => {
+    updateData('birthday', date);
   };
 
   const handleHideNetworkChange: React.ChangeEventHandler<HTMLInputElement> = e => {
@@ -325,10 +320,9 @@ const EditProfile: React.FC = () => {
           <FormGroup
             labelText={<FormattedMessage id='edit_profile.fields.birthday_label' defaultMessage='Birthday' />}
           >
-            <Input
-              type='text'
+            <BirthdayInput
               value={data.birthday}
-              onChange={handleTextChange('birthday')}
+              onChange={handleBirthdayChange}
             />
           </FormGroup>
         )}
@@ -375,17 +369,17 @@ const EditProfile: React.FC = () => {
 
           <div className='space-y-4'>
             <FormGroup
-              labelText={<FormattedMessage id='edit_profile.fields.header_label' defaultMessage='Choose Background Picture' />}
-              hintText={<FormattedMessage id='edit_profile.hints.header' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '1920x1080px' }} />}
-            >
-              <input type='file' onChange={handleFileChange('header', 1920 * 1080)} className='text-sm' />
-            </FormGroup>
-
-            <FormGroup
               labelText={<FormattedMessage id='edit_profile.fields.avatar_label' defaultMessage='Choose Profile Picture' />}
               hintText={<FormattedMessage id='edit_profile.hints.avatar' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '400x400px' }} />}
             >
-              <input type='file' onChange={handleFileChange('avatar', 400 * 400)} className='text-sm' />
+              <FileInput onChange={handleFileChange('avatar', 400 * 400)} />
+            </FormGroup>
+
+            <FormGroup
+              labelText={<FormattedMessage id='edit_profile.fields.header_label' defaultMessage='Choose Background Picture' />}
+              hintText={<FormattedMessage id='edit_profile.hints.header' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '1920x1080px' }} />}
+            >
+              <FileInput onChange={handleFileChange('header', 1920 * 1080)} />
             </FormGroup>
           </div>
         </div>
@@ -409,7 +403,7 @@ const EditProfile: React.FC = () => {
               hint={<FormattedMessage id='edit_profile.hints.hide_network' defaultMessage='Who you follow and who follows you will not be shown on your profile' />}
             >
               <Toggle
-                checked={account ? hidesNetwork(account): false}
+                checked={account ? hidesNetwork(account) : false}
                 onChange={handleHideNetworkChange}
               />
             </ListItem>
@@ -478,7 +472,7 @@ const EditProfile: React.FC = () => {
         )}
 
         <FormActions>
-          <Button to='/settings' theme='ghost'>
+          <Button to='/settings' theme='tertiary'>
             {intl.formatMessage(messages.cancel)}
           </Button>
 

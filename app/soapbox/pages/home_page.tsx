@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
+import FeedCarousel from 'soapbox/features/feed-filtering/feed-carousel';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import {
   WhoToFollowPanel,
@@ -10,6 +11,8 @@ import {
   FundingPanel,
   CryptoDonatePanel,
   BirthdayPanel,
+  CtaBanner,
+  AnnouncementsPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useOwnAccount, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
@@ -29,13 +32,13 @@ const HomePage: React.FC = ({ children }) => {
 
   const hasPatron = soapboxConfig.extensions.getIn(['patron', 'enabled']) === true;
   const hasCrypto = typeof soapboxConfig.cryptoAddresses.getIn([0, 'ticker']) === 'string';
-  const cryptoLimit = soapboxConfig.cryptoDonatePanel.get('limit');
+  const cryptoLimit = soapboxConfig.cryptoDonatePanel.get('limit', 0);
 
   const acct = account ? account.acct : '';
 
   return (
     <>
-      <Layout.Main className='pt-4 sm:pt-0 divide-y divide-gray-200 dark:divide-slate-700 divide-solid space-y-4 divide-none'>
+      <Layout.Main className='pt-3 sm:pt-0 dark:divide-gray-800 space-y-3'>
         {me && (
           <Card variant='rounded' ref={composeBlock}>
             <CardBody>
@@ -55,13 +58,26 @@ const HomePage: React.FC = ({ children }) => {
           </Card>
         )}
 
+        {features.feedUserFiltering && <FeedCarousel />}
+
         {children}
+
+        {!me && (
+          <BundleContainer fetchComponent={CtaBanner}>
+            {Component => <Component key='cta-banner' />}
+          </BundleContainer>
+        )}
       </Layout.Main>
 
       <Layout.Aside>
         {!me && (
           <BundleContainer fetchComponent={SignUpPanel}>
             {Component => <Component />}
+          </BundleContainer>
+        )}
+        {me && features.announcements && (
+          <BundleContainer fetchComponent={AnnouncementsPanel}>
+            {Component => <Component key='announcements-panel' />}
           </BundleContainer>
         )}
         {features.trends && (
@@ -74,7 +90,7 @@ const HomePage: React.FC = ({ children }) => {
             {Component => <Component />}
           </BundleContainer>
         )}
-        {hasCrypto && cryptoLimit && cryptoLimit > 0 && (
+        {hasCrypto && cryptoLimit > 0 && (
           <BundleContainer fetchComponent={CryptoDonatePanel}>
             {Component => <Component limit={cryptoLimit} />}
           </BundleContainer>

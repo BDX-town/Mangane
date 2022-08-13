@@ -61,11 +61,11 @@ const ProfileField: React.FC<IProfileField> = ({ field }) => {
         <HStack space={2} alignItems='center'>
           {field.verified_at && (
             <span className='flex-none' title={intl.formatMessage(messages.linkVerifiedOn, { date: intl.formatDate(field.verified_at, dateFormatOptions) })}>
-              <Icon src={require('@tabler/icons/icons/check.svg')} />
+              <Icon src={require('@tabler/icons/check.svg')} />
             </span>
           )}
 
-          <Text tag='span' dangerouslySetInnerHTML={{ __html: field.value_emojified }} />
+          <Text className='break-words overflow-hidden' tag='span' dangerouslySetInnerHTML={{ __html: field.value_emojified }} />
         </HStack>
       </dd>
     </dl>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Map as ImmutableMap } from 'immutable';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React, { useState, useRef, useCallback } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
@@ -58,7 +58,6 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
   const [usernameUnavailable, setUsernameUnavailable] = useState(false);
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [passwordMismatch, setPasswordMismatch] = useState(false);
-  const [birthday, setBirthday] = useState<Date | undefined>(undefined);
 
   const source = useRef(axios.CancelToken.source());
 
@@ -111,8 +110,8 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
     setPasswordMismatch(!passwordsMatch());
   };
 
-  const onBirthdayChange = (newBirthday: Date) => {
-    setBirthday(newBirthday);
+  const onBirthdayChange = (birthday: string) => {
+    updateParams({ birthday });
   };
 
   const launchModal = () => {
@@ -131,7 +130,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
     </>);
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/icons/check.svg'),
+      icon: require('@tabler/icons/check.svg'),
       heading: needsConfirmation
         ? intl.formatMessage(messages.needsConfirmationHeader)
         : needsApproval
@@ -186,10 +185,6 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
       // Pleroma invites
       if (inviteToken) {
         params.set('token', inviteToken);
-      }
-
-      if (birthday) {
-        params.set('birthday', new Date(birthday.getTime() - (birthday.getTimezoneOffset() * 60000)).toISOString().slice(0, 10));
       }
     });
 
@@ -291,7 +286,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
 
         {birthdayRequired && (
           <BirthdayInput
-            value={birthday}
+            value={params.get('birthday')}
             onChange={onBirthdayChange}
             required
           />

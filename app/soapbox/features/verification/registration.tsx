@@ -1,18 +1,34 @@
-import { AxiosError } from 'axios';
 import * as React from 'react';
-import { useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { startOnboarding } from 'soapbox/actions/onboarding';
 import snackbar from 'soapbox/actions/snackbar';
-import { createAccount } from 'soapbox/actions/verification';
-import { removeStoredVerification } from 'soapbox/actions/verification';
-import { useAppSelector } from 'soapbox/hooks';
+import { createAccount, removeStoredVerification } from 'soapbox/actions/verification';
+import { Button, Form, FormGroup, Input, Text } from 'soapbox/components/ui';
+import { useAppDispatch, useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
+import { getRedirectUrl } from 'soapbox/utils/redirect';
 
-import { Button, Form, FormGroup, Input } from '../../components/ui';
+import PasswordIndicator from './components/password-indicator';
+
+import type { AxiosError } from 'axios';
+
+const messages = defineMessages({
+  success: {
+    id: 'registrations.success',
+    defaultMessage: 'Welcome to {siteTitle}!',
+  },
+  usernameTaken: {
+    id: 'registrations.unprocessable_entity',
+    defaultMessage: 'This username has already been taken.',
+  },
+  error: {
+    id: 'registrations.error',
+    defaultMessage: 'Failed to register your account.',
+  },
+});
 
 const initialState = {
   username: '',
@@ -20,22 +36,24 @@ const initialState = {
 };
 
 const Registration = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
+  const soapboxConfig = useSoapboxConfig();
+  const { links } = soapboxConfig;
 
-  const isLoading = useAppSelector((state) => state.verification.get('isLoading') as boolean);
+  const isLoading = useAppSelector((state) => state.verification.isLoading as boolean);
   const siteTitle = useAppSelector((state) => state.instance.title);
 
   const [state, setState] = React.useState(initialState);
   const [shouldRedirect, setShouldRedirect] = React.useState<boolean>(false);
+  const [hasValidPassword, setHasValidPassword] = React.useState<boolean>(false);
   const { username, password } = state;
 
   const handleSubmit = React.useCallback((event) => {
     event.preventDefault();
 
-    // TODO: handle validation errors from Pepe
     dispatch(createAccount(username, password))
-      .then(() => dispatch(logIn(intl, username, password)))
+      .then(() => dispatch(logIn(username, password)))
       .then(({ access_token }: any) => dispatch(verifyCredentials(access_token)))
       .then(() => dispatch(fetchInstance()))
       .then(() => {
@@ -44,10 +62,7 @@ const Registration = () => {
         dispatch(startOnboarding());
         dispatch(
           snackbar.success(
-            intl.formatMessage({
-              id: 'registrations.success',
-              defaultMessage: 'Welcome to {siteTitle}!',
-            }, { siteTitle }),
+            intl.formatMessage(messages.success, { siteTitle }),
           ),
         );
       })
@@ -55,19 +70,13 @@ const Registration = () => {
         if (error?.response?.status === 422) {
           dispatch(
             snackbar.error(
-              intl.formatMessage({
-                id: 'registrations.unprocessable_entity',
-                defaultMessage: 'This username has already been taken.',
-              }),
+              intl.formatMessage(messages.usernameTaken),
             ),
           );
         } else {
           dispatch(
             snackbar.error(
-              intl.formatMessage({
-                id: 'registrations.error',
-                defaultMessage: 'Failed to register your account.',
-              }),
+              intl.formatMessage(messages.error),
             ),
           );
         }
@@ -81,14 +90,15 @@ const Registration = () => {
   }, []);
 
   if (shouldRedirect) {
-    return <Redirect to='/' />;
+    const redirectUri = getRedirectUrl();
+    return <Redirect to={redirectUri} />;
   }
 
   return (
     <div>
-      <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 border-solid -mx-4 sm:-mx-10'>
+      <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
         <h1 className='text-center font-bold text-2xl'>
-          {intl.formatMessage({ id: 'registration.header', defaultMessage: 'Register your account' })}
+          <FormattedMessage id='registration.header' defaultMessage='Register your account' />
         </h1>
       </div>
 
@@ -101,7 +111,7 @@ const Registration = () => {
               value={username}
               onChange={handleInputChange}
               required
-              icon={require('@tabler/icons/icons/at.svg')}
+              icon={require('@tabler/icons/at.svg')}
             />
           </FormGroup>
 
@@ -112,11 +122,48 @@ const Registration = () => {
               value={password}
               onChange={handleInputChange}
               required
+              data-testid='password-input'
             />
+
+            <PasswordIndicator password={password} onChange={setHasValidPassword} />
           </FormGroup>
 
-          <div className='text-center'>
-            <Button block theme='primary' type='submit' disabled={isLoading}>Register</Button>
+          <div className='text-center space-y-2'>
+            <Button
+              block
+              theme='primary'
+              type='submit'
+              disabled={isLoading || !hasValidPassword}
+            >
+              Register
+            </Button>
+
+            {(links.get('termsOfService') && links.get('privacyPolicy')) ? (
+              <Text theme='muted' size='xs'>
+                <FormattedMessage
+                  id='registration.acceptance'
+                  defaultMessage='By registering, you agree to the {terms} and {privacy}.'
+                  values={{
+                    terms: (
+                      <a href={links.get('termsOfService')} target='_blank' className='text-primary-600 dark:text-primary-400 hover:underline'>
+                        <FormattedMessage
+                          id='registration.tos'
+                          defaultMessage='Terms of Service'
+                        />
+                      </a>
+                    ),
+                    privacy: (
+                      <a href={links.get('privacyPolicy')} target='_blank' className='text-primary-600 dark:text-primary-400 hover:underline'>
+                        <FormattedMessage
+                          id='registration.privacy'
+                          defaultMessage='Privacy Policy'
+                        />
+                      </a>
+                    ),
+                  }}
+                />
+              </Text>
+            ) : null}
           </div>
         </Form>
       </div>

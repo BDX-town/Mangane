@@ -9,6 +9,18 @@ interface IHotkeysModal {
   onClose: () => void,
 }
 
+const Hotkey: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <kbd className='px-1.5 py-1 bg-primary-50 dark:bg-gray-800 border border-solid border-primary-200 rounded-md dark:border-gray-700 text-xs font-sans'>
+    {children}
+  </kbd>
+);
+
+const TableCell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <td className='pb-3 px-2'>
+    {children}
+  </td>
+);
+
 const HotkeysModal: React.FC<IHotkeysModal> = ({ onClose }) => {
   const features = useAppSelector((state) => getFeatures(state.instance));
 
@@ -16,142 +28,145 @@ const HotkeysModal: React.FC<IHotkeysModal> = ({ onClose }) => {
     <Modal
       title={<FormattedMessage id='keyboard_shortcuts.heading' defaultMessage='Keyboard shortcuts' />}
       onClose={onClose}
+      width='4xl'
     >
-      <div className='compose-modal__content'>
+      <div className='flex flex-col lg:flex-row text-xs'>
         <table>
           <thead>
             <tr>
-              <th><FormattedMessage id='keyboard_shortcuts.hotkey' defaultMessage='Hotkey' /></th>
+              <th className='pb-2 font-bold'><FormattedMessage id='keyboard_shortcuts.hotkey' defaultMessage='Hotkey' /></th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><kbd>r</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.reply' defaultMessage='to reply' /></td>
+              <TableCell><Hotkey>r</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.reply' defaultMessage='to reply' /></TableCell>
             </tr>
             <tr>
-              <td><kbd>m</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.mention' defaultMessage='to mention author' /></td>
+              <TableCell><Hotkey>m</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.mention' defaultMessage='to mention author' /></TableCell>
             </tr>
             <tr>
-              <td><kbd>p</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.profile' defaultMessage="to open author's profile" /></td>
+              <TableCell><Hotkey>p</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.profile' defaultMessage="to open author's profile" /></TableCell>
             </tr>
             <tr>
-              <td><kbd>f</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.favourite' defaultMessage='to like' /></td>
+              <TableCell><Hotkey>f</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.favourite' defaultMessage='to like' /></TableCell>
             </tr>
             {features.emojiReacts && (
               <tr>
-                <td><kbd>e</kbd></td>
-                <td><FormattedMessage id='keyboard_shortcuts.react' defaultMessage='to react' /></td>
+                <TableCell><Hotkey>e</Hotkey></TableCell>
+                <TableCell><FormattedMessage id='keyboard_shortcuts.react' defaultMessage='to react' /></TableCell>
               </tr>
             )}
             <tr>
-              <td><kbd>b</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.boost' defaultMessage='to repost' /></td>
+              <TableCell><Hotkey>b</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.boost' defaultMessage='to repost' /></TableCell>
             </tr>
             <tr>
-              <td><kbd>enter</kbd>, <kbd>o</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.enter' defaultMessage='to open post' /></td>
+              <TableCell><Hotkey>enter</Hotkey>, <Hotkey>o</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.enter' defaultMessage='to open post' /></TableCell>
             </tr>
             <tr>
-              <td><kbd>a</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.open_media' defaultMessage='to open media' /></td>
+              <TableCell><Hotkey>a</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.open_media' defaultMessage='to open media' /></TableCell>
             </tr>
           </tbody>
         </table>
         <table>
           <thead>
             <tr>
-              <th><FormattedMessage id='keyboard_shortcuts.hotkey' defaultMessage='Hotkey' /></th>
+              <th className='pb-2 font-bold'><FormattedMessage id='keyboard_shortcuts.hotkey' defaultMessage='Hotkey' /></th>
             </tr>
           </thead>
           <tbody>
             {features.spoilers && (
               <tr>
-                <td><kbd>x</kbd></td>
-                <td><FormattedMessage id='keyboard_shortcuts.toggle_hidden' defaultMessage='to show/hide text behind CW' /></td>
+                <TableCell><Hotkey>x</Hotkey></TableCell>
+                <TableCell><FormattedMessage id='keyboard_shortcuts.toggle_hidden' defaultMessage='to show/hide text behind CW' /></TableCell>
               </tr>
             )}
             {features.spoilers && (
               <tr>
-                <td><kbd>h</kbd></td>
-                <td><FormattedMessage id='keyboard_shortcuts.toggle_sensitivity' defaultMessage='to show/hide media' /></td>
+                <TableCell><Hotkey>h</Hotkey></TableCell>
+                <TableCell><FormattedMessage id='keyboard_shortcuts.toggle_sensitivity' defaultMessage='to show/hide media' /></TableCell>
               </tr>
             )}
             <tr>
-              <td><kbd>up</kbd>, <kbd>k</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.up' defaultMessage='to move up in the list' /></td>
+              <TableCell><Hotkey>up</Hotkey>, <Hotkey>k</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.up' defaultMessage='to move up in the list' /></TableCell>
             </tr>
             <tr>
-              <td><kbd>down</kbd>, <kbd>j</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.down' defaultMessage='to move down in the list' /></td>
+              <TableCell><Hotkey>down</Hotkey>, <Hotkey>j</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.down' defaultMessage='to move down in the list' /></TableCell>
             </tr>
             <tr>
-              <td><kbd>n</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.compose' defaultMessage='to focus the compose textarea' /></td>
+              <TableCell><Hotkey>n</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.compose' defaultMessage='to focus the compose textarea' /></TableCell>
             </tr>
             <tr>
-              <td><kbd>alt</kbd> + <kbd>n</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.toot' defaultMessage='to start a new post' /></td>
+              <TableCell><Hotkey>alt</Hotkey> + <Hotkey>n</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.toot' defaultMessage='to start a new post' /></TableCell>
             </tr>
             <tr>
-              <td><kbd>backspace</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.back' defaultMessage='to navigate back' /></td>
+              <TableCell><Hotkey>backspace</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.back' defaultMessage='to navigate back' /></TableCell>
             </tr>
             <tr>
-              <td><kbd>s</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.search' defaultMessage='to focus search' /></td>
+              <TableCell><Hotkey>s</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.search' defaultMessage='to focus search' /></TableCell>
             </tr>
             <tr>
-              <td><kbd>esc</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.unfocus' defaultMessage='to un-focus compose textarea/search' /></td>
+              <TableCell><Hotkey>esc</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.unfocus' defaultMessage='to un-focus compose textarea/search' /></TableCell>
             </tr>
           </tbody>
         </table>
         <table>
           <thead>
             <tr>
-              <th><FormattedMessage id='keyboard_shortcuts.hotkey' defaultMessage='Hotkey' /></th>
+              <th className='pb-2 font-bold'><FormattedMessage id='keyboard_shortcuts.hotkey' defaultMessage='Hotkey' /></th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><kbd>g</kbd> + <kbd>h</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.home' defaultMessage='to open home timeline' /></td>
+              <TableCell><Hotkey>g</Hotkey> + <Hotkey>h</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.home' defaultMessage='to open home timeline' /></TableCell>
             </tr>
             <tr>
-              <td><kbd>g</kbd> + <kbd>n</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.notifications' defaultMessage='to open notifications column' /></td>
+              <TableCell><Hotkey>g</Hotkey> + <Hotkey>n</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.notifications' defaultMessage='to open notifications column' /></TableCell>
             </tr>
             <tr>
-              <td><kbd>g</kbd> + <kbd>f</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.favourites' defaultMessage='to open likes list' /></td>
+              <TableCell><Hotkey>g</Hotkey> + <Hotkey>f</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.favourites' defaultMessage='to open likes list' /></TableCell>
             </tr>
             <tr>
-              <td><kbd>g</kbd> + <kbd>p</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.pinned' defaultMessage='to open pinned posts list' /></td>
+              <TableCell><Hotkey>g</Hotkey> + <Hotkey>p</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.pinned' defaultMessage='to open pinned posts list' /></TableCell>
             </tr>
             <tr>
-              <td><kbd>g</kbd> + <kbd>u</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.my_profile' defaultMessage='to open your profile' /></td>
+              <TableCell><Hotkey>g</Hotkey> + <Hotkey>u</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.my_profile' defaultMessage='to open your profile' /></TableCell>
             </tr>
             <tr>
-              <td><kbd>g</kbd> + <kbd>b</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.blocked' defaultMessage='to open blocked users list' /></td>
+              <TableCell><Hotkey>g</Hotkey> + <Hotkey>b</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.blocked' defaultMessage='to open blocked users list' /></TableCell>
             </tr>
             <tr>
-              <td><kbd>g</kbd> + <kbd>m</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.muted' defaultMessage='to open muted users list' /></td>
+              <TableCell><Hotkey>g</Hotkey> + <Hotkey>m</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.muted' defaultMessage='to open muted users list' /></TableCell>
             </tr>
+            {features.followRequests && (
+              <tr>
+                <TableCell><Hotkey>g</Hotkey> + <Hotkey>r</Hotkey></TableCell>
+                <TableCell><FormattedMessage id='keyboard_shortcuts.requests' defaultMessage='to open follow requests list' /></TableCell>
+              </tr>
+            )}
             <tr>
-              <td><kbd>g</kbd> + <kbd>r</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.requests' defaultMessage='to open follow requests list' /></td>
-            </tr>
-            <tr>
-              <td><kbd>?</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.legend' defaultMessage='to display this legend' /></td>
+              <TableCell><Hotkey>?</Hotkey></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.legend' defaultMessage='to display this legend' /></TableCell>
             </tr>
           </tbody>
         </table>

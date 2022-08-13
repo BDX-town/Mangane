@@ -100,7 +100,6 @@ manageTranslations({
   },
 });
 
-
 // Check variable interpolations and print error messages if variables are
 // used in translations which are not used in the default message.
 /* eslint-disable no-console */
@@ -109,23 +108,23 @@ function findVariablesinAST(tree) {
   const result = new Set();
   tree.forEach((element) => {
     switch (element.type) {
-    case parser.TYPE.argument:
-    case parser.TYPE.number:
-      result.add(element.value);
-      break;
-    case parser.TYPE.plural:
-      result.add(element.value);
-      Object.values(element.options)
-        .map(option => option.value)
-        .forEach(subtree =>
-          findVariablesinAST(subtree)
-            .forEach(variable => result.add(variable)));
-      break;
-    case parser.TYPE.literal:
-      break;
-    default:
-      console.log('unhandled element=', element);
-      break;
+      case parser.TYPE.argument:
+      case parser.TYPE.number:
+        result.add(element.value);
+        break;
+      case parser.TYPE.plural:
+        result.add(element.value);
+        Object.values(element.options)
+          .map(option => option.value)
+          .forEach(subtree =>
+            findVariablesinAST(subtree)
+              .forEach(variable => result.add(variable)));
+        break;
+      case parser.TYPE.literal:
+        break;
+      default:
+        console.log('unhandled element=', element);
+        break;
     }
   });
   return result;

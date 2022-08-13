@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import Avatar from 'soapbox/components/avatar';
-import DisplayName from 'soapbox/components/display_name';
+import DisplayName from 'soapbox/components/display-name';
 import Icon from 'soapbox/components/icon';
 import Permalink from 'soapbox/components/permalink';
 import { useAppSelector } from 'soapbox/hooks';
@@ -51,7 +51,7 @@ const Account: React.FC<IAccount> = ({ accountId }) => {
             date: formattedBirthday,
           })}
         >
-          <Icon src={require('@tabler/icons/icons/ballon.svg')} />
+          <Icon src={require('@tabler/icons/ballon.svg')} />
           {formattedBirthday}
         </div>
       </div>

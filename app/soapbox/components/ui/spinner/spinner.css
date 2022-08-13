@@ -1,9 +1,9 @@
-
 /**
  * iOS style loading spinner.
  * Adapted from: https://loading.io/css/
  * With some help scaling it: https://signalvnoise.com/posts/2577-loading-spinner-animation-using-css-and-webkit
  */
+
 .spinner {
   @apply inline-block relative w-20 h-20;
 }
@@ -14,7 +14,7 @@
 }
 
 .spinner > div::after {
-  @apply block absolute rounded-full bg-gray-600;
+  @apply block absolute rounded-full bg-gray-700 dark:bg-gray-400;
   content: ' ';
   top: 3.75%;
   left: 46.25%;

@@ -19,11 +19,6 @@
     border-top: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
     padding: 5px;
 
-    .autosuggest-textarea__suggestions {
-      top: auto;
-      bottom: 100%;
-    }
-
     input.search__input {
       border-radius: 6px;
     }
@@ -88,7 +83,7 @@
   }
 
   &__content {
-    @apply flex flex-1 flex-col overflow-hidden bg-white dark:bg-slate-800;
+    @apply flex flex-1 flex-col overflow-hidden bg-white dark:bg-gray-800;
 
     > div {
       @apply max-h-full;
@@ -104,25 +99,20 @@
   }
 
   .audio-toggle .react-toggle-thumb {
-    height: 14px;
-    width: 14px;
-    border: 1px solid var(--brand-color--med);
+    @apply w-3.5 h-3.5 border border-solid border-primary-400;
   }
 
   .audio-toggle .react-toggle {
-    height: 16px;
-    top: 4px;
+    @apply top-1;
   }
 
   .audio-toggle .react-toggle-track {
-    height: 16px;
-    width: 34px;
-    background-color: var(--accent-color);
+    @apply h-4 w-8 bg-accent-500;
   }
 
   .audio-toggle .react-toggle-track-check {
-    left: 2px;
-    bottom: 5px;
+    left: 4px;
+    bottom: 0;
   }
 
   .react-toggle--checked .react-toggle-thumb {
@@ -130,8 +120,8 @@
   }
 
   .audio-toggle .react-toggle-track-x {
-    right: 8px;
-    bottom: 5px;
+    right: 5px;
+    bottom: 0;
   }
 
   .fa {
@@ -149,7 +139,7 @@
   display: flex;
 
   &__bubble {
-    @apply px-2.5 py-1 rounded-lg bg-primary-50 dark:bg-slate-700;
+    @apply px-2.5 py-1 rounded-lg bg-primary-50 dark:bg-gray-700;
     max-width: 70%;
     text-overflow: ellipsis;
     overflow-wrap: break-word;
@@ -312,83 +302,8 @@
   }
 }
 
-.ui--chatroom {
-  padding-bottom: 0;
-
-  .columns-area__panels__main .columns-area .column {
-    height: calc(100vh - 100px);
-    box-sizing: border-box;
-    overflow: hidden;
-
-    @media (max-width: 630px) {
-      height: calc(100vh - 50px);
-    }
-  }
-
-  .page {
-    .chat-box {
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      flex: 1;
-      border-radius: 0 0 10px 10px;
-
-      &__actions textarea {
-        padding: 10px 40px 10px 10px;
-      }
-    }
-  }
-
-  @media (max-width: 630px) {
-    .columns-area__panels__main .columns-area {
-      padding: 0;
-    }
-
-    .columns-area__panels__main {
-      padding: 0;
-      max-width: none;
-    }
-
-    .columns-area .column {
-      border-radius: 0;
-    }
-
-    .page {
-      .chat-messages {
-        margin-bottom: 60px;
-      }
-
-      .chat-box {
-        border-radius: 0;
-        border: 2px solid var(--foreground-color);
-        margin-bottom: var(--thumb-navigation-height);
-
-        &__actions {
-          width: 100%;
-          padding: 0;
-          position: fixed;
-          bottom: 60px;
-          left: 0;
-          z-index: 1;
-
-          textarea {
-            height: 4em;
-            border-radius: 0;
-          }
-        }
-      }
-    }
-  }
-}
-
 @media (max-width: 630px) {
   .chat-panes {
-    display: none;
-  }
-}
-
-@media (min-width: 1190px) {
-  .tabs-bar .tabs-bar__link--chats {
     display: none;
   }
 }

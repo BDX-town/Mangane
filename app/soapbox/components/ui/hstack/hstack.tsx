@@ -1,9 +1,12 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { forwardRef } from 'react';
 
 const justifyContentOptions = {
   between: 'justify-between',
   center: 'justify-center',
+  start: 'justify-start',
+  end: 'justify-end',
+  around: 'justify-around',
 };
 
 const alignItemsOptions = {
@@ -21,6 +24,7 @@ const spaces = {
   3: 'space-x-3',
   4: 'space-x-4',
   6: 'space-x-6',
+  8: 'space-x-8',
 };
 
 interface IHStack {
@@ -28,10 +32,12 @@ interface IHStack {
   alignItems?: 'top' | 'bottom' | 'center' | 'start',
   /** Extra class names on the <div> element. */
   className?: string,
+  /** Children */
+  children?: React.ReactNode,
   /** Horizontal alignment of children. */
-  justifyContent?: 'between' | 'center',
+  justifyContent?: 'between' | 'center' | 'start' | 'end' | 'around',
   /** Size of the gap between elements. */
-  space?: 0.5 | 1 | 1.5 | 2 | 3 | 4 | 6,
+  space?: 0.5 | 1 | 1.5 | 2 | 3 | 4 | 6 | 8,
   /** Whether to let the flexbox grow. */
   grow?: boolean,
   /** Extra CSS styles for the <div> */
@@ -39,12 +45,13 @@ interface IHStack {
 }
 
 /** Horizontal row of child elements. */
-const HStack: React.FC<IHStack> = (props) => {
+const HStack = forwardRef<HTMLDivElement, IHStack>((props, ref) => {
   const { space, alignItems, grow, justifyContent, className, ...filteredProps } = props;
 
   return (
     <div
       {...filteredProps}
+      ref={ref}
       className={classNames('flex', {
         // @ts-ignore
         [alignItemsOptions[alignItems]]: typeof alignItems !== 'undefined',
@@ -56,6 +63,6 @@ const HStack: React.FC<IHStack> = (props) => {
       }, className)}
     />
   );
-};
+});
 
 export default HStack;

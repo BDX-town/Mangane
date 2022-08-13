@@ -1001,7 +1001,7 @@
         "id": "reply_mentions.reply_empty"
       },
       {
-        "defaultMessage": "Replying to {accounts}{more}",
+        "defaultMessage": "<hover>Replying to</hover> {accounts}{more}",
         "id": "reply_mentions.reply"
       },
       {
@@ -2411,7 +2411,7 @@
         "id": "intervals.full.days"
       }
     ],
-    "path": "app/soapbox/features/compose/components/poll_form.json"
+    "path": "app/soapbox/features/compose/components/poll-form.json"
   },
   {
     "descriptors": [
@@ -2470,7 +2470,7 @@
         "id": "reply_mentions.reply_empty"
       },
       {
-        "defaultMessage": "Replying to {accounts}{more}",
+        "defaultMessage": "<hover>Replying to</hover> {accounts}{more}",
         "id": "reply_mentions.reply"
       },
       {
@@ -3793,7 +3793,7 @@
         "id": "column.home"
       },
       {
-        "defaultMessage": "Your home timeline is empty! Visit {public} to get started and meet other users.",
+        "defaultMessage": "Or you can visit {public} to get started and meet other users.",
         "id": "empty_column.home"
       },
       {
@@ -4318,7 +4318,7 @@
       },
       {
         "defaultMessage": "{name} sent you a message",
-        "id": "notification.chat_mention"
+        "id": "notification.pleroma:chat_mention"
       },
       {
         "defaultMessage": "{name} reacted to your post",
@@ -5609,7 +5609,7 @@
         "id": "reply_indicator.cancel"
       },
       {
-        "defaultMessage": "Replying to {accounts}{more}",
+        "defaultMessage": "<hover>Replying to</hover> {accounts}{more}",
         "id": "reply_mentions.reply"
       },
       {
@@ -5747,7 +5747,7 @@
         "id": "confirmations.block.message"
       },
       {
-        "defaultMessage": "One or more posts is unavailable.",
+        "defaultMessage": "One or more posts are unavailable.",
         "id": "statuses.tombstone"
       }
     ],
@@ -6599,7 +6599,7 @@
         "id": "account.register"
       }
     ],
-    "path": "app/soapbox/features/ui/components/sign_up_panel.json"
+    "path": "app/soapbox/features/ui/components/panels/sign-up-panel.json"
   },
   {
     "descriptors": [

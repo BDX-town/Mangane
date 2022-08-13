@@ -67,7 +67,7 @@ const mapStateToProps = state => ({
   frequentlyUsedEmojis: getFrequentlyUsedEmojis(state),
 });
 
-const mapDispatchToProps = (dispatch, { onPickEmoji }) => ({
+const mapDispatchToProps = (dispatch, props) => ({
   onSkinTone: skinTone => {
     dispatch(changeSetting(['skinTone'], skinTone));
   },
@@ -75,8 +75,8 @@ const mapDispatchToProps = (dispatch, { onPickEmoji }) => ({
   onPickEmoji: emoji => {
     dispatch(useEmoji(emoji)); // eslint-disable-line react-hooks/rules-of-hooks
 
-    if (onPickEmoji) {
-      onPickEmoji(emoji);
+    if (props.onPickEmoji) {
+      props.onPickEmoji(emoji);
     }
   },
 });

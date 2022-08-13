@@ -54,16 +54,6 @@ body {
       vertical-align: middle;
       margin: 20px;
 
-      &__illustration {
-        img {
-          display: block;
-          max-width: 470px;
-          width: 100%;
-          height: auto;
-          margin-top: -120px;
-        }
-      }
-
       h1 {
         font-size: 20px;
         line-height: 28px;
@@ -77,17 +67,6 @@ body {
 // will cause severe performance degradation on Safari.
 div[tabindex="-1"]:focus {
   outline: 0;
-}
-
-.visuallyhidden {
-  border: 0 !important;
-  clip: rect(1px, 1px, 1px, 1px) !important;
-  font-size: 1px !important;
-  height: 1px !important;
-  overflow: hidden !important;
-  padding: 0 !important;
-  position: absolute !important;
-  width: 1px !important;
 }
 
 ::selection {
@@ -121,20 +100,15 @@ noscript {
 }
 
 .floating-link {
-  width: 100%;
-  height: 100%;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  position: absolute;
-  z-index: 201;
-  background: transparent;
-  border: 0;
-  margin: 0;
-  padding: 0;
+  @apply w-full h-full inset-0 absolute z-10;
 }
 
 .greentext {
   color: #789922;
+}
+
+// Virtuoso empty placeholder fix.
+// https://gitlab.com/petyosi/soapbox-fe/-/commit/1e22c39934b60e5e186de804060ecfdf1955b506
+div[data-viewport-type="window"] {
+  position: static !important;
 }

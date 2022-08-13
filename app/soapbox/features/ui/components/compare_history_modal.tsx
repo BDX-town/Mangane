@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
 
 import { fetchHistory } from 'soapbox/actions/history';
-import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
+import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import { HStack, Modal, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
@@ -36,14 +36,12 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
     body = <Spinner />;
   } else {
     body = (
-      <div className='divide-y divide-solid divide-gray-200 dark:divide-slate-700'>
+      <div className='divide-y divide-solid divide-gray-200 dark:divide-gray-800'>
         {versions?.map((version) => {
           const content = { __html: version.contentHtml };
           const spoilerContent = { __html: version.spoilerHtml };
 
           const poll = typeof version.poll !== 'string' && version.poll;
-
-          console.log(version.toJS());
 
           return (
             <div className='flex flex-col py-2 first:pt-0 last:pb-0'>
@@ -77,10 +75,7 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
               )}
 
               {version.media_attachments.size > 0 && (
-                <AttachmentThumbs
-                  compact
-                  media={version.media_attachments}
-                />
+                <AttachmentThumbs media={version.media_attachments} />
               )}
 
               <Text align='right' tag='span' theme='muted' size='sm'>

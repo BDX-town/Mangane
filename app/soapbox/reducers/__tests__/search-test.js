@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 
 import {
   SEARCH_CHANGE,
@@ -10,14 +10,25 @@ import reducer from '../search';
 
 describe('search reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap({
+    expect(reducer(undefined, {}).toJS()).toEqual({
       value: '',
       submitted: false,
       submittedValue: '',
       hidden: false,
-      results: ImmutableMap(),
+      results: {
+        accounts: [],
+        statuses: [],
+        hashtags: [],
+        accountsHasMore: false,
+        statusesHasMore: false,
+        hashtagsHasMore: false,
+        accountsLoaded: false,
+        statusesLoaded: false,
+        hashtagsLoaded: false,
+      },
       filter: 'accounts',
-    }));
+      accountId: null,
+    });
   });
 
   describe('SEARCH_CHANGE', () => {
@@ -30,42 +41,55 @@ describe('search reducer', () => {
 
   describe('SEARCH_CLEAR', () => {
     it('resets the state', () => {
-      const state = ImmutableMap({
+      const state = ImmutableRecord({
         value: 'hello world',
         submitted: true,
         submittedValue: 'hello world',
         hidden: false,
-        results: ImmutableMap(),
+        results: ImmutableRecord({})(),
         filter: 'statuses',
-      });
+      })();
 
       const action = { type: SEARCH_CLEAR };
 
-      const expected = ImmutableMap({
+      const expected = {
         value: '',
         submitted: false,
         submittedValue: '',
         hidden: false,
-        results: ImmutableMap(),
+        results: {
+          accounts: [],
+          statuses: [],
+          hashtags: [],
+          accountsHasMore: false,
+          statusesHasMore: false,
+          hashtagsHasMore: false,
+          accountsLoaded: false,
+          statusesLoaded: false,
+          hashtagsLoaded: false,
+        },
         filter: 'accounts',
-      });
+        accountId: null,
+      };
 
-      expect(reducer(state, action)).toEqual(expected);
+      expect(reducer(state, action).toJS()).toEqual(expected);
     });
   });
 
   describe(SEARCH_EXPAND_SUCCESS, () => {
     it('imports hashtags as maps', () => {
-      const state = ImmutableMap({
+      const state = ImmutableRecord({
         value: 'artist',
         submitted: true,
         submittedValue: 'artist',
         hidden: false,
-        results: ImmutableMap({
+        results: ImmutableRecord({
           hashtags: ImmutableList(),
-        }),
+          hashtagsHasMore: false,
+          hashtagsLoaded: true,
+        })(),
         filter: 'hashtags',
-      });
+      })();
 
       const action = {
         type: SEARCH_EXPAND_SUCCESS,
@@ -82,24 +106,26 @@ describe('search reducer', () => {
         searchType: 'hashtags',
       };
 
-      const expected = ImmutableMap({
+      const expected = {
         value: 'artist',
         submitted: true,
         submittedValue: 'artist',
         hidden: false,
-        results: ImmutableMap({
-          hashtags: fromJS([{
-            name: 'artist',
-            url: 'https://gleasonator.com/tags/artist',
-            history: [],
-          }]),
+        results: {
+          hashtags: [
+            {
+              name: 'artist',
+              url: 'https://gleasonator.com/tags/artist',
+              history: [],
+            },
+          ],
           hashtagsHasMore: false,
           hashtagsLoaded: true,
-        }),
+        },
         filter: 'hashtags',
-      });
+      };
 
-      expect(reducer(state, action)).toEqual(expected);
+      expect(reducer(state, action).toJS()).toEqual(expected);
     });
   });
 });

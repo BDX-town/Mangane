@@ -2,12 +2,12 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Avatar from 'soapbox/components/avatar';
-import DisplayName from 'soapbox/components/display_name';
+import DisplayName from 'soapbox/components/display-name';
 import Icon from 'soapbox/components/icon';
+import { Counter } from 'soapbox/components/ui';
 import emojify from 'soapbox/features/emoji/emoji';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetChat } from 'soapbox/selectors';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 import type { Account as AccountEntity, Chat as ChatEntity } from 'soapbox/types/entities';
 
@@ -20,7 +20,7 @@ interface IChat {
 
 const Chat: React.FC<IChat> = ({ chatId, onClick }) => {
   const chat = useAppSelector((state) => {
-    const chat = state.chats.getIn(['items', chatId]);
+    const chat = state.chats.items.get(chatId);
     return chat ? getChat(state, (chat as any).toJS()) : undefined;
   }) as ChatEntity;
 
@@ -44,7 +44,7 @@ const Chat: React.FC<IChat> = ({ chatId, onClick }) => {
           {attachment && (
             <Icon
               className='chat__attachment-icon'
-              src={image ? require('@tabler/icons/icons/photo.svg') : require('@tabler/icons/icons/paperclip.svg')}
+              src={image ? require('@tabler/icons/photo.svg') : require('@tabler/icons/paperclip.svg')}
             />
           )}
           {content ? (
@@ -59,7 +59,11 @@ const Chat: React.FC<IChat> = ({ chatId, onClick }) => {
               {image ? <FormattedMessage id='chats.attachment_image' defaultMessage='Image' /> : <FormattedMessage id='chats.attachment' defaultMessage='Attachment' />}
             </span>
           )}
-          {unreadCount > 0 && <i className='icon-with-badge__badge'>{shortNumberFormat(unreadCount)}</i>}
+          {unreadCount > 0 && (
+            <div className='absolute top-1 right-0'>
+              <Counter count={unreadCount} />
+            </div>
+          )}
         </div>
       </div>
     </div>

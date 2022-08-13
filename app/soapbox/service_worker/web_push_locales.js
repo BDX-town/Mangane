@@ -20,6 +20,12 @@ filenames.forEach(filename => {
     'notification.mention': full['notification.mention'] || '',
     'notification.reblog': full['notification.reblog'] || '',
     'notification.poll': full['notification.poll'] || '',
+    'notification.status': full['notification.status'] || '',
+    'notification.move': full['notification.move'] || '',
+    'notification.user_approved': full['notification.user_approved'] || '',
+
+    'notification.pleroma:chat_mention': full['notification.pleroma:chat_mention'] || '',
+    'notification.pleroma:emoji_reaction': full['notification.pleroma:emoji_reaction'] || '',
 
     'status.show_more': full['status.show_more'] || '',
     'status.reblog': full['status.reblog'] || '',

@@ -11,18 +11,6 @@ import {
 
 import type { Account, Status, EmbeddedEntity } from 'soapbox/types/entities';
 
-export type NotificationType =
-  'follow'
-  | 'follow_request'
-  | 'mention'
-  | 'reblog'
-  | 'favourite'
-  | 'poll'
-  | 'status'
-  | 'move'
-  | 'pleroma:chat_mention'
-  | 'pleroma:emoji_reaction';
-
 // https://docs.joinmastodon.org/entities/notification/
 export const NotificationRecord = ImmutableRecord({
   account: null as EmbeddedEntity<Account>,
@@ -32,7 +20,8 @@ export const NotificationRecord = ImmutableRecord({
   id: '',
   status: null as EmbeddedEntity<Status>,
   target: null as EmbeddedEntity<Account>, // move
-  type: '' as NotificationType | '',
+  type: '',
+  total_count: null as number | null, // grouped notifications
 });
 
 export const normalizeNotification = (notification: Record<string, any>) => {

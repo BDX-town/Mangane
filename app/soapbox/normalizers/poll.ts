@@ -29,6 +29,7 @@ export const PollRecord = ImmutableRecord({
   votes_count: 0,
   own_votes: null as ImmutableList<number> | null,
   voted: false,
+  pleroma: ImmutableMap<string, any>(),
 });
 
 // Sub-entity of Poll
@@ -47,8 +48,18 @@ const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
   });
 };
 
-const normalizePollOption = (option: ImmutableMap<string, any>, emojis: ImmutableList<ImmutableMap<string, string>> = ImmutableList()) => {
+const normalizePollOption = (option: ImmutableMap<string, any> | string, emojis: ImmutableList<ImmutableMap<string, string>> = ImmutableList()) => {
   const emojiMap = makeEmojiMap(emojis);
+
+  if (typeof option === 'string') {
+    const titleEmojified = emojify(escapeTextContentForBrowser(option), emojiMap);
+
+    return PollOptionRecord({
+      title: option,
+      title_emojified: titleEmojified,
+    });
+  }
+
   const titleEmojified = emojify(escapeTextContentForBrowser(option.get('title')), emojiMap);
 
   return PollOptionRecord(

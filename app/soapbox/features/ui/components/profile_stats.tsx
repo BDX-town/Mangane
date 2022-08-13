@@ -2,9 +2,8 @@ import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 import { NavLink } from 'react-router-dom';
 
+import { HStack, Text } from 'soapbox/components/ui';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
-
-import { HStack, Text } from '../../../components/ui';
 
 import type { Account } from 'soapbox/types/entities';
 
@@ -28,7 +27,7 @@ const ProfileStats: React.FC<IProfileStats> = ({ account, onClickHandler }) => {
 
   return (
     <HStack alignItems='center' space={3}>
-      <NavLink to={`/@${account.acct}/followers`} onClick={onClickHandler} title={intl.formatNumber(account.followers_count)}>
+      <NavLink to={`/@${account.acct}/followers`} onClick={onClickHandler} title={intl.formatNumber(account.followers_count)} className='hover:underline'>
         <HStack alignItems='center' space={1}>
           <Text theme='primary' weight='bold' size='sm'>
             {shortNumberFormat(account.followers_count)}
@@ -39,7 +38,7 @@ const ProfileStats: React.FC<IProfileStats> = ({ account, onClickHandler }) => {
         </HStack>
       </NavLink>
 
-      <NavLink to={`/@${account.acct}/following`} onClick={onClickHandler} title={intl.formatNumber(account.following_count)}>
+      <NavLink to={`/@${account.acct}/following`} onClick={onClickHandler} title={intl.formatNumber(account.following_count)} className='hover:underline'>
         <HStack alignItems='center' space={1}>
           <Text theme='primary' weight='bold' size='sm'>
             {shortNumberFormat(account.following_count)}

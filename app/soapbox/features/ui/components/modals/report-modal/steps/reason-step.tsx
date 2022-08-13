@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
@@ -8,7 +8,6 @@ import { fetchRules } from 'soapbox/actions/rules';
 import { FormGroup, Stack, Text, Textarea } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
-import type { Set as ImmutableSet } from 'immutable';
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 
 const messages = defineMessages({
@@ -31,10 +30,13 @@ const ReasonStep = (_props: IReasonStep) => {
   const [isNearBottom, setNearBottom] = useState<boolean>(false);
   const [isNearTop, setNearTop] = useState<boolean>(true);
 
-  const comment = useAppSelector((state) => state.reports.getIn(['new', 'comment']) as string);
+  const comment = useAppSelector((state) => state.reports.new.comment);
   const rules = useAppSelector((state) => state.rules.items);
-  const ruleIds = useAppSelector((state) => state.reports.getIn(['new', 'rule_ids']) as ImmutableSet<string>);
+  const ruleIds = useAppSelector((state) => state.reports.new.rule_ids);
   const shouldRequireRule = rules.length > 0;
+
+  const selectedStatusIds = useAppSelector((state) => state.reports.new.status_ids);
+  const isReportingAccount = useMemo(() => selectedStatusIds.size === 0, []);
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     dispatch(changeReportComment(event.target.value));
@@ -56,6 +58,16 @@ const ReasonStep = (_props: IReasonStep) => {
         setNearTop(false);
       }
     }
+  };
+
+  const filterRuleType = (rule: any) => {
+    const ruleTypeToFilter = isReportingAccount ? 'account' : 'content';
+
+    if (rule.rule_type) {
+      return rule.rule_type === ruleTypeToFilter;
+    }
+
+    return true;
   };
 
   useEffect(() => {
@@ -87,7 +99,7 @@ const ReasonStep = (_props: IReasonStep) => {
               onScroll={handleRulesScrolling}
               ref={rulesListRef}
             >
-              {rules.map((rule, idx) => {
+              {rules.filter(filterRuleType).map((rule, idx) => {
                 const isSelected = ruleIds.includes(String(rule.id));
 
                 return (
@@ -96,10 +108,10 @@ const ReasonStep = (_props: IReasonStep) => {
                     data-testid={`rule-${rule.id}`}
                     onClick={() => dispatch(changeReportRule(rule.id))}
                     className={classNames({
-                      'relative border border-solid border-gray-200 dark:border-slate-900/75 hover:bg-gray-50 dark:hover:bg-slate-900/50 text-left w-full p-4 flex justify-between items-center cursor-pointer': true,
+                      'relative border border-solid border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-primary-800/30 text-left w-full p-4 flex justify-between items-center cursor-pointer': true,
                       'rounded-tl-lg rounded-tr-lg': idx === 0,
                       'rounded-bl-lg rounded-br-lg': idx === rules.length - 1,
-                      'bg-gray-50 dark:bg-slate-900': isSelected,
+                      'bg-gray-200 hover:bg-gray-200 dark:bg-primary-800/50': isSelected,
                     })}
                   >
                     <Stack className='mr-3'>
@@ -120,7 +132,7 @@ const ReasonStep = (_props: IReasonStep) => {
                       value={rule.id}
                       checked={isSelected}
                       readOnly
-                      className='h-4 w-4 cursor-pointer text-primary-600 dark:text-primary-400 border-gray-300 rounded focus:ring-primary-500'
+                      className='border-2 dark:bg-gray-900 dark:border-gray-800 checked:bg-primary-500 dark:checked:bg-primary-500 focus:ring-primary-500 dark:focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded'
                     />
                   </button>
                 );
@@ -128,13 +140,13 @@ const ReasonStep = (_props: IReasonStep) => {
             </div>
 
             <div
-              className={classNames('inset-x-0 top-0 flex rounded-t-lg justify-center bg-gradient-to-b from-white pb-12 pt-8 pointer-events-none dark:from-slate-900 absolute transition-opacity duration-500', {
+              className={classNames('inset-x-0 top-0 flex rounded-t-lg justify-center bg-gradient-to-b from-white pb-12 pt-8 pointer-events-none dark:from-gray-900 absolute transition-opacity duration-500', {
                 'opacity-0': isNearTop,
                 'opacity-100': !isNearTop,
               })}
             />
             <div
-              className={classNames('inset-x-0 bottom-0 flex rounded-b-lg justify-center bg-gradient-to-t from-white pt-12 pb-8 pointer-events-none dark:from-slate-900 absolute transition-opacity duration-500', {
+              className={classNames('inset-x-0 bottom-0 flex rounded-b-lg justify-center bg-gradient-to-t from-white pt-12 pb-8 pointer-events-none dark:from-gray-900 absolute transition-opacity duration-500', {
                 'opacity-0': isNearBottom,
                 'opacity-100': !isNearBottom,
               })}

@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios';
 import classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -10,6 +9,8 @@ import StillImage from 'soapbox/components/still_image';
 import { Avatar, Button, Card, CardBody, Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useOwnAccount } from 'soapbox/hooks';
 import resizeImage from 'soapbox/utils/resize_image';
+
+import type { AxiosError } from 'axios';
 
 /** Default header filenames from various backends */
 const DEFAULT_HEADERS = [
@@ -74,7 +75,7 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
     <Card variant='rounded' size='xl'>
       <CardBody>
         <div>
-          <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 border-solid -mx-4 sm:-mx-10'>
+          <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
             <Stack space={2}>
               <Text size='2xl' align='center' weight='bold'>
                 <FormattedMessage id='onboarding.header.title' defaultMessage='Pick a cover image' />
@@ -88,11 +89,11 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
 
           <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
             <Stack space={10}>
-              <div className='border border-solid border-gray-200 rounded-lg'>
+              <div className='border border-solid border-gray-200 dark:border-gray-800 rounded-lg'>
                 {/* eslint-disable-next-line jsx-a11y/interactive-supports-focus */}
                 <div
                   role='button'
-                  className='relative h-24 bg-primary-100 rounded-t-md flex items-center justify-center'
+                  className='relative h-24 bg-gray-200 dark:bg-gray-800 rounded-t-md flex items-center justify-center'
                 >
                   {selectedFile || account?.header && (
                     <StillImage
@@ -104,7 +105,7 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
 
                   {isSubmitting && (
                     <div
-                      className='absolute inset-0 rounded-t-md flex justify-center items-center bg-white/80'
+                      className='absolute inset-0 rounded-t-md flex justify-center items-center bg-white/80 dark:bg-primary-900/80'
                     >
                       <Spinner withText={false} />
                     </div>
@@ -114,12 +115,12 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
                     onClick={openFilePicker}
                     type='button'
                     className={classNames({
-                      'absolute -top-3 -right-3 p-1 bg-primary-600 rounded-full ring-2 ring-white hover:bg-primary-700': true,
+                      'absolute -top-3 -right-3 p-1 bg-primary-600 rounded-full ring-2 ring-white dark:ring-primary-900 hover:bg-primary-700': true,
                       'opacity-50 pointer-events-none': isSubmitting,
                     })}
                     disabled={isSubmitting}
                   >
-                    <Icon src={require('@tabler/icons/icons/plus.svg')} className='text-white w-5 h-5' />
+                    <Icon src={require('@tabler/icons/plus.svg')} className='text-white w-5 h-5' />
                   </button>
 
                   <input type='file' className='hidden' ref={fileInput} onChange={handleFileChange} />
@@ -127,7 +128,7 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
 
                 <div className='flex flex-col px-4 pb-4'>
                   {account && (
-                    <Avatar src={account.avatar} size={64} className='ring-2 ring-white -mt-8 mb-2' />
+                    <Avatar src={account.avatar} size={64} className='ring-2 dark:ring-primary-800 ring-white -mt-8 mb-2' />
                   )}
 
                   <Text weight='bold' size='sm'>{account?.display_name}</Text>
@@ -141,7 +142,7 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
                 </Button>
 
                 {isDisabled && (
-                  <Button block theme='link' type='button' onClick={onNext}>
+                  <Button block theme='tertiary' type='button' onClick={onNext}>
                     <FormattedMessage id='onboarding.skip' defaultMessage='Skip for now' />
                   </Button>
                 )}

@@ -1,5 +1,4 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
-import { AnyAction } from 'redux';
 
 import {
   CHATS_FETCH_SUCCESS,
@@ -10,6 +9,8 @@ import {
   CHAT_MESSAGE_DELETE_SUCCESS,
 } from 'soapbox/actions/chats';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
+
+import type { AnyAction } from 'redux';
 
 type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
@@ -51,25 +52,25 @@ const replaceMessage = (state: State, chatId: string, oldId: string, newId: stri
 };
 
 export default function chatMessageLists(state = initialState, action: AnyAction) {
-  switch(action.type) {
-  case CHAT_MESSAGE_SEND_REQUEST:
-    return updateList(state, action.chatId, [action.uuid]);
-  case CHATS_FETCH_SUCCESS:
-  case CHATS_EXPAND_SUCCESS:
-    return importLastMessages(state, action.chats);
-  case STREAMING_CHAT_UPDATE:
-    if (action.chat.last_message &&
+  switch (action.type) {
+    case CHAT_MESSAGE_SEND_REQUEST:
+      return updateList(state, action.chatId, [action.uuid]);
+    case CHATS_FETCH_SUCCESS:
+    case CHATS_EXPAND_SUCCESS:
+      return importLastMessages(state, action.chats);
+    case STREAMING_CHAT_UPDATE:
+      if (action.chat.last_message &&
         action.chat.last_message.account_id !== action.me)
-      return importMessages(state, [action.chat.last_message]);
-    else
+        return importMessages(state, [action.chat.last_message]);
+      else
+        return state;
+    case CHAT_MESSAGES_FETCH_SUCCESS:
+      return updateList(state, action.chatId, action.chatMessages.map((chat: APIEntity) => chat.id));
+    case CHAT_MESSAGE_SEND_SUCCESS:
+      return replaceMessage(state, action.chatId, action.uuid, action.chatMessage.id);
+    case CHAT_MESSAGE_DELETE_SUCCESS:
+      return state.update(action.chatId, chat => chat!.delete(action.messageId));
+    default:
       return state;
-  case CHAT_MESSAGES_FETCH_SUCCESS:
-    return updateList(state, action.chatId, action.chatMessages.map((chat: APIEntity) => chat.id));
-  case CHAT_MESSAGE_SEND_SUCCESS:
-    return replaceMessage(state, action.chatId, action.uuid, action.chatMessage.id);
-  case CHAT_MESSAGE_DELETE_SUCCESS:
-    return state.update(action.chatId, chat => chat!.delete(action.messageId));
-  default:
-    return state;
   }
 }

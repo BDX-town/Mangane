@@ -18,14 +18,16 @@ let id = 0;
 export interface MenuItem {
   action?: React.EventHandler<React.KeyboardEvent | React.MouseEvent>,
   middleClick?: React.EventHandler<React.MouseEvent>,
-  text: string | JSX.Element,
+  text: string,
   href?: string,
   to?: string,
   newTab?: boolean,
   isLogout?: boolean,
-  icon: string,
+  icon?: string,
   count?: number,
   destructive?: boolean,
+  meta?: string,
+  active?: boolean,
 }
 
 export type Menu = Array<MenuItem | null>;
@@ -95,29 +97,29 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
     const index = items.indexOf(document.activeElement as any);
     let element = null;
 
-    switch(e.key) {
-    case 'ArrowDown':
-      element = items[index+1] || items[0];
-      break;
-    case 'ArrowUp':
-      element = items[index-1] || items[items.length-1];
-      break;
-    case 'Tab':
-      if (e.shiftKey) {
-        element = items[index-1] || items[items.length-1];
-      } else {
-        element = items[index+1] || items[0];
-      }
-      break;
-    case 'Home':
-      element = items[0];
-      break;
-    case 'End':
-      element = items[items.length-1];
-      break;
-    case 'Escape':
-      this.props.onClose();
-      break;
+    switch (e.key) {
+      case 'ArrowDown':
+        element = items[index + 1] || items[0];
+        break;
+      case 'ArrowUp':
+        element = items[index - 1] || items[items.length - 1];
+        break;
+      case 'Tab':
+        if (e.shiftKey) {
+          element = items[index - 1] || items[items.length - 1];
+        } else {
+          element = items[index + 1] || items[0];
+        }
+        break;
+      case 'Home':
+        element = items[0];
+        break;
+      case 'End':
+        element = items[items.length - 1];
+        break;
+      case 'Escape':
+        this.props.onClose();
+        break;
     }
 
     if (element) {
@@ -249,7 +251,7 @@ export interface IDropdown extends RouteComponentProps {
   ) => void,
   onClose?: (id: number) => void,
   dropdownPlacement?: string,
-  openDropdownId?: number,
+  openDropdownId?: number | null,
   openedViaKeyboard?: boolean,
   text?: string,
   onShiftClick?: React.EventHandler<React.MouseEvent | React.KeyboardEvent>,
@@ -312,22 +314,22 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
   }
 
   handleButtonKeyDown: React.EventHandler<React.KeyboardEvent> = (e) => {
-    switch(e.key) {
-    case ' ':
-    case 'Enter':
-      this.handleMouseDown(e);
-      break;
+    switch (e.key) {
+      case ' ':
+      case 'Enter':
+        this.handleMouseDown(e);
+        break;
     }
   }
 
   handleKeyPress: React.EventHandler<React.KeyboardEvent<HTMLButtonElement>> = (e) => {
-    switch(e.key) {
-    case ' ':
-    case 'Enter':
-      this.handleClick(e);
-      e.stopPropagation();
-      e.preventDefault();
-      break;
+    switch (e.key) {
+      case ' ':
+      case 'Enter':
+        this.handleClick(e);
+        e.stopPropagation();
+        e.preventDefault();
+        break;
     }
   }
 
@@ -364,7 +366,7 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
   }
 
   render() {
-    const { src = require('@tabler/icons/icons/dots.svg'), items, title, disabled, dropdownPlacement, openDropdownId, openedViaKeyboard = false, pressed, text, children } = this.props;
+    const { src = require('@tabler/icons/dots.svg'), items, title, disabled, dropdownPlacement, openDropdownId, openedViaKeyboard = false, pressed, text, children } = this.props;
     const open = this.state.id === openDropdownId;
 
     return (
@@ -382,8 +384,8 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
           <IconButton
             disabled={disabled}
             className={classNames({
-              'text-gray-400 hover:text-gray-600': true,
-              'text-gray-600': open,
+              'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': true,
+              'text-gray-700 dark:text-gray-500': open,
             })}
             title={title}
             src={src}

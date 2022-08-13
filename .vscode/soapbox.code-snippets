@@ -1,0 +1,58 @@
+{
+  // Place your soapbox-fe workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+  // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+  // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+  // used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+  // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+  // Placeholders with the same ids are connected.
+  // Example:
+  // "Print to console": {
+  // 	"scope": "javascript,typescript",
+  // 	"prefix": "log",
+  // 	"body": [
+  // 		"console.log('$1');",
+  // 		"$2"
+  // 	],
+  // 	"description": "Log output to console"
+  // }
+  "React component": {
+    "scope": "typescriptreact",
+    "prefix": ["component", "react component"],
+    "body": [
+      "import React from 'react';",
+      "",
+      "interface I${1:Component} {",
+      "}",
+      "",
+      "/** ${1:Component} component. */",
+      "const ${1:Component}: React.FC<I${1:Component}> = () => {",
+      "  return (",
+      "    <></>",
+      "  );",
+      "};",
+      "",
+      "export default ${1:Component};"
+    ],
+    "description": "React component"
+  },
+  "React component test": {
+    "scope": "typescriptreact",
+    "prefix": ["test", "component test", "react component test"],
+    "body": [
+      "import React from 'react';",
+      "",
+      "import { render, screen } from 'soapbox/jest/test-helpers';",
+      "",
+      "import ${1:Component} from '${2:..}';",
+      "",
+      "describe('<${1:Component} />', () => {",
+      "  it('renders', () => {",
+      "    render(<${1:Component} />);",
+      "",
+      "    expect(screen.getByTestId('${3:test}')).toBeInTheDocument();",
+      "  });",
+      "});"
+    ],
+    "description": "React component test"
+  }
+}

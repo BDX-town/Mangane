@@ -34,8 +34,8 @@ const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant, size 
     {...filteredProps}
     className={classNames({
       'space-y-4': true,
-      'bg-white dark:bg-slate-800 text-black dark:text-white shadow-lg dark:shadow-inset overflow-hidden': variant === 'rounded',
-      [sizes[size]]: true,
+      'bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-none overflow-hidden': variant === 'rounded',
+      [sizes[size]]: variant === 'rounded',
     }, className)}
   >
     {children}
@@ -47,7 +47,10 @@ interface ICardHeader {
   onBackClick?: (event: React.MouseEvent) => void
 }
 
-/** Typically holds a CardTitle. */
+/**
+ * Card header container with back button.
+ * Typically holds a CardTitle.
+ */
 const CardHeader: React.FC<ICardHeader> = ({ children, backHref, onBackClick }): JSX.Element => {
   const intl = useIntl();
 
@@ -60,8 +63,8 @@ const CardHeader: React.FC<ICardHeader> = ({ children, backHref, onBackClick }):
     const backAttributes = backHref ? { to: backHref } : { onClick: onBackClick };
 
     return (
-      <Comp {...backAttributes} className='mr-2 text-gray-900 dark:text-gray-100' aria-label={intl.formatMessage(messages.back)}>
-        <SvgIcon src={require('@tabler/icons/icons/arrow-left.svg')} className='h-6 w-6' />
+      <Comp {...backAttributes} className='mr-2 text-gray-900 dark:text-gray-100 focus:ring-primary-500 focus:ring-2' aria-label={intl.formatMessage(messages.back)}>
+        <SvgIcon src={require('@tabler/icons/arrow-left.svg')} className='h-6 w-6' />
         <span className='sr-only' data-testid='back-button'>{intl.formatMessage(messages.back)}</span>
       </Comp>
     );
@@ -77,7 +80,7 @@ const CardHeader: React.FC<ICardHeader> = ({ children, backHref, onBackClick }):
 };
 
 interface ICardTitle {
-  title: string | React.ReactNode
+  title: React.ReactNode
 }
 
 /** A card's title. */

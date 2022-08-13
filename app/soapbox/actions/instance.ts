@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { get } from 'lodash';
+import get from 'lodash/get';
 
 import KVStore from 'soapbox/storage/kv_store';
 import { RootState } from 'soapbox/store';
@@ -46,7 +46,7 @@ export const fetchInstance = createAsyncThunk<void, void, { state: RootState }>(
         dispatch(fetchNodeinfo());
       }
       return instance;
-    } catch(e) {
+    } catch (e) {
       return rejectWithValue(e);
     }
   },

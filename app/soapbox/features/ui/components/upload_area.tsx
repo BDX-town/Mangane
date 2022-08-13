@@ -20,12 +20,12 @@ const UploadArea: React.FC<IUploadArea> = ({ active, onClose }) => {
     const keyCode = e.keyCode;
 
     if (active) {
-      switch(keyCode) {
-      case 27:
-        e.preventDefault();
-        e.stopPropagation();
-        onClose();
-        break;
+      switch (keyCode) {
+        case 27:
+          e.preventDefault();
+          e.stopPropagation();
+          onClose();
+          break;
       }
     }
   };
@@ -55,7 +55,7 @@ const UploadArea: React.FC<IUploadArea> = ({ active, onClose }) => {
 
             <Stack space={3} justifyContent='center' alignItems='center'>
               <Icon
-                src={require('@tabler/icons/icons/cloud-upload.svg')}
+                src={require('@tabler/icons/cloud-upload.svg')}
                 className='w-12 h-12 text-white text-opacity-90'
               />
 

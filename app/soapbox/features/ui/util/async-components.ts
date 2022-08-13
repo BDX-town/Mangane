@@ -315,11 +315,11 @@ export function ChatIndex() {
 }
 
 export function ChatRoom() {
-  return import(/* webpackChunkName: "features/chats/chat_room" */'../../chats/chat_room');
+  return import(/* webpackChunkName: "features/chats/chat_room" */'../../chats/chat-room');
 }
 
 export function ChatPanes() {
-  return import(/* webpackChunkName: "features/chats/components/chat_panes" */'../../chats/components/chat_panes');
+  return import(/* webpackChunkName: "features/chats/components/chat_panes" */'../../chats/components/chat-panes');
 }
 
 export function ServerInfo() {
@@ -343,7 +343,11 @@ export function PromoPanel() {
 }
 
 export function SignUpPanel() {
-  return import(/* webpackChunkName: "features/ui" */'../components/sign_up_panel');
+  return import(/* webpackChunkName: "features/ui" */'../components/panels/sign-up-panel');
+}
+
+export function CtaBanner() {
+  return import(/* webpackChunkName: "features/ui" */'../components/cta-banner');
 }
 
 export function FundingPanel() {
@@ -399,7 +403,11 @@ export function ModalContainer() {
 }
 
 export function ProfileHoverCard() {
-  return import(/* webpackChunkName: "features/ui" */'soapbox/components/profile_hover_card');
+  return import(/* webpackChunkName: "features/ui" */'soapbox/components/profile-hover-card');
+}
+
+export function StatusHoverCard() {
+  return import(/* webpackChunkName: "features/ui" */'soapbox/components/status-hover-card');
 }
 
 export function CryptoDonate() {
@@ -447,7 +455,7 @@ export function WhoToFollowPanel() {
 }
 
 export function FollowRecommendations() {
-  return import(/* webpackChunkName: "features/follow_recommendations" */'../../follow_recommendations');
+  return import(/* webpackChunkName: "features/follow-recommendations" */'../../follow-recommendations');
 }
 
 export function Directory() {
@@ -479,7 +487,7 @@ export function CreateApp() {
 }
 
 export function SettingsStore() {
-  return import(/* webpackChunkName: "features/developers" */'../../developers/settings_store');
+  return import(/* webpackChunkName: "features/developers" */'../../developers/settings-store');
 }
 
 export function TestTimeline() {
@@ -490,6 +498,30 @@ export function DatePicker() {
   return import(/* webpackChunkName: "date_picker" */'../../birthdays/date_picker');
 }
 
+export function OnboardingWizard() {
+  return import(/* webpackChunkName: "features/onboarding" */'../../onboarding/onboarding-wizard');
+}
+
+export function WaitlistPage() {
+  return import(/* webpackChunkName: "features/verification" */'../../verification/waitlist_page');
+}
+
 export function CompareHistoryModal() {
   return import(/*webpackChunkName: "modals/compare_history_modal" */'../components/compare_history_modal');
+}
+
+export function AuthTokenList() {
+  return import(/* webpackChunkName: "features/auth_token_list" */'../../auth_token_list');
+}
+
+export function VerifySmsModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/verify-sms-modal');
+}
+
+export function FamiliarFollowersModal() {
+  return import(/*webpackChunkName: "modals/familiar_followers_modal" */'../components/familiar_followers_modal');
+}
+
+export function AnnouncementsPanel() {
+  return import(/* webpackChunkName: "features/announcements" */'../../../components/announcements/announcements-panel');
 }

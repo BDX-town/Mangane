@@ -1,6 +1,7 @@
 import api from '../api';
 
 import type { Rule } from 'soapbox/reducers/rules';
+import type { RootState } from 'soapbox/store';
 
 const RULES_FETCH_REQUEST = 'RULES_FETCH_REQUEST';
 const RULES_FETCH_SUCCESS = 'RULES_FETCH_SUCCESS';
@@ -16,7 +17,7 @@ type RulesFetchRequestSuccessAction = {
 
 export type RulesActions = RulesFetchRequestAction | RulesFetchRequestSuccessAction
 
-const fetchRules = () => (dispatch: React.Dispatch<RulesActions>, getState: any) => {
+const fetchRules = () => (dispatch: React.Dispatch<RulesActions>, getState: () => RootState) => {
   dispatch({ type: RULES_FETCH_REQUEST });
 
   return api(getState)

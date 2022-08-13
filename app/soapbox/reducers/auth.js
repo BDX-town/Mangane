@@ -1,5 +1,5 @@
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
-import { trim } from 'lodash';
+import trim from 'lodash/trim';
 
 import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
 import { FE_SUBDIRECTORY } from 'soapbox/build_config';
@@ -257,7 +257,6 @@ const importMastodonPreload = (state, data) => {
   });
 };
 
-
 const persistAuthAccount = account => {
   if (account && account.url) {
     const key = `authAccount:${account.url}`;
@@ -282,28 +281,28 @@ const deleteForbiddenToken = (state, error, token) => {
 };
 
 const reducer = (state, action) => {
-  switch(action.type) {
-  case AUTH_APP_CREATED:
-    return state.set('app', fromJS(action.app));
-  case AUTH_APP_AUTHORIZED:
-    return state.update('app', ImmutableMap(), app => app.merge(fromJS(action.token)));
-  case AUTH_LOGGED_IN:
-    return importToken(state, action.token);
-  case AUTH_LOGGED_OUT:
-    return deleteUser(state, action.account);
-  case VERIFY_CREDENTIALS_SUCCESS:
-    persistAuthAccount(action.account);
-    return importCredentials(state, action.token, action.account);
-  case VERIFY_CREDENTIALS_FAIL:
-    return deleteForbiddenToken(state, action.error, action.token);
-  case SWITCH_ACCOUNT:
-    return state.set('me', action.account.get('url'));
-  case ME_FETCH_SKIP:
-    return state.set('me', null);
-  case MASTODON_PRELOAD_IMPORT:
-    return importMastodonPreload(state, fromJS(action.data));
-  default:
-    return state;
+  switch (action.type) {
+    case AUTH_APP_CREATED:
+      return state.set('app', fromJS(action.app));
+    case AUTH_APP_AUTHORIZED:
+      return state.update('app', ImmutableMap(), app => app.merge(fromJS(action.token)));
+    case AUTH_LOGGED_IN:
+      return importToken(state, action.token);
+    case AUTH_LOGGED_OUT:
+      return deleteUser(state, action.account);
+    case VERIFY_CREDENTIALS_SUCCESS:
+      persistAuthAccount(action.account);
+      return importCredentials(state, action.token, action.account);
+    case VERIFY_CREDENTIALS_FAIL:
+      return deleteForbiddenToken(state, action.error, action.token);
+    case SWITCH_ACCOUNT:
+      return state.set('me', action.account.get('url'));
+    case ME_FETCH_SKIP:
+      return state.set('me', null);
+    case MASTODON_PRELOAD_IMPORT:
+      return importMastodonPreload(state, fromJS(action.data));
+    default:
+      return state;
   }
 };
 

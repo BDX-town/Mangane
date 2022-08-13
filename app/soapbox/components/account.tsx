@@ -9,7 +9,7 @@ import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
 import RelativeTimestamp from './relative_timestamp';
-import { Avatar, HStack, Icon, IconButton, Text } from './ui';
+import { Avatar, Emoji, HStack, Icon, IconButton, Stack, Text } from './ui';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
@@ -26,7 +26,7 @@ const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account }) => {
   };
 
   return (
-    <button className='w-4 h-4 flex-none' onClick={handleClick}>
+    <button className='w-4 h-4 flex-none focus:ring-primary-500 focus:ring-2 focus:ring-offset-2' onClick={handleClick}>
       <img src={account.favicon} alt='' title={account.domain} className='w-full max-h-full' />
     </button>
   );
@@ -47,7 +47,7 @@ interface IAccount {
   actionIcon?: string,
   actionTitle?: string,
   /** Override other actions for specificity like mute/unmute.  */
-  actionType?: 'muting' | 'blocking',
+  actionType?: 'muting' | 'blocking' | 'follow_request',
   avatarSize?: number,
   hidden?: boolean,
   hideActions?: boolean,
@@ -56,9 +56,13 @@ interface IAccount {
   showProfileHoverCard?: boolean,
   timestamp?: string | Date,
   timestampUrl?: string,
+  futureTimestamp?: boolean,
+  withAccountNote?: boolean,
   withDate?: boolean,
+  withLinkToProfile?: boolean,
   withRelationship?: boolean,
   showEdit?: boolean,
+  emoji?: string,
 }
 
 const Account = ({
@@ -75,9 +79,13 @@ const Account = ({
   showProfileHoverCard = true,
   timestamp,
   timestampUrl,
+  futureTimestamp = false,
+  withAccountNote = false,
   withDate = false,
+  withLinkToProfile = true,
   withRelationship = true,
   showEdit = false,
+  emoji,
 }: IAccount) => {
   const overflowRef = React.useRef<HTMLDivElement>(null);
   const actionRef = React.useRef<HTMLDivElement>(null);
@@ -109,7 +117,7 @@ const Account = ({
           src={actionIcon}
           title={actionTitle}
           onClick={handleAction}
-          className='bg-transparent text-gray-400 hover:text-gray-600'
+          className='bg-transparent text-gray-600 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-500'
           iconClassName='w-4 h-4'
         />
       );
@@ -150,15 +158,15 @@ const Account = ({
 
   if (withDate) timestamp = account.created_at;
 
-  const LinkEl: any = showProfileHoverCard ? Link : 'div';
+  const LinkEl: any = withLinkToProfile ? Link : 'div';
 
   return (
     <div data-testid='account' className='flex-shrink-0 group block w-full' ref={overflowRef}>
       <HStack alignItems={actionAlignment} justifyContent='between'>
-        <HStack alignItems='center' space={3} grow>
+        <HStack alignItems={withAccountNote ? 'top' : 'center'} space={3}>
           <ProfilePopper
             condition={showProfileHoverCard}
-            wrapper={(children) => <HoverRefWrapper accountId={account.id} inline>{children}</HoverRefWrapper>}
+            wrapper={(children) => <HoverRefWrapper className='relative' accountId={account.id} inline>{children}</HoverRefWrapper>}
           >
             <LinkEl
               to={`/@${account.acct}`}
@@ -166,6 +174,12 @@ const Account = ({
               onClick={(event: React.MouseEvent) => event.stopPropagation()}
             >
               <Avatar src={account.avatar} size={avatarSize} />
+              {emoji && (
+                <Emoji
+                  className='w-5 h-5 absolute -bottom-1.5 -right-1.5'
+                  emoji={emoji}
+                />
+              )}
             </LinkEl>
           </ProfilePopper>
 
@@ -192,35 +206,45 @@ const Account = ({
               </LinkEl>
             </ProfilePopper>
 
-            <HStack alignItems='center' space={1} style={style}>
-              <Text theme='muted' size='sm' truncate>@{username}</Text>
+            <Stack space={withAccountNote ? 1 : 0}>
+              <HStack alignItems='center' space={1} style={style}>
+                <Text theme='muted' size='sm' truncate>@{username}</Text>
 
-              {account.favicon && (
-                <InstanceFavicon account={account} />
+                {account.favicon && (
+                  <InstanceFavicon account={account} />
+                )}
+
+                {(timestamp) ? (
+                  <>
+                    <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+
+                    {timestampUrl ? (
+                      <Link to={timestampUrl} className='hover:underline'>
+                        <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
+                      </Link>
+                    ) : (
+                      <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
+                    )}
+                  </>
+                ) : null}
+
+                {showEdit ? (
+                  <>
+                    <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+
+                    <Icon className='h-5 w-5 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/pencil.svg')} />
+                  </>
+                ) : null}
+              </HStack>
+
+              {withAccountNote && (
+                <Text
+                  size='sm'
+                  dangerouslySetInnerHTML={{ __html: account.note_emojified }}
+                  className='mr-2'
+                />
               )}
-
-              {(timestamp) ? (
-                <>
-                  <Text tag='span' theme='muted' size='sm'>&middot;</Text>
-
-                  {timestampUrl ? (
-                    <Link to={timestampUrl} className='hover:underline'>
-                      <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' />
-                    </Link>
-                  ) : (
-                    <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' />
-                  )}
-                </>
-              ) : null}
-
-              {showEdit ? (
-                <>
-                  <Text tag='span' theme='muted' size='sm'>&middot;</Text>
-
-                  <Icon className='h-5 w-5 stroke-[1.35]' src={require('@tabler/icons/icons/pencil.svg')} />
-                </>
-              ) : null}
-            </HStack>
+            </Stack>
           </div>
         </HStack>
 

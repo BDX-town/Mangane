@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { fromJS, is } from 'immutable';
-import { throttle, debounce } from 'lodash';
+import debounce from 'lodash/debounce';
+import throttle from 'lodash/throttle';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
@@ -9,8 +10,8 @@ import { connect } from 'react-redux';
 import { getSettings } from 'soapbox/actions/settings';
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
+import { isPanoramic, isPortrait, minimumAspectRatio, maximumAspectRatio } from 'soapbox/utils/media_aspect_ratio';
 
-import { isPanoramic, isPortrait, minimumAspectRatio, maximumAspectRatio } from '../../utils/media_aspect_ratio';
 import { isFullscreen, requestFullscreen, exitFullscreen } from '../ui/util/fullscreen';
 
 const DEFAULT_HEIGHT = 300;
@@ -290,42 +291,42 @@ class Video extends React.PureComponent {
   handleKeyDown = e => {
     const frameTime = 1 / 25;
 
-    switch(e.key) {
-    case 'k':
-      e.preventDefault();
-      e.stopPropagation();
-      this.togglePlay();
-      break;
-    case 'm':
-      e.preventDefault();
-      e.stopPropagation();
-      this.toggleMute();
-      break;
-    case 'f':
-      e.preventDefault();
-      e.stopPropagation();
-      this.toggleFullscreen();
-      break;
-    case 'j':
-      e.preventDefault();
-      e.stopPropagation();
-      this.seekBy(-10);
-      break;
-    case 'l':
-      e.preventDefault();
-      e.stopPropagation();
-      this.seekBy(10);
-      break;
-    case ',':
-      e.preventDefault();
-      e.stopPropagation();
-      this.seekBy(-frameTime);
-      break;
-    case '.':
-      e.preventDefault();
-      e.stopPropagation();
-      this.seekBy(frameTime);
-      break;
+    switch (e.key) {
+      case 'k':
+        e.preventDefault();
+        e.stopPropagation();
+        this.togglePlay();
+        break;
+      case 'm':
+        e.preventDefault();
+        e.stopPropagation();
+        this.toggleMute();
+        break;
+      case 'f':
+        e.preventDefault();
+        e.stopPropagation();
+        this.toggleFullscreen();
+        break;
+      case 'j':
+        e.preventDefault();
+        e.stopPropagation();
+        this.seekBy(-10);
+        break;
+      case 'l':
+        e.preventDefault();
+        e.stopPropagation();
+        this.seekBy(10);
+        break;
+      case ',':
+        e.preventDefault();
+        e.stopPropagation();
+        this.seekBy(-frameTime);
+        break;
+      case '.':
+        e.preventDefault();
+        e.stopPropagation();
+        this.seekBy(frameTime);
+        break;
     }
 
     // If we are in fullscreen mode, we don't want any hotkeys
@@ -505,7 +506,7 @@ class Video extends React.PureComponent {
 
     if (inline && containerWidth) {
       width = containerWidth;
-      const minSize = containerWidth / (16/9);
+      const minSize = containerWidth / (16 / 9);
 
       if (isPanoramic(aspectRatio)) {
         height = Math.max(Math.floor(containerWidth / maximumAspectRatio), minSize);
@@ -588,8 +589,8 @@ class Video extends React.PureComponent {
 
           <div className='video-player__buttons-bar'>
             <div className='video-player__buttons left'>
-              <button type='button' title={intl.formatMessage(paused ? messages.play : messages.pause)} aria-label={intl.formatMessage(paused ? messages.play : messages.pause)} className='player-button' onClick={this.togglePlay} autoFocus={detailed}><Icon src={paused ? require('@tabler/icons/icons/player-play.svg') : require('@tabler/icons/icons/player-pause.svg')} /></button>
-              <button type='button' title={intl.formatMessage(muted ? messages.unmute : messages.mute)} aria-label={intl.formatMessage(muted ? messages.unmute : messages.mute)} className='player-button' onClick={this.toggleMute}><Icon src={muted ? require('@tabler/icons/icons/volume-3.svg') : require('@tabler/icons/icons/volume.svg')} /></button>
+              <button type='button' title={intl.formatMessage(paused ? messages.play : messages.pause)} aria-label={intl.formatMessage(paused ? messages.play : messages.pause)} className='player-button' onClick={this.togglePlay} autoFocus={detailed}><Icon src={paused ? require('@tabler/icons/player-play.svg') : require('@tabler/icons/player-pause.svg')} /></button>
+              <button type='button' title={intl.formatMessage(muted ? messages.unmute : messages.mute)} aria-label={intl.formatMessage(muted ? messages.unmute : messages.mute)} className='player-button' onClick={this.toggleMute}><Icon src={muted ? require('@tabler/icons/volume-3.svg') : require('@tabler/icons/volume.svg')} /></button>
 
               <div className={classNames('video-player__volume', { active: this.state.hovered })} onMouseDown={this.handleVolumeMouseDown} ref={this.setVolumeRef}>
                 <div className='video-player__volume__current' style={{ width: `${volume * 100}%` }} />
@@ -612,10 +613,10 @@ class Video extends React.PureComponent {
             </div>
 
             <div className='video-player__buttons right'>
-              {(sensitive && !onCloseVideo) && <button type='button' title={intl.formatMessage(messages.hide)} aria-label={intl.formatMessage(messages.hide)} className='player-button' onClick={this.toggleReveal}><Icon src={require('@tabler/icons/icons/eye-off.svg')} /></button>}
-              {(!fullscreen && onOpenVideo) && <button type='button' title={intl.formatMessage(messages.expand)} aria-label={intl.formatMessage(messages.expand)} className='player-button' onClick={this.handleOpenVideo}><Icon src={require('@tabler/icons/icons/maximize.svg')} /></button>}
-              {/* onCloseVideo && <button type='button' title={intl.formatMessage(messages.close)} aria-label={intl.formatMessage(messages.close)} className='player-button' onClick={this.handleCloseVideo}><Icon src={require('@tabler/icons/icons/x.svg')} /></button> */}
-              <button type='button' title={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} aria-label={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} className='player-button' onClick={this.toggleFullscreen}><Icon src={fullscreen ? require('@tabler/icons/icons/arrows-minimize.svg') : require('@tabler/icons/icons/arrows-maximize.svg')} /></button>
+              {(sensitive && !onCloseVideo) && <button type='button' title={intl.formatMessage(messages.hide)} aria-label={intl.formatMessage(messages.hide)} className='player-button' onClick={this.toggleReveal}><Icon src={require('@tabler/icons/eye-off.svg')} /></button>}
+              {(!fullscreen && onOpenVideo) && <button type='button' title={intl.formatMessage(messages.expand)} aria-label={intl.formatMessage(messages.expand)} className='player-button' onClick={this.handleOpenVideo}><Icon src={require('@tabler/icons/maximize.svg')} /></button>}
+              {/* onCloseVideo && <button type='button' title={intl.formatMessage(messages.close)} aria-label={intl.formatMessage(messages.close)} className='player-button' onClick={this.handleCloseVideo}><Icon src={require('@tabler/icons/x.svg')} /></button> */}
+              <button type='button' title={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} aria-label={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} className='player-button' onClick={this.toggleFullscreen}><Icon src={fullscreen ? require('@tabler/icons/arrows-minimize.svg') : require('@tabler/icons/arrows-maximize.svg')} /></button>
             </div>
           </div>
         </div>

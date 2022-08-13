@@ -74,7 +74,7 @@ const Streamfield: React.FC<IStreamfield> = ({
                 <IconButton
                   iconClassName='w-4 h-4'
                   className='bg-transparent text-gray-400 hover:text-gray-600'
-                  src={require('@tabler/icons/icons/x.svg')}
+                  src={require('@tabler/icons/x.svg')}
                   onClick={() => onRemoveItem(i)}
                   title={intl.formatMessage(messages.remove)}
                 />
@@ -86,10 +86,10 @@ const Streamfield: React.FC<IStreamfield> = ({
 
       {onAddItem && (
         <Button
-          icon={require('@tabler/icons/icons/plus.svg')}
+          icon={require('@tabler/icons/plus.svg')}
           onClick={onAddItem}
           disabled={values.length >= maxItems}
-          theme='ghost'
+          theme='secondary'
           block
         >
           {intl.formatMessage(messages.add)}

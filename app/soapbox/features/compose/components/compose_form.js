@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { get } from 'lodash';
+import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -8,19 +8,19 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { Link, withRouter } from 'react-router-dom';
 import { length } from 'stringz';
 
+import AutosuggestInput from 'soapbox/components/autosuggest_input';
+import AutosuggestTextarea from 'soapbox/components/autosuggest_textarea';
 import Icon from 'soapbox/components/icon';
+import { Button, Stack } from 'soapbox/components/ui';
+import { isMobile } from 'soapbox/is_mobile';
 
-import AutosuggestInput from '../../../components/autosuggest_input';
-import AutosuggestTextarea from '../../../components/autosuggest_textarea';
-import { Button } from '../../../components/ui';
-import { isMobile } from '../../../is_mobile';
+import PollForm from '../components/polls/poll-form';
 import ReplyMentions from '../components/reply_mentions';
 import UploadForm from '../components/upload_form';
 import Warning from '../components/warning';
 import EmojiPickerDropdown from '../containers/emoji_picker_dropdown_container';
 import MarkdownButtonContainer from '../containers/markdown_button_container';
 import PollButtonContainer from '../containers/poll_button_container';
-import PollFormContainer from '../containers/poll_form_container';
 import PrivacyDropdownContainer from '../containers/privacy_dropdown_container';
 import QuotedStatusContainer from '../containers/quoted_status_container';
 import ReplyIndicatorContainer from '../containers/reply_indicator_container';
@@ -38,6 +38,7 @@ const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u20
 
 const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },
+  pollPlaceholder: { id: 'compose_form.poll_placeholder', defaultMessage: 'Add a poll topic...' },
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Post' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
@@ -62,6 +63,7 @@ class ComposeForm extends ImmutablePureComponent {
     spoilerText: PropTypes.string,
     focusDate: PropTypes.instanceOf(Date),
     caretPosition: PropTypes.number,
+    hasPoll: PropTypes.bool,
     isSubmitting: PropTypes.bool,
     isChangingUpload: PropTypes.bool,
     isEditing: PropTypes.bool,
@@ -208,9 +210,9 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
   handleEmojiPick = (data) => {
-    const { text }     = this.props;
-    const position     = this.autosuggestTextarea.textarea.selectionStart;
-    const needsSpace   = data.custom && position > 0 && !allowedAroundShortCode.includes(text[position - 1]);
+    const { text }   = this.props;
+    const position   = this.autosuggestTextarea.textarea.selectionStart;
+    const needsSpace = data.custom && position > 0 && !allowedAroundShortCode.includes(text[position - 1]);
 
     this.props.onPickEmoji(position, data, needsSpace);
   }
@@ -229,8 +231,8 @@ class ComposeForm extends ImmutablePureComponent {
     const spoilerUpdated = this.props.spoiler !== prevProps.spoiler;
     if (spoilerUpdated) {
       switch (this.props.spoiler) {
-      case true: this.focusSpoilerInput(); break;
-      case false: this.focusTextarea(); break;
+        case true: this.focusSpoilerInput(); break;
+        case false: this.focusTextarea(); break;
       }
     }
   }
@@ -268,14 +270,14 @@ class ComposeForm extends ImmutablePureComponent {
     } else if (this.props.privacy === 'direct') {
       publishText = (
         <>
-          <Icon src={require('@tabler/icons/icons/mail.svg')} />
+          <Icon src={require('@tabler/icons/mail.svg')} />
           {intl.formatMessage(messages.message)}
         </>
       );
     } else if (this.props.privacy === 'private') {
       publishText = (
         <>
-          <Icon src={require('@tabler/icons/icons/lock.svg')} />
+          <Icon src={require('@tabler/icons/lock.svg')} />
           {intl.formatMessage(messages.publish)}
         </>
       );
@@ -288,7 +290,7 @@ class ComposeForm extends ImmutablePureComponent {
     }
 
     return (
-      <div className='w-full' ref={this.setForm} onClick={this.handleClick}>
+      <Stack className='w-full' space={1} ref={this.setForm} onClick={this.handleClick}>
         {scheduledStatusCount > 0 && (
           <Warning
             message={(
@@ -333,14 +335,14 @@ class ComposeForm extends ImmutablePureComponent {
             onSuggestionSelected={this.onSpoilerSuggestionSelected}
             searchTokens={[':']}
             id='cw-spoiler-input'
-            className='mb-2 border-none shadow-none px-0 py-2 text-base'
+            className='border-none shadow-none px-0 py-2 text-base'
             autoFocus
           />
         </div>
 
         <AutosuggestTextarea
           ref={(isModalOpen && shouldCondense) ? null : this.setAutosuggestTextarea}
-          placeholder={intl.formatMessage(messages.placeholder)}
+          placeholder={intl.formatMessage(this.props.hasPoll ? messages.pollPlaceholder : messages.placeholder)}
           disabled={disabled}
           value={this.props.text}
           onChange={this.handleChange}
@@ -359,7 +361,7 @@ class ComposeForm extends ImmutablePureComponent {
             !condensed &&
             <div className='compose-form__modifiers'>
               <UploadForm />
-              <PollFormContainer />
+              <PollForm />
               <ScheduleFormContainer />
             </div>
           }
@@ -393,7 +395,7 @@ class ComposeForm extends ImmutablePureComponent {
             <Button theme='primary' text={publishText} onClick={this.handleSubmit} disabled={disabledButton} />
           </div>
         </div>
-      </div>
+      </Stack>
     );
   }
 

@@ -8,8 +8,8 @@ const truncateFilename = (url: string, maxLength: number) => {
   if (filename.length <= maxLength) return filename;
 
   return [
-    filename.substr(0, maxLength/2),
-    filename.substr(filename.length - maxLength/2),
+    filename.substr(0, maxLength / 2),
+    filename.substr(filename.length - maxLength / 2),
   ].join('…');
 };
 
@@ -25,4 +25,30 @@ const formatBytes = (bytes: number, decimals: number = 2) => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 };
 
-export { formatBytes, truncateFilename };
+const getVideoDuration = (file: File): Promise<number> => {
+  const video = document.createElement('video');
+
+  const promise = new Promise<number>((resolve, reject) => {
+    video.addEventListener('loadedmetadata', () => {
+      // Chrome bug: https://bugs.chromium.org/p/chromium/issues/detail?id=642012
+      if (video.duration === Infinity) {
+        video.currentTime = Number.MAX_SAFE_INTEGER;
+        video.ontimeupdate = () => {
+          video.ontimeupdate = null;
+          resolve(video.duration);
+          video.currentTime = 0;
+        };
+      } else {
+        resolve(video.duration);
+      }
+    });
+
+    video.onerror = (event: any) => reject(event.target.error);
+  });
+
+  video.src = window.URL.createObjectURL(file);
+
+  return promise;
+};
+
+export { getVideoDuration, formatBytes, truncateFilename };

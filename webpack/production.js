@@ -29,6 +29,7 @@ module.exports = merge(sharedConfig, {
       logLevel: 'silent',
     }),
     new OfflinePlugin({
+      autoUpdate: true,
       caches: {
         main: [':rest:'],
         additional: [
@@ -84,36 +85,46 @@ module.exports = merge(sharedConfig, {
       ],
       ServiceWorker: {
         cacheName: 'soapbox',
-        entry: join(__dirname, '../app/soapbox/service_worker/entry.js'),
+        entry: join(__dirname, '../app/soapbox/service_worker/entry.ts'),
+        events: true,
         minify: true,
       },
       cacheMaps: [{
-        match: requestUrl => {
+        // NOTE: This function gets stringified by OfflinePlugin, so don't try
+        // moving it anywhere else or making it depend on anything outside it!
+        // https://github.com/NekR/offline-plugin/blob/master/docs/cache-maps.md
+        match: (url) => {
+          const { pathname } = url;
+
           const backendRoutes = [
+            '/.well-known',
+            '/activities',
+            '/admin',
             '/api',
-            '/pleroma',
-            '/nodeinfo',
-            '/socket',
-            '/oauth',
-            '/.well-known/webfinger',
-            '/static',
+            '/auth',
+            '/inbox',
             '/instance',
+            '/internal',
             '/main/ostatus',
+            '/manifest.json',
+            '/media',
+            '/nodeinfo',
+            '/oauth',
+            '/objects',
             '/ostatus_subscribe',
             '/pghero',
+            '/pleroma',
+            '/proxy',
+            '/relay',
             '/sidekiq',
-            '/open-source',
+            '/socket',
+            '/static',
+            '/unsubscribe',
           ];
 
-          const isBackendRoute = ({ pathname }) => {
-            if (pathname) {
-              return backendRoutes.some(pathname.startsWith);
-            } else {
-              return false;
-            }
-          };
-
-          return isBackendRoute(requestUrl) && requestUrl;
+          if (backendRoutes.some(path => pathname.startsWith(path)) || pathname.endsWith('/embed')) {
+            return url;
+          }
         },
         requestTypes: ['navigate'],
       }],

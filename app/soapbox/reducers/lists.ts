@@ -1,5 +1,4 @@
 import { Map as ImmutableMap } from 'immutable';
-import { AnyAction } from 'redux';
 
 import {
   LIST_FETCH_SUCCESS,
@@ -10,6 +9,8 @@ import {
   LIST_DELETE_SUCCESS,
 } from 'soapbox/actions/lists';
 import { normalizeList } from 'soapbox/normalizers';
+
+import type { AnyAction } from 'redux';
 
 type ListRecord = ReturnType<typeof normalizeList>;
 type APIEntity = Record<string, any>;
@@ -30,17 +31,17 @@ const importLists = (state: State, lists: APIEntities) => {
 };
 
 export default function lists(state: State = initialState, action: AnyAction) {
-  switch(action.type) {
-  case LIST_FETCH_SUCCESS:
-  case LIST_CREATE_SUCCESS:
-  case LIST_UPDATE_SUCCESS:
-    return importList(state, action.list);
-  case LISTS_FETCH_SUCCESS:
-    return importLists(state, action.lists);
-  case LIST_DELETE_SUCCESS:
-  case LIST_FETCH_FAIL:
-    return state.set(action.id, false);
-  default:
-    return state;
+  switch (action.type) {
+    case LIST_FETCH_SUCCESS:
+    case LIST_CREATE_SUCCESS:
+    case LIST_UPDATE_SUCCESS:
+      return importList(state, action.list);
+    case LISTS_FETCH_SUCCESS:
+      return importLists(state, action.lists);
+    case LIST_DELETE_SUCCESS:
+    case LIST_FETCH_FAIL:
+      return state.set(action.id, false);
+    default:
+      return state;
   }
 }

@@ -12,6 +12,7 @@ import admin from './admin';
 import admin_log from './admin_log';
 import alerts from './alerts';
 import aliases from './aliases';
+import announcements from './announcements';
 import auth from './auth';
 import backups from './backups';
 import chat_message_lists from './chat_message_lists';
@@ -29,7 +30,6 @@ import group_lists from './group_lists';
 import group_relationships from './group_relationships';
 import groups from './groups';
 import history from './history';
-import identity_proofs from './identity_proofs';
 import instance from './instance';
 import listAdder from './list_adder';
 import listEditor from './list_editor';
@@ -54,6 +54,7 @@ import security from './security';
 import settings from './settings';
 import sidebar from './sidebar';
 import soapbox from './soapbox';
+import status_hover_card from './status-hover-card';
 import status_lists from './status_lists';
 import statuses from './statuses';
 import suggestions from './suggestions';
@@ -86,7 +87,6 @@ const reducers = {
   search,
   notifications,
   custom_emojis,
-  identity_proofs,
   lists,
   listEditor,
   listAdder,
@@ -110,6 +110,7 @@ const reducers = {
   chat_messages,
   chat_message_lists,
   profile_hover_card,
+  status_hover_card,
   backups,
   admin_log,
   security,
@@ -122,6 +123,7 @@ const reducers = {
   onboarding,
   rules,
   history,
+  announcements,
 };
 
 // Build a default state from all reducers: it has the key and `undefined`
@@ -132,7 +134,6 @@ export const StateRecord = ImmutableRecord(
   }, {}),
 );
 
-// @ts-ignore: This type is fine but TS thinks it's wrong
 const appReducer = combineReducers(reducers, StateRecord);
 
 // Clear the state (mostly) when the user logs out
@@ -152,11 +153,11 @@ const logOut = (state: any = StateRecord()): ReturnType<typeof appReducer> => {
 };
 
 const rootReducer: typeof appReducer = (state, action) => {
-  switch(action.type) {
-  case AUTH_LOGGED_OUT:
-    return appReducer(logOut(state), action);
-  default:
-    return appReducer(state, action);
+  switch (action.type) {
+    case AUTH_LOGGED_OUT:
+      return appReducer(logOut(state), action);
+    default:
+      return appReducer(state, action);
   }
 };
 

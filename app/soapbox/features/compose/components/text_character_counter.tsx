@@ -11,9 +11,9 @@ const TextCharacterCounter: React.FC<ITextCharacterCounter> = ({ text, max }) =>
   const checkRemainingText = (diff: number) => {
     return (
       <span
-        className={classNames('text-sm font-semibold', {
-          'text-gray-400': diff >= 0,
-          'text-danger-600': diff < 0,
+        className={classNames('text-sm font-medium', {
+          'text-gray-700': diff >= 0,
+          'text-secondary-600': diff < 0,
         })}
       >
         {diff}

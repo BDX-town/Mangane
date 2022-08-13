@@ -1,6 +1,5 @@
 import { OrderedSet as ImmutableOrderedSet, is } from 'immutable';
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -8,8 +7,7 @@ import { fetchUsers } from 'soapbox/actions/admin';
 import compareId from 'soapbox/compare_id';
 import { Widget } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
-import { useAppSelector } from 'soapbox/hooks';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
   title: { id: 'admin.latest_accounts_panel.title', defaultMessage: 'Latest Accounts' },

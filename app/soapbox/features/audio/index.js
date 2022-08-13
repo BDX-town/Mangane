@@ -1,13 +1,12 @@
 import classNames from 'classnames';
-import { throttle } from 'lodash';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
+import throttle from 'lodash/throttle';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
-import { formatTime } from 'soapbox/features/video';
-import { getPointerPosition, fileNameFromURL } from 'soapbox/features/video';
+import { formatTime, getPointerPosition, fileNameFromURL } from 'soapbox/features/video';
 
 import Visualizer from './visualizer';
 
@@ -85,7 +84,7 @@ class Audio extends React.PureComponent {
 
   _setDimensions() {
     const width  = this.player.offsetWidth;
-    const height = this.props.fullscreen ? this.player.offsetHeight : (width / (16/9));
+    const height = this.props.fullscreen ? this.player.offsetHeight : (width / (16 / 9));
 
     if (this.props.cacheWidth) {
       this.props.cacheWidth(width);
@@ -312,6 +311,7 @@ class Audio extends React.PureComponent {
   }
 
   _initAudioContext() {
+    // eslint-disable-next-line compat/compat
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const context      = new AudioContext();
     const source       = context.createMediaElementSource(this.audio);
@@ -412,27 +412,27 @@ class Audio extends React.PureComponent {
   }
 
   handleKeyDown = e => {
-    switch(e.key) {
-    case 'k':
-      e.preventDefault();
-      e.stopPropagation();
-      this.togglePlay();
-      break;
-    case 'm':
-      e.preventDefault();
-      e.stopPropagation();
-      this.toggleMute();
-      break;
-    case 'j':
-      e.preventDefault();
-      e.stopPropagation();
-      this.seekBy(-10);
-      break;
-    case 'l':
-      e.preventDefault();
-      e.stopPropagation();
-      this.seekBy(10);
-      break;
+    switch (e.key) {
+      case 'k':
+        e.preventDefault();
+        e.stopPropagation();
+        this.togglePlay();
+        break;
+      case 'm':
+        e.preventDefault();
+        e.stopPropagation();
+        this.toggleMute();
+        break;
+      case 'j':
+        e.preventDefault();
+        e.stopPropagation();
+        this.seekBy(-10);
+        break;
+      case 'l':
+        e.preventDefault();
+        e.stopPropagation();
+        this.seekBy(10);
+        break;
     }
   }
 
@@ -492,8 +492,8 @@ class Audio extends React.PureComponent {
         <div className='video-player__controls active'>
           <div className='video-player__buttons-bar'>
             <div className='video-player__buttons left'>
-              <button type='button' title={intl.formatMessage(paused ? messages.play : messages.pause)} aria-label={intl.formatMessage(paused ? messages.play : messages.pause)} className='player-button' onClick={this.togglePlay}><Icon src={paused ? require('@tabler/icons/icons/player-play.svg') : require('@tabler/icons/icons/player-pause.svg')} /></button>
-              <button type='button' title={intl.formatMessage(muted ? messages.unmute : messages.mute)} aria-label={intl.formatMessage(muted ? messages.unmute : messages.mute)} className='player-button' onClick={this.toggleMute}><Icon src={muted ? require('@tabler/icons/icons/volume-3.svg') : require('@tabler/icons/icons/volume.svg')} /></button>
+              <button type='button' title={intl.formatMessage(paused ? messages.play : messages.pause)} aria-label={intl.formatMessage(paused ? messages.play : messages.pause)} className='player-button' onClick={this.togglePlay}><Icon src={paused ? require('@tabler/icons/player-play.svg') : require('@tabler/icons/player-pause.svg')} /></button>
+              <button type='button' title={intl.formatMessage(muted ? messages.unmute : messages.mute)} aria-label={intl.formatMessage(muted ? messages.unmute : messages.mute)} className='player-button' onClick={this.toggleMute}><Icon src={muted ? require('@tabler/icons/volume-3.svg') : require('@tabler/icons/volume.svg')} /></button>
 
               <div className={classNames('video-player__volume', { active: this.state.hovered })} ref={this.setVolumeRef} onMouseDown={this.handleVolumeMouseDown}>
                 <div className='video-player__volume__current' style={{ width: `${volume * 100}%`, backgroundColor: this._getAccentColor() }} />
@@ -523,7 +523,7 @@ class Audio extends React.PureComponent {
                 download
                 target='_blank'
               >
-                <Icon src={require('@tabler/icons/icons/download.svg')} />
+                <Icon src={require('@tabler/icons/download.svg')} />
               </a>
             </div>
           </div>

@@ -18,7 +18,7 @@ describe('<Registration />', () => {
         mock.onPost('/api/v1/pepe/accounts').reply(200, {});
         mock.onPost('/api/v1/apps').reply(200, {});
         mock.onPost('/oauth/token').reply(200, {});
-        mock.onPost('/api/v1/accounts/verify_credentials').reply(200, {});
+        mock.onGet('/api/v1/accounts/verify_credentials').reply(200, { id: '123' });
         mock.onGet('/api/v1/instance').reply(200, {});
       });
     });
@@ -62,6 +62,23 @@ describe('<Registration />', () => {
       });
 
       expect(screen.getByTestId('toast')).toHaveTextContent(/failed to register your account/i);
+    });
+  });
+
+  describe('validations', () => {
+    it('should undisable button with valid password', async() => {
+      render(<Registration />);
+
+      expect(screen.getByTestId('button')).toBeDisabled();
+      fireEvent.change(screen.getByTestId('password-input'), { target: { value: 'Password' } });
+      expect(screen.getByTestId('button')).not.toBeDisabled();
+    });
+
+    it('should disable button with invalid password', async() => {
+      render(<Registration />);
+
+      fireEvent.change(screen.getByTestId('password-input'), { target: { value: 'Passwor' } });
+      expect(screen.getByTestId('button')).toBeDisabled();
     });
   });
 });

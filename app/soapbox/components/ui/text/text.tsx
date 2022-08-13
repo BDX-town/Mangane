@@ -9,12 +9,13 @@ type TrackingSizes = 'normal' | 'wide'
 type TransformProperties = 'uppercase' | 'normal'
 type Families = 'sans' | 'mono'
 type Tags = 'abbr' | 'p' | 'span' | 'pre' | 'time' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label'
+type Directions = 'ltr' | 'rtl'
 
 const themes = {
   default: 'text-gray-900 dark:text-gray-100',
   danger: 'text-danger-600',
-  primary: 'text-primary-600 dark:text-primary-400',
-  muted: 'text-gray-500 dark:text-gray-400',
+  primary: 'text-primary-600 dark:text-accent-blue',
+  muted: 'text-gray-700 dark:text-gray-600',
   subtle: 'text-gray-400 dark:text-gray-500',
   success: 'text-success-600',
   inherit: 'text-inherit',
@@ -31,7 +32,7 @@ const weights = {
 const sizes = {
   xs: 'text-xs',
   sm: 'text-sm',
-  md: 'text-md',
+  md: 'text-base leading-5',
   lg: 'text-lg',
   xl: 'text-xl',
   '2xl': 'text-2xl',
@@ -64,6 +65,8 @@ interface IText extends Pick<React.HTMLAttributes<HTMLParagraphElement>, 'danger
   align?: Alignments,
   /** Extra class names for the outer element. */
   className?: string,
+  /** Text direction. */
+  direction?: Directions,
   /** Typeface of the text. */
   family?: Families,
   /** The "for" attribute specifies which form element a label is bound to. */
@@ -90,6 +93,7 @@ const Text: React.FC<IText> = React.forwardRef(
     const {
       align,
       className,
+      direction,
       family = 'sans',
       size = 'md',
       tag = 'p',
@@ -109,7 +113,10 @@ const Text: React.FC<IText> = React.forwardRef(
       <Comp
         {...filteredProps}
         ref={ref}
-        style={tag === 'abbr' ? { textDecoration: 'underline dotted' } : undefined}
+        style={{
+          textDecoration: tag === 'abbr' ? 'underline dotted' : undefined,
+          direction,
+        }}
         className={classNames({
           'cursor-default': tag === 'abbr',
           truncate: truncate,

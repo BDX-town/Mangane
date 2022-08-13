@@ -1,5 +1,4 @@
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
-import { AnyAction } from 'redux';
 
 import { ADMIN_CONFIG_UPDATE_REQUEST, ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
 import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
@@ -12,6 +11,8 @@ import {
   fetchInstance,
   fetchNodeinfo,
 } from '../actions/instance';
+
+import type { AnyAction } from 'redux';
 
 const initialState = normalizeInstance(ImmutableMap());
 
@@ -111,22 +112,22 @@ const handleInstanceFetchFail = (state: typeof initialState, error: Record<strin
 };
 
 export default function instance(state = initialState, action: AnyAction) {
-  switch(action.type) {
-  case PLEROMA_PRELOAD_IMPORT:
-    return preloadImport(state, action, '/api/v1/instance');
-  case rememberInstance.fulfilled.type:
-    return importInstance(state, ImmutableMap(fromJS(action.payload)));
-  case fetchInstance.fulfilled.type:
-    persistInstance(action.payload);
-    return importInstance(state, ImmutableMap(fromJS(action.payload)));
-  case fetchInstance.rejected.type:
-    return handleInstanceFetchFail(state, action.error);
-  case fetchNodeinfo.fulfilled.type:
-    return importNodeinfo(state, ImmutableMap(fromJS(action.payload)));
-  case ADMIN_CONFIG_UPDATE_REQUEST:
-  case ADMIN_CONFIG_UPDATE_SUCCESS:
-    return importConfigs(state, ImmutableList(fromJS(action.configs)));
-  default:
-    return state;
+  switch (action.type) {
+    case PLEROMA_PRELOAD_IMPORT:
+      return preloadImport(state, action, '/api/v1/instance');
+    case rememberInstance.fulfilled.type:
+      return importInstance(state, ImmutableMap(fromJS(action.payload)));
+    case fetchInstance.fulfilled.type:
+      persistInstance(action.payload);
+      return importInstance(state, ImmutableMap(fromJS(action.payload)));
+    case fetchInstance.rejected.type:
+      return handleInstanceFetchFail(state, action.error);
+    case fetchNodeinfo.fulfilled.type:
+      return importNodeinfo(state, ImmutableMap(fromJS(action.payload)));
+    case ADMIN_CONFIG_UPDATE_REQUEST:
+    case ADMIN_CONFIG_UPDATE_SUCCESS:
+      return importConfigs(state, ImmutableList(fromJS(action.configs)));
+    default:
+      return state;
   }
 }

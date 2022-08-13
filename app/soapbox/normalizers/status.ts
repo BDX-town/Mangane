@@ -19,7 +19,7 @@ import { normalizePoll } from 'soapbox/normalizers/poll';
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { Account, Attachment, Card, Emoji, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
 
-type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct';
+export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct';
 
 // https://docs.joinmastodon.org/entities/status/
 export const StatusRecord = ImmutableRecord({
@@ -144,6 +144,11 @@ const fixQuote = (status: ImmutableMap<string, any>) => {
   });
 };
 
+// Workaround for not yet implemented filtering from Mastodon 3.6
+const fixFiltered = (status: ImmutableMap<string, any>) => {
+  status.delete('filtered');
+};
+
 export const normalizeStatus = (status: Record<string, any>) => {
   return StatusRecord(
     ImmutableMap(fromJS(status)).withMutations(status => {
@@ -155,6 +160,7 @@ export const normalizeStatus = (status: Record<string, any>) => {
       fixMentionsOrder(status);
       addSelfMention(status);
       fixQuote(status);
+      fixFiltered(status);
     }),
   );
 };

@@ -15,7 +15,7 @@ const buildSearch = (data) => {
       (split ? string.split(/[-|_|\s]+/) : [string]).forEach((s) => {
         s = s.toLowerCase();
 
-        if (search.indexOf(s) === -1) {
+        if (!search.includes(s)) {
           search.push(s);
         }
       });
@@ -190,7 +190,7 @@ function getData(emoji, skin, set) {
 
 function uniq(arr) {
   return arr.reduce((acc, item) => {
-    if (acc.indexOf(item) === -1) {
+    if (!acc.includes(item)) {
       acc.push(item);
     }
     return acc;
@@ -201,7 +201,7 @@ function intersect(a, b) {
   const uniqA = uniq(a);
   const uniqB = uniq(b);
 
-  return uniqA.filter(item => uniqB.indexOf(item) >= 0);
+  return uniqA.filter(item => uniqB.includes(item));
 }
 
 function deepMerge(a, b) {

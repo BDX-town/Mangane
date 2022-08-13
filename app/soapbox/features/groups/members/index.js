@@ -1,4 +1,4 @@
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -18,8 +18,8 @@ import Column from '../../ui/components/column';
 
 const mapStateToProps = (state, { params: { id } }) => ({
   group: state.getIn(['groups', id]),
-  accountIds: state.getIn(['user_lists', 'groups', id, 'items']),
-  hasMore: !!state.getIn(['user_lists', 'groups', id, 'next']),
+  accountIds: state.user_lists.groups.get(id)?.items,
+  hasMore: !!state.user_lists.groups.get(id)?.next,
 });
 
 export default @connect(mapStateToProps)

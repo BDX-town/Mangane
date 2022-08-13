@@ -6,6 +6,8 @@ import { fetchCaptcha } from 'soapbox/actions/auth';
 import { Stack, Text, Input } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
+import type { AxiosResponse } from 'axios';
+
 const noOp = () => {};
 
 const messages = defineMessages({
@@ -30,7 +32,7 @@ const CaptchaField: React.FC<ICaptchaField> = ({
   onFetch = noOp,
   onFetchFail = noOp,
   onClick = noOp,
-  refreshInterval = 5*60*1000, // 5 minutes, Pleroma default
+  refreshInterval = 5 * 60 * 1000, // 5 minutes, Pleroma default
   idempotencyKey,
 }) => {
   const dispatch = useAppDispatch();
@@ -39,7 +41,7 @@ const CaptchaField: React.FC<ICaptchaField> = ({
   const [refresh, setRefresh] = useState<NodeJS.Timer | undefined>(undefined);
 
   const getCaptcha = () => {
-    dispatch(fetchCaptcha()).then(response => {
+    dispatch(fetchCaptcha()).then((response: AxiosResponse) => {
       const captcha = ImmutableMap<string, any>(response.data);
       setCaptcha(captcha);
       onFetch(captcha);
@@ -71,26 +73,26 @@ const CaptchaField: React.FC<ICaptchaField> = ({
     };
   }, [idempotencyKey]);
 
-  switch(captcha.get('type')) {
-  case 'native':
-    return (
-      <div>
-        <Text>
-          <FormattedMessage id='registration.captcha.hint' defaultMessage='Click the image to get a new captcha' />
-        </Text>
+  switch (captcha.get('type')) {
+    case 'native':
+      return (
+        <div>
+          <Text>
+            <FormattedMessage id='registration.captcha.hint' defaultMessage='Click the image to get a new captcha' />
+          </Text>
 
-        <NativeCaptchaField
-          captcha={captcha}
-          onChange={onChange}
-          onClick={onClick}
-          name={name}
-          value={value}
-        />
-      </div>
-    );
-  case 'none':
-  default:
-    return null;
+          <NativeCaptchaField
+            captcha={captcha}
+            onChange={onChange}
+            onClick={onClick}
+            name={name}
+            value={value}
+          />
+        </div>
+      );
+    case 'none':
+    default:
+      return null;
   }
 };
 

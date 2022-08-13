@@ -4,11 +4,10 @@ import { useHistory } from 'react-router-dom';
 
 import { fetchBackupCodes } from 'soapbox/actions/mfa';
 import snackbar from 'soapbox/actions/snackbar';
+import { Button, FormActions, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
-import { Button, FormActions, Spinner, Stack, Text } from '../../../components/ui';
-
-const  messages = defineMessages({
+const messages = defineMessages({
   mfaCancelButton: { id: 'column.mfa_cancel', defaultMessage: 'Cancel' },
   mfaSetupButton: { id: 'column.mfa_setup', defaultMessage: 'Proceed to Setup' },
   codesFail: { id: 'security.codes.fail', defaultMessage: 'Failed to fetch backup codes' },
@@ -37,12 +36,12 @@ const EnableOtpForm: React.FC<IEnableOtpForm> = ({ displayOtpForm, handleSetupPr
 
   return (
     <Stack space={4}>
-      <Stack space={2}>
+      <Stack space={4}>
         <Text theme='muted'>
           <FormattedMessage id='mfa.setup_warning' defaultMessage="Write these codes down or save them somewhere secure - otherwise you won't see them again. If you lose access to your 2FA app and recovery codes you'll be locked out of your account." />
         </Text>
 
-        <div className='bg-gray-100 dark:bg-slate-900/50 rounded-lg p-4'>
+        <div className='border-2 border-solid border-gray-200 dark:border-gray-800 rounded-lg p-4'>
           <Stack space={3}>
             <Text weight='medium' align='center'>
               <FormattedMessage id='mfa.setup_recoverycodes' defaultMessage='Recovery codes' />
@@ -66,7 +65,7 @@ const EnableOtpForm: React.FC<IEnableOtpForm> = ({ displayOtpForm, handleSetupPr
       {!displayOtpForm && (
         <FormActions>
           <Button
-            theme='ghost'
+            theme='tertiary'
             text={intl.formatMessage(messages.mfaCancelButton)}
             onClick={() => history.push('../auth/edit')}
           />

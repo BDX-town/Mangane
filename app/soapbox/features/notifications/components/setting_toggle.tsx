@@ -13,7 +13,6 @@ interface ISettingToggle {
   settingPath: string[],
   /** Callback when the setting is toggled. */
   onChange: (settingPath: string[], checked: boolean) => void,
-
 }
 
 /** Stateful toggle to change user settings. */

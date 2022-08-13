@@ -6,6 +6,7 @@ import {
   WhoToFollowPanel,
   TrendsPanel,
   SignUpPanel,
+  CtaBanner,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 
@@ -19,6 +20,12 @@ const DefaultPage: React.FC = ({ children }) => {
     <>
       <Layout.Main>
         {children}
+
+        {!me && (
+          <BundleContainer fetchComponent={CtaBanner}>
+            {Component => <Component key='cta-banner' />}
+          </BundleContainer>
+        )}
       </Layout.Main>
 
       <Layout.Aside>

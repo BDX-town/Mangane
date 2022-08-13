@@ -15,10 +15,10 @@ interface IReplyMentionsModal {
 }
 
 const ReplyMentionsModal: React.FC<IReplyMentionsModal> = ({ onClose }) => {
-  const status = useAppSelector<StatusEntity | null>(state => makeGetStatus()(state, { id: state.compose.get('in_reply_to') }));
+  const status = useAppSelector<StatusEntity | null>(state => makeGetStatus()(state, { id: state.compose.in_reply_to! }));
   const account = useAppSelector((state) => state.accounts.get(state.me));
 
-  const mentions = statusToMentionsAccountIdsArray(status, account);
+  const mentions = statusToMentionsAccountIdsArray(status!, account!);
   const author = (status?.account as AccountEntity).id;
 
   const onClickClose = () => {
@@ -29,9 +29,11 @@ const ReplyMentionsModal: React.FC<IReplyMentionsModal> = ({ onClose }) => {
     <Modal
       title={<FormattedMessage id='navigation_bar.in_reply_to' defaultMessage='In reply to' />}
       onClose={onClickClose}
+      closeIcon={require('@tabler/icons/arrow-left.svg')}
+      closePosition='left'
     >
       <div className='reply-mentions-modal__accounts'>
-        {mentions.map(accountId => <Account key={accountId} accountId={accountId} added author={author === accountId} />)}
+        {mentions.map(accountId => <Account key={accountId} accountId={accountId} author={author === accountId} />)}
       </div>
     </Modal>
   );

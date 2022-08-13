@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -18,7 +18,9 @@ interface IFooterLink {
 
 const FooterLink: React.FC<IFooterLink> = ({ children, className, ...rest }): JSX.Element => {
   return (
-    <Link className={classNames('text-gray-400 hover:text-gray-500 hover:underline', className)} {...rest}>{children}</Link>
+    <div>
+      <Link className={classNames('text-gray-700 dark:text-gray-600 hover:text-gray-800 dark:hover:text-gray-500 hover:underline', className)} {...rest}>{children}</Link>
+    </div>
   );
 };
 
@@ -27,17 +29,16 @@ const LinkFooter: React.FC = (): JSX.Element => {
   const features = useFeatures();
   const soapboxConfig = useSoapboxConfig();
 
-  const intl = useIntl();
   const dispatch = useDispatch();
 
   const onClickLogOut: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(logOut(intl));
+    dispatch(logOut());
     e.preventDefault();
   };
 
   return (
     <div className='space-y-2'>
-      <div className='flex flex-wrap items-center divide-x-dot'>
+      <div className='flex flex-wrap items-center divide-x-dot text-gray-600'>
         {account && <>
           {features.profileDirectory && (
             <FooterLink to='/directory'><FormattedMessage id='navigation_bar.profile_directory' defaultMessage='Profile directory' /></FooterLink>
@@ -56,11 +57,8 @@ const LinkFooter: React.FC = (): JSX.Element => {
           {account.locked && (
             <FooterLink to='/follow_requests'><FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' /></FooterLink>
           )}
-          {features.importAPI && (
+          {features.import && (
             <FooterLink to='/settings/import'><FormattedMessage id='navigation_bar.import_data' defaultMessage='Import data' /></FooterLink>
-          )}
-          {(features.federating && features.accountMoving) && (
-            <FooterLink to='/settings/migration'><FormattedMessage id='navigation_bar.account_migration' defaultMessage='Move account' /></FooterLink>
           )}
           <FooterLink to='/logout' onClick={onClickLogOut}><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></FooterLink>
         </>}

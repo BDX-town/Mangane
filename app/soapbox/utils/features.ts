@@ -51,6 +51,12 @@ export const TRUTHSOCIAL = 'TruthSocial';
  */
 export const SOAPBOX = 'soapbox';
 
+/**
+ * glitch-soc, fork of Mastodon with a number of experimental features.
+ * @see {@link https://glitch-soc.github.io/docs/}
+ */
+export const GLITCH = 'glitch';
+
 /** Parse features for the given instance */
 const getInstanceFeatures = (instance: Instance) => {
   const v = parseVersion(instance.version);
@@ -63,7 +69,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/pleroma/aliases
      * @see PATCH /api/v1/accounts/update_credentials
      */
-    accountAliasesAPI: v.software === PLEROMA,
+    accountAliases: v.software === PLEROMA,
 
     /**
      * The accounts API allows an acct instead of an ID.
@@ -111,7 +117,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Move followers to a different ActivityPub account.
      * @see POST /api/pleroma/move_account
      */
-    accountMoving: v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
+    accountMoving: v.software === PLEROMA && gte(v.version, '2.4.50'),
 
     /**
      * Ability to subscribe to notifications every time an account posts.
@@ -120,6 +126,7 @@ const getInstanceFeatures = (instance: Instance) => {
     accountNotifies: any([
       v.software === MASTODON && gte(v.compatVersion, '3.3.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
+      v.software === TRUTHSOCIAL,
     ]),
 
     /**
@@ -136,12 +143,31 @@ const getInstanceFeatures = (instance: Instance) => {
     accountWebsite: v.software === TRUTHSOCIAL,
 
     /**
+     * Can display announcements set by admins.
+     * @see GET /api/v1/announcements
+     * @see POST /api/v1/announcements/:id/dismiss
+     * @see {@link https://docs.joinmastodon.org/methods/announcements/}
+     */
+    announcements: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
+      v.software === PLEROMA && gte(v.version, '2.2.49'),
+    ]),
+
+    /**
+     * Can emoji react to announcements set by admins.
+     * @see PUT /api/v1/announcements/:id/reactions/:name
+     * @see DELETE /api/v1/announcements/:id/reactions/:name
+     * @see {@link https://docs.joinmastodon.org/methods/announcements/}
+     */
+    announcementsReactions: v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
+
+    /**
      * Set your birthday and view upcoming birthdays.
      * @see GET /api/v1/pleroma/birthdays
      * @see POST /api/v1/accounts
      * @see PATCH /api/v1/accounts/update_credentials
      */
-    birthdays: v.software === PLEROMA && gte(v.version, '2.4.50'),
+    birthdays: v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
 
     /** Whether people who blocked you are visible through the API. */
     blockersVisible: features.includes('blockers_visible'),
@@ -197,7 +223,10 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === PLEROMA && gte(v.version, '0.9.9'),
     ]),
 
-    editStatuses: v.software === MASTODON && gte(v.version, '3.5.0'),
+    editStatuses: any([
+      v.software === MASTODON && gte(v.version, '3.5.0'),
+      features.includes('editing'),
+    ]),
 
     /**
      * Soapbox email list.
@@ -245,16 +274,32 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /** Whether the accounts who favourited or emoji-reacted to a status can be viewed through the API. */
-    exposableReactions: features.includes('exposable_reactions'),
+    exposableReactions: any([
+      v.software === MASTODON,
+      v.software === TRUTHSOCIAL,
+      features.includes('exposable_reactions'),
+    ]),
+
+    /**
+     * Can see accounts' followers you know
+     * @see GET /api/v1/accounts/familiar_followers
+     */
+    familiarFollowers: v.software === MASTODON && gte(v.version, '3.5.0'),
 
     /** Whether the instance federates. */
     federating: federation.get('enabled', true) === true, // Assume true unless explicitly false
+
+    /** Whether or not to show the Feed Carousel for suggested Statuses */
+    feedUserFiltering: v.software === TRUTHSOCIAL,
 
     /**
      * Can edit and manage timeline filters (aka "muted words").
      * @see {@link https://docs.joinmastodon.org/methods/accounts/filters/}
      */
-    filters: v.software !== TRUTHSOCIAL,
+    filters: any([
+      v.software === MASTODON && lt(v.compatVersion, '3.6.0'),
+      v.software === PLEROMA,
+    ]),
 
     /**
      * Allows setting the focal point of a media attachment.
@@ -289,13 +334,15 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/pleroma/blocks_import
      * @see POST /api/pleroma/mutes_import
      */
-    importAPI: v.software === PLEROMA,
+    import: v.software === PLEROMA,
 
     /**
-     * Pleroma import mutes API.
+     * Pleroma import endpoints.
+     * @see POST /api/pleroma/follow_import
+     * @see POST /api/pleroma/blocks_import
      * @see POST /api/pleroma/mutes_import
      */
-    importMutes: v.software === PLEROMA && gte(v.version, '2.2.0'),
+    importData: v.software === PLEROMA && gte(v.version, '2.2.0'),
 
     /**
      * Can create, view, and manage lists.
@@ -305,6 +352,20 @@ const getInstanceFeatures = (instance: Instance) => {
     lists: any([
       v.software === MASTODON && gte(v.compatVersion, '2.1.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
+    ]),
+
+    /**
+     * Can perform moderation actions with account and reports.
+     * @see {@link https://docs.joinmastodon.org/methods/admin/}
+     * @see GET /api/v1/admin/reports
+     * @see POST /api/v1/admin/reports/:report_id/resolve
+     * @see POST /api/v1/admin/reports/:report_id/reopen
+     * @see POST /api/v1/admin/accounts/:account_id/action
+     * @see POST /api/v1/admin/accounts/:account_id/approve
+     */
+    mastodonAdmin: any([
+      v.software === MASTODON && gte(v.compatVersion, '2.9.1'),
+      v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
     ]),
 
     /**
@@ -341,14 +402,34 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Allows specifying notification types to include, rather than to exclude.
+     * @see GET /api/v1/notifications
+     */
+    notificationsIncludeTypes: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
+      v.software === PLEROMA && gte(v.version, '2.4.50'),
+    ]),
+
+    /**
      * Supports pagination in threads.
      * @see GET /api/v1/statuses/:id/context/ancestors
      * @see GET /api/v1/statuses/:id/context/descendants
      */
     paginatedContext: v.software === TRUTHSOCIAL,
 
-    /** Truth Social account registration API. */
-    pepe: v.software === TRUTHSOCIAL,
+    /**
+     * Require minimum password requirements.
+     * - 8 characters
+     * - 1 uppercase
+     * - 1 lowercase
+     */
+    passwordRequirements: v.software === TRUTHSOCIAL,
+
+    /**
+     * Displays a form to follow a user when logged out.
+     * @see POST /main/ostatus
+     */
+    pleromaRemoteFollow: v.software === PLEROMA,
 
     /**
      * Can add polls to statuses.
@@ -357,6 +438,7 @@ const getInstanceFeatures = (instance: Instance) => {
     polls: any([
       v.software === MASTODON && gte(v.version, '2.8.0'),
       v.software === PLEROMA,
+      v.software === TRUTHSOCIAL,
     ]),
 
     /**
@@ -406,7 +488,16 @@ const getInstanceFeatures = (instance: Instance) => {
      * Interact with statuses from another instance while logged-out.
      * @see POST /api/v1/pleroma/remote_interaction
      */
-    remoteInteractionsAPI: v.software === PLEROMA && gte(v.version, '2.4.50'),
+    remoteInteractions: v.software === PLEROMA && gte(v.version, '2.4.50'),
+
+    /**
+     * Ability to remove an account from your followers.
+     * @see POST /api/v1/accounts/:id/remove_from_followers
+     */
+    removeFromFollowers: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
+      v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
+    ]),
 
     reportMultipleStatuses: any([
       v.software === MASTODON,
@@ -417,13 +508,16 @@ const getInstanceFeatures = (instance: Instance) => {
      * Can request a password reset email through the API.
      * @see POST /auth/password
      */
-    resetPasswordAPI: v.software === PLEROMA,
+    resetPassword: v.software === PLEROMA,
 
     /**
      * Ability to post statuses in Markdown, BBCode, and HTML.
      * @see POST /api/v1/statuses
      */
-    richText: v.software === PLEROMA,
+    richText: any([
+      v.software === MASTODON && v.build === GLITCH,
+      v.software === PLEROMA,
+    ]),
 
     /**
      * Can schedule statuses to be posted at a later time.
@@ -443,15 +537,32 @@ const getInstanceFeatures = (instance: Instance) => {
     scopes: v.software === PLEROMA ? 'read write follow push admin' : 'read write follow push',
 
     /**
+     * Ability to search statuses from the given account.
+     * @see {@link https://docs.joinmastodon.org/methods/search/}
+     * @see POST /api/v2/search
+     */
+    searchFromAccount: any([
+      v.software === MASTODON && gte(v.version, '2.8.0'),
+      v.software === PLEROMA && gte(v.version, '1.0.0'),
+    ]),
+
+    /**
      * Ability to manage account security settings.
      * @see POST /api/pleroma/change_password
      * @see POST /api/pleroma/change_email
      * @see POST /api/pleroma/delete_account
      */
-    securityAPI: any([
+    security: any([
       v.software === PLEROMA,
       v.software === TRUTHSOCIAL,
     ]),
+
+    /**
+     * Ability to manage account sessions.
+     * @see GET /api/oauth_tokens.json
+     * @see DELETE /api/oauth_tokens/:id
+     */
+    sessions: v.software === PLEROMA,
 
     /**
      * Can store client settings in the database.
@@ -508,6 +619,11 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
       v.software === TRUTHSOCIAL,
     ]),
+
+    /**
+     * Supports Truth suggestions.
+     */
+    truthSuggestions: v.software === TRUTHSOCIAL,
 
     /**
      * Whether the backend allows adding users you don't follow to lists.

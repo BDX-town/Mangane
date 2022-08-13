@@ -2,6 +2,8 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Redirect, useHistory } from 'react-router-dom';
 
+import { Column, Layout, Tabs } from 'soapbox/components/ui';
+import Header from 'soapbox/features/account/components/header';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
@@ -10,16 +12,12 @@ import {
   ProfileMediaPanel,
   ProfileFieldsPanel,
   SignUpPanel,
+  CtaBanner,
+  PinnedAccountsPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
-import { findAccountByUsername } from 'soapbox/selectors';
-import { getAcct } from 'soapbox/utils/accounts';
-
-import { Column, Layout, Tabs } from '../components/ui';
-import HeaderContainer from '../features/account_timeline/containers/header_container';
-import { makeGetAccount } from '../selectors';
-
-const getAccount = makeGetAccount();
+import { findAccountByUsername, makeGetAccount } from 'soapbox/selectors';
+import { getAcct, isLocal } from 'soapbox/utils/accounts';
 
 interface IProfilePage {
   params?: {
@@ -27,47 +25,25 @@ interface IProfilePage {
   },
 }
 
+const getAccount = makeGetAccount();
+
 /** Page to display a user's profile. */
 const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
   const history = useHistory();
   const username = params?.username || '';
 
-  const { accountId, account, realAccount } = useAppSelector(state => {
-    const { accounts } = state;
-    const accountFetchError = (((state.accounts.getIn([-1, 'username']) || '') as string).toLowerCase() === username.toLowerCase());
-
-    let accountId: string | -1 | null = -1;
-    let account = null;
-    if (accountFetchError) {
-      accountId = null;
-    } else {
-      account = findAccountByUsername(state, username);
-      accountId = account ? account.id : -1;
-    }
-
-    let realAccount;
-    if (!account) {
-      const maybeAccount = accounts.get(username);
-      if (maybeAccount) {
-        realAccount = maybeAccount;
+  const account = useAppSelector(state => {
+    if (username) {
+      const account = findAccountByUsername(state, username);
+      if (account) {
+        return getAccount(state, account.id) || undefined;
       }
     }
-
-    return {
-      account: typeof accountId === 'string' ? getAccount(state, accountId) : account,
-      accountId,
-      realAccount,
-    };
   });
 
   const me = useAppSelector(state => state.me);
   const features = useFeatures();
   const { displayFqn } = useSoapboxConfig();
-
-  // Redirect from a user ID
-  if (realAccount) {
-    return <Redirect to={`/@${realAccount.acct}`} />;
-  }
 
   // Fix case of username
   if (account && account.acct !== username) {
@@ -105,35 +81,42 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
 
   let activeItem;
   const pathname = history.location.pathname.replace(`@${username}/`, '');
-  if (pathname.includes('with_replies')) {
+  if (pathname.endsWith('/with_replies')) {
     activeItem = 'replies';
-  } else if (pathname.includes('media')) {
+  } else if (pathname.endsWith('/media')) {
     activeItem = 'media';
-  } else if (pathname.includes('favorites')) {
+  } else if (pathname.endsWith('/favorites')) {
     activeItem = 'likes';
   } else {
     activeItem = 'profile';
   }
+
+  const showTabs = !['/following', '/followers', '/pins'].some(path => pathname.endsWith(path));
 
   return (
     <>
       <Layout.Main>
         <Column label={account ? `@${getAcct(account, displayFqn)}` : ''} withHeader={false}>
           <div className='space-y-4'>
-            {/* @ts-ignore */}
-            <HeaderContainer accountId={accountId} username={username} />
+            <Header account={account} />
 
             <BundleContainer fetchComponent={ProfileInfoPanel}>
               {Component => <Component username={username} account={account} />}
             </BundleContainer>
 
-            {account && (
+            {account && showTabs && (
               <Tabs items={tabItems} activeItem={activeItem} />
             )}
 
             {children}
           </div>
         </Column>
+
+        {!me && (
+          <BundleContainer fetchComponent={CtaBanner}>
+            {Component => <Component key='cta-banner' />}
+          </BundleContainer>
+        )}
       </Layout.Main>
 
       <Layout.Aside>
@@ -150,7 +133,11 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
             {Component => <Component account={account} />}
           </BundleContainer>
         )}
-        {features.suggestions && (
+        {(features.accountEndorsements && account && isLocal(account)) ? (
+          <BundleContainer fetchComponent={PinnedAccountsPanel}>
+            {Component => <Component account={account} limit={5} key='pinned-accounts-panel' />}
+          </BundleContainer>
+        ) : features.suggestions && (
           <BundleContainer fetchComponent={WhoToFollowPanel}>
             {Component => <Component limit={5} key='wtf-panel' />}
           </BundleContainer>

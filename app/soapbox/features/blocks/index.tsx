@@ -1,4 +1,4 @@
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -21,8 +21,8 @@ const Blocks: React.FC = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const accountIds = useAppSelector((state) => state.user_lists.getIn(['blocks', 'items']));
-  const hasMore = useAppSelector((state) => !!state.user_lists.getIn(['blocks', 'next']));
+  const accountIds = useAppSelector((state) => state.user_lists.blocks.items);
+  const hasMore = useAppSelector((state) => !!state.user_lists.blocks.next);
 
   React.useEffect(() => {
     dispatch(fetchBlocks());
@@ -47,7 +47,7 @@ const Blocks: React.FC = () => {
         emptyMessage={emptyMessage}
         itemClassName='pb-4'
       >
-        {accountIds.map((id: string) =>
+        {accountIds.map((id) =>
           <AccountContainer key={id} id={id} actionType='blocking' />,
         )}
       </ScrollableList>

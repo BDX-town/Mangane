@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-interface ITextarea extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'maxLength' | 'onChange' | 'required' | 'disabled' | 'rows'> {
+interface ITextarea extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'maxLength' | 'onChange' | 'required' | 'disabled' | 'rows' | 'readOnly'> {
   /** Put the cursor into the input on mount. */
   autoFocus?: boolean,
   /** The initial text in the input. */
@@ -28,8 +28,8 @@ const Textarea = React.forwardRef(
         {...props}
         ref={ref}
         className={classNames({
-          'dark:bg-slate-800 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md':
-              true,
+          'bg-white dark:bg-transparent shadow-sm block w-full sm:text-sm rounded-md text-gray-900 dark:text-gray-100 placeholder:text-gray-600 dark:placeholder:text-gray-600 border-gray-400 dark:border-gray-800 dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
+            true,
           'font-mono': isCodeEditor,
           'text-red-600 border-red-600': hasError,
         })}

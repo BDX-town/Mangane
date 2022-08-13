@@ -14,8 +14,8 @@ import { useAppDispatch } from 'soapbox/hooks';
 
 import ReportStatus from './report_status';
 
-import type { Map as ImmutableMap, List as ImmutableList } from 'immutable';
-import type { Status } from 'soapbox/types/entities';
+import type { List as ImmutableList } from 'immutable';
+import type { Account, AdminReport, Status } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   reportClosed: { id: 'admin.reports.report_closed_message', defaultMessage: 'Report on @{name} was closed' },
@@ -24,7 +24,7 @@ const messages = defineMessages({
 });
 
 interface IReport {
-  report: ImmutableMap<string, any>;
+  report: AdminReport;
 }
 
 const Report: React.FC<IReport> = ({ report }) => {
@@ -33,32 +33,35 @@ const Report: React.FC<IReport> = ({ report }) => {
 
   const [accordionExpanded, setAccordionExpanded] = useState(false);
 
+  const account = report.account as Account;
+  const targetAccount = report.target_account as Account;
+
   const makeMenu = () => {
     return [{
-      text: intl.formatMessage(messages.deactivateUser, { name: report.getIn(['account', 'username']) as string }),
+      text: intl.formatMessage(messages.deactivateUser, { name: targetAccount.username as string }),
       action: handleDeactivateUser,
-      icon: require('@tabler/icons/icons/user-off.svg'),
+      icon: require('@tabler/icons/user-off.svg'),
     }, {
-      text: intl.formatMessage(messages.deleteUser, { name: report.getIn(['account', 'username']) as string }),
+      text: intl.formatMessage(messages.deleteUser, { name: targetAccount.username as string }),
       action: handleDeleteUser,
-      icon: require('@tabler/icons/icons/user-minus.svg'),
+      icon: require('@tabler/icons/user-minus.svg'),
     }];
   };
 
   const handleCloseReport = () => {
-    dispatch(closeReports([report.get('id')])).then(() => {
-      const message = intl.formatMessage(messages.reportClosed, { name: report.getIn(['account', 'username']) as string });
+    dispatch(closeReports([report.id])).then(() => {
+      const message = intl.formatMessage(messages.reportClosed, { name: targetAccount.username as string });
       dispatch(snackbar.success(message));
     }).catch(() => {});
   };
 
   const handleDeactivateUser = () => {
-    const accountId = report.getIn(['account', 'id']);
+    const accountId = targetAccount.id;
     dispatch(deactivateUserModal(intl, accountId, () => handleCloseReport()));
   };
 
   const handleDeleteUser = () => {
-    const accountId = report.getIn(['account', 'id']) as string;
+    const accountId = targetAccount.id as string;
     dispatch(deleteUserModal(intl, accountId, () => handleCloseReport()));
   };
 
@@ -67,17 +70,17 @@ const Report: React.FC<IReport> = ({ report }) => {
   };
 
   const menu = makeMenu();
-  const statuses = report.get('statuses') as ImmutableList<Status>;
+  const statuses = report.statuses as ImmutableList<Status>;
   const statusCount = statuses.count();
-  const acct = report.getIn(['account', 'acct']) as string;
-  const reporterAcct = report.getIn(['actor', 'acct']) as string;
+  const acct = targetAccount.acct as string;
+  const reporterAcct = account.acct as string;
 
   return (
-    <div className='admin-report' key={report.get('id')}>
+    <div className='admin-report' key={report.id}>
       <div className='admin-report__avatar'>
-        <HoverRefWrapper accountId={report.getIn(['account', 'id']) as string} inline>
+        <HoverRefWrapper accountId={targetAccount.id as string} inline>
           <Link to={`/@${acct}`} title={acct}>
-            <Avatar account={report.get('account')} size={32} />
+            <Avatar account={targetAccount} size={32} />
           </Link>
         </HoverRefWrapper>
       </div>
@@ -87,7 +90,7 @@ const Report: React.FC<IReport> = ({ report }) => {
             id='admin.reports.report_title'
             defaultMessage='Report on {acct}'
             values={{ acct: (
-              <HoverRefWrapper accountId={report.getIn(['account', 'id']) as string} inline>
+              <HoverRefWrapper accountId={account.id as string} inline>
                 <Link to={`/@${acct}`} title={acct}>@{acct}</Link>
               </HoverRefWrapper>
             ) }}
@@ -105,12 +108,12 @@ const Report: React.FC<IReport> = ({ report }) => {
           )}
         </div>
         <div className='admin-report__quote'>
-          {report.get('content', '').length > 0 && (
-            <blockquote className='md' dangerouslySetInnerHTML={{ __html: report.get('content') }} />
+          {(report.comment || '').length > 0 && (
+            <blockquote className='md' dangerouslySetInnerHTML={{ __html: report.comment }} />
           )}
           <span className='byline'>
             &mdash;
-            <HoverRefWrapper accountId={report.getIn(['actor', 'id']) as string} inline>
+            <HoverRefWrapper accountId={account.id as string} inline>
               <Link to={`/@${reporterAcct}`} title={reporterAcct}>@{reporterAcct}</Link>
             </HoverRefWrapper>
           </span>
@@ -121,7 +124,7 @@ const Report: React.FC<IReport> = ({ report }) => {
           <FormattedMessage id='admin.reports.actions.close' defaultMessage='Close' />
         </Button>
 
-        <DropdownMenu items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} />
+        <DropdownMenu items={menu} src={require('@tabler/icons/dots-vertical.svg')} />
       </HStack>
     </div>
   );

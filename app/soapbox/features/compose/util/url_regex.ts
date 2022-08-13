@@ -177,8 +177,8 @@ export const urlRegex = (function() {
     '(?:' +
       '#{validGeneralUrlPathChars}*' +
         '(?:#{validUrlBalancedParens}#{validGeneralUrlPathChars}*)*' +
-        '#{validUrlPathEndingChars}'+
-      ')|(?:@#{validGeneralUrlPathChars}+\/)'+
+        '#{validUrlPathEndingChars}' +
+      ')|(?:@#{validGeneralUrlPathChars}+\/)' +
     ')', 'i');
   regexen.validUrlQueryChars = /[a-z0-9!?\*'@\(\);:&=\+\$\/%#\[\]\-_\.,~|]/i;
   regexen.validUrlQueryEndingChars = /[a-z0-9_&=#\/]/i;

@@ -1,13 +1,13 @@
-import { Map as ImmutableMap } from 'immutable';
 import * as React from 'react';
-import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
+import { fetchSuggestions, dismissSuggestion } from 'soapbox/actions/suggestions';
 import { Widget } from 'soapbox/components/ui';
+import AccountContainer from 'soapbox/containers/account_container';
 import { useAppSelector } from 'soapbox/hooks';
 
-import { fetchSuggestions, dismissSuggestion } from '../../../actions/suggestions';
-import AccountContainer from '../../../containers/account_container';
+import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   dismissSuggestion: { id: 'suggestions.dismiss', defaultMessage: 'Dismiss suggestion' },
@@ -21,11 +21,11 @@ const WhoToFollowPanel = ({ limit }: IWhoToFollowPanel) => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const suggestions = useAppSelector((state) => state.suggestions.get('items'));
+  const suggestions = useAppSelector((state) => state.suggestions.items);
   const suggestionsToRender = suggestions.slice(0, limit);
 
-  const handleDismiss = (account: ImmutableMap<string, any>) => {
-    dispatch(dismissSuggestion(account.get('id')));
+  const handleDismiss = (account: AccountEntity) => {
+    dispatch(dismissSuggestion(account.id));
   };
 
   React.useEffect(() => {
@@ -46,12 +46,12 @@ const WhoToFollowPanel = ({ limit }: IWhoToFollowPanel) => {
       title={<FormattedMessage id='who_to_follow.title' defaultMessage='People To Follow' />}
       // onAction={handleAction}
     >
-      {suggestionsToRender.map((suggestion: ImmutableMap<string, any>) => (
+      {suggestionsToRender.map((suggestion) => (
         <AccountContainer
-          key={suggestion.get('account')}
+          key={suggestion.account}
           // @ts-ignore: TS thinks `id` is passed to <Account>, but it isn't
-          id={suggestion.get('account')}
-          actionIcon={require('@tabler/icons/icons/x.svg')}
+          id={suggestion.account}
+          actionIcon={require('@tabler/icons/x.svg')}
           actionTitle={intl.formatMessage(messages.dismissSuggestion)}
           onActionClick={handleDismiss}
         />

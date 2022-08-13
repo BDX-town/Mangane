@@ -4,30 +4,21 @@ import {
   Record as ImmutableRecord,
   fromJS,
 } from 'immutable';
-import { trimStart } from 'lodash';
+import trimStart from 'lodash/trimStart';
 
 import { toTailwind } from 'soapbox/utils/tailwind';
 import { generateAccent } from 'soapbox/utils/theme';
 
+import { normalizeAd } from './ad';
+
 import type {
+  Ad,
   PromoPanelItem,
   FooterItem,
   CryptoAddress,
 } from 'soapbox/types/soapbox';
 
 const DEFAULT_COLORS = ImmutableMap<string, any>({
-  gray: ImmutableMap({
-    50: '#f9fafb',
-    100: '#f3f4f6',
-    200: '#e5e7eb',
-    300: '#d1d5db',
-    400: '#9ca3af',
-    500: '#6b7280',
-    600: '#4b5563',
-    700: '#374151',
-    800: '#1f2937',
-    900: '#111827',
-  }),
   success: ImmutableMap({
     50: '#f0fdf4',
     100: '#dcfce7',
@@ -78,6 +69,7 @@ export const CryptoAddressRecord = ImmutableRecord({
 });
 
 export const SoapboxConfigRecord = ImmutableRecord({
+  ads: ImmutableList<Ad>(),
   appleAppId: null,
   logo: '',
   logoDarkMode: null,
@@ -89,6 +81,8 @@ export const SoapboxConfigRecord = ImmutableRecord({
   customCss: ImmutableList<string>(),
   defaultSettings: ImmutableMap<string, any>(),
   extensions: ImmutableMap(),
+  gdpr: false,
+  gdprUrl: '',
   greentext: false,
   promoPanel: PromoPanelRecord(),
   navlinks: ImmutableMap({
@@ -109,9 +103,8 @@ export const SoapboxConfigRecord = ImmutableRecord({
   cryptoDonatePanel: ImmutableMap({
     limit: 1,
   }),
-  aboutPages: ImmutableMap(),
-  betaPages: ImmutableMap(),
-  mobilePages: ImmutableMap(),
+  aboutPages: ImmutableMap<string, ImmutableMap<string, unknown>>(),
+  mobilePages: ImmutableMap<string, ImmutableMap<string, unknown>>(),
   authenticatedProfile: true,
   singleUserMode: false,
   singleUserModeProfile: '',
@@ -120,6 +113,11 @@ export const SoapboxConfigRecord = ImmutableRecord({
 }, 'SoapboxConfig');
 
 type SoapboxConfigMap = ImmutableMap<string, any>;
+
+const normalizeAds = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
+  const ads = ImmutableList<Record<string, any>>(soapboxConfig.get('ads'));
+  return soapboxConfig.set('ads', ads.map(normalizeAd));
+};
 
 const normalizeCryptoAddress = (address: unknown): CryptoAddress => {
   return CryptoAddressRecord(ImmutableMap(fromJS(address))).update('ticker', ticker => {
@@ -158,6 +156,7 @@ const maybeAddMissingColors = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMa
   const missing = ImmutableMap({
     'gradient-start': colors.getIn(['primary', '500']),
     'gradient-end': colors.getIn(['accent', '500']),
+    'accent-blue': colors.getIn(['primary', '600']),
   });
 
   return soapboxConfig.set('colors', missing.mergeDeep(colors));
@@ -185,6 +184,7 @@ export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
       normalizeFooterLinks(soapboxConfig);
       maybeAddMissingColors(soapboxConfig);
       normalizeCryptoAddresses(soapboxConfig);
+      normalizeAds(soapboxConfig);
     }),
   );
 };

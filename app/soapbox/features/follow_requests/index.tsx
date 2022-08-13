@@ -1,4 +1,4 @@
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -24,8 +24,8 @@ const FollowRequests: React.FC = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const accountIds = useAppSelector<string[]>((state) => state.user_lists.getIn(['follow_requests', 'items']));
-  const hasMore = useAppSelector((state) => !!state.user_lists.getIn(['follow_requests', 'next']));
+  const accountIds = useAppSelector((state) => state.user_lists.follow_requests.items);
+  const hasMore = useAppSelector((state) => !!state.user_lists.follow_requests.next);
 
   React.useEffect(() => {
     dispatch(fetchFollowRequests());

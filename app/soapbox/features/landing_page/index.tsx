@@ -1,16 +1,18 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { Button, Card, CardBody, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import RegistrationForm from 'soapbox/features/auth_login/components/registration_form';
-import { useAppSelector, useFeatures } from 'soapbox/hooks';
-
-import { Button, Card, CardBody, Stack, Text } from '../../components/ui';
+import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
 const LandingPage = () => {
   const features = useFeatures();
+  const soapboxConfig = useSoapboxConfig();
+  const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
+
   const instance = useAppSelector((state) => state.instance);
-  const pepeOpen = useAppSelector(state => state.verification.getIn(['instance', 'registrations'], false) === true);
+  const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
 
   /** Registrations are closed */
   const renderClosed = () => {
@@ -26,7 +28,7 @@ const LandingPage = () => {
           <FormattedMessage
             id='registration.closed_message'
             defaultMessage='{instance} is not accepting new members.'
-            values={{ instance: instance.get('title') }}
+            values={{ instance: instance.title }}
           />
         </Text>
       </Stack>
@@ -56,9 +58,9 @@ const LandingPage = () => {
 
   // Render registration flow depending on features
   const renderBody = () => {
-    if (features.pepe && pepeOpen) {
+    if (pepeEnabled && pepeOpen) {
       return renderPepe();
-    } else if (instance.registrations) {
+    } else if (features.accountCreation && instance.registrations) {
       return renderOpen();
     } else {
       return renderClosed();
@@ -68,13 +70,14 @@ const LandingPage = () => {
   return (
     <main className='mt-16 sm:mt-24' data-testid='homepage'>
       <div className='mx-auto max-w-7xl'>
-        <div className='lg:grid lg:grid-cols-12 lg:gap-8 py-12'>
+        <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 py-12'>
           <div className='px-4 sm:px-6 sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left lg:flex'>
-            <div>
+            <div className='w-full'>
               <Stack space={3}>
-                <h1 className='text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-accent-500 via-primary-500 to-gradient-end sm:mt-5 sm:leading-none lg:mt-6 lg:text-6xl xl:text-7xl'>
+                <h1 className='text-5xl font-extrabold text-transparent text-ellipsis overflow-hidden bg-clip-text bg-gradient-to-br from-accent-500 via-primary-500 to-gradient-end sm:mt-5 sm:leading-none lg:mt-6 lg:text-6xl xl:text-7xl'>
                   {instance.title}
                 </h1>
+
                 <Text size='lg'>
                   {instance.description}
                 </Text>

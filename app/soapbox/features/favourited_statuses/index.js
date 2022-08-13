@@ -1,4 +1,4 @@
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -6,14 +6,14 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
+import { fetchAccount, fetchAccountByUsername } from 'soapbox/actions/accounts';
+import { fetchFavouritedStatuses, expandFavouritedStatuses, fetchAccountFavouritedStatuses, expandAccountFavouritedStatuses } from 'soapbox/actions/favourites';
 import MissingIndicator from 'soapbox/components/missing_indicator';
+import StatusList from 'soapbox/components/status_list';
 import { Spinner } from 'soapbox/components/ui';
 import { findAccountByUsername } from 'soapbox/selectors';
 import { getFeatures } from 'soapbox/utils/features';
 
-import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
-import { fetchFavouritedStatuses, expandFavouritedStatuses, fetchAccountFavouritedStatuses, expandAccountFavouritedStatuses } from '../../actions/favourites';
-import StatusList from '../../components/status_list';
 import Column from '../ui/components/column';
 
 const messages = defineMessages({
@@ -32,9 +32,9 @@ const mapStateToProps = (state, { params }) => {
   if (isMyAccount) {
     return {
       isMyAccount,
-      statusIds: state.getIn(['status_lists', 'favourites', 'items']),
-      isLoading: state.getIn(['status_lists', 'favourites', 'isLoading'], true),
-      hasMore: !!state.getIn(['status_lists', 'favourites', 'next']),
+      statusIds: state.status_lists.get('favourites').items,
+      isLoading: state.status_lists.get('favourites').isLoading,
+      hasMore: !!state.status_lists.get('favourites').next,
     };
   }
 
@@ -57,9 +57,9 @@ const mapStateToProps = (state, { params }) => {
     unavailable,
     username,
     isAccount: !!state.getIn(['accounts', accountId]),
-    statusIds: state.getIn(['status_lists', `favourites:${accountId}`, 'items'], []),
-    isLoading: state.getIn(['status_lists', `favourites:${accountId}`, 'isLoading'], true),
-    hasMore: !!state.getIn(['status_lists', `favourites:${accountId}`, 'next']),
+    statusIds: state.status_lists.get(`favourites:${accountId}`)?.items || [],
+    isLoading: state.status_lists.get(`favourites:${accountId}`)?.isLoading,
+    hasMore: !!state.status_lists.get(`favourites:${accountId}`)?.next,
   };
 };
 
@@ -147,7 +147,7 @@ class Favourites extends ImmutablePureComponent {
           statusIds={statusIds}
           scrollKey='favourited_statuses'
           hasMore={hasMore}
-          isLoading={isLoading}
+          isLoading={typeof isLoading === 'boolean' ? isLoading : true}
           onLoadMore={this.handleLoadMore}
           emptyMessage={emptyMessage}
         />

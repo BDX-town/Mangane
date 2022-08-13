@@ -17,14 +17,14 @@ import { unescapeHTML } from 'soapbox/utils/html';
 import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers';
 
 import type { PatronAccount } from 'soapbox/reducers/patron';
-import type { Emoji, Field, EmbeddedEntity } from 'soapbox/types/entities';
+import type { Emoji, Field, EmbeddedEntity, Relationship } from 'soapbox/types/entities';
 
 // https://docs.joinmastodon.org/entities/account/
 export const AccountRecord = ImmutableRecord({
   acct: '',
   avatar: '',
   avatar_static: '',
-  birthday: undefined as string | undefined,
+  birthday: '',
   bot: false,
   created_at: new Date(),
   discoverable: false,
@@ -61,7 +61,7 @@ export const AccountRecord = ImmutableRecord({
   note_emojified: '',
   note_plain: '',
   patron: null as PatronAccount | null,
-  relationship: ImmutableMap<string, any>(),
+  relationship: null as Relationship | null,
   should_refetch: false,
   staff: false,
 });
@@ -261,6 +261,12 @@ const normalizeDiscoverable = (account: ImmutableMap<string, any>) => {
   return account.set('discoverable', discoverable);
 };
 
+/** Normalize undefined/null birthday to empty string. */
+const fixBirthday = (account: ImmutableMap<string, any>) => {
+  const birthday = account.get('birthday');
+  return account.set('birthday', birthday || '');
+};
+
 export const normalizeAccount = (account: Record<string, any>) => {
   return AccountRecord(
     ImmutableMap(fromJS(account)).withMutations(account => {
@@ -280,6 +286,7 @@ export const normalizeAccount = (account: Record<string, any>) => {
       addStaffFields(account);
       fixUsername(account);
       fixDisplayName(account);
+      fixBirthday(account);
       addInternalFields(account);
     }),
   );

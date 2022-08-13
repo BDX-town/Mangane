@@ -19,158 +19,6 @@
       }
     }
   }
-
-  &__img {
-    height: 130px;
-    position: relative;
-    background: var(--background-color);
-
-    .still-image {
-      display: block;
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      object-fit: cover;
-    }
-
-    @media screen and (max-width: 600px) {
-      height: 200px;
-    }
-
-    @media screen and (max-width: $no-gap-breakpoint) {
-      display: none;
-    }
-  }
-
-  &__bar {
-    position: relative;
-    padding: 15px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    background: var(--background-color);
-    transition: 0.2s;
-
-    .avatar {
-      flex: 0 0 auto;
-      width: 48px;
-      height: 48px;
-      padding-top: 2px;
-
-      .still-image {
-        width: 100%;
-        height: 100%;
-        display: block;
-        margin: 0;
-        border-radius: 4px;
-        background: var(--background-color);
-        object-fit: cover;
-      }
-    }
-
-    .display-name {
-      margin-left: 15px;
-      text-align: left;
-
-      strong {
-        @apply text-black dark:text-white;
-        font-size: 15px;
-        font-weight: 500;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      span {
-        display: block;
-        font-size: 14px;
-        color: var(--primary-text-color--faint);
-        font-weight: 400;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      bdi,
-      span.verified-icon {
-        display: inline-block;
-      }
-    }
-  }
-}
-
-.pagination {
-  padding: 30px 0;
-  text-align: center;
-  overflow: hidden;
-
-  a,
-  .current,
-  .newer,
-  .older,
-  .page,
-  .gap {
-    font-size: 14px;
-    color: var(--primary-text-color);
-    font-weight: 500;
-    display: inline-block;
-    padding: 6px 10px;
-    text-decoration: none;
-  }
-
-  .current {
-    background: var(--foreground-color);
-    border-radius: 100px;
-    color: var(--primary-text-color);
-    cursor: default;
-    margin: 0 10px;
-  }
-
-  .gap {
-    cursor: default;
-  }
-
-  .older,
-  .newer {
-    text-transform: uppercase;
-    color: var(--primary-text-color--faint);
-  }
-
-  .older {
-    float: left;
-    padding-left: 0;
-
-    .fa {
-      display: inline-block;
-      margin-right: 5px;
-    }
-  }
-
-  .newer {
-    float: right;
-    padding-right: 0;
-
-    .fa {
-      display: inline-block;
-      margin-left: 5px;
-    }
-  }
-
-  .disabled {
-    cursor: default;
-    color: var(--primary-text-color);
-  }
-
-  @media screen and (max-width: 700px) {
-    padding: 30px 20px;
-
-    .page {
-      display: none;
-    }
-
-    .newer,
-    .older {
-      display: inline-block;
-    }
-  }
 }
 
 .account {
@@ -219,13 +67,6 @@
 .account__avatar-wrapper {
   float: left;
   margin-right: 12px;
-
-  .emoji-react__emoji {
-    position: absolute;
-    top: 36px;
-    left: 32px;
-    z-index: 1;
-  }
 }
 
 .account__avatar {
@@ -295,111 +136,6 @@ a .account__avatar {
   }
 }
 
-.account__reciprocal_follow_message {
-  padding: 0 5px;
-  color: var(--primary-text-color--faint);
-  text-align: center;
-}
-
-.account__disclaimer {
-  padding: 10px;
-  border-top: 1px solid var(--brand-color--med);
-  color: var(--primary-text-color);
-
-  strong {
-    font-weight: 500;
-
-    @each $lang in $cjk-langs {
-      &:lang(#{$lang}) {
-        font-weight: 700;
-      }
-    }
-  }
-
-  a {
-    font-weight: 500;
-    color: inherit;
-    text-decoration: underline;
-
-    &:hover,
-    &:focus,
-    &:active {
-      text-decoration: none;
-    }
-  }
-}
-
-.account__action-bar {
-  border-top: 1px solid var(--brand-color--med);
-  border-bottom: 1px solid var(--brand-color--med);
-  line-height: 36px;
-  overflow: hidden;
-  flex: 0 0 auto;
-  display: flex;
-}
-
-.account__action-bar-dropdown {
-  padding: 10px;
-
-  .icon-button {
-    vertical-align: middle;
-  }
-
-  .dropdown--active {
-    .dropdown__content.dropdown__right {
-      left: 6px;
-      right: initial;
-    }
-
-    &::after {
-      bottom: initial;
-      margin-left: 11px;
-      margin-top: -7px;
-      right: initial;
-    }
-  }
-}
-
-.account__action-bar-links {
-  display: flex;
-  flex: 1 1 auto;
-  line-height: 18px;
-  text-align: center;
-}
-
-.account__action-bar__tab {
-  text-decoration: none;
-  overflow: hidden;
-  flex: 0 1 100%;
-  border-right: 1px solid var(--brand-color--med);
-  padding: 10px 0;
-  border-bottom: 4px solid transparent;
-
-  &.active {
-    border-bottom: 4px solid var(--brand-color);
-  }
-
-  & > span {
-    display: block;
-    text-transform: uppercase;
-    font-size: 11px;
-    color: var(--primary-text-color--faint);
-  }
-
-  strong {
-    display: block;
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--primary-text-color);
-
-    @each $lang in $cjk-langs {
-      &:lang(#{$lang}) {
-        font-weight: 700;
-      }
-    }
-  }
-}
-
 .account-authorize {
   padding: 14px 10px;
 
@@ -415,15 +151,6 @@ a .account__avatar {
   margin-right: 10px;
 }
 
-// TEMPORARY - need a default size for the avatars for now
-// They are sized individually all over the application and need to change with breakpoints as well
-// Might create a mixin to accept the size attribute and apply the various properties where necessary
-.account__avatar {
-  width: 56px;
-  height: 56px;
-  background-size: cover;
-}
-
 .account-gallery__container {
   display: flex;
   flex-wrap: wrap;
@@ -434,16 +161,20 @@ a .account__avatar {
 }
 
 .account-gallery__item {
+  @apply rounded-lg p-1;
   border: 0;
   box-sizing: border-box;
   display: block;
   position: relative;
-  border-radius: 4px;
   overflow: hidden;
-  margin: 2px;
 
   a {
     background: var(--brand-color--faint);
+  }
+
+  video,
+  img {
+    @apply rounded-lg;
   }
 
   &__icons {
@@ -451,7 +182,10 @@ a .account__avatar {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 24px;
+
+    .svg-icon {
+      @apply h-6 w-6;
+    }
   }
 }
 

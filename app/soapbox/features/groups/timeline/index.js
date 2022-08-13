@@ -12,7 +12,7 @@ import { connectGroupStream } from '../../../actions/streaming';
 import { expandGroupTimeline } from '../../../actions/timelines';
 import Avatar from '../../../components/avatar';
 import MissingIndicator from '../../../components/missing_indicator';
-import StatusListContainer from '../../ui/containers/status_list_container';
+import Timeline from '../../ui/components/timeline';
 
 const mapStateToProps = (state, props) => {
   const me = state.get('me');
@@ -90,7 +90,7 @@ class GroupTimeline extends React.PureComponent {
         )}
 
         <div className='group__feed'>
-          <StatusListContainer
+          <Timeline
             alwaysPrepend
             scrollKey={`group_timeline-${columnId}`}
             timelineId={`group:${id}`}

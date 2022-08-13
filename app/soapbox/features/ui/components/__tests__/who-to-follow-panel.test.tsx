@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import React from 'react';
 
 import { render, screen } from '../../../../jest/test-helpers';
@@ -16,15 +16,15 @@ describe('<WhoToFollow />', () => {
           avatar: 'test.jpg',
         }),
       }),
-      suggestions: ImmutableMap({
-        items: fromJS([{
+      suggestions: {
+        items: ImmutableOrderedSet([{
           source: 'staff',
           account: '1',
         }]),
-      }),
+      },
     };
 
-    render(<WhoToFollowPanel limit={1} />, null, store);
+    render(<WhoToFollowPanel limit={1} />, undefined, store);
     expect(screen.getByTestId('account')).toHaveTextContent(/my name/i);
   });
 
@@ -44,8 +44,8 @@ describe('<WhoToFollow />', () => {
           avatar: 'test.jpg',
         }),
       }),
-      suggestions: ImmutableMap({
-        items: fromJS([
+      suggestions: {
+        items: ImmutableOrderedSet([
           {
             source: 'staff',
             account: '1',
@@ -55,10 +55,10 @@ describe('<WhoToFollow />', () => {
             account: '2',
           },
         ]),
-      }),
+      },
     };
 
-    render(<WhoToFollowPanel limit={3} />, null, store);
+    render(<WhoToFollowPanel limit={3} />, undefined, store);
     expect(screen.queryAllByTestId('account')).toHaveLength(2);
   });
 
@@ -78,8 +78,8 @@ describe('<WhoToFollow />', () => {
           avatar: 'test.jpg',
         }),
       }),
-      suggestions: ImmutableMap({
-        items: fromJS([
+      suggestions: {
+        items: ImmutableOrderedSet([
           {
             source: 'staff',
             account: '1',
@@ -89,10 +89,10 @@ describe('<WhoToFollow />', () => {
             account: '2',
           },
         ]),
-      }),
+      },
     };
 
-    render(<WhoToFollowPanel limit={1} />, null, store);
+    render(<WhoToFollowPanel limit={1} />, undefined, store);
     expect(screen.queryAllByTestId('account')).toHaveLength(1);
   });
 
@@ -112,12 +112,12 @@ describe('<WhoToFollow />', () => {
           avatar: 'test.jpg',
         }),
       }),
-      suggestions: ImmutableMap({
-        items: fromJS([]),
-      }),
+      suggestions: {
+        items: ImmutableOrderedSet([]),
+      },
     };
 
-    render(<WhoToFollowPanel limit={1} />, null, store);
+    render(<WhoToFollowPanel limit={1} />, undefined, store);
     expect(screen.queryAllByTestId('account')).toHaveLength(0);
   });
 });
