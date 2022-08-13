@@ -141,6 +141,7 @@ module.exports = {
   resolve: {
     extensions: settings.extensions,
     modules: [
+      resolve('custom', 'modules'),
       resolve(settings.source_path),
       'node_modules',
     ],
