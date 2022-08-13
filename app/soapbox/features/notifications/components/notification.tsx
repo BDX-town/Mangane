@@ -10,9 +10,9 @@ import { getSettings } from 'soapbox/actions/settings';
 import { hideStatus, revealStatus } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
 import Permalink from 'soapbox/components/permalink';
-import Status from 'soapbox/components/status';
 import { HStack, Text, Emoji } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
+import StatusContainer from 'soapbox/containers/status_container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetNotification } from 'soapbox/selectors';
 import { NotificationType, validType } from 'soapbox/utils/notification';
@@ -303,8 +303,8 @@ const Notification: React.FC<INotificaton> = (props) => {
       case 'update':
       case 'pleroma:emoji_reaction':
         return status && typeof status === 'object' ? (
-          <Status
-            status={status}
+          <StatusContainer
+            id={status.id}
             withDismiss
             hidden={hidden}
             onMoveDown={handleMoveDown}
