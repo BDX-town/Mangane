@@ -13,6 +13,7 @@ import BundleContainer from '../containers/bundle_container';
 type PageProps = {
   params?: MatchType['params'],
   layout?: any,
+  children: React.ReactNode,
 };
 
 interface IWrappedRoute extends RouteProps {
