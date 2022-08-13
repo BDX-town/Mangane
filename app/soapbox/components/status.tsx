@@ -47,6 +47,7 @@ export interface IStatus {
   featured?: boolean,
   hideActionBar?: boolean,
   hoverable?: boolean,
+  withDismiss?: boolean,
 }
 
 const Status: React.FC<IStatus> = (props) => {
@@ -63,6 +64,7 @@ const Status: React.FC<IStatus> = (props) => {
     unread,
     group,
     hideActionBar,
+    withDismiss,
   } = props;
   const intl = useIntl();
   const history = useHistory();
@@ -374,7 +376,7 @@ const Status: React.FC<IStatus> = (props) => {
 
             {!hideActionBar && (
               <div className='pt-4'>
-                <StatusActionBar status={actualStatus} />
+                <StatusActionBar status={actualStatus} withDismiss={withDismiss} />
               </div>
             )}
           </div>
