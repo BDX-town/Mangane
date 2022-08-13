@@ -93,7 +93,7 @@ const toServerSideType = (columnType: string): string => {
     case 'thread':
       return columnType;
     default:
-      if (columnType.indexOf('list:') > -1) {
+      if (columnType.includes('list:')) {
         return 'home';
       } else {
         return 'public'; // community, account, hashtag

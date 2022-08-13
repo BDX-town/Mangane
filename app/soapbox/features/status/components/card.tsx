@@ -26,7 +26,7 @@ const addAutoPlay = (html: string): string => {
   const iframe = document.querySelector('iframe');
 
   if (iframe) {
-    if (iframe.src.indexOf('?') !== -1) {
+    if (iframe.src.includes('?')) {
       iframe.src += '&';
     } else {
       iframe.src += '?';
