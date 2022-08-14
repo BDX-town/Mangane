@@ -65,7 +65,7 @@ const AccountTimeline: React.FC<IAccountTimeline> = ({ params, withReplies = fal
     if (account) {
       dispatch(expandAccountTimeline(account.id, { withReplies }));
     }
-  }, [account?.id]);
+  }, [account?.id, withReplies]);
 
   const handleLoadMore = (maxId: string) => {
     if (account) {
