@@ -18,7 +18,7 @@ import { makeGetNotification } from 'soapbox/selectors';
 import { NotificationType, validType } from 'soapbox/utils/notification';
 
 import type { ScrollPosition } from 'soapbox/components/status';
-import type { Account, Status, Notification as NotificationEntity } from 'soapbox/types/entities';
+import type { Account, Status as StatusEntity, Notification as NotificationEntity } from 'soapbox/types/entities';
 
 const getNotification = makeGetNotification();
 
@@ -143,7 +143,7 @@ interface INotificaton {
   notification: NotificationEntity,
   onMoveUp?: (notificationId: string) => void,
   onMoveDown?: (notificationId: string) => void,
-  onReblog?: (status: Status, e?: KeyboardEvent) => void,
+  onReblog?: (status: StatusEntity, e?: KeyboardEvent) => void,
   getScrollPosition?: () => ScrollPosition | undefined,
   updateScrollBottom?: (bottom: number) => void,
 }
@@ -216,7 +216,7 @@ const Notification: React.FC<INotificaton> = (props) => {
           if (e?.shiftKey || !boostModal) {
             dispatch(reblog(status));
           } else {
-            dispatch(openModal('BOOST', { status, onReblog: (status: Status) => {
+            dispatch(openModal('BOOST', { status, onReblog: (status: StatusEntity) => {
               dispatch(reblog(status));
             } }));
           }
@@ -303,16 +303,12 @@ const Notification: React.FC<INotificaton> = (props) => {
       case 'update':
       case 'pleroma:emoji_reaction':
         return status && typeof status === 'object' ? (
-          // @ts-ignore
           <StatusContainer
             id={status.id}
             withDismiss
             hidden={hidden}
             onMoveDown={handleMoveDown}
             onMoveUp={handleMoveUp}
-            contextType='notifications'
-            getScrollPosition={props.getScrollPosition}
-            updateScrollBottom={props.updateScrollBottom}
           />
         ) : null;
       default:
