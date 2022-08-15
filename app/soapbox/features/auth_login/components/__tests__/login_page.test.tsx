@@ -1,5 +1,6 @@
-import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
+
+import { normalizeInstance } from 'soapbox/normalizers';
 
 import { render, screen } from '../../../../jest/test-helpers';
 import LoginPage from '../login_page';
@@ -7,7 +8,7 @@ import LoginPage from '../login_page';
 describe('<LoginPage />', () => {
   it('renders correctly on load', () => {
     const store = {
-      instance: ImmutableMap({
+      instance: normalizeInstance({
         version: '2.7.2 (compatible; Pleroma 2.3.0)',
       }),
     };
