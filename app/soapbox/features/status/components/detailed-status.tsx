@@ -5,7 +5,7 @@ import Icon from 'soapbox/components/icon';
 import StatusMedia from 'soapbox/components/status-media';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import StatusContent from 'soapbox/components/status_content';
-import { HStack, Text } from 'soapbox/components/ui';
+import { HStack, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
 import { getActualStatus } from 'soapbox/utils/status';
@@ -65,9 +65,9 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   }
 
   if (actualStatus.visibility === 'direct') {
-    statusTypeIcon = <Icon src={require('@tabler/icons/mail.svg')} />;
+    statusTypeIcon = <Icon className='text-gray-700 dark:text-gray-600' src={require('@tabler/icons/mail.svg')} />;
   } else if (actualStatus.visibility === 'private') {
-    statusTypeIcon = <Icon src={require('@tabler/icons/lock.svg')} />;
+    statusTypeIcon = <Icon className='text-gray-700 dark:text-gray-600' src={require('@tabler/icons/lock.svg')} />;
   }
 
   return (
@@ -102,7 +102,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
         <HStack justifyContent='between' alignItems='center' className='py-2'>
           <StatusInteractionBar status={actualStatus} />
 
-          <div className='detailed-actualStatus__timestamp'>
+          <Stack space={1} alignItems='center'>
             {statusTypeIcon}
 
             <span>
@@ -128,7 +128,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
                 </>
               )}
             </span>
-          </div>
+          </Stack>
         </HStack>
       </div>
     </div>
