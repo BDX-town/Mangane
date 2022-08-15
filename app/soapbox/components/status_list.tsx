@@ -122,7 +122,6 @@ const StatusList: React.FC<IStatusList> = ({
 
   const renderStatus = (statusId: string) => {
     return (
-      // @ts-ignore
       <StatusContainer
         key={statusId}
         id={statusId}
@@ -157,7 +156,6 @@ const StatusList: React.FC<IStatusList> = ({
     if (!featuredStatusIds) return [];
 
     return featuredStatusIds.toArray().map(statusId => (
-      // @ts-ignore
       <StatusContainer
         key={`f-${statusId}`}
         id={statusId}
