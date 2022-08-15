@@ -304,7 +304,7 @@
     li:not(:empty) {
       a,
       button {
-        @apply flex items-center px-4 py-3 text-gray-600 dark:text-gray-300 no-underline hover:bg-gray-100 dark:bg-gray-800 hover:text-gray-800 dark:hover:text-gray-200;
+        @apply flex items-center px-4 py-3 text-gray-600 dark:text-gray-300 no-underline hover:bg-gray-100 dark:bg-gray-800 hover:text-gray-800 dark:hover:text-gray-200 text-left;
 
         &.destructive {
           @apply text-danger-600;
@@ -325,7 +325,7 @@
       }
 
       button[type="button"] {
-        @apply w-full justify-center;
+        @apply w-full justify-center text-center;
       }
     }
   }
