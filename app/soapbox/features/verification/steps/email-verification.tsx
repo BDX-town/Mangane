@@ -85,13 +85,15 @@ const EmailVerification = () => {
         );
       })
       .catch((error: AxiosError) => {
-        const isEmailTaken = (error.response?.data as any)?.error === 'email_taken';
+        const errorMessage = (error.response?.data as any)?.error;
+        const isEmailTaken = errorMessage === 'email_taken';
+        let message = intl.formatMessage({ id: 'email_verification.fail', defaultMessage: 'Failed to request email verification.' });
 
-        const message = isEmailTaken ? (
-          intl.formatMessage({ id: 'email_verification.exists', defaultMessage: 'This email has already been taken.' })
-        ) : (
-          intl.formatMessage({ id: 'email_verification.fail', defaultMessage: 'Failed to request email verification.' })
-        );
+        if (isEmailTaken) {
+          message = intl.formatMessage({ id: 'email_verification.exists', defaultMessage: 'This email has already been taken.' });
+        } else if (errorMessage) {
+          message = errorMessage;
+        }
 
         if (isEmailTaken) {
           setErrors([intl.formatMessage({ id: 'email_verification.taken', defaultMessage: 'is taken' })]);
