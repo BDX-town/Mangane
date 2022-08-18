@@ -16,7 +16,7 @@ const ConsumersList: React.FC<IConsumersList> = () => {
 
   if (providers.size > 0) {
     return (
-      <Card className='p-4 sm:rounded-xl bg-gray-50'>
+      <Card className='p-4 sm:rounded-xl bg-gray-50 dark:bg-primary-800'>
         <Text size='xs' theme='muted'>
           <FormattedMessage id='oauth_consumers.title' defaultMessage='Other ways to sign in' />
         </Text>
