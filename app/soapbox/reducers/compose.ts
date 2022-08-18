@@ -65,6 +65,7 @@ import type {
   APIEntity,
   Attachment as AttachmentEntity,
   Status as StatusEntity,
+  Tag,
 } from 'soapbox/types/entities';
 
 const getResetFileKey = () => Math.floor((Math.random() * 0x10000));
@@ -188,14 +189,14 @@ const insertSuggestion = (state: State, position: number, token: string, complet
   });
 };
 
-const updateSuggestionTags = (state: State, token: string) => {
+const updateSuggestionTags = (state: State, token: string, currentTrends: ImmutableList<Tag>) => {
   const prefix = token.slice(1);
 
   return state.merge({
-    suggestions: state.tagHistory
-      .filter(tag => tag.toLowerCase().startsWith(prefix.toLowerCase()))
+    suggestions: ImmutableList(currentTrends
+      .filter((tag) => tag.get('name').toLowerCase().startsWith(prefix.toLowerCase()))
       .slice(0, 4)
-      .map(tag => '#' + tag),
+      .map((tag) => '#' + tag.name)),
     suggestion_token: token,
   });
 };
@@ -406,7 +407,7 @@ export default function compose(state = ReducerRecord({ idempotencyKey: uuid(), 
     case COMPOSE_SUGGESTION_SELECT:
       return insertSuggestion(state, action.position, action.token, action.completion, action.path);
     case COMPOSE_SUGGESTION_TAGS_UPDATE:
-      return updateSuggestionTags(state, action.token);
+      return updateSuggestionTags(state, action.token, action.currentTrends);
     case COMPOSE_TAG_HISTORY_UPDATE:
       return state.set('tagHistory', ImmutableList(fromJS(action.tags)) as ImmutableList<string>);
     case TIMELINE_DELETE:

@@ -1,4 +1,5 @@
 import axios, { AxiosError, Canceler } from 'axios';
+import { List as ImmutableList } from 'immutable';
 import throttle from 'lodash/throttle';
 import { defineMessages, IntlShape } from 'react-intl';
 
@@ -23,7 +24,7 @@ import type { History } from 'history';
 import type { Emoji } from 'soapbox/components/autosuggest_emoji';
 import type { AutoSuggestion } from 'soapbox/components/autosuggest_input';
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { Account, APIEntity, Status } from 'soapbox/types/entities';
+import type { Account, APIEntity, Status, Tag } from 'soapbox/types/entities';
 
 const { CancelToken, isCancel } = axios;
 
@@ -505,7 +506,10 @@ const fetchComposeSuggestionsEmojis = (dispatch: AppDispatch, getState: () => Ro
 };
 
 const fetchComposeSuggestionsTags = (dispatch: AppDispatch, getState: () => RootState, token: string) => {
-  dispatch(updateSuggestionTags(token));
+  const state = getState();
+  const currentTrends = state.trends.items;
+
+  dispatch(updateSuggestionTags(token, currentTrends));
 };
 
 const fetchComposeSuggestions = (token: string) =>
@@ -561,9 +565,10 @@ const selectComposeSuggestion = (position: number, token: string | null, suggest
     });
   };
 
-const updateSuggestionTags = (token: string) => ({
+const updateSuggestionTags = (token: string, currentTrends: ImmutableList<Tag>) => ({
   type: COMPOSE_SUGGESTION_TAGS_UPDATE,
   token,
+  currentTrends,
 });
 
 const updateTagHistory = (tags: string[]) => ({

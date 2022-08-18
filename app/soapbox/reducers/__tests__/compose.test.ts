@@ -4,6 +4,7 @@ import * as actions from 'soapbox/actions/compose';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';
 import { SETTING_CHANGE } from 'soapbox/actions/settings';
 import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
+import { TagRecord } from 'soapbox/normalizers';
 import { normalizeStatus } from 'soapbox/normalizers/status';
 
 import reducer, { ReducerRecord } from '../compose';
@@ -401,6 +402,9 @@ describe('compose reducer', () => {
     const action = {
       type: actions.COMPOSE_SUGGESTION_TAGS_UPDATE,
       token: 'aaadken3',
+      currentTrends: ImmutableList([
+        TagRecord({ name: 'hashtag' }),
+      ]),
     };
     expect(reducer(state, action).toJS()).toMatchObject({
       suggestion_token: 'aaadken3',
