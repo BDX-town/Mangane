@@ -146,7 +146,7 @@ const handlePush = (event: PushEvent) => {
         timestamp: notification.created_at && Number(new Date(notification.created_at)),
         tag:       notification.id,
         image:     notification.status?.media_attachments[0]?.preview_url,
-        data:      { access_token, preferred_locale, id: notification.status ? notification.status.id : notification.account.id, url: notification.status ? `/@${notification.account.username}/posts/${notification.status.id}` : `/@${notification.account.username}` },
+        data:      { access_token, preferred_locale, id: notification.status ? notification.status.id : notification.account.id, url: notification.status ? `/@${notification.account.acct}/posts/${notification.status.id}` : `/@${notification.account.acct}` },
       };
 
       if (notification.status?.spoiler_text || notification.status?.sensitive) {
