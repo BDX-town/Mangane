@@ -52,7 +52,7 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
       {
         features.federating ? (
           <ThumbNavigationLink
-            src={require('@tabler/icons/users.svg')}
+            src={require('icons/bdx.svg')}
             text={instance.get('title')}
             to='/timeline/local'
             exact
