@@ -42,13 +42,17 @@ const Enlistment: React.FC = () => {
         dispatch(changeSettingImmediate(['enlisted'], true));
     }, []);
 
-    const onNext = useCallback(() => {
-        if(step + 1 >= Steps.length) {
+    const onStep = useCallback((nextStep) => {
+        if(nextStep >= Steps.length) {
             dispatch(changeSettingImmediate(['enlisted'], true));
             return;
         }
-        setStep(step + 1);
-    }, [step, setStep, dispatch]);
+        setStep(nextStep);
+    }, [setStep, dispatch]);
+
+    const onNext = useCallback(() => {
+        onStep(step + 1);
+    }, [onStep, step]);
 
     if(done) return null;
 
@@ -63,10 +67,13 @@ const Enlistment: React.FC = () => {
                         <div className='circles flex items-center'>
                             {
                                 Steps.map((e, index) => (
-                                    <div className={classNames({
-                                        "mx-2 border-2 border-solid border-white": true,
-                                        "bg-white": index === step
-                                    })}>
+                                    <div 
+                                        className={classNames({
+                                            "cursor-pointer mx-2 border-2 border-solid border-white": true,
+                                            "bg-white": index === step
+                                        })}
+                                        onClick={() => onStep(index)}
+                                        >
                                     </div>
                                 ))
                             }
