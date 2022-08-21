@@ -41,16 +41,12 @@ const DirectTimeline = () => {
 
   return (
     <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
-      <ColumnHeader
-        icon='envelope'
-        active={hasUnread}
-        title={intl.formatMessage(messages.title)}
-      />
-
-      <AccountSearch
-        placeholder={intl.formatMessage(messages.searchPlaceholder)}
-        onSelected={handleSuggestion}
-      />
+      <div className="my-4">
+        <AccountSearch
+          placeholder={intl.formatMessage(messages.searchPlaceholder)}
+          onSelected={handleSuggestion}
+        />
+      </div>
 
       <Timeline
         scrollKey='direct_timeline'

@@ -38,6 +38,7 @@ const messages = defineMessages({
   invites: { id: 'navigation_bar.invites', defaultMessage: 'Invites' },
   developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
   addAccount: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
+  direct: { id: 'column.direct', defaultMessage: 'Direct messages' },
 });
 
 interface ISidebarLink {
@@ -210,6 +211,14 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   to={`/@${account.acct}`}
                   icon={require('@tabler/icons/user.svg')}
                   text={intl.formatMessage(messages.profile)}
+                  onClick={onClose}
+                />
+
+
+                <SidebarLink
+                  to={`/messages`}
+                  icon={require('@tabler/icons/mail.svg')}
+                  text={intl.formatMessage(messages.direct)}
                   onClick={onClose}
                 />
 
