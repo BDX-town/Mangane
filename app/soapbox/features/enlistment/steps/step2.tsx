@@ -15,8 +15,8 @@ const Step2: React.FC = () => {
 
     return (
         <div className="enlistment__step2 mx-auto py-10 px-5">
-            <div className="flex mt-3">
-                <div className="w-1/3">
+            <div className="flex mt-3 gap-3">
+                <div className="flex-grow-1">
                     <h3 className="text-xl font-bold">
                         <FormattedMessage id="enlistment.step2.title1" />
                     </h3>
@@ -25,7 +25,7 @@ const Step2: React.FC = () => {
                         <FormattedMessage id="enlistment.step2.explanation1" />
                     </p>
                 </div>
-                <div className="mx-6 w-1/3">
+                <div className="flex-grow-1">
                     <h3 className="text-xl font-bold">
                         {instance.get("title")}
                     </h3>
@@ -34,7 +34,7 @@ const Step2: React.FC = () => {
                         <FormattedMessage id="enlistment.step2.explanation2" />
                     </p>
                 </div>
-                <div className="w-1/3">
+                <div className="flex-grow-1">
                     <h3 className="text-xl font-bold">
                         <FormattedMessage id="enlistment.step2.title3" />
                     </h3>

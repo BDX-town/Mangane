@@ -15,40 +15,48 @@ const Step3: React.FC = () => {
                 </p>
             </div>
             <div className="mt-10">
-                <div className='flex'>
-                    <div className='w-1/2 pr-2'>
-                        <h4 className="flex items-center text-xl font-bold">
-                            <Icon className="mr-1 w-6 h-6" src={require("@tabler/icons/world.svg")} />
-                            <FormattedMessage id="enlistment.step3.public-title" />
+                <div className='flex gap-4'>
+                    <div className='flex-grow-1 w-1/2'>
+                        <h4 className="items-center text-xl font-bold">
+                            <Icon className="inline-block align-middle mr-1 w-6 h-6" src={require("@tabler/icons/world.svg")} />
+                            <span className='align-middle'>
+                                <FormattedMessage id="enlistment.step3.public-title" />
+                            </span>
                         </h4>
                         <p>
                             <FormattedMessage id="enlistment.step3.public-description" />
                         </p>
                     </div>
-                    <div className="w-1/2 pr-2">
-                        <h4 className='flex items-center text-xl font-bold'>
-                            <Icon className='mr-1 w-6 h-6' src={require("@tabler/icons/lock-open.svg")} />
-                            <FormattedMessage id="enlistment.step3.unlisted-title" />
+                    <div className="flex-grow-1 w-1/2">
+                        <h4 className='items-center text-xl font-bold'>
+                            <Icon className='inline-block align-middle mr-1 w-6 h-6' src={require("@tabler/icons/lock-open.svg")} />
+                            <span className='align-middle'>
+                                <FormattedMessage id="enlistment.step3.unlisted-title" />
+                            </span>
                         </h4>
                         <p>
                             <FormattedMessage id="enlistment.step3.unlisted-description" />
                         </p>
                     </div>
                 </div>
-                <div className='mt-10 flex'>
-                    <div className='w-1/2 pr-2'>
-                        <h4 className='flex items-center text-xl font-bold'>
-                            <Icon className='mr-1 w-6 h-6' src={require("@tabler/icons/lock.svg")} />
-                            <FormattedMessage id="enlistment.step3.followers-title" />
+                <div className='mt-10 flex gap-4'>
+                    <div className='flex-grow-1 w-1/2'>
+                        <h4 className='items-center text-xl font-bold'>
+                            <Icon className='inline-block align-middle mr-1 w-6 h-6' src={require("@tabler/icons/lock.svg")} />
+                            <span className='align-middle'>
+                                <FormattedMessage id="enlistment.step3.followers-title" />
+                            </span>
                         </h4>
                         <p>
                             <FormattedMessage id="enlistment.step3.followers-description" />
                         </p>
                     </div>
-                    <div className='w-1/2 pl-2'>
-                        <h4 className='flex items-center text-xl font-bold'>
-                            <Icon className='mr-1 w-6 h-6' src={require("@tabler/icons/mail.svg")} />
-                            <FormattedMessage id="enlistment.step3.direct-title" />
+                    <div className='flex-grow-1 w-1/2'>
+                        <h4 className='items-center text-xl font-bold'>
+                            <Icon className='inline-block align-middle mr-1 w-6 h-6' src={require("@tabler/icons/mail.svg")} />
+                            <span className='align-middle'>
+                                <FormattedMessage id="enlistment.step3.direct-title" />
+                            </span>
                         </h4>
                         <p>
                             <FormattedMessage id="enlistment.step3.direct-description" />

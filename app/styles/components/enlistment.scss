@@ -28,6 +28,7 @@
 
         .enlistment__step0, .enlistment__step1, .enlistment__step2, .enlistment__step3, .enlistment__step4 {
             max-width: 700px;
+
             .enlisted__step0__username {
                 background-color: rgb(var(--color-primary-600) / var(--tw-bg-opacity));
             }
@@ -62,9 +63,19 @@
 
     @media screen and (max-width: 600px) {
         top: $header-height;
+        height: calc(100% - $header-height);
         & > section {
-            height: calc(100vh - $header-height);
+            height: 100%;
             border-radius: 0;
+
+            .enlistment__step0, .enlistment__step1, .enlistment__step2, .enlistment__step3, .enlistment__step4 {
+                .flex {
+                    flex-wrap: wrap;
+                    & > div {
+                        min-width: 100%;
+                    }
+                }
+            }
         }
     }
 }

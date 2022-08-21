@@ -19,8 +19,8 @@ const Step1: React.FC = () => {
             <h3 className="text-2xl font-bold">
                 <FormattedMessage id="enlistment.step1.title" />
             </h3>
-            <div className="flex mt-2">
-                <div className="pr-6 w-1/2">
+            <div className="flex gap-12 mt-2">
+                <div className="flex-grow-1">
                     <p>
                         <FormattedMessage
                             id="enlistment.step1.left"
@@ -39,7 +39,7 @@ const Step1: React.FC = () => {
                         />
                     </p>
                 </div>
-                <div className="pl-6 w-1/2">
+                <div className="flex-grow-1">
                     <p dangerouslySetInnerHTML={{ __html: intl.formatMessage(messages.right)}} />
                 </div>
             </div>

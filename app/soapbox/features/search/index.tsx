@@ -13,7 +13,7 @@ const SearchPage = () => {
   const intl = useIntl();
 
   return (
-    <Column label={intl.formatMessage(messages.heading)}>
+    <Column withHeader={false} label={intl.formatMessage(messages.heading)}>
       <div className='space-y-4'>
         <Search autoFocus autoSubmit />
         <SearchResults />
