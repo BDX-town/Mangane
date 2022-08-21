@@ -1135,5 +1135,15 @@
   "enlistment.step3.unlisted-title": "Non-listé",
   "enlistment.step3.unlisted-description": "La publication est publique mais n’apparaît que dans les fils de vos abonnés ainsi que sur ton profil",
   "enlistment.step3.direct-title": "Direct",
-  "enlistment.step3.direct-description": "La publication n'est visible que par les personnes mentionnées via @pseudo@instance"
+  "enlistment.step3.direct-description": "La publication n'est visible que par les personnes mentionnées via @pseudo@instance",
+  "enlistment.step4.title": "Et ensuite ?",
+  "enlistment.step4.disclaimer": "Tu es presque prêt·e à plonger dans le grand bain.",
+  "enlistment.step4.point-1": " Pense à {complete} (photo de profil, bannière et bio). Tu peux même y ajouter des hashtags pour indiquer aux gens tes centres d’intérêts.",
+  "enlistment.step4.point-2": "Il est coutume de {publish} pour te faire découvrir. N’oublie pas les hashtags #introduction ou #presentation.",
+  "enlistment.step4.point-3": "C’est parti, libre à toi de découvrir et apprivoiser les lieux, trouver des gens à suivre, partager tes idées dans le respect du {conduct} et des valeurs de Bdx.town.",
+  "enlistment.step4.informations": "Si tu as des questions sur ce nouveau terrain de jeu, n’hésite pas à poser des questions aux gens que tu croiseras en ligne, la communauté est plutôt bienveillante et accueillante. Tu trouveras aussi des ressources en ligne plus complète {wiki}.",
+  "enlistment.step4.complete": "compléter ton profil",
+  "enlistment.step4.publish": "publier une présentation",
+  "enlistment.step4.conduct": "code de conduite",
+  "enlistment.step4.wiki": "sur le wiki officiel"
 }
