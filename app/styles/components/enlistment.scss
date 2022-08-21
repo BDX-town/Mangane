@@ -1,10 +1,12 @@
 .component-enlistment {
+    $header-height: 48px;
+
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 2;
+    z-index: 51;
 
     backdrop-filter: blur(5px);
 
@@ -16,6 +18,13 @@
         width: 100%;
         max-width: 1000px;
         border-radius: 0.75rem;
+
+        display: flex;
+        flex-direction: column;
+
+        & > div:first-of-type {
+            flex-grow: 1;
+        }
 
         .enlistment__step0, .enlistment__step1, .enlistment__step2, .enlistment__step3, .enlistment__step4 {
             max-width: 700px;
@@ -49,5 +58,13 @@
         }
 
 
+    }
+
+    @media screen and (max-width: 600px) {
+        top: $header-height;
+        & > section {
+            height: calc(100vh - $header-height);
+            border-radius: 0;
+        }
     }
 }
