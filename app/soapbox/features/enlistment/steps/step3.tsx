@@ -1,12 +1,9 @@
 import React from 'react';
-import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 
 import Icon from './../../../components/icon';
 
 const Step3: React.FC = () => {
-    const intl = useIntl();
-
-
     return (
         <div className="enlistment__step3 mx-auto py-10 px-5">
             <div>

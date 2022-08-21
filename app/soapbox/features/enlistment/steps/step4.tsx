@@ -1,16 +1,8 @@
 import React from 'react';
-import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedMessage } from 'react-intl';
 import { useAppSelector } from 'soapbox/hooks';
 
-const messages = defineMessages({
-    col1: { id: 'enlistment.step2.col1'},
-    col2: { id: 'enlistment.step2.col2'},
-    col3: { id: 'enlistment.step2.col3'},
-});
-
 const Step4: React.FC = () => {
-    const intl = useIntl();
-
     const instance = useAppSelector((state) => state.instance);
 
     return (
@@ -42,6 +34,7 @@ const Step4: React.FC = () => {
                     <FormattedMessage 
                         id="enlistment.step4.point-3" 
                         values={{
+                            title: instance.get("title"),
                             conduct: <a target="_blank" href="/about/tos"><FormattedMessage id="enlistment.step4.conduct" /></a>
                         }}
                     />
