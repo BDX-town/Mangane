@@ -628,7 +628,7 @@
   "lists.edit": "listeyi düzenle",
   "lists.edit.submit": "Başlığı değiştir",
   "lists.new.create": "Liste ekle",
-  "lists.new.create_title": "Add list",
+  "lists.new.create_title": "Create",
   "lists.new.save_title": "Save Title",
   "lists.new.title_placeholder": "Yeni liste başlığı",
   "lists.search": "Takip ettiğiniz kişiler arasından arayın",

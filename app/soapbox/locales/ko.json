@@ -628,7 +628,7 @@
   "lists.edit": "리스트 편집",
   "lists.edit.submit": "제목 수정",
   "lists.new.create": "리스트 추가",
-  "lists.new.create_title": "Add list",
+  "lists.new.create_title": "Create",
   "lists.new.save_title": "Save Title",
   "lists.new.title_placeholder": "새 리스트의 이름",
   "lists.search": "팔로우 중인 사람들 중에서 찾기",

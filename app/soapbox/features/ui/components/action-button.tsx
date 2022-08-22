@@ -159,7 +159,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
           text={intl.formatMessage(messages.follow)}
         />
       );
-      // Pleroma's classic remote follow form.
+    // Pleroma's classic remote follow form.
     } else if (features.pleromaRemoteFollow) {
       return (
         <form method='POST' action='/main/ostatus'>
@@ -208,7 +208,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
       return (
         <Button
           size='sm'
-          theme='tertiary'
+          theme='secondary'
           text={small ? intl.formatMessage(messages.requested_small) : intl.formatMessage(messages.requested)}
           onClick={handleFollow}
         />
@@ -245,7 +245,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
     // Edit profile
     return (
       <Button
-        theme='tertiary'
+        theme='secondary'
         size='sm'
         text={intl.formatMessage(messages.edit_profile)}
         to='/settings/profile'

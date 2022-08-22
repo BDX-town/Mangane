@@ -107,8 +107,8 @@ export default function(baseColor: string): TailwindColorObject {
     400: 0.2,
     600: 0.9,
     700: 0.75,
-    800: 0.3,
-    900: 0.19,
+    800: 0.6,
+    900: 0.49,
   };
 
   [50, 100, 200, 300, 400].forEach(level => {

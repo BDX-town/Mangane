@@ -79,7 +79,7 @@ const Option = (props: IOption) => {
         </div>
 
         <AutosuggestInput
-          className='rounded-md dark:!bg-transparent !bg-transparent'
+          className='rounded-md'
           placeholder={intl.formatMessage(messages.option_placeholder, { number: index + 1 })}
           maxLength={maxChars}
           value={title}
@@ -190,9 +190,9 @@ const PollForm = () => {
 
       {/* Remove Poll */}
       <div className='text-center'>
-        <button className='text-danger-500' onClick={onRemovePoll}>
+        <Button theme='danger-link' onClick={onRemovePoll}>
           {intl.formatMessage(messages.removePoll)}
-        </button>
+        </Button>
       </div>
     </Stack>
   );

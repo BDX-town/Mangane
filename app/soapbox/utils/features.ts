@@ -534,7 +534,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/apps
      * @see POST /oauth/token
      */
-    scopes: v.software === PLEROMA ? 'read write follow push admin' : 'read write follow push',
+    scopes: v.software === PLEROMA ? 'read write follow push admin' : 'read write follow push admin:read admin:write',
 
     /**
      * Ability to search statuses from the given account.

@@ -220,7 +220,7 @@ const SearchResults = () => {
           placeholderComponent={placeholderComponent}
           placeholderCount={20}
           className={classNames({
-            'divide-gray-200 dark:divide-gray-800 divide-solid divide-y': selectedFilter === 'statuses',
+            'divide-gray-200 dark:divide-slate-700 divide-solid divide-y': selectedFilter === 'statuses',
           })}
           itemClassName={classNames({
             'pb-4': selectedFilter === 'accounts',

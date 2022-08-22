@@ -108,10 +108,10 @@ const ReasonStep = (_props: IReasonStep) => {
                     data-testid={`rule-${rule.id}`}
                     onClick={() => dispatch(changeReportRule(rule.id))}
                     className={classNames({
-                      'relative border border-solid border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-primary-800/30 text-left w-full p-4 flex justify-between items-center cursor-pointer': true,
+                      'relative border border-solid border-gray-200 dark:border-slate-900/75 hover:bg-gray-50 dark:hover:bg-slate-900/50 text-left w-full p-4 flex justify-between items-center cursor-pointer': true,
                       'rounded-tl-lg rounded-tr-lg': idx === 0,
                       'rounded-bl-lg rounded-br-lg': idx === rules.length - 1,
-                      'bg-gray-200 hover:bg-gray-200 dark:bg-primary-800/50': isSelected,
+                      'bg-gray-50 dark:bg-slate-900': isSelected,
                     })}
                   >
                     <Stack className='mr-3'>
@@ -132,7 +132,7 @@ const ReasonStep = (_props: IReasonStep) => {
                       value={rule.id}
                       checked={isSelected}
                       readOnly
-                      className='border-2 dark:bg-gray-900 dark:border-gray-800 checked:bg-primary-500 dark:checked:bg-primary-500 focus:ring-primary-500 dark:focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded'
+                      className='h-4 w-4 cursor-pointer text-primary-600 dark:text-primary-400 border-gray-300 rounded focus:ring-primary-500'
                     />
                   </button>
                 );
@@ -140,13 +140,13 @@ const ReasonStep = (_props: IReasonStep) => {
             </div>
 
             <div
-              className={classNames('inset-x-0 top-0 flex rounded-t-lg justify-center bg-gradient-to-b from-white pb-12 pt-8 pointer-events-none dark:from-gray-900 absolute transition-opacity duration-500', {
+              className={classNames('inset-x-0 top-0 flex rounded-t-lg justify-center bg-gradient-to-b from-white pb-12 pt-8 pointer-events-none dark:from-slate-900 absolute transition-opacity duration-500', {
                 'opacity-0': isNearTop,
                 'opacity-100': !isNearTop,
               })}
             />
             <div
-              className={classNames('inset-x-0 bottom-0 flex rounded-b-lg justify-center bg-gradient-to-t from-white pt-12 pb-8 pointer-events-none dark:from-gray-900 absolute transition-opacity duration-500', {
+              className={classNames('inset-x-0 bottom-0 flex rounded-b-lg justify-center bg-gradient-to-t from-white pt-12 pb-8 pointer-events-none dark:from-slate-900 absolute transition-opacity duration-500', {
                 'opacity-0': isNearBottom,
                 'opacity-100': !isNearBottom,
               })}

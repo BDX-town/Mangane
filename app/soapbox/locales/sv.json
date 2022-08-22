@@ -628,7 +628,7 @@
   "lists.edit": "Redigera lista",
   "lists.edit.submit": "Ändra titel",
   "lists.new.create": "Lägg till lista",
-  "lists.new.create_title": "Add list",
+  "lists.new.create_title": "Create",
   "lists.new.save_title": "Save Title",
   "lists.new.title_placeholder": "Ny listrubrik",
   "lists.search": "Sök bland personer du följer",

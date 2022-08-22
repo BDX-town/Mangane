@@ -628,7 +628,7 @@
   "lists.edit": "Επεξεργασία λίστας",
   "lists.edit.submit": "Αλλαγή τίτλου",
   "lists.new.create": "Προσθήκη λίστας",
-  "lists.new.create_title": "Add list",
+  "lists.new.create_title": "Create",
   "lists.new.save_title": "Save Title",
   "lists.new.title_placeholder": "Τίτλος νέας λίστα",
   "lists.search": "Αναζήτησε μεταξύ των ανθρώπων που ακουλουθείς",

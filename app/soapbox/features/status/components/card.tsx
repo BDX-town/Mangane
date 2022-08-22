@@ -71,7 +71,7 @@ const Card: React.FC<ICard> = ({
     setEmbedded(false);
   }, [card.url]);
 
-  const trimmedTitle = trim(card.title, maxTitle);
+  const trimmedTitle       = trim(card.title, maxTitle);
   const trimmedDescription = trim(card.description, maxDescription);
 
   const handlePhotoClick = () => {
@@ -111,9 +111,9 @@ const Card: React.FC<ICard> = ({
   };
 
   const renderVideo = () => {
-    const content = { __html: addAutoPlay(card.html) };
-    const ratio = getRatio(card);
-    const height = width / ratio;
+    const content   = { __html: addAutoPlay(card.html) };
+    const ratio     = getRatio(card);
+    const height    = width / ratio;
 
     return (
       <div
@@ -126,7 +126,7 @@ const Card: React.FC<ICard> = ({
   };
 
   const getRatio = (card: CardEntity): number => {
-    const ratio = (card.width / card.height) || 16 / 9;
+    const ratio  = (card.width / card.height) || 16 / 9;
 
     // Constrain to a sane limit
     // https://en.wikipedia.org/wiki/Aspect_ratio_(image)
@@ -135,9 +135,9 @@ const Card: React.FC<ICard> = ({
 
   const interactive = card.type !== 'link';
   horizontal = typeof horizontal === 'boolean' ? horizontal : interactive || embedded;
-  const className = classnames('status-card', { horizontal, compact, interactive }, `status-card--${card.type}`);
-  const ratio = getRatio(card);
-  const height = (compact && !embedded) ? (width / (16 / 9)) : (width / ratio);
+  const className   = classnames('status-card', { horizontal, compact, interactive }, `status-card--${card.type}`);
+  const ratio       = getRatio(card);
+  const height      = (compact && !embedded) ? (width / (16 / 9)) : (width / ratio);
 
   const title = interactive ? (
     <a
@@ -208,12 +208,12 @@ const Card: React.FC<ICard> = ({
           {thumbnail}
 
           <div className='absolute inset-0 flex items-center justify-center'>
-            <div className='bg-gray-500/90 dark:bg-gray-700/90 shadow-md rounded-full px-4 py-3 flex items-center justify-center'>
+            <div className='bg-white shadow-md rounded-md p-2 flex items-center justify-center'>
               <HStack space={3} alignItems='center'>
-                <button onClick={handleEmbedClick} className='appearance-none text-gray-700 dark:text-gray-500 hover:text-gray-900 dark:hover:text-gray-100'>
+                <button onClick={handleEmbedClick} className='appearance-none text-gray-400 hover:text-gray-600'>
                   <Icon
                     src={iconVariant}
-                    className='w-6 h-6 text-inherit'
+                    className='w-5 h-5 text-inherit'
                   />
                 </button>
 
@@ -223,11 +223,11 @@ const Card: React.FC<ICard> = ({
                     href={card.url}
                     target='_blank'
                     rel='noopener'
-                    className='text-gray-700 dark:text-gray-500 hover:text-gray-900 dark:hover:text-gray-100'
+                    className='text-gray-400 hover:text-gray-600'
                   >
                     <Icon
                       src={require('@tabler/icons/external-link.svg')}
-                      className='w-6 h-6 text-inherit'
+                      className='w-5 h-5 text-inherit'
                     />
                   </a>
                 )}

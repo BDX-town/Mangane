@@ -85,7 +85,7 @@
   }
 
   &__content {
-    @apply flex flex-1 flex-col overflow-hidden bg-white dark:bg-gray-800;
+    @apply flex flex-1 flex-col overflow-hidden bg-white dark:bg-slate-800;
 
     > div {
       @apply max-h-full;
@@ -141,7 +141,7 @@
   display: flex;
 
   &__bubble {
-    @apply px-2.5 py-1 rounded-lg bg-primary-50 dark:bg-gray-700;
+    @apply px-2.5 py-1 rounded-lg bg-primary-50 dark:bg-slate-700;
     max-width: 70%;
     text-overflow: ellipsis;
     overflow-wrap: break-word;

@@ -15,7 +15,7 @@ const ValidationCheckmark = ({ isValid, text }: IValidationCheckmark) => {
         src={isValid ? require('@tabler/icons/check.svg') : require('@tabler/icons/point.svg')}
         className={classNames({
           'w-4 h-4': true,
-          'text-gray-400 dark:text-gray-600 dark:fill-gray-600 fill-gray-400': !isValid,
+          'text-gray-400 fill-gray-400': !isValid,
           'text-success-500': isValid,
         })}
       />

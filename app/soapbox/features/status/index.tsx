@@ -484,7 +484,7 @@ const Thread: React.FC<IThread> = (props) => {
             onOpenCompareHistoryModal={handleOpenCompareHistoryModal}
           />
 
-          <hr className='mb-2 border-t-2 dark:border-primary-800' />
+          <hr className='mb-2 dark:border-slate-600' />
 
           <StatusActionBar
             status={status}
@@ -496,7 +496,7 @@ const Thread: React.FC<IThread> = (props) => {
       </HotKeys>
 
       {hasDescendants && (
-        <hr className='mt-2 border-t-2 dark:border-primary-800' />
+        <hr className='mt-2 dark:border-slate-600' />
       )}
     </div>
   );

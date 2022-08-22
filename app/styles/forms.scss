@@ -311,7 +311,7 @@ code {
   input[type=password],
   textarea,
   .rfipbtn {
-    @apply border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white;
+    @apply border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-black dark:text-white;
     box-sizing: border-box;
     font-size: 16px;
     color: var(--primary-text-color);

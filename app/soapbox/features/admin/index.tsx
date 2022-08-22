@@ -2,8 +2,9 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Switch, Route } from 'react-router-dom';
 
-import { Column } from 'soapbox/components/ui';
 import { useOwnAccount } from 'soapbox/hooks';
+
+import Column from '../ui/components/column';
 
 import AdminTabs from './components/admin-tabs';
 import Waitlist from './tabs/awaiting-approval';

@@ -36,7 +36,7 @@ const IconButton = React.forwardRef((props: IIconButton, ref: React.ForwardedRef
       <SvgIcon src={src} className={iconClassName} />
 
       {text ? (
-        <Text tag='span' theme='inherit' size='sm'>
+        <Text tag='span' theme='muted' size='sm'>
           {text}
         </Text>
       ) : null}

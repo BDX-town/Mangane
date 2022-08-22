@@ -233,7 +233,7 @@ const StatusList: React.FC<IStatusList> = ({
       placeholderComponent={PlaceholderStatus}
       placeholderCount={20}
       ref={node}
-      className={classNames('divide-y divide-solid divide-gray-200 dark:divide-gray-800', {
+      className={classNames('divide-y divide-solid divide-gray-200 dark:divide-slate-700', {
         'divide-none': divideType !== 'border',
       })}
       itemClassName={classNames({

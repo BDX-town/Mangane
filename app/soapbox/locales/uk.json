@@ -628,7 +628,7 @@
   "lists.edit": "Редагувати список",
   "lists.edit.submit": "Змінити назву",
   "lists.new.create": "Додати список",
-  "lists.new.create_title": "Add list",
+  "lists.new.create_title": "Create",
   "lists.new.save_title": "Save Title",
   "lists.new.title_placeholder": "Нова назва списку",
   "lists.search": "Шукати серед людей, на яких ви підписані",

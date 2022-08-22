@@ -758,7 +758,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
             <a href={account.avatar} onClick={handleAvatarClick} target='_blank'>
               <Avatar
                 account={account}
-                className='h-24 w-24 rounded-full ring-4 ring-white dark:ring-primary-900'
+                className='h-24 w-24 rounded-full ring-4 ring-white dark:ring-slate-800'
               />
             </a>
           </div>

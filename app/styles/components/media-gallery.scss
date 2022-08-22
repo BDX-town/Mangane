@@ -65,7 +65,7 @@
     width: 100%;
 
     img {
-      @apply object-cover rounded-lg;
+      object-fit: cover;
     }
   }
 
@@ -106,7 +106,7 @@
 }
 
 .media-gallery__preview {
-  @apply bg-gray-200 dark:bg-gray-900 rounded-lg;
+  @apply bg-gray-200 dark:bg-slate-900;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -145,7 +145,6 @@
 }
 
 .media-gallery__item-gifv-thumbnail {
-  @apply rounded-md;
   cursor: zoom-in;
   height: 100%;
   object-fit: cover;

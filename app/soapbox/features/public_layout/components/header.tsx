@@ -101,7 +101,7 @@ const Header = () => {
                   <a
                     href={links.get('help')}
                     target='_blank'
-                    className='text-sm font-medium text-gray-700 dark:text-gray-600 hover:underline'
+                    className='text-sm font-medium text-gray-500 hover:text-gray-900'
                   >
                     <FormattedMessage id='landing_page_modal.helpCenter' defaultMessage='Help Center' />
                   </a>
@@ -109,7 +109,7 @@ const Header = () => {
               </HStack>
 
               <HStack space={2} className='xl:hidden shrink-0'>
-                <Button to='/login' theme='tertiary'>
+                <Button to='/login' theme='secondary'>
                   {intl.formatMessage(messages.login)}
                 </Button>
 
@@ -152,9 +152,8 @@ const Header = () => {
                 <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
                   <IconButton
                     src={require('@tabler/icons/help.svg')}
-                    className='bg-transparent text-gray-700 dark:text-gray-600 hover:text-gray-800 dark:hover:text-gray-500 cursor-pointer'
+                    className='bg-transparent text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 cursor-pointer'
                     iconClassName='w-5 h-5'
-                    transparent
                   />
                 </Tooltip>
               </Link>

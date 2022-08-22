@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Modal, Text } from 'soapbox/components/ui';
+import { Modal } from 'soapbox/components/ui';
 import { SimpleForm, FieldsGroup, Checkbox } from 'soapbox/features/forms';
 
 interface IConfirmationModal {
@@ -60,9 +60,7 @@ const ConfirmationModal: React.FC<IConfirmationModal> = ({
       secondaryText={secondary}
       secondaryAction={onSecondary && handleSecondary}
     >
-      <Text>
-        {message}
-      </Text>
+      <p className='text-gray-600 dark:text-gray-300'>{message}</p>
 
       <div className='mt-2'>
         {checkbox && <div className='confirmation-modal__checkbox'>

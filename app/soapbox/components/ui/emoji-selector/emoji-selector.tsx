@@ -48,7 +48,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({ emojis, onReact, visible = fa
   return (
     <HStack
       space={2}
-      className={classNames('bg-white dark:bg-gray-900 p-3 rounded-full shadow-md z-[999] w-max')}
+      className={classNames('bg-white dark:bg-slate-900 p-3 rounded-full shadow-md z-[999] w-max')}
     >
       {Array.from(emojis).map((emoji, i) => (
         <EmojiButton
