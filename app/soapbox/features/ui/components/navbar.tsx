@@ -70,21 +70,21 @@ const Navbar = () => {
     <nav className='bg-white dark:bg-primary-900 shadow z-50 sticky top-0' ref={node}>
       <div className='max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
         <div className='relative flex justify-between h-12 lg:h-16'>
-          {account && (
-            <div className='absolute inset-y-0 left-0 flex items-center lg:hidden'>
-              <button onClick={onOpenSidebar}>
-                <Avatar src={account.avatar} size={34} />
-              </button>
-            </div>
-          )}
-
           <div
             className={classNames({
               'flex-1 flex items-center lg:items-stretch space-x-4': true,
-              'justify-center lg:justify-start': account,
+              'justify-between lg:justify-start': account,
               'justify-start': !account,
             })}
           >
+            {account && (
+              <div className='flex items-center lg:hidden'>
+                <button onClick={onOpenSidebar}>
+                  <Avatar src={account.avatar} size={34} />
+                </button>
+              </div>
+            )}
+
             <Link key='logo' to='/' data-preview-title-id='column.home' className='flex-shrink-0 flex items-center'>
               <SiteLogo alt='Logo' className='h-5 w-auto cursor-pointer' />
               <span className='hidden'><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
@@ -97,6 +97,15 @@ const Navbar = () => {
                 </div>
               </div>
             )}
+
+            <Link to="/search">
+              <IconButton
+                src={require('@tabler/icons/search.svg')}
+                className='bg-transparent text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 lg:hidden cursor-pointer'
+                iconClassName='w-5 h-5'
+              />
+            </Link>
+
           </div>
 
           <div className='absolute inset-y-0 right-0 flex items-center pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0 space-x-3'>

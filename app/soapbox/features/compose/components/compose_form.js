@@ -384,7 +384,7 @@ class ComposeForm extends ImmutablePureComponent {
             {features.richText && <MarkdownButtonContainer />}
           </div>
 
-          <div className='flex items-center space-x-4 ml-auto'>
+          <div className='flex items-center mt-2 space-x-4 ml-auto'>
             {maxTootChars && (
               <div className='flex items-center space-x-1'>
                 <TextCharacterCounter max={maxTootChars} text={text} />

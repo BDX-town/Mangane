@@ -52,8 +52,8 @@ const AccountAuthorize: React.FC<IAccountAuthorize> = ({ id }) => {
       </div>
 
       <div className='account--panel'>
-        <div className='account--panel__button'><IconButton title={intl.formatMessage(messages.authorize)} src={require('@tabler/icons/check.svg')} onClick={onAuthorize} /></div>
         <div className='account--panel__button'><IconButton title={intl.formatMessage(messages.reject)} src={require('@tabler/icons/x.svg')} onClick={onReject} /></div>
+        <div className='account--panel__button'><IconButton title={intl.formatMessage(messages.authorize)} src={require('@tabler/icons/check.svg')} onClick={onAuthorize} /></div>
       </div>
     </div>
   );

@@ -38,26 +38,7 @@ const HomePage: React.FC = ({ children }) => {
 
   return (
     <>
-      <Layout.Main className='pt-3 sm:pt-0 dark:divide-gray-800 space-y-3'>
-        {me && (
-          <Card variant='rounded' ref={composeBlock}>
-            <CardBody>
-              <div className='flex items-start space-x-4'>
-                <Link to={`/@${acct}`}>
-                  <Avatar account={account} size={46} />
-                </Link>
-
-                <ComposeFormContainer
-                  // @ts-ignore
-                  shouldCondense
-                  autoFocus={false}
-                  clickableAreaRef={composeBlock}
-                />
-              </div>
-            </CardBody>
-          </Card>
-        )}
-
+      <Layout.Main className='pt-3 sm:pt-0 dark:divide-slate-800 space-y-3'>
         {features.feedUserFiltering && <FeedCarousel />}
 
         {children}

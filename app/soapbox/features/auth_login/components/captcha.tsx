@@ -11,7 +11,7 @@ import type { AxiosResponse } from 'axios';
 const noOp = () => {};
 
 const messages = defineMessages({
-  placeholder: { id: 'registration.captcha.placeholder', defaultMessage: 'Enter the pictured text' },
+  placeholder: { id: 'registration.captcha.placeholder', defaultMessage: 'Saisissez le texte visible dans l\'image' },
 });
 
 interface ICaptchaField {

@@ -41,7 +41,6 @@ const ConversationsTimeline = () => {
         placeholder={intl.formatMessage(messages.searchPlaceholder)}
         onSelected={handleSuggestion}
       />
-
       <ConversationsList />
     </Column>
   );

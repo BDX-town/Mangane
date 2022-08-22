@@ -6,7 +6,6 @@ import { changeSetting } from 'soapbox/actions/settings';
 import { connectPublicStream } from 'soapbox/actions/streaming';
 import { expandPublicTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import SubNavigation from 'soapbox/components/sub_navigation';
 import { Column } from 'soapbox/components/ui';
 import Accordion from 'soapbox/features/ui/components/accordion';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
@@ -65,7 +64,6 @@ const CommunityTimeline = () => {
 
   return (
     <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
-      <SubNavigation message={intl.formatMessage(messages.title)} settings={ColumnSettings} />
       <PinnedHostsPicker />
       {showExplanationBox && <div className='mb-4'>
         <Accordion

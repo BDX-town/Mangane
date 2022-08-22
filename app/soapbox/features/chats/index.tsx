@@ -30,21 +30,20 @@ const ChatIndex: React.FC = () => {
   };
 
   return (
-    <Column label={intl.formatMessage(messages.title)}>
-      <div className='column__switch'>
-        <AudioToggle />
+    <Column withHeader={false} label={intl.formatMessage(messages.title)}>
+      <div className='my-3'>
+        <AccountSearch
+          placeholder={intl.formatMessage(messages.searchPlaceholder)}
+          onSelected={handleSuggestion}
+        />
       </div>
-
-      <AccountSearch
-        placeholder={intl.formatMessage(messages.searchPlaceholder)}
-        onSelected={handleSuggestion}
-      />
 
       <ChatList
         onClickChat={handleClickChat}
         useWindowScroll
       />
     </Column>
+    
   );
 };
 

@@ -19,6 +19,8 @@ const messages = defineMessages({
   dashboard: { id: 'tabs_bar.dashboard', defaultMessage: 'Dashboard' },
   all: { id: 'tabs_bar.all', defaultMessage: 'All' },
   fediverse: { id: 'tabs_bar.fediverse', defaultMessage: 'Fediverse' },
+  settings: { id: 'tabs_bar.settings', defaultMessage: 'Settings'},
+  direct: { id: 'column.direct', defaultMessage: 'Direct messages' },
 });
 
 /** Desktop sidebar with links to different views in the app. */
@@ -47,6 +49,12 @@ const SidebarNavigation = () => {
           count: followRequestsCount,
         });
       }
+
+      menu.push({
+        to: '/messages',
+        text: intl.formatMessage(messages.direct),
+        icon: require('@tabler/icons/mail.svg'),
+      });
 
       if (features.bookmarks) {
         menu.push({
@@ -81,25 +89,12 @@ const SidebarNavigation = () => {
         });
       }
 
-      if (features.publicTimeline) {
-        menu.push(null);
-      }
-    }
-
-    if (features.publicTimeline) {
       menu.push({
-        to: '/timeline/local',
-        icon: features.federating ? require('@tabler/icons/users.svg') : require('@tabler/icons/world.svg'),
-        text: features.federating ? instance.title : intl.formatMessage(messages.all),
+        to: '/settings',
+        icon: require('@tabler/icons/settings.svg'),
+        text: intl.formatMessage(messages.settings),
       });
-    }
 
-    if (features.publicTimeline && features.federating) {
-      menu.push({
-        to: '/timeline/fediverse',
-        icon: require('icons/fediverse.svg'),
-        text: intl.formatMessage(messages.fediverse),
-      });
     }
 
     return menu;
@@ -142,11 +137,31 @@ const SidebarNavigation = () => {
           text={<FormattedMessage id='tabs_bar.home' defaultMessage='Home' />}
         />
 
-        <SidebarNavigationLink
-          to='/search'
-          icon={require('@tabler/icons/search.svg')}
-          text={<FormattedMessage id='tabs_bar.search' defaultMessage='Search' />}
-        />
+        {
+          features.federating ? (
+            <SidebarNavigationLink
+              icon={require('icons/bdx.svg')}
+              text={<>{instance.get('title')}</>}
+              to='/timeline/local'
+            />
+          ) : (
+            <SidebarNavigationLink
+              icon={require('@tabler/icons/world.svg')}
+              text={<FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
+              to='/timeline/local'
+            />
+          )
+        }
+
+        {
+          features.federating && (
+            <SidebarNavigationLink
+            icon={require('icons/fediverse.svg')}
+            text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
+            to='/timeline/fediverse'
+          />
+          )
+        }
 
         {account && (
           <>
@@ -158,18 +173,6 @@ const SidebarNavigation = () => {
             />
 
             {renderMessagesLink()}
-
-            <SidebarNavigationLink
-              to={`/@${account.acct}`}
-              icon={require('@tabler/icons/user.svg')}
-              text={<FormattedMessage id='tabs_bar.profile' defaultMessage='Profile' />}
-            />
-
-            <SidebarNavigationLink
-              to='/settings'
-              icon={require('@tabler/icons/settings.svg')}
-              text={<FormattedMessage id='tabs_bar.settings' defaultMessage='Settings' />}
-            />
           </>
         )}
 

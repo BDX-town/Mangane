@@ -1,35 +1,26 @@
-# Soapbox FE
+# Mangane FE
 
-![Soapbox FE Screenshot](soapbox-screenshot.png)
+![Mangane FE Screenshot](mangane-screenshot.png)
 
-**Soapbox FE** is a frontend for Mastodon and Pleroma with a focus on custom branding and ease of use.
-It's part of the [Soapbox](https://soapbox.pub) project.
-
-## Try it out
-
-Visit https://fe.soapbox.pub/ and point it to your favorite instance.
+**Mangane FE** is a frontend for Pleroma with a focus on custom branding and ease of use.
 
 ## :rocket: Deploy on Pleroma
 
-Installing Soapbox FE on an existing Pleroma server is extremely easy.
-Just ssh into the server and download a .zip of the latest build:
-
-```sh
-curl -L https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/v2.0.0/download?job=build-production -o soapbox-fe.zip
-```
+Installing Mangane FE on an existing Pleroma server is extremely easy.
+Just ssh into the server and download a .zip of the latest build.
 
 Then unpack it into Pleroma's `instance` directory:
 
 ```sh
-busybox unzip soapbox-fe.zip -o -d /opt/pleroma/instance
+busybox unzip mangane-fe.zip -o -d /opt/pleroma/instance
 ```
 
 **That's it!** :tada:
-**Soapbox FE is installed.**
+**Mangane FE is installed.**
 The change will take effect immediately, just refresh your browser tab.
 It's not necessary to restart the Pleroma service.
 
-To remove Soapbox FE and revert to the default pleroma-fe, simply `rm /opt/pleroma/instance/static/index.html` (you can delete other stuff in there too, but be careful not to delete your own HTML files).
+To remove Mangane FE and revert to the default pleroma-fe, simply `rm /opt/pleroma/instance/static/index.html` (you can delete other stuff in there too, but be careful not to delete your own HTML files).
 
 ## :elephant: Deploy on Mastodon
 
@@ -37,7 +28,7 @@ See [Installing Soapbox over Mastodon](https://docs.soapbox.pub/frontend/adminis
 
 ## How does it work?
 
-Soapbox FE is a [single-page application (SPA)](https://en.wikipedia.org/wiki/Single-page_application) that runs entirely in the browser with JavaScript.
+Mangane FE is a [single-page application (SPA)](https://en.wikipedia.org/wiki/Single-page_application) that runs entirely in the browser with JavaScript.
 
 It has a single HTML file, `index.html`, responsible only for loading the required JavaScript and CSS.
 It interacts with the backend through [XMLHttpRequest (XHR)](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest).
@@ -65,8 +56,8 @@ It detects features supported by the backend to provide the right experience for
 To get it running, just clone the repo:
 
 ```sh
-git clone https://gitlab.com/soapbox-pub/soapbox-fe.git
-cd soapbox-fe
+git clone https://github.com/Cl0v1s/mangane.git
+cd mangane-fe
 ```
 
 Ensure that Node.js and Yarn are installed, then install dependencies:
@@ -100,10 +91,13 @@ cp .env.example .env
 And ensure that it contains `NODE_ENV=development`.
 Try again.
 
-### Troubleshooting: it's not working!
+## Developing against a live backend
 
-Run `node -V` and compare your Node.js version with the version in [`.tool-versions`](https://gitlab.com/soapbox-pub/soapbox-fe/-/blob/develop/.tool-versions).
-If they don't match, try installing [asdf](https://asdf-vm.com/).
+You can also run Mangane FE locally with a live production server as the backend.
+
+> **Note:** Whether or not this works depends on your production server. It does not seem to work with Cloudflare or VanwaNet.
+
+To do so, just copy the env file:
 
 ## Local Dev Configuration
 
@@ -115,9 +109,9 @@ All configuration is optional, except `NODE_ENV`.
 #### `NODE_ENV`
 
 The Node environment.
-Soapbox FE checks for the following options:
+Mangane FE checks for the following options:
 
-- `development` - What you should use while developing Soapbox FE.
+- `development` - What you should use while developing Mangane FE.
 - `production` - Use when compiling to deploy to a live server.
 - `test` - Use when running automated tests.
 
@@ -170,42 +164,44 @@ NODE_ENV=development
 
 # Contributing
 
-We welcome contributions to this project.
-To contribute, see [Contributing to Soapbox](docs/contributing.md).
+We welcome contributions to this project.  To contribute, first review the [Contributing doc](docs/contributing.md)
+
+Additional supporting documents include:
+* [Mangane History](docs/history.md)
+* [Redux Store Map](docs/history.md)
 
 # Customization
 
-Soapbox supports customization of the user interface, to allow per-instance branding and other features.
-Some examples include:
+Mangane supports customization of the user interface, to allow per instance branding and other features.  Current customization features include:
 
-- Instance name
-- Site logo
-- Favicon
-- About page
-- Terms of Service page
-- Privacy Policy page
-- Copyright Policy (DMCA) page
-- Promo panel list items, e.g. blog site link
-- Soapbox extensions, e.g. Patron module
-- Default settings, e.g. default theme
+* Instance name
+* Site logo
+* Favicon
+* About page
+* Terms of Service page
+* Privacy Policy page
+* Copyright Policy (DMCA) page
+* Promo panel list items, e.g. blog site link
+* Mangane extensions, e.g. Patron module
+* Default settings, e.g. default theme
 
-More details can be found in [Customizing Soapbox](docs/customization.md).
+Customization details can be found in the [Customization doc](docs/customization.md)
 
 # License & Credits
 
-Soapbox FE is based on [Gab Social](https://code.gab.com/gab/social/gab-social)'s frontend which is in turn based on [Mastodon](https://github.com/tootsuite/mastodon/)'s frontend.
+Mangane FE is based on [Soapbox](https://soapbox.pub)'s frontend.
 
 - `static/sounds/chat.mp3` and `static/sounds/chat.oga` are from [notificationsounds.com](https://notificationsounds.com/notification-sounds/intuition-561) licensed under CC BY 4.0.
 
-Soapbox FE is free software: you can redistribute it and/or modify
+Mangane FE is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-Soapbox FE is distributed in the hope that it will be useful,
+Mangane FE is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
-along with Soapbox FE.  If not, see <https://www.gnu.org/licenses/>.
+along with Mangane FE.  If not, see <https://www.gnu.org/licenses/>.

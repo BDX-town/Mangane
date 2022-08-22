@@ -38,6 +38,7 @@ import StatusPage from 'soapbox/pages/status_page';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
+import Enlistment from '../enlistment/enlistment';
 
 import BackgroundShapes from './components/background_shapes';
 import Navbar from './components/navbar';
@@ -654,6 +655,7 @@ const UI: React.FC = ({ children }) => {
 
         <div className='z-10 flex flex-col'>
           <Navbar />
+          <Enlistment />
 
           <Layout>
             <Layout.Sidebar>
