@@ -20,6 +20,7 @@ import type { List as ImmutableList } from 'immutable';
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
+  follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
   follows: { id: 'account.follows', defaultMessage: 'Follows' },
   profile: { id: 'account.profile', defaultMessage: 'Profile' },
@@ -89,6 +90,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const otherAccounts: ImmutableList<AccountEntity> = useAppSelector((state) => getOtherAccounts(state));
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
   const settings = useAppSelector((state) => getSettings(state));
+  const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
 
   const closeButtonRef = React.useRef(null);
 
@@ -271,6 +273,16 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
                 <hr />
 
+                {
+                  (account.locked || followRequestsCount > 0)  && 
+                    <SidebarLink
+                    to='/follow_requests'
+                    icon={require('@tabler/icons/user-plus.svg')}
+                    text={intl.formatMessage(messages.follow_requests)}
+                    onClick={onClose}
+                  />
+                }
+
                 <SidebarLink
                   to='/blocks'
                   icon={require('@tabler/icons/ban.svg')}
@@ -282,13 +294,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   to='/mutes'
                   icon={require('@tabler/icons/circle-x.svg')}
                   text={intl.formatMessage(messages.mutes)}
-                  onClick={onClose}
-                />
-
-                <SidebarLink
-                  to='/settings/preferences'
-                  icon={require('@tabler/icons/settings.svg')}
-                  text={intl.formatMessage(messages.preferences)}
                   onClick={onClose}
                 />
 
@@ -309,6 +314,13 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     onClick={onClose}
                   />
                 )}
+
+                <SidebarLink
+                  to='/settings/preferences'
+                  icon={require('@tabler/icons/settings.svg')}
+                  text={intl.formatMessage(messages.preferences)}
+                  onClick={onClose}
+                />
 
                 {account.admin && (
                   <SidebarLink
