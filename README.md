@@ -1,6 +1,8 @@
 # Mangane FE
 
-![Mangane FE Screenshot](mangane-screenshot.png)
+![UI Mixed](ui-mixed.png)
+![UI Dark](ui-dark.png)
+![UI Light](ui-light.png)
 
 **Mangane FE** is a frontend for Pleroma with a focus on custom branding and ease of use.
 
@@ -12,7 +14,7 @@ Just ssh into the server and download a .zip of the latest build.
 Then unpack it into Pleroma's `instance` directory:
 
 ```sh
-busybox unzip mangane-fe.zip -o -d /opt/pleroma/instance
+busybox unzip static.zip -o -d /opt/pleroma/instance
 ```
 
 **That's it!** :tada:
