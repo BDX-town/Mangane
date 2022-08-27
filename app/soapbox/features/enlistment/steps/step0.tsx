@@ -3,8 +3,8 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useOwnAccount, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
-    title: { id: 'enlistment.step0.title', defaultMessage: "Welcome on Mangane"},
-    body: { id: 'enlistment.step0.body', defaultMessage: "Mangane is your gateway to a network of independent servers that communicate together to form a larger social network: the fediverse. Each server is called an “instance”. Your instance is simply this site: "},
+    title: { id: 'enlistment.step0.title', defaultMessage: "Welcome on the Fediverse"},
+    body: { id: 'enlistment.step0.body', defaultMessage: "This website is your gateway to a network of independent servers that communicate together to form a larger social network: the fediverse. Each server is called an “instance”. Your instance is simply this site: "},
     username: { id: 'enlistment.step0.username', defaultMessage: "You full username"},
     explanation: { id: 'enlistment.step0.explanation', defaultMessage: "It is this identifier that you can share on the fediverse"},
 });
