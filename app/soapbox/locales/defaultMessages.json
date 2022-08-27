@@ -3619,15 +3619,19 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Welcome on Mangane",
         "id": "enlistment.step0.title"
       },
       {
+        "defaultMessage": "Mangane is your gateway to a network of independent servers that communicate together to form a larger social network: the fediverse. Each server is called an “instance”. Your instance is simply this site: ",
         "id": "enlistment.step0.body"
       },
       {
+        "defaultMessage": "You full username",
         "id": "enlistment.step0.username"
       },
       {
+        "defaultMessage": "It is this identifier that you can share on the fediverse",
         "id": "enlistment.step0.explanation"
       }
     ],
@@ -3636,18 +3640,23 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "If you exchange with a person from another instance, you must mention them with their <span class='font-bold'>@pseudo@instance</span><br/><br/> ex: <a href=' https://oslo.town/@matt'>@matt@oslo.town</a>, if you want to talk to the Oslo.town admin",
         "id": "enlistment.step1.right"
       },
       {
+        "defaultMessage": "How it works ?",
         "id": "enlistment.step1.title"
       },
       {
+        "defaultMessage": "Here you are on {title}. If you exchange with people from the same instance as you, you can simply mention them with {username}{br}{br}ex: {contact}, if you want to talk to the admin of {title}",
         "id": "enlistment.step1.left"
       },
       {
+        "defaultMessage": "@username",
         "id": "enlistment.step1.username"
       },
       {
+        "defaultMessage": "Don't worry though, when writing a post, autosuggestion will help you find the right mention! Moreover, if you reply to a post, the mention will automatically be written in the right way.",
         "id": "enlistment.step1.explanation"
       }
     ],
@@ -3656,27 +3665,35 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Here you are on familiar ground: only your publications and those of the people you follow will be displayed on this thread.",
         "id": "enlistment.step2.col1"
       },
       {
+        "defaultMessage": "Here is a bit like your neighborhood: you will only find publications from members of this server, whether you follow them or not.",
         "id": "enlistment.step2.col2"
       },
       {
+        "defaultMessage": "Think outside the box and go explore the rest of the world: this thread displays posts from all known instances.",
         "id": "enlistment.step2.col3"
       },
       {
+        "defaultMessage": "Home",
         "id": "enlistment.step2.title1"
       },
       {
+        "defaultMessage": "At first it will be a little empty but don't worry we can help you fill it!",
         "id": "enlistment.step2.explanation1"
       },
       {
+        "defaultMessage": "We usually call it \"local\" thread",
         "id": "enlistment.step2.explanation2"
       },
       {
+        "defaultMessage": "Discover",
         "id": "enlistment.step2.title3"
       },
       {
+        "defaultMessage": "We usually call it \"global\" or \"federated\" thread",
         "id": "enlistment.step2.explanation3"
       }
     ],
@@ -3685,33 +3702,43 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Privacy",
         "id": "enlistment.step3.title"
       },
       {
+        "defaultMessage": "This site offers precise control over who can see your posts and therefore interact with you.",
         "id": "enlistment.step3.description"
       },
       {
+        "defaultMessage": "Public",
         "id": "enlistment.step3.public-title"
       },
       {
+        "defaultMessage": "The post is displayed on all feeds, including other instances.",
         "id": "enlistment.step3.public-description"
       },
       {
+        "defaultMessage": "Unlisted",
         "id": "enlistment.step3.unlisted-title"
       },
       {
+        "defaultMessage": "The post is public but only appears in your subscribers' feeds and on your profile",
         "id": "enlistment.step3.unlisted-description"
       },
       {
+        "defaultMessage": "Followers only",
         "id": "enlistment.step3.followers-title"
       },
       {
+        "defaultMessage": "The post is not displayed on any public feeds and is only visible to people who follow you",
         "id": "enlistment.step3.followers-description"
       },
       {
+        "defaultMessage": "Direct",
         "id": "enlistment.step3.direct-title"
       },
       {
+        "defaultMessage": "The post is only visible to people mentioned via @username@instance",
         "id": "enlistment.step3.direct-description"
       }
     ],
@@ -3720,33 +3747,43 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "What's next ?",
         "id": "enlistment.step4.title"
       },
       {
+        "defaultMessage": "You're almost ready to dive into the deep end.",
         "id": "enlistment.step4.disclaimer"
       },
       {
+        "defaultMessage": "Think of {complete} (profile photo, banner and bio). You can even add hashtags to let people know your interests.",
         "id": "enlistment.step4.point-1"
       },
       {
+        "defaultMessage": "complete your profile",
         "id": "enlistment.step4.complete"
       },
       {
+        "defaultMessage": "It is customary to {publish} to make you discover. Do not forget the hashtags #introduction or #presentation.",
         "id": "enlistment.step4.point-2"
       },
       {
+        "defaultMessage": "publish a presentation",
         "id": "enlistment.step4.publish"
       },
       {
+        "defaultMessage": "Let's go, it's up to you to discover and tame the places, find people to follow, share your ideas while respecting the {conduct} and the values of {title}.",
         "id": "enlistment.step4.point-3"
       },
       {
+        "defaultMessage": "code of conduct",
         "id": "enlistment.step4.conduct"
       },
       {
+        "defaultMessage": "If you have any questions about this new playground, do not hesitate to ask questions to the people you meet online, the community is quite caring and welcoming. You will also find more comprehensive online resources {wiki}.",
         "id": "enlistment.step4.informations"
       },
       {
+        "defaultMessage": "on the official wiki",
         "id": "enlistment.step4.wiki"
       }
     ],
