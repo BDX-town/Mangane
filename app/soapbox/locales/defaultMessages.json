@@ -61,6 +61,10 @@
         "id": "compose.submit_success"
       },
       {
+        "defaultMessage": "Your post was edited",
+        "id": "compose.edit_success"
+      },
+      {
         "defaultMessage": "File upload limit exceeded.",
         "id": "upload_error.limit"
       },
@@ -71,6 +75,14 @@
       {
         "defaultMessage": "View",
         "id": "snackbar.view"
+      },
+      {
+        "defaultMessage": "Reply",
+        "id": "confirmations.reply.confirm"
+      },
+      {
+        "defaultMessage": "Replying now will overwrite the message you are currently composing. Are you sure you want to proceed?",
+        "id": "confirmations.reply.message"
       }
     ],
     "path": "app/soapbox/actions/compose.json"
@@ -367,6 +379,27 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "{siteTitle} uses cookies",
+        "id": "gdpr.title"
+      },
+      {
+        "defaultMessage": "{siteTitle} uses session cookies, which are essential to the website's functioning.",
+        "id": "gdpr.message"
+      },
+      {
+        "defaultMessage": "Learn more",
+        "id": "gdpr.learn_more"
+      },
+      {
+        "defaultMessage": "Accept",
+        "id": "gdpr.accept"
+      }
+    ],
+    "path": "app/soapbox/components/gdpr-banner.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "{count} {rawCount, plural, one {person} other {people}} talking",
         "id": "trends.count_by_accounts"
       }
@@ -461,16 +494,28 @@
         "id": "poll.closed"
       },
       {
-        "defaultMessage": "Vote",
-        "id": "poll.vote"
+        "defaultMessage": "Other instances may display the options you voted for",
+        "id": "poll.non_anonymous.label"
       },
       {
-        "defaultMessage": "Refresh",
-        "id": "poll.refresh"
+        "defaultMessage": "{count, plural, one {# person} other {# people}}",
+        "id": "poll.total_people"
       },
       {
         "defaultMessage": "{count, plural, one {# vote} other {# votes}}",
         "id": "poll.total_votes"
+      },
+      {
+        "defaultMessage": "Vote",
+        "id": "poll.vote"
+      },
+      {
+        "defaultMessage": "Public poll",
+        "id": "poll.non_anonymous"
+      },
+      {
+        "defaultMessage": "Refresh",
+        "id": "poll.refresh"
       }
     ],
     "path": "app/soapbox/components/polls/poll-footer.json"
@@ -575,6 +620,10 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Follow requests",
+        "id": "navigation_bar.follow_requests"
+      },
+      {
         "defaultMessage": "Followers",
         "id": "account.followers"
       },
@@ -647,6 +696,10 @@
         "id": "profile_dropdown.add_account"
       },
       {
+        "defaultMessage": "Direct messages",
+        "id": "column.direct"
+      },
+      {
         "defaultMessage": "Switch accounts",
         "id": "profile_dropdown.switch_account"
       },
@@ -692,6 +745,14 @@
         "id": "tabs_bar.fediverse"
       },
       {
+        "defaultMessage": "Settings",
+        "id": "tabs_bar.settings"
+      },
+      {
+        "defaultMessage": "Direct messages",
+        "id": "column.direct"
+      },
+      {
         "defaultMessage": "Chats",
         "id": "tabs_bar.chats"
       },
@@ -704,20 +765,8 @@
         "id": "tabs_bar.home"
       },
       {
-        "defaultMessage": "Search",
-        "id": "tabs_bar.search"
-      },
-      {
         "defaultMessage": "Notifications",
         "id": "tabs_bar.notifications"
-      },
-      {
-        "defaultMessage": "Profile",
-        "id": "tabs_bar.profile"
-      },
-      {
-        "defaultMessage": "Settings",
-        "id": "tabs_bar.settings"
       },
       {
         "defaultMessage": "More",
@@ -936,6 +985,231 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Delete",
+        "id": "status.delete"
+      },
+      {
+        "defaultMessage": "Delete & re-draft",
+        "id": "status.redraft"
+      },
+      {
+        "defaultMessage": "Edit",
+        "id": "status.edit"
+      },
+      {
+        "defaultMessage": "Direct message @{name}",
+        "id": "status.direct"
+      },
+      {
+        "defaultMessage": "Chat with @{name}",
+        "id": "status.chat"
+      },
+      {
+        "defaultMessage": "Mention @{name}",
+        "id": "status.mention"
+      },
+      {
+        "defaultMessage": "Mute @{name}",
+        "id": "account.mute"
+      },
+      {
+        "defaultMessage": "Block @{name}",
+        "id": "account.block"
+      },
+      {
+        "defaultMessage": "Reply",
+        "id": "status.reply"
+      },
+      {
+        "defaultMessage": "Share",
+        "id": "status.share"
+      },
+      {
+        "defaultMessage": "More",
+        "id": "status.more"
+      },
+      {
+        "defaultMessage": "Reply to thread",
+        "id": "status.replyAll"
+      },
+      {
+        "defaultMessage": "Repost",
+        "id": "status.reblog"
+      },
+      {
+        "defaultMessage": "Repost to original audience",
+        "id": "status.reblog_private"
+      },
+      {
+        "defaultMessage": "Un-repost",
+        "id": "status.cancel_reblog_private"
+      },
+      {
+        "defaultMessage": "This post cannot be reposted",
+        "id": "status.cannot_reblog"
+      },
+      {
+        "defaultMessage": "Like",
+        "id": "status.favourite"
+      },
+      {
+        "defaultMessage": "Expand this post",
+        "id": "status.open"
+      },
+      {
+        "defaultMessage": "Bookmark",
+        "id": "status.bookmark"
+      },
+      {
+        "defaultMessage": "Remove bookmark",
+        "id": "status.unbookmark"
+      },
+      {
+        "defaultMessage": "Report @{name}",
+        "id": "status.report"
+      },
+      {
+        "defaultMessage": "Mute conversation",
+        "id": "status.mute_conversation"
+      },
+      {
+        "defaultMessage": "Unmute conversation",
+        "id": "status.unmute_conversation"
+      },
+      {
+        "defaultMessage": "Pin on profile",
+        "id": "status.pin"
+      },
+      {
+        "defaultMessage": "Unpin from profile",
+        "id": "status.unpin"
+      },
+      {
+        "defaultMessage": "Embed",
+        "id": "status.embed"
+      },
+      {
+        "defaultMessage": "Open moderation interface for @{name}",
+        "id": "status.admin_account"
+      },
+      {
+        "defaultMessage": "Open this post in the moderation interface",
+        "id": "status.admin_status"
+      },
+      {
+        "defaultMessage": "Copy link to post",
+        "id": "status.copy"
+      },
+      {
+        "defaultMessage": "Remove account from group",
+        "id": "status.remove_account_from_group"
+      },
+      {
+        "defaultMessage": "Remove post from group",
+        "id": "status.remove_post_from_group"
+      },
+      {
+        "defaultMessage": "Deactivate @{name}",
+        "id": "admin.users.actions.deactivate_user"
+      },
+      {
+        "defaultMessage": "Delete @{name}",
+        "id": "admin.users.actions.delete_user"
+      },
+      {
+        "defaultMessage": "Delete post",
+        "id": "admin.statuses.actions.delete_status"
+      },
+      {
+        "defaultMessage": "Mark post sensitive",
+        "id": "admin.statuses.actions.mark_status_sensitive"
+      },
+      {
+        "defaultMessage": "Mark post not sensitive",
+        "id": "admin.statuses.actions.mark_status_not_sensitive"
+      },
+      {
+        "defaultMessage": "Like",
+        "id": "status.reactions.like"
+      },
+      {
+        "defaultMessage": "Love",
+        "id": "status.reactions.heart"
+      },
+      {
+        "defaultMessage": "Haha",
+        "id": "status.reactions.laughing"
+      },
+      {
+        "defaultMessage": "Wow",
+        "id": "status.reactions.open_mouth"
+      },
+      {
+        "defaultMessage": "Sad",
+        "id": "status.reactions.cry"
+      },
+      {
+        "defaultMessage": "Weary",
+        "id": "status.reactions.weary"
+      },
+      {
+        "defaultMessage": "Quote post",
+        "id": "status.quote"
+      },
+      {
+        "defaultMessage": "Delete",
+        "id": "confirmations.delete.confirm"
+      },
+      {
+        "defaultMessage": "Delete post",
+        "id": "confirmations.delete.heading"
+      },
+      {
+        "defaultMessage": "Are you sure you want to delete this post?",
+        "id": "confirmations.delete.message"
+      },
+      {
+        "defaultMessage": "Delete & redraft",
+        "id": "confirmations.redraft.confirm"
+      },
+      {
+        "defaultMessage": "Are you sure you want to delete this post and re-draft it? Favorites and reposts will be lost, and replies to the original post will be orphaned.",
+        "id": "confirmations.redraft.message"
+      },
+      {
+        "defaultMessage": "Block",
+        "id": "confirmations.block.confirm"
+      },
+      {
+        "defaultMessage": "Reply",
+        "id": "confirmations.reply.confirm"
+      },
+      {
+        "defaultMessage": "Delete & redraft",
+        "id": "confirmations.redraft.heading"
+      },
+      {
+        "defaultMessage": "Replying now will overwrite the message you are currently composing. Are you sure you want to proceed?",
+        "id": "confirmations.reply.message"
+      },
+      {
+        "defaultMessage": "Block & Report",
+        "id": "confirmations.block.block_and_report"
+      },
+      {
+        "defaultMessage": "Block @{name}",
+        "id": "confirmations.block.heading"
+      },
+      {
+        "defaultMessage": "Are you sure you want to block {name}?",
+        "id": "confirmations.block.message"
+      }
+    ],
+    "path": "app/soapbox/components/status-action-bar.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Replying to post",
         "id": "reply_mentions.reply_empty"
       },
@@ -961,12 +1235,12 @@
         "id": "status.filtered"
       },
       {
-        "defaultMessage": "Pinned post",
-        "id": "status.pinned"
-      },
-      {
         "defaultMessage": "Post is unavailable.",
         "id": "statuses.quote_tombstone"
+      },
+      {
+        "defaultMessage": "Pinned post",
+        "id": "status.pinned"
       }
     ],
     "path": "app/soapbox/components/status.json"
@@ -999,16 +1273,16 @@
         "id": "navigation.home"
       },
       {
-        "defaultMessage": "Search",
-        "id": "navigation.search"
+        "defaultMessage": "All",
+        "id": "tabs_bar.all"
+      },
+      {
+        "defaultMessage": "Fediverse",
+        "id": "tabs_bar.fediverse"
       },
       {
         "defaultMessage": "Alerts",
         "id": "navigation.notifications"
-      },
-      {
-        "defaultMessage": "Dashboard",
-        "id": "navigation.dashboard"
       }
     ],
     "path": "app/soapbox/components/thumb_navigation.json"
@@ -1480,6 +1754,98 @@
         "id": "admin.users.actions.unsuggest_user"
       },
       {
+        "defaultMessage": "Search from @{name}",
+        "id": "account.search"
+      },
+      {
+        "defaultMessage": "Unfollow",
+        "id": "confirmations.unfollow.confirm"
+      },
+      {
+        "defaultMessage": "Block",
+        "id": "confirmations.block.confirm"
+      },
+      {
+        "defaultMessage": "Hide entire domain",
+        "id": "confirmations.domain_block.confirm"
+      },
+      {
+        "defaultMessage": "Block & Report",
+        "id": "confirmations.block.block_and_report"
+      },
+      {
+        "defaultMessage": "@{acct} was verified",
+        "id": "admin.users.user_verified_message"
+      },
+      {
+        "defaultMessage": "@{acct} was unverified",
+        "id": "admin.users.user_unverified_message"
+      },
+      {
+        "defaultMessage": "@{acct} was set as a donor",
+        "id": "admin.users.set_donor_message"
+      },
+      {
+        "defaultMessage": "@{acct} was removed as a donor",
+        "id": "admin.users.remove_donor_message"
+      },
+      {
+        "defaultMessage": "@{acct} was promoted to an admin",
+        "id": "admin.users.actions.promote_to_admin_message"
+      },
+      {
+        "defaultMessage": "@{acct} was promoted to a moderator",
+        "id": "admin.users.actions.promote_to_moderator_message"
+      },
+      {
+        "defaultMessage": "@{acct} was demoted to a moderator",
+        "id": "admin.users.actions.demote_to_moderator_message"
+      },
+      {
+        "defaultMessage": "@{acct} was demoted to a regular user",
+        "id": "admin.users.actions.demote_to_user_message"
+      },
+      {
+        "defaultMessage": "@{acct} was suggested",
+        "id": "admin.users.user_suggested_message"
+      },
+      {
+        "defaultMessage": "@{acct} was unsuggested",
+        "id": "admin.users.user_unsuggested_message"
+      },
+      {
+        "defaultMessage": "Remove",
+        "id": "confirmations.remove_from_followers.confirm"
+      },
+      {
+        "defaultMessage": "You are now featuring @{acct} on your profile",
+        "id": "account.endorse.success"
+      },
+      {
+        "defaultMessage": "You are no longer featuring @{acct}",
+        "id": "account.unendorse.success"
+      },
+      {
+        "defaultMessage": "Block @{name}",
+        "id": "confirmations.block.heading"
+      },
+      {
+        "defaultMessage": "Are you sure you want to block {name}?",
+        "id": "confirmations.block.message"
+      },
+      {
+        "defaultMessage": "Block {domain}",
+        "id": "confirmations.domain_block.heading"
+      },
+      {
+        "defaultMessage": "Are you really, really sure you want to block the entire {domain}? In most cases a few targeted blocks or mutes are sufficient and preferable. You will not see content from that domain in any public timelines or your notifications.",
+        "id": "confirmations.domain_block.message"
+      },
+      {
+        "defaultMessage": "Are you sure you want to remove {name} from your followers?",
+        "id": "confirmations.remove_from_followers.message"
+      },
+      {
         "defaultMessage": "Follows you",
         "id": "account.follows_you"
       },
@@ -1721,6 +2087,23 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Sponsored post",
+        "id": "sponsored.subtitle"
+      },
+      {
+        "defaultMessage": "Why am I seeing this ad?",
+        "id": "sponsored.info.title"
+      },
+      {
+        "defaultMessage": "{siteTitle} displays ads to help fund our service.",
+        "id": "sponsored.info.message"
+      }
+    ],
+    "path": "app/soapbox/features/ads/components/ad.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Create alias",
         "id": "aliases.account.add"
       }
@@ -1831,6 +2214,24 @@
       }
     ],
     "path": "app/soapbox/features/auth_login/components/captcha.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Sign in with {provider}",
+        "id": "oauth_consumer.tooltip"
+      }
+    ],
+    "path": "app/soapbox/features/auth_login/components/consumer-button.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Other ways to sign in",
+        "id": "oauth_consumers.title"
+      }
+    ],
+    "path": "app/soapbox/features/auth_login/components/consumers-list.json"
   },
   {
     "descriptors": [
@@ -2514,6 +2915,10 @@
       {
         "defaultMessage": "There are no hashtags results for \"{term}\"",
         "id": "empty_column.search.hashtags"
+      },
+      {
+        "defaultMessage": "You are searching for posts from @{acct}.",
+        "id": "search_results.filter_message"
       }
     ],
     "path": "app/soapbox/features/compose/components/search_results.json"
@@ -3201,6 +3606,155 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Next",
+        "id": "enlistment.next"
+      },
+      {
+        "defaultMessage": "Ignore",
+        "id": "enlistment.pass"
+      }
+    ],
+    "path": "app/soapbox/features/enlistment/enlistment.json"
+  },
+  {
+    "descriptors": [
+      {
+        "id": "enlistment.step0.title"
+      },
+      {
+        "id": "enlistment.step0.body"
+      },
+      {
+        "id": "enlistment.step0.username"
+      },
+      {
+        "id": "enlistment.step0.explanation"
+      }
+    ],
+    "path": "app/soapbox/features/enlistment/steps/step0.json"
+  },
+  {
+    "descriptors": [
+      {
+        "id": "enlistment.step1.right"
+      },
+      {
+        "id": "enlistment.step1.title"
+      },
+      {
+        "id": "enlistment.step1.left"
+      },
+      {
+        "id": "enlistment.step1.username"
+      },
+      {
+        "id": "enlistment.step1.explanation"
+      }
+    ],
+    "path": "app/soapbox/features/enlistment/steps/step1.json"
+  },
+  {
+    "descriptors": [
+      {
+        "id": "enlistment.step2.col1"
+      },
+      {
+        "id": "enlistment.step2.col2"
+      },
+      {
+        "id": "enlistment.step2.col3"
+      },
+      {
+        "id": "enlistment.step2.title1"
+      },
+      {
+        "id": "enlistment.step2.explanation1"
+      },
+      {
+        "id": "enlistment.step2.explanation2"
+      },
+      {
+        "id": "enlistment.step2.title3"
+      },
+      {
+        "id": "enlistment.step2.explanation3"
+      }
+    ],
+    "path": "app/soapbox/features/enlistment/steps/step2.json"
+  },
+  {
+    "descriptors": [
+      {
+        "id": "enlistment.step3.title"
+      },
+      {
+        "id": "enlistment.step3.description"
+      },
+      {
+        "id": "enlistment.step3.public-title"
+      },
+      {
+        "id": "enlistment.step3.public-description"
+      },
+      {
+        "id": "enlistment.step3.unlisted-title"
+      },
+      {
+        "id": "enlistment.step3.unlisted-description"
+      },
+      {
+        "id": "enlistment.step3.followers-title"
+      },
+      {
+        "id": "enlistment.step3.followers-description"
+      },
+      {
+        "id": "enlistment.step3.direct-title"
+      },
+      {
+        "id": "enlistment.step3.direct-description"
+      }
+    ],
+    "path": "app/soapbox/features/enlistment/steps/step3.json"
+  },
+  {
+    "descriptors": [
+      {
+        "id": "enlistment.step4.title"
+      },
+      {
+        "id": "enlistment.step4.disclaimer"
+      },
+      {
+        "id": "enlistment.step4.point-1"
+      },
+      {
+        "id": "enlistment.step4.complete"
+      },
+      {
+        "id": "enlistment.step4.point-2"
+      },
+      {
+        "id": "enlistment.step4.publish"
+      },
+      {
+        "id": "enlistment.step4.point-3"
+      },
+      {
+        "id": "enlistment.step4.conduct"
+      },
+      {
+        "id": "enlistment.step4.informations"
+      },
+      {
+        "id": "enlistment.step4.wiki"
+      }
+    ],
+    "path": "app/soapbox/features/enlistment/steps/step4.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Export data",
         "id": "column.export_data"
       },
@@ -3256,6 +3810,14 @@
       {
         "defaultMessage": "example.com",
         "id": "login.fields.instance_placeholder"
+      },
+      {
+        "defaultMessage": "The instance returned an error.",
+        "id": "login_external.errors.instance_fail"
+      },
+      {
+        "defaultMessage": "Connection failed. Is a browser extension blocking it?",
+        "id": "login_external.errors.network_fail"
       },
       {
         "defaultMessage": "Log in",
@@ -3803,6 +4365,22 @@
       {
         "defaultMessage": "{instance} is not accepting new members.",
         "id": "registration.closed_message"
+      },
+      {
+        "defaultMessage": "Let's get started!",
+        "id": "registrations.get_started"
+      },
+      {
+        "defaultMessage": "Sign in with {provider}",
+        "id": "oauth_consumer.tooltip"
+      },
+      {
+        "defaultMessage": "Social Media Without Discrimination",
+        "id": "registrations.tagline"
+      },
+      {
+        "defaultMessage": "Create an account",
+        "id": "registrations.create_account"
       }
     ],
     "path": "app/soapbox/features/landing_page/index.json"
@@ -3929,7 +4507,7 @@
         "id": "lists.new.create"
       },
       {
-        "defaultMessage": "Create",
+        "defaultMessage": "Add list",
         "id": "lists.new.create_title"
       }
     ],
@@ -4042,6 +4620,15 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Clear notifications",
+        "id": "notifications.clear"
+      }
+    ],
+    "path": "app/soapbox/features/notifications/components/clear_column_button.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "All",
         "id": "notifications.filter.all"
       },
@@ -4066,16 +4653,24 @@
         "id": "notifications.filter.follows"
       },
       {
-        "defaultMessage": "Moves",
-        "id": "notifications.filter.moves"
-      },
-      {
         "defaultMessage": "Emoji reacts",
         "id": "notifications.filter.emoji_reacts"
       },
       {
         "defaultMessage": "Updates from people you follow",
         "id": "notifications.filter.statuses"
+      },
+      {
+        "defaultMessage": "Clear notifications",
+        "id": "notifications.clear_heading"
+      },
+      {
+        "defaultMessage": "Are you sure you want to permanently clear all your notifications?",
+        "id": "notifications.clear_confirmation"
+      },
+      {
+        "defaultMessage": "Clear notifications",
+        "id": "notifications.clear"
       }
     ],
     "path": "app/soapbox/features/notifications/components/filter_bar.json"
@@ -4125,6 +4720,10 @@
       {
         "defaultMessage": "Welcome to {instance}!",
         "id": "notification.user_approved"
+      },
+      {
+        "defaultMessage": "{name} edited a post you interacted with",
+        "id": "notification.update"
       },
       {
         "defaultMessage": " + {count} {count, plural, one {other} other {others}}",
@@ -4386,6 +4985,10 @@
       {
         "defaultMessage": "Automatically load more items when scrolled to the bottom of the page",
         "id": "preferences.fields.autoload_more_label"
+      },
+      {
+        "defaultMessage": "Ignore onboarding",
+        "id": "preferences.fields.enlisted"
       }
     ],
     "path": "app/soapbox/features/preferences/index.json"
@@ -5169,11 +5772,11 @@
     "descriptors": [
       {
         "defaultMessage": "Post is unavailable.",
-        "id": "statuses.quote_tombstone"
+        "id": "actualStatuses.quote_tombstone"
       },
       {
         "defaultMessage": "Edited {date}",
-        "id": "status.edited"
+        "id": "actualStatus.edited"
       }
     ],
     "path": "app/soapbox/features/status/components/detailed-status.json"
@@ -5260,14 +5863,6 @@
       {
         "defaultMessage": "Block & Report",
         "id": "confirmations.block.block_and_report"
-      },
-      {
-        "defaultMessage": "Block @{name}",
-        "id": "confirmations.block.heading"
-      },
-      {
-        "defaultMessage": "Are you sure you want to block {name}?",
-        "id": "confirmations.block.message"
       }
     ],
     "path": "app/soapbox/features/status/index.json"
@@ -5364,6 +5959,14 @@
       {
         "defaultMessage": "Unmute @{name}",
         "id": "account.unmute"
+      },
+      {
+        "defaultMessage": "Authorize",
+        "id": "follow_request.authorize"
+      },
+      {
+        "defaultMessage": "Reject",
+        "id": "follow_request.reject"
       }
     ],
     "path": "app/soapbox/features/ui/components/action-button.json"
@@ -5474,8 +6077,20 @@
         "id": "confirmations.delete.confirm"
       },
       {
+        "defaultMessage": "Cancel editing",
+        "id": "confirmations.cancel_editing.confirm"
+      },
+      {
+        "defaultMessage": "Cancel post editing",
+        "id": "confirmations.cancel_editing.heading"
+      },
+      {
         "defaultMessage": "Delete post",
         "id": "confirmations.delete.heading"
+      },
+      {
+        "defaultMessage": "Are you sure you want to cancel editing this post? All changes will be lost.",
+        "id": "confirmations.cancel_editing.message"
       },
       {
         "defaultMessage": "Are you sure you want to delete this post?",
@@ -5529,7 +6144,7 @@
         "id": "signup_panel.title"
       },
       {
-        "defaultMessage": "Sign up now to discuss.",
+        "defaultMessage": "Sign up now to discuss what's happening.",
         "id": "signup_panel.subtitle"
       },
       {
@@ -6252,11 +6867,11 @@
         "id": "account.unsubscribe.success"
       },
       {
-        "defaultMessage": "An error occurred trying to subscribed to this account.",
+        "defaultMessage": "An error occurred trying to subscribe to this account.",
         "id": "account.subscribe.failure"
       },
       {
-        "defaultMessage": "An error occurred trying to unsubscribed to this account.",
+        "defaultMessage": "An error occurred trying to unsubscribe to this account.",
         "id": "account.unsubscribe.failure"
       }
     ],
@@ -6502,6 +7117,18 @@
       {
         "defaultMessage": "Register your account",
         "id": "registration.header"
+      },
+      {
+        "defaultMessage": "By registering, you agree to the {terms} and {privacy}.",
+        "id": "registration.acceptance"
+      },
+      {
+        "defaultMessage": "Terms of Service",
+        "id": "registration.tos"
+      },
+      {
+        "defaultMessage": "Privacy Policy",
+        "id": "registration.privacy"
       }
     ],
     "path": "app/soapbox/features/verification/registration.json"

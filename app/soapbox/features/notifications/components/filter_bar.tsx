@@ -1,12 +1,14 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { setFilter } from 'soapbox/actions/notifications';
+import { openModal } from 'soapbox/actions/modals';
+import { setFilter, clearNotifications } from 'soapbox/actions/notifications';
 import Icon from 'soapbox/components/icon';
 import { Tabs } from 'soapbox/components/ui';
 import { useAppDispatch, useFeatures, useSettings } from 'soapbox/hooks';
 
 import type { Item } from 'soapbox/components/ui/tabs/tabs';
+import ClearColumnButton from './clear_column_button';
 
 const messages = defineMessages({
   all: { id: 'notifications.filter.all', defaultMessage: 'All' },
@@ -17,6 +19,10 @@ const messages = defineMessages({
   follows: { id: 'notifications.filter.follows', defaultMessage: 'Follows' },
   emoji_reacts: { id: 'notifications.filter.emoji_reacts', defaultMessage: 'Emoji reacts' },
   statuses: { id: 'notifications.filter.statuses', defaultMessage: 'Updates from people you follow' },
+
+  clearHeading: { id: 'notifications.clear_heading', defaultMessage: 'Clear notifications' },
+  clearMessage: { id: 'notifications.clear_confirmation', defaultMessage: 'Are you sure you want to permanently clear all your notifications?' },
+  clearConfirm: { id: 'notifications.clear', defaultMessage: 'Clear notifications' },
 });
 
 const NotificationFilterBar = () => {
@@ -29,6 +35,17 @@ const NotificationFilterBar = () => {
   const advancedMode = settings.getIn(['notifications', 'quickFilter', 'advanced']);
 
   const onClick = (notificationType: string) => () => dispatch(setFilter(notificationType));
+
+  const onClear = React.useCallback(() => {
+    dispatch(openModal('CONFIRM', {
+      icon: require('@tabler/icons/eraser.svg'),
+      heading: intl.formatMessage(messages.clearHeading),
+      message: intl.formatMessage(messages.clearMessage),
+      confirm: intl.formatMessage(messages.clearConfirm),
+      onConfirm: () => dispatch(clearNotifications()),
+    }));
+  }, [dispatch, openModal, clearNotifications]);
+  
 
   const items: Item[] = [
     {
@@ -89,7 +106,15 @@ const NotificationFilterBar = () => {
     });
   }
 
-  return <Tabs items={items} activeItem={selectedFilter} />;
+  return (
+    <>
+      <div className='flex justify-between items-center mb-2'>
+        <Icon className='h-6 w-6 text-gray-500 dark:text-gray-400' src={require('@tabler/icons/bell.svg')} />
+        <ClearColumnButton onClick={onClear} />
+      </div>
+      <Tabs items={items} activeItem={selectedFilter} />
+    </>
+  );
 };
 
 export default NotificationFilterBar;
