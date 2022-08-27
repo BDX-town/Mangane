@@ -1,18 +1,16 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Icon from 'soapbox/components/icon';
+import { Button } from 'soapbox/components/ui';
 
 interface IClearColumnButton {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const ClearColumnButton: React.FC<IClearColumnButton> = ({ onClick }) => (
-  <button className='text-btn column-header__setting-btn' tabIndex={0} onClick={onClick}>
-    <Icon src={require('@tabler/icons/eraser.svg')} />
-    {' '}
+  <Button theme={"ghost"} onClick={onClick}>
     <FormattedMessage id='notifications.clear' defaultMessage='Clear notifications' />
-  </button>
+  </Button>
 );
 
 export default ClearColumnButton;
