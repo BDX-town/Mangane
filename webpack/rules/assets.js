@@ -80,4 +80,11 @@ module.exports = [{
   generator: {
     filename: 'packs/images/crypto/[name]-[contenthash:8][ext]',
   },
+}, {
+  test: /manifest.json$/,
+  type: 'asset/resource',
+  include: resolve('app'),
+  generator: {
+    filename: 'manifest.json'
+  }
 }];

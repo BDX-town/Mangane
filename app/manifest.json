@@ -1,0 +1,12 @@
+{
+    "name": "Mangane",
+    "icons": [
+        {
+            "src": "/favicon.png",
+            "type": "image/png",
+            "sizes": "250/250"
+        }
+    ], 
+    "start_url": "/",
+    "display": "standalone"
+}

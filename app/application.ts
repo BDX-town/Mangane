@@ -1,5 +1,7 @@
 import loadPolyfills from './soapbox/load_polyfills';
 
+require('manifest.json');
+
 // @ts-ignore
 require.context('./images/', true);
 
