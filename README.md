@@ -26,7 +26,7 @@ To remove Mangane FE and revert to the default pleroma-fe, simply `rm /opt/plero
 
 ## :elephant: Deploy on Mastodon
 
-See [Installing Soapbox over Mastodon](https://docs.soapbox.pub/frontend/administration/mastodon/).
+See [Installing Mangane over Mastodon](https://docs.soapbox.pub/frontend/administration/mastodon/).
 
 ## How does it work?
 
