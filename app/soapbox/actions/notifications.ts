@@ -10,7 +10,7 @@ import api, { getLinks } from 'soapbox/api';
 import compareId from 'soapbox/compare_id';
 import { getFilters, regexFromFilters } from 'soapbox/selectors';
 import { isLoggedIn } from 'soapbox/utils/auth';
-import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features';
+import { getFeatures, parseVersion, PLEROMA, AKKOMA } from 'soapbox/utils/features';
 import { unescapeHTML } from 'soapbox/utils/html';
 import { joinPublicPath } from 'soapbox/utils/static';
 
@@ -318,7 +318,7 @@ const markReadNotifications = () =>
 
       dispatch(saveMarker(marker));
 
-      if (v.software === PLEROMA) {
+      if (v.software === PLEROMA || v.software === AKKOMA) {
         dispatch(markReadPleroma(topNotificationId));
       }
     }

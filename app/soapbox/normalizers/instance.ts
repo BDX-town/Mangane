@@ -10,7 +10,7 @@ import {
   fromJS,
 } from 'immutable';
 
-import { parseVersion, PLEROMA } from 'soapbox/utils/features';
+import { parseVersion, PLEROMA, AKKOMA } from 'soapbox/utils/features';
 import { mergeDefined } from 'soapbox/utils/normalizers';
 import { isNumber } from 'soapbox/utils/numbers';
 
@@ -84,7 +84,7 @@ const pleromaToMastodonConfig = (instance: ImmutableMap<string, any>) => {
 };
 
 // Get the software's default attachment limit
-const getAttachmentLimit = (software: string | null) => software === PLEROMA ? Infinity : 4;
+const getAttachmentLimit = (software: string | null) => (software === PLEROMA || software === AKKOMA) ? Infinity : 4;
 
 // Normalize version
 const normalizeVersion = (instance: ImmutableMap<string, any>) => {
