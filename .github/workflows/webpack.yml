@@ -24,6 +24,7 @@ jobs:
 
     - name: Build
       run: |
+        export NODE_ENV=production
         yarn
         yarn build
     - name: Automatic Releases
