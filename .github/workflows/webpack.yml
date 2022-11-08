@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
+        node-version: [18.x]
     
     steps:
     - uses: actions/checkout@v3
@@ -24,8 +24,8 @@ jobs:
 
     - name: Build
       run: |
-        npm install
-        npx webpack
+        yarn
+        yarn build
     - name: Automatic Releases
       # You may pin to the exact commit or the version.
       # uses: marvinpinto/action-automatic-releases@919008cf3f741b179569b7a6fb4d8860689ab7f0
