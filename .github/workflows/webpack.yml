@@ -24,16 +24,5 @@ jobs:
 
     - name: Build
       run: |
-        export NODE_ENV=production
-        yarn
-        yarn build
-    - name: Automatic Releases
-      # You may pin to the exact commit or the version.
-      # uses: marvinpinto/action-automatic-releases@919008cf3f741b179569b7a6fb4d8860689ab7f0
-      uses: marvinpinto/action-automatic-releases@v1.2.1
-      with:
-        # GitHub secret token
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        # Assets to upload to the release
-        files: |
-          static
+        NODE_ENV=production yarn
+        NODE_ENV=production yarn build
