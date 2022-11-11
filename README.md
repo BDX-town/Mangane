@@ -62,8 +62,6 @@ Just fill the form at Frontend/frontends/Primary like this.
 The change will take effect immediately, just refresh your browser tab.
 It's not necessary to restart the Pleroma service.
 
-To remove Mangane FE and revert to the default pleroma-fe, simply `rm /opt/pleroma/instance/static/index.html` (you can delete other stuff in there too, but be careful not to delete your own HTML files).
-
 ## :elephant: Deploy on Mastodon
 
 See [Installing Mangane over Mastodon](https://docs.soapbox.pub/frontend/administration/mastodon/).
