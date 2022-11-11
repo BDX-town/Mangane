@@ -1,3 +1,5 @@
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 console.log('Running in development mode'); // eslint-disable-line no-console
 
@@ -112,4 +114,7 @@ module.exports = merge(sharedConfig, {
     },
     proxy: makeProxyConfig(),
   },
+  plugins: [
+    new ForkTsCheckerWebpackPlugin({ typescript: { memoryLimit: 8192 } }),
+  ]
 });
