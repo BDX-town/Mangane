@@ -2,7 +2,7 @@ import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrde
 import { v4 as uuid } from 'uuid';
 
 import { tagHistory } from 'soapbox/settings';
-import { PLEROMA } from 'soapbox/utils/features';
+import { PLEROMA, AKKOMA } from 'soapbox/utils/features';
 import { hasIntegerMediaIds } from 'soapbox/utils/status';
 
 import {
@@ -445,7 +445,7 @@ export default function compose(state = ReducerRecord({ idempotencyKey: uuid(), 
         map.set('content_type', action.contentType || 'text/plain');
         map.set('quote', action.status.get('quote'));
 
-        if (action.v?.software === PLEROMA && action.withRedraft && hasIntegerMediaIds(action.status)) {
+        if ((action.v?.software === PLEROMA || action.v?.software === AKKOMA) && action.withRedraft && hasIntegerMediaIds(action.status)) {
           map.set('media_attachments', ImmutableList());
         } else {
           map.set('media_attachments', action.status.media_attachments);
