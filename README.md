@@ -60,7 +60,7 @@ Just fill the form at Frontend/frontends/Primary like this.
 **That's it!** :tada:
 **Mangane FE is installed.**
 The change will take effect immediately, just refresh your browser tab.
-It's not necessary to restart the Pleroma service.
+You may need to restart pleroma/akkoma for the change to take effect.
 
 ## :elephant: Deploy on Mastodon
 
