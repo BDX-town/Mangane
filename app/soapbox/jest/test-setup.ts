@@ -1,5 +1,5 @@
 'use strict';
-
+import '@testing-library/jest-dom/extend-expect';
 import { __clear as clearApiMocks } from '../__mocks__/api';
 
 // API mocking
