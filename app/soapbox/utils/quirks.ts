@@ -1,7 +1,7 @@
 /* eslint sort-keys: "error" */
 import { createSelector } from 'reselect';
 
-import { parseVersion, PLEROMA, MITRA } from './features';
+import { parseVersion, PLEROMA, MITRA, AKKOMA } from './features';
 
 import type { RootState } from 'soapbox/store';
 import type { Instance } from 'soapbox/types/entities';
@@ -16,7 +16,7 @@ export const getQuirks = createSelector([
      * @see GET /api/v1/blocks
      * @see GET /api/v1/mutes
      */
-    invertedPagination: v.software === PLEROMA,
+    invertedPagination: v.software === PLEROMA || v.software === AKKOMA,
 
     /**
      * Apps are not supported by the API, and should not be created during login or registration.

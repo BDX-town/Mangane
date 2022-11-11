@@ -6,23 +6,61 @@
 
 **Mangane FE** is a frontend for Pleroma with a focus on custom branding and ease of use.
 
-## :rocket: Deploy on Pleroma
+## :rocket: Deploy on Pleroma/Akkoma
 
-Installing Mangane FE on an existing Pleroma server is extremely easy.
-Just ssh into the server and download a .zip of the latest build.
+Installing Mangane FE on an existing Pleroma server is easy.
+Log in your server and follow those instructions depending on your configuration.
 
-Then unpack it into Pleroma's `instance` directory:
+### Download
 
-```sh
-busybox unzip static.zip -o -d /opt/pleroma/instance
+First you need to download mangane on your server.
+
+#### OTP
+
 ```
+/opt/pleroma/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/Cl0v1s/mangane-ui/releases/latest/download/static.zip
+```
+*Note: The pleroma_ctl path may vary on your system*
+
+#### Mix / Source 
+
+```
+mix pleroma.frontend install mangane --ref dist --build-url https://github.com/Cl0v1s/mangane-ui/releases/latest/download/static.zip
+```
+
+#### Admin-fe with database configuration enabled
+
+Just fill the form at Frontend/Available like this.
+
+![admin-fe](./admin-fe.png)
+
+### Activation
+
+Then you need to activate the frontend the it will be available to your users.
+
+#### Config.exs
+
+Edit your configuration files to add/edit the `config :pleroma, :frontends` section like this 
+
+```
+config :pleroma, :frontends,
+  primary: %{
+    "name" => "mangane",
+    "ref" => "dist"
+  }
+```
+
+##### Admin-fe with database configuration enabled
+
+Just fill the form at Frontend/frontends/Primary like this.
+
+![admin-fe](./admin-fe2.png)
+
 
 **That's it!** :tada:
 **Mangane FE is installed.**
 The change will take effect immediately, just refresh your browser tab.
-It's not necessary to restart the Pleroma service.
-
-To remove Mangane FE and revert to the default pleroma-fe, simply `rm /opt/pleroma/instance/static/index.html` (you can delete other stuff in there too, but be careful not to delete your own HTML files).
+You may need to restart pleroma/akkoma for the change to take effect.
 
 ## :elephant: Deploy on Mastodon
 

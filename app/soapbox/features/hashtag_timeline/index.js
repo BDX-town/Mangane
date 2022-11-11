@@ -113,7 +113,9 @@ class HashtagTimeline extends React.PureComponent {
 
     return (
       <Column label={`#${id}`} transparent withHeader={false}>
-        <ColumnHeader active={hasUnread} title={this.title()} />
+        <div className='px-4 pt-4 sm:p-0'>
+          <ColumnHeader active={hasUnread} title={this.title()} />
+        </div>
         <Timeline
           scrollKey='hashtag_timeline'
           timelineId={`hashtag:${id}`}
