@@ -36,7 +36,7 @@ Just fill the form at Frontend/Available like this.
 
 ### Activation
 
-Then you need to activate the frontend the it will be available to your users.
+Then you need to activate the frontend so it will be available to your users.
 
 #### Config.exs
 
