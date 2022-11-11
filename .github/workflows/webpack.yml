@@ -3,12 +3,10 @@ name: NodeJS with Webpack
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-
+    
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -22,7 +20,47 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    - id: set_var
+      run: |
+          content=`cat ./path/to/package.json`
+          # the following lines are only required for multi line json
+          content="${content//'%'/'%25'}"
+          content="${content//$'\n'/'%0A'}"
+          content="${content//$'\r'/'%0D'}"
+          # end of optional handling for multi line json
+          echo "::set-output name=packageJson::$content"
+
     - name: Build
       run: |
-        NODE_ENV=production yarn
-        NODE_ENV=production yarn build
+        export NODE_ENV=production
+        yarn
+        yarn build
+        mv static dist
+        zip -r static.zip dist
+        
+
+    - name: Create Draft Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{fromJson(steps.set_var.outputs.packageJson).version}}
+        release_name: ${{fromJson(steps.set_var.outputs.packageJson).version}}
+        draft: true
+        prerelease: false
+        
+    - uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./static.zip
+        asset_name: static.zip
+        asset_content_type: application/zip
+
+    - uses: eregon/publish-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        release_id: ${{ steps.create_release.outputs.id }}
