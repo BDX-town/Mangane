@@ -334,10 +334,7 @@ export default function compose(state = ReducerRecord({ idempotencyKey: uuid(), 
       return state.withMutations(map => {
         map.set('in_reply_to', action.status.get('id'));
         map.set('to', action.explicitAddressing ? statusToMentionsArray(action.status, action.account) : ImmutableOrderedSet<string>());
-        // Keep as comment for the day mastodon will show things correctly
-        // https://github.com/Cl0v1s/mangane/issues/27
-        // map.set('text', !action.explicitAddressing ? statusToTextMentions(state, action.status, action.account) : '');
-        map.set('text', statusToTextMentions(state, action.status, action.account));
+        map.set('text', !action.explicitAddressing ? statusToTextMentions(state, action.status, action.account) : '');
         map.set('privacy', privacyPreference(action.status.visibility, state.default_privacy));
         map.set('focusDate', new Date());
         map.set('caretPosition', null);
