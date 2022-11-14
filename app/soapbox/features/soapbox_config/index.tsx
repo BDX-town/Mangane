@@ -202,7 +202,7 @@ const SoapboxConfig: React.FC = () => {
           >
             <FileInput
               onChange={handleFileChange(['logo'])}
-              accept='image/svg,image/png'
+              accept='image/svg+xml'
             />
           </FormGroup>
 
