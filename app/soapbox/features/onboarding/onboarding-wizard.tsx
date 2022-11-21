@@ -14,6 +14,12 @@ import CoverPhotoSelectionStep from './steps/cover-photo-selection-step';
 import DisplayNameStep from './steps/display-name-step';
 import SuggestedAccountsStep from './steps/suggested-accounts-step';
 
+import Enlistment1Step from './steps/enlistement-1-step';
+import Enlistment5Step from './steps/enlistement-5-step';
+import Enlistment2Step from './steps/enlistment-2-step';
+import Enlistment3Step from './steps/enlistment-3-step';
+import Enlistment4Step from './steps/enlistment-4-step';
+
 const OnboardingWizard = () => {
   const dispatch = useDispatch();
 
@@ -36,11 +42,14 @@ const OnboardingWizard = () => {
   };
 
   const steps = [
+    <Enlistment1Step onNext={handleNextStep} />,
     <AvatarSelectionStep onNext={handleNextStep} />,
     <DisplayNameStep onNext={handleNextStep} />,
     <BioStep onNext={handleNextStep} />,
     <CoverPhotoSelectionStep onNext={handleNextStep} />,
-    <SuggestedAccountsStep onNext={handleNextStep} />,
+    <Enlistment2Step onNext={handleNextStep} />,
+    <Enlistment3Step onNext={handleNextStep} />,
+    <Enlistment4Step onNext={handleNextStep} />,
     <CompletedStep onComplete={handleComplete} />,
   ];
 

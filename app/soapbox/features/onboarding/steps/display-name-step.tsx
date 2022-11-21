@@ -88,7 +88,11 @@ const DisplayNameStep = ({ onNext }: { onNext: () => void }) => {
                   disabled={isDisabled || isSubmitting}
                   onClick={handleSubmit}
                 >
-                  {isSubmitting ? 'Saving…' : 'Next'}
+                  {isSubmitting ? (
+                    <FormattedMessage id='onboarding.saving' defaultMessage='Saving…' />
+                  ) : (
+                    <FormattedMessage id='onboarding.next' defaultMessage='Next' />
+                  )}
                 </Button>
 
                 <Button block theme='link' type='button' onClick={onNext}>
