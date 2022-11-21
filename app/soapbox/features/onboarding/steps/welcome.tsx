@@ -1,18 +1,18 @@
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { Avatar, Button, Card, CardBody, Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
+import { Button, Card, CardBody } from 'soapbox/components/ui';
 import { useOwnAccount, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
-  title: { id: 'enlistment.step0.title', defaultMessage: 'Welcome on the Fediverse' },
-  body1: { id: 'enlistment.step0.body1', defaultMessage: 'This website is your gateway to a network of independent servers that communicate together to form a larger social network: the fediverse.' },
-  body2: { id: 'enlistment.step0.body2', defaultMessage: 'Each server is called an “instance”. Your instance is simply this site: ' },
-  username: { id: 'enlistment.step0.username', defaultMessage: 'You full username' },
-  explanation: { id: 'enlistment.step0.explanation', defaultMessage: 'It is this identifier that you can share on the fediverse' },
+  title: { id: 'onboarding.welcome.title', defaultMessage: 'Welcome on the Fediverse' },
+  body1: { id: 'onboarding.welcome.body1', defaultMessage: 'This website is your gateway to a network of independent servers that communicate together to form a larger social network: the fediverse.' },
+  body2: { id: 'onboarding.welcome.body2', defaultMessage: 'Each server is called an “instance”. Your instance is simply this site: ' },
+  username: { id: 'onboarding.welcome.username', defaultMessage: 'You full username' },
+  explanation: { id: 'onboarding.welcome.explanation', defaultMessage: 'It is this identifier that you can share on the fediverse' },
 });
 
-const Enlistment1Step = ({ onNext }: { onNext: () => void }) => {
+const Welcome = ({ onNext }: { onNext: () => void }) => {
   const intl = useIntl();
   const account = useOwnAccount();
   const instance = useAppSelector((state: any) => state.instance);
@@ -54,4 +54,4 @@ const Enlistment1Step = ({ onNext }: { onNext: () => void }) => {
   );
 };
 
-export default Enlistment1Step;
+export default Welcome;
