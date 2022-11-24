@@ -355,7 +355,7 @@ const Status: React.FC<IStatus> = (props) => {
             <StatusContent
               status={actualStatus}
               onClick={handleClick}
-              expanded={!status.hidden}
+              expanded={!actualStatus.hidden}
               onExpandedToggle={handleExpandedToggle}
               collapsable
             />
