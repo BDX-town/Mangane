@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { fetchDirectory, expandDirectory } from 'soapbox/actions/directory';
 import LoadMore from 'soapbox/components/load_more';
 import RadioButton from 'soapbox/components/radio_button';
+import Toggle from 'soapbox/components/ui/toggle/toggle';
 import Column from 'soapbox/features/ui/components/column';
 import { useAppSelector } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
@@ -35,16 +36,21 @@ const Directory = () => {
   const [order, setOrder] = useState(params.get('order') || 'active');
   const [local, setLocal] = useState(!!params.get('local'));
 
+  console.log(order);
+  console.log(local);
+
   useEffect(() => {
     dispatch(fetchDirectory({ order: order || 'active', local: local || false }));
   }, [order, local]);
 
   const handleChangeOrder: React.ChangeEventHandler<HTMLInputElement> = e => {
-    setOrder(e.target.value);
+    if(e.target.checked) setOrder('new');
+    else setOrder('active');
   };
 
   const handleChangeLocal: React.ChangeEventHandler<HTMLInputElement> = e => {
-    setLocal(e.target.value === '1');
+    if(e.target.checked) setLocal(true);
+    else setLocal(false);
   };
 
   const handleLoadMore = () => {
@@ -53,16 +59,14 @@ const Directory = () => {
 
   return (
     <Column icon='address-book-o' label={intl.formatMessage(messages.title)}>
-      <div className='directory__filter-form'>
-        <div className='directory__filter-form__column' role='group'>
-          <RadioButton name='order' value='active' label={intl.formatMessage(messages.recentlyActive)} checked={order === 'active'} onChange={handleChangeOrder} />
-          <RadioButton name='order' value='new' label={intl.formatMessage(messages.newArrivals)} checked={order === 'new'} onChange={handleChangeOrder} />
+      <div className='directory__filter-form flex items-center gap-4 my-3'>
+        <div className='directory__filter-form__column flex items-center gap-2' role='group'>
+          <Toggle id="new-arrivals" checked={order === 'new'} onChange={handleChangeOrder} /> <label htmlFor='new-arrivals'>{ intl.formatMessage(messages.newArrivals) }</label>
         </div>
 
         {features.federating && (
-          <div className='directory__filter-form__column' role='group'>
-            <RadioButton name='local' value='1' label={intl.formatMessage(messages.local, { domain: title })} checked={local} onChange={handleChangeLocal} />
-            <RadioButton name='local' value='0' label={intl.formatMessage(messages.federated)} checked={!local} onChange={handleChangeLocal} />
+          <div className='directory__filter-form__column flex items-center gap-2' role='group'>
+            <Toggle id="local" checked={local} onChange={handleChangeLocal} /> <label htmlFor='new-arrivals'>{intl.formatMessage(messages.local, { domain: title })}</label>
           </div>
         )}
       </div>
@@ -70,8 +74,10 @@ const Directory = () => {
       <div className={classNames('directory__list', { loading: isLoading })}>
         {accountIds.map((accountId) => <AccountCard id={accountId} key={accountId} />)}
       </div>
-
-      <LoadMore onClick={handleLoadMore} visible={!isLoading} />
+      
+      <div className="mt-4 pt-3">
+        <LoadMore onClick={handleLoadMore} visible={!isLoading} />
+      </div>
     </Column>
   );
 };
