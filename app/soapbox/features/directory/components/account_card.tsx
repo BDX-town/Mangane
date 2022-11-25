@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { FormattedMessage, FormattedNumber } from 'react-intl';
+import { FormattedMessage, FormattedNumber, defineMessages } from 'react-intl';
 
 
 import { getSettings } from 'soapbox/actions/settings';
@@ -12,13 +12,19 @@ import { Text } from 'soapbox/components/ui';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 const getAccount = makeGetAccount();
 
 interface IAccountCard {
   id: string,
 }
+
+const messages = defineMessages({
+  today: { id: 'account.today', defaultMessage: 'Today' },
+  yesterday: { id: 'account.yesterday', defaultMessage: 'Yesterday' },
+  days: { id: 'account.days', defaultMessage: 'Days' },
+});
+
 
 const AccountCard: React.FC<IAccountCard> = ({ id }) => {
   const me = useAppSelector((state) => state.me);
@@ -29,11 +35,20 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
 
   const followedBy = me !== account.id && account.relationship?.followed_by;
 
+  const ago = React.useMemo(() => {
+    const date = new Date(account.last_status_at).valueOf();
+    const today = new Date().valueOf();
+
+    const diffInDays = Math.floor((today - date) / 1000 / 60 / 60 / 24);
+
+    return diffInDays;
+  }, [account]);
+
   return (
-    <div className='directory__card shadow dark:bg-slate-700'>
+    <div className='directory__card shadow dark:bg-slate-700 flex flex-col'>
       {followedBy &&
         <div className='directory__card__info'>
-          <span className='bg-white rounded p-1 mt-1 text-[8px] opacity-90 uppercase'>
+          <span className='bg-white rounded p-1 mt-1 text-[8px] opacity-90 uppercase dark:text-white dark:bg-slate-800'>
             <FormattedMessage id='account.follows_you' defaultMessage='Follows you' />
           </span>
         </div>}
@@ -43,8 +58,8 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
 
       <div className='px-4 py-3'>
         <Permalink href={account.url} to={`/@${account.acct}`}>
-          <div className='flex justify-between items-end'>
-            <Avatar className="absolute border-solid border-4 border-white dark:border-slate-800" account={account} size={100} />
+          <div className='flex justify-between items-end min-h-[30px]'>
+            <Avatar className="absolute border-solid border-4 border-white dark:border-slate-700" account={account} size={100} />
             <div className="text-right grow">
               <ActionButton account={account} small />
             </div>
@@ -55,7 +70,7 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
         </Permalink>
       </div>
 
-      <div className='h-24 overflow-hidden px-4 py-3'>
+      <div className='h-24 overflow-hidden px-4 py-3 grow'>
         <Text
           size="sm"
           className={classNames('italic account__header__content', (account.note.length === 0 || account.note === '<p></p>') && 'empty')}
@@ -73,8 +88,18 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
         <div className='accounts-table__count text-right'>
           <Text theme='primary' size="xs"><FormattedMessage id='account.last_status' defaultMessage='Last active' /></Text>
           {account.last_status_at === null
-            ? <Text weight='bold' size="lg" className='leading-5 text-primary-600'><FormattedMessage id='account.never_active' defaultMessage='Never' /></Text>
-            : <RelativeTimestamp weight="bold" size="lg" className='leading-5 text-primary-600' timestamp={account.last_status_at} />}
+            ? <Text weight='bold' size="lg" className='leading-5'><FormattedMessage id='account.never_active' defaultMessage='Never' /></Text>
+            : <Text weight='bold' size="lg" className='leading-5'>
+                {
+                  (ago < 1) && <FormattedMessage { ...messages.today } />
+                }
+                {
+                  (ago >= 1 && ago < 2) && <FormattedMessage { ...messages.days } />
+                }
+                {
+                  ago >= 2 && <>{ ago } <FormattedMessage { ...messages.days } /></>
+                }
+              </Text>}
         </div>
       </div>
     </div>

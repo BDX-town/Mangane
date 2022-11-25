@@ -29,15 +29,11 @@ const Directory = () => {
   const params = new URLSearchParams(search);
 
   const accountIds = useAppSelector((state) => state.user_lists.directory.items);
-  const isLoading = useAppSelector((state) => state.user_lists.directory.isLoading);
   const title = useAppSelector((state) => state.instance.get('title'));
   const features = useAppSelector((state) => getFeatures(state.instance));
 
   const [order, setOrder] = useState(params.get('order') || 'active');
   const [local, setLocal] = useState(!!params.get('local'));
-
-  console.log(order);
-  console.log(local);
 
   useEffect(() => {
     dispatch(fetchDirectory({ order: order || 'active', local: local || false }));
@@ -71,12 +67,12 @@ const Directory = () => {
         )}
       </div>
 
-      <div className={classNames('directory__list', { loading: isLoading })}>
+      <div className={classNames('directory__list')}>
         {accountIds.map((accountId) => <AccountCard id={accountId} key={accountId} />)}
       </div>
       
       <div className="mt-4 pt-3">
-        <LoadMore onClick={handleLoadMore} visible={!isLoading} />
+        <LoadMore onClick={handleLoadMore} />
       </div>
     </Column>
   );

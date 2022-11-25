@@ -21,6 +21,7 @@ const messages = defineMessages({
   fediverse: { id: 'tabs_bar.fediverse', defaultMessage: 'Fediverse' },
   settings: { id: 'tabs_bar.settings', defaultMessage: 'Settings'},
   direct: { id: 'column.direct', defaultMessage: 'Direct messages' },
+  directory: { id: 'navigation_bar.profile_directory', defaultMessage: 'Profile directory' },
 });
 
 /** Desktop sidebar with links to different views in the app. */
@@ -69,6 +70,14 @@ const SidebarNavigation = () => {
           to: '/lists',
           text: intl.formatMessage(messages.lists),
           icon: require('@tabler/icons/list.svg'),
+        });
+      }
+
+      if(features.profileDirectory) {
+        menu.push({
+          to: '/directory',
+          text: intl.formatMessage(messages.directory),
+          icon: require('@tabler/icons/folder.svg'),
         });
       }
 
