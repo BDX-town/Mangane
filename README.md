@@ -18,14 +18,14 @@ First you need to download mangane on your server.
 #### OTP
 
 ```
-/opt/pleroma/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/Cl0v1s/mangane-ui/releases/latest/download/static.zip
+/opt/pleroma/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane-ui/releases/latest/download/static.zip
 ```
 *Note: The pleroma_ctl path may vary on your system*
 
 #### Mix / Source 
 
 ```
-mix pleroma.frontend install mangane --ref dist --build-url https://github.com/Cl0v1s/mangane-ui/releases/latest/download/static.zip
+mix pleroma.frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane-ui/releases/latest/download/static.zip
 ```
 
 #### Admin-fe with database configuration enabled
@@ -96,8 +96,8 @@ It detects features supported by the backend to provide the right experience for
 To get it running, just clone the repo:
 
 ```sh
-git clone https://github.com/Cl0v1s/mangane.git
-cd mangane-fe
+git clone https://github.com/BDX-town/Mangane.git
+cd Mangane
 ```
 
 Ensure that Node.js and Yarn are installed, then install dependencies:

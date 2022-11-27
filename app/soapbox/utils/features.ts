@@ -276,7 +276,7 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     explicitAddressing: any([
       // Keep as comment for the day mastodon will show things correctly
-      // https://github.com/Cl0v1s/mangane/issues/27
+      // https://github.com/BDX-town/Mangane/issues/27
       // v.software === PLEROMA && gte(v.version, '1.0.0'),
       v.software === TRUTHSOCIAL,
     ]),
