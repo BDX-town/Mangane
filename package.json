@@ -6,14 +6,14 @@
   "homepage": "https://bdx.town",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Cl0v1s/mangane"
+    "url": "https://github.com/BDX-town/Mangane"
   },
   "keywords": [
     "fediverse",
     "pleroma"
   ],
   "bugs": {
-    "url": "https://github.com/Cl0v1s/mangane/issues"
+    "url": "https://github.com/BDX-town/Mangane/issues"
   },
   "scripts": {
     "start": "npx webpack-dev-server",
