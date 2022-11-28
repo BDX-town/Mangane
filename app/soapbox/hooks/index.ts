@@ -12,3 +12,4 @@ export { useSettings } from './useSettings';
 export { useSoapboxConfig } from './useSoapboxConfig';
 export { useSystemTheme } from './useSystemTheme';
 export { useTheme } from './useTheme';
+export { useLogo } from './useLogo';
