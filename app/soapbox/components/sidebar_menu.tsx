@@ -11,7 +11,7 @@ import Account from 'soapbox/components/account';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Stack } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile_stats';
-import { useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useAppSelector, useFeatures, useLogo } from 'soapbox/hooks';
 import { makeGetAccount, makeGetOtherAccounts } from 'soapbox/selectors';
 
 import { HStack, Icon, IconButton, Text } from './ui';
@@ -83,6 +83,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const intl = useIntl();
   const dispatch = useDispatch();
 
+  const logo = useLogo();
   const features = useFeatures();
   const getAccount = makeGetAccount();
   const instance = useAppSelector((state) => state.instance);
@@ -219,7 +220,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
 
                 <SidebarLink
-                  to={`/messages`}
+                  to={'/messages'}
                   icon={require('@tabler/icons/mail.svg')}
                   text={intl.formatMessage(messages.direct)}
                   onClick={onClose}
@@ -266,7 +267,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
                   <SidebarLink
                     to='/timeline/local'
-                    icon={features.federating ? require('icons/bdx.svg') : require('@tabler/icons/world.svg')}
+                    icon={features.federating ? logo : require('@tabler/icons/world.svg')}
                     text={features.federating ? instance.title : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
                     onClick={onClose}
                   />
@@ -284,13 +285,13 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                 <hr />
 
                 {
-                  (account.locked || followRequestsCount > 0)  && 
+                  (account.locked || followRequestsCount > 0)  &&
                     <SidebarLink
-                    to='/follow_requests'
-                    icon={require('@tabler/icons/user-plus.svg')}
-                    text={intl.formatMessage(messages.follow_requests)}
-                    onClick={onClose}
-                  />
+                      to='/follow_requests'
+                      icon={require('@tabler/icons/user-plus.svg')}
+                      text={intl.formatMessage(messages.follow_requests)}
+                      onClick={onClose}
+                    />
                 }
 
                 <SidebarLink

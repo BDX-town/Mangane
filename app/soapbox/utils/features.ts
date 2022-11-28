@@ -202,13 +202,13 @@ const getInstanceFeatures = (instance: Instance) => {
      * Pleroma chats API.
      * @see {@link https://docs.pleroma.social/backend/development/API/chats/}
      */
-    chats: (v.software === PLEROMA || v.software === AKKOMA) && gte(v.version, '2.1.0'),
+    chats: (v.software === PLEROMA || features.includes('pleroma_chat_messages')) && gte(v.version, '2.1.0'),
 
     /**
      * Paginated chats API.
      * @see GET /api/v2/chats
      */
-    chatsV2: (v.software === PLEROMA || v.software === AKKOMA) && gte(v.version, '2.3.0'),
+    chatsV2: (v.software === PLEROMA || features.includes('pleroma_chat_messages')) && gte(v.version, '2.3.0'),
 
     /**
      * Mastodon's newer solution for direct messaging.

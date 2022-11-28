@@ -3620,19 +3620,19 @@
     "descriptors": [
       {
         "defaultMessage": "Welcome on Mangane",
-        "id": "enlistment.step0.title"
+        "id": "onboarding.welcome.title"
       },
       {
         "defaultMessage": "Mangane is your gateway to a network of independent servers that communicate together to form a larger social network: the fediverse. Each server is called an “instance”. Your instance is simply this site: ",
-        "id": "enlistment.step0.body"
+        "id": "onboarding.welcome.body"
       },
       {
         "defaultMessage": "You full username",
-        "id": "enlistment.step0.username"
+        "id": "onboarding.welcome.username"
       },
       {
         "defaultMessage": "It is this identifier that you can share on the fediverse",
-        "id": "enlistment.step0.explanation"
+        "id": "onboarding.welcome.explanation"
       }
     ],
     "path": "app/soapbox/features/enlistment/steps/step0.json"
@@ -3641,23 +3641,23 @@
     "descriptors": [
       {
         "defaultMessage": "If you exchange with a person from another instance, you must mention them with their <span class='font-bold'>@pseudo@instance</span><br/><br/> ex: <a href=' https://oslo.town/@matt'>@matt@oslo.town</a>, if you want to talk to the Oslo.town admin",
-        "id": "enlistment.step1.right"
+        "id": "onboarding.how-it-works.right"
       },
       {
         "defaultMessage": "How it works ?",
-        "id": "enlistment.step1.title"
+        "id": "onboarding.how-it-works.title"
       },
       {
         "defaultMessage": "Here you are on {title}. If you exchange with people from the same instance as you, you can simply mention them with {username}{br}{br}ex: {contact}, if you want to talk to the admin of {title}",
-        "id": "enlistment.step1.left"
+        "id": "onboarding.how-it-works.left"
       },
       {
         "defaultMessage": "@username",
-        "id": "enlistment.step1.username"
+        "id": "onboarding.how-it-works.username"
       },
       {
         "defaultMessage": "Don't worry though, when writing a post, autosuggestion will help you find the right mention! Moreover, if you reply to a post, the mention will automatically be written in the right way.",
-        "id": "enlistment.step1.explanation"
+        "id": "onboarding.how-it-works.explanation"
       }
     ],
     "path": "app/soapbox/features/enlistment/steps/step1.json"
@@ -3666,35 +3666,35 @@
     "descriptors": [
       {
         "defaultMessage": "Here you are on familiar ground: only your publications and those of the people you follow will be displayed on this thread.",
-        "id": "enlistment.step2.col1"
+        "id": "onboarding.feeds.col1"
       },
       {
         "defaultMessage": "Here is a bit like your neighborhood: you will only find publications from members of this server, whether you follow them or not.",
-        "id": "enlistment.step2.col2"
+        "id": "onboarding.feeds.col2"
       },
       {
         "defaultMessage": "Think outside the box and go explore the rest of the world: this thread displays posts from all known instances.",
-        "id": "enlistment.step2.col3"
+        "id": "onboarding.feeds.col3"
       },
       {
         "defaultMessage": "Home",
-        "id": "enlistment.step2.title1"
+        "id": "onboarding.feeds.title1"
       },
       {
         "defaultMessage": "At first it will be a little empty but don't worry we can help you fill it!",
-        "id": "enlistment.step2.explanation1"
+        "id": "onboarding.feeds.explanation1"
       },
       {
         "defaultMessage": "We usually call it \"local\" thread",
-        "id": "enlistment.step2.explanation2"
+        "id": "onboarding.feeds.explanation2"
       },
       {
         "defaultMessage": "Discover",
-        "id": "enlistment.step2.title3"
+        "id": "onboarding.feeds.title3"
       },
       {
         "defaultMessage": "We usually call it \"global\" or \"federated\" thread",
-        "id": "enlistment.step2.explanation3"
+        "id": "onboarding.feeds.explanation3"
       }
     ],
     "path": "app/soapbox/features/enlistment/steps/step2.json"
@@ -3703,43 +3703,43 @@
     "descriptors": [
       {
         "defaultMessage": "Privacy",
-        "id": "enlistment.step3.title"
+        "id": "onboarding.privacy.title"
       },
       {
         "defaultMessage": "This site offers precise control over who can see your posts and therefore interact with you.",
-        "id": "enlistment.step3.description"
+        "id": "onboarding.privacy.description"
       },
       {
         "defaultMessage": "Public",
-        "id": "enlistment.step3.public-title"
+        "id": "onboarding.privacy.public-title"
       },
       {
         "defaultMessage": "The post is displayed on all feeds, including other instances.",
-        "id": "enlistment.step3.public-description"
+        "id": "onboarding.privacy.public-description"
       },
       {
         "defaultMessage": "Unlisted",
-        "id": "enlistment.step3.unlisted-title"
+        "id": "onboarding.privacy.unlisted-title"
       },
       {
         "defaultMessage": "The post is public but only appears in your subscribers' feeds and on your profile",
-        "id": "enlistment.step3.unlisted-description"
+        "id": "onboarding.privacy.unlisted-description"
       },
       {
         "defaultMessage": "Followers only",
-        "id": "enlistment.step3.followers-title"
+        "id": "onboarding.privacy.followers-title"
       },
       {
         "defaultMessage": "The post is not displayed on any public feeds and is only visible to people who follow you",
-        "id": "enlistment.step3.followers-description"
+        "id": "onboarding.privacy.followers-description"
       },
       {
         "defaultMessage": "Direct",
-        "id": "enlistment.step3.direct-title"
+        "id": "onboarding.privacy.direct-title"
       },
       {
         "defaultMessage": "The post is only visible to people mentioned via @username@instance",
-        "id": "enlistment.step3.direct-description"
+        "id": "onboarding.privacy.direct-description"
       }
     ],
     "path": "app/soapbox/features/enlistment/steps/step3.json"

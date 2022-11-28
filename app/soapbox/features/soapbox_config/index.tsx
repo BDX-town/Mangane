@@ -27,7 +27,6 @@ import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 import Accordion from '../ui/components/accordion';
 
 import ColorWithPicker from './components/color-with-picker';
-import CryptoAddressInput from './components/crypto-address-input';
 import FooterLinkInput from './components/footer-link-input';
 import PromoPanelInput from './components/promo-panel-input';
 import SitePreview from './components/site-preview';
@@ -202,7 +201,7 @@ const SoapboxConfig: React.FC = () => {
           >
             <FileInput
               onChange={handleFileChange(['logo'])}
-              accept='image/svg,image/png'
+              accept='image/svg+xml'
             />
           </FormGroup>
 
@@ -323,31 +322,6 @@ const SoapboxConfig: React.FC = () => {
               placeholder={intl.formatMessage(messages.copyrightFooterLabel)}
               value={soapbox.copyright}
               onChange={handleChange(['copyright'], (e) => e.target.value)}
-            />
-          </FormGroup>
-
-          <CardHeader>
-            <CardTitle title={<FormattedMessage id='soapbox_config.headings.cryptocurrency' defaultMessage='Cryptocurrency' />} />
-          </CardHeader>
-
-          <Streamfield
-            label={<FormattedMessage id='soapbox_config.fields.crypto_addresses_label' defaultMessage='Cryptocurrency addresses' />}
-            hint={<FormattedMessage id='soapbox_config.hints.crypto_addresses' defaultMessage='Add cryptocurrency addresses so users of your site can donate to you. Order matters, and you must use lowercase ticker values.' />}
-            component={CryptoAddressInput}
-            values={soapbox.cryptoAddresses.toArray()}
-            onChange={handleStreamItemChange(['cryptoAddresses'])}
-            onAddItem={addStreamItem(['cryptoAddresses'], templates.cryptoAddress)}
-            onRemoveItem={deleteStreamItem(['cryptoAddresses'])}
-          />
-
-          <FormGroup labelText={intl.formatMessage(messages.cryptoDonatePanelLimitLabel)}>
-            <Input
-              type='number'
-              min={0}
-              pattern='[0-9]+'
-              placeholder={intl.formatMessage(messages.cryptoDonatePanelLimitLabel)}
-              value={soapbox.cryptoDonatePanel.get('limit')}
-              onChange={handleChange(['cryptoDonatePanel', 'limit'], (e) => Number(e.target.value))}
             />
           </FormGroup>
 

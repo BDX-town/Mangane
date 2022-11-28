@@ -12,7 +12,10 @@ import BioStep from './steps/bio-step';
 import CompletedStep from './steps/completed-step';
 import CoverPhotoSelectionStep from './steps/cover-photo-selection-step';
 import DisplayNameStep from './steps/display-name-step';
-import SuggestedAccountsStep from './steps/suggested-accounts-step';
+import Feeds from './steps/feeds';
+import HowItWorks from './steps/how-it-works';
+import Privacy from './steps/privacy';
+import Welcome from './steps/welcome';
 
 const OnboardingWizard = () => {
   const dispatch = useDispatch();
@@ -36,11 +39,14 @@ const OnboardingWizard = () => {
   };
 
   const steps = [
+    <Welcome onNext={handleNextStep} />,
     <AvatarSelectionStep onNext={handleNextStep} />,
     <DisplayNameStep onNext={handleNextStep} />,
     <BioStep onNext={handleNextStep} />,
     <CoverPhotoSelectionStep onNext={handleNextStep} />,
-    <SuggestedAccountsStep onNext={handleNextStep} />,
+    <HowItWorks onNext={handleNextStep} />,
+    <Feeds onNext={handleNextStep} />,
+    <Privacy onNext={handleNextStep} />,
     <CompletedStep onComplete={handleComplete} />,
   ];
 
