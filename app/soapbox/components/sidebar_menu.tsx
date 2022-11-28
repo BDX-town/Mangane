@@ -40,6 +40,7 @@ const messages = defineMessages({
   developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
   addAccount: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
   direct: { id: 'column.direct', defaultMessage: 'Direct messages' },
+  directory: { id: 'navigation_bar.profile_directory', defaultMessage: 'Profile directory' },
 });
 
 interface ISidebarLink {
@@ -239,6 +240,15 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     to='/lists'
                     icon={require('@tabler/icons/list.svg')}
                     text={intl.formatMessage(messages.lists)}
+                    onClick={onClose}
+                  />
+                )}
+
+                {features.profileDirectory && (
+                  <SidebarLink
+                    to='/directory'
+                    icon={require('@tabler/icons/folder.svg')}
+                    text={intl.formatMessage(messages.directory)}
                     onClick={onClose}
                   />
                 )}
