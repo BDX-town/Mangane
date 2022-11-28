@@ -46,9 +46,11 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
   return (
     <label
       className={
-        classNames('flex relative p-2 bg-white dark:bg-primary-900 cursor-pointer rounded-3xl border border-solid hover:bg-primary-50 dark:hover:bg-primary-800/50', {
+        classNames('flex relative p-2 bg-white dark:bg-primary-900 cursor-pointer border border-solid hover:bg-primary-50 dark:hover:bg-primary-800/50', {
           'border-primary-600 ring-1 ring-primary-600 bg-primary-50 dark:bg-primary-800/50 dark:border-primary-300 dark:ring-primary-300': active,
           'border-primary-300 dark:border-primary-500': !active,
+          'rounded-3xl': poll.multiple !== true,
+          'rounded-xl': poll.multiple,
         })
       }
     >
@@ -74,9 +76,11 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
 
         <div className='col-start-1 row-start-1 justify-self-end flex items-center'>
           <span
-            className={classNames('flex items-center justify-center w-6 h-6 flex-none border border-solid rounded-full', {
+            className={classNames('flex items-center justify-center w-6 h-6 flex-none border border-solid', {
               'bg-primary-600 border-primary-600 dark:bg-primary-300 dark:border-primary-300': active,
               'border-primary-300 bg-white dark:bg-primary-900 dark:border-primary-500': !active,
+              'rounded-full': poll.multiple !== true,
+              'rounded': poll.multiple,
             })}
             tabIndex={0}
             role={poll.multiple ? 'checkbox' : 'radio'}
