@@ -145,9 +145,12 @@ const fetchReports = (params: Record<string, any> = {}) =>
       return dispatch(fetchMastodonReports(params));
     } else {
       const { resolved } = params;
+      let state: string | undefined = undefined;
+      if (resolved === false) state = 'open';
+      if (resolved) state = 'resolved';
 
       return dispatch(fetchPleromaReports({
-        state: resolved === false ? 'open' : (resolved ? 'resolved' : null),
+        state,
       }));
     }
   };
