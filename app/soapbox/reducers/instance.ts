@@ -17,15 +17,17 @@ import type { AnyAction } from 'redux';
 const initialState = normalizeInstance(ImmutableMap());
 
 const nodeinfoToInstance = (nodeinfo: ImmutableMap<string, any>) => {
+  const data = nodeinfo.get("data");
   // Match Pleroma's develop branch
   return normalizeInstance(ImmutableMap({
     pleroma: ImmutableMap({
       metadata: ImmutableMap({
-        account_activation_required: nodeinfo.getIn(['metadata', 'accountActivationRequired']),
-        features: nodeinfo.getIn(['metadata', 'features']),
-        federation: nodeinfo.getIn(['metadata', 'federation']),
+        account_activation_required: data.getIn(['metadata', 'accountActivationRequired']),
+        features: data.getIn(['metadata', 'features']),
+        staff_accounts: data.getIn(['metadata', 'staffAccounts']),
+        federation: data.getIn(['metadata', 'federation']),
         fields_limits: ImmutableMap({
-          max_fields: nodeinfo.getIn(['metadata', 'fieldsLimits', 'maxFields']),
+          max_fields: data.getIn(['metadata', 'fieldsLimits', 'maxFields']),
         }),
       }),
     }),

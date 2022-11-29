@@ -50,6 +50,7 @@ export const InstanceRecord = ImmutableRecord({
         enabled: true,
         exclusions: false,
       }),
+      staff_accounts: [],
     }),
     stats: ImmutableMap(),
   }),
