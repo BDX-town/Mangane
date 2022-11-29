@@ -53,8 +53,10 @@ class IconPickerMenu extends React.PureComponent {
   }
 
   componentDidMount() {
-    document.addEventListener('click', this.handleDocumentClick, false);
-    document.addEventListener('touchend', this.handleDocumentClick, listenerOptions);
+    setTimeout(() => {
+      document.addEventListener('click', this.handleDocumentClick, false);
+      document.addEventListener('touchend', this.handleDocumentClick, listenerOptions);
+    }, 200);
   }
 
   componentWillUnmount() {
@@ -174,10 +176,8 @@ class IconPickerDropdown extends React.PureComponent {
   }
 
   onShowDropdown = ({ target }) => {
-    this.setState({ active: true });
-
     const { top } = target.getBoundingClientRect();
-    this.setState({ placement: top * 2 < innerHeight ? 'bottom' : 'top' });
+    this.setState({active: true, placement: top * 2 < innerHeight ? 'bottom' : 'top' });
   }
 
   onHideDropdown = () => {
