@@ -42,9 +42,7 @@ export const fetchInstance = createAsyncThunk<void, void, { state: RootState }>(
   async(_arg, { dispatch, getState, rejectWithValue }) => {
     try {
       const { data: instance } = await api(getState).get('/api/v1/instance');
-      if (needsNodeinfo(instance)) {
-        dispatch(fetchNodeinfo());
-      }
+      dispatch(fetchNodeinfo());
       return instance;
     } catch (e) {
       return rejectWithValue(e);

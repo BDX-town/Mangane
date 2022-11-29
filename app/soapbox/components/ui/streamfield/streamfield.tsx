@@ -68,8 +68,8 @@ const Streamfield: React.FC<IStreamfield> = ({
       {(values.length > 0) && (
         <Stack>
           {values.map((value, i) => (
-            <HStack space={2} alignItems='center'>
-              <Component key={i} onChange={handleChange(i)} value={value} />
+            <HStack key={i} space={2} alignItems='center'>
+              <Component  onChange={handleChange(i)} value={value} />
               {onRemoveItem && (
                 <IconButton
                   iconClassName='w-4 h-4'

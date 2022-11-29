@@ -1,12 +1,16 @@
+import Immutable from 'immutable';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { fetchAccount } from 'soapbox/actions/accounts';
 import { prepareRequest } from 'soapbox/actions/consumer-auth';
 import { Button, Card, CardBody, Stack, Text } from 'soapbox/components/ui';
+import Account from 'soapbox/components/account';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import RegistrationForm from 'soapbox/features/auth_login/components/registration_form';
 import { useAppDispatch, useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 import { capitalize } from 'soapbox/utils/strings';
+import { List as ImmutableList } from 'immutable';
 
 const LandingPage = () => {
   const dispatch = useAppDispatch();
@@ -15,7 +19,27 @@ const LandingPage = () => {
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
 
   const instance = useAppSelector((state) => state.instance);
+  const accounts = useAppSelector((state) => state.accounts);
   const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
+
+  React.useEffect(() => {
+    const staff = (instance.pleroma.getIn(["metadata", "staff_accounts"]) as ImmutableList<string>).map((s) => s.split('/').pop());
+    staff.forEach((s) => dispatch(fetchAccount(s)));
+  }, [instance, dispatch]);
+
+  const staffAccounts = React.useMemo(() => {
+    if(accounts == null) return [];
+    const a =  Object.values(accounts?.toJSON()).filter((a) => a.admin || a.moderator);
+    console.log(a);
+    return a;
+  }, [accounts]);
+
+  const userCount = instance.stats.get('user_count');
+
+  const homeDescription = React.useMemo(() => {
+    const format = new Intl.NumberFormat().format(userCount);
+    return soapboxConfig.homeDescription.replace('[users]', format);
+  }, [userCount, soapboxConfig]);
 
   /** Registrations are closed */
   const renderClosed = () => {
@@ -107,14 +131,30 @@ const LandingPage = () => {
         <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 py-12'>
           <div className='px-4 sm:px-6 sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left lg:flex'>
             <div className='w-full'>
-              <Stack space={3}>
+              <Stack space={5}>
                 <h1 className='text-5xl font-extrabold text-transparent text-ellipsis overflow-hidden bg-clip-text bg-gradient-to-br from-accent-500 via-primary-500 to-gradient-end sm:mt-5 sm:leading-none lg:mt-6 lg:text-6xl xl:text-7xl'>
                   {instance.title}
                 </h1>
-
                 <Text size='lg'>
-                  {instance.description}
+                  {
+                    homeDescription ? <span dangerouslySetInnerHTML={{ __html: homeDescription }} /> : instance.description
+                  }
                 </Text>
+                <div>
+                  <div className='flex justify-between'>
+                    <h2 className="text-xl text-gray-800">
+                      <FormattedMessage id='landingPage.admins' defaultMessage='Moderators' />
+                    </h2>
+                  </div>
+                  <a href={`mailto:${instance.email}`}>
+                      {instance.email}
+                    </a>
+                  <Stack space={3} className="mt-4">
+                    {
+                      staffAccounts.map((s) => <Account key={s.id} hideActions={true} account={s} />)
+                    }
+                  </Stack>
+                </div>
               </Stack>
             </div>
           </div>

@@ -51,6 +51,7 @@ const messages = defineMessages({
   singleUserModeHint: { id: 'soapbox_config.single_user_mode_hint', defaultMessage: 'Front page will redirect to a given user profile.' },
   singleUserModeProfileLabel: { id: 'soapbox_config.single_user_mode_profile_label', defaultMessage: 'Main user handle' },
   singleUserModeProfileHint: { id: 'soapbox_config.single_user_mode_profile_hint', defaultMessage: '@handle' },
+  homeDescription: { id: 'soapbox_config.home_description', defaultMessage: 'Instance\'s description shown in Home page. Supports HTML. Use [users] to insert the number of current users on the instance.' }
 });
 
 type ValueGetter<T = Element> = (e: React.ChangeEvent<T>) => any;
@@ -154,8 +155,8 @@ const SoapboxConfig: React.FC = () => {
 
   const addStreamItem = (path: ConfigPath, template: Template) => {
     return () => {
-      const items = data.getIn(path);
-      setConfig(path, items.push(template));
+      const items = data.getIn(path) || [];
+      setConfig(path, ImmutableList([...items, template]));
     };
   };
 
@@ -291,6 +292,19 @@ const SoapboxConfig: React.FC = () => {
               </ListItem>
             )}
           </List>
+
+          <CardHeader>
+            <CardTitle title={<FormattedMessage id='soapbox_config.headings.home' defaultMessage='Home' />} />
+          </CardHeader>
+
+          <FormGroup labelText={intl.formatMessage(messages.homeDescription)}>
+            <Textarea
+              placeholder={intl.formatMessage(messages.homeDescription)}
+              isCodeEditor
+              value={soapbox.homeDescription}
+              onChange={handleChange(['homeDescription'], (e) => e.target.value)}
+            />
+          </FormGroup>
 
           <CardHeader>
             <CardTitle title={<FormattedMessage id='soapbox_config.headings.navigation' defaultMessage='Navigation' />} />
