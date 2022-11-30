@@ -96,7 +96,7 @@
   "admin.moderation_log.empty_message": "You have not performed any moderation actions yet. When you do, a history will be shown here.",
   "admin.reports.actions.close": "Fermer",
   "admin.reports.actions.view_status": "View post",
-  "admin.reports.empty_message": "There are no open reports. If a user gets reported, they will show up here.",
+  "admin.reports.empty_message": "Aucun signalement n'a été remonté.",
   "admin.reports.report_closed_message": "Report on @{name} was closed",
   "admin.reports.report_title": "Report on {acct}",
   "admin.statuses.actions.delete_status": "Supprimer le statut",
