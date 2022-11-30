@@ -1,0 +1,15 @@
+@keyframes component-sticky__appear {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.component-sticky__fixed {
+    animation-name: component-sticky__appear;
+    animation-duration: 0.2s;
+    animation-fill-mode: forwards;
+}

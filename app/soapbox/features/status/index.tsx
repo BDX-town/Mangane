@@ -49,6 +49,7 @@ import type {
   Attachment as AttachmentEntity,
   Status as StatusEntity,
 } from 'soapbox/types/entities';
+import Sticky from 'soapbox/components/sticky';
 
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: '@{username}\'s Post' },
@@ -515,10 +516,12 @@ const Thread: React.FC<IThread> = (props) => {
 
   return (
     <Column label={intl.formatMessage(titleMessage, { username })} transparent withHeader={false}>
-      <div className='px-4 pt-4 sm:p-0'>
-        <SubNavigation message={intl.formatMessage(titleMessage, { username })} />
-      </div>
-
+      <Sticky stickyClassName='sm:hidden w-full shadow-lg before:-z-10 before:bg-gradient-sm before:w-full before:h-full before:absolute before:top-0 before:left-0  bg-white dark:bg-slate-900'>
+        <div className='px-4 pt-4 sm:p-0'>
+         <SubNavigation message={intl.formatMessage(titleMessage, { username })} />
+        </div>
+      </Sticky>
+      
       <PullToRefresh onRefresh={handleRefresh}>
         <Stack space={2}>
           <div ref={node} className='thread'>
