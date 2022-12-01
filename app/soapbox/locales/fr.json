@@ -844,7 +844,6 @@
   "preferences.fields.display_media.hide_all": "Toujours cacher les medias",
   "preferences.fields.display_media.show_all": "Toujours afficher les medias",
   "preferences.fields.dyslexic_font_label": "Mode dyslexique",
-  "preferences.fields.enlisted": "Ignorer l'onboarding",
   "preferences.fields.expand_spoilers_label": "Toujours étendre les publications sensibles",
   "preferences.fields.language_label": "Langage",
   "preferences.fields.media_display_label": "Media",

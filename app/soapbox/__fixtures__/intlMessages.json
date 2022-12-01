@@ -797,7 +797,6 @@
   "poll_button.add_poll": "Add a poll",
   "poll_button.remove_poll": "Remove poll",
   "preferences.fields.auto_play_gif_label": "Auto-play animated GIFs",
-  "preferences.fields.enlisted": "Ignore onboarding",
   "preferences.fields.boost_modal_label": "Show confirmation dialog before reposting",
   "preferences.fields.delete_modal_label": "Show confirmation dialog before deleting a post",
   "preferences.fields.demetricator_label": "Use Demetricator",

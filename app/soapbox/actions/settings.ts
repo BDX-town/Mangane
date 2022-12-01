@@ -28,7 +28,6 @@ const messages = defineMessages({
 });
 
 const defaultSettings = ImmutableMap({
-  enlisted: false, 
   onboarded: false,
   skinTone: 1,
   reduceMotion: false,

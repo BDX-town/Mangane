@@ -204,10 +204,6 @@ const Preferences = () => {
         <ListItem label={<FormattedMessage id='preferences.fields.autoload_more_label' defaultMessage='Automatically load more items when scrolled to the bottom of the page' />}>
           <SettingToggle settings={settings} settingPath={['autoloadMore']} onChange={onToggleChange} />
         </ListItem>
-
-        <ListItem label={<FormattedMessage id='preferences.fields.enlisted' defaultMessage='Ignore onboarding' />}>
-          <SettingToggle settings={settings} settingPath={['enlisted']} onChange={onToggleChange} />
-        </ListItem>
       </List>
     </Form>
   );
