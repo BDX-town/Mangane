@@ -43,7 +43,7 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
         <FormattedMessage id='site_preview.preview' defaultMessage='Preview' />
       </div>
 
-      <div className={classNames('flex absolute inset-0 shadow z-10 h-12 lg:h-16', {
+      <div className={classNames('flex items-center absolute inset-0 shadow z-10 h-12 lg:h-16', {
         'bg-white': !dark,
         'bg-slate-800': dark,
       })}

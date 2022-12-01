@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { getSettings } from 'soapbox/actions/settings';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 import ComposeButton from 'soapbox/features/ui/components/compose-button';
-import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
+import { useAppSelector, useOwnAccount, useLogo } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
 
 import SidebarNavigationLink from './sidebar-navigation-link';
@@ -19,14 +19,16 @@ const messages = defineMessages({
   dashboard: { id: 'tabs_bar.dashboard', defaultMessage: 'Dashboard' },
   all: { id: 'tabs_bar.all', defaultMessage: 'All' },
   fediverse: { id: 'tabs_bar.fediverse', defaultMessage: 'Fediverse' },
-  settings: { id: 'tabs_bar.settings', defaultMessage: 'Settings'},
+  settings: { id: 'tabs_bar.settings', defaultMessage: 'Settings' },
   direct: { id: 'column.direct', defaultMessage: 'Direct messages' },
+  directory: { id: 'navigation_bar.profile_directory', defaultMessage: 'Profile directory' },
 });
 
 /** Desktop sidebar with links to different views in the app. */
 const SidebarNavigation = () => {
   const intl = useIntl();
 
+  const logo = useLogo();
   const instance = useAppSelector((state) => state.instance);
   const settings = useAppSelector((state) => getSettings(state));
   const account = useOwnAccount();
@@ -69,6 +71,14 @@ const SidebarNavigation = () => {
           to: '/lists',
           text: intl.formatMessage(messages.lists),
           icon: require('@tabler/icons/list.svg'),
+        });
+      }
+
+      if(features.profileDirectory) {
+        menu.push({
+          to: '/directory',
+          text: intl.formatMessage(messages.directory),
+          icon: require('@tabler/icons/folder.svg'),
         });
       }
 
@@ -140,7 +150,7 @@ const SidebarNavigation = () => {
         {
           features.federating ? (
             <SidebarNavigationLink
-              icon={require('icons/bdx.svg')}
+              icon={logo}
               text={<>{instance.get('title')}</>}
               to='/timeline/local'
             />
@@ -156,10 +166,10 @@ const SidebarNavigation = () => {
         {
           features.federating && (
             <SidebarNavigationLink
-            icon={require('icons/fediverse.svg')}
-            text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
-            to='/timeline/fediverse'
-          />
+              icon={require('icons/fediverse.svg')}
+              text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
+              to='/timeline/fediverse'
+            />
           )
         }
 

@@ -40,9 +40,6 @@ const LinkFooter: React.FC = (): JSX.Element => {
     <div className='space-y-2'>
       <div className='flex flex-wrap items-center divide-x-dot text-gray-400'>
         {account && <>
-          {features.profileDirectory && (
-            <FooterLink to='/directory'><FormattedMessage id='navigation_bar.profile_directory' defaultMessage='Profile directory' /></FooterLink>
-          )}
           <FooterLink to='/blocks'><FormattedMessage id='navigation_bar.blocks' defaultMessage='Blocks' /></FooterLink>
           <FooterLink to='/mutes'><FormattedMessage id='navigation_bar.mutes' defaultMessage='Mutes' /></FooterLink>
           {features.filters && (

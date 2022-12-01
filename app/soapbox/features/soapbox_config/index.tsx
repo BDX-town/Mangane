@@ -27,7 +27,6 @@ import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 import Accordion from '../ui/components/accordion';
 
 import ColorWithPicker from './components/color-with-picker';
-import CryptoAddressInput from './components/crypto-address-input';
 import FooterLinkInput from './components/footer-link-input';
 import PromoPanelInput from './components/promo-panel-input';
 import SitePreview from './components/site-preview';
@@ -52,6 +51,7 @@ const messages = defineMessages({
   singleUserModeHint: { id: 'soapbox_config.single_user_mode_hint', defaultMessage: 'Front page will redirect to a given user profile.' },
   singleUserModeProfileLabel: { id: 'soapbox_config.single_user_mode_profile_label', defaultMessage: 'Main user handle' },
   singleUserModeProfileHint: { id: 'soapbox_config.single_user_mode_profile_hint', defaultMessage: '@handle' },
+  homeDescription: { id: 'soapbox_config.home_description', defaultMessage: 'Instance\'s description shown in Home page. Supports HTML. Use [users] to insert the number of current users on the instance.' }
 });
 
 type ValueGetter<T = Element> = (e: React.ChangeEvent<T>) => any;
@@ -155,8 +155,8 @@ const SoapboxConfig: React.FC = () => {
 
   const addStreamItem = (path: ConfigPath, template: Template) => {
     return () => {
-      const items = data.getIn(path);
-      setConfig(path, items.push(template));
+      const items = data.getIn(path) || [];
+      setConfig(path, ImmutableList([...items, template]));
     };
   };
 
@@ -202,7 +202,7 @@ const SoapboxConfig: React.FC = () => {
           >
             <FileInput
               onChange={handleFileChange(['logo'])}
-              accept='image/svg,image/png'
+              accept='image/svg+xml'
             />
           </FormGroup>
 
@@ -294,6 +294,19 @@ const SoapboxConfig: React.FC = () => {
           </List>
 
           <CardHeader>
+            <CardTitle title={<FormattedMessage id='soapbox_config.headings.home' defaultMessage='Home' />} />
+          </CardHeader>
+
+          <FormGroup labelText={intl.formatMessage(messages.homeDescription)}>
+            <Textarea
+              placeholder={intl.formatMessage(messages.homeDescription)}
+              isCodeEditor
+              value={soapbox.homeDescription}
+              onChange={handleChange(['homeDescription'], (e) => e.target.value)}
+            />
+          </FormGroup>
+
+          <CardHeader>
             <CardTitle title={<FormattedMessage id='soapbox_config.headings.navigation' defaultMessage='Navigation' />} />
           </CardHeader>
 
@@ -323,31 +336,6 @@ const SoapboxConfig: React.FC = () => {
               placeholder={intl.formatMessage(messages.copyrightFooterLabel)}
               value={soapbox.copyright}
               onChange={handleChange(['copyright'], (e) => e.target.value)}
-            />
-          </FormGroup>
-
-          <CardHeader>
-            <CardTitle title={<FormattedMessage id='soapbox_config.headings.cryptocurrency' defaultMessage='Cryptocurrency' />} />
-          </CardHeader>
-
-          <Streamfield
-            label={<FormattedMessage id='soapbox_config.fields.crypto_addresses_label' defaultMessage='Cryptocurrency addresses' />}
-            hint={<FormattedMessage id='soapbox_config.hints.crypto_addresses' defaultMessage='Add cryptocurrency addresses so users of your site can donate to you. Order matters, and you must use lowercase ticker values.' />}
-            component={CryptoAddressInput}
-            values={soapbox.cryptoAddresses.toArray()}
-            onChange={handleStreamItemChange(['cryptoAddresses'])}
-            onAddItem={addStreamItem(['cryptoAddresses'], templates.cryptoAddress)}
-            onRemoveItem={deleteStreamItem(['cryptoAddresses'])}
-          />
-
-          <FormGroup labelText={intl.formatMessage(messages.cryptoDonatePanelLimitLabel)}>
-            <Input
-              type='number'
-              min={0}
-              pattern='[0-9]+'
-              placeholder={intl.formatMessage(messages.cryptoDonatePanelLimitLabel)}
-              value={soapbox.cryptoDonatePanel.get('limit')}
-              onChange={handleChange(['cryptoDonatePanel', 'limit'], (e) => Number(e.target.value))}
             />
           </FormGroup>
 

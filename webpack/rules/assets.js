@@ -85,6 +85,6 @@ module.exports = [{
   type: 'asset/resource',
   include: resolve('app'),
   generator: {
-    filename: 'manifest.json'
-  }
+    filename: 'manifest.json',
+  },
 }];

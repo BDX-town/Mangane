@@ -31,12 +31,38 @@
   }
 
   &__card {
-    @apply rounded-lg bg-gray-100 dark:bg-slate-700;
+    @apply rounded-lg;
     box-sizing: border-box;
     margin-bottom: 0;
-    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
     overflow: hidden;
     position: relative;
+
+    .display-name {
+      text-align: left;
+
+      strong {
+        @apply text-black dark:text-white;
+        display: block;
+        font-size: 15px;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      span:not(.verified-icon) {
+        @apply text-gray-500 dark:text-gray-400;
+        display: block;
+        font-size: 14px;
+        font-weight: 400;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .verified-icon div,
+      .verified-icon svg {
+        @apply inline;
+      }
+    }
 
     &__info {
       z-index: 1;
@@ -95,33 +121,6 @@
           border-radius: 4px;
           background: var(--brand-color--faint);
           object-fit: cover;
-        }
-      }
-
-      .display-name {
-        margin-left: 15px;
-        text-align: left;
-
-        strong {
-          @apply text-black dark:text-white;
-          font-size: 15px;
-          font-weight: 500;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        span:not(.verified-icon) {
-          @apply text-gray-500 dark:text-gray-400;
-          display: block;
-          font-size: 14px;
-          font-weight: 400;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .verified-icon div,
-        .verified-icon svg {
-          @apply inline;
         }
       }
     }
