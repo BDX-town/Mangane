@@ -18,14 +18,14 @@ First you need to download mangane on your server.
 #### OTP
 
 ```
-/opt/pleroma/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane-ui/releases/latest/download/static.zip
+/opt/pleroma/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip
 ```
 *Note: The pleroma_ctl path may vary on your system*
 
 #### Mix / Source 
 
 ```
-mix pleroma.frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane-ui/releases/latest/download/static.zip
+mix pleroma.frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip
 ```
 
 #### Admin-fe with database configuration enabled
