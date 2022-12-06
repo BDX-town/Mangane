@@ -28,6 +28,9 @@ Otherwise, the settings need to be uploaded manually and made available at GET `
 ### The instance logo
 The instance logo must be a valid svg file. It will be shown in pages using the same icon system than the rest of the app, in order to match the colors settings. Be sure to use a 'raw' svg file, and to not simply use a svg wrapper for a bitmap image. 
 
+If you want the logo to match your color settings, you will need to update it so every `fill` or `stroke` property that you want to change use the special value `currentColor`
+https://css-tricks.com/currentcolor/
+
 ## About pages
 
 It is possible to create arbitrary HTML pages under `/about/:page` on your website.
