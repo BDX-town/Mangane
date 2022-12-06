@@ -14,7 +14,7 @@ These are settings global to your website, and will also affect mobile apps and 
 
 These settings are exposed through the API under GET `/api/v1/instance`.
 
-## Soapbox settings
+## Mangane settings
 
 Most settings are specific to your Soapbox installation and not the entire website.
 That includes the logo, default theme, and more.
@@ -24,6 +24,9 @@ That includes the logo, default theme, and more.
 
 If using Pleroma, these settings are exposed through the API under GET `/api/pleroma/frontend_configurations`.
 Otherwise, the settings need to be uploaded manually and made available at GET `/instance/soapbox.json`.
+
+### The instance logo
+The instance logo must be a valid svg file. It will be shown in pages using the same icon system than the rest of the app, in order to match the colors settings. Be sure to use a 'raw' svg file, and to not simply use a svg wrapper for a bitmap image. 
 
 ## About pages
 
