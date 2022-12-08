@@ -30,7 +30,7 @@ const Sidebar: React.FC = ({ children }) => (
 const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className }) => (
   <main
     className={classNames({
-      'md:col-span-12 lg:col-span-9 xl:col-span-6 pb-36': true,
+      'md:col-span-12 lg:col-span-6 xl:col-span-6 pb-36': true,
     }, className)}
   >
     {children}
@@ -39,7 +39,7 @@ const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, classN
 
 /** Right sidebar container in the UI. */
 const Aside: React.FC = ({ children }) => (
-  <aside className='hidden xl:block xl:col-span-3'>
+  <aside className='hidden lg:block lg:col-span-3'>
     <StickyBox offsetTop={80} className='space-y-6 pb-12' >
       {children}
     </StickyBox>
