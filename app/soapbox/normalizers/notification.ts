@@ -17,6 +17,7 @@ export const NotificationRecord = ImmutableRecord({
   chat_message: null as ImmutableMap<string, any> | string | null, // pleroma:chat_mention
   created_at: new Date(),
   emoji: null as string | null, // pleroma:emoji_reaction
+  emoji_url: null as string | null, // pleroma:emoji_reaction used to custom emojis
   id: '',
   status: null as EmbeddedEntity<Status>,
   target: null as EmbeddedEntity<Account>, // move

@@ -9,9 +9,11 @@ import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
 import RelativeTimestamp from './relative_timestamp';
-import { Avatar, Emoji, HStack, Icon, IconButton, Stack, Text } from './ui';
+import { Avatar, EmojiReact, HStack, Icon, IconButton, Stack, Text } from './ui';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
+import { EmojiReact as EmojiReactType } from 'soapbox/utils/emoji_reacts';
+
 
 interface IInstanceFavicon {
   account: AccountEntity,
@@ -62,7 +64,7 @@ interface IAccount {
   withLinkToProfile?: boolean,
   withRelationship?: boolean,
   showEdit?: boolean,
-  emoji?: string,
+  emoji?: EmojiReactType,
 }
 
 const Account = ({
@@ -175,7 +177,7 @@ const Account = ({
             >
               <Avatar src={account.avatar} size={avatarSize} />
               {emoji && (
-                <Emoji
+                <EmojiReact
                   className='w-5 h-5 absolute -bottom-1.5 -right-1.5'
                   emoji={emoji}
                 />

@@ -39,3 +39,4 @@ export { default as Textarea } from './textarea/textarea';
 export { default as Toggle } from './toggle/toggle';
 export { default as Tooltip } from './tooltip/tooltip';
 export { default as Widget } from './widget/widget';
+export { default as EmojiReact } from './emoji-react/emoji-react';
