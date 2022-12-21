@@ -14,9 +14,12 @@ export const buildStatus = (state: RootState, scheduledStatus: ScheduledStatus) 
 
   const account = getAccount(state, me);
 
+  if (!scheduledStatus) return null;
+
   const status = ImmutableMap({
     account,
-    content: scheduledStatus.text.replace(new RegExp('\n', 'g'), '<br>'), /* eslint-disable-line no-control-regex */
+    // eslint-disable-next-line no-control-regex
+    content: scheduledStatus.text.replace(new RegExp('\n', 'g'), '<br>'),
     created_at: scheduledStatus.scheduled_at,
     id: scheduledStatus.id,
     in_reply_to_id: scheduledStatus.in_reply_to_id,
