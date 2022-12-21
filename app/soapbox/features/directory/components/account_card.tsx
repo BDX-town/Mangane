@@ -7,7 +7,6 @@ import { getSettings } from 'soapbox/actions/settings';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display-name';
 import Permalink from 'soapbox/components/permalink';
-import RelativeTimestamp from 'soapbox/components/relative_timestamp';
 import { Text } from 'soapbox/components/ui';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import { useAppSelector } from 'soapbox/hooks';
@@ -31,11 +30,11 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
   const account = useAppSelector((state) => getAccount(state, id));
   const autoPlayGif = useAppSelector((state) => getSettings(state).get('autoPlayGif'));
 
-  if (!account) return null;
 
   const followedBy = me !== account.id && account.relationship?.followed_by;
 
   const ago = React.useMemo(() => {
+    if (!account) return 0;
     const date = new Date(account.last_status_at).valueOf();
     const today = new Date().valueOf();
 
@@ -43,6 +42,8 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
 
     return diffInDays;
   }, [account]);
+
+  if (!account) return null;
 
   return (
     <div className='directory__card shadow dark:bg-slate-700 flex flex-col'>
@@ -59,12 +60,12 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
       <div className='px-4 py-3'>
         <Permalink href={account.url} to={`/@${account.acct}`}>
           <div className='flex justify-between items-end min-h-[30px]'>
-            <Avatar className="absolute border-solid border-4 border-white dark:border-slate-700" account={account} size={100} />
-            <div className="text-right grow">
+            <Avatar className='absolute border-solid border-4 border-white dark:border-slate-700' account={account} size={100} />
+            <div className='text-right grow'>
               <ActionButton account={account} small />
             </div>
           </div>
-          <Text className='mt-3 leading-5' size="lg">
+          <Text className='mt-3 leading-5' size='lg'>
             <DisplayName account={account} />
           </Text>
         </Permalink>
@@ -72,7 +73,7 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
 
       <div className='h-24 overflow-hidden px-4 py-3 grow'>
         <Text
-          size="sm"
+          size='sm'
           className={classNames('italic account__header__content', (account.note.length === 0 || account.note === '<p></p>') && 'empty')}
           dangerouslySetInnerHTML={{ __html: account.note_emojified }}
         />
@@ -82,24 +83,24 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
         <div>
           <Text theme='primary' size='xs'>
             <FormattedMessage id='account.posts' defaultMessage='Posts' />
-          </Text> 
-          <Text weight='bold' size="lg" className='leading-5'><FormattedNumber value={account.statuses_count} /></Text>
+          </Text>
+          <Text weight='bold' size='lg' className='leading-5'><FormattedNumber value={account.statuses_count} /></Text>
         </div>
         <div className='accounts-table__count text-right'>
-          <Text theme='primary' size="xs"><FormattedMessage id='account.last_status' defaultMessage='Last active' /></Text>
+          <Text theme='primary' size='xs'><FormattedMessage id='account.last_status' defaultMessage='Last active' /></Text>
           {account.last_status_at === null
-            ? <Text weight='bold' size="lg" className='leading-5'><FormattedMessage id='account.never_active' defaultMessage='Never' /></Text>
-            : <Text weight='bold' size="lg" className='leading-5'>
-                {
-                  (ago < 1) && <FormattedMessage { ...messages.today } />
-                }
-                {
-                  (ago >= 1 && ago < 2) && <FormattedMessage { ...messages.days } />
-                }
-                {
-                  ago >= 2 && <>{ ago } <FormattedMessage { ...messages.days } /></>
-                }
-              </Text>}
+            ? <Text weight='bold' size='lg' className='leading-5'><FormattedMessage id='account.never_active' defaultMessage='Never' /></Text>
+            : <Text weight='bold' size='lg' className='leading-5'>
+              {
+                (ago < 1) && <FormattedMessage {...messages.today} />
+              }
+              {
+                (ago >= 1 && ago < 2) && <FormattedMessage {...messages.yesterday} />
+              }
+              {
+                ago >= 2 && <>{ ago } <FormattedMessage {...messages.days} /></>
+              }
+            </Text>}
         </div>
       </div>
     </div>

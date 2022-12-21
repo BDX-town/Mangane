@@ -6,7 +6,6 @@ import { useLocation } from 'react-router-dom';
 
 import { fetchDirectory, expandDirectory } from 'soapbox/actions/directory';
 import LoadMore from 'soapbox/components/load_more';
-import RadioButton from 'soapbox/components/radio_button';
 import Toggle from 'soapbox/components/ui/toggle/toggle';
 import Column from 'soapbox/features/ui/components/column';
 import { useAppSelector } from 'soapbox/hooks';
@@ -40,12 +39,12 @@ const Directory = () => {
   }, [order, local]);
 
   const handleChangeOrder: React.ChangeEventHandler<HTMLInputElement> = e => {
-    if(e.target.checked) setOrder('new');
+    if (e.target.checked) setOrder('new');
     else setOrder('active');
   };
 
   const handleChangeLocal: React.ChangeEventHandler<HTMLInputElement> = e => {
-    if(e.target.checked) setLocal(true);
+    if (e.target.checked) setLocal(true);
     else setLocal(false);
   };
 
@@ -57,12 +56,12 @@ const Directory = () => {
     <Column icon='address-book-o' label={intl.formatMessage(messages.title)}>
       <div className='directory__filter-form flex items-center gap-4 my-3'>
         <div className='directory__filter-form__column flex items-center gap-2' role='group'>
-          <Toggle id="new-arrivals" checked={order === 'new'} onChange={handleChangeOrder} /> <label htmlFor='new-arrivals'>{ intl.formatMessage(messages.newArrivals) }</label>
+          <Toggle id='new-arrivals' checked={order === 'new'} onChange={handleChangeOrder} /> <label htmlFor='new-arrivals'>{ intl.formatMessage(messages.newArrivals) }</label>
         </div>
 
         {features.federating && (
           <div className='directory__filter-form__column flex items-center gap-2' role='group'>
-            <Toggle id="local" checked={local} onChange={handleChangeLocal} /> <label htmlFor='new-arrivals'>{intl.formatMessage(messages.local, { domain: title })}</label>
+            <Toggle id='local' checked={local} onChange={handleChangeLocal} /> <label htmlFor='new-arrivals'>{intl.formatMessage(messages.local, { domain: title })}</label>
           </div>
         )}
       </div>
@@ -70,8 +69,8 @@ const Directory = () => {
       <div className={classNames('directory__list')}>
         {accountIds.map((accountId) => <AccountCard id={accountId} key={accountId} />)}
       </div>
-      
-      <div className="mt-4 pt-3">
+
+      <div className='mt-4 pt-3'>
         <LoadMore onClick={handleLoadMore} />
       </div>
     </Column>
