@@ -1,13 +1,15 @@
-import { List as ImmutableList } from 'immutable';
+import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { fetchFavourites, fetchReactions } from 'soapbox/actions/interactions';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import { Emoji, Modal, Spinner, Tabs } from 'soapbox/components/ui';
+import { EmojiReact, Modal, Spinner, Tabs } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { ReactionRecord } from 'soapbox/reducers/user_lists';
+import { EmojiReact as EmojiReactType } from 'soapbox/utils/emoji_reacts';
+
 
 import type { Item } from 'soapbox/components/ui/tabs/tabs';
 
@@ -53,7 +55,7 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
     reactions!.forEach(reaction => items.push(
       {
         text: <div className='flex items-center gap-1'>
-          <Emoji className='w-4 h-4' emoji={reaction.name} />
+          <EmojiReact className='w-4 h-4' emoji={ImmutableMap(reaction)} />
           {reaction.count}
         </div>,
         action: () => setReaction(reaction.name),
@@ -68,9 +70,17 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
     fetchData();
   }, []);
 
-  const accounts = reactions && (reaction
-    ? reactions.find(({ name }) => name === reaction)?.accounts.map(account => ({ id: account, reaction: reaction }))
-    : reactions.map(({ accounts, name }) => accounts.map(account => ({ id: account, reaction: name }))).flatten()) as ImmutableList<{ id: string, reaction: string }>;
+  const accounts = React.useMemo(() => {
+    if(!reactions) return null;
+    if(reaction) {
+      const selected = reactions.find(({ name }) => name === reaction);
+      return selected?.accounts.map(account => ({ id: account, reaction: selected }))
+    }
+
+    return reactions.map(({ accounts, name, url }) => accounts.map(account => ({ id: account, reaction: ImmutableMap({ name, url }) }))).flatten() as ImmutableList<{ id: string, reaction: EmojiReactType }>
+  }, [reactions, reaction]);  
+
+
 
   let body;
 
@@ -78,7 +88,6 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
     body = <Spinner />;
   } else {
     const emptyMessage = <FormattedMessage id='status.reactions.empty' defaultMessage='No one has reacted to this post yet. When someone does, they will show up here.' />;
-
     body = (<>
       {reactions.size > 0 && renderFilterBar()}
       <ScrollableList

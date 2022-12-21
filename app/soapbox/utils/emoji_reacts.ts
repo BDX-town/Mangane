@@ -2,6 +2,7 @@ import {
   Map as ImmutableMap,
   List as ImmutableList,
 } from 'immutable';
+import { emojiReact } from 'soapbox/actions/emoji_reacts';
 
 import type { Me } from 'soapbox/types/soapbox';
 
@@ -17,7 +18,7 @@ export const ALLOWED_EMOJI = ImmutableList([
 ]);
 
 type Account = ImmutableMap<string, any>;
-type EmojiReact = ImmutableMap<string, any>;
+export type EmojiReact = ImmutableMap<string, any>;
 
 export const sortEmoji = (emojiReacts: ImmutableList<EmojiReact>): ImmutableList<EmojiReact> => (
   emojiReacts.sortBy(emojiReact => -emojiReact.get('count'))
@@ -70,10 +71,11 @@ export const oneEmojiPerAccount = (emojiReacts: ImmutableList<EmojiReact>, me: M
     .reverse();
 };
 
-export const filterEmoji = (emojiReacts: ImmutableList<EmojiReact>, allowedEmoji = ALLOWED_EMOJI): ImmutableList<EmojiReact> => (
-  emojiReacts.filter(emojiReact => (
+export const filterEmoji = (emojiReacts: ImmutableList<EmojiReact>, allowedEmoji = ALLOWED_EMOJI): ImmutableList<EmojiReact> => {
+  if(allowedEmoji === null) return emojiReacts;
+  return emojiReacts.filter(emojiReact => (
     allowedEmoji.includes(emojiReact.get('name'))
-  )));
+  ))};
 
 export const reduceEmoji = (emojiReacts: ImmutableList<EmojiReact>, favouritesCount: number, favourited: boolean, allowedEmoji = ALLOWED_EMOJI): ImmutableList<EmojiReact> => (
   filterEmoji(sortEmoji(mergeEmoji(mergeEmojiFavourites(

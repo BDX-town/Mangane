@@ -5,7 +5,7 @@ import { FormattedNumber } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
-import { HStack, IconButton, Text, Emoji } from 'soapbox/components/ui';
+import { HStack, IconButton, Text, EmojiReact } from 'soapbox/components/ui';
 import { useAppSelector, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
 import { reduceEmoji } from 'soapbox/utils/emoji_reacts';
 
@@ -51,14 +51,14 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
     }));
   };
 
-  const getNormalizedReacts = () => {
+  const getNormalizedReacts = React.useCallback(() => {
     return reduceEmoji(
       ImmutableList(status.pleroma.get('emoji_reactions') as any),
       status.favourites_count,
       status.favourited,
-      allowedEmoji,
+      null, // we dont want to filter them
     ).reverse();
-  };
+  }, [status]);
 
   const handleOpenReblogsModal: React.EventHandler<React.MouseEvent> = (e) => {
     e.preventDefault();
@@ -138,9 +138,9 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
             {emojiReacts.map((e, i) => {
               return (
                 <HStack space={0.5} className='emoji-react p-1' alignItems='center' key={i}>
-                  <Emoji
+                  <EmojiReact
                     className={classNames('emoji-react__emoji w-5 h-5 flex-none', { 'cursor-pointer': features.exposableReactions })}
-                    emoji={e.get('name')}
+                    emoji={e}
                     onClick={features.exposableReactions ? handleOpenReactionsModal(e) : undefined}
                   />
                   <Text theme='muted' size='sm' className='emoji-react__count'>

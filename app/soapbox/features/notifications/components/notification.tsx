@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
 import { useHistory } from 'react-router-dom';
+import { Map as ImmutableMap } from 'immutable';
 
 import { mentionCompose } from 'soapbox/actions/compose';
 import { reblog, favourite, unreblog, unfavourite } from 'soapbox/actions/interactions';
@@ -10,7 +11,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import { hideStatus, revealStatus } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
 import Permalink from 'soapbox/components/permalink';
-import { HStack, Text, Emoji } from 'soapbox/components/ui';
+import { HStack, Text, EmojiReact } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import StatusContainer from 'soapbox/containers/status_container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
@@ -250,8 +251,8 @@ const Notification: React.FC<INotificaton> = (props) => {
   const renderIcon = (): React.ReactNode => {
     if (type === 'pleroma:emoji_reaction' && notification.emoji) {
       return (
-        <Emoji
-          emoji={notification.emoji}
+        <EmojiReact
+          emoji={ImmutableMap({ name: notification.emoji, url: notification.emoji_url })}
           className='w-4 h-4 flex-none'
         />
       );
