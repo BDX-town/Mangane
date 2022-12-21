@@ -1121,7 +1121,7 @@
   "status.unbookmark": "Supprimer le marque-page",
   "status.unbookmarked": "Marque-page supprimé.",
   "status.unmute_conversation": "Ne plus masquer la conversation",
-  "status.unpin": "Désépingler",
+  "status.unpin": "Ne plus épingler sur le profil",
   "status_list.queue_label": "Click to see {count} new {count, plural, one {post} other {posts}}",
   "statuses.quote_tombstone": "Post is unavailable.",
   "statuses.tombstone": "One or more posts are unavailable.",
