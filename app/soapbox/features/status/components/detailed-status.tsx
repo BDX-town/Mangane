@@ -5,10 +5,14 @@ import Icon from 'soapbox/components/icon';
 import StatusMedia from 'soapbox/components/status-media';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import StatusContent from 'soapbox/components/status_content';
-import { HStack, Stack, Text } from 'soapbox/components/ui';
+import { HStack, Stack, Text, Button } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
+import { useAppSelector } from 'soapbox/hooks';
+import { getFeatures } from 'soapbox/utils/features';
 import { getActualStatus } from 'soapbox/utils/status';
+
+
 
 import StatusInteractionBar from './status-interaction-bar';
 
@@ -34,6 +38,8 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
 }) => {
   const intl = useIntl();
   const node = useRef<HTMLDivElement>(null);
+  const firstLanguage = useAppSelector((state) => state.instance?.languages[0] || 'en');
+  const features = useAppSelector((state) => getFeatures(state.instance));
 
   const handleExpandedToggle = () => {
     onToggleHidden(status);
@@ -102,34 +108,43 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
         <HStack justifyContent='between' alignItems='center' className='py-2'>
           <StatusInteractionBar status={actualStatus} />
 
-          <Stack space={1} alignItems='center'>
-            {statusTypeIcon}
-
-            <span>
-              <a href={actualStatus.url} target='_blank' rel='noopener' className='hover:underline'>
-                <Text tag='span' theme='muted' size='sm'>
-                  <FormattedDate value={new Date(actualStatus.created_at)} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
-                </Text>
-              </a>
-
-              {actualStatus.edited_at && (
-                <>
-                  {' · '}
-                  <div
-                    className='inline hover:underline'
-                    onClick={handleOpenCompareHistoryModal}
-                    role='button'
-                    tabIndex={0}
-                  >
-                    <Text tag='span' theme='muted' size='sm'>
-                      <FormattedMessage id='actualStatus.edited' defaultMessage='Edited {date}' values={{ date: intl.formatDate(new Date(actualStatus.edited_at), { hour12: false, month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }) }} />
-                    </Text>
-                  </div>
-                </>
-              )}
-            </span>
-          </Stack>
+          {
+            features.translations && actualStatus.language !== firstLanguage && (
+              <Button theme='link' >
+                <Icon src={require('@tabler/icons/language.svg')} />
+                <FormattedMessage id='actualStatuses.translate' defaultMessage='Translate' />
+              </Button>
+            )
+          }
         </HStack>
+
+        <Stack space={1} className='items-end mb-3'>
+          {statusTypeIcon}
+
+          <span>
+            <a href={actualStatus.url} target='_blank' rel='noopener' className='hover:underline'>
+              <Text tag='span' theme='muted' size='sm'>
+                <FormattedDate value={new Date(actualStatus.created_at)} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
+              </Text>
+            </a>
+
+            {actualStatus.edited_at && (
+              <>
+                {' · '}
+                <div
+                  className='inline hover:underline'
+                  onClick={handleOpenCompareHistoryModal}
+                  role='button'
+                  tabIndex={0}
+                >
+                  <Text tag='span' theme='muted' size='sm'>
+                    <FormattedMessage id='actualStatus.edited' defaultMessage='Edited {date}' values={{ date: intl.formatDate(new Date(actualStatus.edited_at), { hour12: false, month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }) }} />
+                  </Text>
+                </div>
+              </>
+            )}
+          </span>
+        </Stack>
       </div>
     </div>
   );

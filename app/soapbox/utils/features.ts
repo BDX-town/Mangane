@@ -450,6 +450,14 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Can translate statuses
+     * @see GET /api/v1/statuses/:id/translations/:language
+     */
+    translations: any([
+      v.software === AKKOMA,
+    ]),
+
+    /**
      * Can set privacy scopes on statuses.
      * @see POST /api/v1/statuses
      */
