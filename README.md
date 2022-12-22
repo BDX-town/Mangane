@@ -8,28 +8,29 @@ Mangane is a frontend for Pleroma, Akkoma and Mastodon with a focus on ease of u
 
 ## :rocket: Deploy on Pleroma/Akkoma
 
-Installing Mangane on an existing Pleroma server is easy.
-Log in your server and follow those instructions depending on your configuration.
+Installing Mangane on an existing Pleroma or Akkoma instance is easy.
+Log in with SSH your server and follow those instructions depending on your configuration.
 
 ### Download
 
 First you need to download Mangane on your server.
 
-#### OTP
+#### For OTP install
 
 ```
 /opt/pleroma/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip
 ```
 *Note: The pleroma_ctl path may vary on your system*
 
-#### Mix / Source 
+#### For Mix/Source install
 
 ```
 mix pleroma.frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip
 ```
 
-#### Admin-fe with database configuration enabled
+#### With Admin-fe 
 
+If database configuration is enabled, you can also install Mangane from the Admin interface of Pleroma/Akkoma. 
 Just fill the form at Frontend/Available like this.
 
 ![admin-fe](./admin-fe.png)
@@ -58,9 +59,10 @@ Just fill the form at Frontend/frontends/Primary like this.
 
 
 **That's it!** :tada:
-**Mangane FE is installed.**
-The change will take effect immediately, just refresh your browser tab.
-You may need to restart pleroma/akkoma for the change to take effect.
+
+**Mangane FE is now installed.**  
+The change will take effect immediately, just refresh your browser tab, and Mangane will replace the default Pleroma FE or Akkoma FE interface. 
+You may need to restart Pleroma/Akkoma for the change to take effect.
 
 ## :elephant: Deploy on Mastodon
 
