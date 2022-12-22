@@ -1,10 +1,10 @@
 # Mangane
 
+Mangane is a frontend for Pleroma, Akkoma and Mastodon with a focus on ease of use, readability and custom branding.
+
 ![UI Mixed](ui-mixed.png)
 ![UI Dark](ui-dark.png)
 ![UI Light](ui-light.png)
-
-**Mangane** is a frontend for Pleroma with a focus on custom branding and ease of use.
 
 ## :rocket: Deploy on Pleroma/Akkoma
 
