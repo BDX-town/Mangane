@@ -4,9 +4,11 @@ Mangane is an alternative frontend for Pleroma, Akkoma and Mastodon with a focus
 
 This project is developped for [BDX-town](http://bdx.town/) Akkoma instance. Akkoma is a fork of Pleroma who mostly adds features, exposing them through new API endpoints. As of today, Akkoma and Pleroma API are compatible.
 
+Mangane inherit from Pleroma the native large compatibility with Mastodon API.
+
 Moreover, Mangane already has a feature detection system allowing us to adapt the experience following what platform is used as a backend.
 
-We are speaking about Akkoma here since we are planning to add akkoma specific features to the project without breaking any existing compatibility.
+We are speaking about Akkoma here since we are planning to add Akkoma specific features to the project without breaking any existing compatibility.
 
 ![UI Mixed](./docs/ui-mixed.png)
 ![UI Dark](./docs/ui-dark.png)
@@ -72,7 +74,7 @@ You may need to restart Pleroma/Akkoma for the change to take effect.
 
 ## :elephant: Deploy on Mastodon
 
-See [Installing Mangane over Mastodon](https://docs.soapbox.pub/frontend/administration/mastodon/).
+See [Installing Mangane over Mastodon](./docs/administration/mastodon.md).
 
 ## How does it work?
 
@@ -216,24 +218,19 @@ We welcome contributions to this project. To contribute, first review the [Contr
 
 Additional supporting documents include:
 * [Mangane History](docs/history.md)
-* [Redux Store Map](docs/history.md)
+* Redux Store Map
 
 # Customization
 
-Mangane supports customization of the user interface, to allow per instance branding and other features.  Current customization features include:
+Mangane supports customization of the user interface, to allow per instance branding and other features. Current customization features include:
 
-* Instance name
-* Site logo
-* Favicon
-* About page
-* Terms of Service page
-* Privacy Policy page
-* Copyright Policy (DMCA) page
-* Promo panel list items, e.g. blog site link
-* Mangane extensions, e.g. Patron module
-* Default settings, e.g. default theme
+* Instance name, site logo and favicon.
+* Custom pages: e.g About, Terms of Service page, Privacy Policy page, Copyright Policy (DMCA).
+* Promo panel custom links (e.g. link to blog or documentation external site).
+* Mangane extensions.
+* Default instance settings (e.g. default theme).
 
-Customization details can be found in the [Customization doc](docs/customization.md)
+Customization details can be found in the [Customization documentation](docs/customization.md)
 
 # License & Credits
 
@@ -252,8 +249,8 @@ along with Mangane.  If not, see <https://www.gnu.org/licenses/>.
 
 Mangane make use of code from other opensource and free software under various licenses:
 
-- Mangane is based on [Soapbox](https://soapbox.pub) frontend for Rebased, Pleroma, Mastodon, licensed under AGPL v3 or later.
+- Mangane is a fork of [Soapbox](https://soapbox.pub) a frontend for Rebased, Pleroma and Mastodon, licensed under AGPL v3 or later.
 
 - `static/sounds/chat.mp3` and `static/sounds/chat.oga` are from [notificationsounds.com](https://notificationsounds.com/notification-sounds/intuition-561) licensed under CC BY 4.0.
 
-- Mangane use part of [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) licensed by Tailwindlab under the simple permissive MIT License.
+- [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) licensed by Tailwindlab under the simple permissive MIT License.
