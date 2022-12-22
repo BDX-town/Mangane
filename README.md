@@ -2,9 +2,9 @@
 
 Mangane is a frontend for Pleroma, Akkoma and Mastodon with a focus on ease of use, readability and custom branding.
 
-![UI Mixed](ui-mixed.png)
-![UI Dark](ui-dark.png)
-![UI Light](ui-light.png)
+![UI Mixed](./docs/ui-mixed.png)
+![UI Dark](./docs/ui-dark.png)
+![UI Light](./docs/ui-light.png)
 
 ## :rocket: Deploy on Pleroma/Akkoma
 
@@ -33,7 +33,7 @@ mix pleroma.frontend install mangane --ref dist --build-url https://github.com/B
 If database configuration is enabled, you can also install Mangane from the Admin interface of Pleroma/Akkoma. 
 Just fill the form at Frontend/Available like this.
 
-![admin-fe](./admin-fe.png)
+![admin-fe](./docs/admin-ui-1.png)
 
 ### Activation
 
@@ -55,7 +55,7 @@ config :pleroma, :frontends,
 
 Just fill the form at Frontend/frontends/Primary like this.
 
-![admin-fe](./admin-fe2.png)
+![admin-fe](./docs/admin-ui-2.png)
 
 
 **That's it!** :tada:
