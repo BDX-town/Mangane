@@ -242,8 +242,10 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with Mangane.  If not, see <https://www.gnu.org/licenses/>.
 
+Mangane make use of code from other opensource and free software under various licenses:
+
 - Mangane is based on [Soapbox](https://soapbox.pub) frontend for Rebased, Pleroma, Mastodon, licensed under AGPL v3 or later.
 
 - `static/sounds/chat.mp3` and `static/sounds/chat.oga` are from [notificationsounds.com](https://notificationsounds.com/notification-sounds/intuition-561) licensed under CC BY 4.0.
 
-- [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) is licensed by Tailwindlab under the simple permissive MIT License.
+- Mangane use part of [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) licensed by Tailwindlab under the simple permissive MIT License.
