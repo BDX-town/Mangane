@@ -1,14 +1,14 @@
-# Mangane FE
+# Mangane
 
 ![UI Mixed](ui-mixed.png)
 ![UI Dark](ui-dark.png)
 ![UI Light](ui-light.png)
 
-**Mangane FE** is a frontend for Pleroma with a focus on custom branding and ease of use.
+**Mangane** is a frontend for Pleroma with a focus on custom branding and ease of use.
 
 ## :rocket: Deploy on Pleroma/Akkoma
 
-Installing Mangane FE on an existing Pleroma server is easy.
+Installing Mangane on an existing Pleroma server is easy.
 Log in your server and follow those instructions depending on your configuration.
 
 ### Download
@@ -68,7 +68,7 @@ See [Installing Mangane over Mastodon](https://docs.soapbox.pub/frontend/adminis
 
 ## How does it work?
 
-Mangane FE is a [single-page application (SPA)](https://en.wikipedia.org/wiki/Single-page_application) that runs entirely in the browser with JavaScript.
+Mangane is a [single-page application (SPA)](https://en.wikipedia.org/wiki/Single-page_application) that runs entirely in the browser with JavaScript.
 
 It has a single HTML file, `index.html`, responsible only for loading the required JavaScript and CSS.
 It interacts with the backend through [XMLHttpRequest (XHR)](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest).
@@ -149,7 +149,7 @@ All configuration is optional, except `NODE_ENV`.
 #### `NODE_ENV`
 
 The Node environment.
-Mangane FE checks for the following options:
+Mangane checks for the following options:
 
 - `development` - What you should use while developing Mangane FE.
 - `production` - Use when compiling to deploy to a live server.
@@ -204,7 +204,7 @@ NODE_ENV=development
 
 # Contributing
 
-We welcome contributions to this project.  To contribute, first review the [Contributing doc](docs/contributing.md)
+We welcome contributions to this project. To contribute, first review the [Contributing doc](docs/contributing.md)
 
 Additional supporting documents include:
 * [Mangane History](docs/history.md)
@@ -229,19 +229,19 @@ Customization details can be found in the [Customization doc](docs/customization
 
 # License & Credits
 
-Mangane FE is based on [Soapbox](https://soapbox.pub)'s frontend.
-
-- `static/sounds/chat.mp3` and `static/sounds/chat.oga` are from [notificationsounds.com](https://notificationsounds.com/notification-sounds/intuition-561) licensed under CC BY 4.0.
-
-Mangane FE is free software: you can redistribute it and/or modify
+Mangane is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-Mangane FE is distributed in the hope that it will be useful,
+Mangane is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
-along with Mangane FE.  If not, see <https://www.gnu.org/licenses/>.
+along with Mangane.  If not, see <https://www.gnu.org/licenses/>.
+
+- Mangane is based on [Soapbox](https://soapbox.pub) frontend for Rebased, Pleroma, Mastodon, licensed under AGPL v3 or later.
+
+- `static/sounds/chat.mp3` and `static/sounds/chat.oga` are from [notificationsounds.com](https://notificationsounds.com/notification-sounds/intuition-561) licensed under CC BY 4.0.
