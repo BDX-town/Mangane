@@ -13,7 +13,7 @@ Log in your server and follow those instructions depending on your configuration
 
 ### Download
 
-First you need to download mangane on your server.
+First you need to download Mangane on your server.
 
 #### OTP
 
