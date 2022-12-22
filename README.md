@@ -1,6 +1,12 @@
 # Mangane
 
-Mangane is a frontend for Pleroma, Akkoma and Mastodon with a focus on ease of use, readability and custom branding.
+Mangane is an alternative frontend for Pleroma, Akkoma and Mastodon with a focus on ease of use, readability and custom branding.
+
+This project is developped for [BDX-town](http://bdx.town/) Akkoma instance. Akkoma is a fork of Pleroma who mostly adds features, exposing them through new API endpoints. As of today, Akkoma and Pleroma API are compatible.
+
+Moreover, Mangane already has a feature detection system allowing us to adapt the experience following what platform is used as a backend.
+
+We are speaking about Akkoma here since we are planning to add akkoma specific features to the project without breaking any existing compatibility.
 
 ![UI Mixed](./docs/ui-mixed.png)
 ![UI Dark](./docs/ui-dark.png)
