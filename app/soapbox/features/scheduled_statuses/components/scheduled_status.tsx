@@ -20,7 +20,7 @@ interface IScheduledStatus {
 }
 
 const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => {
-  const status = useAppSelector((state) => buildStatus(state, state.scheduled_statuses.get(statusId)!)) as StatusEntity;
+  const status = useAppSelector((state) => buildStatus(state, state.scheduled_statuses.get(statusId))) as StatusEntity;
 
   if (!status) return null;
 
