@@ -534,7 +534,8 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     scheduledStatuses: any([
       v.software === MASTODON && gte(v.version, '2.7.0'),
-      (v.software === PLEROMA || v.software === AKKOMA),
+      // v.software === PLEROMA, disable for new as scheduled statuses on Pleroma doesnt work
+      v.software === AKKOMA,
     ]),
 
     /**
