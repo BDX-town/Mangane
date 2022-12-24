@@ -41,7 +41,7 @@ const ReducerRecord = ImmutableRecord({
   submittedValue: '',
   hidden: false,
   results: ResultsRecord(),
-  filter: 'accounts' as SearchFilter,
+  filter: 'statuses' as SearchFilter,
   accountId: null as string | null,
 });
 
@@ -104,7 +104,7 @@ export default function search(state = ReducerRecord(), action: AnyAction) {
     case SEARCH_CHANGE:
       return state.set('value', action.value);
     case SEARCH_CLEAR:
-      return ReducerRecord();
+      return ReducerRecord({ filter: state.filter });
     case SEARCH_SHOW:
       return state.set('hidden', false);
     case COMPOSE_REPLY:
