@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 
+import { getSettings } from 'soapbox/actions/settings';
 import Icon from 'soapbox/components/icon';
 import StatusMedia from 'soapbox/components/status-media';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
@@ -11,6 +12,7 @@ import QuotedStatus from 'soapbox/features/status/containers/quoted_status_conta
 import { useAppSelector } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
 import { getActualStatus } from 'soapbox/utils/status';
+
 
 
 
@@ -40,7 +42,8 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
 }) => {
   const intl = useIntl();
   const node = useRef<HTMLDivElement>(null);
-  const firstLanguage = useAppSelector((state) => state.instance.get('languages').get(0) || 'en');
+  const locale = useAppSelector((state) => getSettings(state).get('locale')) as string;
+  const localeTranslated = React.useMemo(() => (new Intl.DisplayNames([locale], { type: 'language' })).of(locale), [locale]);
   const features = useAppSelector((state) => getFeatures(state.instance));
 
   const handleExpandedToggle = () => {
@@ -52,8 +55,8 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   };
 
   const handleTranslateStatus = React.useCallback(() => {
-    onTranslate(status, firstLanguage);
-  }, [status, firstLanguage]);
+    onTranslate(status, locale);
+  }, [status, locale]);
 
   const actualStatus = getActualStatus(status);
   if (!actualStatus) return null;
@@ -97,12 +100,21 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             />
           </div>
           {
-            features.translations && actualStatus.language !== firstLanguage && (
+            features.translations && actualStatus.language !== locale && (
               <div>
-                <Button theme='link'  onClick={handleTranslateStatus}>
-                  <Icon src={require('@tabler/icons/language.svg')} />
-                  <FormattedMessage id='actualStatuses.translate' defaultMessage='Translate' />
-                </Button>
+                {
+                  !actualStatus.translations.get(locale) ? (
+                    <Button theme='link'  onClick={handleTranslateStatus}>
+                      <Icon className='mr-1' src={require('@tabler/icons/language.svg')} />
+                      <FormattedMessage id='actualStatuses.translate' defaultMessage='Translate' />
+                    </Button>
+                  ) : (
+                    <Text className='text-grey-500 dark:text-grey-300 flex items-center' size='xs'>
+                      <Icon className='mr-1' src={require('@tabler/icons/check.svg')} />
+                      <FormattedMessage id='actualStatuses.translated' defaultMessage='Translate' />
+                    </Text>
+                  )
+                }
               </div>
             )
           }
@@ -115,6 +127,26 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
           expanded={!actualStatus.hidden}
           onExpandedToggle={handleExpandedToggle}
         />
+
+        {
+          actualStatus.translations.get(locale) && !actualStatus.hidden && (
+            <>
+              <hr className='my-3' />
+              <Text className='mb-1' size='md' weight='medium'>
+                <FormattedMessage
+                  id='actualStatuses.translate_done'
+                  defaultMessage='Status translated to {locale}'
+                  values={{ locale: localeTranslated }}
+                />
+              </Text>
+              <div
+                className='status__content'
+                lang={locale}
+                dangerouslySetInnerHTML={{ __html: actualStatus.translations.get(locale) }}
+              />
+            </>
+          )
+        }
 
         <StatusMedia
           status={actualStatus}

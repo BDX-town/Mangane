@@ -68,7 +68,6 @@ const getInstanceFeatures = (instance: Instance) => {
   const v = parseVersion(instance.version);
   const features = instance.pleroma.getIn(['metadata', 'features'], ImmutableList()) as ImmutableList<string>;
   const federation = instance.pleroma.getIn(['metadata', 'federation'], ImmutableMap()) as ImmutableMap<string, any>;
-
   return {
     /**
      * Can view and manage ActivityPub aliases through the API.
@@ -450,18 +449,12 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
-     * Can translate statuses
-     * @see GET /api/v1/statuses/:id/translations/:language
-     */
-    translations: any([
-      v.software === AKKOMA,
-    ]),
-
-    /**
      * Can set privacy scopes on statuses.
      * @see POST /api/v1/statuses
      */
     privacyScopes: v.software !== TRUTHSOCIAL,
+
+
 
     /**
      * A directory of discoverable profiles from the instance.
@@ -613,6 +606,14 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
       v.software === TRUTHSOCIAL,
       features.includes('v2_suggestions'),
+    ]),
+
+    /**
+     * Can translate statuses
+     * @see GET /api/v1/statuses/:id/translations/:language
+     */
+    translations: any([
+      v.software === AKKOMA && features.find((f) => f === 'akkoma:machine_translation'),
     ]),
 
     /**
