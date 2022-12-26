@@ -25,10 +25,6 @@ const messages = defineMessages({
   follows: { id: 'account.follows', defaultMessage: 'Follows' },
   profile: { id: 'account.profile', defaultMessage: 'Profile' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
-  blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
-  domainBlocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Hidden domains' },
-  mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
-  filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
   soapboxConfig: { id: 'navigation_bar.soapbox_config', defaultMessage: 'Soapbox config' },
   importData: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
   accountMigration: { id: 'navigation_bar.account_migration', defaultMessage: 'Move account' },
@@ -293,38 +289,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                       onClick={onClose}
                     />
                 }
-
-                <SidebarLink
-                  to='/blocks'
-                  icon={require('@tabler/icons/ban.svg')}
-                  text={intl.formatMessage(messages.blocks)}
-                  onClick={onClose}
-                />
-
-                <SidebarLink
-                  to='/mutes'
-                  icon={require('@tabler/icons/circle-x.svg')}
-                  text={intl.formatMessage(messages.mutes)}
-                  onClick={onClose}
-                />
-
-                {features.federating && (
-                  <SidebarLink
-                    to='/domain_blocks'
-                    icon={require('@tabler/icons/ban.svg')}
-                    text={intl.formatMessage(messages.domainBlocks)}
-                    onClick={onClose}
-                  />
-                )}
-
-                {features.filters && (
-                  <SidebarLink
-                    to='/filters'
-                    icon={require('@tabler/icons/filter.svg')}
-                    text={intl.formatMessage(messages.filters)}
-                    onClick={onClose}
-                  />
-                )}
 
                 <SidebarLink
                   to='/settings/preferences'
