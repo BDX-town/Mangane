@@ -1143,7 +1143,7 @@
   "theme_toggle.light": "Clair",
   "theme_toggle.system": "Système",
   "thread_login.login": "Se connecter",
-  "thread_login.message": "Rejoingez {siteTitle} pour tout savoir.",
+  "thread_login.message": "Rejoignez {siteTitle} pour tout savoir.",
   "thread_login.signup": "S'inscrire",
   "thread_login.title": "Continuez la conversation",
   "time_remaining.days": "{number, plural, one {# day} other {# days}} restants",
