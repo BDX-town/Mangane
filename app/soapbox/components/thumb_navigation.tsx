@@ -13,6 +13,9 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
   const instance = useAppSelector((state) => state.instance);
   const logo = useLogo();
 
+  const bubbleTimelineSetting = useAppSelector(state => state.soapbox.get("bubbleTimeline"));
+  const bubbleTimeline = features.bubbleTimeline && bubbleTimelineSetting;
+
   /** Conditionally render the supported messages link */
   const renderMessagesLink = (): React.ReactNode => {
     if (features.chats) {
@@ -71,7 +74,7 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
       {
         features.federating && (
           <ThumbNavigationLink
-            src={require('icons/fediverse.svg')}
+            src={!bubbleTimeline ? require('icons/fediverse.svg') : require('@tabler/icons/octagon.svg')}
             text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
             to='/timeline/fediverse'
             exact

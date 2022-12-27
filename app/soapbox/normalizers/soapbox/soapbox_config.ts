@@ -124,6 +124,7 @@ export const SoapboxConfigRecord = ImmutableRecord({
   linkFooterMessage: '',
   links: ImmutableMap<string, string>(),
   homeDescription: '',
+  bubbleTimeline: false,
 }, 'SoapboxConfig');
 
 type SoapboxConfigMap = ImmutableMap<string, any>;

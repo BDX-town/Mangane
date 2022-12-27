@@ -39,6 +39,9 @@ const SidebarNavigation = () => {
 
   const features = getFeatures(instance);
 
+  const bubbleTimelineSetting = useAppSelector(state => state.soapbox.get("bubbleTimeline"));
+  const bubbleTimeline = features.bubbleTimeline && bubbleTimelineSetting;
+
   const makeMenu = (): Menu => {
     const menu: Menu = [];
 
@@ -166,7 +169,7 @@ const SidebarNavigation = () => {
         {
           features.federating && (
             <SidebarNavigationLink
-              icon={require('icons/fediverse.svg')}
+              icon={!bubbleTimeline ? require('icons/fediverse.svg') : require('@tabler/icons/octagon.svg')}
               text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
               to='/timeline/fediverse'
             />

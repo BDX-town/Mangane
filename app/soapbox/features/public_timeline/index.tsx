@@ -28,7 +28,8 @@ const CommunityTimeline = () => {
   const showExplanationBox = settings.get('showExplanationBox');
 
   const features = useFeatures();
-  const bubbleTimeline = false && features.bubbleTimeline; // add setting
+  const bubbleTimelineSetting = useAppSelector(state => state.soapbox.get("bubbleTimeline"));
+  const bubbleTimeline = features.bubbleTimeline && bubbleTimelineSetting;
 
   const timelineId = React.useMemo(() => !bubbleTimeline ? 'public' : 'bubble', [bubbleTimeline]);
 

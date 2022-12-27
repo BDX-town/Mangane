@@ -94,6 +94,9 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const settings = useAppSelector((state) => getSettings(state));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
 
+  const bubbleTimelineSetting = useAppSelector(state => state.soapbox.get("bubbleTimeline"));
+  const bubbleTimeline = features.bubbleTimeline && bubbleTimelineSetting;
+
   const closeButtonRef = React.useRef(null);
 
   const [switcher, setSwitcher] = React.useState(false);
@@ -275,7 +278,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   {features.federating && (
                     <SidebarLink
                       to='/timeline/fediverse'
-                      icon={require('icons/fediverse.svg')}
+                      icon={!bubbleTimeline ? require('icons/fediverse.svg') : require('@tabler/icons/octagon.svg')}
                       text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
                       onClick={onClose}
                     />
