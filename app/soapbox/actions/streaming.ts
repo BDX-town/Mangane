@@ -135,6 +135,10 @@ const connectUserStream      = () =>
 const connectCommunityStream = ({ onlyMedia }: Record<string, any> = {}) =>
   connectTimelineStream(`community${onlyMedia ? ':media' : ''}`, `public:local${onlyMedia ? ':media' : ''}`);
 
+// Bubble stream doesnt exists for now
+// const connectBubbleStream = ({ onlyMedia }: Record<string, any> = {}) =>
+//   connectTimelineStream(`bubble${onlyMedia ? ':media' : ''}`, `bubble${onlyMedia ? ':media' : ''}`);
+
 const connectPublicStream    = ({ onlyMedia }: Record<string, any> = {}) =>
   connectTimelineStream(`public${onlyMedia ? ':media' : ''}`, `public${onlyMedia ? ':media' : ''}`);
 
@@ -165,4 +169,5 @@ export {
   connectDirectStream,
   connectListStream,
   connectGroupStream,
+  // connectBubbleStream,
 };

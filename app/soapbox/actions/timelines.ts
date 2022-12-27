@@ -195,6 +195,9 @@ const expandHomeTimeline = ({ accountId, maxId }: Record<string, any> = {}, done
 const expandPublicTimeline = ({ maxId, onlyMedia }: Record<string, any> = {}, done = noOp) =>
   expandTimeline(`public${onlyMedia ? ':media' : ''}`, '/api/v1/timelines/public', { max_id: maxId, only_media: !!onlyMedia }, done);
 
+const expandBubbleTimeline = ({ maxId, onlyMedia }: Record<string, any> = {}, done = noOp) =>
+  expandTimeline(`bubble${onlyMedia ? ':media' : ''}`, '/api/v1/timelines/bubble', { max_id: maxId, only_media: !!onlyMedia }, done);
+
 const expandRemoteTimeline = (instance: string, { maxId, onlyMedia }: Record<string, any> = {}, done = noOp) =>
   expandTimeline(`remote${onlyMedia ? ':media' : ''}:${instance}`, '/api/v1/timelines/public', { local: false, instance: instance, max_id: maxId, only_media: !!onlyMedia }, done);
 
@@ -318,4 +321,5 @@ export {
   scrollTopTimeline,
   insertSuggestionsIntoTimeline,
   clearFeedAccountId,
+  expandBubbleTimeline,
 };
