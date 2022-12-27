@@ -30,6 +30,7 @@ import {
   STATUS_HIDE,
   STATUS_DELETE_REQUEST,
   STATUS_DELETE_FAIL,
+  STATUS_TRANSLATE_SUCCESS,
 } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
@@ -146,6 +147,9 @@ const importStatus = (state: State, status: APIEntity, expandSpoilers: boolean):
 const importStatuses = (state: State, statuses: APIEntities, expandSpoilers: boolean): State =>
   state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status, expandSpoilers)));
 
+const translateStatus = (state: State, statusId: string, language: string, text: string) =>
+  state.updateIn([statusId, 'translations', language], () => text);
+
 const deleteStatus = (state: State, id: string, references: Array<string>) => {
   references.forEach(ref => {
     state = deleteStatus(state, ref[0], []);
@@ -201,6 +205,8 @@ export default function statuses(state = initialState, action: AnyAction): State
       return importStatus(state, action.status, action.expandSpoilers);
     case STATUSES_IMPORT:
       return importStatuses(state, action.statuses, action.expandSpoilers);
+    case STATUS_TRANSLATE_SUCCESS:
+      return translateStatus(state, action.statusId, action.language, action.text);
     case STATUS_CREATE_REQUEST:
       return action.editing ? state : incrementReplyCount(state, action.params);
     case STATUS_CREATE_FAIL:

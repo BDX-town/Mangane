@@ -6,13 +6,14 @@ import VerificationBadge from 'soapbox/components/verification_badge';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import { useAppSelector, useOnScreen } from 'soapbox/hooks';
 import { getAcct } from 'soapbox/utils/accounts';
+import { EmojiReact as EmojiReactType } from 'soapbox/utils/emoji_reacts';
 import { displayFqn } from 'soapbox/utils/state';
 
 import RelativeTimestamp from './relative_timestamp';
 import { Avatar, EmojiReact, HStack, Icon, IconButton, Stack, Text } from './ui';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
-import { EmojiReact as EmojiReactType } from 'soapbox/utils/emoji_reacts';
+
 
 
 interface IInstanceFavicon {

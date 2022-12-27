@@ -63,6 +63,7 @@ export const StatusRecord = ImmutableRecord({
   hidden: false,
   search_index: '',
   spoilerHtml: '',
+  translations: ImmutableMap<string, string>(),
 });
 
 const normalizeAttachments = (status: ImmutableMap<string, any>) => {
