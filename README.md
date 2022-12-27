@@ -1,38 +1,47 @@
-# Mangane FE
+# Mangane
 
-![UI Mixed](ui-mixed.png)
-![UI Dark](ui-dark.png)
-![UI Light](ui-light.png)
+Mangane is an alternative frontend for Pleroma, Akkoma and Mastodon with a focus on ease of use, readability and custom branding.
 
-**Mangane FE** is a frontend for Pleroma with a focus on custom branding and ease of use.
+This project is developped for [BDX-town](http://bdx.town/) Akkoma instance. Akkoma is a fork of Pleroma who mostly adds features, exposing them through new API endpoints. As of today, Akkoma and Pleroma API are compatible.
+
+Mangane inherit from Pleroma the native large compatibility with Mastodon API.
+
+Moreover, Mangane already has a feature detection system allowing us to adapt the experience following what platform is used as a backend.
+
+We are speaking about Akkoma here since we are planning to add Akkoma specific features to the project without breaking any existing compatibility.
+
+![UI Mixed](./docs/ui-mixed.png)
+![UI Dark](./docs/ui-dark.png)
+![UI Light](./docs/ui-light.png)
 
 ## :rocket: Deploy on Pleroma/Akkoma
 
-Installing Mangane FE on an existing Pleroma server is easy.
-Log in your server and follow those instructions depending on your configuration.
+Installing Mangane on an existing Pleroma or Akkoma instance is easy.
+Log in with SSH your server and follow those instructions depending on your configuration.
 
 ### Download
 
-First you need to download mangane on your server.
+First you need to download Mangane on your server.
 
-#### OTP
+#### For OTP install
 
 ```
 /opt/pleroma/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip
 ```
 *Note: The pleroma_ctl path may vary on your system*
 
-#### Mix / Source 
+#### For Mix/Source install
 
 ```
 mix pleroma.frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip
 ```
 
-#### Admin-fe with database configuration enabled
+#### With Admin-fe 
 
+If database configuration is enabled, you can also install Mangane from the Admin interface of Pleroma/Akkoma. 
 Just fill the form at Frontend/Available like this.
 
-![admin-fe](./admin-fe.png)
+![admin-fe](./docs/admin-ui-1.png)
 
 ### Activation
 
@@ -54,21 +63,22 @@ config :pleroma, :frontends,
 
 Just fill the form at Frontend/frontends/Primary like this.
 
-![admin-fe](./admin-fe2.png)
+![admin-fe](./docs/admin-ui-2.png)
 
 
 **That's it!** :tada:
-**Mangane FE is installed.**
-The change will take effect immediately, just refresh your browser tab.
-You may need to restart pleroma/akkoma for the change to take effect.
+
+**Mangane FE is now installed.**  
+The change will take effect immediately, just refresh your browser tab, and Mangane will replace the default Pleroma FE or Akkoma FE interface. 
+You may need to restart Pleroma/Akkoma for the change to take effect.
 
 ## :elephant: Deploy on Mastodon
 
-See [Installing Mangane over Mastodon](https://docs.soapbox.pub/frontend/administration/mastodon/).
+See [Installing Mangane over Mastodon](./docs/administration/mastodon.md).
 
 ## How does it work?
 
-Mangane FE is a [single-page application (SPA)](https://en.wikipedia.org/wiki/Single-page_application) that runs entirely in the browser with JavaScript.
+Mangane is a [single-page application (SPA)](https://en.wikipedia.org/wiki/Single-page_application) that runs entirely in the browser with JavaScript.
 
 It has a single HTML file, `index.html`, responsible only for loading the required JavaScript and CSS.
 It interacts with the backend through [XMLHttpRequest (XHR)](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest).
@@ -86,9 +96,9 @@ location / {
 }
 ```
 
-(See [`mastodon.conf`](https://gitlab.com/soapbox-pub/soapbox-fe/-/blob/develop/installation/mastodon.conf) for a full example.)
+(See [`mastodon.conf`](https://github.com/BDX-town/Mangane/blob/master/installation/mastodon.conf) for a full example.)
 
-Soapbox incorporates much of the [Mastodon API](https://docs.joinmastodon.org/methods/), [Pleroma API](https://api.pleroma.social/), and more.
+Mangane incorporates much of the [Mastodon API](https://docs.joinmastodon.org/methods/), [Pleroma API](https://api.pleroma.social/), and more.
 It detects features supported by the backend to provide the right experience for the backend.
 
 # Running locally
@@ -149,7 +159,7 @@ All configuration is optional, except `NODE_ENV`.
 #### `NODE_ENV`
 
 The Node environment.
-Mangane FE checks for the following options:
+Mangane checks for the following options:
 
 - `development` - What you should use while developing Mangane FE.
 - `production` - Use when compiling to deploy to a live server.
@@ -204,44 +214,43 @@ NODE_ENV=development
 
 # Contributing
 
-We welcome contributions to this project.  To contribute, first review the [Contributing doc](docs/contributing.md)
+We welcome contributions to this project. To contribute, first review the [Contributing doc](docs/contributing.md)
 
 Additional supporting documents include:
 * [Mangane History](docs/history.md)
-* [Redux Store Map](docs/history.md)
+* Redux Store Map
 
 # Customization
 
-Mangane supports customization of the user interface, to allow per instance branding and other features.  Current customization features include:
+Mangane supports customization of the user interface, to allow per instance branding and other features. Current customization features include:
 
-* Instance name
-* Site logo
-* Favicon
-* About page
-* Terms of Service page
-* Privacy Policy page
-* Copyright Policy (DMCA) page
-* Promo panel list items, e.g. blog site link
-* Mangane extensions, e.g. Patron module
-* Default settings, e.g. default theme
+* Instance name, site logo and favicon.
+* Custom pages: e.g About, Terms of Service page, Privacy Policy page, Copyright Policy (DMCA).
+* Promo panel custom links (e.g. link to blog or documentation external site).
+* Mangane extensions.
+* Default instance settings (e.g. default theme).
 
-Customization details can be found in the [Customization doc](docs/customization.md)
+Customization details can be found in the [Customization documentation](docs/customization.md)
 
 # License & Credits
 
-Mangane FE is based on [Soapbox](https://soapbox.pub)'s frontend.
-
-- `static/sounds/chat.mp3` and `static/sounds/chat.oga` are from [notificationsounds.com](https://notificationsounds.com/notification-sounds/intuition-561) licensed under CC BY 4.0.
-
-Mangane FE is free software: you can redistribute it and/or modify
+Mangane is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-Mangane FE is distributed in the hope that it will be useful,
+Mangane is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
-along with Mangane FE.  If not, see <https://www.gnu.org/licenses/>.
+along with Mangane.  If not, see <https://www.gnu.org/licenses/>.
+
+Mangane make use of code from other opensource and free software under various licenses:
+
+- Mangane is a fork of [Soapbox](https://soapbox.pub) a frontend for Rebased, Pleroma and Mastodon, licensed under AGPL v3 or later.
+
+- `static/sounds/chat.mp3` and `static/sounds/chat.oga` are from [notificationsounds.com](https://notificationsounds.com/notification-sounds/intuition-561) licensed under CC BY 4.0.
+
+- [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) licensed by Tailwindlab under the simple permissive MIT License.
