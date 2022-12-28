@@ -111,12 +111,6 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
             {children}
           </div>
         </Column>
-
-        {!me && (
-          <BundleContainer fetchComponent={CtaBanner}>
-            {Component => <Component key='cta-banner' />}
-          </BundleContainer>
-        )}
       </Layout.Main>
 
       <Layout.Aside>

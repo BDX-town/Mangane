@@ -7,6 +7,10 @@ import { useAppSelector } from 'soapbox/hooks';
 /** Prompts logged-out users to log in when viewing a thread. */
 const ThreadLoginCta: React.FC = () => {
   const siteTitle = useAppSelector(state => state.instance.title);
+  const registrationOpen = useAppSelector((state) => state.instance.registrations);
+
+  if (!registrationOpen) return null;
+
 
   return (
     <Card className='px-6 py-12 space-y-6 text-center' variant='rounded'>

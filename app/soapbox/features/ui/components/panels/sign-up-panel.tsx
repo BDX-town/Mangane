@@ -7,9 +7,10 @@ import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 const SignUpPanel = () => {
   const { singleUserMode } = useSoapboxConfig();
   const siteTitle = useAppSelector((state) => state.instance.title);
+  const registrationOpen = useAppSelector((state) => state.instance.registrations);
   const me = useAppSelector((state) => state.me);
 
-  if (me || singleUserMode) return null;
+  if (me || singleUserMode || !registrationOpen) return null;
 
   return (
     <Stack space={2}>

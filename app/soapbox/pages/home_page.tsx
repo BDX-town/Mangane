@@ -40,14 +40,7 @@ const HomePage: React.FC = ({ children }) => {
     <>
       <Layout.Main className='pt-3 sm:pt-0 dark:divide-slate-800 space-y-3'>
         {features.feedUserFiltering && <FeedCarousel />}
-
         {children}
-
-        {!me && (
-          <BundleContainer fetchComponent={CtaBanner}>
-            {Component => <Component key='cta-banner' />}
-          </BundleContainer>
-        )}
       </Layout.Main>
 
       <Layout.Aside>
