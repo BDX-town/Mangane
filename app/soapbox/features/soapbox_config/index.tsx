@@ -51,8 +51,6 @@ const messages = defineMessages({
   singleUserModeHint: { id: 'soapbox_config.single_user_mode_hint', defaultMessage: 'Front page will redirect to a given user profile.' },
   singleUserModeProfileLabel: { id: 'soapbox_config.single_user_mode_profile_label', defaultMessage: 'Main user handle' },
   singleUserModeProfileHint: { id: 'soapbox_config.single_user_mode_profile_hint', defaultMessage: '@handle' },
-  bubbleTimelineLabel: { id: 'soapbox_config.bubble_timeline_label', defaultMessage: 'Curated timeline' },
-  bubbleTimelineHint: { id: 'soapbox_config.bubble_timeline_hint', defaultMessage: 'Replace the fediverse timeline with the Akkoma bubble timeline.' },
   homeDescription: { id: 'soapbox_config.home_description', defaultMessage: 'Instance\'s description shown in Home page. Supports HTML. Use [users] to insert the number of current users on the instance.' }
 });
 
@@ -244,20 +242,6 @@ const SoapboxConfig: React.FC = () => {
           </CardHeader>
 
           <List>
-            {
-              features.bubbleTimeline && (
-                <ListItem 
-                  label={intl.formatMessage(messages.bubbleTimelineLabel)}
-                  hint={intl.formatMessage(messages.bubbleTimelineHint)}
-                >
-                  <Toggle
-                    checked={soapbox.bubbleTimeline === true}
-                    onChange={handleChange(['bubbleTimeline'], (e) => e.target.checked)}
-                  />
-                </ListItem>
-              )
-            }
-
             <ListItem label={intl.formatMessage(messages.verifiedCanEditNameLabel)}>
               <Toggle
                 checked={soapbox.verifiedCanEditName === true}

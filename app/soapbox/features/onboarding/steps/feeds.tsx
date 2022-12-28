@@ -40,7 +40,7 @@ const Feeds = ({ onNext } : { onNext: () => void }) => {
             </div>
             <div className='flex-grow-1'>
               <h3 className='text-xl font-bold mb-2 text-primary-500'>
-                <FormattedMessage id='onboarding.feeds.title3' defaultMessage='Discover' />
+                <FormattedMessage id='onboarding.feeds.title3' defaultMessage='Explore' />
               </h3>
               <p dangerouslySetInnerHTML={{ __html: intl.formatMessage(messages.col3) }} />
               <p className='mt-4 italic'>

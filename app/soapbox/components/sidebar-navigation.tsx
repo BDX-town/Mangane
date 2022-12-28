@@ -18,7 +18,7 @@ const messages = defineMessages({
   developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
   dashboard: { id: 'tabs_bar.dashboard', defaultMessage: 'Dashboard' },
   all: { id: 'tabs_bar.all', defaultMessage: 'All' },
-  fediverse: { id: 'tabs_bar.fediverse', defaultMessage: 'Fediverse' },
+  fediverse: { id: 'tabs_bar.fediverse', defaultMessage: 'Explore' },
   settings: { id: 'tabs_bar.settings', defaultMessage: 'Settings' },
   direct: { id: 'column.direct', defaultMessage: 'Direct messages' },
   directory: { id: 'navigation_bar.profile_directory', defaultMessage: 'Profile directory' },
@@ -38,9 +38,7 @@ const SidebarNavigation = () => {
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
 
   const features = getFeatures(instance);
-
-  const bubbleTimelineSetting = useAppSelector(state => state.soapbox.get("bubbleTimeline"));
-  const bubbleTimeline = features.bubbleTimeline && bubbleTimelineSetting;
+  const bubbleTimeline = features.bubbleTimeline && settings.getIn(['public', 'bubble']);
 
   const makeMenu = (): Menu => {
     const menu: Menu = [];
@@ -169,8 +167,8 @@ const SidebarNavigation = () => {
         {
           features.federating && (
             <SidebarNavigationLink
-              icon={!bubbleTimeline ? require('icons/fediverse.svg') : require('@tabler/icons/octagon.svg')}
-              text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
+              icon={!bubbleTimeline ? require('icons/fediverse.svg') : require('@tabler/icons/hexagon.svg')}
+              text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Explore' />}
               to='/timeline/fediverse'
             />
           )

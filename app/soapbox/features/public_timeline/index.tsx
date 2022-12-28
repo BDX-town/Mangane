@@ -13,7 +13,7 @@ import PinnedHostsPicker from '../remote_timeline/components/pinned_hosts_picker
 import Timeline from '../ui/components/timeline';
 
 const messages = defineMessages({
-  title: { id: 'column.public', defaultMessage: 'Discover' },
+  title: { id: 'column.public', defaultMessage: 'Explore' },
 });
 
 const CommunityTimeline = () => {
@@ -28,8 +28,7 @@ const CommunityTimeline = () => {
   const showExplanationBox = settings.get('showExplanationBox');
 
   const features = useFeatures();
-  const bubbleTimelineSetting = useAppSelector(state => state.soapbox.get("bubbleTimeline"));
-  const bubbleTimeline = features.bubbleTimeline && bubbleTimelineSetting;
+  const bubbleTimeline = features.bubbleTimeline && settings.getIn(['public', 'bubble']);
 
   const timelineId = React.useMemo(() => !bubbleTimeline ? 'public' : 'bubble', [bubbleTimeline]);
 
