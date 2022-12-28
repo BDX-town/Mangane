@@ -290,11 +290,12 @@
   }
 
   &__send {
+    @apply absolute right-3;
+    top: 50%;
+    transform: translateY(-50%);
     .icon-button,
     button {
-      @apply absolute right-2.5 w-auto h-auto border-0 p-0 m-0 text-black dark:text-white;
-      top: 50%;
-      transform: translateY(-50%);
+      @apply w-auto h-auto border-0 p-0 m-0 text-black dark:text-white;
 
       .svg-icon,
       svg {

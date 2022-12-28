@@ -10,6 +10,7 @@ import { uploadMedia } from 'soapbox/actions/media';
 import IconButton from 'soapbox/components/icon_button';
 import UploadProgress from 'soapbox/components/upload-progress';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
+import EmojiPickerDropdown from 'soapbox/features/compose/containers/emoji_picker_dropdown_container';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { truncateFilename } from 'soapbox/utils/media';
 
@@ -140,6 +141,14 @@ const ChatBox: React.FC<IChatBox> = ({ chatId, onSetInputRef, autosize }) => {
     });
   };
 
+  const handleEmojiPick = React.useCallback((data) => {
+    if(data.custom) {
+      setContent(content + ' ' + data.native + ' ');
+    } else {
+      setContent(content + data.native);
+    }
+  }, [content]);
+
   const renderAttachment = () => {
     if (!attachment) return null;
 
@@ -159,15 +168,22 @@ const ChatBox: React.FC<IChatBox> = ({ chatId, onSetInputRef, autosize }) => {
   };
 
   const renderActionButton = () => {
-    return canSubmit() ? (
-      <IconButton
-        src={require('@tabler/icons/send.svg')}
-        title={intl.formatMessage(messages.send)}
-        onClick={sendMessage}
+    return <div className='flex items-center gap-3'>
+      <EmojiPickerDropdown
+        onPickEmoji={handleEmojiPick}
       />
-    ) : (
-      <UploadButton onSelectFile={handleFiles} resetFileKey={resetFileKey} />
-    );
+      {
+        canSubmit() ? (
+          <IconButton
+            src={require('@tabler/icons/send.svg')}
+            title={intl.formatMessage(messages.send)}
+            onClick={sendMessage}
+          />
+        ) : (
+          <UploadButton onSelectFile={handleFiles} resetFileKey={resetFileKey} />
+        )
+      }
+    </div>
   };
 
   if (!chatMessageIds) return null;
