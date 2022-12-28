@@ -27,6 +27,11 @@ const messages = defineMessages({
   other: { id: 'settings.other', defaultMessage: 'Other options' },
   mfaEnabled: { id: 'mfa.enabled', defaultMessage: 'Enabled' },
   mfaDisabled: { id: 'mfa.disabled', defaultMessage: 'Disabled' },
+  content: { id: 'settings.content', defaultMessage: 'Content' },
+  blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
+  domainBlocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Hidden domains' },
+  mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
+  filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
 });
 
 /** User settings page. */
@@ -47,6 +52,11 @@ const Settings = () => {
   const navigateToDeleteAccount = () => history.push('/settings/account');
   const navigateToMoveAccount = () => history.push('/settings/migration');
   const navigateToAliases = () => history.push('/settings/aliases');
+
+  const navigateToBlocks = () => history.push('/blocks');
+  const navigateToMutes = () => history.push('/mutes');
+  const navigateToDomainBlocks = () => history.push('/domain_blocks');
+  const navigateToFilters = () => history.push('/filters');
 
   const isMfaEnabled = mfa.getIn(['settings', 'totp']);
 
@@ -70,6 +80,23 @@ const Settings = () => {
             <ListItem label={intl.formatMessage(messages.editProfile)} onClick={navigateToEditProfile}>
               <span>{displayName}</span>
             </ListItem>
+          </List>
+        </CardBody>
+
+        <CardHeader>
+          <CardTitle title={intl.formatMessage(messages.content)} />
+        </CardHeader>
+
+        <CardBody>
+          <List>
+            <ListItem label={intl.formatMessage(messages.blocks)} onClick={navigateToBlocks} />
+            <ListItem label={intl.formatMessage(messages.mutes)} onClick={navigateToMutes} />
+            {
+              features.federating && <ListItem label={intl.formatMessage(messages.domainBlocks)} onClick={navigateToDomainBlocks} />
+            }
+            {
+              features.filters && <ListItem label={intl.formatMessage(messages.filters)} onClick={navigateToFilters} />
+            }
           </List>
         </CardBody>
 
