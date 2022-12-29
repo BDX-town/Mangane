@@ -2,16 +2,19 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import ThumbNavigationLink from 'soapbox/components/thumb_navigation-link';
-import { useAppSelector, useLogo, useOwnAccount } from 'soapbox/hooks';
+import { useAppSelector, useLogo, useOwnAccount, useSettings } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
 
 const ThumbNavigation: React.FC = (): JSX.Element => {
+  const settings = useSettings();
   const account = useOwnAccount();
   const notificationCount = useAppSelector((state) => state.notifications.unread);
   const chatsCount = useAppSelector((state) => state.chats.items.reduce((acc, curr) => acc + Math.min(curr.unread || 0, 1), 0));
   const features = getFeatures(useAppSelector((state) => state.instance));
   const instance = useAppSelector((state) => state.instance);
   const logo = useLogo();
+
+  const bubbleTimeline = features.bubbleTimeline && settings.getIn(['public', 'bubble']);
 
   /** Conditionally render the supported messages link */
   const renderMessagesLink = (): React.ReactNode => {
@@ -71,8 +74,8 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
       {
         features.federating && (
           <ThumbNavigationLink
-            src={require('icons/fediverse.svg')}
-            text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
+            src={!bubbleTimeline ? require('icons/fediverse.svg') : require('@tabler/icons/hexagon.svg')}
+            text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Explore' />}
             to='/timeline/fediverse'
             exact
           />

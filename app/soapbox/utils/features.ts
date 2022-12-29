@@ -198,6 +198,14 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Can display a timeline of a list of handpicked instaces statuses.
+     * @see GET /api/v1/timelines/bubble
+     */
+    bubbleTimeline: any([
+      v.software === AKKOMA,
+    ]),
+
+    /**
      * Pleroma chats API.
      * @see {@link https://docs.pleroma.social/backend/development/API/chats/}
      */
@@ -474,6 +482,8 @@ const getInstanceFeatures = (instance: Instance) => {
       (v.software === PLEROMA || v.software === AKKOMA),
     ]),
 
+     
+
     /**
      * Can display a timeline of all known public statuses.
      * Local and Fediverse timelines both use this feature.
@@ -483,6 +493,8 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === MASTODON,
       (v.software === PLEROMA || v.software === AKKOMA),
     ]),
+
+   
 
     /**
      * Ability to quote posts in statuses.

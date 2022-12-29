@@ -21,7 +21,7 @@ import {
 } from 'soapbox/components/ui';
 import Streamfield from 'soapbox/components/ui/streamfield/streamfield';
 import ThemeSelector from 'soapbox/features/ui/components/theme-selector';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useFeatures } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 
 import Accordion from '../ui/components/accordion';
@@ -71,6 +71,8 @@ const SoapboxConfig: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const initialData = useAppSelector(state => state.soapbox);
+
+  const features = useFeatures();
 
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState(initialData);

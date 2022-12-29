@@ -90,6 +90,8 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const settings = useAppSelector((state) => getSettings(state));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
 
+  const bubbleTimeline = features.bubbleTimeline && settings.getIn(['public', 'bubble']);
+
   const closeButtonRef = React.useRef(null);
 
   const [switcher, setSwitcher] = React.useState(false);
@@ -271,8 +273,8 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   {features.federating && (
                     <SidebarLink
                       to='/timeline/fediverse'
-                      icon={require('icons/fediverse.svg')}
-                      text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
+                      icon={!bubbleTimeline ? require('icons/fediverse.svg') : require('@tabler/icons/hexagon.svg')}
+                      text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Explore' />}
                       onClick={onClose}
                     />
                   )}
