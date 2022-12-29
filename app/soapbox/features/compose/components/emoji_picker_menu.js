@@ -5,6 +5,8 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, injectIntl } from 'react-intl';
 
+import { IconButton } from 'soapbox/components/ui';
+
 import { buildCustomEmojis } from '../../emoji/emoji';
 
 const messages = defineMessages({
@@ -234,7 +236,7 @@ class EmojiPickerMenu extends React.PureComponent {
   }
 
   render() {
-    const { loading, style, intl, custom_emojis, skinTone, frequentlyUsedEmojis, EmojiPicker, Emoji } = this.props;
+    const { loading, style, intl, custom_emojis, skinTone, frequentlyUsedEmojis, EmojiPicker, Emoji, onClose } = this.props;
 
     if (loading) {
       return <div style={{ width: 299 }} />;
@@ -244,35 +246,42 @@ class EmojiPickerMenu extends React.PureComponent {
     const { modifierOpen } = this.state;
 
     return (
-      <div className={classNames('emoji-picker-dropdown__menu', { selecting: modifierOpen })} style={style} ref={this.setRef}>
-        <EmojiPicker
-          perLine={8}
-          emojiSize={22}
-          sheetSize={32}
-          custom={buildCustomEmojis(custom_emojis)}
-          color=''
-          emoji=''
-          set='twitter'
-          title={title}
-          i18n={this.getI18n()}
-          onClick={this.handleClick}
-          include={categoriesSort}
-          recent={frequentlyUsedEmojis}
-          skin={skinTone}
-          showPreview={false}
-          backgroundImageFn={backgroundImageFn}
-          autoFocus
-          emojiTooltip
+      <div className={classNames('emoji-picker-dropdown__menu grow flex flex-col', { selecting: modifierOpen })} style={style} ref={this.setRef}>
+        <IconButton
+          alt='Close'
+          className='ml-auto'
+          src={require('@tabler/icons/x.svg')}
+          onClick={onClose}
         />
+        <div className='grow relative'>
+          <EmojiPicker
+            perLine={8}
+            emojiSize={22}
+            sheetSize={32}
+            custom={buildCustomEmojis(custom_emojis)}
+            color=''
+            emoji=''
+            set='twitter'
+            title={title}
+            i18n={this.getI18n()}
+            onClick={this.handleClick}
+            include={categoriesSort}
+            recent={frequentlyUsedEmojis}
+            skin={skinTone}
+            showPreview={false}
+            backgroundImageFn={backgroundImageFn}
+            emojiTooltip
+          />
 
-        <ModifierPicker
-          Emoji={Emoji}
-          active={modifierOpen}
-          modifier={skinTone}
-          onOpen={this.handleModifierOpen}
-          onClose={this.handleModifierClose}
-          onChange={this.handleModifierChange}
-        />
+          <ModifierPicker
+            Emoji={Emoji}
+            active={modifierOpen}
+            modifier={skinTone}
+            onOpen={this.handleModifierOpen}
+            onClose={this.handleModifierClose}
+            onChange={this.handleModifierChange}
+          />
+        </div>
       </div>
     );
   }

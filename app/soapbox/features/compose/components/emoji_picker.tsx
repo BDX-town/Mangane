@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
-import { Overlay } from 'react-overlays';
+import { Overlay, Modal } from 'react-overlays';
 
 import { IconButton } from 'soapbox/components/ui';
 import { isMobile } from 'soapbox/is_mobile';
@@ -18,15 +18,22 @@ interface IWrapper {
     target: any,
     show: boolean,
     children: React.ReactNode,
+    onClose: Function,
 }
 
 const Wrapper: React.FC<IWrapper> = ({ target, show, children }) => {
   const placement = React.useMemo(() => target.current?.getBoundingClientRect().top * 2 < window.innerHeight ? 'bottom' : 'top', [target]);
+
   return (
     isMobile(window.innerWidth) ? (
-      <div>
-        { children }
-      </div>
+      show && (
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+        <div
+          className='fixed top-0 left-0 w-screen h-screen flex flex-col'
+        >
+          { children }
+        </div>
+      )
     ) : (
       <Overlay target={target.current} placement={placement} show={show}>{ children }</Overlay>
     )
@@ -72,7 +79,10 @@ const EmojiPickerUI : React.FC<IEmojiPicker> = ({
     loadEmojiPicker();
   }, []);
 
-  const handleClose = React.useCallback(() => {
+  const handleClose = React.useCallback((e) => {
+    if (e) {
+      e.stopPropagation();
+    }
     setActive(false);
   }, []);
 
