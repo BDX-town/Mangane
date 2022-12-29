@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 
 import { useEmoji } from '../../../actions/emojis';
 import { getSettings, changeSetting } from '../../../actions/settings';
-import EmojiPickerDropdown from '../components/emoji_picker_dropdown';
+import EmojiPicker from '../components/emoji_picker';
 
 const perLine = 8;
 const lines   = 2;
@@ -81,4 +81,4 @@ const mapDispatchToProps = (dispatch, props) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmojiPickerDropdown);
+export default connect(mapStateToProps, mapDispatchToProps)(EmojiPicker);
