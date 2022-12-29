@@ -1,9 +1,12 @@
 .emoji-mart {
   @apply text-base text-gray-900 dark:text-gray-100 rounded bg-white dark:bg-slate-900 shadow-lg;
-  width: auto !important;
   display: flex;
   flex-direction: column;
   height: 100%;
+
+  @media screen and (max-width: 630px) {
+    width: initial !important;
+  }
 }
 
 .emoji-mart-scroll {
@@ -12,6 +15,10 @@
   flex: 1 1 0;
   min-width: 0;
   will-change: transform; /* avoids "repaints on scroll" in mobile Chrome */
+
+  @media screen and (min-width: 630px) {
+    min-height: 236px;
+  }
 }
 
 .emoji-mart .emoji-mart-emoji {

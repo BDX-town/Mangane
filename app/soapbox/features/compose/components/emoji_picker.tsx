@@ -101,7 +101,7 @@ const EmojiPickerUI : React.FC<IEmojiPicker> = ({
 
   return (
     <>
-      <div ref={root} onKeyDown={handleToggle}>
+      <div className='relative' ref={root} onKeyDown={handleToggle}>
         <IconButton
           className={classNames({
             'text-gray-400 hover:text-gray-600': true,

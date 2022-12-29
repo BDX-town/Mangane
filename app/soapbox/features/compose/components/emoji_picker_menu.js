@@ -7,6 +7,8 @@ import { defineMessages, injectIntl } from 'react-intl';
 
 import { IconButton } from 'soapbox/components/ui';
 
+import { isMobile } from '../../../is_mobile';
+
 import { buildCustomEmojis } from '../../emoji/emoji';
 
 const messages = defineMessages({
@@ -246,7 +248,7 @@ class EmojiPickerMenu extends React.PureComponent {
     const { modifierOpen } = this.state;
 
     return (
-      <div className={classNames('emoji-picker-dropdown__menu grow flex flex-col', { selecting: modifierOpen })} style={style} ref={this.setRef}>
+      <div className={classNames('emoji-picker-dropdown__menu grow flex flex-col', { selecting: modifierOpen, 'absolute': !isMobile(window.innerWidth) })} style={style} ref={this.setRef}>
         <IconButton
           alt='Close'
           className='ml-auto'
