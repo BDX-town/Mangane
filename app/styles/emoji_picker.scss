@@ -124,7 +124,7 @@
   @apply stroke-gray-800;
 }
 
-.emoji-mart-category .emoji-mart-emoji span {
+.emoji-mart-category .emoji-mart-emoji img, .emoji-mart-category .emoji-mart-emoji span {
   @apply relative text-center;
   z-index: 1;
 }
