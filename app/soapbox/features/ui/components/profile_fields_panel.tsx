@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import { defineMessages, useIntl, FormattedMessage, FormatDateOptions } from 'react-intl';
+import { defineMessages, useIntl, FormatDateOptions } from 'react-intl';
 
-import { Widget, Stack, HStack, Icon, Text } from 'soapbox/components/ui';
+import { Stack, HStack, Icon, Text } from 'soapbox/components/ui';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
 
@@ -79,13 +79,11 @@ interface IProfileFieldsPanel {
 /** Custom profile fields for sidebar. */
 const ProfileFieldsPanel: React.FC<IProfileFieldsPanel> = ({ account }) => {
   return (
-    <Widget title={<FormattedMessage id='profile_fields_panel.title' defaultMessage='Profile fields' />}>
-      <Stack space={4}>
-        {account.fields.map((field, i) => (
-          <ProfileField field={field} key={i} />
-        ))}
-      </Stack>
-    </Widget>
+    <Stack space={4}>
+      {account.fields.map((field, i) => (
+        <ProfileField field={field} key={i} />
+      ))}
+    </Stack>
   );
 };
 

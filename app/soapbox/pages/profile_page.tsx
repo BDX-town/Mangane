@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Redirect, useHistory } from 'react-router-dom';
 
-import { Column, Layout, Tabs } from 'soapbox/components/ui';
+import { Column, Layout, Tabs, Widget } from 'soapbox/components/ui';
 import Header from 'soapbox/features/account/components/header';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
@@ -12,7 +12,6 @@ import {
   ProfileMediaPanel,
   ProfileFieldsPanel,
   SignUpPanel,
-  CtaBanner,
   PinnedAccountsPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
@@ -66,18 +65,12 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
       to: `/@${username}/media`,
       name: 'media',
     },
+    {
+      text: <FormattedMessage id='account.about' defaultMessage='About' />,
+      to: `/@${username}/about`,
+      name: 'about',
+    },
   ];
-
-  if (account) {
-    const ownAccount = account.id === me;
-    if (ownAccount || !account.pleroma.get('hide_favorites', true)) {
-      tabItems.push({
-        text: <FormattedMessage id='navigation_bar.favourites' defaultMessage='Likes' />,
-        to: `/@${account.acct}/favorites`,
-        name: 'likes',
-      });
-    }
-  }
 
   let activeItem;
   const pathname = history.location.pathname.replace(`@${username}/`, '');
@@ -85,8 +78,8 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
     activeItem = 'replies';
   } else if (pathname.endsWith('/media')) {
     activeItem = 'media';
-  } else if (pathname.endsWith('/favorites')) {
-    activeItem = 'likes';
+  } else if (pathname.endsWith('/about')) {
+    activeItem = 'about';
   } else {
     activeItem = 'profile';
   }
@@ -123,9 +116,11 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
           {Component => <Component account={account} />}
         </BundleContainer>
         {account && !account.fields.isEmpty() && (
-          <BundleContainer fetchComponent={ProfileFieldsPanel}>
-            {Component => <Component account={account} />}
-          </BundleContainer>
+          <Widget title={<FormattedMessage id='profile_fields_panel.title' defaultMessage='Profile fields' />}>
+            <BundleContainer fetchComponent={ProfileFieldsPanel}>
+              {Component => <Component account={account} />}
+            </BundleContainer>
+          </Widget>
         )}
         {(features.accountEndorsements && account && isLocal(account)) ? (
           <BundleContainer fetchComponent={PinnedAccountsPanel}>
