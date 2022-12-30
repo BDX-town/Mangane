@@ -89,36 +89,35 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   return (
     <div className='border-box'>
       <div ref={node} className='detailed-actualStatus' tabIndex={-1}>
-        <HStack className='mb-4' alignItems='center'>
-          <div className='grow'>
-            <AccountContainer
-              key={account.id}
-              id={account.id}
-              timestamp={actualStatus.created_at}
-              avatarSize={42}
-              hideActions
-            />
-          </div>
-          {
-            features.translations && actualStatus.language !== locale && (
-              <div>
-                {
-                  !actualStatus.translations.get(locale) ? (
-                    <Button theme='link'  onClick={handleTranslateStatus}>
-                      <Icon className='mr-1' src={require('@tabler/icons/language.svg')} />
-                      <FormattedMessage id='actualStatuses.translate' defaultMessage='Translate' />
-                    </Button>
-                  ) : (
-                    <Text className='text-grey-500 dark:text-grey-300 flex items-center' size='xs'>
-                      <Icon className='mr-1' src={require('@tabler/icons/check.svg')} />
-                      <FormattedMessage id='actualStatuses.translated' defaultMessage='Translate' />
-                    </Text>
-                  )
-                }
-              </div>
-            )
-          }
-        </HStack>
+        {
+          features.translations && actualStatus.language !== locale && (
+            <div className='mb-3 flex items-center justify-between py-1'>
+              <Icon className='text-gray-300 dark:text-slate-500' src={require('@tabler/icons/note.svg')} />
+              {
+                !actualStatus.translations.get(locale) ? (
+                  <Button theme='link' size='sm'  onClick={handleTranslateStatus}>
+                    <Icon className='mr-1' src={require('@tabler/icons/language.svg')} />
+                    <FormattedMessage id='actualStatuses.translate' defaultMessage='Translate' />
+                  </Button>
+                ) : (
+                  <Text theme='subtle' className='flex items-center' size='xs'>
+                    <Icon className='mr-1' src={require('@tabler/icons/check.svg')} />
+                    <FormattedMessage id='actualStatuses.translated' defaultMessage='Translate' />
+                  </Text>
+                )
+              }
+            </div>
+          )
+        }
+        <div className='mb-3'>
+          <AccountContainer
+            key={account.id}
+            id={account.id}
+            timestamp={actualStatus.created_at}
+            avatarSize={42}
+            hideActions
+          />
+        </div>
 
         <StatusReplyMentions status={actualStatus} />
 
