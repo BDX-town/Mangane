@@ -366,6 +366,10 @@ export function ProfileMediaPanel() {
   return import(/* webpackChunkName: "features/account_gallery" */'../components/profile_media_panel');
 }
 
+export function ProfileFields() {
+  return import(/* webpackChunkName: "features/favourited_statuses" */'../../profile_fields');
+}
+
 export function ProfileFieldsPanel() {
   return import(/* webpackChunkName: "features/account_timeline" */'../components/profile_fields_panel');
 }
