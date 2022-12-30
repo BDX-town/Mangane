@@ -142,7 +142,7 @@ const ChatBox: React.FC<IChatBox> = ({ chatId, onSetInputRef, autosize }) => {
   };
 
   const handleEmojiPick = React.useCallback((data) => {
-    if(data.custom) {
+    if (data.custom) {
       setContent(content + ' ' + data.native + ' ');
     } else {
       setContent(content + data.native);
@@ -168,22 +168,24 @@ const ChatBox: React.FC<IChatBox> = ({ chatId, onSetInputRef, autosize }) => {
   };
 
   const renderActionButton = () => {
-    return <div className='flex items-center gap-3'>
-      <EmojiPickerDropdown
-        onPickEmoji={handleEmojiPick}
-      />
-      {
-        canSubmit() ? (
-          <IconButton
-            src={require('@tabler/icons/send.svg')}
-            title={intl.formatMessage(messages.send)}
-            onClick={sendMessage}
-          />
-        ) : (
-          <UploadButton onSelectFile={handleFiles} resetFileKey={resetFileKey} />
-        )
-      }
-    </div>
+    return (
+      <>
+        <EmojiPickerDropdown
+          onPickEmoji={handleEmojiPick}
+        />
+        {
+          canSubmit() ? (
+            <IconButton
+              src={require('@tabler/icons/send.svg')}
+              title={intl.formatMessage(messages.send)}
+              onClick={sendMessage}
+            />
+          ) : (
+            <UploadButton onSelectFile={handleFiles} resetFileKey={resetFileKey} />
+          )
+        }
+      </>
+    );
   };
 
   if (!chatMessageIds) return null;
@@ -196,7 +198,7 @@ const ChatBox: React.FC<IChatBox> = ({ chatId, onSetInputRef, autosize }) => {
         <UploadProgress progress={uploadProgress * 100} />
       )}
       <div className='chat-box__actions simple_form'>
-        <div className='chat-box__send'>
+        <div className='chat-box__send flex items-center gap-3'>
           {renderActionButton()}
         </div>
         <textarea

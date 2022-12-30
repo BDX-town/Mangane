@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
-import { Overlay, Modal } from 'react-overlays';
+import { Overlay } from 'react-overlays';
 
 import { IconButton } from 'soapbox/components/ui';
 import { isMobile } from 'soapbox/is_mobile';
@@ -18,25 +18,24 @@ interface IWrapper {
     target: any,
     show: boolean,
     children: React.ReactNode,
-    onClose: Function,
 }
 
 const Wrapper: React.FC<IWrapper> = ({ target, show, children }) => {
   const placement = React.useMemo(() => target.current?.getBoundingClientRect().top * 2 < window.innerHeight ? 'bottom' : 'top', [target]);
 
+  if (isMobile(window.innerWidth) && show) {
+    return (
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      <div
+        className='fixed top-0 left-0 w-screen h-screen flex flex-col z-[200]'
+      >
+        { children }
+      </div>
+    );
+  }
+
   return (
-    isMobile(window.innerWidth) ? (
-      show && (
-        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-        <div
-          className='fixed top-0 left-0 w-screen h-screen flex flex-col'
-        >
-          { children }
-        </div>
-      )
-    ) : (
-      <Overlay target={target.current} placement={placement} show={show}>{ children }</Overlay>
-    )
+    <Overlay target={target.current} placement={placement} show={show}>{ children }</Overlay>
   );
 };
 
@@ -130,37 +129,3 @@ const EmojiPickerUI : React.FC<IEmojiPicker> = ({
 };
 
 export default EmojiPickerUI;
-
-// <div className='relative' onKeyDown={this.handleKeyDown}>
-// <div
-//   ref={this.setTargetRef}
-//   title={title}
-//   aria-label={title}
-//   aria-expanded={active}
-//   role='button'
-//   onClick={this.onToggle}
-//   onKeyDown={this.onToggle}
-//   tabIndex={0}
-// >
-//   {button || <IconButton
-//     className={classNames({
-//       'text-gray-400 hover:text-gray-600': true,
-//       'pulse-loading': active && loading,
-//     })}
-//     alt='😀'
-//     src={require('@tabler/icons/mood-happy.svg')}
-//   />}
-// </div>
-
-// <Overlay show={active} placement={placement} target={this.findTarget}>
-//   <EmojiPickerMenu
-//     custom_emojis={this.props.custom_emojis}
-//     loading={loading}
-//     onClose={this.onHideDropdown}
-//     onPick={onPickEmoji}
-//     onSkinTone={onSkinTone}
-//     skinTone={skinTone}
-//     frequentlyUsedEmojis={frequentlyUsedEmojis}
-//   />
-// </Overlay>
-// </div>

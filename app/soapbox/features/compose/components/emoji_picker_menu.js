@@ -8,7 +8,6 @@ import { defineMessages, injectIntl } from 'react-intl';
 import { IconButton } from 'soapbox/components/ui';
 
 import { isMobile } from '../../../is_mobile';
-
 import { buildCustomEmojis } from '../../emoji/emoji';
 
 const messages = defineMessages({
