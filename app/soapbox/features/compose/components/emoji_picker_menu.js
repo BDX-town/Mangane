@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, injectIntl } from 'react-intl';
-import Overlay from 'react-overlays/lib/Overlay';
 
 import { IconButton } from 'soapbox/components/ui';
 
+import { isMobile } from '../../../is_mobile';
+
 import { buildCustomEmojis } from '../../emoji/emoji';
-import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components';
 
 const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
@@ -27,8 +27,6 @@ const messages = defineMessages({
   symbols: { id: 'emoji_button.symbols', defaultMessage: 'Symbols' },
   flags: { id: 'emoji_button.flags', defaultMessage: 'Flags' },
 });
-
-let EmojiPicker, Emoji; // load asynchronously
 
 const backgroundImageFn = () => require('emoji-datasource/img/twitter/sheets/32.png');
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
@@ -52,6 +50,7 @@ class ModifierPickerMenu extends React.PureComponent {
     active: PropTypes.bool,
     onSelect: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
+    Emoji: PropTypes.any.isRequired,
   };
 
   handleClick = e => {
@@ -91,7 +90,7 @@ class ModifierPickerMenu extends React.PureComponent {
   }
 
   render() {
-    const { active } = this.props;
+    const { active, Emoji } = this.props;
 
     return (
       <div className='emoji-picker-dropdown__modifiers__menu' style={{ display: active ? 'block' : 'none' }} ref={this.setRef}>
@@ -115,6 +114,7 @@ class ModifierPicker extends React.PureComponent {
     onChange: PropTypes.func,
     onClose: PropTypes.func,
     onOpen: PropTypes.func,
+    Emoji: PropTypes.any.isRequired,
   };
 
   handleClick = () => {
@@ -131,19 +131,19 @@ class ModifierPicker extends React.PureComponent {
   }
 
   render() {
-    const { active, modifier } = this.props;
+    const { active, modifier, Emoji } = this.props;
 
     return (
       <div className='emoji-picker-dropdown__modifiers'>
         <Emoji emoji='thumbsup' set='twitter' size={22} sheetSize={32} skin={modifier} onClick={this.handleClick} backgroundImageFn={backgroundImageFn} />
-        <ModifierPickerMenu active={active} onSelect={this.handleSelect} onClose={this.props.onClose} />
+        <ModifierPickerMenu Emoji={Emoji} active={active} onSelect={this.handleSelect} onClose={this.props.onClose} />
       </div>
     );
   }
 
 }
 
-@injectIntl
+export default @injectIntl
 class EmojiPickerMenu extends React.PureComponent {
 
   static propTypes = {
@@ -159,6 +159,8 @@ class EmojiPickerMenu extends React.PureComponent {
     intl: PropTypes.object.isRequired,
     skinTone: PropTypes.number.isRequired,
     onSkinTone: PropTypes.func.isRequired,
+    EmojiPicker: PropTypes.any.isRequired,
+    Emoji: PropTypes.any.isRequired,
   };
 
   static defaultProps = {
@@ -236,7 +238,7 @@ class EmojiPickerMenu extends React.PureComponent {
   }
 
   render() {
-    const { loading, style, intl, custom_emojis, skinTone, frequentlyUsedEmojis } = this.props;
+    const { loading, style, intl, custom_emojis, skinTone, frequentlyUsedEmojis, EmojiPicker, Emoji, onClose } = this.props;
 
     if (loading) {
       return <div style={{ width: 299 }} />;
@@ -246,152 +248,45 @@ class EmojiPickerMenu extends React.PureComponent {
     const { modifierOpen } = this.state;
 
     return (
-      <div className={classNames('emoji-picker-dropdown__menu', { selecting: modifierOpen })} style={style} ref={this.setRef}>
-        <EmojiPicker
-          perLine={8}
-          emojiSize={22}
-          sheetSize={32}
-          custom={buildCustomEmojis(custom_emojis)}
-          color=''
-          emoji=''
-          set='twitter'
-          title={title}
-          i18n={this.getI18n()}
-          onClick={this.handleClick}
-          include={categoriesSort}
-          recent={frequentlyUsedEmojis}
-          skin={skinTone}
-          showPreview={false}
-          backgroundImageFn={backgroundImageFn}
-          autoFocus
-          emojiTooltip
+      <div className={classNames('emoji-picker-dropdown__menu grow flex flex-col', { selecting: modifierOpen, 'absolute': !isMobile(window.innerWidth) })} style={style} ref={this.setRef}>
+        <IconButton
+          alt='Close'
+          className='ml-auto'
+          src={require('@tabler/icons/x.svg')}
+          onClick={onClose}
         />
-
-        <ModifierPicker
-          active={modifierOpen}
-          modifier={skinTone}
-          onOpen={this.handleModifierOpen}
-          onClose={this.handleModifierClose}
-          onChange={this.handleModifierChange}
-        />
-      </div>
-    );
-  }
-
-}
-
-export default @injectIntl
-class EmojiPickerDropdown extends React.PureComponent {
-
-  static propTypes = {
-    custom_emojis: ImmutablePropTypes.list,
-    frequentlyUsedEmojis: PropTypes.arrayOf(PropTypes.string),
-    intl: PropTypes.object.isRequired,
-    onPickEmoji: PropTypes.func.isRequired,
-    onSkinTone: PropTypes.func.isRequired,
-    skinTone: PropTypes.number.isRequired,
-    button: PropTypes.node,
-  };
-
-  state = {
-    active: false,
-    loading: false,
-  };
-
-  setRef = (c) => {
-    this.dropdown = c;
-  }
-
-  onShowDropdown = (e) => {
-    e.stopPropagation();
-
-    this.setState({ active: true });
-
-    if (!EmojiPicker) {
-      this.setState({ loading: true });
-
-      EmojiPickerAsync().then(EmojiMart => {
-        EmojiPicker = EmojiMart.Picker;
-        Emoji       = EmojiMart.Emoji;
-
-        this.setState({ loading: false });
-      }).catch(() => {
-        this.setState({ loading: false });
-      });
-    }
-
-    const { top } = e.target.getBoundingClientRect();
-    this.setState({ placement: top * 2 < innerHeight ? 'bottom' : 'top' });
-  }
-
-  onHideDropdown = () => {
-    this.setState({ active: false });
-  }
-
-  onToggle = (e) => {
-    if (!this.state.loading && (!e.key || e.key === 'Enter')) {
-      if (this.state.active) {
-        this.onHideDropdown();
-      } else {
-        this.onShowDropdown(e);
-      }
-    }
-  }
-
-  handleKeyDown = e => {
-    if (e.key === 'Escape') {
-      this.onHideDropdown();
-    }
-  }
-
-  setTargetRef = c => {
-    this.target = c;
-  }
-
-  findTarget = () => {
-    return this.target;
-  }
-
-  render() {
-    const { intl, onPickEmoji, onSkinTone, skinTone, frequentlyUsedEmojis, button } = this.props;
-    const title = intl.formatMessage(messages.emoji);
-    const { active, loading, placement } = this.state;
-
-    return (
-      <div className='relative' onKeyDown={this.handleKeyDown}>
-        <div
-          ref={this.setTargetRef}
-          title={title}
-          aria-label={title}
-          aria-expanded={active}
-          role='button'
-          onClick={this.onToggle}
-          onKeyDown={this.onToggle}
-          tabIndex={0}
-        >
-          {button || <IconButton
-            className={classNames({
-              'text-gray-400 hover:text-gray-600': true,
-              'pulse-loading': active && loading,
-            })}
-            alt='😀'
-            src={require('@tabler/icons/mood-happy.svg')}
-          />}
-        </div>
-
-        <Overlay show={active} placement={placement} target={this.findTarget}>
-          <EmojiPickerMenu
-            custom_emojis={this.props.custom_emojis}
-            loading={loading}
-            onClose={this.onHideDropdown}
-            onPick={onPickEmoji}
-            onSkinTone={onSkinTone}
-            skinTone={skinTone}
-            frequentlyUsedEmojis={frequentlyUsedEmojis}
+        <div className='grow relative'>
+          <EmojiPicker
+            perLine={8}
+            emojiSize={22}
+            sheetSize={32}
+            custom={buildCustomEmojis(custom_emojis)}
+            color=''
+            emoji=''
+            set='twitter'
+            title={title}
+            i18n={this.getI18n()}
+            onClick={this.handleClick}
+            include={categoriesSort}
+            recent={frequentlyUsedEmojis}
+            skin={skinTone}
+            showPreview={false}
+            backgroundImageFn={backgroundImageFn}
+            emojiTooltip
           />
-        </Overlay>
+
+          <ModifierPicker
+            Emoji={Emoji}
+            active={modifierOpen}
+            modifier={skinTone}
+            onOpen={this.handleModifierOpen}
+            onClose={this.handleModifierClose}
+            onChange={this.handleModifierChange}
+          />
+        </div>
       </div>
     );
   }
 
 }
+
