@@ -277,6 +277,15 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Click to see {count} new {count, plural, one {post} other {posts}}",
+        "id": "status_list.queue_label"
+      }
+    ],
+    "path": "app/soapbox/components/__tests__/scroll-top-button.test.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Search for an account",
         "id": "account_search.placeholder"
       }
@@ -640,22 +649,6 @@
         "id": "navigation_bar.preferences"
       },
       {
-        "defaultMessage": "Blocked users",
-        "id": "navigation_bar.blocks"
-      },
-      {
-        "defaultMessage": "Hidden domains",
-        "id": "navigation_bar.domain_blocks"
-      },
-      {
-        "defaultMessage": "Muted users",
-        "id": "navigation_bar.mutes"
-      },
-      {
-        "defaultMessage": "Muted words",
-        "id": "navigation_bar.filters"
-      },
-      {
         "defaultMessage": "Soapbox config",
         "id": "navigation_bar.soapbox_config"
       },
@@ -700,6 +693,10 @@
         "id": "column.direct"
       },
       {
+        "defaultMessage": "Profile directory",
+        "id": "navigation_bar.profile_directory"
+      },
+      {
         "defaultMessage": "Switch accounts",
         "id": "profile_dropdown.switch_account"
       },
@@ -708,7 +705,7 @@
         "id": "tabs_bar.all"
       },
       {
-        "defaultMessage": "Fediverse",
+        "defaultMessage": "Explore",
         "id": "tabs_bar.fediverse"
       }
     ],
@@ -741,7 +738,7 @@
         "id": "tabs_bar.all"
       },
       {
-        "defaultMessage": "Fediverse",
+        "defaultMessage": "Explore",
         "id": "tabs_bar.fediverse"
       },
       {
@@ -751,6 +748,10 @@
       {
         "defaultMessage": "Direct messages",
         "id": "column.direct"
+      },
+      {
+        "defaultMessage": "Profile directory",
+        "id": "navigation_bar.profile_directory"
       },
       {
         "defaultMessage": "Chats",
@@ -774,183 +775,6 @@
       }
     ],
     "path": "app/soapbox/components/sidebar-navigation.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "Delete",
-        "id": "status.delete"
-      },
-      {
-        "defaultMessage": "Delete & re-draft",
-        "id": "status.redraft"
-      },
-      {
-        "defaultMessage": "Edit",
-        "id": "status.edit"
-      },
-      {
-        "defaultMessage": "Direct message @{name}",
-        "id": "status.direct"
-      },
-      {
-        "defaultMessage": "Chat with @{name}",
-        "id": "status.chat"
-      },
-      {
-        "defaultMessage": "Mention @{name}",
-        "id": "status.mention"
-      },
-      {
-        "defaultMessage": "Mute @{name}",
-        "id": "account.mute"
-      },
-      {
-        "defaultMessage": "Block @{name}",
-        "id": "account.block"
-      },
-      {
-        "defaultMessage": "Reply",
-        "id": "status.reply"
-      },
-      {
-        "defaultMessage": "Share",
-        "id": "status.share"
-      },
-      {
-        "defaultMessage": "More",
-        "id": "status.more"
-      },
-      {
-        "defaultMessage": "Reply to thread",
-        "id": "status.replyAll"
-      },
-      {
-        "defaultMessage": "Repost",
-        "id": "status.reblog"
-      },
-      {
-        "defaultMessage": "Repost to original audience",
-        "id": "status.reblog_private"
-      },
-      {
-        "defaultMessage": "Un-repost",
-        "id": "status.cancel_reblog_private"
-      },
-      {
-        "defaultMessage": "This post cannot be reposted",
-        "id": "status.cannot_reblog"
-      },
-      {
-        "defaultMessage": "Like",
-        "id": "status.favourite"
-      },
-      {
-        "defaultMessage": "Expand this post",
-        "id": "status.open"
-      },
-      {
-        "defaultMessage": "Bookmark",
-        "id": "status.bookmark"
-      },
-      {
-        "defaultMessage": "Remove bookmark",
-        "id": "status.unbookmark"
-      },
-      {
-        "defaultMessage": "Report @{name}",
-        "id": "status.report"
-      },
-      {
-        "defaultMessage": "Mute conversation",
-        "id": "status.mute_conversation"
-      },
-      {
-        "defaultMessage": "Unmute conversation",
-        "id": "status.unmute_conversation"
-      },
-      {
-        "defaultMessage": "Pin on profile",
-        "id": "status.pin"
-      },
-      {
-        "defaultMessage": "Unpin from profile",
-        "id": "status.unpin"
-      },
-      {
-        "defaultMessage": "Embed",
-        "id": "status.embed"
-      },
-      {
-        "defaultMessage": "Open moderation interface for @{name}",
-        "id": "status.admin_account"
-      },
-      {
-        "defaultMessage": "Open this post in the moderation interface",
-        "id": "status.admin_status"
-      },
-      {
-        "defaultMessage": "Copy link to post",
-        "id": "status.copy"
-      },
-      {
-        "defaultMessage": "Remove account from group",
-        "id": "status.remove_account_from_group"
-      },
-      {
-        "defaultMessage": "Remove post from group",
-        "id": "status.remove_post_from_group"
-      },
-      {
-        "defaultMessage": "Deactivate @{name}",
-        "id": "admin.users.actions.deactivate_user"
-      },
-      {
-        "defaultMessage": "Delete @{name}",
-        "id": "admin.users.actions.delete_user"
-      },
-      {
-        "defaultMessage": "Delete post",
-        "id": "admin.statuses.actions.delete_status"
-      },
-      {
-        "defaultMessage": "Mark post sensitive",
-        "id": "admin.statuses.actions.mark_status_sensitive"
-      },
-      {
-        "defaultMessage": "Mark post not sensitive",
-        "id": "admin.statuses.actions.mark_status_not_sensitive"
-      },
-      {
-        "defaultMessage": "Like",
-        "id": "status.reactions.like"
-      },
-      {
-        "defaultMessage": "Love",
-        "id": "status.reactions.heart"
-      },
-      {
-        "defaultMessage": "Haha",
-        "id": "status.reactions.laughing"
-      },
-      {
-        "defaultMessage": "Wow",
-        "id": "status.reactions.open_mouth"
-      },
-      {
-        "defaultMessage": "Sad",
-        "id": "status.reactions.cry"
-      },
-      {
-        "defaultMessage": "Weary",
-        "id": "status.reactions.weary"
-      },
-      {
-        "defaultMessage": "Quote post",
-        "id": "status.quote"
-      }
-    ],
-    "path": "app/soapbox/components/status_action_bar.json"
   },
   {
     "descriptors": [
@@ -1277,7 +1101,7 @@
         "id": "tabs_bar.all"
       },
       {
-        "defaultMessage": "Fediverse",
+        "defaultMessage": "Explore",
         "id": "tabs_bar.fediverse"
       },
       {
@@ -1408,59 +1232,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Delete",
-        "id": "confirmations.delete.confirm"
-      },
-      {
-        "defaultMessage": "Delete post",
-        "id": "confirmations.delete.heading"
-      },
-      {
-        "defaultMessage": "Are you sure you want to delete this post?",
-        "id": "confirmations.delete.message"
-      },
-      {
-        "defaultMessage": "Delete & redraft",
-        "id": "confirmations.redraft.confirm"
-      },
-      {
-        "defaultMessage": "Are you sure you want to delete this post and re-draft it? Favorites and reposts will be lost, and replies to the original post will be orphaned.",
-        "id": "confirmations.redraft.message"
-      },
-      {
-        "defaultMessage": "Block",
-        "id": "confirmations.block.confirm"
-      },
-      {
-        "defaultMessage": "Reply",
-        "id": "confirmations.reply.confirm"
-      },
-      {
-        "defaultMessage": "Delete & redraft",
-        "id": "confirmations.redraft.heading"
-      },
-      {
-        "defaultMessage": "Replying now will overwrite the message you are currently composing. Are you sure you want to proceed?",
-        "id": "confirmations.reply.message"
-      },
-      {
-        "defaultMessage": "Block & Report",
-        "id": "confirmations.block.block_and_report"
-      },
-      {
-        "defaultMessage": "Block @{name}",
-        "id": "confirmations.block.heading"
-      },
-      {
-        "defaultMessage": "Are you sure you want to block {name}?",
-        "id": "confirmations.block.message"
-      }
-    ],
-    "path": "app/soapbox/containers/status_container.json"
-  },
-  {
-    "descriptors": [
-      {
         "defaultMessage": "Available in:",
         "id": "about.also_available"
       }
@@ -1488,95 +1259,6 @@
       }
     ],
     "path": "app/soapbox/features/account_timeline/components/moved_note.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "Unfollow",
-        "id": "confirmations.unfollow.confirm"
-      },
-      {
-        "defaultMessage": "Block",
-        "id": "confirmations.block.confirm"
-      },
-      {
-        "defaultMessage": "Hide entire domain",
-        "id": "confirmations.domain_block.confirm"
-      },
-      {
-        "defaultMessage": "Block & Report",
-        "id": "confirmations.block.block_and_report"
-      },
-      {
-        "defaultMessage": "@{acct} was verified",
-        "id": "admin.users.user_verified_message"
-      },
-      {
-        "defaultMessage": "@{acct} was unverified",
-        "id": "admin.users.user_unverified_message"
-      },
-      {
-        "defaultMessage": "@{acct} was set as a donor",
-        "id": "admin.users.set_donor_message"
-      },
-      {
-        "defaultMessage": "@{acct} was removed as a donor",
-        "id": "admin.users.remove_donor_message"
-      },
-      {
-        "defaultMessage": "@{acct} was promoted to an admin",
-        "id": "admin.users.actions.promote_to_admin_message"
-      },
-      {
-        "defaultMessage": "@{acct} was promoted to a moderator",
-        "id": "admin.users.actions.promote_to_moderator_message"
-      },
-      {
-        "defaultMessage": "@{acct} was demoted to a moderator",
-        "id": "admin.users.actions.demote_to_moderator_message"
-      },
-      {
-        "defaultMessage": "@{acct} was demoted to a regular user",
-        "id": "admin.users.actions.demote_to_user_message"
-      },
-      {
-        "defaultMessage": "@{acct} was suggested",
-        "id": "admin.users.user_suggested_message"
-      },
-      {
-        "defaultMessage": "@{acct} was unsuggested",
-        "id": "admin.users.user_unsuggested_message"
-      },
-      {
-        "defaultMessage": "Remove",
-        "id": "confirmations.remove_from_followers.confirm"
-      },
-      {
-        "defaultMessage": "Are you sure you want to unfollow {name}?",
-        "id": "confirmations.unfollow.message"
-      },
-      {
-        "defaultMessage": "Block @{name}",
-        "id": "confirmations.block.heading"
-      },
-      {
-        "defaultMessage": "Are you sure you want to block {name}?",
-        "id": "confirmations.block.message"
-      },
-      {
-        "defaultMessage": "Block {domain}",
-        "id": "confirmations.domain_block.heading"
-      },
-      {
-        "defaultMessage": "Are you really, really sure you want to block the entire {domain}? In most cases a few targeted blocks or mutes are sufficient and preferable. You will not see content from that domain in any public timelines or your notifications.",
-        "id": "confirmations.domain_block.message"
-      },
-      {
-        "defaultMessage": "Are you sure you want to remove {name} from your followers?",
-        "id": "confirmations.remove_from_followers.message"
-      }
-    ],
-    "path": "app/soapbox/features/account_timeline/containers/header_container.json"
   },
   {
     "descriptors": [
@@ -2474,6 +2156,19 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Bubble timeline",
+        "id": "column.bubble"
+      },
+      {
+        "defaultMessage": "There is nothing here! Write something publicly, or manually follow users from other servers to fill it up",
+        "id": "empty_column.public"
+      }
+    ],
+    "path": "app/soapbox/features/bubble_timeline/index.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Audio notification on",
         "id": "chats.audio_toggle_on"
       },
@@ -2565,27 +2260,6 @@
       }
     ],
     "path": "app/soapbox/features/chats/index.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "Close",
-        "id": "lightbox.close"
-      },
-      {
-        "defaultMessage": "Local timeline settings",
-        "id": "community.column_settings.title"
-      },
-      {
-        "defaultMessage": "Show replies",
-        "id": "home.column_settings.show_replies"
-      },
-      {
-        "defaultMessage": "Media Only",
-        "id": "community.column_settings.media_only"
-      }
-    ],
-    "path": "app/soapbox/features/community_timeline/components/column_settings.json"
   },
   {
     "descriptors": [
@@ -2705,6 +2379,67 @@
       }
     ],
     "path": "app/soapbox/features/compose/components/emoji_picker_dropdown.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Insert emoji",
+        "id": "emoji_button.label"
+      },
+      {
+        "defaultMessage": "Search…",
+        "id": "emoji_button.search"
+      },
+      {
+        "defaultMessage": "No emoji's found.",
+        "id": "emoji_button.not_found"
+      },
+      {
+        "defaultMessage": "Custom",
+        "id": "emoji_button.custom"
+      },
+      {
+        "defaultMessage": "Frequently used",
+        "id": "emoji_button.recent"
+      },
+      {
+        "defaultMessage": "Search results",
+        "id": "emoji_button.search_results"
+      },
+      {
+        "defaultMessage": "People",
+        "id": "emoji_button.people"
+      },
+      {
+        "defaultMessage": "Nature",
+        "id": "emoji_button.nature"
+      },
+      {
+        "defaultMessage": "Food & Drink",
+        "id": "emoji_button.food"
+      },
+      {
+        "defaultMessage": "Activity",
+        "id": "emoji_button.activity"
+      },
+      {
+        "defaultMessage": "Travel & Places",
+        "id": "emoji_button.travel"
+      },
+      {
+        "defaultMessage": "Objects",
+        "id": "emoji_button.objects"
+      },
+      {
+        "defaultMessage": "Symbols",
+        "id": "emoji_button.symbols"
+      },
+      {
+        "defaultMessage": "Flags",
+        "id": "emoji_button.flags"
+      }
+    ],
+    "path": "app/soapbox/features/compose/components/emoji_picker_menu.json"
   },
   {
     "descriptors": [
@@ -3311,6 +3046,18 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Today",
+        "id": "account.today"
+      },
+      {
+        "defaultMessage": "Yesterday",
+        "id": "account.yesterday"
+      },
+      {
+        "defaultMessage": "Days",
+        "id": "account.days"
+      },
+      {
         "defaultMessage": "Follows you",
         "id": "account.follows_you"
       },
@@ -3319,16 +3066,12 @@
         "id": "account.posts"
       },
       {
-        "defaultMessage": "Followers",
-        "id": "account.followers"
+        "defaultMessage": "Last active",
+        "id": "account.last_status"
       },
       {
         "defaultMessage": "Never",
         "id": "account.never_active"
-      },
-      {
-        "defaultMessage": "Last active",
-        "id": "account.last_status"
       }
     ],
     "path": "app/soapbox/features/directory/components/account_card.json"
@@ -3619,20 +3362,20 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Welcome on Mangane",
-        "id": "onboarding.welcome.title"
+        "defaultMessage": "Welcome on the Fediverse",
+        "id": "enlistment.step0.title"
       },
       {
-        "defaultMessage": "Mangane is your gateway to a network of independent servers that communicate together to form a larger social network: the fediverse. Each server is called an “instance”. Your instance is simply this site: ",
-        "id": "onboarding.welcome.body"
+        "defaultMessage": "This website is your gateway to a network of independent servers that communicate together to form a larger social network: the fediverse. Each server is called an “instance”. Your instance is simply this site: ",
+        "id": "enlistment.step0.body"
       },
       {
         "defaultMessage": "You full username",
-        "id": "onboarding.welcome.username"
+        "id": "enlistment.step0.username"
       },
       {
         "defaultMessage": "It is this identifier that you can share on the fediverse",
-        "id": "onboarding.welcome.explanation"
+        "id": "enlistment.step0.explanation"
       }
     ],
     "path": "app/soapbox/features/enlistment/steps/step0.json"
@@ -3641,23 +3384,23 @@
     "descriptors": [
       {
         "defaultMessage": "If you exchange with a person from another instance, you must mention them with their <span class='font-bold'>@pseudo@instance</span><br/><br/> ex: <a href=' https://oslo.town/@matt'>@matt@oslo.town</a>, if you want to talk to the Oslo.town admin",
-        "id": "onboarding.how-it-works.right"
+        "id": "enlistment.step1.right"
       },
       {
         "defaultMessage": "How it works ?",
-        "id": "onboarding.how-it-works.title"
+        "id": "enlistment.step1.title"
       },
       {
         "defaultMessage": "Here you are on {title}. If you exchange with people from the same instance as you, you can simply mention them with {username}{br}{br}ex: {contact}, if you want to talk to the admin of {title}",
-        "id": "onboarding.how-it-works.left"
+        "id": "enlistment.step1.left"
       },
       {
         "defaultMessage": "@username",
-        "id": "onboarding.how-it-works.username"
+        "id": "enlistment.step1.username"
       },
       {
         "defaultMessage": "Don't worry though, when writing a post, autosuggestion will help you find the right mention! Moreover, if you reply to a post, the mention will automatically be written in the right way.",
-        "id": "onboarding.how-it-works.explanation"
+        "id": "enlistment.step1.explanation"
       }
     ],
     "path": "app/soapbox/features/enlistment/steps/step1.json"
@@ -3666,35 +3409,35 @@
     "descriptors": [
       {
         "defaultMessage": "Here you are on familiar ground: only your publications and those of the people you follow will be displayed on this thread.",
-        "id": "onboarding.feeds.col1"
+        "id": "enlistment.step2.col1"
       },
       {
         "defaultMessage": "Here is a bit like your neighborhood: you will only find publications from members of this server, whether you follow them or not.",
-        "id": "onboarding.feeds.col2"
+        "id": "enlistment.step2.col2"
       },
       {
         "defaultMessage": "Think outside the box and go explore the rest of the world: this thread displays posts from all known instances.",
-        "id": "onboarding.feeds.col3"
+        "id": "enlistment.step2.col3"
       },
       {
         "defaultMessage": "Home",
-        "id": "onboarding.feeds.title1"
+        "id": "enlistment.step2.title1"
       },
       {
         "defaultMessage": "At first it will be a little empty but don't worry we can help you fill it!",
-        "id": "onboarding.feeds.explanation1"
+        "id": "enlistment.step2.explanation1"
       },
       {
         "defaultMessage": "We usually call it \"local\" thread",
-        "id": "onboarding.feeds.explanation2"
+        "id": "enlistment.step2.explanation2"
       },
       {
         "defaultMessage": "Discover",
-        "id": "onboarding.feeds.title3"
+        "id": "enlistment.step2.title3"
       },
       {
         "defaultMessage": "We usually call it \"global\" or \"federated\" thread",
-        "id": "onboarding.feeds.explanation3"
+        "id": "enlistment.step2.explanation3"
       }
     ],
     "path": "app/soapbox/features/enlistment/steps/step2.json"
@@ -3703,43 +3446,43 @@
     "descriptors": [
       {
         "defaultMessage": "Privacy",
-        "id": "onboarding.privacy.title"
+        "id": "enlistment.step3.title"
       },
       {
         "defaultMessage": "This site offers precise control over who can see your posts and therefore interact with you.",
-        "id": "onboarding.privacy.description"
+        "id": "enlistment.step3.description"
       },
       {
         "defaultMessage": "Public",
-        "id": "onboarding.privacy.public-title"
+        "id": "enlistment.step3.public-title"
       },
       {
         "defaultMessage": "The post is displayed on all feeds, including other instances.",
-        "id": "onboarding.privacy.public-description"
+        "id": "enlistment.step3.public-description"
       },
       {
         "defaultMessage": "Unlisted",
-        "id": "onboarding.privacy.unlisted-title"
+        "id": "enlistment.step3.unlisted-title"
       },
       {
         "defaultMessage": "The post is public but only appears in your subscribers' feeds and on your profile",
-        "id": "onboarding.privacy.unlisted-description"
+        "id": "enlistment.step3.unlisted-description"
       },
       {
         "defaultMessage": "Followers only",
-        "id": "onboarding.privacy.followers-title"
+        "id": "enlistment.step3.followers-title"
       },
       {
         "defaultMessage": "The post is not displayed on any public feeds and is only visible to people who follow you",
-        "id": "onboarding.privacy.followers-description"
+        "id": "enlistment.step3.followers-description"
       },
       {
         "defaultMessage": "Direct",
-        "id": "onboarding.privacy.direct-title"
+        "id": "enlistment.step3.direct-title"
       },
       {
         "defaultMessage": "The post is only visible to people mentioned via @username@instance",
-        "id": "onboarding.privacy.direct-description"
+        "id": "enlistment.step3.direct-description"
       }
     ],
     "path": "app/soapbox/features/enlistment/steps/step3.json"
@@ -4418,6 +4161,10 @@
       {
         "defaultMessage": "Create an account",
         "id": "registrations.create_account"
+      },
+      {
+        "defaultMessage": "Moderators",
+        "id": "landingPage.admins"
       }
     ],
     "path": "app/soapbox/features/landing_page/index.json"
@@ -4544,7 +4291,7 @@
         "id": "lists.new.create"
       },
       {
-        "defaultMessage": "Add list",
+        "defaultMessage": "Create",
         "id": "lists.new.create_title"
       }
     ],
@@ -4868,6 +4615,14 @@
         "id": "onboarding.header.subtitle"
       },
       {
+        "defaultMessage": "Saving…",
+        "id": "onboarding.saving"
+      },
+      {
+        "defaultMessage": "Next",
+        "id": "onboarding.next"
+      },
+      {
         "defaultMessage": "Skip for now",
         "id": "onboarding.skip"
       }
@@ -4885,11 +4640,286 @@
         "id": "onboarding.display_name.subtitle"
       },
       {
+        "defaultMessage": "Saving…",
+        "id": "onboarding.saving"
+      },
+      {
+        "defaultMessage": "Next",
+        "id": "onboarding.next"
+      },
+      {
         "defaultMessage": "Skip for now",
         "id": "onboarding.skip"
       }
     ],
     "path": "app/soapbox/features/onboarding/steps/display-name-step.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Welcome on the Fediverse",
+        "id": "enlistment.step0.title"
+      },
+      {
+        "defaultMessage": "This website is your gateway to a network of independent servers that communicate together to form a larger social network: the fediverse.",
+        "id": "enlistment.step0.body1"
+      },
+      {
+        "defaultMessage": "Each server is called an “instance”. Your instance is simply this site: ",
+        "id": "enlistment.step0.body2"
+      },
+      {
+        "defaultMessage": "You full username",
+        "id": "enlistment.step0.username"
+      },
+      {
+        "defaultMessage": "It is this identifier that you can share on the fediverse",
+        "id": "enlistment.step0.explanation"
+      },
+      {
+        "defaultMessage": "Next",
+        "id": "onboarding.next"
+      }
+    ],
+    "path": "app/soapbox/features/onboarding/steps/enlistement-1-step.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "If you exchange with a person from another instance, you must mention them with their <span class='font-bold'>@pseudo@instance</span><br/><br/> ex: <a href=' https://oslo.town/@matt'>@matt@oslo.town</a>, if you want to talk to the Oslo.town admin",
+        "id": "enlistment.step1.right"
+      },
+      {
+        "defaultMessage": "How it works ?",
+        "id": "enlistment.step1.title"
+      },
+      {
+        "defaultMessage": "Here you are on {title}. If you exchange with people from the same instance as you, you can simply mention them with {username}{br}{br}ex: {contact}, if you want to talk to the admin of {title}",
+        "id": "enlistment.step1.left"
+      },
+      {
+        "defaultMessage": "@username",
+        "id": "enlistment.step1.username"
+      },
+      {
+        "defaultMessage": "Don't worry though, when writing a post, autosuggestion will help you find the right mention! Moreover, if you reply to a post, the mention will automatically be written in the right way.",
+        "id": "enlistment.step1.explanation"
+      },
+      {
+        "defaultMessage": "Next",
+        "id": "onboarding.next"
+      }
+    ],
+    "path": "app/soapbox/features/onboarding/steps/enlistment-2-step.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Here you are on familiar ground: only your publications and those of the people you follow will be displayed on this thread.",
+        "id": "enlistment.step2.col1"
+      },
+      {
+        "defaultMessage": "Here is a bit like your neighborhood: you will only find publications from members of this server, whether you follow them or not.",
+        "id": "enlistment.step2.col2"
+      },
+      {
+        "defaultMessage": "Think outside the box and go explore the rest of the world: this thread displays posts from all known instances.",
+        "id": "enlistment.step2.col3"
+      },
+      {
+        "defaultMessage": "Home",
+        "id": "enlistment.step2.title1"
+      },
+      {
+        "defaultMessage": "At first it will be a little empty but don't worry we can help you fill it!",
+        "id": "enlistment.step2.explanation1"
+      },
+      {
+        "defaultMessage": "We usually call it \"local\" thread",
+        "id": "enlistment.step2.explanation2"
+      },
+      {
+        "defaultMessage": "Discover",
+        "id": "enlistment.step2.title3"
+      },
+      {
+        "defaultMessage": "We usually call it \"global\" or \"federated\" thread",
+        "id": "enlistment.step2.explanation3"
+      },
+      {
+        "defaultMessage": "Next",
+        "id": "onboarding.next"
+      }
+    ],
+    "path": "app/soapbox/features/onboarding/steps/enlistment-3-step.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Privacy",
+        "id": "enlistment.step3.title"
+      },
+      {
+        "defaultMessage": "This site offers precise control over who can see your posts and therefore interact with you.",
+        "id": "enlistment.step3.description"
+      },
+      {
+        "defaultMessage": "Public",
+        "id": "enlistment.step3.public-title"
+      },
+      {
+        "defaultMessage": "The post is displayed on all feeds, including other instances.",
+        "id": "enlistment.step3.public-description"
+      },
+      {
+        "defaultMessage": "Unlisted",
+        "id": "enlistment.step3.unlisted-title"
+      },
+      {
+        "defaultMessage": "The post is public but only appears in your subscribers' feeds and on your profile",
+        "id": "enlistment.step3.unlisted-description"
+      },
+      {
+        "defaultMessage": "Followers only",
+        "id": "enlistment.step3.followers-title"
+      },
+      {
+        "defaultMessage": "The post is not displayed on any public feeds and is only visible to people who follow you",
+        "id": "enlistment.step3.followers-description"
+      },
+      {
+        "defaultMessage": "Direct",
+        "id": "enlistment.step3.direct-title"
+      },
+      {
+        "defaultMessage": "The post is only visible to people mentioned via @username@instance",
+        "id": "enlistment.step3.direct-description"
+      },
+      {
+        "defaultMessage": "Next",
+        "id": "onboarding.next"
+      }
+    ],
+    "path": "app/soapbox/features/onboarding/steps/enlistment-4-step.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Here you are on familiar ground: only your publications and those of the people you follow will be displayed on this thread.",
+        "id": "onboarding.feeds.col1"
+      },
+      {
+        "defaultMessage": "Here is a bit like your neighborhood: you will only find publications from members of this server, whether you follow them or not.",
+        "id": "onboarding.feeds.col2"
+      },
+      {
+        "defaultMessage": "Think outside the box and go explore the rest of the world: this thread displays posts from all known instances.",
+        "id": "onboarding.feeds.col3"
+      },
+      {
+        "defaultMessage": "Home",
+        "id": "onboarding.feeds.title1"
+      },
+      {
+        "defaultMessage": "At first it will be a little empty but don't worry we can help you fill it!",
+        "id": "onboarding.feeds.explanation1"
+      },
+      {
+        "defaultMessage": "We usually call it \"local\" thread",
+        "id": "onboarding.feeds.explanation2"
+      },
+      {
+        "defaultMessage": "Explore",
+        "id": "onboarding.feeds.title3"
+      },
+      {
+        "defaultMessage": "We usually call it \"global\" or \"federated\" thread",
+        "id": "onboarding.feeds.explanation3"
+      },
+      {
+        "defaultMessage": "Next",
+        "id": "onboarding.next"
+      }
+    ],
+    "path": "app/soapbox/features/onboarding/steps/feeds.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "If you exchange with a person from another instance, you must mention them with their <span class='font-bold'>@pseudo@instance</span><br/><br/> ex: <a href=' https://oslo.town/@matt'>@matt@oslo.town</a>, if you want to talk to the Oslo.town admin",
+        "id": "onboarding.how-it-works.right"
+      },
+      {
+        "defaultMessage": "How it works ?",
+        "id": "onboarding.how-it-works.title"
+      },
+      {
+        "defaultMessage": "Here you are on {title}. If you exchange with people from the same instance as you, you can simply mention them with {username}{br}{br}ex: {contact}, if you want to talk to the admin of {title}",
+        "id": "onboarding.how-it-works.left"
+      },
+      {
+        "defaultMessage": "@username",
+        "id": "onboarding.how-it-works.username"
+      },
+      {
+        "defaultMessage": "Don't worry though, when writing a post, autosuggestion will help you find the right mention! Moreover, if you reply to a post, the mention will automatically be written in the right way.",
+        "id": "onboarding.how-it-works.explanation"
+      },
+      {
+        "defaultMessage": "Next",
+        "id": "onboarding.next"
+      }
+    ],
+    "path": "app/soapbox/features/onboarding/steps/how-it-works.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Privacy",
+        "id": "onboarding.privacy.title"
+      },
+      {
+        "defaultMessage": "This site offers precise control over who can see your posts and therefore interact with you.",
+        "id": "onboarding.privacy.description"
+      },
+      {
+        "defaultMessage": "Public",
+        "id": "onboarding.privacy.public-title"
+      },
+      {
+        "defaultMessage": "The post is displayed on all feeds, including other instances.",
+        "id": "onboarding.privacy.public-description"
+      },
+      {
+        "defaultMessage": "Unlisted",
+        "id": "onboarding.privacy.unlisted-title"
+      },
+      {
+        "defaultMessage": "The post is public but only appears in your subscribers' feeds and on your profile",
+        "id": "onboarding.privacy.unlisted-description"
+      },
+      {
+        "defaultMessage": "Followers only",
+        "id": "onboarding.privacy.followers-title"
+      },
+      {
+        "defaultMessage": "The post is not displayed on any public feeds and is only visible to people who follow you",
+        "id": "onboarding.privacy.followers-description"
+      },
+      {
+        "defaultMessage": "Direct",
+        "id": "onboarding.privacy.direct-title"
+      },
+      {
+        "defaultMessage": "The post is only visible to people mentioned via @username@instance",
+        "id": "onboarding.privacy.direct-description"
+      },
+      {
+        "defaultMessage": "Next",
+        "id": "onboarding.next"
+      }
+    ],
+    "path": "app/soapbox/features/onboarding/steps/privacy.json"
   },
   {
     "descriptors": [
@@ -4915,6 +4945,35 @@
       }
     ],
     "path": "app/soapbox/features/onboarding/steps/suggested-accounts-step.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Welcome on the Fediverse",
+        "id": "onboarding.welcome.title"
+      },
+      {
+        "defaultMessage": "This website is your gateway to a network of independent servers that communicate together to form a larger social network: the fediverse.",
+        "id": "onboarding.welcome.body1"
+      },
+      {
+        "defaultMessage": "Each server is called an “instance”. Your instance is simply this site: ",
+        "id": "onboarding.welcome.body2"
+      },
+      {
+        "defaultMessage": "You full username",
+        "id": "onboarding.welcome.username"
+      },
+      {
+        "defaultMessage": "It is this identifier that you can share on the fediverse",
+        "id": "onboarding.welcome.explanation"
+      },
+      {
+        "defaultMessage": "Next",
+        "id": "onboarding.next"
+      }
+    ],
+    "path": "app/soapbox/features/onboarding/steps/welcome.json"
   },
   {
     "descriptors": [
@@ -4966,6 +5025,14 @@
       {
         "defaultMessage": "Markdown",
         "id": "preferences.options.content_type_markdown"
+      },
+      {
+        "defaultMessage": "Curated timeline",
+        "id": "preferences.options.bubble_timeline_label"
+      },
+      {
+        "defaultMessage": "Replace the fediverse timeline with the Akkoma bubble timeline showing public statuses from a list of handpicked instances.",
+        "id": "preferences.options.bubble_timeline_hint"
       },
       {
         "defaultMessage": "Show reposts",
@@ -5022,13 +5089,18 @@
       {
         "defaultMessage": "Automatically load more items when scrolled to the bottom of the page",
         "id": "preferences.fields.autoload_more_label"
-      },
-      {
-        "defaultMessage": "Ignore onboarding",
-        "id": "preferences.fields.enlisted"
       }
     ],
     "path": "app/soapbox/features/preferences/index.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "This section is empty for now.",
+        "id": "account.no_fields"
+      }
+    ],
+    "path": "app/soapbox/features/profile_fields/index.json"
   },
   {
     "descriptors": [
@@ -5066,37 +5138,8 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Close",
-        "id": "lightbox.close"
-      },
-      {
-        "defaultMessage": "Fediverse timeline settings",
-        "id": "public.column_settings.title"
-      },
-      {
-        "defaultMessage": "Show reposts",
-        "id": "home.column_settings.show_reblogs"
-      },
-      {
-        "defaultMessage": "Show replies",
-        "id": "home.column_settings.show_replies"
-      },
-      {
-        "defaultMessage": "Media Only",
-        "id": "community.column_settings.media_only"
-      }
-    ],
-    "path": "app/soapbox/features/public_timeline/components/column_settings.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "Fediverse timeline",
+        "defaultMessage": "Explore",
         "id": "column.public"
-      },
-      {
-        "defaultMessage": "Don't show again",
-        "id": "fediverse_tab.explanation_box.dismiss"
       },
       {
         "defaultMessage": "What is the Fediverse?",
@@ -5109,6 +5152,14 @@
       {
         "defaultMessage": "the {site_title} tab",
         "id": "empty_column.home.local_tab"
+      },
+      {
+        "defaultMessage": "This timeline shows you all the statuses published on a selection of other instances curated by your moderators.",
+        "id": "fediverse_tab.explanation_box.bubble"
+      },
+      {
+        "defaultMessage": "Don\\'t show again",
+        "id": "fediverse_tab.explanation_box.dismiss"
       },
       {
         "defaultMessage": "There is nothing here! Write something publicly, or manually follow users from other servers to fill it up",
@@ -5393,6 +5444,26 @@
       {
         "defaultMessage": "Disabled",
         "id": "mfa.disabled"
+      },
+      {
+        "defaultMessage": "Content",
+        "id": "settings.content"
+      },
+      {
+        "defaultMessage": "Blocked users",
+        "id": "navigation_bar.blocks"
+      },
+      {
+        "defaultMessage": "Hidden domains",
+        "id": "navigation_bar.domain_blocks"
+      },
+      {
+        "defaultMessage": "Muted users",
+        "id": "navigation_bar.mutes"
+      },
+      {
+        "defaultMessage": "Muted words",
+        "id": "navigation_bar.filters"
       }
     ],
     "path": "app/soapbox/features/settings/index.json"
@@ -5570,6 +5641,10 @@
         "id": "soapbox_config.single_user_mode_profile_hint"
       },
       {
+        "defaultMessage": "Instance's description shown in Home page. Supports HTML. Use [users] to insert the number of current users on the instance.",
+        "id": "soapbox_config.home_description"
+      },
+      {
         "defaultMessage": "Logo",
         "id": "soapbox_config.fields.logo_label"
       },
@@ -5598,6 +5673,10 @@
         "id": "soapbox_config.headings.options"
       },
       {
+        "defaultMessage": "Home",
+        "id": "soapbox_config.headings.home"
+      },
+      {
         "defaultMessage": "Navigation",
         "id": "soapbox_config.headings.navigation"
       },
@@ -5618,18 +5697,6 @@
         "id": "soapbox_config.hints.home_footer_fields"
       },
       {
-        "defaultMessage": "Cryptocurrency",
-        "id": "soapbox_config.headings.cryptocurrency"
-      },
-      {
-        "defaultMessage": "Cryptocurrency addresses",
-        "id": "soapbox_config.fields.crypto_addresses_label"
-      },
-      {
-        "defaultMessage": "Add cryptocurrency addresses so users of your site can donate to you. Order matters, and you must use lowercase ticker values.",
-        "id": "soapbox_config.hints.crypto_addresses"
-      },
-      {
         "defaultMessage": "Advanced",
         "id": "soapbox_config.headings.advanced"
       },
@@ -5643,173 +5710,20 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Delete",
-        "id": "status.delete"
-      },
-      {
-        "defaultMessage": "Delete & re-draft",
-        "id": "status.redraft"
-      },
-      {
-        "defaultMessage": "Edit",
-        "id": "status.edit"
-      },
-      {
-        "defaultMessage": "Direct message @{name}",
-        "id": "status.direct"
-      },
-      {
-        "defaultMessage": "Chat with @{name}",
-        "id": "status.chat"
-      },
-      {
-        "defaultMessage": "Mention @{name}",
-        "id": "status.mention"
-      },
-      {
-        "defaultMessage": "Reply",
-        "id": "status.reply"
-      },
-      {
-        "defaultMessage": "Repost",
-        "id": "status.reblog"
-      },
-      {
-        "defaultMessage": "Repost to original audience",
-        "id": "status.reblog_private"
-      },
-      {
-        "defaultMessage": "Un-repost",
-        "id": "status.cancel_reblog_private"
-      },
-      {
-        "defaultMessage": "This post cannot be reposted",
-        "id": "status.cannot_reblog"
-      },
-      {
-        "defaultMessage": "Like",
-        "id": "status.favourite"
-      },
-      {
-        "defaultMessage": "Mute @{name}",
-        "id": "status.mute"
-      },
-      {
-        "defaultMessage": "Mute conversation",
-        "id": "status.mute_conversation"
-      },
-      {
-        "defaultMessage": "Unmute conversation",
-        "id": "status.unmute_conversation"
-      },
-      {
-        "defaultMessage": "Block @{name}",
-        "id": "status.block"
-      },
-      {
-        "defaultMessage": "Report @{name}",
-        "id": "status.report"
-      },
-      {
-        "defaultMessage": "Share",
-        "id": "status.share"
-      },
-      {
-        "defaultMessage": "Pin on profile",
-        "id": "status.pin"
-      },
-      {
-        "defaultMessage": "Unpin from profile",
-        "id": "status.unpin"
-      },
-      {
-        "defaultMessage": "Embed",
-        "id": "status.embed"
-      },
-      {
-        "defaultMessage": "Open moderation interface for @{name}",
-        "id": "status.admin_account"
-      },
-      {
-        "defaultMessage": "Open this post in the moderation interface",
-        "id": "status.admin_status"
-      },
-      {
-        "defaultMessage": "Copy link to post",
-        "id": "status.copy"
-      },
-      {
-        "defaultMessage": "Bookmark",
-        "id": "status.bookmark"
-      },
-      {
-        "defaultMessage": "Remove bookmark",
-        "id": "status.unbookmark"
-      },
-      {
-        "defaultMessage": "Deactivate @{name}",
-        "id": "admin.users.actions.deactivate_user"
-      },
-      {
-        "defaultMessage": "Delete @{name}",
-        "id": "admin.users.actions.delete_user"
-      },
-      {
-        "defaultMessage": "Delete post",
-        "id": "admin.statuses.actions.delete_status"
-      },
-      {
-        "defaultMessage": "Mark post sensitive",
-        "id": "admin.statuses.actions.mark_status_sensitive"
-      },
-      {
-        "defaultMessage": "Mark post not sensitive",
-        "id": "admin.statuses.actions.mark_status_not_sensitive"
-      },
-      {
-        "defaultMessage": "Like",
-        "id": "status.reactions.like"
-      },
-      {
-        "defaultMessage": "Love",
-        "id": "status.reactions.heart"
-      },
-      {
-        "defaultMessage": "Haha",
-        "id": "status.reactions.laughing"
-      },
-      {
-        "defaultMessage": "Wow",
-        "id": "status.reactions.open_mouth"
-      },
-      {
-        "defaultMessage": "Sad",
-        "id": "status.reactions.cry"
-      },
-      {
-        "defaultMessage": "Weary",
-        "id": "status.reactions.weary"
-      },
-      {
-        "defaultMessage": "Select emoji",
-        "id": "status.reactions_expand"
-      },
-      {
-        "defaultMessage": "More",
-        "id": "status.actions.more"
-      },
-      {
-        "defaultMessage": "Quote post",
-        "id": "status.quote"
-      }
-    ],
-    "path": "app/soapbox/features/status/components/action-bar.json"
-  },
-  {
-    "descriptors": [
-      {
         "defaultMessage": "Post is unavailable.",
         "id": "actualStatuses.quote_tombstone"
+      },
+      {
+        "defaultMessage": "Translate",
+        "id": "actualStatuses.translate"
+      },
+      {
+        "defaultMessage": "Translate",
+        "id": "actualStatuses.translated"
+      },
+      {
+        "defaultMessage": "Status translated to {locale}",
+        "id": "actualStatuses.translate_done"
       },
       {
         "defaultMessage": "Edited {date}",
@@ -6426,26 +6340,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Profile directory",
-        "id": "navigation_bar.profile_directory"
-      },
-      {
-        "defaultMessage": "Blocks",
-        "id": "navigation_bar.blocks"
-      },
-      {
-        "defaultMessage": "Mutes",
-        "id": "navigation_bar.mutes"
-      },
-      {
-        "defaultMessage": "Filters",
-        "id": "navigation_bar.filters"
-      },
-      {
-        "defaultMessage": "Domain blocks",
-        "id": "navigation_bar.domain_blocks"
-      },
-      {
         "defaultMessage": "Mangane config",
         "id": "navigation_bar.soapbox_config"
       },
@@ -6758,10 +6652,6 @@
       {
         "defaultMessage": "Bot",
         "id": "account.badges.bot"
-      },
-      {
-        "defaultMessage": "Profile fields",
-        "id": "profile_fields_panel.title"
       }
     ],
     "path": "app/soapbox/features/ui/components/profile_fields_panel.json"
@@ -7260,8 +7150,12 @@
         "id": "account.media"
       },
       {
-        "defaultMessage": "Likes",
-        "id": "navigation_bar.favourites"
+        "defaultMessage": "About",
+        "id": "account.about"
+      },
+      {
+        "defaultMessage": "Profile fields",
+        "id": "profile_fields_panel.title"
       }
     ],
     "path": "app/soapbox/pages/profile_page.json"
