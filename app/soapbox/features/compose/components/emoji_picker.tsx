@@ -1,47 +1,59 @@
+import data from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
 import classNames from 'classnames';
 import { List as ImmutableList } from 'immutable';
-import React from 'react';
-import { Overlay } from 'react-overlays';
+import React, { MouseEventHandler } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 
 import { IconButton } from 'soapbox/components/ui';
 import { isMobile } from 'soapbox/is_mobile';
+import { useTheme } from 'soapbox/hooks';
 
-import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components';
-
-import EmojiPickerMenu from './emoji_picker_menu';
-
-
-let EmojiPicker, Emoji; // load asynchronously
-
+const messages = defineMessages({
+  emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
+  emoji_search: { id: 'emoji_button.search', defaultMessage: 'Search…' },
+  emoji_not_found: { id: 'emoji_button.not_found', defaultMessage: 'No emoji\'s found.' },
+  custom: { id: 'emoji_button.custom', defaultMessage: 'Custom' },
+  recent: { id: 'emoji_button.recent', defaultMessage: 'Frequently used' },
+  search_results: { id: 'emoji_button.search_results', defaultMessage: 'Search results' },
+  people: { id: 'emoji_button.people', defaultMessage: 'People' },
+  nature: { id: 'emoji_button.nature', defaultMessage: 'Nature' },
+  food: { id: 'emoji_button.food', defaultMessage: 'Food & Drink' },
+  activity: { id: 'emoji_button.activity', defaultMessage: 'Activity' },
+  travel: { id: 'emoji_button.travel', defaultMessage: 'Travel & Places' },
+  objects: { id: 'emoji_button.objects', defaultMessage: 'Objects' },
+  symbols: { id: 'emoji_button.symbols', defaultMessage: 'Symbols' },
+  flags: { id: 'emoji_button.flags', defaultMessage: 'Flags' },
+  skins: { id: 'emoji_button.skins', defaultMessage: 'Skins' },
+});
 
 interface IWrapper {
     target: any,
     show: boolean,
+    onClose: MouseEventHandler,
     children: React.ReactNode,
 }
 
-const Wrapper: React.FC<IWrapper> = ({ target, show, children }) => {
-  const placement = React.useMemo(() => target.current?.getBoundingClientRect().top * 2 < window.innerHeight ? 'bottom' : 'top', [target]);
-
-  if (isMobile(window.innerWidth) && show) {
-    return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <div
-        className='fixed top-0 left-0 w-screen h-screen flex flex-col z-[200]'
-      >
+const Wrapper: React.FC<IWrapper> = ({ target, show, onClose, children }) => {
+  if (!show) return null;
+  return (
+    <div className='emoji-picker fixed top-0 left-0 w-screen h-screen bg-gray-800 z-[100]'>
+      <div className='bg-white dark:bg-slate-800  flex flex-col overflow-hidden sm:rounded-lg absolute top-1/2 left-1/2 -translate-x-[50%] -translate-y-[50%] '>
+        <div className='p-1'>
+          <IconButton
+            className='ml-auto text-gray-500'
+            src={require('@tabler/icons/x.svg')}
+            onClick={onClose}
+          />
+        </div>
         { children }
       </div>
-    );
-  }
-
-  return (
-    <Overlay target={target.current} placement={placement} show={show}>{ children }</Overlay>
+    </div>
   );
 };
 
 interface IEmojiPicker {
     custom_emojis: ImmutableList<string>,
-    frequentlyUsedEmojis: Array<string>,
     onPickEmoji: Function,
     onSkinTone: Function,
     skinTone: number,
@@ -50,35 +62,14 @@ interface IEmojiPicker {
 
 const EmojiPickerUI : React.FC<IEmojiPicker> = ({
   custom_emojis,
-  frequentlyUsedEmojis,
   onPickEmoji,
-  onSkinTone,
-  skinTone,
-  button,
 }) => {
   const root = React.useRef<HTMLDivElement>(null);
   const [active, setActive] = React.useState(false);
-  const [loading, setLoading] = React.useState(!EmojiPicker || !Emoji);
+  const intl = useIntl();
+  const theme = useTheme();
 
-  const loadEmojiPicker = React.useCallback(async() => {
-    if (EmojiPicker) return;
-    setLoading(true);
-    try {
-      const EmojiMart = await EmojiPickerAsync();
-      EmojiPicker = EmojiMart.Picker;
-      Emoji = EmojiMart.Emoji;
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  React.useEffect(() => {
-    loadEmojiPicker();
-  }, []);
-
-  const handleClose = React.useCallback((e) => {
+  const handleClose = React.useCallback((e = null) => {
     if (e) {
       e.stopPropagation();
     }
@@ -87,7 +78,6 @@ const EmojiPickerUI : React.FC<IEmojiPicker> = ({
 
   const handleToggle = React.useCallback((e) => {
     e.stopPropagation();
-    if (loading) return;
     if (e.key === 'Escape') {
       setActive(false);
       return;
@@ -96,7 +86,28 @@ const EmojiPickerUI : React.FC<IEmojiPicker> = ({
     if ((!e.key || e.key === 'Enter')) {
       setActive(!active);
     }
-  }, [active, loading]);
+  }, [active]);
+
+  const buildCustomEmojis = React.useCallback((custom_emojis: ImmutableList<any>) => {
+    const emojis = custom_emojis.map((emoji) => (
+      {
+        id: emoji.get('shortcode'),
+        name: emoji.get('shortcode'),
+        keywords: [emoji.get('shortcode')],
+        skins: [{ src: emoji.get('static_url') }],
+      }
+    )).toJS();
+    return [{
+      id: 'custom',
+      name: intl.formatMessage(messages.custom),
+      emojis,
+    }];
+  }, []);
+
+  const handlePick = React.useCallback((emoji) => {
+    onPickEmoji({ ...emoji, native: emoji.native || emoji.shortcodes });
+    handleClose();
+  }, [handleClose, onPickEmoji]);
 
   return (
     <>
@@ -104,23 +115,40 @@ const EmojiPickerUI : React.FC<IEmojiPicker> = ({
         <IconButton
           className={classNames({
             'text-gray-400 hover:text-gray-600': true,
-            'pulse-loading': active && loading,
           })}
           alt='😀'
           src={require('@tabler/icons/mood-happy.svg')}
           onClick={handleToggle}
         />
-        <Wrapper target={root} show={active}>
-          <EmojiPickerMenu
-            Emoji={Emoji}
-            EmojiPicker={EmojiPicker}
-            custom_emojis={custom_emojis}
-            loading={loading}
-            onClose={handleClose}
-            onPick={onPickEmoji}
-            onSkinTone={onSkinTone}
-            skinTone={skinTone}
-            frequentlyUsedEmojis={frequentlyUsedEmojis}
+        <Wrapper target={root} show={active} onClose={handleClose}>
+          <Picker
+            theme={theme}
+            dynamicWidth={isMobile(window.innerWidth)}
+            categories={['frequent', 'custom', 'people', 'nature', 'foods', 'activity', 'places', 'objects', 'symbols', 'flags']}
+            previewPosition='none'
+            custom={buildCustomEmojis(custom_emojis)}
+            data={data}
+            onEmojiSelect={handlePick}
+            i18n={
+              {
+                search: intl.formatMessage(messages.emoji_search),
+                notfound: intl.formatMessage(messages.emoji_not_found),
+                skins: intl.formatMessage(messages.skins),
+                categories: {
+                  search: intl.formatMessage(messages.search_results),
+                  recent: intl.formatMessage(messages.recent),
+                  people: intl.formatMessage(messages.people),
+                  nature: intl.formatMessage(messages.nature),
+                  foods: intl.formatMessage(messages.food),
+                  activity: intl.formatMessage(messages.activity),
+                  places: intl.formatMessage(messages.travel),
+                  objects: intl.formatMessage(messages.objects),
+                  symbols: intl.formatMessage(messages.symbols),
+                  flags: intl.formatMessage(messages.flags),
+                  custom: intl.formatMessage(messages.custom),
+                },
+              }
+            }
           />
         </Wrapper>
       </div>

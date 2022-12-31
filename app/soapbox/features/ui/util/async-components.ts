@@ -1,7 +1,3 @@
-export function EmojiPicker() {
-  return import(/* webpackChunkName: "emoji_picker" */'../../emoji/emoji_picker');
-}
-
 export function Notifications() {
   return import(/* webpackChunkName: "features/notifications" */'../../notifications');
 }
