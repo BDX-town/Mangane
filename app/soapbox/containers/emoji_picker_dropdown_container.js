@@ -1,8 +1,7 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { useEmoji } from '../../../actions/emojis';
-import { changeSetting } from '../../../actions/settings';
+import { useEmoji } from '../actions/emojis';
 import EmojiPicker from '../components/emoji_picker';
 
 

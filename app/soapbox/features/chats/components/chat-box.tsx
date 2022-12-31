@@ -9,8 +9,8 @@ import {
 import { uploadMedia } from 'soapbox/actions/media';
 import IconButton from 'soapbox/components/icon_button';
 import UploadProgress from 'soapbox/components/upload-progress';
+import EmojiPickerDropdown from 'soapbox/containers/emoji_picker_dropdown_container';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
-import EmojiPickerDropdown from 'soapbox/features/compose/containers/emoji_picker_dropdown_container';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { truncateFilename } from 'soapbox/utils/media';
 

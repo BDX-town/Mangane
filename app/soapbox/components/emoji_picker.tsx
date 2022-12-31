@@ -6,8 +6,8 @@ import React, { MouseEventHandler } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { IconButton } from 'soapbox/components/ui';
-import { isMobile } from 'soapbox/is_mobile';
 import { useTheme } from 'soapbox/hooks';
+import { isMobile } from 'soapbox/is_mobile';
 
 const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
@@ -53,15 +53,14 @@ const Wrapper: React.FC<IWrapper> = ({ target, show, onClose, children }) => {
 };
 
 interface IEmojiPicker {
-    custom_emojis: ImmutableList<string>,
-    onPickEmoji: Function,
-    onSkinTone: Function,
-    skinTone: number,
+    custom_emojis?: ImmutableList<string>,
     button?: React.ReactNode,
+    onPickEmoji: Function,
 }
 
 const EmojiPickerUI : React.FC<IEmojiPicker> = ({
-  custom_emojis,
+  custom_emojis = ImmutableList(),
+  button,
   onPickEmoji,
 }) => {
   const root = React.useRef<HTMLDivElement>(null);
@@ -112,14 +111,17 @@ const EmojiPickerUI : React.FC<IEmojiPicker> = ({
   return (
     <>
       <div className='relative' ref={root} onKeyDown={handleToggle}>
-        <IconButton
-          className={classNames({
-            'text-gray-400 hover:text-gray-600': true,
-          })}
-          alt='😀'
-          src={require('@tabler/icons/mood-happy.svg')}
-          onClick={handleToggle}
-        />
+        <div role='button' tabIndex={0} onClick={handleToggle}>
+          {
+            button || <IconButton
+              className={classNames({
+                'text-gray-400 hover:text-gray-600': true,
+              })}
+              alt='😀'
+              src={require('@tabler/icons/mood-happy.svg')}
+            />
+          }
+        </div>
         <Wrapper target={root} show={active} onClose={handleClose}>
           <Picker
             theme={theme}

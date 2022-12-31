@@ -18,7 +18,7 @@ const PromoPanelInput: StreamfieldComponent<PromoPanelItem> = ({ value, onChange
   const intl = useIntl();
 
   const handleIconChange = (icon: any) => {
-    onChange(value.set('icon', icon.id));
+    onChange(value.set('icon', icon.native));
   };
 
   const handleChange = (key: 'text' | 'url'): React.ChangeEventHandler<HTMLInputElement> => {
