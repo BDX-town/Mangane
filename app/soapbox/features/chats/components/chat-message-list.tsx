@@ -66,8 +66,6 @@ interface IChatMessageList {
   chatId: string,
   /** Message IDs to render. */
   chatMessageIds: ImmutableOrderedSet<string>,
-  /** Whether to make the chatbox fill the height of the screen. */
-  autosize?: boolean,
 }
 
 /** Scrollable list of chat messages. */
@@ -308,7 +306,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chatId, chatMessageIds, a
   }, [chatMessageIds.first()]);
 
   return (
-    <div className='chat-messages' style={{ height: autosize ? 'calc(100vh - 16rem)' : undefined }} ref={node}>
+    <div className='chat-messages' ref={node}>
       {chatMessages.reduce((acc, curr, idx) => {
         const lastMessage = chatMessages.get(idx - 1);
 

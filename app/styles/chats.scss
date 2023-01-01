@@ -283,24 +283,9 @@
       border: 0;
       border-radius: 6px;
       color: var(--primary-text-color);
+      border: 1px solid currentColor;
       font-size: 15px;
       overflow: hidden;
-    }
-  }
-
-  &__send {
-    @apply absolute right-3 h-full;
-
-    & > div {
-      &> .icon-button,
-      & > button {
-        @apply w-auto h-auto border-0 p-0 m-0 text-black dark:text-white;
-
-        .svg-icon,
-        svg {
-          @apply w-[18px] h-[18px];
-        }
-      }
     }
   }
 }
