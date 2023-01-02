@@ -5,19 +5,11 @@
 // It's designed to be emitted in an array format to take up less space
 // over the wire.
 
-const { emojiIndex } = require('emoji-mart');
-let data = require('emoji-mart/data/all.json');
-const { uncompress: emojiMartUncompress } = require('emoji-mart/dist/utils/data');
+const { emojis, aliases, categories } = require('@emoji-mart/data');
 
 const emojiMap = require('./emoji_map.json');
 const { unicodeToFilename } = require('./unicode_to_filename');
 const { unicodeToUnifiedName } = require('./unicode_to_unified_name');
-
-if (data.compressed) {
-  data = emojiMartUncompress(data);
-}
-
-const emojiMartData = data;
 
 const excluded       = ['®', '©', '™'];
 const skinTones      = ['🏻', '🏼', '🏽', '🏾', '🏿'];
@@ -26,15 +18,9 @@ const shortcodeMap   = {};
 const shortCodesToEmojiData = {};
 const emojisWithoutShortCodes = [];
 
-Object.keys(emojiIndex.emojis).forEach(key => {
-  let emoji = emojiIndex.emojis[key];
-
-  // Emojis with skin tone modifiers are stored like this
-  if (Object.prototype.hasOwnProperty.call(emoji, '1')) {
-    emoji = emoji['1'];
-  }
-
-  shortcodeMap[emoji.native] = emoji.id;
+Object.keys(emojis).forEach(key => {
+  const emoji = emojis[key];
+  shortcodeMap[emoji.skins[0].native] = emoji.id;
 });
 
 const stripModifiers = unicode => {
@@ -78,27 +64,15 @@ Object.keys(emojiMap).forEach(key => {
   }
 });
 
-Object.keys(emojiIndex.emojis).forEach(key => {
-  let emoji = emojiIndex.emojis[key];
+Object.keys(emojis).forEach(key => {
+  const emoji = emojis[key];
+  const { native, unified } = emoji.skins[0];
 
-  // Emojis with skin tone modifiers are stored like this
-  if (Object.prototype.hasOwnProperty.call(emoji, '1')) {
-    emoji = emoji['1'];
-  }
-
-  const { native } = emoji;
-  const { short_names, search, unified } = emojiMartData.emojis[key];
-
-  if (short_names[0] !== key) {
-    throw new Error('The compresser expects the first short_code to be the ' +
-      'key. It may need to be rewritten if the emoji change such that this ' +
-      'is no longer the case.');
-  }
 
   const searchData = [
     native,
-    short_names.slice(1), // first short name can be inferred from the key
-    search,
+    emoji.id,
+    [...emoji.keywords, ...emoji.name.toLowerCase().split(' ')].join(','),
   ];
 
   if (unicodeToUnifiedName(native) !== unified) {
@@ -117,8 +91,8 @@ Object.keys(emojiIndex.emojis).forEach(key => {
 // inconsistent behavior in dev mode
 module.exports = JSON.parse(JSON.stringify([
   shortCodesToEmojiData,
-  emojiMartData.skins,
-  emojiMartData.categories,
-  emojiMartData.aliases,
+  undefined, // legacy value, but order is still important
+  categories,
+  aliases,
   emojisWithoutShortCodes,
 ]));
