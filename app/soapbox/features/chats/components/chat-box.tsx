@@ -179,7 +179,7 @@ const ChatBox: React.FC<IChatBox> = ({ chatId, onSetInputRef, autosize }) => {
             <UploadProgress progress={uploadProgress * 100} />
           )}
         </div>
-        <div className='flex items-center gap-3'>
+        <div className='flex items-center gap-2'>
           <textarea
             className='border'
             rows={1}
@@ -190,7 +190,7 @@ const ChatBox: React.FC<IChatBox> = ({ chatId, onSetInputRef, autosize }) => {
             value={content}
             ref={setInputRef}
           />
-          <div className='chat-box__send flex items-center gap-2'>
+          <div className='chat-box__send flex items-center gap-1'>
             <EmojiPickerDropdown
               onPickEmoji={handleEmojiPick}
             />

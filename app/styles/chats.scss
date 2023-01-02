@@ -272,6 +272,11 @@
     margin-top: auto;
     position: relative;
 
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
     textarea {
       width: 100%;
       height: 100%;
