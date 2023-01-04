@@ -14,7 +14,7 @@
   "account.days": "Дні",
   "account.deactivated": "Деактивовано",
   "account.direct": "Пряме повідомлення @{name}",
-  "account.domain_blocked": "Domain hidden",
+  "account.domain_blocked": "Домен приховано",
   "account.edit_profile": "Редагувати профіль",
   "account.endorse": "Особливість профілю",
   "account.endorse.success": "Зараз ви показуєте @{acct} у своєму профілі",
