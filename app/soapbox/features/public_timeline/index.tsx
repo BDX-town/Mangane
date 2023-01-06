@@ -7,7 +7,7 @@ import { connectPublicStream } from 'soapbox/actions/streaming';
 import { expandPublicTimeline, expandBubbleTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Button, Column, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useSettings, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useSettings, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is_mobile';
 
 import PinnedHostsPicker from '../remote_timeline/components/pinned_hosts_picker';
@@ -22,6 +22,7 @@ const CommunityTimeline = () => {
   const dispatch = useAppDispatch();
 
   const settings = useSettings();
+  const account = useOwnAccount();
   const onlyMedia = settings.getIn(['public', 'other', 'onlyMedia']);
 
 
@@ -29,7 +30,7 @@ const CommunityTimeline = () => {
   const showExplanationBox = settings.get('showExplanationBox');
 
   const features = useFeatures();
-  const bubbleTimeline = features.bubbleTimeline && settings.getIn(['public', 'bubble']);
+  const bubbleTimeline = account && features.bubbleTimeline && settings.getIn(['public', 'bubble']);
 
   const timelineId = React.useMemo(() => !bubbleTimeline ? 'public' : 'bubble', [bubbleTimeline]);
 
