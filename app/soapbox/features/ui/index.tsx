@@ -33,7 +33,6 @@ import DefaultPage from 'soapbox/pages/default_page';
 // import GroupPage from 'soapbox/pages/group_page';
 import HomePage from 'soapbox/pages/home_page';
 import ProfilePage from 'soapbox/pages/profile_page';
-import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
 import StatusPage from 'soapbox/pages/status_page';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
@@ -183,7 +182,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       */}
       {features.federating && <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} publicRoute />}
       {features.federating && <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />}
-      {features.federating && <WrappedRoute path='/timeline/:instance' exact page={RemoteInstancePage} component={RemoteTimeline} content={children} />}
+      {features.federating && <WrappedRoute path='/timeline/:instance' exact page={HomePage} component={RemoteTimeline} content={children} />}
 
       {features.conversations && <WrappedRoute path='/conversations' page={DefaultPage} component={Conversations} content={children} />}
       {features.directTimeline && <WrappedRoute path='/messages' page={DefaultPage} component={DirectTimeline} content={children} />}
