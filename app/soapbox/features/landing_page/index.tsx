@@ -62,6 +62,33 @@ const LandingPage = () => {
     );
   };
 
+  /** Custom Registrations */ 
+  const renderCustom = () => {
+    const { customRegProvider } = soapboxConfig;
+    const { customRegUrl } = soapboxConfig;
+    const onClickUrl = () => {
+      window.open(customRegUrl);
+    }
+
+    return (
+      <Stack space={3}>
+        <Stack>
+          <Text size='2xl' weight='bold' align='center'>
+            <FormattedMessage id='registrations.redirect' defaultMessage="No account yet?" />
+          </Text>
+        </Stack>
+
+        <Button onClick={onClickUrl} theme='primary' block>
+          <FormattedMessage
+            id='registration.custom_provider_tooltip'
+            defaultMessage='Sign up with {provider}'
+            values={{ provider: capitalize(customRegProvider) }}
+          />
+        </Button>
+      </Stack>
+    );
+  };
+
   /** Mastodon API registrations are open */
   const renderOpen = () => {
     return <RegistrationForm />;
@@ -120,6 +147,8 @@ const LandingPage = () => {
       return renderPepe();
     } else if (features.accountCreation && instance.registrations) {
       return renderOpen();
+    } else if (soapboxConfig.customRegProvider) {
+        return renderCustom();
     } else {
       return renderClosed();
     }

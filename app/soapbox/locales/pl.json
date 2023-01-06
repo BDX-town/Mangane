@@ -947,6 +947,8 @@
   "registrations.success": "Witamy na {siteTitle}!",
   "registrations.tagline": "Social Media Without Discrimination",
   "registrations.unprocessable_entity": "Ta nazwa użytkownika jest już zajęta.",
+  "registration.custom_provider_tooltip": "Zarejestruj konto z {provider}",
+  "registrations.redirect": "Nie masz jeszcze konta?",
   "relative_time.days": "{number} dni",
   "relative_time.hours": "{number} godz.",
   "relative_time.just_now": "teraz",
