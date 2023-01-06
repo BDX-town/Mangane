@@ -1,6 +1,7 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { fromJS } from 'immutable';
 
 import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
+import { SoapboxConfigRecord } from 'soapbox/normalizers';
 import KVStore from 'soapbox/storage/kv_store';
 import { ConfigDB } from 'soapbox/utils/config_db';
 
@@ -11,9 +12,9 @@ import {
   SOAPBOX_CONFIG_REQUEST_FAIL,
 } from '../actions/soapbox';
 
-const initialState = ImmutableMap();
+const initialState = SoapboxConfigRecord();
 
-const fallbackState = ImmutableMap({
+const fallbackState = SoapboxConfigRecord({
   brandColor: '#0482d8', // Azure
 });
 

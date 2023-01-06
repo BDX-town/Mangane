@@ -260,7 +260,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.federating && <WrappedRoute path='/domain_blocks' page={DefaultPage} component={DomainBlocks} content={children} />}
       <WrappedRoute path='/mutes' page={DefaultPage} component={Mutes} content={children} />
       {features.filters && <WrappedRoute path='/filters' page={DefaultPage} component={Filters} content={children} />}
-      <WrappedRoute path='/@:username' publicRoute exact component={AccountTimeline} page={ProfilePage} content={children} />
+      <WrappedRoute path='/@:username' publicRoute={!authenticatedProfile} exact component={AccountTimeline} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/with_replies' publicRoute={!authenticatedProfile} component={AccountTimeline} page={ProfilePage} content={children} componentParams={{ withReplies: true }} />
       <WrappedRoute path='/@:username/followers' publicRoute={!authenticatedProfile} component={Followers} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/following' publicRoute={!authenticatedProfile} component={Following} page={ProfilePage} content={children} />
