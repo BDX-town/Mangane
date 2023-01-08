@@ -81,6 +81,7 @@ const messages = defineMessages({
   display_media_hide_all: { id: 'preferences.fields.display_media.hide_all', defaultMessage: 'Always hide media' },
   display_media_show_all: { id: 'preferences.fields.display_media.show_all', defaultMessage: 'Always show media' },
   privacy_public: { id: 'preferences.options.privacy_public', defaultMessage: 'Public' },
+  privacy_local: { id: 'preferences.options.privacy_local', defaultMessage: 'Local-only' },
   privacy_unlisted: { id: 'preferences.options.privacy_unlisted', defaultMessage: 'Unlisted' },
   privacy_followers_only: { id: 'preferences.options.privacy_followers_only', defaultMessage: 'Followers-only' },
   content_type_plaintext: { id: 'preferences.options.content_type_plaintext', defaultMessage: 'Plain text' },
@@ -111,6 +112,7 @@ const Preferences = () => {
 
   const defaultPrivacyOptions = React.useMemo(() => ({
     public: intl.formatMessage(messages.privacy_public),
+    ...(features.localOnlyPrivacy ? { local: intl.formatMessage(messages.privacy_local) } : {}),
     unlisted: intl.formatMessage(messages.privacy_unlisted),
     private: intl.formatMessage(messages.privacy_followers_only),
   }), []);
@@ -124,14 +126,14 @@ const Preferences = () => {
     <Form>
       <List>
         {
-              features.bubbleTimeline && (
-                <ListItem 
-                  label={intl.formatMessage(messages.bubble_timeline_label)}
-                  hint={intl.formatMessage(messages.bubble_timeline_hint)}
-                >
-                  <SettingToggle settings={settings} settingPath={['public', 'bubble']} onChange={onToggleChange} />
-                </ListItem>
-              )
+          features.bubbleTimeline && (
+            <ListItem
+              label={intl.formatMessage(messages.bubble_timeline_label)}
+              hint={intl.formatMessage(messages.bubble_timeline_hint)}
+            >
+              <SettingToggle settings={settings} settingPath={['public', 'bubble']} onChange={onToggleChange} />
+            </ListItem>
+          )
         }
 
         <ListItem

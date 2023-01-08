@@ -6,8 +6,8 @@ import { spring } from 'react-motion';
 // @ts-ignore
 import Overlay from 'react-overlays/lib/Overlay';
 
-import Icon from 'soapbox/components/icon';
-import { IconButton } from 'soapbox/components/ui';
+import { IconButton, Icon } from 'soapbox/components/ui';
+import { useFeatures, useLogo } from 'soapbox/hooks';
 
 import Motion from '../../ui/util/optional_motion';
 
@@ -16,6 +16,8 @@ const messages = defineMessages({
   public_long: { id: 'privacy.public.long', defaultMessage: 'Post to public timelines' },
   unlisted_short: { id: 'privacy.unlisted.short', defaultMessage: 'Unlisted' },
   unlisted_long: { id: 'privacy.unlisted.long', defaultMessage: 'Do not post to public timelines' },
+  local_short: { id: 'privacy.local.short', defaultMessage: 'Local-only' },
+  local_long: { id: 'privacy.local.long', defaultMessage: 'Status is only visible to people on this instance' },
   private_short: { id: 'privacy.private.short', defaultMessage: 'Followers-only' },
   private_long: { id: 'privacy.private.long', defaultMessage: 'Post to followers only' },
   direct_short: { id: 'privacy.direct.short', defaultMessage: 'Direct' },
@@ -120,7 +122,7 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, pla
           {items.map(item => (
             <div role='option' tabIndex={0} key={item.value} data-index={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={classNames('privacy-dropdown__option', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
               <div className='privacy-dropdown__option__icon'>
-                <Icon src={item.icon} />
+                <Icon size={16} src={item.icon} />
               </div>
 
               <div className='privacy-dropdown__option__content'>
@@ -156,12 +158,15 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
   const intl = useIntl();
   const node = useRef<HTMLDivElement>(null);
   const activeElement = useRef<HTMLElement | null>(null);
+  const logo = useLogo();
+  const features = useFeatures();
 
   const [open, setOpen] = useState(false);
   const [placement, setPlacement] = useState('bottom');
 
   const options = [
     { icon: require('@tabler/icons/world.svg'), value: 'public', text: intl.formatMessage(messages.public_short), meta: intl.formatMessage(messages.public_long) },
+    ...(features.localOnlyPrivacy ? [{ icon: logo, value: 'local', text: intl.formatMessage(messages.local_short), meta: intl.formatMessage(messages.local_long) }] : []),
     { icon: require('@tabler/icons/lock-open.svg'), value: 'unlisted', text: intl.formatMessage(messages.unlisted_short), meta: intl.formatMessage(messages.unlisted_long) },
     { icon: require('@tabler/icons/lock.svg'), value: 'private', text: intl.formatMessage(messages.private_short), meta: intl.formatMessage(messages.private_long) },
     { icon: require('@tabler/icons/mail.svg'), value: 'direct', text: intl.formatMessage(messages.direct_short), meta: intl.formatMessage(messages.direct_long) },
