@@ -33,6 +33,7 @@ const messages = defineMessages({
   domainBlocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Hidden domains' },
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
+  backups: { id: 'column.backups', defaultMessage: 'Backups' },
 });
 
 /** User settings page. */
@@ -54,6 +55,7 @@ const Settings = () => {
   const navigateToDeleteAccount = () => history.push('/settings/account');
   const navigateToMoveAccount = () => history.push('/settings/migration');
   const navigateToAliases = () => history.push('/settings/aliases');
+  const navigateToBackups = () => history.push('/settings/backups');
 
   const navigateToBlocks = () => history.push('/blocks');
   const navigateToMutes = () => history.push('/mutes');
@@ -150,14 +152,19 @@ const Settings = () => {
 
             <CardBody>
               <List>
-                {features.security && (
-                  <ListItem label={intl.formatMessage(messages.deleteAccount)} onClick={navigateToDeleteAccount} />
-                )}
                 {features.federating && (features.accountMoving ? (
                   <ListItem label={intl.formatMessage(messages.accountMigration)} onClick={navigateToMoveAccount} />
                 ) : features.accountAliases && (
                   <ListItem label={intl.formatMessage(messages.accountAliases)} onClick={navigateToAliases} />
                 ))}
+
+                {features.backups && (
+                  <ListItem label={intl.formatMessage(messages.backups)} onClick={navigateToBackups} />
+                )}
+
+                {features.security && (
+                  <ListItem label={intl.formatMessage(messages.deleteAccount)} onClick={navigateToDeleteAccount} />
+                )}
               </List>
             </CardBody>
           </>

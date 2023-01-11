@@ -167,6 +167,13 @@ const getInstanceFeatures = (instance: Instance) => {
     announcementsReactions: v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
 
     /**
+     * Pleroma backups.
+     * @see GET /api/v1/pleroma/backups
+     * @see POST /api/v1/pleroma/backups
+     */
+    backups: v.software === PLEROMA,
+
+    /**
      * Set your birthday and view upcoming birthdays.
      * @see GET /api/v1/pleroma/birthdays
      * @see POST /api/v1/accounts
