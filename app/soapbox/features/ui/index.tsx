@@ -82,7 +82,7 @@ import {
   EmailConfirmation,
   DeleteAccount,
   SoapboxConfig,
-  // ExportData,
+  ExportData,
   ImportData,
   Backups,
   MfaForm,
@@ -280,8 +280,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.scheduledStatuses && <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />}
 
       <WrappedRoute path='/settings/profile' page={DefaultPage} component={EditProfile} content={children} />
-      {/* FIXME: this could DDoS our API? :\ */}
-      {/* <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} /> */}
+      {features.exportData && <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} />}
       {features.importData && <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />}
       {features.accountAliases && <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />}
       {features.accountMoving && <WrappedRoute path='/settings/migration' page={DefaultPage} component={Migration} content={children} />}

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Admin: let admins configure media preview for attachment thumbnails.
 - Login: accept `?server` param in external login, eg `fe.soapbox.pub/login/external?server=gleasonator.com`.
 - Backups: restored Pleroma backups functionality.
+- Export: restored "Export data" to CSV.
 
 ### Changed
 - Posts: letterbox images to 19:6 again.

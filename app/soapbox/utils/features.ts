@@ -295,6 +295,9 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === TRUTHSOCIAL,
     ]),
 
+    /** Whether to allow exporting follows/blocks/mutes to CSV by paginating the API. */
+    exportData: true,
+
     /** Whether the accounts who favourited or emoji-reacted to a status can be viewed through the API. */
     exposableReactions: any([
       v.software === MASTODON,
