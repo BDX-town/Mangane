@@ -34,6 +34,7 @@ const messages = defineMessages({
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
   backups: { id: 'column.backups', defaultMessage: 'Backups' },
+  importData: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
 });
 
 /** User settings page. */
@@ -56,6 +57,7 @@ const Settings = () => {
   const navigateToMoveAccount = () => history.push('/settings/migration');
   const navigateToAliases = () => history.push('/settings/aliases');
   const navigateToBackups = () => history.push('/settings/backups');
+  const navigateToImportData = () => history.push('/settings/import');
 
   const navigateToBlocks = () => history.push('/blocks');
   const navigateToMutes = () => history.push('/mutes');
@@ -160,6 +162,10 @@ const Settings = () => {
 
                 {features.backups && (
                   <ListItem label={intl.formatMessage(messages.backups)} onClick={navigateToBackups} />
+                )}
+
+                {features.importData && (
+                  <ListItem label={intl.formatMessage(messages.importData)} onClick={navigateToImportData} />
                 )}
 
                 {features.security && (
