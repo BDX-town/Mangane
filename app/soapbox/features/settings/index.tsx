@@ -35,7 +35,7 @@ const messages = defineMessages({
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
   backups: { id: 'column.backups', defaultMessage: 'Backups' },
   importData: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
-  exportData: { id: 'settings.export_data', defaultMessage: 'Export data' },
+  exportData: { id: 'column.export_data', defaultMessage: 'Export data' },
 });
 
 /** User settings page. */
