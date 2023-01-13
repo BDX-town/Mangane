@@ -21,7 +21,7 @@ import {
 } from 'soapbox/components/ui';
 import Streamfield from 'soapbox/components/ui/streamfield/streamfield';
 import ThemeSelector from 'soapbox/features/ui/components/theme-selector';
-import { useAppSelector, useAppDispatch, useFeatures } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 
 import Accordion from '../ui/components/accordion';
@@ -51,7 +51,7 @@ const messages = defineMessages({
   singleUserModeHint: { id: 'soapbox_config.single_user_mode_hint', defaultMessage: 'Front page will redirect to a given user profile.' },
   singleUserModeProfileLabel: { id: 'soapbox_config.single_user_mode_profile_label', defaultMessage: 'Main user handle' },
   singleUserModeProfileHint: { id: 'soapbox_config.single_user_mode_profile_hint', defaultMessage: '@handle' },
-  homeDescription: { id: 'soapbox_config.home_description', defaultMessage: 'Instance\'s description shown in Home page. Supports HTML. Use [users] to insert the number of current users on the instance.' }
+  homeDescription: { id: 'soapbox_config.home_description', defaultMessage: 'Instance\'s description shown in Home page. Supports HTML. Use [users] to insert the number of current users on the instance.' },
 });
 
 type ValueGetter<T = Element> = (e: React.ChangeEvent<T>) => any;
@@ -72,7 +72,6 @@ const SoapboxConfig: React.FC = () => {
 
   const initialData = useAppSelector(state => state.soapbox);
 
-  const features = useFeatures();
 
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState(initialData);

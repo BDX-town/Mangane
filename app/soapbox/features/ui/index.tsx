@@ -33,7 +33,6 @@ import DefaultPage from 'soapbox/pages/default_page';
 // import GroupPage from 'soapbox/pages/group_page';
 import HomePage from 'soapbox/pages/home_page';
 import ProfilePage from 'soapbox/pages/profile_page';
-import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
 import StatusPage from 'soapbox/pages/status_page';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
@@ -183,7 +182,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       */}
       {features.federating && <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} publicRoute />}
       {features.federating && <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />}
-      {features.federating && <WrappedRoute path='/timeline/:instance' exact page={RemoteInstancePage} component={RemoteTimeline} content={children} />}
+      {features.federating && <WrappedRoute path='/timeline/:instance' exact page={HomePage} component={RemoteTimeline} content={children} />}
 
       {features.conversations && <WrappedRoute path='/conversations' page={DefaultPage} component={Conversations} content={children} />}
       {features.directTimeline && <WrappedRoute path='/messages' page={DefaultPage} component={DirectTimeline} content={children} />}
@@ -260,7 +259,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.federating && <WrappedRoute path='/domain_blocks' page={DefaultPage} component={DomainBlocks} content={children} />}
       <WrappedRoute path='/mutes' page={DefaultPage} component={Mutes} content={children} />
       {features.filters && <WrappedRoute path='/filters' page={DefaultPage} component={Filters} content={children} />}
-      <WrappedRoute path='/@:username' publicRoute exact component={AccountTimeline} page={ProfilePage} content={children} />
+      <WrappedRoute path='/@:username' publicRoute={!authenticatedProfile} exact component={AccountTimeline} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/with_replies' publicRoute={!authenticatedProfile} component={AccountTimeline} page={ProfilePage} content={children} componentParams={{ withReplies: true }} />
       <WrappedRoute path='/@:username/followers' publicRoute={!authenticatedProfile} component={Followers} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/following' publicRoute={!authenticatedProfile} component={Following} page={ProfilePage} content={children} />
