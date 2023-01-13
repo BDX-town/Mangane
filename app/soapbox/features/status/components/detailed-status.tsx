@@ -9,7 +9,7 @@ import StatusContent from 'soapbox/components/status_content';
 import { HStack, Stack, Text, Button } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
 import { getActualStatus } from 'soapbox/utils/status';
 
@@ -42,9 +42,17 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
 }) => {
   const intl = useIntl();
   const node = useRef<HTMLDivElement>(null);
+  const ownAccount = useOwnAccount();
   const locale = useAppSelector((state) => getSettings(state).get('locale')) as string;
   const localeTranslated = React.useMemo(() => (new Intl.DisplayNames([locale], { type: 'language' })).of(locale), [locale]);
   const features = useAppSelector((state) => getFeatures(state.instance));
+
+  const actualStatus = getActualStatus(status);
+  const { account } = actualStatus;
+
+  const canTranslate = React.useMemo(() =>
+    ownAccount && features.translations && actualStatus.language !== locale
+  , [ownAccount, features, actualStatus]);
 
   const handleExpandedToggle = () => {
     onToggleHidden(status);
@@ -58,10 +66,11 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
     onTranslate(status, locale);
   }, [status, locale]);
 
-  const actualStatus = getActualStatus(status);
+
   if (!actualStatus) return null;
-  const { account } = actualStatus;
   if (!account || typeof account !== 'object') return null;
+
+
 
   let statusTypeIcon = null;
 
@@ -90,7 +99,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
     <div className='border-box'>
       <div ref={node} className='detailed-actualStatus' tabIndex={-1}>
         {
-          features.translations && actualStatus.language !== locale && (
+          canTranslate && (
             <div className='mb-3 flex items-center justify-between py-1'>
               <Icon className='text-gray-300 dark:text-slate-500' src={require('@tabler/icons/note.svg')} />
               {
