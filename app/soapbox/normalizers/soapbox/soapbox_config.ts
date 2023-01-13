@@ -84,6 +84,8 @@ export const SoapboxConfigRecord = ImmutableRecord({
   ads: ImmutableList<Ad>(),
   appleAppId: null,
   authProvider: '',
+  customRegProvider: '',
+  customRegUrl: '',
   logo: '',
   logoDarkMode: null,
   banner: '',
