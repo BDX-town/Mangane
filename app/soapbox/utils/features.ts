@@ -370,6 +370,12 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Can set status visibility to local-only
+     * @see {@link https://docs.akkoma.dev/stable/development/API/differences_in_mastoapi_responses/#statuses}
+     */
+    localOnlyPrivacy: v.software === AKKOMA,
+
+    /**
      * Can perform moderation actions with account and reports.
      * @see {@link https://docs.joinmastodon.org/methods/admin/}
      * @see GET /api/v1/admin/reports
@@ -462,8 +468,6 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     privacyScopes: v.software !== TRUTHSOCIAL,
 
-
-
     /**
      * A directory of discoverable profiles from the instance.
      * @see {@link https://docs.joinmastodon.org/methods/instance/directory/}
@@ -482,7 +486,7 @@ const getInstanceFeatures = (instance: Instance) => {
       (v.software === PLEROMA || v.software === AKKOMA),
     ]),
 
-     
+
 
     /**
      * Can display a timeline of all known public statuses.
@@ -494,7 +498,7 @@ const getInstanceFeatures = (instance: Instance) => {
       (v.software === PLEROMA || v.software === AKKOMA),
     ]),
 
-   
+
 
     /**
      * Ability to quote posts in statuses.
