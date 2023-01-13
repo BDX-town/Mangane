@@ -25,7 +25,8 @@ const toSimplePolicy = (configs: ImmutableList<Config>): Policy => {
   const reducer = (acc: ImmutableMap<string, any>, curr: ImmutableMap<string, any>) => {
     const key = curr.getIn(['tuple', 0]) as string;
     const hosts = curr.getIn(['tuple', 1]) as ImmutableList<string>;
-    return acc.set(trimStart(key, ':'), ImmutableSet(hosts));
+    if ((typeof hosts !== 'object' || hosts === null)) return acc;
+    return acc.set(trimStart(key, ':'),  ImmutableSet(hosts));
   };
 
   if (config?.get) {
