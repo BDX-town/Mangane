@@ -28,7 +28,7 @@ First you need to download Mangane on your server.
 ```
 /opt/pleroma/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip
 ```
-*Note: The pleroma_ctl path may vary on your system*
+*Note: The pleroma_ctl path may vary on your system, if you are using Akkoma it's probably in /opt/akkoma/bin/*
 
 #### For Mix/Source install
 
@@ -231,6 +231,13 @@ Mangane supports customization of the user interface, to allow per instance bran
 * Default instance settings (e.g. default theme).
 
 Customization details can be found in the [Customization documentation](docs/customization.md)
+
+# Troubleshooting
+
+## Unable to upload some files (notably svg files)
+
+It's a [known issue](https://git.pleroma.social/pleroma/pleroma/-/issues/2768#note_97928) with the `exiftool` filter.
+To solve these upload problems, go to your admin-fe, search the upload section and remove `exiftool` from the enabled filters.
 
 # License & Credits
 
