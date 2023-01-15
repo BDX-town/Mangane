@@ -14,9 +14,7 @@ import {
 
 const initialState = SoapboxConfigRecord();
 
-const fallbackState = SoapboxConfigRecord({
-  brandColor: '#0482d8', // Azure
-});
+const fallbackState = SoapboxConfigRecord();
 
 const updateFromAdmin = (state, configs) => {
   try {

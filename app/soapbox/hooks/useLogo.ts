@@ -11,19 +11,17 @@ const useLogo = (): string => {
   const { logo, logoDarkMode } = useSoapboxConfig();
   const darkMode = useTheme() === 'dark';
 
-  /** Soapbox logo. */
-  const soapboxLogo = darkMode
-    ? require('images/soapbox-logo-white.svg')
-    : require('images/soapbox-logo.svg');
+  /** Mangane logo. */
+  const manganeLogo = require('images/mangane-logo.svg');
 
   // Use the right logo if provided, then use fallbacks.
   const getSrc = () => {
-    // In demo mode, use the Soapbox logo.
-    if (settings.get('demo')) return soapboxLogo;
+    // In demo mode, use the mangane logo.
+    if (settings.get('demo')) return manganeLogo;
 
     return (darkMode && logoDarkMode)
       ? logoDarkMode
-      : logo || logoDarkMode || soapboxLogo;
+      : logo || logoDarkMode || manganeLogo;
   };
 
   return getSrc();

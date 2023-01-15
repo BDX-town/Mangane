@@ -1,16 +1,15 @@
-import Immutable from 'immutable';
+import { List as ImmutableList } from 'immutable';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { fetchAccount } from 'soapbox/actions/accounts';
 import { prepareRequest } from 'soapbox/actions/consumer-auth';
-import { Button, Card, CardBody, Stack, Text } from 'soapbox/components/ui';
 import Account from 'soapbox/components/account';
+import { Button, Card, CardBody, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import RegistrationForm from 'soapbox/features/auth_login/components/registration_form';
 import { useAppDispatch, useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 import { capitalize } from 'soapbox/utils/strings';
-import { List as ImmutableList } from 'immutable';
 
 const LandingPage = () => {
   const dispatch = useAppDispatch();
@@ -23,14 +22,14 @@ const LandingPage = () => {
   const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
 
   React.useEffect(() => {
-    const staff = (instance.pleroma.getIn(["metadata", "staff_accounts"]) as ImmutableList<string>).map((s) => s.split('/').pop());
+    const staff = (instance.pleroma.getIn(['metadata', 'staff_accounts']) as ImmutableList<string>).map((s) => s.split('/').pop());
     staff.forEach((s) => dispatch(fetchAccount(s)));
   }, [instance, dispatch]);
 
   const staffAccounts = React.useMemo(() => {
-    if(accounts == null) return [];
+    // eslint-disable-next-line eqeqeq
+    if (accounts == null) return [];
     const a =  Object.values(accounts?.toJSON()).filter((a) => a.admin || a.moderator);
-    console.log(a);
     return a;
   }, [accounts]);
 
@@ -62,19 +61,19 @@ const LandingPage = () => {
     );
   };
 
-  /** Custom Registrations */ 
+  /** Custom Registrations */
   const renderCustom = () => {
     const { customRegProvider } = soapboxConfig;
     const { customRegUrl } = soapboxConfig;
     const onClickUrl = () => {
       window.open(customRegUrl);
-    }
+    };
 
     return (
       <Stack space={3}>
         <Stack>
           <Text size='2xl' weight='bold' align='center'>
-            <FormattedMessage id='registrations.redirect' defaultMessage="No account yet?" />
+            <FormattedMessage id='registrations.redirect' defaultMessage='No account yet?' />
           </Text>
         </Stack>
 
@@ -148,7 +147,7 @@ const LandingPage = () => {
     } else if (features.accountCreation && instance.registrations) {
       return renderOpen();
     } else if (soapboxConfig.customRegProvider) {
-        return renderCustom();
+      return renderCustom();
     } else {
       return renderClosed();
     }
@@ -171,16 +170,16 @@ const LandingPage = () => {
                 </Text>
                 <div>
                   <div className='flex justify-between'>
-                    <h2 className="text-xl text-gray-800">
+                    <h2 className='text-xl text-gray-800 dark:text-gray-300'>
                       <FormattedMessage id='landingPage.admins' defaultMessage='Moderators' />
                     </h2>
                   </div>
                   <a href={`mailto:${instance.email}`}>
-                      {instance.email}
-                    </a>
-                  <Stack space={3} className="mt-4">
+                    {instance.email}
+                  </a>
+                  <Stack space={3} className='mt-4'>
                     {
-                      staffAccounts.map((s) => <Account key={s.id} hideActions={true} account={s} />)
+                      staffAccounts.map((s) => <Account key={s.id} hideActions account={s} />)
                     }
                   </Stack>
                 </div>
