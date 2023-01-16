@@ -48,20 +48,20 @@ Log in with SSH your server and follow those instructions depending on your conf
 
 First you need to download Mangane on your server.
 
-#### 1) For OTP install
+#### For OTP install
 
 ```sh
 /opt/pleroma/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip
 ```
 *Note: The pleroma_ctl path may vary on your system, if you are using Akkoma it's probably in /opt/akkoma/bin/*
 
-#### 2) For Mix/Source install
+#### For Mix/Source install
 
 ```sh
 mix pleroma.frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip
 ```
 
-#### 3) With Admin FE 
+#### With Admin FE 
 
 If database configuration is enabled, you can also install Mangane from the Admin interface of Pleroma/Akkoma. 
 Just fill the form at Frontend/Available like this.
@@ -72,7 +72,7 @@ Just fill the form at Frontend/Available like this.
 
 Then you need to activate the frontend so it will be available to your users.
 
-#### 4) Config.exs
+#### With Config.exs file
 
 Edit your configuration files to add/edit the `config :pleroma, :frontends` section like this 
 
@@ -84,7 +84,7 @@ config :pleroma, :frontends,
   }
 ```
 
-#### 5) Admin FE with database configuration enabled
+#### With Admin FE (database configuration enabled)
 
 Just fill the form at Frontend/frontends/Primary like this.
 
