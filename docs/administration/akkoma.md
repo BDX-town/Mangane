@@ -14,4 +14,4 @@ Mangane shows a `Curated Timeline` entry in user's settings. If enabled, it will
 - Translation of statuses for local users.
 - Description on uploads for accessibility (empty by default).
 
-Note: at time of writing, most of thes features are _not supported_ (or not functional) with Pleroma.
+Note: at time of writing, most of these features are _not supported_ (or not functional) with Pleroma.
