@@ -14,68 +14,6 @@ We are speaking about Akkoma here since we are planning to add Akkoma specific f
 ![UI Dark](./docs/ui-dark.png)
 ![UI Light](./docs/ui-light.png)
 
-## :rocket: Deploy on Pleroma/Akkoma
-
-Installing Mangane on an existing Pleroma or Akkoma instance is easy.
-Log in with SSH your server and follow those instructions depending on your configuration.
-
-### Download
-
-First you need to download Mangane on your server.
-
-#### For OTP install
-
-```
-/opt/pleroma/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip
-```
-*Note: The pleroma_ctl path may vary on your system, if you are using Akkoma it's probably in /opt/akkoma/bin/*
-
-#### For Mix/Source install
-
-```
-mix pleroma.frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip
-```
-
-#### With Admin-fe 
-
-If database configuration is enabled, you can also install Mangane from the Admin interface of Pleroma/Akkoma. 
-Just fill the form at Frontend/Available like this.
-
-![admin-fe](./docs/admin-ui-1.png)
-
-### Activation
-
-Then you need to activate the frontend so it will be available to your users.
-
-#### Config.exs
-
-Edit your configuration files to add/edit the `config :pleroma, :frontends` section like this 
-
-```
-config :pleroma, :frontends,
-  primary: %{
-    "name" => "mangane",
-    "ref" => "dist"
-  }
-```
-
-##### Admin-fe with database configuration enabled
-
-Just fill the form at Frontend/frontends/Primary like this.
-
-![admin-fe](./docs/admin-ui-2.png)
-
-
-**That's it!** :tada:
-
-**Mangane FE is now installed.**  
-The change will take effect immediately, just refresh your browser tab, and Mangane will replace the default Pleroma FE or Akkoma FE interface. 
-You may need to restart Pleroma/Akkoma for the change to take effect.
-
-## :elephant: Deploy on Mastodon
-
-See [Installing Mangane over Mastodon](./docs/administration/mastodon.md).
-
 ## How does it work?
 
 Mangane is a [single-page application (SPA)](https://en.wikipedia.org/wiki/Single-page_application) that runs entirely in the browser with JavaScript.
@@ -83,7 +21,7 @@ Mangane is a [single-page application (SPA)](https://en.wikipedia.org/wiki/Singl
 It has a single HTML file, `index.html`, responsible only for loading the required JavaScript and CSS.
 It interacts with the backend through [XMLHttpRequest (XHR)](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest).
 
-Here is a simplified example with Nginx:
+Here is a simplified configuration example with Nginx:
 
 ```nginx
 location /api {
@@ -96,10 +34,88 @@ location / {
 }
 ```
 
-(See [`mastodon.conf`](https://github.com/BDX-town/Mangane/blob/master/installation/mastodon.conf) for a full example.)
+(See [`mastodon.conf`](https://github.com/BDX-town/Mangane/blob/master/installation/mastodon.conf) file for a full example.)
 
 Mangane incorporates much of the [Mastodon API](https://docs.joinmastodon.org/methods/), [Pleroma API](https://api.pleroma.social/), and more.
 It detects features supported by the backend to provide the right experience for the backend.
+
+# :rocket: Deploy on Pleroma/Akkoma
+
+Installing Mangane on an existing Pleroma or Akkoma instance is easy.
+Log in with SSH your server and follow those instructions depending on your configuration.
+
+## Download
+
+First you need to download Mangane on your server.
+
+#### For OTP install
+
+```sh
+/opt/pleroma/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip
+```
+*Note: The pleroma_ctl path may vary on your system, if you are using Akkoma it's probably in /opt/akkoma/bin/*
+
+#### For Mix/Source install
+
+```sh
+mix pleroma.frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip
+```
+
+#### With Admin FE 
+
+If database configuration is enabled, you can also install Mangane from the Admin interface of Pleroma/Akkoma. 
+Just fill the form at Frontend/Available like this.
+
+![admin-fe](./docs/admin-ui-1.png)
+
+### Activation
+
+Then you need to activate the frontend so it will be available to your users.
+
+#### With Config.exs file
+
+Edit your configuration files to add/edit the `config :pleroma, :frontends` section like this 
+
+```
+config :pleroma, :frontends,
+  primary: %{
+    "name" => "mangane",
+    "ref" => "dist"
+  }
+```
+
+#### With Admin FE (database configuration enabled)
+
+Just fill the form at Frontend/frontends/Primary like this.
+
+![admin-fe](./docs/admin-ui-2.png)
+
+
+**That's it!** :tada:
+
+Mangane FE is now installed.
+The change will take effect immediately, just refresh your browser tab, and Mangane will replace the default Pleroma FE or Akkoma FE interface. 
+You may need to restart Pleroma/Akkoma for the change to take effect.
+
+## Install in other environments
+
+#### Yunohost server
+
+If you use Plemora packaged application [Yunohost](https://github.com/YunoHost-Apps/pleroma_ynh), a Debian system dedicated to self hosting, you can install Makoma from the command line `pleroma_ctl`) or with Pleroma’s admin interface (Admin FE). Note that YNH modifies the organization of Pleroma files, in particular the location of the `static/` directory. See installing on Yunohost server [tutorial](https://pad.tmprs.net/s/0FZSy_kfG#) (in french only for now).
+
+#### Deploy on Mastodon
+
+Mangane is developed and tested only for Pleroma and Akkoma, this mean that there is _no_ explicit support to be installed as a frontend for a Mastodon instance.  If you want to try anyway, procede with caution. See the Soapbox (version 2) outdated documentation on [installing over Mastodon](./docs/administration/mastodon.md).
+
+# Upgrade
+
+To upgrade Mangane, run the install commands again, on top of actual version.
+
+```
+/opt/pleroma/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip
+```
+
+If you want, you can also upgrade from the admin interface (Admin FE), doing a _new_ installation.
 
 # Running locally
 
