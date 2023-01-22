@@ -39,21 +39,25 @@ Some information, for all intents and purposes, on the differences between a dir
 
 **For Akkoma**
 
-With Akkoma YNH package Mangane is _pre-installed_, but not activated as default frontend interface. 
-You need the CLI install command only for version upgrade.
+Important: with Akkoma YNH package Mangane is _pre-installed_, but not activated as default frontend interface. 
+You don’t need to run the CLI install command the first time, only later for version upgrade.
+
+Login with SSH to your server as `admin` user and exec this command:
 
 ```
-su pleroma -s $SHELL -lc "/var/www/akkoma/live/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip"
+sudo su akkoma -s $SHELL -lc "/var/www/akkoma/live/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip"
 ```
 
 **For Pleroma**
 
+Login with SSH to your server as `admin` user and exec this command:
+
 ```
-su pleroma -s $SHELL -lc "/var/www/pleroma/live/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip"
+sudo su pleroma -s $SHELL -lc "/var/www/pleroma/live/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip"
 ```
 It’s done!
 
 **Upgrade**
 
-To upgrade Mangane, you only have to run the _install command_ again on top of actual version.
+To upgrade Mangane, you only have to run the _install command_ again on top of actual version. Normaly _no need_ to reload Pleroma or Akkoma.
 
