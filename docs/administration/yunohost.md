@@ -2,6 +2,11 @@
 
 If you use Yonohost selfhosting system (based on Debian GNU/Linux), and run an Akkoma or Pleroma instance, you can install Mangane, but instructions are quite different.
 
+Yunohost Package code repositories:
+
+- [Akkoma YNH](https://github.com/YunoHost-Apps/akkoma_ynh)
+- [Pleroma YNH](https://github.com/YunoHost-Apps/pleroma_ynh)
+
 ## Yunohost App Package
 
 Some information, for all intents and purposes, on the differences between a direct installation of Akkoma or Pleroma (from the _releases_) and installation with the Yunohost application package.
