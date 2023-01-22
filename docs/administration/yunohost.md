@@ -39,6 +39,9 @@ Some information, for all intents and purposes, on the differences between a dir
 
 **For Akkoma**
 
+With Akkoma YNH package Mangane is _pre-installed_, but not activated as default frontend interface. 
+You need the CLI install command only for version upgrade.
+
 ```
 su pleroma -s $SHELL -lc "/var/www/akkoma/live/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip"
 ```
@@ -52,5 +55,5 @@ It’s done!
 
 **Upgrade**
 
-To upgrade Mangane, run the install commands again, on top of actual version.
+To upgrade Mangane, you only have to run the _install command_ again on top of actual version.
 
