@@ -506,6 +506,7 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     quotePosts: any([
       (v.software === PLEROMA || v.software === AKKOMA) && v.build === SOAPBOX && gte(v.version, '2.4.50'),
+      features.includes('quote_posting'),
       instance.feature_quote === true,
     ]),
 
