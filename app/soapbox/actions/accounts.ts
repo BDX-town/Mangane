@@ -891,7 +891,7 @@ const fetchPinnedAccounts = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(fetchPinnedAccountsRequest(id));
 
-    api(getState).get(`/api/v1/pleroma/accounts/${id}/endorsements`).then(response => {
+    api(getState).get(`/api/pleroma/accounts/${id}/endorsements`).then(response => {
       dispatch(importFetchedAccounts(response.data));
       dispatch(fetchPinnedAccountsSuccess(id, response.data, null));
     }).catch(error => {
