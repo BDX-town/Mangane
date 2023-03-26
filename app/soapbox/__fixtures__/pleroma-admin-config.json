@@ -3000,7 +3000,7 @@
         {
           "tuple": [
             ":path",
-            "/api/pleroma/app_metrics"
+            "/api/pleroma/v1/app_metrics"
           ]
         },
         {
