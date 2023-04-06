@@ -285,7 +285,7 @@ export const register = (params: Record<string, any>) =>
 
 export const fetchCaptcha = () =>
   (_dispatch: AppDispatch, getState: () => RootState) => {
-    return api(getState).get('/api/pleroma/captcha');
+    return api(getState).get('/api/v1/pleroma/captcha');
   };
 
 export const authLoggedIn = (token: Record<string, string | number>) =>
