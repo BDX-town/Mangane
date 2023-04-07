@@ -95,7 +95,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Ability to pin other accounts on one's profile.
      * @see POST /api/v1/accounts/:id/pin
      * @see POST /api/v1/accounts/:id/unpin
-     * @see GET /api/v1/pleroma/accounts/:id/endorsements
+     * @see GET  /api/v1/endorsements
      */
     accountEndorsements: (v.software === PLEROMA || v.software === AKKOMA) && gte(v.version, '2.4.50'),
 
@@ -506,6 +506,7 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     quotePosts: any([
       (v.software === PLEROMA || v.software === AKKOMA) && v.build === SOAPBOX && gte(v.version, '2.4.50'),
+      features.includes('quote_posting'),
       instance.feature_quote === true,
     ]),
 

@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "npx webpack-dev-server",
-    "dev": "${npm_execpath} run start",
+    "dev": "npm run start",
     "build": "npx webpack",
     "jsdoc": "npx jsdoc -c jsdoc.conf.js",
     "manage:translations": "node ./webpack/translationRunner.js",
