@@ -89,6 +89,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
   const settings = useAppSelector((state) => getSettings(state));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
+  const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
 
   const bubbleTimeline = features.bubbleTimeline && settings.getIn(['public', 'bubble']);
 
@@ -307,6 +308,15 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     onClick={onClose}
                   />
                 )}
+
+                {account.staff && (
+                  <SidebarLink
+                    to='/soapbox/admin'
+                    icon={require('@tabler/icons/dashboard.svg')}
+                    text={intl.formatMessage(messages.dashboard)}
+                    onClick={onClose}
+                  />
+                )}		
 
                 {features.import && (
                   <SidebarLink
