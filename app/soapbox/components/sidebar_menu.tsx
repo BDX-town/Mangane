@@ -37,6 +37,7 @@ const messages = defineMessages({
   addAccount: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
   direct: { id: 'column.direct', defaultMessage: 'Direct messages' },
   directory: { id: 'navigation_bar.profile_directory', defaultMessage: 'Profile directory' },
+  dashboard: { id: 'tabs_bar.dashboard', defaultMessage: 'Dashboard' },
 });
 
 interface ISidebarLink {
