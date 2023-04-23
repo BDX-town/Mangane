@@ -107,7 +107,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
       onMouseEnter={handleMouseEnter(dispatch)}
       onMouseLeave={handleMouseLeave(dispatch)}
     >
-      <Card variant='rounded' className='relative'>
+      <Card variant='rounded' className='relative isolate overflow-hidden'>
         <CardBody>
           <Stack space={2}>
             <BundleContainer fetchComponent={UserPanel}>
