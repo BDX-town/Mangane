@@ -35,6 +35,7 @@ import {
 import type { Menu as MenuType } from 'soapbox/components/dropdown_menu';
 
 const messages = defineMessages({
+  open_profile: { id: 'account.open_profile', defaultMessage: 'Open Original Profile' },
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
   linkVerifiedOn: { id: 'account.link_verified_on', defaultMessage: 'Ownership of this link was checked on {date}' },
   account_locked: { id: 'account.locked_info', defaultMessage: 'This account privacy status is set to locked. The owner manually reviews who can follow them.' },
@@ -368,6 +369,16 @@ const Header: React.FC<IHeader> = ({ account }) => {
       menu.push(null);
     }
 
+    if (isRemote(account)) {
+      const originalUrl = account.url;
+
+      menu.push({
+        text: intl.formatMessage(messages.open_profile),
+        icon: require('@tabler/icons/external-link.svg'),
+        href: originalUrl,
+        newTab: true,
+      });
+    }
     if (account.id === ownAccount?.id) {
       menu.push({
         text: intl.formatMessage(messages.edit_profile),
@@ -792,8 +803,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
                               {menuItem.icon && (
                                 <SvgIcon src={menuItem.icon} className='mr-3 h-5 w-5 text-gray-400 flex-none group-hover:text-gray-500' />
                               )}
-
-                              <div className='truncate'>{menuItem.text}</div>
+                              {menuItem.href ?
+                                <a
+                                  href={menuItem.href}
+                                  className='truncate'
+                                  target={menuItem.newTab ? '_blank' : '_self'}
+                                >{menuItem.text}</a>
+                                : <div className='truncate'>{menuItem.text}</div>}
                             </div>
                           </Comp>
                         );
