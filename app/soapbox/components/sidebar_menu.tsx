@@ -37,6 +37,7 @@ const messages = defineMessages({
   addAccount: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
   direct: { id: 'column.direct', defaultMessage: 'Direct messages' },
   directory: { id: 'navigation_bar.profile_directory', defaultMessage: 'Profile directory' },
+  dashboard: { id: 'tabs_bar.dashboard', defaultMessage: 'Dashboard' },
 });
 
 interface ISidebarLink {
@@ -89,7 +90,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
   const settings = useAppSelector((state) => getSettings(state));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
-  const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
 
   const bubbleTimeline = features.bubbleTimeline && settings.getIn(['public', 'bubble']);
 
@@ -316,7 +316,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     text={intl.formatMessage(messages.dashboard)}
                     onClick={onClose}
                   />
-                )}		
+                )}
 
                 {features.import && (
                   <SidebarLink
