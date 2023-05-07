@@ -277,15 +277,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Click to see {count} new {count, plural, one {post} other {posts}}",
-        "id": "status_list.queue_label"
-      }
-    ],
-    "path": "app/soapbox/components/__tests__/scroll-top-button.test.json"
-  },
-  {
-    "descriptors": [
-      {
         "defaultMessage": "Search for an account",
         "id": "account_search.placeholder"
       }
@@ -347,6 +338,71 @@
       }
     ],
     "path": "app/soapbox/components/domain.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Insert emoji",
+        "id": "emoji_button.label"
+      },
+      {
+        "defaultMessage": "Search…",
+        "id": "emoji_button.search"
+      },
+      {
+        "defaultMessage": "No emoji's found.",
+        "id": "emoji_button.not_found"
+      },
+      {
+        "defaultMessage": "Custom",
+        "id": "emoji_button.custom"
+      },
+      {
+        "defaultMessage": "Frequently used",
+        "id": "emoji_button.recent"
+      },
+      {
+        "defaultMessage": "Search results",
+        "id": "emoji_button.search_results"
+      },
+      {
+        "defaultMessage": "People",
+        "id": "emoji_button.people"
+      },
+      {
+        "defaultMessage": "Nature",
+        "id": "emoji_button.nature"
+      },
+      {
+        "defaultMessage": "Food & Drink",
+        "id": "emoji_button.food"
+      },
+      {
+        "defaultMessage": "Activity",
+        "id": "emoji_button.activity"
+      },
+      {
+        "defaultMessage": "Travel & Places",
+        "id": "emoji_button.travel"
+      },
+      {
+        "defaultMessage": "Objects",
+        "id": "emoji_button.objects"
+      },
+      {
+        "defaultMessage": "Symbols",
+        "id": "emoji_button.symbols"
+      },
+      {
+        "defaultMessage": "Flags",
+        "id": "emoji_button.flags"
+      },
+      {
+        "defaultMessage": "Skins",
+        "id": "emoji_button.skins"
+      }
+    ],
+    "path": "app/soapbox/components/emoji_picker.json"
   },
   {
     "descriptors": [
@@ -505,10 +561,6 @@
       {
         "defaultMessage": "Other instances may display the options you voted for",
         "id": "poll.non_anonymous.label"
-      },
-      {
-        "defaultMessage": "{count, plural, one {# person} other {# people}}",
-        "id": "poll.total_people"
       },
       {
         "defaultMessage": "{count, plural, one {# vote} other {# votes}}",
@@ -1279,6 +1331,10 @@
   },
   {
     "descriptors": [
+      {
+        "defaultMessage": "Open Original Profile",
+        "id": "account.open_profile"
+      },
       {
         "defaultMessage": "Edit profile",
         "id": "account.edit_profile"
@@ -2156,19 +2212,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Bubble timeline",
-        "id": "column.bubble"
-      },
-      {
-        "defaultMessage": "There is nothing here! Write something publicly, or manually follow users from other servers to fill it up",
-        "id": "empty_column.public"
-      }
-    ],
-    "path": "app/soapbox/features/bubble_timeline/index.json"
-  },
-  {
-    "descriptors": [
-      {
         "defaultMessage": "Audio notification on",
         "id": "chats.audio_toggle_on"
       },
@@ -2322,128 +2365,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Insert emoji",
-        "id": "emoji_button.label"
-      },
-      {
-        "defaultMessage": "Search…",
-        "id": "emoji_button.search"
-      },
-      {
-        "defaultMessage": "No emoji's found.",
-        "id": "emoji_button.not_found"
-      },
-      {
-        "defaultMessage": "Custom",
-        "id": "emoji_button.custom"
-      },
-      {
-        "defaultMessage": "Frequently used",
-        "id": "emoji_button.recent"
-      },
-      {
-        "defaultMessage": "Search results",
-        "id": "emoji_button.search_results"
-      },
-      {
-        "defaultMessage": "People",
-        "id": "emoji_button.people"
-      },
-      {
-        "defaultMessage": "Nature",
-        "id": "emoji_button.nature"
-      },
-      {
-        "defaultMessage": "Food & Drink",
-        "id": "emoji_button.food"
-      },
-      {
-        "defaultMessage": "Activity",
-        "id": "emoji_button.activity"
-      },
-      {
-        "defaultMessage": "Travel & Places",
-        "id": "emoji_button.travel"
-      },
-      {
-        "defaultMessage": "Objects",
-        "id": "emoji_button.objects"
-      },
-      {
-        "defaultMessage": "Symbols",
-        "id": "emoji_button.symbols"
-      },
-      {
-        "defaultMessage": "Flags",
-        "id": "emoji_button.flags"
-      }
-    ],
-    "path": "app/soapbox/features/compose/components/emoji_picker_dropdown.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "Insert emoji",
-        "id": "emoji_button.label"
-      },
-      {
-        "defaultMessage": "Search…",
-        "id": "emoji_button.search"
-      },
-      {
-        "defaultMessage": "No emoji's found.",
-        "id": "emoji_button.not_found"
-      },
-      {
-        "defaultMessage": "Custom",
-        "id": "emoji_button.custom"
-      },
-      {
-        "defaultMessage": "Frequently used",
-        "id": "emoji_button.recent"
-      },
-      {
-        "defaultMessage": "Search results",
-        "id": "emoji_button.search_results"
-      },
-      {
-        "defaultMessage": "People",
-        "id": "emoji_button.people"
-      },
-      {
-        "defaultMessage": "Nature",
-        "id": "emoji_button.nature"
-      },
-      {
-        "defaultMessage": "Food & Drink",
-        "id": "emoji_button.food"
-      },
-      {
-        "defaultMessage": "Activity",
-        "id": "emoji_button.activity"
-      },
-      {
-        "defaultMessage": "Travel & Places",
-        "id": "emoji_button.travel"
-      },
-      {
-        "defaultMessage": "Objects",
-        "id": "emoji_button.objects"
-      },
-      {
-        "defaultMessage": "Symbols",
-        "id": "emoji_button.symbols"
-      },
-      {
-        "defaultMessage": "Flags",
-        "id": "emoji_button.flags"
-      }
-    ],
-    "path": "app/soapbox/features/compose/components/emoji_picker_menu.json"
-  },
-  {
-    "descriptors": [
-      {
         "defaultMessage": "Post markdown enabled",
         "id": "compose_form.markdown.marked"
       },
@@ -2554,6 +2475,14 @@
       {
         "defaultMessage": "Do not post to public timelines",
         "id": "privacy.unlisted.long"
+      },
+      {
+        "defaultMessage": "Local-only",
+        "id": "privacy.local.short"
+      },
+      {
+        "defaultMessage": "Status is only visible to people on this instance",
+        "id": "privacy.local.long"
       },
       {
         "defaultMessage": "Followers-only",
@@ -3349,192 +3278,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Next",
-        "id": "enlistment.next"
-      },
-      {
-        "defaultMessage": "Ignore",
-        "id": "enlistment.pass"
-      }
-    ],
-    "path": "app/soapbox/features/enlistment/enlistment.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "Welcome on the Fediverse",
-        "id": "enlistment.step0.title"
-      },
-      {
-        "defaultMessage": "This website is your gateway to a network of independent servers that communicate together to form a larger social network: the fediverse. Each server is called an “instance”. Your instance is simply this site: ",
-        "id": "enlistment.step0.body"
-      },
-      {
-        "defaultMessage": "You full username",
-        "id": "enlistment.step0.username"
-      },
-      {
-        "defaultMessage": "It is this identifier that you can share on the fediverse",
-        "id": "enlistment.step0.explanation"
-      }
-    ],
-    "path": "app/soapbox/features/enlistment/steps/step0.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "If you exchange with a person from another instance, you must mention them with their <span class='font-bold'>@pseudo@instance</span><br/><br/> ex: <a href=' https://oslo.town/@matt'>@matt@oslo.town</a>, if you want to talk to the Oslo.town admin",
-        "id": "enlistment.step1.right"
-      },
-      {
-        "defaultMessage": "How it works ?",
-        "id": "enlistment.step1.title"
-      },
-      {
-        "defaultMessage": "Here you are on {title}. If you exchange with people from the same instance as you, you can simply mention them with {username}{br}{br}ex: {contact}, if you want to talk to the admin of {title}",
-        "id": "enlistment.step1.left"
-      },
-      {
-        "defaultMessage": "@username",
-        "id": "enlistment.step1.username"
-      },
-      {
-        "defaultMessage": "Don't worry though, when writing a post, autosuggestion will help you find the right mention! Moreover, if you reply to a post, the mention will automatically be written in the right way.",
-        "id": "enlistment.step1.explanation"
-      }
-    ],
-    "path": "app/soapbox/features/enlistment/steps/step1.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "Here you are on familiar ground: only your publications and those of the people you follow will be displayed on this thread.",
-        "id": "enlistment.step2.col1"
-      },
-      {
-        "defaultMessage": "Here is a bit like your neighborhood: you will only find publications from members of this server, whether you follow them or not.",
-        "id": "enlistment.step2.col2"
-      },
-      {
-        "defaultMessage": "Think outside the box and go explore the rest of the world: this thread displays posts from all known instances.",
-        "id": "enlistment.step2.col3"
-      },
-      {
-        "defaultMessage": "Home",
-        "id": "enlistment.step2.title1"
-      },
-      {
-        "defaultMessage": "At first it will be a little empty but don't worry we can help you fill it!",
-        "id": "enlistment.step2.explanation1"
-      },
-      {
-        "defaultMessage": "We usually call it \"local\" thread",
-        "id": "enlistment.step2.explanation2"
-      },
-      {
-        "defaultMessage": "Discover",
-        "id": "enlistment.step2.title3"
-      },
-      {
-        "defaultMessage": "We usually call it \"global\" or \"federated\" thread",
-        "id": "enlistment.step2.explanation3"
-      }
-    ],
-    "path": "app/soapbox/features/enlistment/steps/step2.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "Privacy",
-        "id": "enlistment.step3.title"
-      },
-      {
-        "defaultMessage": "This site offers precise control over who can see your posts and therefore interact with you.",
-        "id": "enlistment.step3.description"
-      },
-      {
-        "defaultMessage": "Public",
-        "id": "enlistment.step3.public-title"
-      },
-      {
-        "defaultMessage": "The post is displayed on all feeds, including other instances.",
-        "id": "enlistment.step3.public-description"
-      },
-      {
-        "defaultMessage": "Unlisted",
-        "id": "enlistment.step3.unlisted-title"
-      },
-      {
-        "defaultMessage": "The post is public but only appears in your subscribers' feeds and on your profile",
-        "id": "enlistment.step3.unlisted-description"
-      },
-      {
-        "defaultMessage": "Followers only",
-        "id": "enlistment.step3.followers-title"
-      },
-      {
-        "defaultMessage": "The post is not displayed on any public feeds and is only visible to people who follow you",
-        "id": "enlistment.step3.followers-description"
-      },
-      {
-        "defaultMessage": "Direct",
-        "id": "enlistment.step3.direct-title"
-      },
-      {
-        "defaultMessage": "The post is only visible to people mentioned via @username@instance",
-        "id": "enlistment.step3.direct-description"
-      }
-    ],
-    "path": "app/soapbox/features/enlistment/steps/step3.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "What's next ?",
-        "id": "enlistment.step4.title"
-      },
-      {
-        "defaultMessage": "You're almost ready to dive into the deep end.",
-        "id": "enlistment.step4.disclaimer"
-      },
-      {
-        "defaultMessage": "Think of {complete} (profile photo, banner and bio). You can even add hashtags to let people know your interests.",
-        "id": "enlistment.step4.point-1"
-      },
-      {
-        "defaultMessage": "complete your profile",
-        "id": "enlistment.step4.complete"
-      },
-      {
-        "defaultMessage": "It is customary to {publish} to make you discover. Do not forget the hashtags #introduction or #presentation.",
-        "id": "enlistment.step4.point-2"
-      },
-      {
-        "defaultMessage": "publish a presentation",
-        "id": "enlistment.step4.publish"
-      },
-      {
-        "defaultMessage": "Let's go, it's up to you to discover and tame the places, find people to follow, share your ideas while respecting the {conduct} and the values of {title}.",
-        "id": "enlistment.step4.point-3"
-      },
-      {
-        "defaultMessage": "code of conduct",
-        "id": "enlistment.step4.conduct"
-      },
-      {
-        "defaultMessage": "If you have any questions about this new playground, do not hesitate to ask questions to the people you meet online, the community is quite caring and welcoming. You will also find more comprehensive online resources {wiki}.",
-        "id": "enlistment.step4.informations"
-      },
-      {
-        "defaultMessage": "on the official wiki",
-        "id": "enlistment.step4.wiki"
-      }
-    ],
-    "path": "app/soapbox/features/enlistment/steps/step4.json"
-  },
-  {
-    "descriptors": [
-      {
         "defaultMessage": "Export data",
         "id": "column.export_data"
       },
@@ -4147,6 +3890,14 @@
         "id": "registration.closed_message"
       },
       {
+        "defaultMessage": "No account yet?",
+        "id": "registrations.redirect"
+      },
+      {
+        "defaultMessage": "Sign up with {provider}",
+        "id": "registration.custom_provider_tooltip"
+      },
+      {
         "defaultMessage": "Let's get started!",
         "id": "registrations.get_started"
       },
@@ -4657,154 +4408,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Welcome on the Fediverse",
-        "id": "enlistment.step0.title"
-      },
-      {
-        "defaultMessage": "This website is your gateway to a network of independent servers that communicate together to form a larger social network: the fediverse.",
-        "id": "enlistment.step0.body1"
-      },
-      {
-        "defaultMessage": "Each server is called an “instance”. Your instance is simply this site: ",
-        "id": "enlistment.step0.body2"
-      },
-      {
-        "defaultMessage": "You full username",
-        "id": "enlistment.step0.username"
-      },
-      {
-        "defaultMessage": "It is this identifier that you can share on the fediverse",
-        "id": "enlistment.step0.explanation"
-      },
-      {
-        "defaultMessage": "Next",
-        "id": "onboarding.next"
-      }
-    ],
-    "path": "app/soapbox/features/onboarding/steps/enlistement-1-step.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "If you exchange with a person from another instance, you must mention them with their <span class='font-bold'>@pseudo@instance</span><br/><br/> ex: <a href=' https://oslo.town/@matt'>@matt@oslo.town</a>, if you want to talk to the Oslo.town admin",
-        "id": "enlistment.step1.right"
-      },
-      {
-        "defaultMessage": "How it works ?",
-        "id": "enlistment.step1.title"
-      },
-      {
-        "defaultMessage": "Here you are on {title}. If you exchange with people from the same instance as you, you can simply mention them with {username}{br}{br}ex: {contact}, if you want to talk to the admin of {title}",
-        "id": "enlistment.step1.left"
-      },
-      {
-        "defaultMessage": "@username",
-        "id": "enlistment.step1.username"
-      },
-      {
-        "defaultMessage": "Don't worry though, when writing a post, autosuggestion will help you find the right mention! Moreover, if you reply to a post, the mention will automatically be written in the right way.",
-        "id": "enlistment.step1.explanation"
-      },
-      {
-        "defaultMessage": "Next",
-        "id": "onboarding.next"
-      }
-    ],
-    "path": "app/soapbox/features/onboarding/steps/enlistment-2-step.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "Here you are on familiar ground: only your publications and those of the people you follow will be displayed on this thread.",
-        "id": "enlistment.step2.col1"
-      },
-      {
-        "defaultMessage": "Here is a bit like your neighborhood: you will only find publications from members of this server, whether you follow them or not.",
-        "id": "enlistment.step2.col2"
-      },
-      {
-        "defaultMessage": "Think outside the box and go explore the rest of the world: this thread displays posts from all known instances.",
-        "id": "enlistment.step2.col3"
-      },
-      {
-        "defaultMessage": "Home",
-        "id": "enlistment.step2.title1"
-      },
-      {
-        "defaultMessage": "At first it will be a little empty but don't worry we can help you fill it!",
-        "id": "enlistment.step2.explanation1"
-      },
-      {
-        "defaultMessage": "We usually call it \"local\" thread",
-        "id": "enlistment.step2.explanation2"
-      },
-      {
-        "defaultMessage": "Discover",
-        "id": "enlistment.step2.title3"
-      },
-      {
-        "defaultMessage": "We usually call it \"global\" or \"federated\" thread",
-        "id": "enlistment.step2.explanation3"
-      },
-      {
-        "defaultMessage": "Next",
-        "id": "onboarding.next"
-      }
-    ],
-    "path": "app/soapbox/features/onboarding/steps/enlistment-3-step.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "Privacy",
-        "id": "enlistment.step3.title"
-      },
-      {
-        "defaultMessage": "This site offers precise control over who can see your posts and therefore interact with you.",
-        "id": "enlistment.step3.description"
-      },
-      {
-        "defaultMessage": "Public",
-        "id": "enlistment.step3.public-title"
-      },
-      {
-        "defaultMessage": "The post is displayed on all feeds, including other instances.",
-        "id": "enlistment.step3.public-description"
-      },
-      {
-        "defaultMessage": "Unlisted",
-        "id": "enlistment.step3.unlisted-title"
-      },
-      {
-        "defaultMessage": "The post is public but only appears in your subscribers' feeds and on your profile",
-        "id": "enlistment.step3.unlisted-description"
-      },
-      {
-        "defaultMessage": "Followers only",
-        "id": "enlistment.step3.followers-title"
-      },
-      {
-        "defaultMessage": "The post is not displayed on any public feeds and is only visible to people who follow you",
-        "id": "enlistment.step3.followers-description"
-      },
-      {
-        "defaultMessage": "Direct",
-        "id": "enlistment.step3.direct-title"
-      },
-      {
-        "defaultMessage": "The post is only visible to people mentioned via @username@instance",
-        "id": "enlistment.step3.direct-description"
-      },
-      {
-        "defaultMessage": "Next",
-        "id": "onboarding.next"
-      }
-    ],
-    "path": "app/soapbox/features/onboarding/steps/enlistment-4-step.json"
-  },
-  {
-    "descriptors": [
-      {
         "defaultMessage": "Here you are on familiar ground: only your publications and those of the people you follow will be displayed on this thread.",
         "id": "onboarding.feeds.col1"
       },
@@ -4924,31 +4527,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Looks like no suggestions could be generated for you. You can try using search to look for people you might know or explore trending hashtags.",
-        "id": "empty_column.follow_recommendations"
-      },
-      {
-        "defaultMessage": "Suggested accounts",
-        "id": "onboarding.suggestions.title"
-      },
-      {
-        "defaultMessage": "Here are a few of the most popular accounts you might like.",
-        "id": "onboarding.suggestions.subtitle"
-      },
-      {
-        "defaultMessage": "Done",
-        "id": "onboarding.done"
-      },
-      {
-        "defaultMessage": "Skip for now",
-        "id": "onboarding.skip"
-      }
-    ],
-    "path": "app/soapbox/features/onboarding/steps/suggested-accounts-step.json"
-  },
-  {
-    "descriptors": [
-      {
         "defaultMessage": "Welcome on the Fediverse",
         "id": "onboarding.welcome.title"
       },
@@ -5009,6 +4587,10 @@
       {
         "defaultMessage": "Public",
         "id": "preferences.options.privacy_public"
+      },
+      {
+        "defaultMessage": "Local-only",
+        "id": "preferences.options.privacy_local"
       },
       {
         "defaultMessage": "Unlisted",
@@ -5183,10 +4765,6 @@
   },
   {
     "descriptors": [
-      {
-        "defaultMessage": "Federated timeline",
-        "id": "column.remote"
-      },
       {
         "defaultMessage": "You are viewing the timeline of {instance}.",
         "id": "remote_timeline.filter_message"
@@ -5492,23 +5070,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Ticker",
-        "id": "soapbox_config.crypto_address.meta_fields.ticker_placeholder"
-      },
-      {
-        "defaultMessage": "Address",
-        "id": "soapbox_config.crypto_address.meta_fields.address_placeholder"
-      },
-      {
-        "defaultMessage": "Note (optional)",
-        "id": "soapbox_config.crypto_address.meta_fields.note_placeholder"
-      }
-    ],
-    "path": "app/soapbox/features/soapbox_config/components/crypto-address-input.json"
-  },
-  {
-    "descriptors": [
-      {
         "defaultMessage": "Label",
         "id": "soapbox_config.home_footer.meta_fields.label_placeholder"
       },
@@ -5518,31 +5079,6 @@
       }
     ],
     "path": "app/soapbox/features/soapbox_config/components/footer-link-input.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "Select icon",
-        "id": "icon_button.label"
-      },
-      {
-        "defaultMessage": "Search…",
-        "id": "emoji_button.search"
-      },
-      {
-        "defaultMessage": "No icons!! (╯°□°）╯︵ ┻━┻",
-        "id": "icon_button.not_found"
-      },
-      {
-        "defaultMessage": "Icons",
-        "id": "icon_button.icons"
-      },
-      {
-        "defaultMessage": "Search results",
-        "id": "emoji_button.search_results"
-      }
-    ],
-    "path": "app/soapbox/features/soapbox_config/components/icon_picker_dropdown.json"
   },
   {
     "descriptors": [
