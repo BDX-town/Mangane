@@ -1,7 +1,7 @@
 ## **How to add new emojis to a reaction on a status?**
 
 1. We clone the Mangane repository to our computer/server and then open the file **app/soapbox/locales/defaultMessages.json**
-In it, we look for the field `"defaultMessage": "Love",_"`.
+In it, we look for the field `"defaultMessage": "Love","`.
 After it, we indent to write code for our emoji (to make the translation work).
 ![](https://telegra.ph/file/2aac2c64934dae56f8357.png)
 In my case, I translated the emoji "Okay" and named its ID as "status.reactions.okay".
