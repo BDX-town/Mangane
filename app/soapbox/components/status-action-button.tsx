@@ -51,7 +51,7 @@ const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButt
           src={icon}
           className={classNames(
             {
-              'fill-accent-300 hover:fill-accent-300': active && filled && color === COLORS.accent,
+              'fill-accent-300 text-accent-300 hover:fill-accent-300': active && filled && color === COLORS.accent,
             },
             iconClassName,
           )}

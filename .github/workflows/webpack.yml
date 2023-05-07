@@ -1,4 +1,4 @@
-name: NodeJS with Webpack
+name: NodeJs with Webpack
 
 on:
   push:
@@ -43,7 +43,7 @@ jobs:
       id: create_release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.access_token }}
       with:
         tag_name: ${{fromJson(steps.set_var.outputs.packageJson).version}}
         release_name: ${{fromJson(steps.set_var.outputs.packageJson).version}}
@@ -52,7 +52,7 @@ jobs:
         
     - uses: actions/upload-release-asset@v1.0.1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.access_token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./static.zip
@@ -61,6 +61,6 @@ jobs:
 
     - uses: eregon/publish-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.access_token }}
       with:
         release_id: ${{ steps.create_release.outputs.id }}
