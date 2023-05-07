@@ -260,7 +260,7 @@ To solve these upload problems, go to your admin-fe, search the upload section a
 ## Messy colors / style configuration
 
 Akkoma recently changed their Content Security Policy (Content-Secutiry-Policy HTTP response header) to make it more strict.
-If you notice any issue with your UI style configuration, please update your reverse-proxy configuration to override Akkoma's CSP header so the `style-src` section is set to `'self' 'unsafe-inline';`
+If you notice any issue with your UI style configuration, please update your HTTP server configuration to override Akkoma's CSP header so the `style-src` section is set to `'self' 'unsafe-inline';`
 
 Here is a example configuration for nginx:
 ```
