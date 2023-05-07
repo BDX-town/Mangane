@@ -97,6 +97,8 @@ Mangane is now installed.
 The change will take effect immediately, just refresh your browser tab, and Mangane will replace the default Pleroma FE or Akkoma FE interface. 
 You may need to restart Pleroma/Akkoma for the change to take effect.
 
+If you notice some issue with UI colors, please take a look at the Troubleshooting section.
+
 ## Install in other environments
 
 #### Yunohost server
@@ -254,6 +256,18 @@ Customization details can be found in the [Customization documentation](docs/cus
 
 It's a [known issue](https://git.pleroma.social/pleroma/pleroma/-/issues/2768#note_97928) with the `exiftool` filter.
 To solve these upload problems, go to your admin-fe, search the upload section and remove `exiftool` from the enabled filters.
+
+## Messy colors / style configuration
+
+Akkoma recently changed their Content Security Policy (Content-Secutiry-Policy HTTP response header) to make it more strict.
+If you notice any issue with your UI style configuration, please update your HTTP server configuration to override Akkoma's CSP header so the `style-src` section is set to `'self' 'unsafe-inline';`
+
+Here is a example configuration for nginx:
+```
+# add style-src for mangane
+proxy_set_header Content-Security-Policy "upgrade-insecure-requests;script-src 'self';connect-src 'self' blob: https://example.com wss://example.com;media-src 'self' https:;img-src 'self' data: blob: https:;default-src 'none';base-uri 'self';frame-ancestors 'none';style-src 'self' 'unsafe-inline';font-src 'self';manifest-src 'self';";
+```
+*Please replace https://example.com with your own domain*
 
 # License & Credits
 
