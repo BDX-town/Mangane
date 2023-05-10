@@ -143,6 +143,7 @@ export const statusToMentionsAccountIdsArray = (status: StatusEntity, account: A
 function clearAll(state: State) {
   return ReducerRecord({
     content_type: state.default_content_type,
+    default_content_type: state.default_content_type,
     privacy: state.default_privacy,
     idempotencyKey: uuid(),
   });
