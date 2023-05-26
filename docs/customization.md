@@ -19,7 +19,7 @@ These settings are exposed through the API under GET `/api/v1/instance`.
 Most settings are specific to your Mangane installation and not the entire website.
 That includes the logo, default theme, and more.
 
-- On Pleroma, admins can edit these settings directly from Mangane. Just click "Mangane config" in the sidebar, or navigate directly to `/mangane/config`.
+- On Pleroma, admins can edit these settings directly from Mangane. Just click "Mangane config" in the sidebar, or navigate directly to `/soapbox/config`.
 - On Mastodon, admins need to upload a JSON file with the settings, and make it available at `https://yoursite.tld/instance/mangane.json`.
 
 If using Pleroma, these settings are exposed through the API under GET `/api/pleroma/frontend_configurations`.
