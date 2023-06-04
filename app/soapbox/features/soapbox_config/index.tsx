@@ -44,6 +44,7 @@ const messages = defineMessages({
   verifiedCanEditNameLabel: { id: 'soapbox_config.verified_can_edit_name_label', defaultMessage: 'Allow verified users to edit their own display name.' },
   displayFqnLabel: { id: 'soapbox_config.display_fqn_label', defaultMessage: 'Display domain (eg @user@domain) for local accounts.' },
   greentextLabel: { id: 'soapbox_config.greentext_label', defaultMessage: 'Enable greentext support' },
+  quoteRT: { id: 'soapbox_config.quote_rt', defaultMessage: 'Enable Quote RT' },
   promoPanelIconsLink: { id: 'soapbox_config.hints.promo_panel_icons.link', defaultMessage: 'Soapbox Icons List' },
   authenticatedProfileLabel: { id: 'soapbox_config.authenticated_profile_label', defaultMessage: 'Profiles require authentication' },
   authenticatedProfileHint: { id: 'soapbox_config.authenticated_profile_hint', defaultMessage: 'Users must be logged-in to view replies and media on user profiles.' },
@@ -259,6 +260,13 @@ const SoapboxConfig: React.FC = () => {
               <Toggle
                 checked={soapbox.greentext === true}
                 onChange={handleChange(['greentext'], (e) => e.target.checked)}
+              />
+            </ListItem>
+
+            <ListItem label={intl.formatMessage(messages.quoteRT)}>
+              <Toggle
+                checked={soapbox.quotePosts === true}
+                onChange={handleChange(['quotePosts'], (e) => e.target.checked)}
               />
             </ListItem>
 
