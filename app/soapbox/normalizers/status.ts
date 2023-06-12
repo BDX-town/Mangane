@@ -19,7 +19,7 @@ import { normalizePoll } from 'soapbox/normalizers/poll';
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { Account, Attachment, Card, Emoji, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
 
-export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct';
+export type StatusVisibility = 'public' | 'unlisted' | 'local' | 'private' | 'direct';
 
 // https://docs.joinmastodon.org/entities/status/
 export const StatusRecord = ImmutableRecord({
