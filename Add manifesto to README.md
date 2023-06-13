@@ -10,6 +10,25 @@ Moreover, Mangane already has a feature detection system allowing us to adapt th
 
 We are speaking about Akkoma here since we are planning to add Akkoma specific features to the project without breaking any existing compatibility.
 
+## Manifesto
+
+Mangane is a fork of an existing project driven by a fundamental disagreement regarding the opinions and actions of its maintainer. This manifesto serves as a declaration of our motivations and the principles that guide the development of Mangane.
+
+### Our Vision
+Mangane aims to provide a more accessible interface compared to the majority of existing software interfaces. We recognize that many platforms overlook the importance of user-friendliness and fail to incorporate familiar design patterns that users are accustomed to. By leveraging well-established user interface conventions, we strive to create an inclusive environment that welcomes users from diverse backgrounds and skill levels.
+
+### Supporting Akkoma and Promoting Sustainability
+One of the primary reasons Mangane embraces Akkoma is because of its alignment with our software's objectives. Akkoma has been chosen not only for its capabilities but also because it can operate efficiently on modest hardware configurations. This choice reflects our commitment to energy efficiency and sustainability, allowing users to engage with technology while minimizing their environmental impact.
+
+### Transparency and Accountability
+We understand the importance of demonstrating our good intentions and the integrity of our project. To that end, we invite interested parties to explore the following resources as evidence of our commitment to ethical practices:
+
+* [Manifesto of bdx.town (available in French)](https://bdx.town/about)
+* [Rules of bdx.town (available in French)](https://bdx.town/about/rules)
+* [Publicly accessible blocklist of bdx.town](https://bdx.town/api/v1/instance) (pleroma -> metadata -> federation -> mrf_simple -> reject)
+
+These resources provide insight into the principles upheld by the individuals involved in Mangane and showcase our dedication to creating a safe and respectful digital environment.
+
 ![UI Mixed](./docs/ui-mixed.png)
 ![UI Dark](./docs/ui-dark.png)
 ![UI Light](./docs/ui-light.png)
