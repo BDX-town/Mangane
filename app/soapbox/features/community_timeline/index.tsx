@@ -6,9 +6,10 @@ import { expandCommunityTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Column } from 'soapbox/components/ui';
 import { useAppDispatch, useSettings } from 'soapbox/hooks';
-import { isMobile } from 'soapbox/is_mobile';
 
 import Timeline from '../ui/components/timeline';
+
+import ColumnSettings from './containers/column_settings_container';
 
 const messages = defineMessages({
   title: { id: 'column.community', defaultMessage: 'Local timeline' },
@@ -33,13 +34,11 @@ const CommunityTimeline = () => {
 
   useEffect(() => {
     dispatch(expandCommunityTimeline({ onlyMedia } as any));
-    if (!isMobile(window.innerWidth)) {
-      const disconnect = dispatch(connectCommunityStream({ onlyMedia } as any));
+    const disconnect = dispatch(connectCommunityStream({ onlyMedia } as any));
 
-      return () => {
-        disconnect();
-      };
-    }
+    return () => {
+      disconnect();
+    };
   }, [onlyMedia]);
 
   return (
