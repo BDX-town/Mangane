@@ -368,7 +368,7 @@ const Status: React.FC<IStatus> = (props) => {
               onToggleVisibility={handleToggleMediaVisibility}
             />
 
-            {quote}
+            {!actualStatus.hidden && quote}
 
             {!hideActionBar && (
               <div className='pt-4'>

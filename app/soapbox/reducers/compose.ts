@@ -101,6 +101,7 @@ export const ReducerRecord = ImmutableRecord({
   sensitive: false,
   spoiler: false,
   spoiler_text: '',
+  spoiler_forced: false,
   suggestions: ImmutableList(),
   suggestion_token: null as string | null,
   tagHistory: ImmutableList<string>(),
@@ -360,8 +361,9 @@ export default function compose(state = ReducerRecord({ idempotencyKey: uuid(), 
         map.set('caretPosition', null);
         map.set('idempotencyKey', uuid());
         map.set('content_type', state.default_content_type);
-        map.set('spoiler', false);
-        map.set('spoiler_text', '');
+        map.set('spoiler', !!action.status.getIn(['pleroma', 'spoiler_text', 'text/plain']));
+        map.set('spoiler_forced', !!action.status.getIn(['pleroma', 'spoiler_text', 'text/plain']));
+        map.set('spoiler_text', action.status.getIn(['pleroma', 'spoiler_text', 'text/plain']) || '');
       });
     case COMPOSE_SUBMIT_REQUEST:
       return state.set('is_submitting', true);
