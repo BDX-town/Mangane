@@ -166,7 +166,7 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
 
   const options = [
     { icon: require('@tabler/icons/world.svg'), value: 'public', text: intl.formatMessage(messages.public_short), meta: intl.formatMessage(messages.public_long) },
-    { icon: require('@tabler/icons/lock-open.svg'), value: 'unlisted', text: intl.formatMessage(messages.unlisted_short), meta: intl.formatMessage(messages.unlisted_long) },
+    { icon: require('@tabler/icons/eye-off.svg'), value: 'unlisted', text: intl.formatMessage(messages.unlisted_short), meta: intl.formatMessage(messages.unlisted_long) },
     ...(features.localOnlyPrivacy ? [{ icon: logo, value: 'local', text: intl.formatMessage(messages.local_short), meta: intl.formatMessage(messages.local_long) }] : []),
     { icon: require('@tabler/icons/lock.svg'), value: 'private', text: intl.formatMessage(messages.private_short), meta: intl.formatMessage(messages.private_long) },
     { icon: require('@tabler/icons/mail.svg'), value: 'direct', text: intl.formatMessage(messages.direct_short), meta: intl.formatMessage(messages.direct_long) },

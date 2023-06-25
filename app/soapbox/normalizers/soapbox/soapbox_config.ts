@@ -99,6 +99,7 @@ export const SoapboxConfigRecord = ImmutableRecord({
   gdpr: false,
   gdprUrl: '',
   greentext: false,
+  quotePosts: true,
   promoPanel: PromoPanelRecord(),
   navlinks: ImmutableMap({
     homeFooter: ImmutableList<FooterItem>(),

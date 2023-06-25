@@ -11,7 +11,7 @@ import { toggleStatusHidden } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
-import { useAppDispatch, useSettings } from 'soapbox/hooks';
+import { useAppDispatch, useSettings, useLogo } from 'soapbox/hooks';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status';
 
 import StatusActionBar from './status-action-bar';
@@ -78,6 +78,8 @@ const Status: React.FC<IStatus> = (props) => {
   const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
 
   const actualStatus = getActualStatus(status);
+
+  const logo = useLogo();
 
   // Track height changes we know about to compensate scrolling.
   useEffect(() => {
@@ -207,61 +209,6 @@ const Status: React.FC<IStatus> = (props) => {
     );
   }
 
-  if (status.reblog && typeof status.reblog === 'object') {
-    const displayNameHtml = { __html: String(status.getIn(['account', 'display_name_html'])) };
-
-    reblogElement = (
-      <NavLink
-        to={`/@${status.getIn(['account', 'acct'])}`}
-        onClick={(event) => event.stopPropagation()}
-        className='hidden sm:flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 hover:underline'
-      >
-        <Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />
-
-        <HStack alignItems='center'>
-          <FormattedMessage
-            id='status.reblogged_by'
-            defaultMessage='{name} reposted'
-            values={{
-              name: <bdi className='max-w-[100px] truncate pr-1'>
-                <strong className='text-gray-800 dark:text-gray-200' dangerouslySetInnerHTML={displayNameHtml} />
-              </bdi>,
-            }}
-          />
-        </HStack>
-      </NavLink>
-    );
-
-    reblogElementMobile = (
-      <div className='pb-5 -mt-2 sm:hidden truncate'>
-        <NavLink
-          to={`/@${status.getIn(['account', 'acct'])}`}
-          onClick={(event) => event.stopPropagation()}
-          className='flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 hover:underline'
-        >
-          <Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />
-
-          <span>
-            <FormattedMessage
-              id='status.reblogged_by'
-              defaultMessage='{name} reposted'
-              values={{
-                name: <bdi>
-                  <strong className='text-gray-800 dark:text-gray-200' dangerouslySetInnerHTML={displayNameHtml} />
-                </bdi>,
-              }}
-            />
-          </span>
-        </NavLink>
-      </div>
-    );
-
-    rebloggedByText = intl.formatMessage(
-      messages.reblogged_by,
-      { name: String(status.getIn(['account', 'acct'])) },
-    );
-  }
-
   let quote;
 
   if (actualStatus.quote) {
@@ -299,7 +246,10 @@ const Status: React.FC<IStatus> = (props) => {
         className={classNames('status cursor-pointer', { focusable })}
         tabIndex={focusable && !muted ? 0 : undefined}
         data-featured={featured ? 'true' : null}
-        aria-label={textForScreenReader(intl, actualStatus, rebloggedByText)}
+        aria-label={textForScreenReader(intl, actualStatus, intl.formatMessage(
+          messages.reblogged_by,
+          { name: String(status.getIn(['account', 'acct'])) },
+        ))}
         ref={node}
         onClick={() => history.push(statusUrl)}
         role='link'
@@ -324,21 +274,60 @@ const Status: React.FC<IStatus> = (props) => {
           })}
           data-id={status.id}
         >
-          {reblogElementMobile}
 
-          <div className='mb-4'>
-            <AccountContainer
-              key={String(actualStatus.getIn(['account', 'id']))}
-              id={String(actualStatus.getIn(['account', 'id']))}
-              timestamp={actualStatus.created_at}
-              timestampUrl={statusUrl}
-              action={reblogElement}
-              hideActions={!reblogElement}
-              showEdit={!!actualStatus.edited_at}
-              showProfileHoverCard={hoverable}
-              withLinkToProfile={hoverable}
-            />
+          <div className='flex mb-3'>
+            <div className='grow'>
+              {
+                status.reblog && typeof status.reblog === 'object' && (
+                  <NavLink
+                    to={`/@${status.getIn(['account', 'acct'])}`}
+                    onClick={(event) => event.stopPropagation()}
+                    className='flex items-center mb-3 text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 hover:underline'
+                  >
+                    <Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />
+
+                    <HStack alignItems='center'>
+                      <FormattedMessage
+                        id='status.reblogged_by'
+                        defaultMessage='{name} reposted'
+                        values={{
+                          name: <bdi className='max-w-[100px] truncate pr-1'>
+                            <strong className='text-gray-800 dark:text-gray-200' dangerouslySetInnerHTML={{ __html: String(status.getIn(['account', 'display_name_html'])) }} />
+                          </bdi>,
+                        }}
+                      />
+                    </HStack>
+                  </NavLink>
+                )
+              }
+              <AccountContainer
+                key={String(actualStatus.getIn(['account', 'id']))}
+                id={String(actualStatus.getIn(['account', 'id']))}
+                timestamp={actualStatus.created_at}
+                timestampUrl={statusUrl}
+                hideActions
+                showEdit={!!actualStatus.edited_at}
+                showProfileHoverCard={hoverable}
+                withLinkToProfile={hoverable}
+              />
+            </div>
+            {
+              actualStatus.visibility === 'public' && <Icon aria-hidden src={require('@tabler/icons/world.svg')} className='h-5 w-5 shrink-0 text-gray-400 dark:text-gray-600' />
+            }
+            {
+              actualStatus.visibility === 'unlisted' && <Icon aria-hidden src={require('@tabler/icons/eye-off.svg')} className='h-5 w-5 shrink-0 text-gray-400 dark:text-gray-600' />
+            }
+            {
+              actualStatus.visibility === 'local' && <Icon aria-hidden src={logo} className='h-5 w-5 shrink-0 text-gray-400 dark:text-gray-600' />
+            }
+            {
+              actualStatus.visibility === 'private' && <Icon aria-hidden src={require('@tabler/icons/lock.svg')} className='h-5 w-5 shrink-0 text-gray-400 dark:text-gray-600' />
+            }
+            {
+              actualStatus.visibility === 'direct' && <Icon aria-hidden src={require('@tabler/icons/mail.svg')} className='h-5 w-5 shrink-0 text-gray-400 dark:text-gray-600' />
+            }
           </div>
+
 
           <div className='status__content-wrapper'>
             {!group && actualStatus.group && (
@@ -368,7 +357,7 @@ const Status: React.FC<IStatus> = (props) => {
               onToggleVisibility={handleToggleMediaVisibility}
             />
 
-            {quote}
+            {!actualStatus.hidden && quote}
 
             {!hideActionBar && (
               <div className='pt-4'>

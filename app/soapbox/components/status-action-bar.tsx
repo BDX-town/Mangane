@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { List as ImmutableList } from 'immutable';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -108,6 +108,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const account = useOwnAccount();
   const isStaff = account ? account.staff : false;
   const isAdmin = account ? account.admin : false;
+
+  const quotePosts = useMemo(() => features.quotePosts && soapboxConfig.quotePosts, [features, soapboxConfig]);
 
   if (!status) {
     return null;
@@ -601,7 +603,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         text={withLabels ? intl.formatMessage(messages.reply) : undefined}
       />
 
-      {(features.quotePosts && me) ? (
+      {(quotePosts && me) ? (
         <DropdownMenuContainer
           items={reblogMenu}
           disabled={!publicStatus}

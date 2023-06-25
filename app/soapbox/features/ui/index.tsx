@@ -35,6 +35,7 @@ import HomePage from 'soapbox/pages/home_page';
 import ProfilePage from 'soapbox/pages/profile_page';
 import StatusPage from 'soapbox/pages/status_page';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
+import { ConfigDB } from 'soapbox/utils/config_db';
 import { isStandalone } from 'soapbox/utils/state';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
 
@@ -116,6 +117,7 @@ import {
 } from './util/async-components';
 import { WrappedRoute } from './util/react_router_helpers';
 
+
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
 import 'soapbox/components/status';
@@ -161,6 +163,8 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
   const features = useFeatures();
   const { search } = useLocation();
 
+  const configuration = useAppSelector((state) => state.admin.get('configs'));
+  const isLdapEnabled = React.useMemo(() => ConfigDB.find(configuration, ':pleroma', ':ldap')?.get('value').find((e) => e.get('tuple').get(0) === ':enabled')?.getIn(['tuple', 1]), [configuration]);
   const { authenticatedProfile, cryptoAddresses } = useSoapboxConfig();
   const hasCrypto = cryptoAddresses.size > 0;
 
@@ -282,7 +286,11 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.accountAliases && <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />}
       {features.accountMoving && <WrappedRoute path='/settings/migration' page={DefaultPage} component={Migration} content={children} />}
       <WrappedRoute path='/settings/email' page={DefaultPage} component={EditEmail} content={children} />
-      <WrappedRoute path='/settings/password' page={DefaultPage} component={EditPassword} content={children} />
+      {
+        !isLdapEnabled && (
+          <WrappedRoute path='/settings/password' page={DefaultPage} component={EditPassword} content={children} />
+        )
+      }
       <WrappedRoute path='/settings/account' page={DefaultPage} component={DeleteAccount} content={children} />
       <WrappedRoute path='/settings/media_display' page={DefaultPage} component={MediaDisplay} content={children} />
       <WrappedRoute path='/settings/mfa' page={DefaultPage} component={MfaForm} exact />

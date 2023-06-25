@@ -1036,6 +1036,7 @@
   "soapbox_config.promo_panel.meta_fields.icon_placeholder": "图标",
   "soapbox_config.promo_panel.meta_fields.label_placeholder": "标签",
   "soapbox_config.promo_panel.meta_fields.url_placeholder": "URL",
+  "soapbox_config.quote_rt": "Enable Quote RT",
   "soapbox_config.raw_json_hint": "直接编辑JSON数据。将覆盖此页所有设定。单击以应用更改。",
   "soapbox_config.raw_json_label": "高级：编辑JSON数据",
   "soapbox_config.save": "保存更改",

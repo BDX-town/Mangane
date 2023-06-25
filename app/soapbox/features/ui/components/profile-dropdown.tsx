@@ -116,9 +116,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
                 {menuItem.toggle}
               </div>
             );
-          } else if (!menuItem.text) {
-            return <MenuDivider key={idx} />;
-          } else {
+          } else if (menuItem.text) {
             const Comp: any = menuItem.action ? MenuItem : MenuLink;
             const itemProps = menuItem.action ? { onSelect: menuItem.action } : { to: menuItem.to, as: Link };
 

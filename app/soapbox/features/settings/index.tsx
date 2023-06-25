@@ -7,6 +7,7 @@ import { fetchMfa } from 'soapbox/actions/mfa';
 import List, { ListItem } from 'soapbox/components/list';
 import { Card, CardBody, CardHeader, CardTitle, Column } from 'soapbox/components/ui';
 import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
+import { ConfigDB } from 'soapbox/utils/config_db';
 import { getFeatures } from 'soapbox/utils/features';
 
 import Preferences from '../preferences';
@@ -41,6 +42,7 @@ const Settings = () => {
   const intl = useIntl();
 
   const mfa = useAppSelector((state) => state.security.get('mfa'));
+  const configuration = useAppSelector((state) => state.admin.get('configs'));
   const features = useAppSelector((state) => getFeatures(state.instance));
   const account = useOwnAccount();
 
@@ -59,6 +61,7 @@ const Settings = () => {
   const navigateToFilters = () => history.push('/filters');
 
   const isMfaEnabled = mfa.getIn(['settings', 'totp']);
+  const isLdapEnabled = React.useMemo(() => ConfigDB.find(configuration, ':pleroma', ':ldap')?.get('value').find((e) => e.get('tuple').get(0) === ':enabled')?.getIn(['tuple', 1]), [configuration]);
 
   useEffect(() => {
     dispatch(fetchMfa());
@@ -111,7 +114,11 @@ const Settings = () => {
                 {features.security && (
                   <>
                     <ListItem label={intl.formatMessage(messages.changeEmail)} onClick={navigateToChangeEmail} />
-                    <ListItem label={intl.formatMessage(messages.changePassword)} onClick={navigateToChangePassword} />
+                    {
+                      !isLdapEnabled && (
+                        <ListItem label={intl.formatMessage(messages.changePassword)} onClick={navigateToChangePassword} />
+                      )
+                    }
                     <ListItem label={intl.formatMessage(messages.configureMfa)} onClick={navigateToMfa}>
                       {isMfaEnabled ?
                         intl.formatMessage(messages.mfaEnabled) :

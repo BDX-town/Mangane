@@ -1036,6 +1036,7 @@
   "soapbox_config.promo_panel.meta_fields.icon_placeholder": "Icon",
   "soapbox_config.promo_panel.meta_fields.label_placeholder": "Label",
   "soapbox_config.promo_panel.meta_fields.url_placeholder": "URL",
+  "soapbox_config.quote_rt": "Enable Quote RT",
   "soapbox_config.raw_json_hint": "Edit the settings data directly. Changes made directly to the JSON file will override the form fields above. Click Save to apply your changes.",
   "soapbox_config.raw_json_label": "Advanced: Edit raw JSON data",
   "soapbox_config.save": "Speichern",

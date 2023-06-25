@@ -749,6 +749,10 @@
         "id": "navigation_bar.profile_directory"
       },
       {
+        "defaultMessage": "Dashboard",
+        "id": "tabs_bar.dashboard"
+      },
+      {
         "defaultMessage": "Switch accounts",
         "id": "profile_dropdown.switch_account"
       },
@@ -808,10 +812,6 @@
       {
         "defaultMessage": "Chats",
         "id": "tabs_bar.chats"
-      },
-      {
-        "defaultMessage": "Messages",
-        "id": "navigation.direct_messages"
       },
       {
         "defaultMessage": "Home",
@@ -2350,6 +2350,10 @@
       {
         "defaultMessage": "Save changes",
         "id": "compose_form.save_changes"
+      },
+      {
+        "defaultMessage": "Text is hidden behind warning",
+        "id": "compose_form.spoiler.marked"
       },
       {
         "defaultMessage": "You have scheduled posts. {click_here} to see them.",
@@ -5147,6 +5151,10 @@
       {
         "defaultMessage": "Enable greentext support",
         "id": "soapbox_config.greentext_label"
+      },
+      {
+        "defaultMessage": "Enable Quote RT",
+        "id": "soapbox_config.quote_rt"
       },
       {
         "defaultMessage": "Soapbox Icons List",
