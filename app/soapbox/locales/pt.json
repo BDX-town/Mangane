@@ -1036,6 +1036,7 @@
   "soapbox_config.promo_panel.meta_fields.icon_placeholder": "Ícone",
   "soapbox_config.promo_panel.meta_fields.label_placeholder": "Descrição",
   "soapbox_config.promo_panel.meta_fields.url_placeholder": "URL",
+  "soapbox_config.quote_rt": "Enable Quote RT",
   "soapbox_config.raw_json_hint": "Edita os dados das definições diretamente. Alterações são feitas diretamente no ficheiro JSON que substituirão os campos do formulário acima. Clica  Guardar para aplicar as alterações.",
   "soapbox_config.raw_json_label": "Avançado: Editar dados JSON diretamente",
   "soapbox_config.save": "Guardar",

@@ -1036,6 +1036,7 @@
   "soapbox_config.promo_panel.meta_fields.icon_placeholder": "Ikona",
   "soapbox_config.promo_panel.meta_fields.label_placeholder": "Štítek",
   "soapbox_config.promo_panel.meta_fields.url_placeholder": "URL",
+  "soapbox_config.quote_rt": "Enable Quote RT",
   "soapbox_config.raw_json_hint": "Upravte data nastavení přímo. Změny udělané přímo do JSON přepíše předchozí formulář. Zmáčkněte Uložit pro aplikaci změn.",
   "soapbox_config.raw_json_label": "Pokročilé: Upravit JSON data",
   "soapbox_config.save": "Uložit",
