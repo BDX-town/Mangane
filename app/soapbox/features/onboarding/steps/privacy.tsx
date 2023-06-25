@@ -31,7 +31,7 @@ const Privacy = ({ onNext } : { onNext : () => void}) => {
               </div>
               <div className='flex-grow-1 w-1/2'>
                 <h4 className='items-center text-xl font-bold'>
-                  <Icon className='inline-block text-primary-500 align-middle mr-1 w-6 h-6' src={require('@tabler/icons/lock-open.svg')} />
+                  <Icon className='inline-block text-primary-500 align-middle mr-1 w-6 h-6' src={require('@tabler/icons/eye-off.svg')} />
                   <span className='align-middle'>
                     <FormattedMessage id='onboarding.privacy.unlisted-title' defaultMessage='Unlisted' />
                   </span>
