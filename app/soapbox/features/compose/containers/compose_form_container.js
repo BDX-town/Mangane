@@ -13,6 +13,7 @@ import {
 } from 'soapbox/actions/compose';
 import { getFeatures } from 'soapbox/utils/features';
 
+
 import ComposeForm from '../components/compose_form';
 
 const mapStateToProps = state => {
@@ -23,6 +24,7 @@ const mapStateToProps = state => {
     suggestions: state.getIn(['compose', 'suggestions']),
     spoiler: state.getIn(['compose', 'spoiler']),
     spoilerText: state.getIn(['compose', 'spoiler_text']),
+    spoilerForced: state.getIn(['compose', 'spoiler_forced']),
     privacy: state.getIn(['compose', 'privacy']),
     focusDate: state.getIn(['compose', 'focusDate']),
     caretPosition: state.getIn(['compose', 'caretPosition']),

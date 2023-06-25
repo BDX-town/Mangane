@@ -12,6 +12,7 @@ import AutosuggestInput from 'soapbox/components/autosuggest_input';
 import AutosuggestTextarea from 'soapbox/components/autosuggest_textarea';
 import Icon from 'soapbox/components/icon';
 import { Button, Stack } from 'soapbox/components/ui';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import { isMobile } from 'soapbox/is_mobile';
 
 import EmojiPickerDropdown from '../../../containers/emoji_picker_dropdown_container';
@@ -31,6 +32,8 @@ import UploadButtonContainer from '../containers/upload_button_container';
 import WarningContainer from '../containers/warning_container';
 import { countableText } from '../util/counter';
 
+
+
 import TextCharacterCounter from './text_character_counter';
 import VisualCharacterCounter from './visual_character_counter';
 
@@ -45,7 +48,9 @@ const messages = defineMessages({
   message: { id: 'compose_form.message', defaultMessage: 'Message' },
   schedule: { id: 'compose_form.schedule', defaultMessage: 'Schedule' },
   saveChanges: { id: 'compose_form.save_changes', defaultMessage: 'Save changes' },
+  marked: { id: 'compose_form.spoiler.marked', defaultMessage: 'Text is hidden behind warning' },
 });
+
 
 export default @withRouter
 class ComposeForm extends ImmutablePureComponent {
@@ -85,10 +90,12 @@ class ComposeForm extends ImmutablePureComponent {
     clickableAreaRef: PropTypes.object,
     scheduledAt: PropTypes.instanceOf(Date),
     features: PropTypes.object.isRequired,
+    spoilerForced: PropTypes.bool,
   };
 
   static defaultProps = {
     showSearch: false,
+    spoilerForced: false,
   };
 
   handleChange = (e) => {
@@ -256,7 +263,7 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars, scheduledStatusCount, features } = this.props;
+    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars, scheduledStatusCount, features, spoilerForced } = this.props;
     const condensed = shouldCondense && !this.state.composeFocused && this.isEmpty() && !this.props.isUploading;
     const disabled = this.props.isSubmitting;
     const text     = [this.props.spoilerText, countableText(this.props.text)].join('');
@@ -327,7 +334,7 @@ class ComposeForm extends ImmutablePureComponent {
             value={this.props.spoilerText}
             onChange={this.handleChangeSpoilerText}
             onKeyDown={this.handleKeyDown}
-            disabled={!this.props.spoiler}
+            disabled={this.props.spoilerForced || !this.props.spoiler}
             ref={this.setSpoilerText}
             suggestions={this.props.suggestions}
             onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -380,7 +387,13 @@ class ComposeForm extends ImmutablePureComponent {
             {features.polls && <PollButtonContainer />}
             {features.privacyScopes && <PrivacyDropdownContainer />}
             {features.scheduledStatuses && <ScheduleButtonContainer />}
-            {features.spoilers && <SpoilerButtonContainer />}
+            {features.spoilers && (
+              spoilerForced ? <SvgIcon
+                className={classNames('cursor-not-allowed text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300')}
+                src={require('@tabler/icons/alert-triangle.svg')}
+                title={intl.formatMessage(messages.marked)}
+              /> : <SpoilerButtonContainer />
+            )}
             {features.richText && <MarkdownButtonContainer />}
           </div>
 
