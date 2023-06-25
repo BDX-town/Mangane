@@ -145,6 +145,7 @@ function clearAll(state: State) {
     content_type: state.default_content_type,
     default_content_type: state.default_content_type,
     privacy: state.default_privacy,
+    default_privacy: state.default_privacy,
     idempotencyKey: uuid(),
   });
 }
