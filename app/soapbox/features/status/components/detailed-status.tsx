@@ -102,26 +102,27 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   return (
     <div className='border-box'>
       <div ref={node} className='detailed-actualStatus' tabIndex={-1}>
-        {
-          canTranslate && (
-            <div className='mb-4 flex items-center justify-between gap-1'>
-              {
-                !actualStatus.translations.get(locale) ? (
-                  <Button theme='link' size='sm'  onClick={handleTranslateStatus}>
-                    <Icon className='mr-1' src={require('@tabler/icons/language.svg')} />
-                    <FormattedMessage id='actualStatuses.translate' defaultMessage='Translate' />
-                  </Button>
-                ) : (
-                  <Text theme='subtle' className='flex items-center' size='xs'>
-                    <Icon className='mr-1' src={require('@tabler/icons/check.svg')} />
-                    <FormattedMessage id='actualStatuses.translated' defaultMessage='Translate' />
-                  </Text>
-                )
-              }
-              <Icon aria-hidden src={privacyIcon} className='h-5 w-5 shrink-0 text-gray-400 dark:text-gray-600' />
-            </div>
-          )
-        }
+        <div className='mb-4 flex items-center justify-between gap-1'>
+          {
+            canTranslate ? (
+              !actualStatus.translations.get(locale) ? (
+                <Button theme='link' size='sm'  onClick={handleTranslateStatus}>
+                  <Icon className='mr-1' src={require('@tabler/icons/language.svg')} />
+                  <FormattedMessage id='actualStatuses.translate' defaultMessage='Translate' />
+                </Button>
+              ) : (
+                <Text theme='subtle' className='flex items-center' size='xs'>
+                  <Icon className='mr-1' src={require('@tabler/icons/check.svg')} />
+                  <FormattedMessage id='actualStatuses.translated' defaultMessage='Translate' />
+                </Text>
+              )
+            ) : (
+              <Icon className='text-gray-300 dark:text-slate-500' src={require('@tabler/icons/note.svg')} />
+            )
+          }
+          <Icon aria-hidden src={privacyIcon} className='h-5 w-5 shrink-0 text-gray-400 dark:text-gray-600' />
+        </div>
+
         <div className='mb-3'>
           <AccountContainer
             key={account.id}
