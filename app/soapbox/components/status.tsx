@@ -182,8 +182,18 @@ const Status: React.FC<IStatus> = (props) => {
     firstEmoji?.focus();
   };
 
+  const privacyIcon = React.useMemo(() => {
+    switch (actualStatus?.visibility) {
+      default:
+      case 'public': return require('@tabler/icons/world.svg');
+      case 'unlisted': return require('@tabler/icons/eye-off.svg');
+      case 'local': return logo;
+      case 'private': return require('@tabler/icons/lock.svg');
+      case 'direct': return require('@tabler/icons/mail.svg');
+    }
+  }, [actualStatus?.visibility]);
+
   if (!status) return null;
-  let rebloggedByText, reblogElement, reblogElementMobile;
 
   if (hidden) {
     return (
@@ -237,6 +247,8 @@ const Status: React.FC<IStatus> = (props) => {
     openMedia: handleHotkeyOpenMedia,
     react: handleHotkeyReact,
   };
+
+
 
   const statusUrl = `/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`;
 
@@ -311,21 +323,8 @@ const Status: React.FC<IStatus> = (props) => {
                 withLinkToProfile={hoverable}
               />
             </div>
-            {
-              actualStatus.visibility === 'public' && <Icon aria-hidden src={require('@tabler/icons/world.svg')} className='h-5 w-5 shrink-0 text-gray-400 dark:text-gray-600' />
-            }
-            {
-              actualStatus.visibility === 'unlisted' && <Icon aria-hidden src={require('@tabler/icons/eye-off.svg')} className='h-5 w-5 shrink-0 text-gray-400 dark:text-gray-600' />
-            }
-            {
-              actualStatus.visibility === 'local' && <Icon aria-hidden src={logo} className='h-5 w-5 shrink-0 text-gray-400 dark:text-gray-600' />
-            }
-            {
-              actualStatus.visibility === 'private' && <Icon aria-hidden src={require('@tabler/icons/lock.svg')} className='h-5 w-5 shrink-0 text-gray-400 dark:text-gray-600' />
-            }
-            {
-              actualStatus.visibility === 'direct' && <Icon aria-hidden src={require('@tabler/icons/mail.svg')} className='h-5 w-5 shrink-0 text-gray-400 dark:text-gray-600' />
-            }
+
+            <Icon aria-hidden src={privacyIcon} className='h-5 w-5 shrink-0 text-gray-400 dark:text-gray-600' />
           </div>
 
 

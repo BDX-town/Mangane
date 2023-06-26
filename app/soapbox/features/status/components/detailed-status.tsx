@@ -9,7 +9,7 @@ import StatusContent from 'soapbox/components/status_content';
 import { HStack, Stack, Text, Button } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
-import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
+import { useAppSelector, useOwnAccount, useLogo } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
 import { getActualStatus } from 'soapbox/utils/status';
 
@@ -46,6 +46,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   const locale = useAppSelector((state) => getSettings(state).get('locale')) as string;
   const localeTranslated = React.useMemo(() => (new Intl.DisplayNames([locale], { type: 'language' })).of(locale), [locale]);
   const features = useAppSelector((state) => getFeatures(state.instance));
+  const logo = useLogo();
 
   const actualStatus = getActualStatus(status);
   const { account } = actualStatus;
@@ -66,13 +67,21 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
     onTranslate(status, locale);
   }, [status, locale]);
 
+  const privacyIcon = React.useMemo(() => {
+    switch (actualStatus?.visibility) {
+      default:
+      case 'public': return require('@tabler/icons/world.svg');
+      case 'unlisted': return require('@tabler/icons/eye-off.svg');
+      case 'local': return logo;
+      case 'private': return require('@tabler/icons/lock.svg');
+      case 'direct': return require('@tabler/icons/mail.svg');
+    }
+  }, [actualStatus?.visibility]);
 
   if (!actualStatus) return null;
   if (!account || typeof account !== 'object') return null;
 
 
-
-  let statusTypeIcon = null;
 
   let quote;
 
@@ -88,11 +97,6 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
     }
   }
 
-  if (actualStatus.visibility === 'direct') {
-    statusTypeIcon = <Icon className='text-gray-700 dark:text-gray-600' src={require('@tabler/icons/mail.svg')} />;
-  } else if (actualStatus.visibility === 'private') {
-    statusTypeIcon = <Icon className='text-gray-700 dark:text-gray-600' src={require('@tabler/icons/lock.svg')} />;
-  }
 
 
   return (
@@ -100,8 +104,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
       <div ref={node} className='detailed-actualStatus' tabIndex={-1}>
         {
           canTranslate && (
-            <div className='mb-3 flex items-center justify-between py-1'>
-              <Icon className='text-gray-300 dark:text-slate-500' src={require('@tabler/icons/note.svg')} />
+            <div className='mb-4 flex items-center justify-between gap-1'>
               {
                 !actualStatus.translations.get(locale) ? (
                   <Button theme='link' size='sm'  onClick={handleTranslateStatus}>
@@ -115,6 +118,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
                   </Text>
                 )
               }
+              <Icon aria-hidden src={privacyIcon} className='h-5 w-5 shrink-0 text-gray-400 dark:text-gray-600' />
             </div>
           )
         }
@@ -162,14 +166,12 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
           onToggleVisibility={onToggleMediaVisibility}
         />
 
-        {quote}
+        {!actualStatus.hidden && quote}
 
         <HStack justifyContent='between' alignItems='center' className='py-2'>
           <StatusInteractionBar status={actualStatus} />
 
           <Stack space={1} className='items-end mb-3'>
-            {statusTypeIcon}
-
             <span>
               <a href={actualStatus.url} target='_blank' rel='noopener' className='hover:underline'>
                 <Text tag='span' theme='muted' size='sm'>
