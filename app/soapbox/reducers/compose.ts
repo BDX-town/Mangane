@@ -1,6 +1,7 @@
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord, fromJS } from 'immutable';
 import { v4 as uuid } from 'uuid';
 
+import { StatusVisibility } from 'soapbox/normalizers/status';
 import { tagHistory } from 'soapbox/settings';
 import { PLEROMA, AKKOMA } from 'soapbox/utils/features';
 import { hasIntegerMediaIds } from 'soapbox/utils/status';
@@ -80,7 +81,7 @@ export const ReducerRecord = ImmutableRecord({
   caretPosition: null as number | null,
   content_type: 'text/plain',
   default_content_type: 'text/plain',
-  default_privacy: 'public',
+  default_privacy: 'public' as StatusVisibility,
   default_sensitive: false,
   focusDate: null as Date | null,
   idempotencyKey: '',
@@ -93,7 +94,7 @@ export const ReducerRecord = ImmutableRecord({
   media_attachments: ImmutableList<AttachmentEntity>(),
   mounted: 0,
   poll: null as Poll | null,
-  privacy: 'public',
+  privacy: 'public' as StatusVisibility,
   progress: 0,
   quote: null as string | null,
   resetFileKey: null as number | null,
@@ -216,8 +217,8 @@ const insertEmoji = (state: State, position: number, emojiData: Emoji, needsSpac
   });
 };
 
-const privacyPreference = (a: string, b: string) => {
-  const order = ['public', 'unlisted', 'private', 'direct'];
+const privacyPreference = (a: StatusVisibility, b: StatusVisibility) => {
+  const order: Array<StatusVisibility> = ['public', 'local', 'unlisted', 'private', 'direct'];
   return order[Math.max(order.indexOf(a), order.indexOf(b), 0)];
 };
 
@@ -276,11 +277,11 @@ const updateAccount = (state: State, account: APIEntity) => {
   });
 };
 
-const updateSetting = (state: State, path: string[], value: string) => {
+const updateSetting = (state: State, path: string[], value: StatusVisibility | string) => {
   const pathString = path.join(',');
   switch (pathString) {
     case 'defaultPrivacy':
-      return state.set('default_privacy', value).set('privacy', value);
+      return state.set('default_privacy', value as StatusVisibility).set('privacy', value as StatusVisibility);
     case 'defaultContentType':
       return state.set('default_content_type', value).set('content_type', value);
     default:
