@@ -242,7 +242,6 @@
   "column.filters.expires_hint": "Expiration dates are not currently supported",
   "column.filters.home_timeline": "Accueil",
   "column.filters.keyword": "Mot-clé ou phrase",
-  "column.filters.notifications": "Notifications",
   "column.filters.public_timeline": "Découvrir",
   "column.filters.subheading_add_new": "Ajouter le nouveau filtre",
   "column.filters.subheading_filters": "Filtres actuels",

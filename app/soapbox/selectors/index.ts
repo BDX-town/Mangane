@@ -5,7 +5,6 @@ import {
   fromJS,
 } from 'immutable';
 import { createSelector } from 'reselect';
-
 import { getSettings } from 'soapbox/actions/settings';
 import { getDomain } from 'soapbox/utils/accounts';
 import { validId } from 'soapbox/utils/auth';
@@ -105,9 +104,10 @@ type FilterContext = { contextType?: string };
 
 export const getFilters = (state: RootState, query: FilterContext) => {
   return state.filters.filter((filter) => {
-    return query?.contextType
-      && filter.context.includes(toServerSideType(query.contextType))
-      && (filter.expires_at === null
+    // if contextType is provided we want to filter by context
+    if (query?.contextType && !filter.context.includes(toServerSideType(query.contextType))) return false;
+
+    return (filter.expires_at === null
       || Date.parse(filter.expires_at) > new Date().getTime());
   });
 };
@@ -166,6 +166,7 @@ export const makeGetStatus = () => {
       }
 
       const regex    = (accountReblog || accountBase).id !== me && regexFromFilters(filters);
+
       const filtered = regex && regex.test(statusReblog?.search_index || statusBase.search_index);
 
       return statusBase.withMutations(map => {
