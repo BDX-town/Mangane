@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+
 import { fetchFilters, createFilter, deleteFilter } from 'soapbox/actions/filters';
 import snackbar from 'soapbox/actions/snackbar';
 import Icon from 'soapbox/components/icon';
-import ScrollableList from 'soapbox/components/scrollable_list';
-import { Button, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
+import { Button, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
 import {
   FieldsGroup,
   Checkbox,
@@ -41,7 +41,6 @@ const Filters = () => {
 
   const [phrase, setPhrase] = useState('');
   const [expiresAt] = useState('');
-  const [notifications, setNotifications] = useState(true);
   const [irreversible, setIrreversible] = useState(false);
   const [wholeWord, setWholeWord] = useState(true);
 
@@ -54,7 +53,7 @@ const Filters = () => {
     });
   };
 
-  const handleFilterDelete: React.MouseEventHandler<HTMLDivElement> = e => {
+  const handleFilterDelete: React.MouseEventHandler<HTMLButtonElement> = e => {
     dispatch(deleteFilter(e.currentTarget.dataset.value!)).then(() => {
       return dispatch(fetchFilters());
     }).catch(() => {
@@ -83,20 +82,22 @@ const Filters = () => {
           />
         </FormGroup>
         <FieldsGroup>
-          <Checkbox
-            label={intl.formatMessage(messages.drop_header)}
-            hint={intl.formatMessage(messages.drop_hint)}
-            name='irreversible'
-            checked={irreversible}
-            onChange={({ target }) => setIrreversible(target.checked)}
-          />
-          <Checkbox
-            label={intl.formatMessage(messages.whole_word_header)}
-            hint={intl.formatMessage(messages.whole_word_hint)}
-            name='whole_word'
-            checked={wholeWord}
-            onChange={({ target }) => setWholeWord(target.checked)}
-          />
+          <div className='flex flex-col gap-2'>
+            <Checkbox
+              label={intl.formatMessage(messages.drop_header)}
+              hint={intl.formatMessage(messages.drop_hint)}
+              name='irreversible'
+              checked={irreversible}
+              onChange={({ target }) => setIrreversible(target.checked)}
+            />
+            <Checkbox
+              label={intl.formatMessage(messages.whole_word_header)}
+              hint={intl.formatMessage(messages.whole_word_hint)}
+              name='whole_word'
+              checked={wholeWord}
+              onChange={({ target }) => setWholeWord(target.checked)}
+            />
+          </div>
         </FieldsGroup>
 
         <FormActions>
@@ -113,14 +114,14 @@ const Filters = () => {
           filters.size === 0 && <div>{ emptyMessage }</div>
         }
         {filters.map((filter, i) => (
-          <div key={i} className='filter__container border-solid border rounded border-gray-200 p-2 my-3'>
-            <div className='filter__details'>
-              <div className='filter__phrase'>
-                <span className='filter__list-label'><FormattedMessage id='filters.filters_list_phrase_label' defaultMessage='Keyword or phrase:' /></span>
+          <div key={i} className='filter__container rounded bg-gray-100 dark:bg-slate-900 p-2 my-3'>
+            <div className=''>
+              <div className='mb-1'>
+                <span className='pr-1 text-gray-600 dark:text-gray-400'><FormattedMessage id='filters.filters_list_phrase_label' defaultMessage='Keyword or phrase:' /></span>
                 <span className='filter__list-value'>{filter.phrase}</span>
               </div>
-              <div className='filter__details'>
-                <span className='filter__list-label'><FormattedMessage id='filters.filters_list_details_label' defaultMessage='Filter settings:' /></span>
+              <div className=''>
+                <span className='pr-1 text-gray-600 dark:text-gray-400'><FormattedMessage id='filters.filters_list_details_label' defaultMessage='Filter settings:' /></span>
                 <span className='filter__list-value'>
                   {filter.irreversible ?
                     <span><FormattedMessage id='filters.filters_list_drop' defaultMessage='Drop' /></span> :
@@ -132,10 +133,15 @@ const Filters = () => {
                 </span>
               </div>
             </div>
-            <div className='filter__delete' role='button' tabIndex={0} onClick={handleFilterDelete} data-value={filter.id} aria-label={intl.formatMessage(messages.delete)}>
-              <span className='filter__delete-label'><FormattedMessage id='filters.filters_list_delete' defaultMessage='Delete' /></span>
-              <Icon className='filter__delete-icon' src={require('@tabler/icons/x.svg')} />
+            <div>
+              <Button  theme='ghost' onClick={handleFilterDelete} aria-label={intl.formatMessage(messages.delete)}>
+                <div className='flex items-end gap-1'>
+                  <FormattedMessage id='filters.filters_list_delete' defaultMessage='Delete' />
+                  <Icon src={require('@tabler/icons/x.svg')} />
+                </div>
+              </Button>
             </div>
+
           </div>
         ))}
       </div>

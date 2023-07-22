@@ -107,9 +107,11 @@ const updateNotificationsQueue = (notification: APIEntity, intlMessages: Record<
       filtered = regex && regex.test(searchIndex);
     }
 
+    if (filtered) return;
+
     // Desktop notifications
     try {
-      if (showAlert && !filtered) {
+      if (showAlert) {
         const title = new IntlMessageFormat(intlMessages[`notification.${notification.type}`], intlLocale).format({ name: notification.account.display_name.length > 0 ? notification.account.display_name : notification.account.username });
         const body = (notification.status && notification.status.spoiler_text.length > 0) ? notification.status.spoiler_text : unescapeHTML(notification.status ? notification.status.content : '');
 
@@ -128,7 +130,7 @@ const updateNotificationsQueue = (notification: APIEntity, intlMessages: Record<
       console.warn(e);
     }
 
-    if (playSound && !filtered) {
+    if (playSound) {
       dispatch({
         type: NOTIFICATIONS_UPDATE_NOOP,
         meta: { sound: 'boop' },

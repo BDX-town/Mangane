@@ -68,12 +68,8 @@
       @apply py-1;
     }
 
-    span.filter__list-label {
-      @apply pr-1 text-gray-500 dark:text-gray-400;
-    }
-
     span.filter__list-value span {
-      @apply pr-1 capitalize;
+      @apply pr-1;
 
       &::after {
         content: ",";
