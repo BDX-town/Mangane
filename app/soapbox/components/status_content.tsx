@@ -227,7 +227,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     directionStyle.direction = 'rtl';
   }
 
-  if (status.spoiler_text.length > 0) {
+  if (status.spoiler_text.length > 0 || status.filtered) {
     return (
       <div className={className} ref={node} tabIndex={0} style={directionStyle} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
         <p style={{ marginBottom: isHidden && status.mentions.isEmpty() ? 0 : undefined }}>
