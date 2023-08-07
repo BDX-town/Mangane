@@ -3,6 +3,8 @@ import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeStatus } from 'soapbox/normalizers';
+import { regexFromFilters } from 'soapbox/selectors';
+import { Filter } from 'soapbox/types/entities';
 import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
 import { stripCompatibilityFeatures, unescapeHTML } from 'soapbox/utils/html';
 import { makeEmojiMap, normalizeId } from 'soapbox/utils/normalizers';
@@ -93,6 +95,7 @@ export const calculateStatus = (
   status: StatusRecord,
   oldStatus?: StatusRecord,
   expandSpoilers: boolean = false,
+  filters: ImmutableList<Filter> = ImmutableList([]),
 ): StatusRecord => {
   if (oldStatus && oldStatus.content === status.content && oldStatus.spoiler_text === status.spoiler_text) {
     return status.merge({
@@ -100,17 +103,21 @@ export const calculateStatus = (
       contentHtml: oldStatus.contentHtml,
       spoilerHtml: oldStatus.spoilerHtml,
       hidden: oldStatus.hidden,
+      filtered: oldStatus.filtered,
     });
   } else {
     const spoilerText   = status.spoiler_text;
-    const searchContent = buildSearchContent(status);
+    const searchIndex = domParser.parseFromString(buildSearchContent(status), 'text/html').documentElement.textContent || '';
     const emojiMap      = makeEmojiMap(status.emojis);
+    const regex    =  regexFromFilters(filters);
+    const filtered = Boolean(regex && regex.test(searchIndex));
 
     return status.merge({
-      search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent || '',
+      search_index: searchIndex,
       contentHtml: stripCompatibilityFeatures(emojify(status.content, emojiMap)),
       spoilerHtml: emojify(escapeTextContentForBrowser(spoilerText), emojiMap),
-      hidden: expandSpoilers ? false : spoilerText.length > 0 || status.sensitive,
+      hidden: (expandSpoilers ? false : spoilerText.length > 0 || status.sensitive) || filtered,
+      filtered,
     });
   }
 };
@@ -131,21 +138,21 @@ const fixQuote = (status: StatusRecord, oldStatus?: StatusRecord): StatusRecord 
   }
 };
 
-const fixStatus = (state: State, status: APIEntity, expandSpoilers: boolean): ReducerStatus => {
+const fixStatus = (state: State, status: APIEntity, expandSpoilers: boolean, filters: ImmutableList<Filter>): ReducerStatus => {
   const oldStatus = state.get(status.id);
 
   return normalizeStatus(status).withMutations(status => {
     fixQuote(status, oldStatus);
-    calculateStatus(status, oldStatus, expandSpoilers);
+    calculateStatus(status, oldStatus, expandSpoilers, filters);
     minifyStatus(status);
   }) as ReducerStatus;
 };
 
-const importStatus = (state: State, status: APIEntity, expandSpoilers: boolean): State =>
-  state.set(status.id, fixStatus(state, status, expandSpoilers));
+const importStatus = (state: State, status: APIEntity, expandSpoilers: boolean, filters: ImmutableList<Filter>): State =>
+  state.set(status.id, fixStatus(state, status, expandSpoilers, filters));
 
-const importStatuses = (state: State, statuses: APIEntities, expandSpoilers: boolean): State =>
-  state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status, expandSpoilers)));
+const importStatuses = (state: State, statuses: APIEntities, expandSpoilers: boolean, filters: ImmutableList<Filter>): State =>
+  state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status, expandSpoilers, filters)));
 
 const translateStatus = (state: State, statusId: string, language: string, text: string) =>
   state.updateIn([statusId, 'translations', language], () => text);
@@ -202,9 +209,9 @@ const initialState: State = ImmutableMap();
 export default function statuses(state = initialState, action: AnyAction): State {
   switch (action.type) {
     case STATUS_IMPORT:
-      return importStatus(state, action.status, action.expandSpoilers);
+      return importStatus(state, action.status, action.expandSpoilers, action.filters);
     case STATUSES_IMPORT:
-      return importStatuses(state, action.statuses, action.expandSpoilers);
+      return importStatuses(state, action.statuses, action.expandSpoilers, action.filters);
     case STATUS_TRANSLATE_SUCCESS:
       return translateStatus(state, action.statusId, action.language, action.text);
     case STATUS_CREATE_REQUEST:

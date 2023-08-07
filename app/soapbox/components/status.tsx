@@ -328,20 +328,26 @@ const Status: React.FC<IStatus> = (props) => {
             <StatusContent
               status={actualStatus}
               onClick={handleClick}
-              expanded={!actualStatus.hidden && !actualStatus.filtered}
+              expanded={!actualStatus.hidden}
               onExpandedToggle={handleExpandedToggle}
               collapsable
             />
 
-            <StatusMedia
-              status={actualStatus}
-              muted={muted}
-              onClick={handleClick}
-              showMedia={showMedia}
-              onToggleVisibility={handleToggleMediaVisibility}
-            />
+            {
+              !actualStatus.hidden && (
+                <>
+                  <StatusMedia
+                    status={actualStatus}
+                    muted={muted}
+                    onClick={handleClick}
+                    showMedia={showMedia}
+                    onToggleVisibility={handleToggleMediaVisibility}
+                  />
+                  { quote  }
+                </>
 
-            {!actualStatus.hidden && quote}
+              )
+            }
 
             {!hideActionBar && (
               <div className='pt-4'>

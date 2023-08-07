@@ -11,6 +11,7 @@ import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich_content';
 import { isRtl } from '../rtl';
 
 import Poll from './polls/poll';
+import { Button, Text } from './ui';
 
 import type { Status, Mention } from 'soapbox/types/entities';
 
@@ -42,18 +43,9 @@ interface ISpoilerButton {
 
 /** Button to expand status text behind a content warning */
 const SpoilerButton: React.FC<ISpoilerButton> = ({ onClick, hidden, tabIndex }) => (
-  <button
-    tabIndex={tabIndex}
-    className={classNames(
-      'inline-block rounded-md px-1.5 py-0.5 ml-[0.5em]',
-      'text-black dark:text-white',
-      'font-bold text-[11px] uppercase',
-      'bg-primary-100 dark:bg-primary-900',
-      'hover:bg-primary-300 dark:hover:bg-primary-600',
-      'focus:bg-primary-200 dark:focus:bg-primary-600',
-      'hover:no-underline',
-      'duration-100',
-    )}
+  <Button
+    theme='ghost'
+    size='sm'
     onClick={onClick}
   >
     {hidden ? (
@@ -61,7 +53,7 @@ const SpoilerButton: React.FC<ISpoilerButton> = ({ onClick, hidden, tabIndex }) 
     ) : (
       <FormattedMessage id='status.show_less' defaultMessage='Show less' />
     )}
-  </button>
+  </Button>
 );
 
 interface IStatusContent {
@@ -230,14 +222,44 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
   if (status.spoiler_text.length > 0 || status.filtered) {
     return (
       <div className={className} ref={node} tabIndex={0} style={directionStyle} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
-        <p style={{ marginBottom: isHidden && status.mentions.isEmpty() ? 0 : undefined }}>
-          <span dangerouslySetInnerHTML={spoilerContent} lang={status.language || undefined} />
-
-          <SpoilerButton
-            tabIndex={0}
-            onClick={handleSpoilerClick}
-            hidden={isHidden}
-          />
+        <p className='flex items-center justify-between bg-gray-100 dark:bg-slate-700 p-2 rounded mt-1' style={{ marginBottom: isHidden && status.mentions.isEmpty() ? 0 : undefined }}>
+          {
+            status.spoiler_text.length > 0 ? (
+              <span>
+                <Text tag='span' weight='medium'>
+                  <FormattedMessage
+                    id='status.cw'
+                    defaultMessage='Warning:'
+                  />
+                </Text>
+                &nbsp;
+                <span dangerouslySetInnerHTML={spoilerContent} lang={status.language || undefined} />
+              </span>
+            ) : (
+              <span>
+                <Text tag='span'>
+                  <FormattedMessage
+                    id='status.filtered'
+                    defaultMessage='Filtered'
+                  />
+                </Text>
+                <br />
+                <Text size='xs' theme='muted' tag='span'>
+                  <FormattedMessage
+                    id='status.filtered-hint'
+                    defaultMessage='Status was hidden by filter settings'
+                  />
+                </Text>
+              </span>
+            )
+          }
+          <div>
+            <SpoilerButton
+              tabIndex={0}
+              onClick={handleSpoilerClick}
+              hidden={isHidden}
+            />
+          </div>
         </p>
 
         <div

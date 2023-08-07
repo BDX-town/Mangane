@@ -5,6 +5,7 @@ import {
   fromJS,
 } from 'immutable';
 import { createSelector } from 'reselect';
+
 import { getSettings } from 'soapbox/actions/settings';
 import { getDomain } from 'soapbox/utils/accounts';
 import { validId } from 'soapbox/utils/auth';
@@ -165,15 +166,10 @@ export const makeGetStatus = () => {
         statusReblog = undefined;
       }
 
-      const regex    = (accountReblog || accountBase).id !== me && regexFromFilters(filters);
-
-      const filtered = regex && regex.test(statusReblog?.search_index || statusBase.search_index);
-
       return statusBase.withMutations(map => {
         map.set('reblog', statusReblog || null);
         // @ts-ignore :(
         map.set('account', accountBase || null);
-        map.set('filtered', Boolean(filtered));
       });
     },
   );

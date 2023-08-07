@@ -26,7 +26,7 @@ const messages = defineMessages({
 });
 
 const fetchFilters = () =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
+  async(dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
     const state = getState();
@@ -40,19 +40,21 @@ const fetchFilters = () =>
       skipLoading: true,
     });
 
-    api(getState)
-      .get('/api/v1/filters')
-      .then(({ data }) => dispatch({
+    try {
+      const { data } = await api(getState).get('/api/v1/filters');
+      dispatch({
         type: FILTERS_FETCH_SUCCESS,
         filters: data,
         skipLoading: true,
-      }))
-      .catch(err => dispatch({
+      });
+    } catch (err) {
+      dispatch({
         type: FILTERS_FETCH_FAIL,
         err,
         skipLoading: true,
         skipAlert: true,
-      }));
+      });
+    }
   };
 
 const createFilter = (phrase: string, expires_at: string, context: Array<string>, whole_word: boolean, irreversible: boolean) =>
