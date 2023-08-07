@@ -25,14 +25,26 @@ That includes the logo, default theme, and more.
 If using Pleroma, these settings are exposed through the API under GET `/api/pleroma/frontend_configurations`.
 Otherwise, the settings need to be uploaded manually and made available at GET `/instance/mangane.json`.
 
-### The instance logo
+### The instance logo in the web-UI (from mangane-config)
 The instance logo must be a valid svg file. It will be shown in pages using the same icon system than the rest of the app, in order to match the colors settings. Be sure to use a 'raw' svg file, and to not simply use a svg wrapper for a bitmap image. 
 
 If you want the logo to match your color settings, you will need to update it so every `fill` or `stroke` property that you want to change use the special value `currentColor`
 https://css-tricks.com/currentcolor/
 
+## Static files
 
-## About pages
+### PWA logo
+
+Mangane can be installed as a Progressive Web App (PWA) on both iPhones and Android devices. 
+Once installed, it will appear as a regular application. You have the option to customize the icon displayed by the operating system:
+
+1 - Find your static directory. For Akkoma, it will be located at `/var/lib/akkoma/static`.
+2 - If it doesn't exist, create a new `static` folder once in the static directory.
+3 - Place your logo in two formats here:
+   - Save the logo as an svg file named `logo.svg`.
+   - Save the logo as a 512x512 png file named `logo-512.png`.
+
+### About pages
 
 It is possible to create arbitrary HTML pages under `/about/:page` on your website.
 
