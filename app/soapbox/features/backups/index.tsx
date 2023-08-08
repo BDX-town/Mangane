@@ -3,7 +3,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { fetchBackups, createBackup } from 'soapbox/actions/backups';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import { Button, FormActions, Text } from 'soapbox/components/ui';
+import { Button, FormActions, Text, Spinner } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import Column from '../ui/components/better_column';
@@ -53,24 +53,33 @@ const Backups = () => {
         scrollKey='backups'
         emptyMessage={intl.formatMessage(messages.emptyMessage, { action: emptyMessageAction })}
       >
-        {backups.map((backup) => (
-          <div
-            className='p-4'
-            key={backup.id}
-          >
-            {backup.processed
-              ? <a href={backup.url} target='_blank'>{backup.inserted_at}</a>
-              : <Text theme='subtle'>{intl.formatMessage(messages.pending)}: {backup.inserted_at}</Text>
-            }
-          </div>
-        ))}
+        {backups.map((backup) => {
+          const insertedAt = new Date(backup.inserted_at).toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+          return (
+            <div
+              className='p-2 mb-3 rounded bg-gray-100 dark:bg-slate-900 flex justify-between items-center'
+              key={backup.id}
+            >
+              <div>
+                {backup.processed
+                  ? <a href={backup.url} target='_blank'>{insertedAt}</a>
+                  : <Text theme='subtle'>{insertedAt}&nbsp;-&nbsp;{intl.formatMessage(messages.pending)}</Text>
+                }
+              </div>
+              {
+                !backup.processed && <Spinner withText={false} size={15} />
+              }
+            </div>
+          );
+        })}
       </ScrollableList>
-
-      <FormActions>
-        <Button theme='primary' disabled={isLoading} onClick={handleCreateBackup}>
-          {intl.formatMessage(messages.create)}
-        </Button>
-      </FormActions>
+      <div className='mt-4'>
+        <FormActions>
+          <Button theme='primary' disabled={isLoading} onClick={handleCreateBackup}>
+            {intl.formatMessage(messages.create)}
+          </Button>
+        </FormActions>
+      </div>
     </Column>
   );
 };

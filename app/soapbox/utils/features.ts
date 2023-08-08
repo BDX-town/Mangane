@@ -171,7 +171,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/pleroma/backups
      * @see POST /api/v1/pleroma/backups
      */
-    backups: v.software === PLEROMA,
+    backups: v.software === PLEROMA || v.software === AKKOMA,
 
     /**
      * Set your birthday and view upcoming birthdays.
