@@ -10,6 +10,7 @@ import {
   Checkbox,
 } from 'soapbox/features/forms';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { Filter } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   heading: { id: 'column.filters', defaultMessage: 'Muted words' },
@@ -53,8 +54,8 @@ const Filters = () => {
     });
   };
 
-  const handleFilterDelete: React.MouseEventHandler<HTMLButtonElement> = e => {
-    dispatch(deleteFilter(e.currentTarget.dataset.value!)).then(() => {
+  const handleFilterDelete = (filter: Filter) => {
+    dispatch(deleteFilter(filter.id)).then(() => {
       return dispatch(fetchFilters());
     }).catch(() => {
       dispatch(snackbar.error(intl.formatMessage(messages.delete_error)));
@@ -134,7 +135,7 @@ const Filters = () => {
               </div>
             </div>
             <div>
-              <Button  theme='ghost' onClick={handleFilterDelete} aria-label={intl.formatMessage(messages.delete)}>
+              <Button  theme='ghost' onClick={() => handleFilterDelete(filter)} aria-label={intl.formatMessage(messages.delete)}>
                 <div className='flex items-end gap-1'>
                   <FormattedMessage id='filters.filters_list_delete' defaultMessage='Delete' />
                   <Icon src={require('@tabler/icons/x.svg')} />
