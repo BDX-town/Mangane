@@ -56,6 +56,56 @@ const SpoilerButton: React.FC<ISpoilerButton> = ({ onClick, hidden, tabIndex }) 
   </Button>
 );
 
+interface ISpoiler {
+  hidden: boolean,
+  status: Status,
+  onClick: (event: React.MouseEvent<Element, MouseEvent>) => void,
+}
+
+const Spoiler: React.FC<ISpoiler> = ({ hidden, onClick, status }) => {
+  return (
+    <div className='flex items-center justify-between bg-gray-100 dark:bg-slate-700 p-2 rounded mt-1'>
+      {
+        status.spoiler_text.length > 0 ? (
+          <span>
+            <Text tag='span' weight='medium'>
+              <FormattedMessage
+                id='status.cw'
+                defaultMessage='Warning:'
+              />
+            </Text>
+                &nbsp;
+            <span dangerouslySetInnerHTML={{ __html: status.spoilerHtml }} lang={status.language || undefined} />
+          </span>
+        ) : (
+          <span>
+            <Text tag='span'>
+              <FormattedMessage
+                id='status.filtered'
+                defaultMessage='Filtered'
+              />
+            </Text>
+            <br />
+            <Text size='xs' theme='muted' tag='span'>
+              <FormattedMessage
+                id='status.filtered-hint'
+                defaultMessage='Status was hidden by filter settings'
+              />
+            </Text>
+          </span>
+        )
+      }
+      <div>
+        <SpoilerButton
+          tabIndex={0}
+          onClick={onClick}
+          hidden={hidden}
+        />
+      </div>
+    </div>
+  );
+};
+
 interface IStatusContent {
   status: Status,
   expanded?: boolean,
@@ -206,7 +256,6 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
   const isHidden = onExpandedToggle ? !expanded : hidden;
 
   const content = { __html: parsedHtml };
-  const spoilerContent = { __html: status.spoilerHtml };
   const directionStyle: React.CSSProperties = { direction: 'ltr' };
   const className = classNames('status__content', {
     'status__content--with-action': onClick,
@@ -219,110 +268,48 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     directionStyle.direction = 'rtl';
   }
 
-  if (status.spoiler_text.length > 0 || status.filtered) {
-    return (
-      <div className={className} ref={node} tabIndex={0} style={directionStyle} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
-        <p className='flex items-center justify-between bg-gray-100 dark:bg-slate-700 p-2 rounded mt-1' style={{ marginBottom: isHidden && status.mentions.isEmpty() ? 0 : undefined }}>
-          {
-            status.spoiler_text.length > 0 ? (
-              <span>
-                <Text tag='span' weight='medium'>
-                  <FormattedMessage
-                    id='status.cw'
-                    defaultMessage='Warning:'
-                  />
-                </Text>
-                &nbsp;
-                <span dangerouslySetInnerHTML={spoilerContent} lang={status.language || undefined} />
-              </span>
-            ) : (
-              <span>
-                <Text tag='span'>
-                  <FormattedMessage
-                    id='status.filtered'
-                    defaultMessage='Filtered'
-                  />
-                </Text>
-                <br />
-                <Text size='xs' theme='muted' tag='span'>
-                  <FormattedMessage
-                    id='status.filtered-hint'
-                    defaultMessage='Status was hidden by filter settings'
-                  />
-                </Text>
-              </span>
-            )
-          }
-          <div>
-            <SpoilerButton
-              tabIndex={0}
-              onClick={handleSpoilerClick}
+  return (
+    <>
+      <div className={`${className} flex flex-col gap-2`} ref={node} tabIndex={0} style={directionStyle} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
+        {
+          // post has a spoiler or was filtered
+          (status.spoiler_text.length > 0 || status.filtered) && (
+            <Spoiler
+              status={status}
               hidden={isHidden}
+              onClick={handleSpoilerClick}
             />
-          </div>
-        </p>
-
-        <div
-          tabIndex={!isHidden ? 0 : undefined}
-          className={classNames('status__content__text', {
-            'status__content__text--visible': !isHidden,
-          })}
-          style={directionStyle}
-          dangerouslySetInnerHTML={content}
-          lang={status.language || undefined}
-        />
-
-        {!isHidden && status.poll && typeof status.poll === 'string' && (
-          <Poll id={status.poll} status={status.url} />
-        )}
+          )
+        }
+        {
+          // actual content
+          !isHidden && (
+            <div
+              tabIndex={!isHidden ? 0 : undefined}
+              className={classNames('status__content__text', {
+                'status__content__text--visible': !isHidden,
+              })}
+              style={directionStyle}
+              dangerouslySetInnerHTML={content}
+              lang={status.language || undefined}
+            />
+          )
+        }
+        {
+          // post folded because too long
+          collapsed && onClick && (
+            <ReadMoreButton onClick={onClick} key='read-more' />
+          )
+        }
+        {
+          // post has a poll
+          status.poll && typeof status.poll === 'string' && (
+            <Poll id={status.poll} key='poll' status={status.url} />
+          )
+        }
       </div>
-    );
-  } else if (onClick) {
-    const output = [
-      <div
-        ref={node}
-        tabIndex={0}
-        key='content'
-        className={className}
-        style={directionStyle}
-        dangerouslySetInnerHTML={content}
-        lang={status.language || undefined}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-      />,
-    ];
-
-    if (collapsed) {
-      output.push(<ReadMoreButton onClick={onClick} key='read-more' />);
-    }
-
-    const hasPoll = status.poll && typeof status.poll === 'string';
-    if (hasPoll) {
-      output.push(<Poll id={status.poll} key='poll' status={status.url} />);
-    }
-
-    return <div className={classNames({ 'rounded-md p-4': hasPoll })}>{output}</div>;
-  } else {
-    const output = [
-      <div
-        ref={node}
-        tabIndex={0}
-        key='content'
-        className={classNames('status__content', {
-          'status__content--big': onlyEmoji,
-        })}
-        style={directionStyle}
-        dangerouslySetInnerHTML={content}
-        lang={status.language || undefined}
-      />,
-    ];
-
-    if (status.poll && typeof status.poll === 'string') {
-      output.push(<Poll id={status.poll} key='poll' status={status.url} />);
-    }
-
-    return <>{output}</>;
-  }
+    </>
+  );
 };
 
 export default React.memo(StatusContent);
