@@ -29,10 +29,11 @@ interface IReadMoreButton {
 
 /** Button to expand a truncated status (due to too much content) */
 const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
-  <button className='status__content__read-more-button' onClick={onClick}>
+  <Button onClick={onClick} theme='link' size='sm' classNames='px-1 py-1 -mx-1'>
     <FormattedMessage id='status.read_more' defaultMessage='Read more' />
     <Icon className='inline-block h-5 w-5' src={require('@tabler/icons/chevron-right.svg')} fixedWidth />
-  </button>
+  </Button>
+
 );
 
 interface ISpoilerButton {
@@ -286,7 +287,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
           !isHidden && (
             <div
               tabIndex={!isHidden ? 0 : undefined}
-              className={classNames('status__content__text', {
+              className={classNames('min-h-0 overflow-hidden text-ellipsis status__content__text', {
                 'status__content__text--visible': !isHidden,
               })}
               style={directionStyle}
@@ -298,7 +299,9 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
         {
           // post folded because too long
           collapsed && onClick && (
-            <ReadMoreButton onClick={onClick} key='read-more' />
+            <div>
+              <ReadMoreButton onClick={onClick} key='read-more' />
+            </div>
           )
         }
         {
