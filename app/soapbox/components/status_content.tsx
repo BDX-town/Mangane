@@ -29,7 +29,7 @@ interface IReadMoreButton {
 
 /** Button to expand a truncated status (due to too much content) */
 const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
-  <Button onClick={onClick} theme='link' size='sm' classNames='px-1 py-1 -mx-1'>
+  <Button onClick={onClick} theme='link' size='sm' classNames='-mx-3'>
     <FormattedMessage id='status.read_more' defaultMessage='Read more' />
     <Icon className='inline-block h-5 w-5' src={require('@tabler/icons/chevron-right.svg')} fixedWidth />
   </Button>
@@ -96,7 +96,16 @@ const Spoiler: React.FC<ISpoiler> = ({ hidden, onClick, status }) => {
           </span>
         )
       }
-      <div>
+      <div className='flex gap-3 items-center'>
+        {
+          status.media_attachments?.count() > 0 && (
+            <div aria-hidden className='flex gap-1 items-center'>
+              <Icon className='inline-block' src={require('@tabler/icons/paperclip.svg')} />
+              <Text tag='span' size='xs' theme='muted'>{ status.media_attachments.count() }</Text>
+            </div>
+          )
+        }
+
         <SpoilerButton
           tabIndex={0}
           onClick={onClick}
