@@ -164,9 +164,9 @@ const Account = ({
   const LinkEl: any = withLinkToProfile ? Link : 'div';
 
   return (
-    <div data-testid='account' className='flex-shrink-0 group block w-full' ref={overflowRef}>
+    <div data-testid='account' className='shrink-0 group block w-full' ref={overflowRef}>
       <HStack alignItems={actionAlignment} justifyContent='between'>
-        <HStack alignItems={withAccountNote ? 'top' : 'center'} space={3}>
+        <HStack className='grow min-w-0' alignItems={withAccountNote ? 'top' : 'center'} space={3}>
           <ProfilePopper
             condition={showProfileHoverCard}
             wrapper={(children) => <HoverRefWrapper className='relative' accountId={account.id} inline>{children}</HoverRefWrapper>}
@@ -186,7 +186,7 @@ const Account = ({
             </LinkEl>
           </ProfilePopper>
 
-          <div className='flex-grow'>
+          <div className='grow min-w-0'>
             <ProfilePopper
               condition={showProfileHoverCard}
               wrapper={(children) => <HoverRefWrapper accountId={account.id} inline>{children}</HoverRefWrapper>}
@@ -210,7 +210,7 @@ const Account = ({
             </ProfilePopper>
 
             <Stack space={withAccountNote ? 1 : 0}>
-              <HStack alignItems='center' space={1} style={style}>
+              <HStack className='grow' alignItems='center' space={1} style={style}>
                 <Text theme='muted' size='sm' truncate>@{username}</Text>
 
                 {account.favicon && (
