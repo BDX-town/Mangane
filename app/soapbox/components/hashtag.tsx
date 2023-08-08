@@ -23,7 +23,7 @@ const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {
   return (
     <HStack alignItems='center' justifyContent='between' data-testid='hashtag'>
       <Stack>
-        <Permalink href={hashtag.url} to={`/tags/${hashtag.name}`} className='hover:underline'>
+        <Permalink href={hashtag.url} to={`/tag/${hashtag.name}`} className='hover:underline'>
           <Text tag='span' size='sm' weight='semibold'>#{hashtag.name}</Text>
         </Permalink>
 

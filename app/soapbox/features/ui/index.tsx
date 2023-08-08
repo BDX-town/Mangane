@@ -207,7 +207,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <Redirect from='/main/all' to='/timeline/fediverse' />
       <Redirect from='/main/public' to='/timeline/local' />
       <Redirect from='/main/friends' to='/' />
-      <Redirect from='/tag/:id' to='/tags/:id' />
+      <Redirect from='/tags/:id' to='/tag/:id' />
       <Redirect from='/user-settings' to='/settings/profile' />
       <WrappedRoute path='/notice/:statusId' publicRoute exact page={DefaultPage} component={Status} content={children} />
       <Redirect from='/users/:username/statuses/:statusId' to='/@:username/posts/:statusId' />
@@ -243,7 +243,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <Redirect from='/auth/password/new' to='/reset-password' />
       <Redirect from='/auth/password/edit' to={`/edit-password${search}`} />
 
-      <WrappedRoute path='/tags/:id' publicRoute page={DefaultPage} component={HashtagTimeline} content={children} />
+      <WrappedRoute path='/tag/:id' publicRoute page={DefaultPage} component={HashtagTimeline} content={children} />
 
       {features.lists && <WrappedRoute path='/lists' page={DefaultPage} component={Lists} content={children} />}
       {features.lists && <WrappedRoute path='/list/:id' page={HomePage} component={ListTimeline} content={children} />}
