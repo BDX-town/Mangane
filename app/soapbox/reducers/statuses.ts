@@ -33,6 +33,7 @@ import {
   STATUS_DELETE_REQUEST,
   STATUS_DELETE_FAIL,
   STATUS_TRANSLATE_SUCCESS,
+  STATUS_APPLY_FILTERS,
 } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
@@ -95,7 +96,6 @@ export const calculateStatus = (
   status: StatusRecord,
   oldStatus?: StatusRecord,
   expandSpoilers: boolean = false,
-  filters: ImmutableList<Filter> = ImmutableList([]),
 ): StatusRecord => {
   if (oldStatus && oldStatus.content === status.content && oldStatus.spoiler_text === status.spoiler_text) {
     return status.merge({
@@ -103,23 +103,29 @@ export const calculateStatus = (
       contentHtml: oldStatus.contentHtml,
       spoilerHtml: oldStatus.spoilerHtml,
       hidden: oldStatus.hidden,
-      filtered: oldStatus.filtered,
     });
   } else {
     const spoilerText   = status.spoiler_text;
     const searchIndex = domParser.parseFromString(buildSearchContent(status), 'text/html').documentElement.textContent || '';
     const emojiMap      = makeEmojiMap(status.emojis);
-    const regex    =  regexFromFilters(filters);
-    const filtered = Boolean(regex && regex.test(searchIndex));
 
     return status.merge({
       search_index: searchIndex,
       contentHtml: stripCompatibilityFeatures(emojify(status.content, emojiMap)),
       spoilerHtml: emojify(escapeTextContentForBrowser(spoilerText), emojiMap),
-      hidden: (expandSpoilers ? false : spoilerText.length > 0 || status.sensitive) || filtered,
-      filtered,
+      hidden: (expandSpoilers ? false : spoilerText.length > 0 || status.sensitive),
     });
   }
+};
+
+// apply filters on a status
+const fixFilters = (status: StatusRecord, filters: ImmutableList<Filter>): StatusRecord => {
+  const regex    =  regexFromFilters(filters);
+  const filtered = Boolean(regex && regex.test(status.search_index));
+  return status.merge({
+    hidden: status.hidden || filtered,
+    filtered,
+  });
 };
 
 // Check whether a status is a quote by secondary characteristics
@@ -143,7 +149,8 @@ const fixStatus = (state: State, status: APIEntity, expandSpoilers: boolean, fil
 
   return normalizeStatus(status).withMutations(status => {
     fixQuote(status, oldStatus);
-    calculateStatus(status, oldStatus, expandSpoilers, filters);
+    calculateStatus(status, oldStatus, expandSpoilers);
+    fixFilters(status, filters);
     minifyStatus(status);
   }) as ReducerStatus;
 };
@@ -204,10 +211,20 @@ const simulateFavourite = (
   return state.set(statusId, updatedStatus);
 };
 
+// When filters are fetched we want to apply them to already retrieved status
+const applyFilters = (
+  state: State,
+  filters: ImmutableList<Filter>,
+): State => {
+  return state.map((status) => fixFilters(status, filters) as ReducerStatus);
+};
+
 const initialState: State = ImmutableMap();
 
 export default function statuses(state = initialState, action: AnyAction): State {
   switch (action.type) {
+    case STATUS_APPLY_FILTERS:
+      return applyFilters(state, action.filters);
     case STATUS_IMPORT:
       return importStatus(state, action.status, action.expandSpoilers, action.filters);
     case STATUSES_IMPORT:

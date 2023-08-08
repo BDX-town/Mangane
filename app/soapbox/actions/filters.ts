@@ -1,10 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 import snackbar from 'soapbox/actions/snackbar';
+import { getFilters } from 'soapbox/selectors';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
 
 import api from '../api';
+
+import { STATUS_APPLY_FILTERS } from './statuses';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
 
@@ -42,10 +45,15 @@ const fetchFilters = () =>
 
     try {
       const { data } = await api(getState).get('/api/v1/filters');
-      dispatch({
+      await dispatch({
         type: FILTERS_FETCH_SUCCESS,
         filters: data,
         skipLoading: true,
+      });
+      const filters = getFilters(getState(), null);
+      dispatch({
+        type: STATUS_APPLY_FILTERS,
+        filters,
       });
     } catch (err) {
       dispatch({
