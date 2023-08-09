@@ -3,12 +3,13 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
+import Icon from 'soapbox/components/icon';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import { connectHashtagStream } from '../../actions/streaming';
 import { expandHashtagTimeline, clearTimeline } from '../../actions/timelines';
 import ColumnHeader from '../../components/column_header';
-import { Column } from '../../components/ui';
+import { Button, Column } from '../../components/ui';
 import Timeline from '../ui/components/timeline';
 
 
@@ -95,7 +96,19 @@ const HashtagTimeline: React.FC = () => {
   return (
     <Column label={`#${id}`} transparent withHeader={false}>
       <div className='px-4 pt-4 sm:p-0'>
-        <ColumnHeader active={hasUnread} title={title} />
+        <ColumnHeader
+          active={hasUnread}
+          title={
+            <div className='flex justify-between items-center'>
+              { title }
+              <Button theme='ghost' size='sm'>
+                <Icon src={require('@tabler/icons/plus.svg')} className='mr-1' />
+                &nbsp;
+                <FormattedMessage id='hashtag_timeline.follow' defaultMessage='Follow this tag' />
+              </Button>
+            </div>
+          }
+        />
       </div>
       <Timeline
         scrollKey='hashtag_timeline'
