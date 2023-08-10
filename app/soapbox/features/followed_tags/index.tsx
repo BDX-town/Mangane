@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { followTag, unfollowTag } from 'soapbox/actions/tags';
+import { fetchTags, followTag, unfollowTag } from 'soapbox/actions/tags';
 import Icon from 'soapbox/components/icon';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { Button, Column, IconButton, Spinner, Text } from 'soapbox/components/ui';
@@ -42,6 +42,7 @@ const FollowButton: React.FC<IFollowButton> = ({ id }) => {
 const FollowedHashtags = () => {
   const intl = useIntl();
   const [tags, setTags] = React.useState(null);
+  const dispatch = useAppDispatch();
 
   const { tags: serverTags, loading } = useAppSelector((state) => ({ tags: state.tags.list, loading: state.tags.loading }));
 
@@ -50,6 +51,10 @@ const FollowedHashtags = () => {
     if (loading || tags) return;
     setTags(serverTags);
   }, [serverTags, tags, loading]);
+
+  React.useEffect(() => {
+    dispatch(fetchTags());
+  }, [dispatch]);
 
 
   return (
