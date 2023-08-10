@@ -4,10 +4,10 @@ import { useDispatch } from 'react-redux';
 
 import { unblockDomain } from 'soapbox/actions/domain_blocks';
 
-import IconButton from './icon_button';
+import Icon from './icon';
+import { Button } from './ui';
 
 const messages = defineMessages({
-  blockDomainConfirm: { id: 'confirmations.domain_block.confirm', defaultMessage: 'Hide entire domain' },
   unblockDomain: { id: 'account.unblock_domain', defaultMessage: 'Unhide {domain}' },
 });
 
@@ -19,29 +19,27 @@ const Domain: React.FC<IDomain> = ({ domain }) => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  // const onBlockDomain = () => {
-  //   dispatch(openModal('CONFIRM', {
-  //     icon: require('@tabler/icons/ban.svg'),
-  //     heading: <FormattedMessage id='confirmations.domain_block.heading' defaultMessage='Block {domain}' values={{ domain }} />,
-  //     message: <FormattedMessage id='confirmations.domain_block.message' defaultMessage='Are you really, really sure you want to block the entire {domain}? In most cases a few targeted blocks or mutes are sufficient and preferable.' values={{ domain: <strong>{domain}</strong> }} />,
-  //     confirm: intl.formatMessage(messages.blockDomainConfirm),
-  //     onConfirm: () => dispatch(blockDomain(domain)),
-  //   }));
-  // }
-
   const handleDomainUnblock = () => {
     dispatch(unblockDomain(domain));
   };
 
   return (
     <div className='domain'>
-      <div className='domain__wrapper'>
-        <span className='domain__domain-name'>
-          <strong>{domain}</strong>
-        </span>
+      <div className='domain__wrapper flex justify-between items-center'>
+        <div className='flex gap-1 items-center'>
+          <Icon src={require('@tabler/icons/world.svg')} />
+          <strong className='text-gray-700 dark:text-white'>{domain}</strong>
+        </div>
 
         <div className='domain__buttons'>
-          <IconButton active src={require('@tabler/icons/lock-open.svg')} title={intl.formatMessage(messages.unblockDomain, { domain })} onClick={handleDomainUnblock} />
+          <Button theme='ghost' onClick={handleDomainUnblock}>
+            <div className='flex gap-1 items-center'>
+              <Icon src={require('@tabler/icons/lock-open.svg')} />
+              <span>
+                { intl.formatMessage(messages.unblockDomain) }
+              </span>
+            </div>
+          </Button>
         </div>
       </div>
     </div>

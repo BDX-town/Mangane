@@ -26,24 +26,18 @@ const FollowRequests: React.FC = () => {
 
   const accountIds = useAppSelector((state) => state.user_lists.follow_requests.items);
   const hasMore = useAppSelector((state) => !!state.user_lists.follow_requests.next);
+  const loading = useAppSelector((state) => state.user_lists.mutes.isLoading);
 
   React.useEffect(() => {
     dispatch(fetchFollowRequests());
   }, []);
-
-  if (!accountIds) {
-    return (
-      <Column>
-        <Spinner />
-      </Column>
-    );
-  }
 
   const emptyMessage = <FormattedMessage id='empty_column.follow_requests' defaultMessage="You don't have any follow requests yet. When you receive one, it will show up here." />;
 
   return (
     <Column icon='user-plus' label={intl.formatMessage(messages.heading)}>
       <ScrollableList
+        className='flex flex-col gap-3'
         scrollKey='follow_requests'
         onLoadMore={() => handleLoadMore(dispatch)}
         hasMore={hasMore}
@@ -52,6 +46,9 @@ const FollowRequests: React.FC = () => {
         {accountIds.map(id =>
           <AccountAuthorize key={id} id={id} />,
         )}
+        {
+          loading && <Spinner />
+        }
       </ScrollableList>
     </Column>
   );

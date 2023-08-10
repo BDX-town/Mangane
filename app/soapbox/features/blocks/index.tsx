@@ -23,18 +23,11 @@ const Blocks: React.FC = () => {
 
   const accountIds = useAppSelector((state) => state.user_lists.blocks.items);
   const hasMore = useAppSelector((state) => !!state.user_lists.blocks.next);
+  const loading = useAppSelector((state) => state.user_lists.blocks.isLoading);
 
   React.useEffect(() => {
     dispatch(fetchBlocks());
   }, []);
-
-  if (!accountIds) {
-    return (
-      <Column>
-        <Spinner />
-      </Column>
-    );
-  }
 
   const emptyMessage = <FormattedMessage id='empty_column.blocks' defaultMessage="You haven't blocked any users yet." />;
 
@@ -45,12 +38,16 @@ const Blocks: React.FC = () => {
         onLoadMore={() => handleLoadMore(dispatch)}
         hasMore={hasMore}
         emptyMessage={emptyMessage}
-        itemClassName='pb-4'
+        itemClassName='flex flex-col gap-3 pb-4'
       >
         {accountIds.map((id) =>
           <AccountContainer key={id} id={id} actionType='blocking' />,
         )}
+        {
+          loading && <Spinner />
+        }
       </ScrollableList>
+
     </Column>
   );
 };
