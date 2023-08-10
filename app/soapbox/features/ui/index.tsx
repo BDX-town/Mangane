@@ -21,6 +21,7 @@ import { register as registerPushNotifications } from 'soapbox/actions/push_noti
 import { fetchScheduledStatuses } from 'soapbox/actions/scheduled_statuses';
 import { connectUserStream } from 'soapbox/actions/streaming';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
+import { fetchTags } from 'soapbox/actions/tags';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
 import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
@@ -466,11 +467,13 @@ const UI: React.FC = ({ children }) => {
 
     setTimeout(() => dispatch(fetchFilters()), 500);
 
+    setTimeout(() => dispatch(fetchTags()), 700);
+
     if (account.locked) {
-      setTimeout(() => dispatch(fetchFollowRequests()), 700);
+      setTimeout(() => dispatch(fetchFollowRequests()), 900);
     }
 
-    setTimeout(() => dispatch(fetchScheduledStatuses()), 900);
+    setTimeout(() => dispatch(fetchScheduledStatuses()), 1100);
   };
 
   useEffect(() => {

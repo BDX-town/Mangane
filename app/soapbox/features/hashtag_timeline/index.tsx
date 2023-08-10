@@ -3,14 +3,47 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
+import { unfollowTag, followTag } from 'soapbox/actions/tags';
 import Icon from 'soapbox/components/icon';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import { connectHashtagStream } from '../../actions/streaming';
 import { expandHashtagTimeline, clearTimeline } from '../../actions/timelines';
 import ColumnHeader from '../../components/column_header';
-import { Button, Column } from '../../components/ui';
+import { Button, Column, Spinner } from '../../components/ui';
 import Timeline from '../ui/components/timeline';
+
+interface IFollowButton {
+  id: string,
+}
+
+const FollowButton: React.FC<IFollowButton> = ({ id }) => {
+  const { isFollow, loading } = useAppSelector(state => ({ loading: state.tags.loading, isFollow: state.tags.list.find((t) => t.name === id) }));
+  const dispatch = useAppDispatch();
+
+  const onClick = React.useCallback(() => {
+    const action = isFollow ? unfollowTag : followTag;
+    dispatch(action(id));
+  }, [isFollow, id]);
+
+
+  return (
+    <Button disabled={loading} theme={isFollow ? 'secondary' : 'primary'} size='sm' onClick={onClick}>
+      {
+        loading ? <Spinner withText={false} size={16} /> : <Icon src={isFollow ? require('@tabler/icons/minus.svg') : require('@tabler/icons/plus.svg')} className='mr-1' />
+      }
+    &nbsp;
+      {
+        isFollow ? (
+          <FormattedMessage id='hashtag_timeline.unfollow' defaultMessage='Unfollow tag' />
+
+        ) : (
+          <FormattedMessage id='hashtag_timeline.follow' defaultMessage='Follow this tag' />
+        )
+      }
+    </Button>
+  );
+};
 
 
 const HashtagTimeline: React.FC = () => {
@@ -101,11 +134,7 @@ const HashtagTimeline: React.FC = () => {
           title={
             <div className='flex justify-between items-center'>
               { title }
-              <Button theme='ghost' size='sm'>
-                <Icon src={require('@tabler/icons/plus.svg')} className='mr-1' />
-                &nbsp;
-                <FormattedMessage id='hashtag_timeline.follow' defaultMessage='Follow this tag' />
-              </Button>
+              <FollowButton id={id} />
             </div>
           }
         />

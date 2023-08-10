@@ -57,7 +57,7 @@ const followTag = (tagId: string) => async(dispatch: AppDispatch, getState: () =
   dispatch({ type: TAG_FOLLOW_REQUEST });
 
   try {
-    const { data } = await api(getState).get(`/api/v1/tags/${tagId}/follow`);
+    const { data } = await api(getState).post(`/api/v1/tags/${tagId}/follow`);
     dispatch({
       type: TAG_FOLLOW_SUCCESS,
       tag: data,
@@ -82,7 +82,7 @@ const unfollowTag = (tagId: string) => async(dispatch: AppDispatch, getState: ()
   dispatch({ type: TAG_UNFOLLOW_REQUEST });
 
   try {
-    const { data } = await api(getState).get(`/api/v1/tags/${tagId}/follow`);
+    const { data } = await api(getState).post(`/api/v1/tags/${tagId}/unfollow`);
     dispatch({
       type: TAG_UNFOLLOW_SUCCESS,
       tag: data,
