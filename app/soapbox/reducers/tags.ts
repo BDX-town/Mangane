@@ -1,6 +1,6 @@
 import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 
-import { TAG_FETCH_REQUEST, TAG_FETCH_SUCCESS, TAG_FOLLOW_REQUEST, TAG_FOLLOW_SUCCESS, TAG_UNFOLLOW_REQUEST, TAG_UNFOLLOW_SUCCESS } from 'soapbox/actions/tags';
+import { TAG_FETCH_FAIL, TAG_FETCH_REQUEST, TAG_FETCH_SUCCESS, TAG_FOLLOW_FAIL, TAG_FOLLOW_REQUEST, TAG_FOLLOW_SUCCESS, TAG_UNFOLLOW_FAIL, TAG_UNFOLLOW_REQUEST, TAG_UNFOLLOW_SUCCESS } from 'soapbox/actions/tags';
 import { normalizeTag } from 'soapbox/normalizers';
 
 import type { AnyAction } from 'redux';
@@ -47,7 +47,11 @@ export default function filters(state = TagRecord(), action: AnyAction): State {
       return addTag(state, action.tag);
     case TAG_UNFOLLOW_SUCCESS:
       return removeTag(state, action.tag);
-    default:
+    case TAG_FETCH_FAIL:
+    case TAG_FOLLOW_FAIL:
+    case TAG_UNFOLLOW_FAIL:
       return state.set('loading', false);
+    default:
+      return state;
   }
 }

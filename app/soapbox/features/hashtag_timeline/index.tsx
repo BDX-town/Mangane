@@ -26,6 +26,16 @@ const FollowButton: React.FC<IFollowButton> = ({ id }) => {
     dispatch(action(id));
   }, [isFollow, id]);
 
+  const text = React.useMemo(() => {
+    if (loading) return <FormattedMessage id='hashtag_timeline.loading' defaultMessage='Loading...' />;
+    return isFollow ? (
+      <FormattedMessage id='hashtag_timeline.unfollow' defaultMessage='Unfollow tag' />
+
+    ) : (
+      <FormattedMessage id='hashtag_timeline.follow' defaultMessage='Follow this tag' />
+    );
+  }, [loading, isFollow]);
+
 
   return (
     <Button disabled={loading} theme={isFollow ? 'secondary' : 'primary'} size='sm' onClick={onClick}>
@@ -33,14 +43,7 @@ const FollowButton: React.FC<IFollowButton> = ({ id }) => {
         loading ? <Spinner withText={false} size={16} /> : <Icon src={isFollow ? require('@tabler/icons/minus.svg') : require('@tabler/icons/plus.svg')} className='mr-1' />
       }
     &nbsp;
-      {
-        isFollow ? (
-          <FormattedMessage id='hashtag_timeline.unfollow' defaultMessage='Unfollow tag' />
-
-        ) : (
-          <FormattedMessage id='hashtag_timeline.follow' defaultMessage='Follow this tag' />
-        )
-      }
+      {text}
     </Button>
   );
 };
