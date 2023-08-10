@@ -8,7 +8,7 @@ import type { APIEntity, Tag } from 'soapbox/types/entities';
 
 const TagRecord = ImmutableRecord({
   list: ImmutableList<Tag>(),
-  loading: false,
+  loading: true,
 });
 
 type State = ReturnType<typeof TagRecord>;

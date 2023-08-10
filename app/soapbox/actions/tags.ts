@@ -1,7 +1,7 @@
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
 
-import api from '../api';
+import api, { getNextLink } from '../api';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
 
@@ -29,13 +29,18 @@ const fetchTags = () => async(dispatch: AppDispatch, getState: () => RootState) 
   dispatch({ type: TAG_FETCH_REQUEST, skipLoading: true });
 
   try {
-    const { data } = await api(getState).get('/api/v1/followed_tags');
+    let next = null;
+    let tags = [];
+    do {
+      const response = await api(getState).get(next || '/api/v1/followed_tags');
+      tags = [...tags, ...response.data];
+      next = getNextLink(response);
+    } while (next);
     dispatch({
       type: TAG_FETCH_SUCCESS,
-      tags: data,
+      tags,
       skipLoading: true,
     });
-
   } catch (err) {
     dispatch({
       type: TAG_FETCH_FAIL,
