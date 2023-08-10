@@ -115,6 +115,7 @@ import {
   LogoutPage,
   AuthTokenList,
   ProfileFields,
+  FollowedHashtags,
 } from './util/async-components';
 import { WrappedRoute } from './util/react_router_helpers';
 
@@ -260,6 +261,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.chats && <WrappedRoute path='/chats/:chatId' page={DefaultPage} component={ChatRoom} content={children} />}
 
       <WrappedRoute path='/follow_requests' page={DefaultPage} component={FollowRequests} content={children} />
+      <WrappedRoute path='/followed_hashtags' page={DefaultPage} component={FollowedHashtags} content={children} />
       <WrappedRoute path='/blocks' page={DefaultPage} component={Blocks} content={children} />
       {features.federating && <WrappedRoute path='/domain_blocks' page={DefaultPage} component={DomainBlocks} content={children} />}
       <WrappedRoute path='/mutes' page={DefaultPage} component={Mutes} content={children} />

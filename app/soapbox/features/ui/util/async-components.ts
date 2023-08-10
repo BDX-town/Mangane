@@ -525,3 +525,7 @@ export function FamiliarFollowersModal() {
 export function AnnouncementsPanel() {
   return import(/* webpackChunkName: "features/announcements" */'../../../components/announcements/announcements-panel');
 }
+
+export function FollowedHashtags() {
+  return import('../../../features/followed_tags');
+}

@@ -38,6 +38,7 @@ const messages = defineMessages({
   direct: { id: 'column.direct', defaultMessage: 'Direct messages' },
   directory: { id: 'navigation_bar.profile_directory', defaultMessage: 'Profile directory' },
   dashboard: { id: 'tabs_bar.dashboard', defaultMessage: 'Dashboard' },
+  tags: { id: 'navigation_bar.tags', defaultMessage: 'Hashtags' },
 });
 
 interface ISidebarLink {
@@ -239,6 +240,15 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     to='/lists'
                     icon={require('@tabler/icons/list.svg')}
                     text={intl.formatMessage(messages.lists)}
+                    onClick={onClose}
+                  />
+                )}
+
+                {features.followTags && (
+                  <SidebarLink
+                    to='/followed_hashtags'
+                    icon={require('@tabler/icons/hash.svg')}
+                    text={intl.formatMessage(messages.tags)}
                     onClick={onClose}
                   />
                 )}
