@@ -94,21 +94,6 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
       ap_id: account.url,
     }));
   };
-
-  return (
-    <div className='flex flex-col gap-1'>
-      <Text size='xs' theme='muted'>
-        { intl.formatMessage(messages.awaiting_approval) }
-      </Text>
-      <Button
-        size='sm'
-        theme='secondary'
-        text={intl.formatMessage(messages.requested)}
-        onClick={handleFollow}
-      />
-    </div>
-  );
-
   /** Handles actionType='muting' */
   const mutingAction = () => {
     const isMuted = account.relationship?.muting;
