@@ -111,7 +111,10 @@ const expandNormalizedTimeline = (state: State, timelineId: string, statuses: Im
         // we need to sort between queue and actual list to avoid
         // messing with user position in the timeline by inserting inseen statuses
         unseens = ImmutableOrderedSet<any>();
-        if (!isLoadingMore && timeline.items.count() > 0) {
+        if (!isLoadingMore
+          && timeline.items.count() > 0
+          && newIds.first() > timeline.items.first()
+        ) {
           unseens = newIds.subtract(timeline.items);
         }
 
