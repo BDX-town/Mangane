@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import throttle from 'lodash/throttle';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useIntl, MessageDescriptor } from 'react-intl';
@@ -34,35 +33,27 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
   const [scrolled, setScrolled] = useState<boolean>(false);
   const autoload = settings.get('autoloadTimelines') === true;
 
-  const visible = count > 0 && scrolled;
-
-  const classes = classNames('left-1/2 -translate-x-1/2 fixed top-20 z-50', {
-    'hidden': !visible,
-  });
-
-  const getScrollTop = (): number => {
+  const getScrollTop = React.useCallback((): number => {
     return (document.scrollingElement || document.documentElement).scrollTop;
-  };
+  }, []);
 
-  const maybeUnload = () => {
+  const maybeUnload = React.useCallback(() => {
     if (autoload && getScrollTop() <= autoloadThreshold) {
       onClick();
     }
-  };
+  }, [autoload, autoloadThreshold, onClick]);
 
   const handleScroll = useCallback(throttle(() => {
-    maybeUnload();
-
     if (getScrollTop() > threshold) {
       setScrolled(true);
     } else {
       setScrolled(false);
     }
-  }, 150, { trailing: true }), [autoload, threshold, autoloadThreshold, onClick]);
+  }, 150, { trailing: true }), [threshold]);
 
-  const scrollUp = () => {
+  const scrollUp = React.useCallback(() => {
     window.scrollTo({ top: 0 });
-  };
+  }, []);
 
   const handleClick: React.MouseEventHandler = () => {
     setTimeout(scrollUp, 10);
@@ -81,17 +72,21 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
     maybeUnload();
   }, [count]);
 
-  return (
-    <div className={classes}>
-      <a className='flex items-center bg-primary-600 hover:bg-primary-700 hover:scale-105 active:scale-100 transition-transform text-white rounded-full px-4 py-2 space-x-1.5 cursor-pointer whitespace-nowrap' onClick={handleClick}>
-        <Icon src={require('@tabler/icons/arrow-bar-to-up.svg')} />
+  const visible = React.useMemo(() => count > 0 && scrolled, [count, scrolled]) ;
 
-        {(count > 0) && (
-          <Text theme='inherit' size='sm'>
-            {intl.formatMessage(message, { count })}
-          </Text>
-        )}
-      </a>
+  if (!visible) return null;
+
+  return (
+    <div className='left-1/2 -translate-x-1/2 fixed top-20 z-50'>
+      <button
+        className='flex items-center bg-primary-600 hover:bg-primary-700 hover:scale-105 active:scale-100 transition-transform text-white rounded-full px-4 py-2 space-x-1.5 cursor-pointer whitespace-nowrap' 
+        onClick={handleClick}
+      >
+        <Icon src={require('@tabler/icons/arrow-bar-to-up.svg')} />
+        <Text theme='inherit' size='sm'>
+          {intl.formatMessage(message, { count })}
+        </Text>
+      </button>
     </div>
   );
 };
