@@ -51,35 +51,35 @@ const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX
         {poll.pleroma.get('non_anonymous') && (
           <>
             <Tooltip text={intl.formatMessage(messages.nonAnonymous)}>
-              <Text theme='muted' weight='medium'>
+              <Text tag='span' theme='muted' weight='medium'>
                 <FormattedMessage id='poll.non_anonymous' defaultMessage='Public poll' />
               </Text>
             </Tooltip>
 
-            <Text theme='muted'>&middot;</Text>
+            <Text tag='span' theme='muted'>&middot;</Text>
           </>
         )}
 
         {showResults && (
           <>
             <button className='text-gray-600 underline' onClick={handleRefresh} data-testid='poll-refresh'>
-              <Text theme='muted' weight='medium'>
+              <Text tag='span' theme='muted' weight='medium'>
                 <FormattedMessage id='poll.refresh' defaultMessage='Refresh' />
               </Text>
             </button>
 
-            <Text theme='muted'>&middot;</Text>
+            <Text tag='span' theme='muted'>&middot;</Text>
           </>
         )}
 
-        <Text theme='muted' weight='medium'>
+        <Text tag='span' theme='muted' weight='medium'>
           {votesCount}
         </Text>
 
         {poll.expires_at && (
           <>
-            <Text theme='muted'>&middot;</Text>
-            <Text weight='medium' theme='muted' data-testid='poll-expiration'>{timeRemaining}</Text>
+            <Text tag='span' theme='muted'>&middot;</Text>
+            <Text tag='span' weight='medium' theme='muted' data-testid='poll-expiration'>{timeRemaining}</Text>
           </>
         )}
       </HStack>

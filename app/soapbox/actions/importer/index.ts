@@ -1,3 +1,5 @@
+import { getFilters } from 'soapbox/selectors';
+
 import { getSettings } from '../settings';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
@@ -21,14 +23,16 @@ export function importAccounts(accounts: APIEntity[]) {
 export function importStatus(status: APIEntity, idempotencyKey?: string) {
   return (dispatch: AppDispatch, getState: () => RootState) => {
     const expandSpoilers = getSettings(getState()).get('expandSpoilers');
-    return dispatch({ type: STATUS_IMPORT, status, idempotencyKey, expandSpoilers });
+    const filters = getFilters(getState(), null);
+    return dispatch({ type: STATUS_IMPORT, status, idempotencyKey, expandSpoilers, filters });
   };
 }
 
 export function importStatuses(statuses: APIEntity[]) {
   return (dispatch: AppDispatch, getState: () => RootState) => {
     const expandSpoilers = getSettings(getState()).get('expandSpoilers');
-    return dispatch({ type: STATUSES_IMPORT, statuses, expandSpoilers });
+    const filters = getFilters(getState(), null);
+    return dispatch({ type: STATUSES_IMPORT, statuses, expandSpoilers, filters });
   };
 }
 

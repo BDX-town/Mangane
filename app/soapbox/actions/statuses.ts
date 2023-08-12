@@ -47,6 +47,8 @@ const STATUS_TRANSLATE_FAIL = 'STATUS_TRANSLATE_FAIL';
 const STATUS_REVEAL = 'STATUS_REVEAL';
 const STATUS_HIDE   = 'STATUS_HIDE';
 
+const STATUS_APPLY_FILTERS = 'STATUS_APPLY_FILTERS';
+
 const statusExists = (getState: () => RootState, statusId: string) => {
   return (getState().statuses.get(statusId) || null) !== null;
 };
@@ -353,6 +355,7 @@ export {
   STATUS_TRANSLATE_REQUEST,
   STATUS_TRANSLATE_SUCCESS,
   STATUS_TRANSLATE_FAIL,
+  STATUS_APPLY_FILTERS,
   createStatus,
   editStatus,
   fetchStatus,

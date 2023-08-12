@@ -12,7 +12,6 @@ interface IButton {
   block?: boolean,
   /** Elements inside the <button> */
   children?: React.ReactNode,
-  /** @deprecated unused */
   classNames?: string,
   /** Prevent the button from being clicked. */
   disabled?: boolean,
@@ -22,7 +21,6 @@ interface IButton {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void,
   /** A predefined button size. */
   size?: ButtonSizes,
-  /** @deprecated unused */
   style?: React.CSSProperties,
   /** Text inside the button. Takes precedence over `children`. */
   text?: React.ReactNode,
@@ -37,6 +35,7 @@ interface IButton {
 /** Customizable button element with various themes. */
 const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.Element => {
   const {
+    classNames,
     block = false,
     children,
     disabled = false,
@@ -47,6 +46,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
     theme = 'accent',
     to,
     type = 'button',
+    style,
   } = props;
 
   const themeClass = useButtonStyles({
@@ -72,12 +72,13 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
 
   const renderButton = () => (
     <button
-      className={themeClass}
+      className={`${themeClass} ${classNames}`}
       disabled={disabled}
       onClick={handleClick}
       ref={ref}
       type={type}
       data-testid='button'
+      style={style}
     >
       {renderIcon()}
       {text || children}

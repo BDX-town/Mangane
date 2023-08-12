@@ -204,21 +204,6 @@ const Status: React.FC<IStatus> = (props) => {
     );
   }
 
-  if (status.filtered || actualStatus.filtered) {
-    const minHandlers = muted ? undefined : {
-      moveUp: handleHotkeyMoveUp,
-      moveDown: handleHotkeyMoveDown,
-    };
-
-    return (
-      <HotKeys handlers={minHandlers}>
-        <div className={classNames('status__wrapper', 'status__wrapper--filtered', { focusable })} tabIndex={focusable ? 0 : undefined} ref={node}>
-          <FormattedMessage id='status.filtered' defaultMessage='Filtered' />
-        </div>
-      </HotKeys>
-    );
-  }
-
   let quote;
 
   if (actualStatus.quote) {
@@ -348,15 +333,21 @@ const Status: React.FC<IStatus> = (props) => {
               collapsable
             />
 
-            <StatusMedia
-              status={actualStatus}
-              muted={muted}
-              onClick={handleClick}
-              showMedia={showMedia}
-              onToggleVisibility={handleToggleMediaVisibility}
-            />
+            {
+              !actualStatus.hidden && (
+                <>
+                  <StatusMedia
+                    status={actualStatus}
+                    muted={muted}
+                    onClick={handleClick}
+                    showMedia={showMedia}
+                    onToggleVisibility={handleToggleMediaVisibility}
+                  />
+                  { quote  }
+                </>
 
-            {!actualStatus.hidden && quote}
+              )
+            }
 
             {!hideActionBar && (
               <div className='pt-4'>
