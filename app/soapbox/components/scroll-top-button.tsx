@@ -30,6 +30,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
   const intl = useIntl();
   const settings = useSettings();
 
+  const timer = React.useRef(null);
   const [scrolled, setScrolled] = useState<boolean>(false);
   const autoload = settings.get('autoloadTimelines') === true;
 
@@ -38,10 +39,17 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
   }, []);
 
   const maybeUnload = React.useCallback(() => {
-    if (autoload && getScrollTop() <= autoloadThreshold) {
-      onClick();
-    }
-  }, [autoload, autoloadThreshold, onClick]);
+    // we need to add a timer since there is a delay between content render and
+    // scroll top calculation. Without it, new content is always loaded because
+    // scrollTop is 0 at first.
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      if (count > 0 && autoload && getScrollTop() <= autoloadThreshold) {
+        onClick();
+      }
+      timer.current = null;
+    }, 250);
+  }, [autoload, autoloadThreshold, onClick, count]);
 
   const handleScroll = useCallback(throttle(() => {
     if (getScrollTop() > threshold) {
@@ -70,7 +78,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
 
   useEffect(() => {
     maybeUnload();
-  }, [count]);
+  }, [maybeUnload]);
 
   const visible = React.useMemo(() => count > 0 && scrolled, [count, scrolled]) ;
 

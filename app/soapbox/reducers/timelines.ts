@@ -98,22 +98,23 @@ const expandNormalizedTimeline = (state: State, timelineId: string, statuses: Im
       timeline.set('isLoading', false);
       timeline.set('loadingFailed', false);
       timeline.set('isPartial', isPartial);
-  
+
       if (!next && !isLoadingRecent) timeline.set('hasMore', false);
-  
+
       // Pinned timelines can be replaced entirely
       if (timelineId.endsWith(':pinned')) {
         timeline.set('items', newIds);
         return;
       }
-  
+
       if (!newIds.isEmpty()) {
         // we need to sort between queue and actual list to avoid
         // messing with user position in the timeline by inserting inseen statuses
-        let unseens = ImmutableOrderedSet<any>();
+        unseens = ImmutableOrderedSet<any>();
         if (!isLoadingMore && timeline.items.count() > 0) {
           unseens = newIds.subtract(timeline.items);
         }
+
         newIds = newIds.subtract(unseens);
         timeline.update('items', oldIds => {
           if (newIds.first() > oldIds.first()!) {
@@ -124,7 +125,7 @@ const expandNormalizedTimeline = (state: State, timelineId: string, statuses: Im
         });
       }
     }));
-    unseens.forEach((statusId) => updateTimelineQueue(s, timelineId, statusId));
+    unseens.forEach((statusId) => s.set(timelineId, updateTimelineQueue(s, timelineId, statusId).get(timelineId)));
   });
 };
 
@@ -160,7 +161,6 @@ const updateTimelineQueue = (state: State, timelineId: string, statusId: string)
     timeline.set('totalQueuedItemsCount', queuedCount + 1);
     timeline.set('queuedItems', addStatusId(queuedIds, statusId).take(MAX_QUEUED_ITEMS));
   }));
-
 };
 
 const shouldDelete = (timelineId: string, excludeAccount?: string) => {
@@ -328,64 +328,47 @@ const handleExpandFail = (state: State, timelineId: string) => {
 export default function timelines(state: State = initialState, action: AnyAction) {
   switch (action.type) {
     case STATUS_CREATE_REQUEST:
-      console.log(JSON.stringify(action, null, 2));
       if (action.params.scheduled_at) return state;
       return importPendingStatus(state, action.params, action.idempotencyKey);
     case STATUS_CREATE_SUCCESS:
-      console.log(JSON.stringify(action, null, 2));
       if (action.status.scheduled_at) return state;
       return importStatus(state, action.status, action.idempotencyKey);
     case TIMELINE_EXPAND_REQUEST:
-      console.log(JSON.stringify(action, null, 2));
       return setLoading(state, action.timeline, true);
     case TIMELINE_EXPAND_FAIL:
-      console.log(JSON.stringify(action, null, 2));
       return handleExpandFail(state, action.timeline);
     case TIMELINE_EXPAND_SUCCESS:
       return expandNormalizedTimeline(state, action.timeline, fromJS(action.statuses) as ImmutableList<ImmutableMap<string, any>>, action.next, action.partial, action.isLoadingRecent, action.isLoadingMore);
     case TIMELINE_UPDATE:
-      console.log(JSON.stringify(action, null, 2));
       return updateTimeline(state, action.timeline, action.statusId);
     case TIMELINE_UPDATE_QUEUE:
-      console.log(JSON.stringify(action, null, 2));
       return updateTimelineQueue(state, action.timeline, action.statusId);
     case TIMELINE_DEQUEUE:
-      console.log(JSON.stringify(action, null, 2));
       return timelineDequeue(state, action.timeline);
     case TIMELINE_DELETE:
-      console.log(JSON.stringify(action, null, 2));
       return deleteStatus(state, action.id, action.accountId, action.references, action.reblogOf);
     case TIMELINE_CLEAR:
-      console.log(JSON.stringify(action, null, 2));
       return clearTimeline(state, action.timeline);
     case ACCOUNT_BLOCK_SUCCESS:
     case ACCOUNT_MUTE_SUCCESS:
-      console.log(JSON.stringify(action, null, 2));
       return filterTimelines(state, action.relationship, action.statuses);
     case ACCOUNT_UNFOLLOW_SUCCESS:
-      console.log(JSON.stringify(action, null, 2));
       return filterTimeline(state, 'home', action.relationship, action.statuses);
     case TIMELINE_SCROLL_TOP:
-      console.log(JSON.stringify(action, null, 2));
       return updateTop(state, action.timeline, action.top);
     case TIMELINE_CONNECT:
-      console.log(JSON.stringify(action, null, 2));
       return timelineConnect(state, action.timeline);
     case TIMELINE_DISCONNECT:
-      console.log(JSON.stringify(action, null, 2));
       return timelineDisconnect(state, action.timeline);
     case GROUP_REMOVE_STATUS_SUCCESS:
-      console.log(JSON.stringify(action, null, 2));
       return removeStatusFromGroup(state, action.groupId, action.id);
     case TIMELINE_REPLACE:
-      console.log(JSON.stringify(action, null, 2));
       return state
         .update('home', TimelineRecord(), timeline => timeline.withMutations(timeline => {
           timeline.set('items', ImmutableOrderedSet([]));
         }))
         .update('home', TimelineRecord(), timeline => timeline.set('feedAccountId', action.accountId));
     case TIMELINE_INSERT:
-      console.log(JSON.stringify(action, null, 2));
       return state.update(action.timeline, TimelineRecord(), timeline => timeline.withMutations(timeline => {
         timeline.update('items', oldIds => {
 
@@ -401,7 +384,6 @@ export default function timelines(state: State = initialState, action: AnyAction
         });
       }));
     case TIMELINE_CLEAR_FEED_ACCOUNT_ID:
-      console.log(JSON.stringify(action, null, 2));
       return state.update('home', TimelineRecord(), timeline => timeline.set('feedAccountId', null));
     default:
       return state;
