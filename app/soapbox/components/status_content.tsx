@@ -99,7 +99,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
       e.stopPropagation();
-      history.push(`/tags/${hashtag}`);
+      history.push(`/tag/${hashtag}`);
     }
   };
 

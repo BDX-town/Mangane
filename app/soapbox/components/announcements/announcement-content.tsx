@@ -30,7 +30,7 @@ const AnnouncementContent: React.FC<IAnnouncementContent> = ({ announcement }) =
     if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
       e.stopPropagation();
-      history.push(`/tags/${hashtag}`);
+      history.push(`/tag/${hashtag}`);
     }
   };
 

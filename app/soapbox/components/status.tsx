@@ -287,14 +287,14 @@ const Status: React.FC<IStatus> = (props) => {
           data-id={status.id}
         >
 
-          <div className='flex mb-3'>
-            <div className='grow'>
+          <div className={classNames('flex items-center', { 'mb-3': status.reblog && typeof status.reblog === 'object' })}>
+            <div className='grow min-w-0'>
               {
                 status.reblog && typeof status.reblog === 'object' && (
                   <NavLink
                     to={`/@${status.getIn(['account', 'acct'])}`}
                     onClick={(event) => event.stopPropagation()}
-                    className='flex items-center mb-3 text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 hover:underline'
+                    className='flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 hover:underline'
                   >
                     <Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />
 
@@ -312,21 +312,21 @@ const Status: React.FC<IStatus> = (props) => {
                   </NavLink>
                 )
               }
-              <AccountContainer
-                key={String(actualStatus.getIn(['account', 'id']))}
-                id={String(actualStatus.getIn(['account', 'id']))}
-                timestamp={actualStatus.created_at}
-                timestampUrl={statusUrl}
-                hideActions
-                showEdit={!!actualStatus.edited_at}
-                showProfileHoverCard={hoverable}
-                withLinkToProfile={hoverable}
-              />
             </div>
-
             <Icon aria-hidden src={privacyIcon} className='h-5 w-5 shrink-0 text-gray-400 dark:text-gray-600' />
           </div>
-
+          <div className='mb-3'>
+            <AccountContainer
+              key={String(actualStatus.getIn(['account', 'id']))}
+              id={String(actualStatus.getIn(['account', 'id']))}
+              timestamp={actualStatus.created_at}
+              timestampUrl={statusUrl}
+              hideActions
+              showEdit={!!actualStatus.edited_at}
+              showProfileHoverCard={hoverable}
+              withLinkToProfile={hoverable}
+            />
+          </div>
 
           <div className='status__content-wrapper'>
             {!group && actualStatus.group && (
