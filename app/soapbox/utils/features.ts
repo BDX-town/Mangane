@@ -342,6 +342,15 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Can follow hashtag and show tags in home timeline
+     * @see GET /api/v1/followed_tags
+     */
+    followTags: any([
+      v.software === MASTODON && gte(v.compatVersion, '4.0.0'),
+      v.software === AKKOMA,
+    ]),
+
+    /**
      * Whether client settings can be retrieved from the API.
      * @see GET /api/pleroma/frontend_configurations
      */

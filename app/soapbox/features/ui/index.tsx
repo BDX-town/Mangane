@@ -21,6 +21,7 @@ import { register as registerPushNotifications } from 'soapbox/actions/push_noti
 import { fetchScheduledStatuses } from 'soapbox/actions/scheduled_statuses';
 import { connectUserStream } from 'soapbox/actions/streaming';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
+import { fetchTags } from 'soapbox/actions/tags';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
 import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
@@ -114,6 +115,7 @@ import {
   LogoutPage,
   AuthTokenList,
   ProfileFields,
+  FollowedHashtags,
 } from './util/async-components';
 import { WrappedRoute } from './util/react_router_helpers';
 
@@ -259,6 +261,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.chats && <WrappedRoute path='/chats/:chatId' page={DefaultPage} component={ChatRoom} content={children} />}
 
       <WrappedRoute path='/follow_requests' page={DefaultPage} component={FollowRequests} content={children} />
+      <WrappedRoute path='/followed_hashtags' page={DefaultPage} component={FollowedHashtags} content={children} />
       <WrappedRoute path='/blocks' page={DefaultPage} component={Blocks} content={children} />
       {features.federating && <WrappedRoute path='/domain_blocks' page={DefaultPage} component={DomainBlocks} content={children} />}
       <WrappedRoute path='/mutes' page={DefaultPage} component={Mutes} content={children} />
@@ -465,11 +468,13 @@ const UI: React.FC = ({ children }) => {
 
     setTimeout(() => dispatch(fetchFilters()), 500);
 
+    setTimeout(() => dispatch(fetchTags()), 700);
+
     if (account.locked) {
-      setTimeout(() => dispatch(fetchFollowRequests()), 700);
+      setTimeout(() => dispatch(fetchFollowRequests()), 900);
     }
 
-    setTimeout(() => dispatch(fetchScheduledStatuses()), 900);
+    setTimeout(() => dispatch(fetchScheduledStatuses()), 1100);
   };
 
   useEffect(() => {
