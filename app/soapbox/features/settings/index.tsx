@@ -33,6 +33,9 @@ const messages = defineMessages({
   domainBlocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Hidden domains' },
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
+  backups: { id: 'column.backups', defaultMessage: 'Backups' },
+  importData: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
+  exportData: { id: 'column.export_data', defaultMessage: 'Export data' },
 });
 
 /** User settings page. */
@@ -54,6 +57,9 @@ const Settings = () => {
   const navigateToDeleteAccount = () => history.push('/settings/account');
   const navigateToMoveAccount = () => history.push('/settings/migration');
   const navigateToAliases = () => history.push('/settings/aliases');
+  const navigateToBackups = () => history.push('/settings/backups');
+  const navigateToImportData = () => history.push('/settings/import');
+  const navigateToExportData = () => history.push('/settings/export');
 
   const navigateToBlocks = () => history.push('/blocks');
   const navigateToMutes = () => history.push('/mutes');
@@ -150,14 +156,27 @@ const Settings = () => {
 
             <CardBody>
               <List>
-                {features.security && (
-                  <ListItem label={intl.formatMessage(messages.deleteAccount)} onClick={navigateToDeleteAccount} />
+                {features.importData && (
+                  <ListItem label={intl.formatMessage(messages.importData)} onClick={navigateToImportData} />
                 )}
+
+                {features.exportData && (
+                  <ListItem label={intl.formatMessage(messages.exportData)} onClick={navigateToExportData} />
+                )}
+
+                {features.backups && (
+                  <ListItem label={intl.formatMessage(messages.backups)} onClick={navigateToBackups} />
+                )}
+
                 {features.federating && (features.accountMoving ? (
                   <ListItem label={intl.formatMessage(messages.accountMigration)} onClick={navigateToMoveAccount} />
                 ) : features.accountAliases && (
                   <ListItem label={intl.formatMessage(messages.accountAliases)} onClick={navigateToAliases} />
                 ))}
+
+                {features.security && (
+                  <ListItem label={intl.formatMessage(messages.deleteAccount)} onClick={navigateToDeleteAccount} />
+                )}
               </List>
             </CardBody>
           </>
