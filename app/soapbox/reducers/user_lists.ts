@@ -16,10 +16,12 @@ import {
   FOLLOW_REQUEST_REJECT_SUCCESS,
   PINNED_ACCOUNTS_FETCH_SUCCESS,
   BIRTHDAY_REMINDERS_FETCH_SUCCESS,
+  FOLLOW_REQUESTS_FETCH_REQUEST,
 } from '../actions/accounts';
 import {
   BLOCKS_FETCH_SUCCESS,
   BLOCKS_EXPAND_SUCCESS,
+  BLOCKS_FETCH_REQUEST,
 } from '../actions/blocks';
 import {
   DIRECTORY_FETCH_REQUEST,
@@ -47,6 +49,7 @@ import {
 import {
   MUTES_FETCH_SUCCESS,
   MUTES_EXPAND_SUCCESS,
+  MUTES_FETCH_REQUEST,
 } from '../actions/mutes';
 import {
   NOTIFICATIONS_UPDATE,
@@ -98,9 +101,15 @@ type Items = ImmutableOrderedSet<string>;
 type NestedListPath = ['followers' | 'following' | 'reblogged_by' | 'favourited_by' | 'reactions' | 'groups' | 'groups_removed_accounts' | 'pinned' | 'birthday_reminders' | 'familiar_followers', string];
 type ListPath = ['follow_requests' | 'blocks' | 'mutes' | 'directory'];
 
+const loadingList = (state: State, path: ListPath) => {
+  const current = state.getIn(path) as List;
+  return state.setIn(path, current.set('isLoading', true));
+};
+
 const normalizeList = (state: State, path: NestedListPath | ListPath, accounts: APIEntity[], next?: string | null) => {
 
   return state.setIn(path, ListRecord({
+    isLoading: false,
     next,
     items: ImmutableOrderedSet(accounts.map(item => item.id)),
   }));
@@ -108,13 +117,15 @@ const normalizeList = (state: State, path: NestedListPath | ListPath, accounts: 
 
 const appendToList = (state: State, path: NestedListPath | ListPath, accounts: APIEntity[], next: string | null) => {
   return state.updateIn(path, map => {
-    return (map as List).set('next', next).update('items', list => (list as Items).concat(accounts.map(item => item.id)));
+    return (map as List)
+      .set('next', next).update('items', list => (list as Items).concat(accounts.map(item => item.id)));
   });
 };
 
 const removeFromList = (state: State, path: NestedListPath | ListPath, accountId: string) => {
   return state.updateIn(path, map => {
-    return (map as List).update('items', list => (list as Items).filterNot(item => item === accountId));
+    return (map as List)
+      .update('items', list => (list as Items).filterNot(item => item === accountId));
   });
 };
 
@@ -126,6 +137,12 @@ const normalizeFollowRequest = (state: State, notification: APIEntity) => {
 
 export default function userLists(state = ReducerRecord(), action: AnyAction) {
   switch (action.type) {
+    case BLOCKS_FETCH_REQUEST:
+      return loadingList(state, ['blocks']);
+    case MUTES_FETCH_REQUEST:
+      return loadingList(state, ['mutes']);
+    case FOLLOW_REQUESTS_FETCH_REQUEST:
+      return loadingList(state, ['follow_requests']);
     case FOLLOWERS_FETCH_SUCCESS:
       return normalizeList(state, ['followers', action.id], action.accounts, action.next);
     case FOLLOWERS_EXPAND_SUCCESS:
