@@ -37,6 +37,8 @@ jobs:
         yarn build
         mv static dist
         zip -r static.zip dist
+        mkdir -p dist/.github/workflows/
+        cp .github/workflows/* dist/.github/workflows/
         
 
     - name: Create Draft Release
