@@ -1,0 +1,21 @@
+{
+    "icons": [
+        {
+            "src": "/favicon.png",
+            "type": "image/png",
+            "sizes": "250/250"
+        },
+        {
+            "src": "/favicon.ico",
+            "type": "image/x-icon",
+            "sizes": "250/250"
+        },
+        {
+            "src": "/favicon.svg",
+            "type": "image/svg+xml",
+            "sizes": "250/250"
+        }
+    ], 
+    "start_url": "/",
+    "display": "standalone"
+}

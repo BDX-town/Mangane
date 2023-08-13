@@ -1,0 +1,29 @@
+{
+  "logo": "/instance/images/mangane-logo.svg",
+  "brandColor": "#0482d8",
+  "promoPanel": {
+    "items": [{
+      "icon": "area-chart",
+      "text": "Our Site stats",
+      "url": "https://fediverse.network/example.com"
+    }, {
+      "icon": "comment-o",
+      "text": "Our Site blog",
+      "url": "https://blog.example.com"
+    }]
+  },
+  "defaultSettings": {
+    "autoPlayGif": false,
+    "themeMode": "light"
+  },
+  "copyright": "♡2020. Copying is an act of love. Please copy and share.",
+  "navlinks": {
+    "homeFooter": [
+      { "title": "About", "url": "/about" },
+      { "title": "Terms of Service", "url": "/about/tos" },
+      { "title": "Privacy Policy", "url": "/about/privacy" },
+      { "title": "DMCA", "url": "/about/dmca" },
+      { "title": "Source Code", "url": "/about#opensource" }
+    ]
+  }
+}
