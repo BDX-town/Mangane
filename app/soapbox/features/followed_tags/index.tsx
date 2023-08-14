@@ -70,14 +70,14 @@ const FollowedHashtags = () => {
           >
             {
               tags?.map((tag) => (
-                <div className='p-1 bg-gray-100 dark:bg-slate-900 rounded flex justify-between items-center'>
-                  <div className='flex items-center'>
+                <div className='p-1 bg-gray-100 dark:bg-slate-900 rounded flex flex-wrap justify-between items-center'>
+                  <div className='flex items-center grow'>
                     <Icon src={require('@tabler/icons/hash.svg')} />
                     <Text tag='span' weight='semibold'>
                       { tag.name }
                     </Text>
                   </div>
-                  <div className='flex items-center gap-3'>
+                  <div className='flex items-center gap-3 grow shrink justify-end'>
                     <FollowButton id={tag.name} />
                     <span className='dark:text-slate-800 text-gray-300' >|</span>
                     <Button theme='link' to={`/tag/${tag.name}`}>

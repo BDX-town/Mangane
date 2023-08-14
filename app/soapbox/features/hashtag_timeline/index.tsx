@@ -12,6 +12,7 @@ import { expandHashtagTimeline, clearTimeline } from '../../actions/timelines';
 import ColumnHeader from '../../components/column_header';
 import { Button, Column, Spinner } from '../../components/ui';
 import Timeline from '../ui/components/timeline';
+import { isLoggedIn } from 'soapbox/utils/auth';
 
 interface IFollowButton {
   id: string,
@@ -54,6 +55,7 @@ const HashtagTimeline: React.FC = () => {
   const disconnects = React.useRef([]);
   const { id, tags } = useParams<{ id: string, tags: any }>();
   const prevParams = React.useRef({ id, tags });
+  const isLoggedIn = useAppSelector((state) => state.me);
 
   const hasUnread = useAppSelector((state) => (state.getIn(['timelines', `hashtag:${id}`, 'unread']) as number) > 0);
 
@@ -137,7 +139,11 @@ const HashtagTimeline: React.FC = () => {
           title={
             <div className='flex justify-between items-center'>
               { title }
-              <FollowButton id={id} />
+              {
+                isLoggedIn && (
+                  <FollowButton id={id} />
+                )
+              }
             </div>
           }
         />
