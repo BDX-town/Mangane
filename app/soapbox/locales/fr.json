@@ -1062,7 +1062,7 @@
   "status.cannot_reblog": "Cette publication ne peut être boostée",
   "status.chat": "Chat with @{name}",
   "status.copy": "Copier le lien vers le statut",
-  "status.cw": "Avertissement:",
+  "status.cw": "Sujet:",
   "status.delete": "Effacer",
   "status.detailed_status": "Vue détaillée de la conversation",
   "status.direct": "Envoyer un message direct à @{name}",
