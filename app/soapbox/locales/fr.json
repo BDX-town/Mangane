@@ -813,7 +813,7 @@
   "patron.title": "Funding Goal",
   "pinned_accounts.title": "{name}’s choices",
   "pinned_statuses.none": "Aucun statut épinglé.",
-  "poll.chooseMultiple": "Choose as many as you'd like.",
+  "poll.chooseMultiple": "Choisissez autant d'options que vous voulez.",
   "poll.closed": "Fermé",
   "poll.non_anonymous": "Public poll",
   "poll.non_anonymous.label": "Other instances may display the options you voted for",

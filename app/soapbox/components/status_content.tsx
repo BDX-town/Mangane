@@ -294,29 +294,29 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
         {
           // actual content
           !isHidden && (
-            <div
-              tabIndex={!isHidden ? 0 : undefined}
-              className={classNames('min-h-0 overflow-hidden text-ellipsis status__content__text', {
-                'status__content__text--visible': !isHidden,
-              })}
-              style={directionStyle}
-              dangerouslySetInnerHTML={content}
-              lang={status.language || undefined}
-            />
-          )
-        }
-        {
-          // post folded because too long
-          collapsed && onClick && (
-            <div>
-              <ReadMoreButton onClick={onClick} key='read-more' />
-            </div>
-          )
-        }
-        {
-          // post has a poll
-          status.poll && typeof status.poll === 'string' && (
-            <Poll id={status.poll} key='poll' status={status.url} />
+            <>
+              <div
+                tabIndex={!isHidden ? 0 : undefined}
+                className={classNames('min-h-0 overflow-hidden text-ellipsis status__content__text status__content__text--visible')}
+                style={directionStyle}
+                dangerouslySetInnerHTML={content}
+                lang={status.language || undefined}
+              />
+              {
+              // post folded because too long
+                collapsed && onClick && (
+                  <div>
+                    <ReadMoreButton onClick={onClick} key='read-more' />
+                  </div>
+                )
+              }
+              {
+              // post has a poll
+                !collapsed && status.poll && typeof status.poll === 'string' && (
+                  <Poll id={status.poll} key='poll' status={status.url} />
+                )
+              }
+            </>
           )
         }
       </div>
