@@ -598,7 +598,7 @@ class MediaGallery extends React.PureComponent {
     return (
       <div className={classNames('media-gallery', { 'media-gallery--compact': compact })} style={sizeData.get('style')} ref={this.handleRef}>
         <div className={classNames('spoiler-button', { 'spoiler-button--minified': visible || compact })}>
-          {sensitive && (
+          {(
             (visible || compact) ? (
               <Button
                 text={intl.formatMessage(messages.toggle_visible)}
@@ -612,11 +612,14 @@ class MediaGallery extends React.PureComponent {
                 <div className='p-4 rounded-xl shadow-xl backdrop-blur-sm bg-white/75 dark:bg-slate-800/75 text-center inline-block space-y-4 max-w-[280px]'>
                   <div className='space-y-1'>
                     <Text weight='semibold'>{warning}</Text>
-                    <Text size='sm'>
-                      <FormattedMessage id='status.sensitive_warning.subtitle' defaultMessage='This content may not be suitable for all audiences.' />
-                    </Text>
+                    {
+                      sensitive && (
+                        <Text size='sm'>
+                          <FormattedMessage id='status.sensitive_warning.subtitle' defaultMessage='This content may not be suitable for all audiences.' />
+                        </Text>
+                      )
+                    }
                   </div>
-
                   <Button type='button' theme='primary' size='sm' icon={require('@tabler/icons/eye.svg')}>
                     <FormattedMessage id='status.sensitive_warning.action' defaultMessage='Show content' />
                   </Button>
