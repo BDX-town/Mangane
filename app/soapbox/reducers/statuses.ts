@@ -113,7 +113,7 @@ export const calculateStatus = (
       search_index: searchIndex,
       contentHtml: stripCompatibilityFeatures(emojify(status.content, emojiMap)),
       spoilerHtml: emojify(escapeTextContentForBrowser(spoilerText), emojiMap),
-      hidden: (expandSpoilers ? false : spoilerText.length > 0 || status.sensitive),
+      hidden: expandSpoilers ? false : spoilerText.length > 0,
     });
   }
 };
