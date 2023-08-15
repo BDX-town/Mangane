@@ -224,7 +224,7 @@
 }
 
 .status__content {
-  @apply text-gray-900 dark:text-gray-100 break-words text-ellipsis overflow-hidden relative;
+  @apply text-gray-900 dark:text-gray-100 break-words relative;
 
   &:focus {
     @apply outline-none;

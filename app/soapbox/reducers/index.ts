@@ -58,6 +58,7 @@ import status_hover_card from './status-hover-card';
 import status_lists from './status_lists';
 import statuses from './statuses';
 import suggestions from './suggestions';
+import tags from './tags';
 import timelines from './timelines';
 import trending_statuses from './trending_statuses';
 import trends from './trends';
@@ -124,6 +125,7 @@ const reducers = {
   rules,
   history,
   announcements,
+  tags,
 };
 
 // Build a default state from all reducers: it has the key and `undefined`

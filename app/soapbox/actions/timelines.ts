@@ -245,6 +245,7 @@ const expandTimelineSuccess = (timeline: string, statuses: APIEntity[], next: st
   partial,
   isLoadingRecent,
   skipLoading: !isLoadingMore,
+  isLoadingMore,
 });
 
 const expandTimelineFail = (timeline: string, error: AxiosError, isLoadingMore: boolean) => ({

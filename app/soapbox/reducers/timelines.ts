@@ -89,32 +89,47 @@ const setFailed = (state: State, timelineId: string, failed: boolean) => {
   return state.update(timelineId, TimelineRecord(), timeline => timeline.set('loadingFailed', failed));
 };
 
-const expandNormalizedTimeline = (state: State, timelineId: string, statuses: ImmutableList<ImmutableMap<string, any>>, next: string | null, isPartial: boolean, isLoadingRecent: boolean) => {
-  const newIds = getStatusIds(statuses);
+const expandNormalizedTimeline = (state: State, timelineId: string, statuses: ImmutableList<ImmutableMap<string, any>>, next: string | null, isPartial: boolean, isLoadingRecent: boolean, isLoadingMore: boolean) => {
+  let newIds = getStatusIds(statuses);
+  let unseens = ImmutableOrderedSet<any>();
 
-  return state.update(timelineId, TimelineRecord(), timeline => timeline.withMutations(timeline => {
-    timeline.set('isLoading', false);
-    timeline.set('loadingFailed', false);
-    timeline.set('isPartial', isPartial);
+  return state.withMutations((s) => {
+    s.update(timelineId, TimelineRecord(), timeline => timeline.withMutations(timeline => {
+      timeline.set('isLoading', false);
+      timeline.set('loadingFailed', false);
+      timeline.set('isPartial', isPartial);
 
-    if (!next && !isLoadingRecent) timeline.set('hasMore', false);
+      if (!next && !isLoadingRecent) timeline.set('hasMore', false);
 
-    // Pinned timelines can be replaced entirely
-    if (timelineId.endsWith(':pinned')) {
-      timeline.set('items', newIds);
-      return;
-    }
+      // Pinned timelines can be replaced entirely
+      if (timelineId.endsWith(':pinned')) {
+        timeline.set('items', newIds);
+        return;
+      }
 
-    if (!newIds.isEmpty()) {
-      timeline.update('items', oldIds => {
-        if (newIds.first() > oldIds.first()!) {
-          return mergeStatusIds(oldIds, newIds);
-        } else {
-          return mergeStatusIds(newIds, oldIds);
+      if (!newIds.isEmpty()) {
+        // we need to sort between queue and actual list to avoid
+        // messing with user position in the timeline by inserting inseen statuses
+        unseens = ImmutableOrderedSet<any>();
+        if (!isLoadingMore
+          && timeline.items.count() > 0
+          && newIds.first() > timeline.items.first()
+        ) {
+          unseens = newIds.subtract(timeline.items);
         }
-      });
-    }
-  }));
+
+        newIds = newIds.subtract(unseens);
+        timeline.update('items', oldIds => {
+          if (newIds.first() > oldIds.first()!) {
+            return mergeStatusIds(oldIds, newIds);
+          } else {
+            return mergeStatusIds(newIds, oldIds);
+          }
+        });
+      }
+    }));
+    unseens.forEach((statusId) => s.set(timelineId, updateTimelineQueue(s, timelineId, statusId).get(timelineId)));
+  });
 };
 
 const updateTimeline = (state: State, timelineId: string, statusId: string) => {
@@ -326,7 +341,7 @@ export default function timelines(state: State = initialState, action: AnyAction
     case TIMELINE_EXPAND_FAIL:
       return handleExpandFail(state, action.timeline);
     case TIMELINE_EXPAND_SUCCESS:
-      return expandNormalizedTimeline(state, action.timeline, fromJS(action.statuses) as ImmutableList<ImmutableMap<string, any>>, action.next, action.partial, action.isLoadingRecent);
+      return expandNormalizedTimeline(state, action.timeline, fromJS(action.statuses) as ImmutableList<ImmutableMap<string, any>>, action.next, action.partial, action.isLoadingRecent, action.isLoadingMore);
     case TIMELINE_UPDATE:
       return updateTimeline(state, action.timeline, action.statusId);
     case TIMELINE_UPDATE_QUEUE:

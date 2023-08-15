@@ -1,9 +1,9 @@
-import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { fetchBackups, createBackup } from 'soapbox/actions/backups';
 import ScrollableList from 'soapbox/components/scrollable_list';
+import { Button, FormActions, Text, Spinner } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import Column from '../ui/components/better_column';
@@ -24,22 +24,14 @@ const Backups = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const handleCreateBackup: React.MouseEventHandler<HTMLAnchorElement> = e => {
+  const handleCreateBackup: React.MouseEventHandler = e => {
     dispatch(createBackup());
     e.preventDefault();
   };
 
-  const makeColumnMenu = () => {
-    return [{
-      text: intl.formatMessage(messages.create),
-      action: handleCreateBackup,
-      icon: require('@tabler/icons/plus.svg'),
-    }];
-  };
-
   useEffect(() => {
     dispatch(fetchBackups()).then(() => {
-      setIsLoading(true);
+      setIsLoading(false);
     }).catch(() => {});
   }, []);
 
@@ -47,30 +39,47 @@ const Backups = () => {
 
   const emptyMessageAction = (
     <a href='#' onClick={handleCreateBackup}>
-      {intl.formatMessage(messages.emptyMessageAction)}
+      <Text tag='span' theme='primary' size='sm' className='hover:underline'>
+        {intl.formatMessage(messages.emptyMessageAction)}
+      </Text>
     </a>
   );
 
   return (
-    <Column icon='cloud-download' label={intl.formatMessage(messages.heading)} menu={makeColumnMenu()}>
+    <Column label={intl.formatMessage(messages.heading)}>
       <ScrollableList
         isLoading={isLoading}
         showLoading={showLoading}
         scrollKey='backups'
         emptyMessage={intl.formatMessage(messages.emptyMessage, { action: emptyMessageAction })}
       >
-        {backups.map((backup) => (
-          <div
-            className={classNames('backup', { 'backup--pending': !backup.processed })}
-            key={backup.id}
-          >
-            {backup.processed
-              ? <a href={backup.url} target='_blank'>{backup.inserted_at}</a>
-              : <div>{intl.formatMessage(messages.pending)}: {backup.inserted_at}</div>
-            }
-          </div>
-        ))}
+        {backups.map((backup) => {
+          const insertedAt = new Date(backup.inserted_at).toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+          return (
+            <div
+              className='p-2 mb-3 rounded bg-gray-100 dark:bg-slate-900 flex justify-between items-center'
+              key={backup.id}
+            >
+              <div>
+                {backup.processed
+                  ? <a href={backup.url} target='_blank'>{insertedAt}</a>
+                  : <Text theme='subtle'>{insertedAt}&nbsp;-&nbsp;{intl.formatMessage(messages.pending)}</Text>
+                }
+              </div>
+              {
+                !backup.processed && <Spinner withText={false} size={15} />
+              }
+            </div>
+          );
+        })}
       </ScrollableList>
+      <div className='mt-4'>
+        <FormActions>
+          <Button theme='primary' disabled={isLoading} onClick={handleCreateBackup}>
+            {intl.formatMessage(messages.create)}
+          </Button>
+        </FormActions>
+      </div>
     </Column>
   );
 };

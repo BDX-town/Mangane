@@ -22,6 +22,7 @@ const messages = defineMessages({
   settings: { id: 'tabs_bar.settings', defaultMessage: 'Settings' },
   direct: { id: 'column.direct', defaultMessage: 'Direct messages' },
   directory: { id: 'navigation_bar.profile_directory', defaultMessage: 'Profile directory' },
+  tags: { id: 'navigation_bar.tags', defaultMessage: 'Hashtags' },
 });
 
 /** Desktop sidebar with links to different views in the app. */
@@ -76,6 +77,14 @@ const SidebarNavigation = () => {
           to: '/lists',
           text: intl.formatMessage(messages.lists),
           icon: require('@tabler/icons/list.svg'),
+        });
+      }
+
+      if (features.followTags) {
+        menu.push({
+          to: '/followed_hashtags',
+          text: intl.formatMessage(messages.tags),
+          icon: require('@tabler/icons/hash.svg'),
         });
       }
 

@@ -161,13 +161,16 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
           )
         }
 
-        <StatusMedia
-          status={actualStatus}
-          showMedia={showMedia}
-          onToggleVisibility={onToggleMediaVisibility}
-        />
-
-        {!actualStatus.hidden && quote}
+        {!actualStatus.hidden && (
+          <>
+            <StatusMedia
+              status={actualStatus}
+              showMedia={showMedia}
+              onToggleVisibility={onToggleMediaVisibility}
+            />
+            { quote }
+          </>
+        )}
 
         <HStack justifyContent='between' alignItems='center' className='py-2'>
           <StatusInteractionBar status={actualStatus} />

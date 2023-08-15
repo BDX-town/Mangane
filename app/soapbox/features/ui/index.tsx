@@ -21,6 +21,7 @@ import { register as registerPushNotifications } from 'soapbox/actions/push_noti
 import { fetchScheduledStatuses } from 'soapbox/actions/scheduled_statuses';
 import { connectUserStream } from 'soapbox/actions/streaming';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
+import { fetchTags } from 'soapbox/actions/tags';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
 import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
@@ -82,9 +83,9 @@ import {
   EmailConfirmation,
   DeleteAccount,
   SoapboxConfig,
-  // ExportData,
+  ExportData,
   ImportData,
-  // Backups,
+  Backups,
   MfaForm,
   ChatIndex,
   ChatRoom,
@@ -114,6 +115,7 @@ import {
   LogoutPage,
   AuthTokenList,
   ProfileFields,
+  FollowedHashtags,
 } from './util/async-components';
 import { WrappedRoute } from './util/react_router_helpers';
 
@@ -207,7 +209,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <Redirect from='/main/all' to='/timeline/fediverse' />
       <Redirect from='/main/public' to='/timeline/local' />
       <Redirect from='/main/friends' to='/' />
-      <Redirect from='/tag/:id' to='/tags/:id' />
+      <Redirect from='/tags/:id' to='/tag/:id' />
       <Redirect from='/user-settings' to='/settings/profile' />
       <WrappedRoute path='/notice/:statusId' publicRoute exact page={DefaultPage} component={Status} content={children} />
       <Redirect from='/users/:username/statuses/:statusId' to='/@:username/posts/:statusId' />
@@ -243,7 +245,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <Redirect from='/auth/password/new' to='/reset-password' />
       <Redirect from='/auth/password/edit' to={`/edit-password${search}`} />
 
-      <WrappedRoute path='/tags/:id' publicRoute page={DefaultPage} component={HashtagTimeline} content={children} />
+      <WrappedRoute path='/tag/:id' publicRoute page={DefaultPage} component={HashtagTimeline} content={children} />
 
       {features.lists && <WrappedRoute path='/lists' page={DefaultPage} component={Lists} content={children} />}
       {features.lists && <WrappedRoute path='/list/:id' page={HomePage} component={ListTimeline} content={children} />}
@@ -259,6 +261,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.chats && <WrappedRoute path='/chats/:chatId' page={DefaultPage} component={ChatRoom} content={children} />}
 
       <WrappedRoute path='/follow_requests' page={DefaultPage} component={FollowRequests} content={children} />
+      <WrappedRoute path='/followed_hashtags' page={DefaultPage} component={FollowedHashtags} content={children} />
       <WrappedRoute path='/blocks' page={DefaultPage} component={Blocks} content={children} />
       {features.federating && <WrappedRoute path='/domain_blocks' page={DefaultPage} component={DomainBlocks} content={children} />}
       <WrappedRoute path='/mutes' page={DefaultPage} component={Mutes} content={children} />
@@ -280,11 +283,11 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.scheduledStatuses && <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />}
 
       <WrappedRoute path='/settings/profile' page={DefaultPage} component={EditProfile} content={children} />
-      {/* FIXME: this could DDoS our API? :\ */}
-      {/* <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} /> */}
+      {features.exportData && <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} />}
       {features.importData && <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />}
       {features.accountAliases && <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />}
       {features.accountMoving && <WrappedRoute path='/settings/migration' page={DefaultPage} component={Migration} content={children} />}
+      {features.backups && <WrappedRoute path='/settings/backups' page={DefaultPage} component={Backups} content={children} />}
       <WrappedRoute path='/settings/email' page={DefaultPage} component={EditEmail} content={children} />
       {
         !isLdapEnabled && (
@@ -296,7 +299,6 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/settings/mfa' page={DefaultPage} component={MfaForm} exact />
       <WrappedRoute path='/settings/tokens' page={DefaultPage} component={AuthTokenList} content={children} />
       <WrappedRoute path='/settings' page={DefaultPage} component={Settings} content={children} />
-      {/* <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} /> */}
       <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
 
       <WrappedRoute path='/soapbox/admin' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
@@ -466,11 +468,13 @@ const UI: React.FC = ({ children }) => {
 
     setTimeout(() => dispatch(fetchFilters()), 500);
 
+    setTimeout(() => dispatch(fetchTags()), 700);
+
     if (account.locked) {
-      setTimeout(() => dispatch(fetchFollowRequests()), 700);
+      setTimeout(() => dispatch(fetchFollowRequests()), 900);
     }
 
-    setTimeout(() => dispatch(fetchScheduledStatuses()), 900);
+    setTimeout(() => dispatch(fetchScheduledStatuses()), 1100);
   };
 
   useEffect(() => {

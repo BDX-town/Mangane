@@ -3,6 +3,8 @@ import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeStatus } from 'soapbox/normalizers';
+import { regexFromFilters } from 'soapbox/selectors';
+import { Filter } from 'soapbox/types/entities';
 import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
 import { stripCompatibilityFeatures, unescapeHTML } from 'soapbox/utils/html';
 import { makeEmojiMap, normalizeId } from 'soapbox/utils/normalizers';
@@ -31,6 +33,7 @@ import {
   STATUS_DELETE_REQUEST,
   STATUS_DELETE_FAIL,
   STATUS_TRANSLATE_SUCCESS,
+  STATUS_APPLY_FILTERS,
 } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
@@ -103,16 +106,26 @@ export const calculateStatus = (
     });
   } else {
     const spoilerText   = status.spoiler_text;
-    const searchContent = buildSearchContent(status);
+    const searchIndex = domParser.parseFromString(buildSearchContent(status), 'text/html').documentElement.textContent || '';
     const emojiMap      = makeEmojiMap(status.emojis);
 
     return status.merge({
-      search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent || '',
+      search_index: searchIndex,
       contentHtml: stripCompatibilityFeatures(emojify(status.content, emojiMap)),
       spoilerHtml: emojify(escapeTextContentForBrowser(spoilerText), emojiMap),
-      hidden: expandSpoilers ? false : spoilerText.length > 0 || status.sensitive,
+      hidden: expandSpoilers ? false : spoilerText.length > 0,
     });
   }
+};
+
+// apply filters on a status
+const fixFilters = (status: StatusRecord, filters: ImmutableList<Filter>): StatusRecord => {
+  const regex    =  regexFromFilters(filters);
+  const filtered = Boolean(regex && regex.test(status.search_index));
+  return status.merge({
+    hidden: status.hidden || filtered,
+    filtered,
+  });
 };
 
 // Check whether a status is a quote by secondary characteristics
@@ -131,21 +144,22 @@ const fixQuote = (status: StatusRecord, oldStatus?: StatusRecord): StatusRecord 
   }
 };
 
-const fixStatus = (state: State, status: APIEntity, expandSpoilers: boolean): ReducerStatus => {
+const fixStatus = (state: State, status: APIEntity, expandSpoilers: boolean, filters: ImmutableList<Filter>): ReducerStatus => {
   const oldStatus = state.get(status.id);
 
   return normalizeStatus(status).withMutations(status => {
     fixQuote(status, oldStatus);
     calculateStatus(status, oldStatus, expandSpoilers);
+    fixFilters(status, filters);
     minifyStatus(status);
   }) as ReducerStatus;
 };
 
-const importStatus = (state: State, status: APIEntity, expandSpoilers: boolean): State =>
-  state.set(status.id, fixStatus(state, status, expandSpoilers));
+const importStatus = (state: State, status: APIEntity, expandSpoilers: boolean, filters: ImmutableList<Filter>): State =>
+  state.set(status.id, fixStatus(state, status, expandSpoilers, filters));
 
-const importStatuses = (state: State, statuses: APIEntities, expandSpoilers: boolean): State =>
-  state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status, expandSpoilers)));
+const importStatuses = (state: State, statuses: APIEntities, expandSpoilers: boolean, filters: ImmutableList<Filter>): State =>
+  state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status, expandSpoilers, filters)));
 
 const translateStatus = (state: State, statusId: string, language: string, text: string) =>
   state.updateIn([statusId, 'translations', language], () => text);
@@ -197,14 +211,24 @@ const simulateFavourite = (
   return state.set(statusId, updatedStatus);
 };
 
+// When filters are fetched we want to apply them to already retrieved status
+const applyFilters = (
+  state: State,
+  filters: ImmutableList<Filter>,
+): State => {
+  return state.map((status) => fixFilters(status, filters) as ReducerStatus);
+};
+
 const initialState: State = ImmutableMap();
 
 export default function statuses(state = initialState, action: AnyAction): State {
   switch (action.type) {
+    case STATUS_APPLY_FILTERS:
+      return applyFilters(state, action.filters);
     case STATUS_IMPORT:
-      return importStatus(state, action.status, action.expandSpoilers);
+      return importStatus(state, action.status, action.expandSpoilers, action.filters);
     case STATUSES_IMPORT:
-      return importStatuses(state, action.statuses, action.expandSpoilers);
+      return importStatuses(state, action.statuses, action.expandSpoilers, action.filters);
     case STATUS_TRANSLATE_SUCCESS:
       return translateStatus(state, action.statusId, action.language, action.text);
     case STATUS_CREATE_REQUEST:

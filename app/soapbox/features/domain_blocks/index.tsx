@@ -26,18 +26,12 @@ const DomainBlocks: React.FC = () => {
 
   const domains = useAppSelector((state) => state.domain_lists.blocks.items);
   const hasMore = useAppSelector((state) => !!state.domain_lists.blocks.next);
+  const loading = useAppSelector((state) => state.domain_lists.blocks.isLoading);
+
 
   React.useEffect(() => {
     dispatch(fetchDomainBlocks());
   }, []);
-
-  if (!domains) {
-    return (
-      <Column>
-        <Spinner />
-      </Column>
-    );
-  }
 
   const emptyMessage = <FormattedMessage id='empty_column.domain_blocks' defaultMessage='There are no hidden domains yet.' />;
 
@@ -48,10 +42,16 @@ const DomainBlocks: React.FC = () => {
         onLoadMore={() => handleLoadMore(dispatch)}
         hasMore={hasMore}
         emptyMessage={emptyMessage}
+        itemClassName='flex flex-col gap-3'
       >
-        {domains.map((domain) =>
-          <Domain key={domain} domain={domain} />,
-        )}
+        {domains.map((domain) => (
+          <div className='rounded p-1 bg-gray-100 dark:bg-slate-900'>
+            <Domain key={domain} domain={domain} />
+          </div>
+        ))}
+        {
+          loading && <Spinner />
+        }
       </ScrollableList>
     </Column>
   );

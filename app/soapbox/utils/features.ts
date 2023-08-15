@@ -167,6 +167,13 @@ const getInstanceFeatures = (instance: Instance) => {
     announcementsReactions: v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
 
     /**
+     * Pleroma backups.
+     * @see GET /api/v1/pleroma/backups
+     * @see POST /api/v1/pleroma/backups
+     */
+    backups: v.software === PLEROMA || v.software === AKKOMA,
+
+    /**
      * Set your birthday and view upcoming birthdays.
      * @see GET /api/v1/pleroma/birthdays
      * @see POST /api/v1/accounts
@@ -288,6 +295,9 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === TRUTHSOCIAL,
     ]),
 
+    /** Whether to allow exporting follows/blocks/mutes to CSV by paginating the API. */
+    exportData: true,
+
     /** Whether the accounts who favourited or emoji-reacted to a status can be viewed through the API. */
     exposableReactions: any([
       v.software === MASTODON,
@@ -329,6 +339,15 @@ const getInstanceFeatures = (instance: Instance) => {
     followRequests: any([
       v.software === MASTODON,
       (v.software === PLEROMA || v.software === AKKOMA),
+    ]),
+
+    /**
+     * Can follow hashtag and show tags in home timeline
+     * @see GET /api/v1/followed_tags
+     */
+    followTags: any([
+      v.software === MASTODON && gte(v.compatVersion, '4.0.0'),
+      v.software === AKKOMA,
     ]),
 
     /**

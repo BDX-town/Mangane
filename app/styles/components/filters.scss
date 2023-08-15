@@ -60,7 +60,7 @@
   }
 
   .filter__container {
-    @apply flex justify-between py-5 px-2 text-sm text-black dark:text-white;
+    @apply flex justify-between p-2 text-sm text-black dark:text-white;
 
     .filter__phrase,
     .filter__contexts,
@@ -68,12 +68,8 @@
       @apply py-1;
     }
 
-    span.filter__list-label {
-      @apply pr-1 text-gray-500 dark:text-gray-400;
-    }
-
     span.filter__list-value span {
-      @apply pr-1 capitalize;
+      @apply pr-1;
 
       &::after {
         content: ",";

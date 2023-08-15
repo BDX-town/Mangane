@@ -13,7 +13,7 @@ import {
   rejectFollowRequest,
 } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
-import { Button, HStack } from 'soapbox/components/ui';
+import { Button, HStack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
@@ -25,8 +25,8 @@ const messages = defineMessages({
   follow: { id: 'account.follow', defaultMessage: 'Follow' },
   mute: { id: 'account.mute', defaultMessage: 'Mute @{name}' },
   remote_follow: { id: 'account.remote_follow', defaultMessage: 'Remote follow' },
-  requested: { id: 'account.requested', defaultMessage: 'Awaiting approval. Click to cancel follow request' },
-  requested_small: { id: 'account.requested_small', defaultMessage: 'Awaiting approval' },
+  requested: { id: 'account.requested', defaultMessage: 'Click to cancel' },
+  awaiting_approval: { id: 'account.awaiting_approval', defaultMessage: 'Awaiting approval' },
   unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
   unfollow: { id: 'account.unfollow', defaultMessage: 'Unfollow' },
   unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
@@ -94,7 +94,6 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
       ap_id: account.url,
     }));
   };
-
   /** Handles actionType='muting' */
   const mutingAction = () => {
     const isMuted = account.relationship?.muting;
@@ -206,12 +205,17 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
     } else if (account.relationship?.requested) {
       // Awaiting acceptance
       return (
-        <Button
-          size='sm'
-          theme='secondary'
-          text={small ? intl.formatMessage(messages.requested_small) : intl.formatMessage(messages.requested)}
-          onClick={handleFollow}
-        />
+        <div className='flex flex-col gap-1'>
+          <Text size='xs' theme='muted'>
+            { intl.formatMessage(messages.awaiting_approval) }
+          </Text>
+          <Button
+            size='sm'
+            theme='secondary'
+            text={intl.formatMessage(messages.requested)}
+            onClick={handleFollow}
+          />
+        </div>
       );
     } else if (!account.relationship?.blocking && !account.relationship?.muting) {
       // Follow & Unfollow
