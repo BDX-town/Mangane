@@ -37,6 +37,8 @@ jobs:
         yarn build
         mv static dist
         zip -r static.zip dist
+        mkdir -p dist/.github/workflows/
+        cp .github/workflows/* dist/.github/workflows/
         
 
     - name: Create Draft Release
@@ -64,3 +66,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         release_id: ${{ steps.create_release.outputs.id }}
+
+    - name: Deploy 🚀
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: dist
