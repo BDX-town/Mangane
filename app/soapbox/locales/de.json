@@ -784,8 +784,7 @@
   "onboarding.header.subtitle": "Das wird ganz oben in deinem Profil angezeigt.",
   "onboarding.header.title": "Wähle ein Titelbild",
   "onboarding.how-it-works.explanation": "Aber keine Sorge - wenn du einen Beitrag schreibst, wird dir die automatische Vorschlagsfunktion helfen, die richtige Erwähnung zu finden! Und wenn du auf einen Beitrag antwortest, wird die Erwähnung automatisch auf die richtige Weise geschrieben.",
-  "onboarding.how-it-works.left": "Hier bist du auf {title}. Wenn du dich mit Leuten aus der gleichen Instanz wie du austauschst, kannst du sie einfach mit {username} erwähnen
-{br}{br}Bsp: {contact} erwähnen, wenn du mit dem Administrator von {title} sprechen willst",
+  "onboarding.how-it-works.left": "Hier bist du auf {title}. Wenn du dich mit Leuten aus der gleichen Instanz wie du austauschst, kannst du sie einfach mit {username} erwähnen{br}{br}Bsp: {contact} erwähnen, wenn du mit dem Administrator von {title} sprechen willst",
   "onboarding.how-it-works.right": "Wenn du dich mit einer Person aus einer anderen Instanz austauscht, musst du sie mit ihrem <span class='font-bold'>@pseudo@instanz</span><br/><br/> Bsp: <a href=' https://oslo.town/@matt'>@matt@oslo.town</a>, wenn du mit dem Administrator von Oslo.town sprechen möchtest",
   "onboarding.how-it-works.title": "Wie funktioniert das?",
   "onboarding.how-it-works.username": "@benutzername",

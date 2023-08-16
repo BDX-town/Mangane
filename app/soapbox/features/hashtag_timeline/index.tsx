@@ -12,14 +12,13 @@ import { expandHashtagTimeline, clearTimeline } from '../../actions/timelines';
 import ColumnHeader from '../../components/column_header';
 import { Button, Column, Spinner } from '../../components/ui';
 import Timeline from '../ui/components/timeline';
-import { isLoggedIn } from 'soapbox/utils/auth';
 
 interface IFollowButton {
   id: string,
 }
 
 const FollowButton: React.FC<IFollowButton> = ({ id }) => {
-  const { isFollow, loading } = useAppSelector(state => ({ loading: state.tags.loading, isFollow: state.tags.list.find((t) => t.name === id) }));
+  const { isFollow, loading } = useAppSelector(state => ({ loading: state.tags.loading, isFollow: state.tags.list.find((t) => t.name.toLowerCase() === id.toLowerCase()) }));
   const dispatch = useAppDispatch();
 
   const onClick = React.useCallback(() => {
