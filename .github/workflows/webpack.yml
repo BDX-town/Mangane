@@ -32,14 +32,16 @@ jobs:
 
     - name: Build
       run: |
+        # Build one time for release
         export NODE_ENV=production
         yarn
         yarn build
         mv static dist
         zip -r static.zip dist
-        mkdir -p dist/.github/workflows/
-        cp .github/workflows/* dist/.github/workflows/
-        
+        # Build one time for showcase
+        export NODE_ENV=development
+        export FE_SUBDIRECTORY=Mangane
+        yarn build
 
     - name: Create Draft Release
       id: create_release
@@ -70,4 +72,4 @@ jobs:
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: dist
+        folder: static
