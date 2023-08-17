@@ -555,7 +555,7 @@
   "gdpr.learn_more": "Learn more",
   "gdpr.message": "{siteTitle} uses session cookies, which are essential to the website's functioning.",
   "gdpr.title": "{siteTitle} uses cookies",
-  "getting_started.open_source_notice": "{code_name}은 오픈 소스 소프트웨어입니다. 누구나 GitLab({code_link} (v{code_version}))에서 개발에 참여하거나, 문제를 보고할 수 있습니다.",
+  "getting_started.open_source_notice": "{code_name}은 오픈 소스 소프트웨어입니다. 누구나 GitHub({code_link} (v{code_version}))에서 개발에 참여하거나, 문제를 보고할 수 있습니다.",
   "group.members.empty": "This group does not has any members.",
   "group.removed_accounts.empty": "This group does not has any removed accounts.",
   "groups.card.join": "Join",

@@ -555,7 +555,7 @@
   "gdpr.learn_more": "Dowiedz się więcej",
   "gdpr.message": "{siteTitle} korzysta z ciasteczek sesji, które są niezbędne dla działania strony.",
   "gdpr.title": "{siteTitle} korzysta z ciasteczek",
-  "getting_started.open_source_notice": "{code_name} jest oprogramowaniem o otwartym źródle. Możesz pomóc w rozwoju lub zgłaszać błędy na GitLabie tutaj: {code_link} (v{code_version}).",
+  "getting_started.open_source_notice": "{code_name} jest oprogramowaniem o otwartym źródle. Możesz pomóc w rozwoju lub zgłaszać błędy na GitHubie tutaj: {code_link} (v{code_version}).",
   "group.members.empty": "Ta grupa nie ma żadnych członków.",
   "group.removed_accounts.empty": "Ta grupa nie ma żadnych usuniętych kont.",
   "groups.card.join": "Dołącz",

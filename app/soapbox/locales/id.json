@@ -555,7 +555,7 @@
   "gdpr.learn_more": "Learn more",
   "gdpr.message": "{siteTitle} uses session cookies, which are essential to the website's functioning.",
   "gdpr.title": "{siteTitle} uses cookies",
-  "getting_started.open_source_notice": "{code_name} adalah perangkat lunak yang bersifat terbuka. Anda dapat berkontribusi atau melaporkan permasalahan/bug di Gitlab {code_link} (v{code_version}).",
+  "getting_started.open_source_notice": "{code_name} adalah perangkat lunak yang bersifat terbuka. Anda dapat berkontribusi atau melaporkan permasalahan/bug di GitHub {code_link} (v{code_version}).",
   "group.members.empty": "This group does not has any members.",
   "group.removed_accounts.empty": "This group does not has any removed accounts.",
   "groups.card.join": "Join",

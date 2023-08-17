@@ -555,7 +555,7 @@
   "gdpr.learn_more": "Learn more",
   "gdpr.message": "{siteTitle} uses session cookies, which are essential to the website's functioning.",
   "gdpr.title": "{siteTitle} uses cookies",
-  "getting_started.open_source_notice": "{code_name} est un logiciel libre. Vous pouvez contribuer et envoyer vos commentaires et rapports de bogues via {code_link} ({code_version}) sur Github.",
+  "getting_started.open_source_notice": "{code_name} est un logiciel libre. Vous pouvez contribuer et envoyer vos commentaires et rapports de bogues via {code_link} ({code_version}) sur GitHub.",
   "group.members.empty": "This group does not has any members.",
   "group.removed_accounts.empty": "This group does not has any removed accounts.",
   "groups.card.join": "Join",
