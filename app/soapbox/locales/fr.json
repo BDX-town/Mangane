@@ -1143,7 +1143,7 @@
   "time_remaining.seconds": "{number, plural, one {# second} other {# seconds}} restantes",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {personne} other {personnes}} discutent",
   "trends.title": "Trends",
-  "ui.beforeunload": "Votre brouillon sera perdu si vous quittez Soapbox FE.",
+  "ui.beforeunload": "Votre projet sera perdu si vous quittez cette page.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "Glissez et déposez pour envoyer",
