@@ -28,17 +28,17 @@ const getBadges = (account: Account): JSX.Element[] => {
   const badges = [];
 
   if (account.admin) {
-    badges.push(<Badge key='admin' slug='admin' title='Admin' />);
+    badges.push(<Badge key='admin' slug='admin' title={<FormattedMessage id='account.badges.admin' defaultMessage='Admin' />} />);
   } else if (account.moderator) {
-    badges.push(<Badge key='moderator' slug='moderator' title='Moderator' />);
+    badges.push(<Badge key='moderator' slug='moderator' title={<FormattedMessage id='account.badges.moderator' defaultMessage='Moderator' />} />);
   }
 
   if (account.getIn(['patron', 'is_patron'])) {
-    badges.push(<Badge key='patron' slug='patron' title='Patron' />);
+    badges.push(<Badge key='patron' slug='patron' title={<FormattedMessage id='account.badges.patron' defaultMessage='Patron' />} />);
   }
 
   if (account.donor) {
-    badges.push(<Badge key='donor' slug='donor' title='Donor' />);
+    badges.push(<Badge key='donor' slug='donor' title={<FormattedMessage id='account.badges.donor' defaultMessage='Donor' />} />);
   }
 
   return badges;
