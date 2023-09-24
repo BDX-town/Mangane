@@ -1143,7 +1143,7 @@
   "time_remaining.seconds": "{number, plural, one {# segundo restante} other {# segundos restantes}}",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {persona} other {personas}} hablando",
   "trends.title": "Trends",
-  "ui.beforeunload": "Tu borrador se perderá si sales de Mangane FE.",
+  "ui.beforeunload": "Tu borrador se perderá si sales de esta página.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "Arrastra y suelta para subir",

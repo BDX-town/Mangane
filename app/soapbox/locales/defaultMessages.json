@@ -604,6 +604,22 @@
       {
         "defaultMessage": "Follows you",
         "id": "account.follows_you"
+      },
+      {
+        "defaultMessage": "Admin",
+        "id": "account.badges.admin"
+      },
+      {
+        "defaultMessage": "Moderator",
+        "id": "account.badges.moderator"
+      },
+      {
+        "defaultMessage": "Patron",
+        "id": "account.badges.patron"
+      },
+      {
+        "defaultMessage": "Donor",
+        "id": "account.badges.donor"
       }
     ],
     "path": "app/soapbox/components/profile-hover-card.json"
@@ -1602,14 +1618,6 @@
       {
         "defaultMessage": "Blocked",
         "id": "account.blocked"
-      },
-      {
-        "defaultMessage": "Muted",
-        "id": "account.muted"
-      },
-      {
-        "defaultMessage": "Domain hidden",
-        "id": "account.domain_blocked"
       }
     ],
     "path": "app/soapbox/features/account/components/header.json"
@@ -6268,6 +6276,22 @@
         "id": "account.badges.bot"
       },
       {
+        "defaultMessage": "Admin",
+        "id": "account.badges.admin"
+      },
+      {
+        "defaultMessage": "Moderator",
+        "id": "account.badges.moderator"
+      },
+      {
+        "defaultMessage": "Patron",
+        "id": "account.badges.patron"
+      },
+      {
+        "defaultMessage": "Donor",
+        "id": "account.badges.donor"
+      },
+      {
         "defaultMessage": "Birthday is today!",
         "id": "account.birthday_today"
       },
@@ -6278,6 +6302,10 @@
       {
         "defaultMessage": "Joined {date}",
         "id": "account.member_since"
+      },
+      {
+        "defaultMessage": "Muted",
+        "id": "account.muted"
       }
     ],
     "path": "app/soapbox/features/ui/components/profile_info_panel.json"
