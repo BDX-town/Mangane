@@ -669,7 +669,7 @@
   "login.otp_log_in": "OTP-Login",
   "login.otp_log_in.fail": "Ungültiger Code, bitte erneut versuchen.",
   "login.reset_password_hint": "Probleme beim Anmelden?",
-  "login.sign_in": "Anmelden",
+  "login.sign_in": "Registrieren",
   "login_external.errors.instance_fail": "Die Instanz hat einen Fehler gemeldet.",
   "login_external.errors.network_fail": "Verbindung fehlgeschlagen. Wird sie durch eine Browsererweiterung blockiert?",
   "login_form.header": "Anmelden",
