@@ -44,9 +44,9 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
 
   const getStaffBadge = (): React.ReactNode => {
     if (account?.admin) {
-      return <Badge slug='admin' title='Admin' key='staff' />;
+      return <Badge slug='admin' title={<FormattedMessage id='account.badges.admin' defaultMessage='Admin' />} key='staff' />;
     } else if (account?.moderator) {
-      return <Badge slug='moderator' title='Moderator' key='staff' />;
+      return <Badge slug='moderator' title={<FormattedMessage id='account.badges.moderator' defaultMessage='Moderator' />} key='staff' />;
     } else {
       return null;
     }
@@ -63,11 +63,11 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
     }
 
     if (isPatron) {
-      badges.push(<Badge slug='patron' title='Patron' key='patron' />);
+      badges.push(<Badge slug='patron' title={<FormattedMessage id='account.badges.patron' defaultMessage='Patron' />} key='patron' />);
     }
 
     if (account.donor) {
-      badges.push(<Badge slug='donor' title='Donor' key='donor' />);
+      badges.push(<Badge slug='donor' title={<FormattedMessage id='account.badges.donor' defaultMessage='Donor' />} key='donor' />);
     }
 
     return badges;
