@@ -555,7 +555,7 @@
   "gdpr.learn_more": "Learn more",
   "gdpr.message": "{siteTitle} uses session cookies, which are essential to the website's functioning.",
   "gdpr.title": "{siteTitle} uses cookies",
-  "getting_started.open_source_notice": "{code_name} é software de código aberto (open source). Podes contribuir ou reportar problemas no GitLab do projecto: {code_link} (v{code_version}).",
+  "getting_started.open_source_notice": "{code_name} é software de código aberto (open source). Podes contribuir ou reportar problemas no GitHub do projecto: {code_link} (v{code_version}).",
   "group.members.empty": "Este grupo não contém nenhum membro.",
   "group.removed_accounts.empty": "Este grupo não tem nenhuma conta removida.",
   "groups.card.join": "Juntar",

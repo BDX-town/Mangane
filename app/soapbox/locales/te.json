@@ -555,7 +555,7 @@
   "gdpr.learn_more": "Learn more",
   "gdpr.message": "{siteTitle} uses session cookies, which are essential to the website's functioning.",
   "gdpr.title": "{siteTitle} uses cookies",
-  "getting_started.open_source_notice": "మాస్టొడొన్ ఓపెన్ సోర్స్ సాఫ్ట్వేర్. మీరు {code_link} (v{code_version}) వద్ద GitLab పై సమస్యలను నివేదించవచ్చు లేదా తోడ్పడచ్చు.",
+  "getting_started.open_source_notice": "మాస్టొడొన్ ఓపెన్ సోర్స్ సాఫ్ట్వేర్. మీరు {code_link} (v{code_version}) వద్ద GitHub పై సమస్యలను నివేదించవచ్చు లేదా తోడ్పడచ్చు.",
   "group.members.empty": "This group does not has any members.",
   "group.removed_accounts.empty": "This group does not has any removed accounts.",
   "groups.card.join": "Join",

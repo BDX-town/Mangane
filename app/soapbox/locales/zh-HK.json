@@ -555,7 +555,7 @@
   "gdpr.learn_more": "Learn more",
   "gdpr.message": "{siteTitle} uses session cookies, which are essential to the website's functioning.",
   "gdpr.title": "{siteTitle} uses cookies",
-  "getting_started.open_source_notice": "{code_name}（萬象）是一個開放源碼的軟件。你可以在官方 GitLab ({code_link} (v{code_version})) 貢獻或者回報問題。",
+  "getting_started.open_source_notice": "{code_name}（萬象）是一個開放源碼的軟件。你可以在官方 GitHub ({code_link} (v{code_version})) 貢獻或者回報問題。",
   "group.members.empty": "This group does not has any members.",
   "group.removed_accounts.empty": "This group does not has any removed accounts.",
   "groups.card.join": "Join",

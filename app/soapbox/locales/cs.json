@@ -555,7 +555,7 @@
   "gdpr.learn_more": "Learn more",
   "gdpr.message": "{siteTitle} uses session cookies, which are essential to the website's functioning.",
   "gdpr.title": "{siteTitle} uses cookies",
-  "getting_started.open_source_notice": "{code_name} je otevřený software. Na GitLabu k němu můžete přispět nebo nahlásit chyby: {code_link} (v{code_version}).",
+  "getting_started.open_source_notice": "{code_name} je otevřený software. Na GitHubu k němu můžete přispět nebo nahlásit chyby: {code_link} (v{code_version}).",
   "group.members.empty": "Tato skupina nemá členy.",
   "group.removed_accounts.empty": "Tato skupina nemá žádné odstraněné členy.",
   "groups.card.join": "Připojit se",

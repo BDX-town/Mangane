@@ -555,7 +555,7 @@
   "gdpr.learn_more": "Learn more",
   "gdpr.message": "{siteTitle} uses session cookies, which are essential to the website's functioning.",
   "gdpr.title": "{siteTitle} uses cookies",
-  "getting_started.open_source_notice": "{code_name} 是开源软件。欢迎前往 GitLab（{code_link} (v{code_version})）贡献代码或反馈问题。",
+  "getting_started.open_source_notice": "{code_name} 是开源软件。欢迎前往 GitHub（{code_link} (v{code_version})）贡献代码或反馈问题。",
   "group.members.empty": "这个列表没有任何帐号。",
   "group.removed_accounts.empty": "这个列表没有被移除的帐号",
   "groups.card.join": "加入",
