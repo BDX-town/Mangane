@@ -713,7 +713,7 @@
         "id": "navigation_bar.preferences"
       },
       {
-        "defaultMessage": "Soapbox config",
+        "defaultMessage": "Mangane config",
         "id": "navigation_bar.soapbox_config"
       },
       {
@@ -2806,7 +2806,7 @@
         "id": "column.app_create"
       },
       {
-        "defaultMessage": "e.g. 'Soapbox'",
+        "defaultMessage": "e.g. 'Mangane'",
         "id": "app_create.name_placeholder"
       },
       {
@@ -5174,11 +5174,11 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Soapbox config",
+        "defaultMessage": "Mangane config",
         "id": "column.soapbox_config"
       },
       {
-        "defaultMessage": "Soapbox config saved!",
+        "defaultMessage": "Mangane config saved!",
         "id": "soapbox_config.saved"
       },
       {
@@ -5218,7 +5218,7 @@
         "id": "soapbox_config.quote_rt"
       },
       {
-        "defaultMessage": "Soapbox Icons List",
+        "defaultMessage": "Mangane Icons List",
         "id": "soapbox_config.hints.promo_panel_icons.link"
       },
       {
