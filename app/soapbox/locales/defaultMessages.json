@@ -604,6 +604,22 @@
       {
         "defaultMessage": "Follows you",
         "id": "account.follows_you"
+      },
+      {
+        "defaultMessage": "Admin",
+        "id": "account.badges.admin"
+      },
+      {
+        "defaultMessage": "Moderator",
+        "id": "account.badges.moderator"
+      },
+      {
+        "defaultMessage": "Patron",
+        "id": "account.badges.patron"
+      },
+      {
+        "defaultMessage": "Donor",
+        "id": "account.badges.donor"
       }
     ],
     "path": "app/soapbox/components/profile-hover-card.json"
@@ -697,7 +713,7 @@
         "id": "navigation_bar.preferences"
       },
       {
-        "defaultMessage": "Soapbox config",
+        "defaultMessage": "Mangane config",
         "id": "navigation_bar.soapbox_config"
       },
       {
@@ -1602,14 +1618,6 @@
       {
         "defaultMessage": "Blocked",
         "id": "account.blocked"
-      },
-      {
-        "defaultMessage": "Muted",
-        "id": "account.muted"
-      },
-      {
-        "defaultMessage": "Domain hidden",
-        "id": "account.domain_blocked"
       }
     ],
     "path": "app/soapbox/features/account/components/header.json"
@@ -2798,7 +2806,7 @@
         "id": "column.app_create"
       },
       {
-        "defaultMessage": "e.g. 'Soapbox'",
+        "defaultMessage": "e.g. 'Mangane'",
         "id": "app_create.name_placeholder"
       },
       {
@@ -5166,11 +5174,11 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Soapbox config",
+        "defaultMessage": "Mangane config",
         "id": "column.soapbox_config"
       },
       {
-        "defaultMessage": "Soapbox config saved!",
+        "defaultMessage": "Mangane config saved!",
         "id": "soapbox_config.saved"
       },
       {
@@ -5210,7 +5218,7 @@
         "id": "soapbox_config.quote_rt"
       },
       {
-        "defaultMessage": "Soapbox Icons List",
+        "defaultMessage": "Mangane Icons List",
         "id": "soapbox_config.hints.promo_panel_icons.link"
       },
       {
@@ -6268,6 +6276,22 @@
         "id": "account.badges.bot"
       },
       {
+        "defaultMessage": "Admin",
+        "id": "account.badges.admin"
+      },
+      {
+        "defaultMessage": "Moderator",
+        "id": "account.badges.moderator"
+      },
+      {
+        "defaultMessage": "Patron",
+        "id": "account.badges.patron"
+      },
+      {
+        "defaultMessage": "Donor",
+        "id": "account.badges.donor"
+      },
+      {
         "defaultMessage": "Birthday is today!",
         "id": "account.birthday_today"
       },
@@ -6278,6 +6302,10 @@
       {
         "defaultMessage": "Joined {date}",
         "id": "account.member_since"
+      },
+      {
+        "defaultMessage": "Muted",
+        "id": "account.muted"
       }
     ],
     "path": "app/soapbox/features/ui/components/profile_info_panel.json"
