@@ -849,7 +849,7 @@ const unpinAccount = (id: string) =>
 const updateNotificationSettings = (params: Record<string, any>) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: NOTIFICATION_SETTINGS_REQUEST, params });
-    return api(getState).put('/api/v1/pleroma/notification_settings', params).then(({ data }) => {
+    return api(getState).put('/api/pleroma/notification_settings', params).then(({ data }) => {
       dispatch({ type: NOTIFICATION_SETTINGS_SUCCESS, params, data });
     }).catch(error => {
       dispatch({ type: NOTIFICATION_SETTINGS_FAIL, params, error });
