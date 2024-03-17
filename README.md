@@ -1,4 +1,4 @@
-# Mangane
+![Mangane](./app/icons/mangane-full-horizontal.svg)
 
 Mangane is an alternative frontend for Pleroma, Akkoma and Mastodon with a focus on ease of use, readability and custom branding.
 
