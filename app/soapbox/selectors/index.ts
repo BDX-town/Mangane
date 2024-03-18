@@ -41,7 +41,7 @@ export const makeGetAccount = () => {
   ], (base, counters, relationship, moved, meta, admin, patron) => {
     if (!base) return null;
 
-    return base.withMutations(map => {
+    const a = base.withMutations(map => {
       if (counters) map.merge(counters);
       if (meta) {
         map.merge(meta);
@@ -52,6 +52,7 @@ export const makeGetAccount = () => {
       map.set('patron', patron || null);
       map.setIn(['pleroma', 'admin'], admin);
     });
+    return a;
   });
 };
 
