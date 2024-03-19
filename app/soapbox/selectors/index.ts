@@ -7,10 +7,11 @@ import {
 import { createSelector } from 'reselect';
 
 import { getSettings } from 'soapbox/actions/settings';
+import { ReducerStatus } from 'soapbox/reducers/statuses';
 import { getDomain } from 'soapbox/utils/accounts';
 import { validId } from 'soapbox/utils/auth';
 import ConfigDB from 'soapbox/utils/config_db';
-import { shouldFilter } from 'soapbox/utils/timelines';
+import { shoulDedupReblog, shouldFilter } from 'soapbox/utils/timelines';
 
 import type { ReducerChat } from 'soapbox/reducers/chats';
 import type { RootState } from 'soapbox/store';
@@ -341,9 +342,13 @@ export const makeGetStatusIds = () => createSelector([
   (state: RootState, { type }: ColumnQuery) => state.timelines.get(type)?.items || ImmutableOrderedSet(),
   (state: RootState) => state.statuses,
 ], (columnSettings, statusIds: ImmutableOrderedSet<string>, statuses) => {
+  const reblogs: {[x: string]: ReducerStatus[] } = {};
   return statusIds.filter((id: string) => {
     const status = statuses.get(id);
     if (!status) return true;
-    return !shouldFilter(status, columnSettings);
+    // if we dont want to show reblog, it's done here, this logic must stay before
+    // our dedup filter for reblogs
+    if (shouldFilter(status, columnSettings)) return false;
+    return !shoulDedupReblog(status, reblogs);
   });
 });
