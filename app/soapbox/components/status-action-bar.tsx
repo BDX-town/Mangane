@@ -530,7 +530,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     (status.pleroma.get('emoji_reactions') || ImmutableList()) as ImmutableList<any>,
     favouriteCount,
     status.favourited,
-    allowedEmoji,
+    null,
   ).reduce((acc, cur) => acc + cur.get('count'), 0);
 
   const meEmojiReact = getReactForStatus(status, allowedEmoji) as keyof typeof reactMessages | undefined;
