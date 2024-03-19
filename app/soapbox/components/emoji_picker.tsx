@@ -3,6 +3,7 @@ import Picker from '@emoji-mart/react';
 import classNames from 'classnames';
 import { List as ImmutableList } from 'immutable';
 import React, { MouseEventHandler } from 'react';
+import ReactDOM from 'react-dom';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { IconButton } from 'soapbox/components/ui';
@@ -28,15 +29,14 @@ const messages = defineMessages({
 });
 
 interface IWrapper {
-    target: any,
     show: boolean,
     onClose: MouseEventHandler,
     children: React.ReactNode,
 }
 
-const Wrapper: React.FC<IWrapper> = ({ target, show, onClose, children }) => {
+const Wrapper: React.FC<IWrapper> = ({ show, onClose, children }) => {
   if (!show) return null;
-  return (
+  return ReactDOM.createPortal(
     <div className='emoji-picker fixed top-0 left-0 w-screen h-screen bg-gray-800 z-[100]'>
       <div className='bg-white dark:bg-slate-800  flex flex-col overflow-hidden sm:rounded-lg absolute top-1/2 left-1/2 -translate-x-[50%] -translate-y-[50%] '>
         <div className='p-1'>
@@ -49,22 +49,17 @@ const Wrapper: React.FC<IWrapper> = ({ target, show, onClose, children }) => {
         { children }
       </div>
     </div>
-  );
+    , document.body);
 };
 
-interface IEmojiPicker {
-    custom_emojis?: ImmutableList<string>,
-    button?: React.ReactNode,
-    onPickEmoji: Function,
+interface IEmojiPickerModal {
+  custom_emojis?: ImmutableList<string>,
+  onPickEmoji: Function,
+  active: boolean,
+  onClose: Function,
 }
 
-const EmojiPickerUI : React.FC<IEmojiPicker> = ({
-  custom_emojis = ImmutableList(),
-  button,
-  onPickEmoji,
-}) => {
-  const root = React.useRef<HTMLDivElement>(null);
-  const [active, setActive] = React.useState(false);
+export const EmojiPickerModal: React.FC<IEmojiPickerModal> = ({ custom_emojis = ImmutableList(), active, onClose, onPickEmoji }) => {
   const intl = useIntl();
   const theme = useTheme();
 
@@ -72,20 +67,8 @@ const EmojiPickerUI : React.FC<IEmojiPicker> = ({
     if (e) {
       e.stopPropagation();
     }
-    setActive(false);
+    onClose();
   }, []);
-
-  const handleToggle = React.useCallback((e) => {
-    e.stopPropagation();
-    if (e.key === 'Escape') {
-      setActive(false);
-      return;
-    }
-
-    if ((!e.key || e.key === 'Enter')) {
-      setActive(!active);
-    }
-  }, [active]);
 
   const buildCustomEmojis = React.useCallback((custom_emojis: ImmutableList<any>) => {
     const emojis = custom_emojis.map((emoji) => (
@@ -109,6 +92,71 @@ const EmojiPickerUI : React.FC<IEmojiPicker> = ({
   }, [handleClose, onPickEmoji]);
 
   return (
+    <Wrapper show={active} onClose={handleClose}>
+      <Picker
+        theme={theme}
+        dynamicWidth={isMobile(window.innerWidth)}
+        categories={['frequent', 'custom', 'people', 'nature', 'foods', 'activity', 'places', 'objects', 'symbols', 'flags']}
+        previewPosition='none'
+        custom={buildCustomEmojis(custom_emojis)}
+        data={data}
+        onEmojiSelect={handlePick}
+        i18n={
+          {
+            search: intl.formatMessage(messages.emoji_search),
+            notfound: intl.formatMessage(messages.emoji_not_found),
+            skins: intl.formatMessage(messages.skins),
+            categories: {
+              search: intl.formatMessage(messages.search_results),
+              recent: intl.formatMessage(messages.recent),
+              people: intl.formatMessage(messages.people),
+              nature: intl.formatMessage(messages.nature),
+              foods: intl.formatMessage(messages.food),
+              activity: intl.formatMessage(messages.activity),
+              places: intl.formatMessage(messages.travel),
+              objects: intl.formatMessage(messages.objects),
+              symbols: intl.formatMessage(messages.symbols),
+              flags: intl.formatMessage(messages.flags),
+              custom: intl.formatMessage(messages.custom),
+            },
+          }
+        }
+      />
+    </Wrapper>
+  );
+};
+
+interface IEmojiPicker {
+  custom_emojis?: ImmutableList<string>,
+  button?: React.ReactNode,
+  onPickEmoji: Function,
+}
+
+const EmojiPickerUI : React.FC<IEmojiPicker> = ({
+  custom_emojis = ImmutableList(),
+  button,
+  onPickEmoji,
+}) => {
+  const root = React.useRef<HTMLDivElement>(null);
+  const [active, setActive] = React.useState(false);
+
+  const handleClose = React.useCallback(() => {
+    setActive(false);
+  }, []);
+
+  const handleToggle = React.useCallback((e) => {
+    e.stopPropagation();
+    if (e.key === 'Escape') {
+      setActive(false);
+      return;
+    }
+
+    if ((!e.key || e.key === 'Enter')) {
+      setActive(!active);
+    }
+  }, [active]);
+
+  return (
     <>
       <div className='relative' ref={root} onKeyDown={handleToggle}>
         <div role='button' tabIndex={0} onClick={handleToggle}>
@@ -117,42 +165,18 @@ const EmojiPickerUI : React.FC<IEmojiPicker> = ({
               className={classNames({
                 'text-gray-400 hover:text-gray-600': true,
               })}
+              // @ts-expect-error alt
               alt='😀'
               src={require('@tabler/icons/mood-happy.svg')}
             />
           }
         </div>
-        <Wrapper target={root} show={active} onClose={handleClose}>
-          <Picker
-            theme={theme}
-            dynamicWidth={isMobile(window.innerWidth)}
-            categories={['frequent', 'custom', 'people', 'nature', 'foods', 'activity', 'places', 'objects', 'symbols', 'flags']}
-            previewPosition='none'
-            custom={buildCustomEmojis(custom_emojis)}
-            data={data}
-            onEmojiSelect={handlePick}
-            i18n={
-              {
-                search: intl.formatMessage(messages.emoji_search),
-                notfound: intl.formatMessage(messages.emoji_not_found),
-                skins: intl.formatMessage(messages.skins),
-                categories: {
-                  search: intl.formatMessage(messages.search_results),
-                  recent: intl.formatMessage(messages.recent),
-                  people: intl.formatMessage(messages.people),
-                  nature: intl.formatMessage(messages.nature),
-                  foods: intl.formatMessage(messages.food),
-                  activity: intl.formatMessage(messages.activity),
-                  places: intl.formatMessage(messages.travel),
-                  objects: intl.formatMessage(messages.objects),
-                  symbols: intl.formatMessage(messages.symbols),
-                  flags: intl.formatMessage(messages.flags),
-                  custom: intl.formatMessage(messages.custom),
-                },
-              }
-            }
-          />
-        </Wrapper>
+        <EmojiPickerModal
+          active={active}
+          onClose={handleClose}
+          onPickEmoji={onPickEmoji}
+          custom_emojis={custom_emojis}
+        />
       </div>
     </>
   );

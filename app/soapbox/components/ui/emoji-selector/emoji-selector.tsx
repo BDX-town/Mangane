@@ -1,7 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 
+import { EmojiPickerModal } from 'soapbox/components/emoji_picker';
 import { Emoji, HStack } from 'soapbox/components/ui';
+
 
 interface IEmojiButton {
   /** Unicode emoji character. */
@@ -36,29 +38,48 @@ interface IEmojiSelector {
 
 /** Panel with a row of emoji buttons. */
 const EmojiSelector: React.FC<IEmojiSelector> = ({ emojis, onReact, visible = false, focused = false }): JSX.Element => {
+  const [modalActive, setModalActive] = React.useState(false);
 
-  const handleReact = (emoji: string): React.EventHandler<React.MouseEvent> => {
+  const handleReact = React.useCallback((emoji: string): React.EventHandler<React.MouseEvent> => {
     return (e) => {
-      onReact(emoji);
       e.preventDefault();
       e.stopPropagation();
+      onReact(emoji);
     };
-  };
+  }, [onReact]);
+
+  const handleCustomReact: React.MouseEventHandler = React.useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setModalActive(true);
+  }, []);
 
   return (
-    <HStack
-      space={2}
-      className={classNames('bg-white dark:bg-slate-900 p-3 rounded-full shadow-md z-[999] w-max')}
-    >
-      {Array.from(emojis).map((emoji, i) => (
+    <>
+      <HStack
+        space={2}
+        className={classNames('bg-white dark:bg-slate-900 p-3 rounded-full shadow-md z-[999] w-max')}
+      >
+        {Array.from(emojis).map((emoji, i) => (
+          <EmojiButton
+            key={i}
+            emoji={emoji}
+            onClick={handleReact(emoji)}
+            tabIndex={(visible || focused) ? 0 : -1}
+          />
+        ))}
         <EmojiButton
-          key={i}
-          emoji={emoji}
-          onClick={handleReact(emoji)}
+          emoji={'🤯'}
+          onClick={handleCustomReact}
           tabIndex={(visible || focused) ? 0 : -1}
         />
-      ))}
-    </HStack>
+      </HStack>
+      <EmojiPickerModal
+        active={modalActive}
+        onClose={() => setModalActive(false)}
+        onPickEmoji={(e) => console.log(e)}
+      />
+    </>
   );
 };
 

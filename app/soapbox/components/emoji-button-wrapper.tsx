@@ -109,14 +109,13 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
     e.stopPropagation();
   };
 
-  // const handleUnfocus: React.EventHandler<React.KeyboardEvent> = () => {
-  //   setFocused(false);
-  // };
-
   const selector = (
+    // eslint-disable-next-line jsx-a11y/interactive-supports-focus
     <div
+      role='menu'
+      onClick={handleClick}
       className={classNames('z-50 transition-opacity duration-100', {
-        'opacity-0 pointer-events-none': !visible,
+        'hidden opacity-0 pointer-events-none': !visible,
       })}
       ref={setPopperElement}
       style={styles.popper}
@@ -125,20 +124,14 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
       <EmojiSelector
         emojis={soapboxConfig.allowedEmoji}
         onReact={handleReact}
-        // focused={focused}
-        // onUnfocus={handleUnfocus}
       />
     </div>
   );
 
   return (
-    <div className='relative' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      {React.cloneElement(children, {
-        onClick: handleClick,
-        ref: setReferenceElement,
-      })}
-
-      {selector}
+    <div className='relative' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
+      { children}
+      { selector }
     </div>
   );
 };
