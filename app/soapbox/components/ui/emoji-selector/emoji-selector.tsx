@@ -48,11 +48,15 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({ emojis, onReact, visible = fa
     };
   }, [onReact]);
 
-  const handleCustomReact: React.MouseEventHandler = React.useCallback((e) => {
+  const handleOpenCustomReact: React.MouseEventHandler = React.useCallback((e) => {
     e.preventDefault();
     e.stopPropagation();
     setModalActive(true);
   }, []);
+
+  const handleCustomReact = React.useCallback((emoji) => {
+    onReact(emoji.native);
+  }, [onReact]);
 
   return (
     <>
@@ -70,14 +74,14 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({ emojis, onReact, visible = fa
         ))}
         <EmojiButton
           emoji={'🤯'}
-          onClick={handleCustomReact}
+          onClick={handleOpenCustomReact}
           tabIndex={(visible || focused) ? 0 : -1}
         />
       </HStack>
       <EmojiPickerModal
         active={modalActive}
         onClose={() => setModalActive(false)}
-        onPickEmoji={(e) => console.log(e)}
+        onPickEmoji={handleCustomReact}
       />
     </>
   );
