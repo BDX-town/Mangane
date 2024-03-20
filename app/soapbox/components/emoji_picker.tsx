@@ -5,6 +5,7 @@ import { List as ImmutableList } from 'immutable';
 import React, { MouseEventHandler } from 'react';
 import ReactDOM from 'react-dom';
 import { defineMessages, useIntl } from 'react-intl';
+import { createSelector } from 'reselect';
 
 import { IconButton } from 'soapbox/components/ui';
 import { useTheme } from 'soapbox/hooks';
@@ -27,6 +28,21 @@ const messages = defineMessages({
   flags: { id: 'emoji_button.flags', defaultMessage: 'Flags' },
   skins: { id: 'emoji_button.skins', defaultMessage: 'Skins' },
 });
+
+export const getCustomEmojis = createSelector([
+  (state: any) => state.get('custom_emojis'),
+], emojis => emojis.filter(e => e.get('visible_in_picker')).sort((a, b) => {
+  const aShort = a.get('shortcode').toLowerCase();
+  const bShort = b.get('shortcode').toLowerCase();
+
+  if (aShort < bShort) {
+    return -1;
+  } else if (aShort > bShort) {
+    return 1;
+  } else {
+    return 0;
+  }
+}));
 
 interface IWrapper {
     show: boolean,

@@ -1,5 +1,6 @@
-import classNames from 'classnames';
+/* eslint-disable jsx-a11y/interactive-supports-focus */
 import React, { useState, useEffect, useRef } from 'react';
+import ReactDOM from 'react-dom';
 import { usePopper } from 'react-popper';
 import { useDispatch } from 'react-redux';
 
@@ -17,6 +18,7 @@ interface IEmojiButtonWrapper {
 
 /** Provides emoji reaction functionality to the underlying button component */
 const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children }): JSX.Element | null => {
+  const root = React.useRef(null);
   const dispatch = useDispatch();
   const ownAccount = useOwnAccount();
   const status = useAppSelector(state => state.statuses.get(statusId));
@@ -24,10 +26,7 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
 
   const timeout = useRef<NodeJS.Timeout>();
   const [visible, setVisible] = useState(false);
-  // const [focused, setFocused] = useState(false);
 
-  // `useRef` won't trigger a re-render, while `useState` does.
-  // https://popper.js.org/react-popper/v2/
   const [referenceElement, setReferenceElement] = useState<HTMLDivElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
 
@@ -49,6 +48,10 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
         clearTimeout(timeout.current);
       }
     };
+  }, []);
+
+  useEffect(() => {
+    setReferenceElement(root.current);
   }, []);
 
   if (!status) return null;
@@ -93,6 +96,8 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
   };
 
   const handleClick: React.EventHandler<React.MouseEvent> = e => {
+    e.preventDefault();
+    e.stopPropagation();
     const meEmojiReact = getReactForStatus(status, soapboxConfig.allowedEmoji) || '👍';
 
     if (isUserTouching()) {
@@ -104,34 +109,32 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
     } else {
       handleReact(meEmojiReact);
     }
-
-    e.preventDefault();
-    e.stopPropagation();
   };
 
-  const selector = (
-    // eslint-disable-next-line jsx-a11y/interactive-supports-focus
-    <div
-      role='menu'
-      onClick={handleClick}
-      className={classNames('z-50 transition-opacity duration-100', {
-        'hidden opacity-0 pointer-events-none': !visible,
-      })}
-      ref={setPopperElement}
-      style={styles.popper}
-      {...attributes.popper}
-    >
-      <EmojiSelector
-        emojis={soapboxConfig.allowedEmoji}
-        onReact={handleReact}
-      />
-    </div>
-  );
 
   return (
-    <div className='relative' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
+    <div ref={root} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
       { children}
-      { selector }
+      {
+        visible && (
+          ReactDOM.createPortal((
+            <div
+              role='menu'
+              onClick={handleClick}
+              className='z-50 transition-opacity duration-100'
+              ref={setPopperElement}
+              style={styles.popper}
+              {...attributes.popper}
+            >
+              <EmojiSelector
+                emojis={soapboxConfig.allowedEmoji}
+                onReact={handleReact}
+              />
+            </div>
+          ), document.body)
+
+        )
+      }
     </div>
   );
 };

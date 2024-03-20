@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import { EmojiPickerModal } from 'soapbox/components/emoji_picker';
+import { EmojiPickerModal, getCustomEmojis } from 'soapbox/components/emoji_picker';
 import { Emoji, HStack } from 'soapbox/components/ui';
+import { useAppSelector } from 'soapbox/hooks';
 
 
 interface IEmojiButton {
@@ -39,6 +40,7 @@ interface IEmojiSelector {
 /** Panel with a row of emoji buttons. */
 const EmojiSelector: React.FC<IEmojiSelector> = ({ emojis, onReact, visible = false, focused = false }): JSX.Element => {
   const [modalActive, setModalActive] = React.useState(false);
+  const custom_emojis = useAppSelector((state) => getCustomEmojis(state));
 
   const handleReact = React.useCallback((emoji: string): React.EventHandler<React.MouseEvent> => {
     return (e) => {
@@ -72,13 +74,15 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({ emojis, onReact, visible = fa
             tabIndex={(visible || focused) ? 0 : -1}
           />
         ))}
+        <div className='' />
         <EmojiButton
-          emoji={'🤯'}
+          emoji={'➕'}
           onClick={handleOpenCustomReact}
           tabIndex={(visible || focused) ? 0 : -1}
         />
       </HStack>
       <EmojiPickerModal
+        custom_emojis={custom_emojis}
         active={modalActive}
         onClose={() => setModalActive(false)}
         onPickEmoji={handleCustomReact}
