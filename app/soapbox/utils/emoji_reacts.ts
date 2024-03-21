@@ -3,6 +3,8 @@ import {
   List as ImmutableList,
 } from 'immutable';
 
+import { EmojiReact as EmojiReactType } from 'soapbox/utils/emoji_reacts';
+
 import type { Me } from 'soapbox/types/soapbox';
 
 // https://emojipedia.org/facebook
@@ -89,16 +91,16 @@ export const reduceEmoji = (emojiReacts: ImmutableList<EmojiReact>, favouritesCo
   return filterEmoji(list, allowedEmoji);
 };
 
-export const getReactForStatus = (status: any, allowedEmoji = ALLOWED_EMOJI): string | undefined => {
+export const getReactForStatus = (status: any, allowedEmoji = ALLOWED_EMOJI): EmojiReactType | undefined => {
   const result = reduceEmoji(
     status.pleroma.get('emoji_reactions', ImmutableList()),
     status.favourites_count || 0,
     status.favourited,
     allowedEmoji,
   ).filter(e => e.get('me') === true)
-    .getIn([0, 'name']);
+    .get(0);
 
-  return typeof result === 'string' ? result : undefined;
+  return result;
 };
 
 export const simulateEmojiReact = (emojiReacts: ImmutableList<EmojiReact>, emoji: string) => {

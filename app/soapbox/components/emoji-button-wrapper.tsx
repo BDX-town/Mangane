@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
+import { Map as ImmutableMap } from 'immutable';
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { usePopper } from 'react-popper';
@@ -22,6 +23,7 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
   const dispatch = useDispatch();
   const ownAccount = useOwnAccount();
   const status = useAppSelector(state => state.statuses.get(statusId));
+  const meEmojiReact = getReactForStatus(status, null);
   const soapboxConfig = useSoapboxConfig();
 
   const timeout = useRef<NodeJS.Timeout>();
@@ -98,16 +100,16 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
   const handleClick: React.EventHandler<React.MouseEvent> = e => {
     e.preventDefault();
     e.stopPropagation();
-    const meEmojiReact = getReactForStatus(status, soapboxConfig.allowedEmoji) || '👍';
+    const wMeEmojiReact = getReactForStatus(status, soapboxConfig.allowedEmoji) || ImmutableMap({ name: '👍' }) ;
 
     if (isUserTouching()) {
       if (visible) {
-        handleReact(meEmojiReact);
+        handleReact(wMeEmojiReact.get('name'));
       } else {
         setVisible(true);
       }
     } else {
-      handleReact(meEmojiReact);
+      handleReact(wMeEmojiReact.get('name'));
     }
   };
 
@@ -127,6 +129,7 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
               {...attributes.popper}
             >
               <EmojiSelector
+                meEmojiReact={meEmojiReact}
                 emojis={soapboxConfig.allowedEmoji}
                 onReact={handleReact}
               />
