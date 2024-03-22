@@ -26,7 +26,7 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
   const meEmojiReact = getReactForStatus(status, null);
   const soapboxConfig = useSoapboxConfig();
 
-  const timeout = useRef<NodeJS.Timeout>();
+  const [timer, setTimer] = useState(undefined);
   const [visible, setVisible] = useState(false);
 
   const [referenceElement, setReferenceElement] = useState<HTMLDivElement | null>(null);
@@ -45,12 +45,12 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
   });
 
   useEffect(() => {
+    if (!timer) return undefined;
+    const t = timer;
     return () => {
-      if (timeout.current) {
-        clearTimeout(timeout.current);
-      }
+      clearTimeout(t);
     };
-  }, []);
+  }, [timer]);
 
   useEffect(() => {
     setReferenceElement(root.current);
@@ -59,8 +59,9 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
   if (!status) return null;
 
   const handleMouseEnter = () => {
-    if (timeout.current) {
-      clearTimeout(timeout.current);
+    if (timer) {
+      clearTimeout(timer);
+      setTimer(null);
     }
 
     if (!isUserTouching()) {
@@ -69,8 +70,9 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
   };
 
   const handleMouseLeave = () => {
-    if (timeout.current) {
-      clearTimeout(timeout.current);
+    if (timer) {
+      clearTimeout(timer);
+      setTimer(null);
     }
 
     // Unless the user is touching, delay closing the emoji selector briefly
@@ -78,13 +80,15 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
     if (isUserTouching()) {
       setVisible(false);
     } else {
-      timeout.current = setTimeout(() => {
-        setVisible(false);
-      }, 500);
+      setTimer(
+        setTimeout(() => setVisible(false), 500),
+      );
     }
   };
 
   const handleReact = (emoji: string): void => {
+    setVisible(false);
+    if (!emoji) return;
     if (ownAccount) {
       dispatch(simpleEmojiReact(status, emoji));
     } else {
@@ -94,7 +98,6 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
       }));
     }
 
-    setVisible(false);
   };
 
   const handleClick: React.EventHandler<React.MouseEvent> = e => {

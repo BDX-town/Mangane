@@ -4,7 +4,7 @@ import React from 'react';
 
 import { EmojiPickerModal, getCustomEmojis } from 'soapbox/components/emoji_picker';
 import { Emoji, HStack } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { EmojiReact } from 'soapbox/utils/emoji_reacts';
 
 
@@ -32,7 +32,7 @@ interface IEmojiSelector {
   /** List of Unicode emoji characters. */
   emojis: Iterable<string>,
   /** Event handler when an emoji is clicked. */
-  onReact: (emoji: string) => void,
+  onReact: (emoji?: string) => void,
   /** Whether the selector should be visible. */
   visible?: boolean,
   /** Whether the selector should be focused. */
@@ -45,6 +45,7 @@ interface IEmojiSelector {
 const EmojiSelector: React.FC<IEmojiSelector> = ({ emojis, onReact, visible = false, focused = false, meEmojiReact }): JSX.Element => {
   const [modalActive, setModalActive] = React.useState(false);
   const custom_emojis = useAppSelector((state) => getCustomEmojis(state));
+  const features = useFeatures();
 
   const handleReact = React.useCallback((emoji: string): React.EventHandler<React.MouseEvent> => {
     return (e) => {
@@ -70,6 +71,11 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({ emojis, onReact, visible = fa
     onReact(emoji.native);
   }, [onReact]);
 
+  const onCloseModal = React.useCallback(() => {
+    setModalActive(false);
+    onReact(null);
+  }, []);
+
   return (
     <>
       <HStack
@@ -84,32 +90,42 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({ emojis, onReact, visible = fa
             tabIndex={(visible || focused) ? 0 : -1}
           />
         ))}
-        <div className='' />
         {
-          !meEmojiReact ? (
-            <EmojiButton
-              emoji={'➕'}
-              onClick={handleOpenCustomReact}
-              tabIndex={(visible || focused) ? 0 : -1}
-            />
-          ) : (
-            <EmojiButton
-              emoji={'➖'}
-              onClick={handleUnReact}
-              tabIndex={(visible || focused) ? 0 : -1}
-            />
+          features.emojiCustomReacts && (
+            <>
+              <div className='' />
+              {
+                !meEmojiReact ? (
+                  <EmojiButton
+                    emoji={'➕'}
+                    onClick={handleOpenCustomReact}
+                    tabIndex={(visible || focused) ? 0 : -1}
+                  />
+                ) : (
+                  <EmojiButton
+                    emoji={'➖'}
+                    onClick={handleUnReact}
+                    tabIndex={(visible || focused) ? 0 : -1}
+                  />
+                )
+              }
+            </>
           )
         }
-
       </HStack>
-      <div onClick={(e) => e.stopPropagation()} >
-        <EmojiPickerModal
-          custom_emojis={custom_emojis}
-          active={modalActive}
-          onClose={() => setModalActive(false)}
-          onPickEmoji={handleCustomReact}
-        />
-      </div>
+      {
+        features.emojiCustomReacts && (
+          <div onClick={(e) => e.stopPropagation()} >
+            <EmojiPickerModal
+              custom_emojis={custom_emojis}
+              active={modalActive}
+              onClose={onCloseModal}
+              onPickEmoji={handleCustomReact}
+            />
+          </div>
+        )
+      }
+
     </>
   );
 };
