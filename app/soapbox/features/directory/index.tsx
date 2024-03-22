@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 
 import { fetchDirectory, expandDirectory } from 'soapbox/actions/directory';
 import LoadMore from 'soapbox/components/load_more';
+import { Spinner } from 'soapbox/components/ui';
 import Toggle from 'soapbox/components/ui/toggle/toggle';
 import Column from 'soapbox/features/ui/components/column';
 import { useAppSelector } from 'soapbox/hooks';
@@ -27,6 +28,8 @@ const Directory = () => {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
 
+  const [loading, setLoading] = React.useState(true);
+
   const accountIds = useAppSelector((state) => state.user_lists.directory.items);
   const title = useAppSelector((state) => state.instance.get('title'));
   const features = useAppSelector((state) => getFeatures(state.instance));
@@ -34,9 +37,18 @@ const Directory = () => {
   const [order, setOrder] = useState(params.get('order') || 'active');
   const [local, setLocal] = useState(!!params.get('local'));
 
-  useEffect(() => {
-    dispatch(fetchDirectory({ order: order || 'active', local: local || false }));
+  const load = React.useCallback(async() => {
+    setLoading(true);
+    try {
+      await dispatch(fetchDirectory({ order: order || 'active', local: local || false }));
+    } finally {
+      setLoading(false);
+    }
   }, [order, local]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const handleChangeOrder: React.ChangeEventHandler<HTMLInputElement> = e => {
     if (e.target.checked) setOrder('new');
@@ -48,9 +60,14 @@ const Directory = () => {
     else setLocal(false);
   };
 
-  const handleLoadMore = () => {
-    dispatch(expandDirectory({ order: order || 'active', local: local || false }));
-  };
+  const handleLoadMore = React.useCallback(async() => {
+    setLoading(true);
+    try {
+      await dispatch(expandDirectory({ order: order || 'active', local: local || false }));
+    } finally {
+      setLoading(false);
+    }
+  }, [order, local]);
 
   return (
     <Column icon='address-book-o' label={intl.formatMessage(messages.title)}>
@@ -70,8 +87,10 @@ const Directory = () => {
         {accountIds.map((accountId) => <AccountCard id={accountId} key={accountId} />)}
       </div>
 
-      <div className='mt-4 pt-3'>
-        <LoadMore onClick={handleLoadMore} />
+      { loading && <div className='my-3'><Spinner /></div> }
+
+      <div className='mt-4 mt-3'>
+        <LoadMore disabled={loading} onClick={handleLoadMore} />
       </div>
     </Column>
   );
