@@ -20,6 +20,7 @@ const messages = defineMessages({
   newArrivals: { id: 'directory.new_arrivals', defaultMessage: 'New arrivals' },
   local: { id: 'directory.local', defaultMessage: 'From {domain} only' },
   federated: { id: 'directory.federated', defaultMessage: 'From known fediverse' },
+  description: { id: 'directory.description', defaultMessage: 'Only accounts that have consented to appear here are displayed.' },
 });
 
 const Directory = () => {
@@ -71,6 +72,9 @@ const Directory = () => {
 
   return (
     <Column icon='address-book-o' label={intl.formatMessage(messages.title)}>
+      <div className='my-4 text-gray-700 dark:text-gray-400'>
+        { intl.formatMessage(messages.description) }
+      </div>
       <div className='directory__filter-form flex items-center gap-4 my-3'>
         <div className='directory__filter-form__column flex items-center gap-2' role='group'>
           <Toggle id='new-arrivals' checked={order === 'new'} onChange={handleChangeOrder} /> <label htmlFor='new-arrivals'>{ intl.formatMessage(messages.newArrivals) }</label>
