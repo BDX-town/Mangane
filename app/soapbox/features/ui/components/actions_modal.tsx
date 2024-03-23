@@ -1,14 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { spring } from 'react-motion';
 
 import Icon from 'soapbox/components/icon';
-import StatusContent from 'soapbox/components/status_content';
-import { Stack } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
-
-import Motion from '../util/optional_motion';
 
 import type { Menu, MenuItem } from 'soapbox/components/dropdown_menu';
 import type { Status as StatusEntity } from 'soapbox/types/entities';
@@ -51,37 +45,19 @@ const ActionsModal: React.FC<IActionsModal> = ({ status, actions, onClick, onClo
   };
 
   return (
-    <Motion defaultStyle={{ top: 100 }} style={{ top: spring(0) }}>
-      {({ top }) => (
-        <div className='modal-root__modal actions-modal' style={{ top: `${top}%` }}>
-          {status && (
-            <Stack space={2} className='p-4 bg-gray-50 dark:bg-slate-800 border-b border-solid border-gray-200 dark:border-gray-700'>
-              <AccountContainer
-                key={status.account as string}
-                id={status.account as string}
-                showProfileHoverCard={false}
-                withLinkToProfile={false}
-                timestamp={status.created_at}
-              />
-              <StatusContent status={status} />
-            </Stack>
-          )}
+    <div className='modal-root__modal actions-modal rounded-t-lg relative overflow-hidden w-full max-h-full mt-auto max-auto bg-white dark:bg-slate-800'>
+      <ul className={classNames('w-full', { 'with-status': !!status })}>
+        {actions && actions.map(renderAction)}
 
-          <ul className={classNames({ 'with-status': !!status })}>
-            {actions && actions.map(renderAction)}
+        <li className='dropdown-menu__separator' />
 
-            <li className='dropdown-menu__separator' />
-
-            <li>
-              <button type='button' onClick={onClose}>
-                <FormattedMessage id='lightbox.close' defaultMessage='Cancel' />
-              </button>
-            </li>
-          </ul>
-        </div>
-      )}
-    </Motion>
-  );
+        <li>
+          <button type='button' onClick={onClose}>
+            <FormattedMessage id='lightbox.close' defaultMessage='Cancel' />
+          </button>
+        </li>
+      </ul>
+    </div>);
 };
 
 export default ActionsModal;

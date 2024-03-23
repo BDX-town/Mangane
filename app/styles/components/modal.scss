@@ -262,34 +262,22 @@
   }
 }
 
-.actions-modal {
-  position: relative;
-  flex-direction: column;
-  overflow: hidden;
-  width: 480px;
-  max-width: 90vw;
-  border-radius: 10px;
-  border: 1px solid var(--background-color);
-  color: var(--primary-text-color--faint);
-  background: var(--foreground-color);
-
-  .status__display-name {
-    display: block;
-    max-width: 100%;
-    padding-right: 25px;
+@keyframes action-modal-spawn {
+  0% {
+    transform: translateY(100%);
   }
 
-  .dropdown-menu__separator {
-    @apply block m-2 h-[1px] bg-gray-200 dark:bg-gray-600;
+  100% {
+    transform: translateY(0);
   }
 }
 
 .actions-modal {
-  @apply w-full max-h-full max-w-lg mt-auto mb-2 bg-white dark:bg-slate-800;
+  animation: action-modal-spawn 0.20s ease-in-out;
+  padding-bottom: env(safe-area-inset-bottom);
 
-  .status {
-    overflow-y: auto;
-    max-height: 300px;
+  .dropdown-menu__separator {
+    @apply block m-2 h-[1px] bg-gray-200 dark:bg-gray-600;
   }
 
   .actions-modal__item-label { font-weight: 500; }
