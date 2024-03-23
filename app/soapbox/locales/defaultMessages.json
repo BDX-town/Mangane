@@ -602,10 +602,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Follows you",
-        "id": "account.follows_you"
-      },
-      {
         "defaultMessage": "Admin",
         "id": "account.badges.admin"
       },
@@ -620,6 +616,10 @@
       {
         "defaultMessage": "Donor",
         "id": "account.badges.donor"
+      },
+      {
+        "defaultMessage": "Follows you",
+        "id": "account.follows_you"
       }
     ],
     "path": "app/soapbox/components/profile-hover-card.json"
@@ -713,7 +713,7 @@
         "id": "navigation_bar.preferences"
       },
       {
-        "defaultMessage": "Mangane config",
+        "defaultMessage": "Soapbox config",
         "id": "navigation_bar.soapbox_config"
       },
       {
@@ -1618,6 +1618,14 @@
       {
         "defaultMessage": "Blocked",
         "id": "account.blocked"
+      },
+      {
+        "defaultMessage": "Muted",
+        "id": "account.muted"
+      },
+      {
+        "defaultMessage": "Domain hidden",
+        "id": "account.domain_blocked"
       }
     ],
     "path": "app/soapbox/features/account/components/header.json"
@@ -2806,7 +2814,7 @@
         "id": "column.app_create"
       },
       {
-        "defaultMessage": "e.g. 'Mangane'",
+        "defaultMessage": "e.g. 'Soapbox'",
         "id": "app_create.name_placeholder"
       },
       {
@@ -3050,6 +3058,10 @@
       {
         "defaultMessage": "From known fediverse",
         "id": "directory.federated"
+      },
+      {
+        "defaultMessage": "Only accounts that have consented to appear here are displayed.",
+        "id": "directory.description"
       }
     ],
     "path": "app/soapbox/features/directory/index.json"
@@ -3104,6 +3116,10 @@
       {
         "defaultMessage": "Cancel",
         "id": "common.cancel"
+      },
+      {
+        "defaultMessage": "To change your email, you must re-enter your password",
+        "id": "edit_email.description"
       }
     ],
     "path": "app/soapbox/features/edit_email/index.json"
@@ -3188,6 +3204,10 @@
         "id": "edit_profile.fields.location_placeholder"
       },
       {
+        "defaultMessage": "Number of days",
+        "id": "edit_profile.fields.status_expiry_placeholder"
+      },
+      {
         "defaultMessage": "Cancel",
         "id": "common.cancel"
       },
@@ -3266,6 +3286,14 @@
       {
         "defaultMessage": "Display account in profile directory and allow indexing by external services",
         "id": "edit_profile.hints.discoverable"
+      },
+      {
+        "defaultMessage": "Scheduled post deletion",
+        "id": "edit_profile.fields.status_expiry_label"
+      },
+      {
+        "defaultMessage": "Delete posts after a set amount of days (let empty to disable)",
+        "id": "edit_profile.hints.status_expiry"
       },
       {
         "defaultMessage": "Subscribe to newsletter",
@@ -5174,11 +5202,11 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Mangane config",
+        "defaultMessage": "Soapbox config",
         "id": "column.soapbox_config"
       },
       {
-        "defaultMessage": "Mangane config saved!",
+        "defaultMessage": "Soapbox config saved!",
         "id": "soapbox_config.saved"
       },
       {
@@ -5218,7 +5246,7 @@
         "id": "soapbox_config.quote_rt"
       },
       {
-        "defaultMessage": "Mangane Icons List",
+        "defaultMessage": "Soapbox Icons List",
         "id": "soapbox_config.hints.promo_panel_icons.link"
       },
       {
@@ -6302,10 +6330,6 @@
       {
         "defaultMessage": "Joined {date}",
         "id": "account.member_since"
-      },
-      {
-        "defaultMessage": "Muted",
-        "id": "account.muted"
       }
     ],
     "path": "app/soapbox/features/ui/components/profile_info_panel.json"
