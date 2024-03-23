@@ -849,7 +849,8 @@ const unpinAccount = (id: string) =>
 const updateNotificationSettings = (params: Record<string, any>) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: NOTIFICATION_SETTINGS_REQUEST, params });
-    return api(getState).put('/api/pleroma/notification_settings', params).then(({ data }) => {
+    // @see https://akkoma.dev/AkkomaGang/akkoma/issues/722
+    return api(getState).put(`/api/pleroma/notification_settings?${new URLSearchParams(params).toString()}`).then(({ data }) => {
       dispatch({ type: NOTIFICATION_SETTINGS_SUCCESS, params, data });
     }).catch(error => {
       dispatch({ type: NOTIFICATION_SETTINGS_FAIL, params, error });
@@ -891,7 +892,7 @@ const fetchPinnedAccounts = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(fetchPinnedAccountsRequest(id));
 
-    api(getState).get(`/api/v1/endorsements`).then(response => {
+    api(getState).get('/api/v1/endorsements').then(response => {
       dispatch(importFetchedAccounts(response.data));
       dispatch(fetchPinnedAccountsSuccess(id, response.data, null));
     }).catch(error => {

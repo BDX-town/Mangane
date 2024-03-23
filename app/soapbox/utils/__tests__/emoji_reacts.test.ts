@@ -161,17 +161,17 @@ describe('getReactForStatus', () => {
         ],
       },
     }));
-    expect(getReactForStatus(status, ALLOWED_EMOJI)).toEqual('❤');
+    expect(getReactForStatus(status, ALLOWED_EMOJI)?.get('name')).toEqual('❤');
   });
 
   it('returns a thumbs-up for a favourite', () => {
     const status = normalizeStatus(fromJS({ favourites_count: 1, favourited: true }));
-    expect(getReactForStatus(status)).toEqual('👍');
+    expect(getReactForStatus(status)?.get('name')).toEqual('👍');
   });
 
   it('returns undefined when a status has no reacts (or favourites)', () => {
     const status = normalizeStatus(fromJS({}));
-    expect(getReactForStatus(status)).toEqual(undefined);
+    expect(getReactForStatus(status)?.get('name')).toEqual(undefined);
   });
 
   it('returns undefined when a status has no valid reacts (or favourites)', () => {
@@ -181,7 +181,7 @@ describe('getReactForStatus', () => {
       { 'count': 1,  'me': false, 'name': '👀' },
       { 'count': 1,  'me': false, 'name': '🍩' },
     ]));
-    expect(getReactForStatus(status)).toEqual(undefined);
+    expect(getReactForStatus(status)?.get('name')).toEqual(undefined);
   });
 });
 

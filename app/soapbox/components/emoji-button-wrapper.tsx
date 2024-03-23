@@ -1,5 +1,7 @@
-import classNames from 'classnames';
+/* eslint-disable jsx-a11y/interactive-supports-focus */
+import { Map as ImmutableMap } from 'immutable';
 import React, { useState, useEffect, useRef } from 'react';
+import ReactDOM from 'react-dom';
 import { usePopper } from 'react-popper';
 import { useDispatch } from 'react-redux';
 
@@ -17,17 +19,16 @@ interface IEmojiButtonWrapper {
 
 /** Provides emoji reaction functionality to the underlying button component */
 const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children }): JSX.Element | null => {
+  const root = React.useRef(null);
   const dispatch = useDispatch();
   const ownAccount = useOwnAccount();
   const status = useAppSelector(state => state.statuses.get(statusId));
+  const meEmojiReact = getReactForStatus(status, null);
   const soapboxConfig = useSoapboxConfig();
 
-  const timeout = useRef<NodeJS.Timeout>();
+  const [timer, setTimer] = useState(undefined);
   const [visible, setVisible] = useState(false);
-  // const [focused, setFocused] = useState(false);
 
-  // `useRef` won't trigger a re-render, while `useState` does.
-  // https://popper.js.org/react-popper/v2/
   const [referenceElement, setReferenceElement] = useState<HTMLDivElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
 
@@ -44,18 +45,23 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
   });
 
   useEffect(() => {
+    if (!timer) return undefined;
+    const t = timer;
     return () => {
-      if (timeout.current) {
-        clearTimeout(timeout.current);
-      }
+      clearTimeout(t);
     };
+  }, [timer]);
+
+  useEffect(() => {
+    setReferenceElement(root.current);
   }, []);
 
   if (!status) return null;
 
   const handleMouseEnter = () => {
-    if (timeout.current) {
-      clearTimeout(timeout.current);
+    if (timer) {
+      clearTimeout(timer);
+      setTimer(null);
     }
 
     if (!isUserTouching()) {
@@ -64,8 +70,9 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
   };
 
   const handleMouseLeave = () => {
-    if (timeout.current) {
-      clearTimeout(timeout.current);
+    if (timer) {
+      clearTimeout(timer);
+      setTimer(null);
     }
 
     // Unless the user is touching, delay closing the emoji selector briefly
@@ -73,13 +80,15 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
     if (isUserTouching()) {
       setVisible(false);
     } else {
-      timeout.current = setTimeout(() => {
-        setVisible(false);
-      }, 500);
+      setTimer(
+        setTimeout(() => setVisible(false), 500),
+      );
     }
   };
 
   const handleReact = (emoji: string): void => {
+    setVisible(false);
+    if (!emoji) return;
     if (ownAccount) {
       dispatch(simpleEmojiReact(status, emoji));
     } else {
@@ -89,56 +98,49 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
       }));
     }
 
-    setVisible(false);
   };
 
   const handleClick: React.EventHandler<React.MouseEvent> = e => {
-    const meEmojiReact = getReactForStatus(status, soapboxConfig.allowedEmoji) || '👍';
+    e.preventDefault();
+    e.stopPropagation();
+    const wMeEmojiReact = getReactForStatus(status, soapboxConfig.allowedEmoji) || ImmutableMap({ name: '👍' }) ;
 
     if (isUserTouching()) {
       if (visible) {
-        handleReact(meEmojiReact);
+        handleReact(wMeEmojiReact.get('name'));
       } else {
         setVisible(true);
       }
     } else {
-      handleReact(meEmojiReact);
+      handleReact(wMeEmojiReact.get('name'));
     }
-
-    e.preventDefault();
-    e.stopPropagation();
   };
 
-  // const handleUnfocus: React.EventHandler<React.KeyboardEvent> = () => {
-  //   setFocused(false);
-  // };
-
-  const selector = (
-    <div
-      className={classNames('z-50 transition-opacity duration-100', {
-        'opacity-0 pointer-events-none': !visible,
-      })}
-      ref={setPopperElement}
-      style={styles.popper}
-      {...attributes.popper}
-    >
-      <EmojiSelector
-        emojis={soapboxConfig.allowedEmoji}
-        onReact={handleReact}
-        // focused={focused}
-        // onUnfocus={handleUnfocus}
-      />
-    </div>
-  );
 
   return (
-    <div className='relative' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      {React.cloneElement(children, {
-        onClick: handleClick,
-        ref: setReferenceElement,
-      })}
+    <div ref={root} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
+      { children}
+      {
+        visible && (
+          ReactDOM.createPortal((
+            <div
+              role='menu'
+              onClick={handleClick}
+              className='z-50 transition-opacity duration-100'
+              ref={setPopperElement}
+              style={styles.popper}
+              {...attributes.popper}
+            >
+              <EmojiSelector
+                meEmojiReact={meEmojiReact}
+                emojis={soapboxConfig.allowedEmoji}
+                onReact={handleReact}
+              />
+            </div>
+          ), document.body)
 
-      {selector}
+        )
+      }
     </div>
   );
 };

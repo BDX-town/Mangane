@@ -265,6 +265,14 @@ const getInstanceFeatures = (instance: Instance) => {
     embeds: v.software === MASTODON,
 
     /**
+     * Ability to add custom emoji reactions to a status.
+     * @see PUT /api/v1/pleroma/statuses/:id/reactions/:emoji
+     * @see GET /api/v1/pleroma/statuses/:id/reactions/:emoji?
+     * @see DELETE /api/v1/pleroma/statuses/:id/reactions/:emoji
+     */
+    emojiCustomReacts: v.software === AKKOMA && features.includes('custom_emoji_reactions'),
+
+    /**
      * Ability to add emoji reactions to a status.
      * @see PUT /api/v1/pleroma/statuses/:id/reactions/:emoji
      * @see GET /api/v1/pleroma/statuses/:id/reactions/:emoji?
@@ -624,6 +632,12 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/statuses
      */
     spoilers: v.software !== TRUTHSOCIAL,
+
+    /**
+     * Ability to set a default expiry date to posts
+     * @see https://docs.akkoma.dev/stable/development/API/differences_in_mastoapi_responses/#accounts
+     */
+    statusExpiry: v.software === AKKOMA && gte(v.version, '3.5.0'),
 
     /**
      * Can display suggested accounts.

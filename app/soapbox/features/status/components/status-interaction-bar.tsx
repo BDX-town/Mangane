@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
 import { HStack, IconButton, Text, EmojiReact } from 'soapbox/components/ui';
-import { useAppSelector, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
+import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { reduceEmoji } from 'soapbox/utils/emoji_reacts';
 
 import type { Status } from 'soapbox/types/entities';
@@ -18,12 +18,10 @@ interface IStatusInteractionBar {
 const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.Element | null => {
 
   const me = useAppSelector(({ me }) => me);
-  const { allowedEmoji } = useSoapboxConfig();
   const dispatch = useDispatch();
   const features = useFeatures();
   const { account } = status;
 
-  if (!account || typeof account !== 'object') return null;
 
   const onOpenUnauthorizedModal = () => {
     dispatch(openModal('UNAUTHORIZED'));
@@ -59,6 +57,8 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
       null, // we dont want to filter them
     ).reverse();
   }, [status]);
+
+  if (!account || typeof account !== 'object') return null;
 
   const handleOpenReblogsModal: React.EventHandler<React.MouseEvent> = (e) => {
     e.preventDefault();
