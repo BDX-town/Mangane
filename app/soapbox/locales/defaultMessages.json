@@ -602,6 +602,22 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Admin",
+        "id": "account.badges.admin"
+      },
+      {
+        "defaultMessage": "Moderator",
+        "id": "account.badges.moderator"
+      },
+      {
+        "defaultMessage": "Patron",
+        "id": "account.badges.patron"
+      },
+      {
+        "defaultMessage": "Donor",
+        "id": "account.badges.donor"
+      },
+      {
         "defaultMessage": "Follows you",
         "id": "account.follows_you"
       }
@@ -3042,6 +3058,10 @@
       {
         "defaultMessage": "From known fediverse",
         "id": "directory.federated"
+      },
+      {
+        "defaultMessage": "Only accounts that have consented to appear here are displayed.",
+        "id": "directory.description"
       }
     ],
     "path": "app/soapbox/features/directory/index.json"
@@ -3096,6 +3116,10 @@
       {
         "defaultMessage": "Cancel",
         "id": "common.cancel"
+      },
+      {
+        "defaultMessage": "To change your email, you must re-enter your password",
+        "id": "edit_email.description"
       }
     ],
     "path": "app/soapbox/features/edit_email/index.json"
@@ -3180,6 +3204,10 @@
         "id": "edit_profile.fields.location_placeholder"
       },
       {
+        "defaultMessage": "Number of days",
+        "id": "edit_profile.fields.status_expiry_placeholder"
+      },
+      {
         "defaultMessage": "Cancel",
         "id": "common.cancel"
       },
@@ -3258,6 +3286,14 @@
       {
         "defaultMessage": "Display account in profile directory and allow indexing by external services",
         "id": "edit_profile.hints.discoverable"
+      },
+      {
+        "defaultMessage": "Scheduled post deletion",
+        "id": "edit_profile.fields.status_expiry_label"
+      },
+      {
+        "defaultMessage": "Delete posts after a set amount of days (let empty to disable)",
+        "id": "edit_profile.hints.status_expiry"
       },
       {
         "defaultMessage": "Subscribe to newsletter",
@@ -6266,6 +6302,22 @@
       {
         "defaultMessage": "Bot",
         "id": "account.badges.bot"
+      },
+      {
+        "defaultMessage": "Admin",
+        "id": "account.badges.admin"
+      },
+      {
+        "defaultMessage": "Moderator",
+        "id": "account.badges.moderator"
+      },
+      {
+        "defaultMessage": "Patron",
+        "id": "account.badges.patron"
+      },
+      {
+        "defaultMessage": "Donor",
+        "id": "account.badges.donor"
       },
       {
         "defaultMessage": "Birthday is today!",

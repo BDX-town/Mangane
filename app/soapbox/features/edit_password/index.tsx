@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { logOut } from 'soapbox/actions/auth';
 import { changePassword } from 'soapbox/actions/security';
 import snackbar from 'soapbox/actions/snackbar';
 import { Button, Card, CardBody, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
+
 
 import PasswordIndicator from '../verification/components/password-indicator';
 
@@ -42,10 +44,10 @@ const EditPassword = () => {
 
   const handleSubmit = React.useCallback(() => {
     setLoading(true);
-    dispatch(changePassword(currentPassword, newPassword, newPasswordConfirmation)).then(() => {
+    dispatch(changePassword(currentPassword, newPassword, newPasswordConfirmation)).then(async() => {
       resetState();
-      dispatch(snackbar.success(intl.formatMessage(messages.updatePasswordSuccess)));
-
+      await dispatch(snackbar.success(intl.formatMessage(messages.updatePasswordSuccess)));
+      dispatch(logOut());
     }).finally(() => {
       setLoading(false);
     }).catch(() => {
