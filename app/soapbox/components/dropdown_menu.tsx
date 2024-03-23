@@ -28,6 +28,7 @@ export interface MenuItem {
   destructive?: boolean,
   meta?: string,
   active?: boolean,
+  disabled?: boolean,
 }
 
 export type Menu = Array<MenuItem | null>;
@@ -177,26 +178,33 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
       return <li key={`sep-${i}`} className='dropdown-menu__separator' />;
     }
 
-    const { text, href, to, newTab, isLogout, icon, count, destructive } = option;
+    const { text, href, to, newTab, isLogout, icon, count, destructive, disabled } = option;
 
     return (
-      <li className={classNames('dropdown-menu__item truncate', { destructive })} key={`${text}-${i}`}>
+      <li className={classNames('dropdown-menu__item truncate', { destructive, 'opacity-40': disabled })} key={`${text}-${i}`}>
         <a
+          className={
+            classNames(
+              'text-gray-700 dark:text-gray-400',
+              {
+                'hover:bg-gray-100 dark:hover:bg-slate-800 focus:bg-gray-100 dark:focus:bg-slate-800': !disabled,
+              },
+            )
+          }
+          aria-disabled={disabled}
           href={href || to || '#'}
           role='button'
           tabIndex={0}
           ref={i === 0 ? this.setFocusRef : null}
-          onClick={this.handleClick}
-          onAuxClick={this.handleAuxClick}
-          onKeyPress={this.handleItemKeyPress}
+          onClick={!disabled ? this.handleClick : (e) => e.preventDefault()}
+          onAuxClick={!disabled ? this.handleAuxClick : (e) => e.preventDefault()}
+          onKeyPress={!disabled ? this.handleItemKeyPress : (e) => e.preventDefault()}
           data-index={i}
           target={newTab ? '_blank' : undefined}
           data-method={isLogout ? 'delete' : undefined}
         >
           {icon && <SvgIcon src={icon} className='mr-3 h-5 w-5 flex-none' />}
-
           <span className='truncate'>{text}</span>
-
           {count ? (
             <span className='ml-auto h-5 w-5 flex-none'>
               <Counter count={count} />

@@ -199,40 +199,34 @@ const EditProfile: React.FC = () => {
     });
   };
 
-  const handleSubmit: React.FormEventHandler = (event) => {
-    const promises = [];
-
-    promises.push(
-      dispatch(
+  const handleSubmit: React.FormEventHandler = async(event) => {
+    event.preventDefault();
+    setLoading(true);
+    try {
+      // the calls must be done sequentially
+      if (features.muteStrangers) {
+        await (
+          dispatch(updateNotificationSettings({
+            block_from_strangers: muteStrangers,
+          }))
+        );
+      }
+      await dispatch(
         patchMe(
           {
             ...data,
             status_ttl_days: data.status_ttl_days === null ? -1 : data.status_ttl_days,
-          }
-          , true,
+          },
+          true,
         ),
-      ),
-    );
-
-    if (features.muteStrangers) {
-      promises.push(
-        dispatch(updateNotificationSettings({
-          block_from_strangers: muteStrangers,
-        })).catch(console.error),
       );
-    }
-
-    setLoading(true);
-
-    Promise.all(promises).then(() => {
-      setLoading(false);
       dispatch(snackbar.success(intl.formatMessage(messages.success)));
-    }).catch(() => {
-      setLoading(false);
+    } catch (e) {
+      console.error(e);
       dispatch(snackbar.error(intl.formatMessage(messages.error)));
-    });
-
-    event.preventDefault();
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCheckboxChange = (key: keyof AccountCredentials): React.ChangeEventHandler<HTMLInputElement> => {

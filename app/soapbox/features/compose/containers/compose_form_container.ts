@@ -1,3 +1,4 @@
+import { Map as ImmutableMap } from 'immutable';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
@@ -16,8 +17,10 @@ import { getFeatures } from 'soapbox/utils/features';
 
 import ComposeForm from '../components/compose_form';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: ImmutableMap<string, any>)  => {
   const instance = state.get('instance');
+
+  const now = new Date().getTime();
 
   return {
     text: state.getIn(['compose', 'text']),
@@ -34,11 +37,12 @@ const mapStateToProps = state => {
     isChangingUpload: state.getIn(['compose', 'is_changing_upload']),
     isUploading: state.getIn(['compose', 'is_uploading']),
     showSearch: state.getIn(['search', 'submitted']) && !state.getIn(['search', 'hidden']),
-    anyMedia: state.getIn(['compose', 'media_attachments']).size > 0,
+    anyMedia: (state.getIn(['compose', 'media_attachments']) as ImmutableMap<unknown, unknown>).size > 0,
     isModalOpen: Boolean(state.get('modals').size && state.get('modals').last().modalType === 'COMPOSE'),
     maxTootChars: state.getIn(['instance', 'configuration', 'statuses', 'max_characters']),
     scheduledAt: state.getIn(['compose', 'schedule']),
-    scheduledStatusCount: state.get('scheduled_statuses').size,
+    // we only want to keep scheduled status that werent sent, since server does not push that information to client when scheduled status are posted
+    scheduledStatus: (state.get('scheduled_statuses') as ImmutableMap<number, { scheduled_at: string}>).filter((s) => new Date(s.scheduled_at).getTime() > now),
     features: getFeatures(instance),
   };
 };
