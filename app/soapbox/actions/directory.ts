@@ -19,11 +19,13 @@ const fetchDirectory = (params: Record<string, any>) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(fetchDirectoryRequest());
 
-    api(getState).get('/api/v1/directory', { params: { ...params, limit: 20 } }).then(({ data }) => {
-      dispatch(importFetchedAccounts(data));
-      dispatch(fetchDirectorySuccess(data));
-      dispatch(fetchRelationships(data.map((x: APIEntity) => x.id)));
-    }).catch(error => dispatch(fetchDirectoryFail(error)));
+    return api(getState).get('/api/v1/directory', { params: { ...params, limit: 20 } })
+      .then(({ data }) => {
+        dispatch(importFetchedAccounts(data));
+        dispatch(fetchDirectorySuccess(data));
+        dispatch(fetchRelationships(data.map((x: APIEntity) => x.id)));
+      })
+      .catch(error => dispatch(fetchDirectoryFail(error)));
   };
 
 const fetchDirectoryRequest = () => ({
@@ -46,11 +48,13 @@ const expandDirectory = (params: Record<string, any>) =>
 
     const loadedItems = getState().user_lists.directory.items.size;
 
-    api(getState).get('/api/v1/directory', { params: { ...params, offset: loadedItems, limit: 20 } }).then(({ data }) => {
-      dispatch(importFetchedAccounts(data));
-      dispatch(expandDirectorySuccess(data));
-      dispatch(fetchRelationships(data.map((x: APIEntity) => x.id)));
-    }).catch(error => dispatch(expandDirectoryFail(error)));
+    return api(getState).get('/api/v1/directory', { params: { ...params, offset: loadedItems, limit: 20 } })
+      .then(({ data }) => {
+        dispatch(importFetchedAccounts(data));
+        dispatch(expandDirectorySuccess(data));
+        dispatch(fetchRelationships(data.map((x: APIEntity) => x.id)));
+      })
+      .catch(error => dispatch(expandDirectoryFail(error)));
   };
 
 const expandDirectoryRequest = () => ({
