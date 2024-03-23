@@ -567,19 +567,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     icon: require('@tabler/icons/quote.svg'),
   }];
 
-  const reblogButton = (
-    <StatusActionButton
-      icon={reblogIcon}
-      color='success'
-      disabled={!publicStatus}
-      title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
-      active={status.reblogged}
-      onClick={handleReblogClick}
-      count={reblogCount}
-      text={withLabels ? intl.formatMessage(messages.reblog) : undefined}
-    />
-  );
-
   if (!status.in_reply_to_id) {
     replyTitle = intl.formatMessage(messages.reply);
   } else {
@@ -609,10 +596,27 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           disabled={!publicStatus}
           onShiftClick={handleReblogClick}
         >
-          {reblogButton}
+          <StatusActionButton
+            icon={reblogIcon}
+            color='success'
+            disabled={!publicStatus}
+            title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
+            active={status.reblogged}
+            count={reblogCount}
+            text={withLabels ? intl.formatMessage(messages.reblog) : undefined}
+          />
         </DropdownMenuContainer>
       ) : (
-        reblogButton
+        <StatusActionButton
+          icon={reblogIcon}
+          color='success'
+          disabled={!publicStatus}
+          title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
+          active={status.reblogged}
+          onClick={handleReblogClick}
+          count={reblogCount}
+          text={withLabels ? intl.formatMessage(messages.reblog) : undefined}
+        />
       )}
 
       {features.emojiReacts ? (

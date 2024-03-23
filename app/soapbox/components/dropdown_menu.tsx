@@ -1,3 +1,6 @@
+// @ts-expect-error no types
+// eslint-disable-next-line import/no-unresolved
+import dots from '@tabler/icons/dots.svg';
 import classNames from 'classnames';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import React from 'react';
@@ -366,20 +369,15 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
   }
 
   render() {
-    const { src = require('@tabler/icons/dots.svg'), items, title, disabled, dropdownPlacement, openDropdownId, openedViaKeyboard = false, pressed, text, children } = this.props;
+    const { src = dots, items, title, disabled, dropdownPlacement, openDropdownId, openedViaKeyboard = false, pressed, text, children } = this.props;
     const open = this.state.id === openDropdownId;
 
     return (
       <>
         {children ? (
-          React.cloneElement(children, {
-            disabled,
-            onClick: this.handleClick,
-            onMouseDown: this.handleMouseDown,
-            onKeyDown: this.handleButtonKeyDown,
-            onKeyPress: this.handleKeyPress,
-            ref: this.setTargetRef,
-          })
+          <button ref={this.setTargetRef} className='bg-transparent border-0 p-0' disabled={disabled} onClick={this.handleClick} onMouseDown={this.handleMouseDown} onKeyDown={this.handleButtonKeyDown} onKeyPress={this.handleKeyPress}>
+            { children }
+          </button>
         ) : (
           <IconButton
             disabled={disabled}
