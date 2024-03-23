@@ -195,30 +195,26 @@ const EditProfile: React.FC = () => {
     });
   };
 
-  const handleSubmit: React.FormEventHandler = (event) => {
-    const promises = [];
-
-    promises.push(dispatch(patchMe(data, true)));
-
-    if (features.muteStrangers) {
-      promises.push(
-        dispatch(updateNotificationSettings({
-          block_from_strangers: muteStrangers,
-        })).catch(console.error),
-      );
-    }
-
-    setLoading(true);
-
-    Promise.all(promises).then(() => {
-      setLoading(false);
-      dispatch(snackbar.success(intl.formatMessage(messages.success)));
-    }).catch(() => {
-      setLoading(false);
-      dispatch(snackbar.error(intl.formatMessage(messages.error)));
-    });
-
+  const handleSubmit: React.FormEventHandler = async(event) => {
     event.preventDefault();
+    setLoading(true);
+    try {
+      // the calls must be done sequentially
+      if (features.muteStrangers) {
+        await (
+          dispatch(updateNotificationSettings({
+            block_from_strangers: muteStrangers,
+          }))
+        );
+      }
+      await dispatch(patchMe(data, true));
+      dispatch(snackbar.success(intl.formatMessage(messages.success)));
+    } catch (e) {
+      console.error(e);
+      dispatch(snackbar.error(intl.formatMessage(messages.error)));
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCheckboxChange = (key: keyof AccountCredentials): React.ChangeEventHandler<HTMLInputElement> => {
