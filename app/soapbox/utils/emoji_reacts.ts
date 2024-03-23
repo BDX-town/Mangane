@@ -2,7 +2,8 @@ import {
   Map as ImmutableMap,
   List as ImmutableList,
 } from 'immutable';
-import { emojiReact } from 'soapbox/actions/emoji_reacts';
+
+import { EmojiReact as EmojiReactType } from 'soapbox/utils/emoji_reacts';
 
 import type { Me } from 'soapbox/types/soapbox';
 
@@ -72,26 +73,34 @@ export const oneEmojiPerAccount = (emojiReacts: ImmutableList<EmojiReact>, me: M
 };
 
 export const filterEmoji = (emojiReacts: ImmutableList<EmojiReact>, allowedEmoji = ALLOWED_EMOJI): ImmutableList<EmojiReact> => {
-  if(allowedEmoji === null) return emojiReacts;
+  if (allowedEmoji === null) return emojiReacts;
   return emojiReacts.filter(emojiReact => (
     allowedEmoji.includes(emojiReact.get('name'))
-  ))};
+  ));
+};
 
-export const reduceEmoji = (emojiReacts: ImmutableList<EmojiReact>, favouritesCount: number, favourited: boolean, allowedEmoji = ALLOWED_EMOJI): ImmutableList<EmojiReact> => (
-  filterEmoji(sortEmoji(mergeEmoji(mergeEmojiFavourites(
-    emojiReacts, favouritesCount, favourited,
-  ))), allowedEmoji));
+export const reduceEmoji = (emojiReacts: ImmutableList<EmojiReact>, favouritesCount: number, favourited: boolean, allowedEmoji = ALLOWED_EMOJI): ImmutableList<EmojiReact> => {
+  const list = sortEmoji(
+    mergeEmoji(
+      mergeEmojiFavourites(
+        emojiReacts, favouritesCount, favourited,
+      ),
+    ),
+  );
+  if (allowedEmoji === null) return list;
+  return filterEmoji(list, allowedEmoji);
+};
 
-export const getReactForStatus = (status: any, allowedEmoji = ALLOWED_EMOJI): string | undefined => {
+export const getReactForStatus = (status: any, allowedEmoji = ALLOWED_EMOJI): EmojiReactType | undefined => {
   const result = reduceEmoji(
     status.pleroma.get('emoji_reactions', ImmutableList()),
     status.favourites_count || 0,
     status.favourited,
     allowedEmoji,
   ).filter(e => e.get('me') === true)
-    .getIn([0, 'name']);
+    .get(0);
 
-  return typeof result === 'string' ? result : undefined;
+  return result;
 };
 
 export const simulateEmojiReact = (emojiReacts: ImmutableList<EmojiReact>, emoji: string) => {

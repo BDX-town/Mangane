@@ -1058,7 +1058,7 @@
   "status.admin_status": "Ouvrir ce statut dans l’interface de modération",
   "status.bookmark": "Marque-page",
   "status.bookmarked": "Marque-page ajouté.",
-  "status.cancel_reblog_private": "Dé-booster",
+  "status.cancel_reblog_private": "Ne plus partager",
   "status.cannot_reblog": "Cette publication ne peut être boostée",
   "status.chat": "Chat with @{name}",
   "status.copy": "Copier le lien vers le statut",

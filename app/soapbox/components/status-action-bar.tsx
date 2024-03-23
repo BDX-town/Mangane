@@ -103,8 +103,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
 
-  const { allowedEmoji } = soapboxConfig;
-
   const account = useOwnAccount();
   const isStaff = account ? account.staff : false;
   const isAdmin = account ? account.admin : false;
@@ -530,10 +528,10 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     (status.pleroma.get('emoji_reactions') || ImmutableList()) as ImmutableList<any>,
     favouriteCount,
     status.favourited,
-    allowedEmoji,
+    null,
   ).reduce((acc, cur) => acc + cur.get('count'), 0);
 
-  const meEmojiReact = getReactForStatus(status, allowedEmoji) as keyof typeof reactMessages | undefined;
+  const meEmojiReact = getReactForStatus(status, null);
 
   const reactMessages = {
     '👍': messages.reactionLike,
@@ -545,7 +543,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     '': messages.favourite,
   };
 
-  const meEmojiTitle = intl.formatMessage(reactMessages[meEmojiReact || ''] || messages.favourite);
+  const meEmojiTitle = intl.formatMessage(reactMessages[meEmojiReact?.get('name') || ''] || messages.favourite);
 
   const menu = _makeMenu(publicStatus);
   let reblogIcon = require('@tabler/icons/repeat.svg');
@@ -565,6 +563,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     text: intl.formatMessage(messages.quotePost),
     action: handleQuoteClick,
     icon: require('@tabler/icons/quote.svg'),
+    disabled: status.visibility !== 'public' && status.visibility !== 'unlisted',
   }];
 
   const reblogButton = (

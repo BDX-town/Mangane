@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import { Text, Icon, Emoji } from 'soapbox/components/ui';
+import { Text, Icon, EmojiReact, Emoji } from 'soapbox/components/ui';
+import { EmojiReact as EmojiReactType } from 'soapbox/utils/emoji_reacts';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 const COLORS = {
@@ -31,7 +32,7 @@ interface IStatusActionButton extends React.ButtonHTMLAttributes<HTMLButtonEleme
   active?: boolean,
   color?: Color,
   filled?: boolean,
-  emoji?: string,
+  emoji?: string | EmojiReactType,
   text?: React.ReactNode,
 }
 
@@ -42,7 +43,11 @@ const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButt
     if (emoji) {
       return (
         <span className='block w-6 h-6 flex items-center justify-center'>
-          <Emoji className='w-full h-full p-0.5' emoji={emoji} />
+          { typeof emoji === 'string' ? (
+            <Emoji className='w-full h-full p-0.5' emoji={emoji} />
+          ) : (
+            <EmojiReact className='w-full h-full p-0.5' emoji={emoji} />
+          )}
         </span>
       );
     } else {
