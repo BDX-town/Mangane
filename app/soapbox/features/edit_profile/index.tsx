@@ -47,6 +47,7 @@ const messages = defineMessages({
   displayNamePlaceholder: { id: 'edit_profile.fields.display_name_placeholder', defaultMessage: 'Name' },
   websitePlaceholder: { id: 'edit_profile.fields.website_placeholder', defaultMessage: 'Display a Link' },
   locationPlaceholder: { id: 'edit_profile.fields.location_placeholder', defaultMessage: 'Location' },
+  statusExpiryPlaceholder: { id: 'edit_profile.fields.status_expiry_placeholder', defaultMessage: 'Number of days' },
   cancel: { id: 'common.cancel', defaultMessage: 'Cancel' },
 });
 
@@ -112,6 +113,8 @@ interface AccountCredentials {
   location?: string,
   /** User's birthday. */
   birthday?: string,
+  /** number of days before automatic post deletion, null to keep forever */
+  status_ttl_days?: number,
 }
 
 /** Convert an account into an update_credentials request object. */
@@ -134,6 +137,7 @@ const accountToCredentials = (account: Account): AccountCredentials => {
     website: account.website,
     location: account.location,
     birthday: account.birthday,
+    status_ttl_days: account.akkoma.get('status_ttl_days'),
   };
 };
 
@@ -207,7 +211,15 @@ const EditProfile: React.FC = () => {
           }))
         );
       }
-      await dispatch(patchMe(data, true));
+      await dispatch(
+        patchMe(
+          {
+            ...data,
+            status_ttl_days: data.status_ttl_days === null ? -1 : data.status_ttl_days,
+          },
+          true,
+        ),
+      );
       dispatch(snackbar.success(intl.formatMessage(messages.success)));
     } catch (e) {
       console.error(e);
@@ -226,6 +238,17 @@ const EditProfile: React.FC = () => {
   const handleTextChange = (key: keyof AccountCredentials): React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> => {
     return e => {
       updateData(key, e.target.value);
+    };
+  };
+
+  const handleNumberChange = (key: keyof AccountCredentials): React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> => {
+    return e => {
+      const num = parseInt(e.target.value, 10);
+      if (Number.isNaN(num)) {
+        updateData(key, null);
+      } else {
+        updateData(key, num);
+      }
     };
   };
 
@@ -437,6 +460,20 @@ const EditProfile: React.FC = () => {
               <Toggle
                 checked={data.discoverable}
                 onChange={handleCheckboxChange('discoverable')}
+              />
+            </ListItem>
+          )}
+
+          {features.statusExpiry && (
+            <ListItem
+              label={<FormattedMessage id='edit_profile.fields.status_expiry_label' defaultMessage='Scheduled post deletion' />}
+              hint={<FormattedMessage id='edit_profile.hints.status_expiry' defaultMessage='Delete posts after a set amount of days (let empty to disable)' />}
+            >
+              <Input
+                type='number'
+                value={data.status_ttl_days}
+                onChange={handleNumberChange('status_ttl_days')}
+                placeholder={intl.formatMessage(messages.statusExpiryPlaceholder)}
               />
             </ListItem>
           )}

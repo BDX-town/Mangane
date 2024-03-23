@@ -634,6 +634,12 @@ const getInstanceFeatures = (instance: Instance) => {
     spoilers: v.software !== TRUTHSOCIAL,
 
     /**
+     * Ability to set a default expiry date to posts
+     * @see https://docs.akkoma.dev/stable/development/API/differences_in_mastoapi_responses/#accounts
+     */
+    statusExpiry: v.software === AKKOMA && gte(v.version, '3.5.0'),
+
+    /**
      * Can display suggested accounts.
      * @see {@link https://docs.joinmastodon.org/methods/accounts/suggestions/}
      */

@@ -47,6 +47,7 @@ export const makeGetAccount = () => {
       if (meta) {
         map.merge(meta);
         map.set('pleroma', meta.pleroma.merge(base.get('pleroma', ImmutableMap()))); // Lol, thanks Pleroma
+        map.set('akkoma', meta.akkoma.merge(base.get('akkoma', ImmutableMap())));
       }
       if (relationship) map.set('relationship', relationship);
       map.set('moved', moved || null);
