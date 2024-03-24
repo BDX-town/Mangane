@@ -3,7 +3,6 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { getSettings } from 'soapbox/actions/settings';
 import { Avatar, Divider } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
 import ComposeButton from 'soapbox/features/ui/components/compose-button';
@@ -19,7 +18,6 @@ const SidebarNavigation = () => {
 
   const logo = useLogo();
   const instance = useAppSelector((state) => state.instance);
-  const settings = useAppSelector((state) => getSettings(state));
   const account = useOwnAccount();
   const notificationCount = useAppSelector((state) => state.notifications.get('unread'));
   const chatsCount = useAppSelector((state) => state.chats.items.reduce((acc, curr) => acc + Math.min(curr.unread || 0, 1), 0));
@@ -27,7 +25,6 @@ const SidebarNavigation = () => {
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
 
   const features = getFeatures(instance);
-  const bubbleTimeline = features.bubbleTimeline && settings.getIn(['public', 'bubble']);
 
   return (
     <div className='flex flex-col gap-2 h-full overflow-hidden'>
@@ -78,11 +75,11 @@ const SidebarNavigation = () => {
         }
 
         {
-          features.federating && bubbleTimeline && (
+          features.federating && features.bubbleTimeline && (
             <SidebarNavigationLink
               icon={require('@tabler/icons/hexagon.svg')}
               text={<FormattedMessage id='tabs_bar.bubble' defaultMessage='Featured' />}
-              to='/timeline/fediverse'
+              to='/timeline/bubble'
             />
           )
         }
