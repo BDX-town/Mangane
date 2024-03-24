@@ -84,7 +84,7 @@ const CommunityTimelineMenu = ({ referenceElement, onClose }: { referenceElement
   );
 };
 
-const ThumbNavigation: React.FC = (): JSX.Element => {
+const ThumbNavigation: React.FC<{ className?: string }> = ({ className = '', ...props }): JSX.Element => {
   const account = useOwnAccount();
   const { pathname } = useLocation();
   const dispatch = useDispatch();
@@ -100,7 +100,7 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
 
   return (
     <>
-      <div className='thumb-navigation flex items-center'>
+      <div className={`thumb-navigation flex items-center ${className}`}>
         <ThumbNavigationLink
           src={require('@tabler/icons/home.svg')}
           text={<FormattedMessage id='navigation.home' defaultMessage='Home' />}

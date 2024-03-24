@@ -681,7 +681,7 @@ const UI: React.FC = ({ children }) => {
               {Component => <Component />}
             </BundleContainer>
           )}
-          <ThumbNavigation />
+          <ThumbNavigation className='lg:hidden' />
 
           <BundleContainer fetchComponent={ProfileHoverCard}>
             {Component => <Component />}
