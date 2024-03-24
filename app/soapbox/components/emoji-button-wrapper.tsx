@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import { Map as ImmutableMap } from 'immutable';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { usePopper } from 'react-popper';
 import { useDispatch } from 'react-redux';
@@ -118,14 +118,13 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
 
 
   return (
-    <div ref={root} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    <div ref={root} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleClick}>
       { children}
       {
         visible && (
           ReactDOM.createPortal((
             <div
-              role='menu'
-              onClick={handleClick}
               className='z-50 transition-opacity duration-100'
               ref={setPopperElement}
               style={styles.popper}
