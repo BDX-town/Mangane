@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { changeSetting } from 'soapbox/actions/settings';
 import { expandBubbleTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
+import SubNavigation from 'soapbox/components/sub_navigation';
 import { Button, Column, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
 
@@ -12,7 +13,7 @@ import PinnedHostsPicker from '../remote_timeline/components/pinned_hosts_picker
 import Timeline from '../ui/components/timeline';
 
 const messages = defineMessages({
-  title: { id: 'column.public', defaultMessage: 'Explore' },
+  title: { id: 'tabs_bar.bubble', defaultMessage: 'Featured' },
 });
 
 const BubbleTimeline = () => {
@@ -44,6 +45,9 @@ const BubbleTimeline = () => {
 
   return (
     <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
+      <div className='px-4 pt-4 sm:p-0'>
+        <SubNavigation message={intl.formatMessage(messages.title)} />
+      </div>
       <PinnedHostsPicker />
       {showExplanationBox && <div className='mb-4'>
         <Text size='lg' weight='bold' className='mb-2'>

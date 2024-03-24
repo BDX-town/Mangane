@@ -4,12 +4,11 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { connectCommunityStream } from 'soapbox/actions/streaming';
 import { expandCommunityTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
+import SubNavigation from 'soapbox/components/sub_navigation';
 import { Column } from 'soapbox/components/ui';
-import { useAppDispatch, useSettings } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
 
 import Timeline from '../ui/components/timeline';
-
-import ColumnSettings from './containers/column_settings_container';
 
 const messages = defineMessages({
   title: { id: 'column.community', defaultMessage: 'Local timeline' },
@@ -19,6 +18,7 @@ const CommunityTimeline = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
+  const instance = useAppSelector((state) => state.instance);
   const settings = useSettings();
   const onlyMedia = settings.getIn(['community', 'other', 'onlyMedia']);
 
@@ -43,6 +43,9 @@ const CommunityTimeline = () => {
 
   return (
     <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
+      <div className='px-4 pt-4 sm:p-0'>
+        <SubNavigation message={instance.title} />
+      </div>
       <PullToRefresh onRefresh={handleRefresh}>
         <Timeline
           scrollKey={`${timelineId}_timeline`}

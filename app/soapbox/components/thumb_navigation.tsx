@@ -13,7 +13,7 @@ import { getFeatures } from 'soapbox/utils/features';
 import { Avatar } from './ui';
 
 const CommunityTimelineMenu = ({ referenceElement, onClose }: { referenceElement: HTMLElement, onClose: React.MouseEventHandler }) => {
-  const [popperElement, setPopperElement] = React.useState(null);
+  const [popperElement, setPopperElement] = React.useState<HTMLElement | null>(null);
 
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: 'top',
@@ -30,6 +30,17 @@ const CommunityTimelineMenu = ({ referenceElement, onClose }: { referenceElement
   const features = getFeatures(useAppSelector((state) => state.instance));
   const instance = useAppSelector((state) => state.instance);
   const logo = useLogo();
+
+  const handleClickOutside = React.useCallback((e) => {
+    if (popperElement.contains(e.target)) return;
+    onClose(e);
+  }, [popperElement]);
+
+  React.useEffect(() => {
+    window.addEventListener('click', handleClickOutside);
+
+    return () => window.removeEventListener('click', handleClickOutside);
+  }, [handleClickOutside]);
 
   return ReactDOM.createPortal(
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
@@ -93,6 +104,7 @@ const ThumbNavigation: React.FC<{ className?: string }> = ({ className = '', ...
   const [showCommunityMenu, setShowCommunityMenu] = React.useState(null);
 
   const handleCommunityClick = React.useCallback((e) => {
+    e.stopPropagation();
     setShowCommunityMenu(e.currentTarget);
   }, []);
 
@@ -115,6 +127,12 @@ const ThumbNavigation: React.FC<{ className?: string }> = ({ className = '', ...
           onClick={handleCommunityClick}
         />
 
+        <ThumbNavigationLink
+          src={require('@tabler/icons/search.svg')}
+          text={<FormattedMessage id='column.search' defaultMessage='Search' />}
+          to='/search'
+        />
+
 
         {account && (
           <>
@@ -125,7 +143,7 @@ const ThumbNavigation: React.FC<{ className?: string }> = ({ className = '', ...
               exact
               count={notificationCount}
             />
-            <button className='pr-3 bg-transparent border-0' onClick={onOpenSidebar}>
+            <button className='mx-3 bg-transparent border-0' onClick={onOpenSidebar}>
               <Avatar src={account.avatar} size={32} />
             </button>
           </>
