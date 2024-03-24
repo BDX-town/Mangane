@@ -41,7 +41,6 @@ import { isStandalone } from 'soapbox/utils/state';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
 
 import BackgroundShapes from './components/background_shapes';
-import Navbar from './components/navbar';
 import BundleContainer from './containers/bundle_container';
 import {
   Status,
@@ -654,7 +653,6 @@ const UI: React.FC = ({ children }) => {
         <BackgroundShapes />
 
         <div className='z-10 flex flex-col'>
-          <Navbar />
           <Layout>
             <Layout.Sidebar>
               {!standalone && <SidebarNavigation />}
