@@ -1,15 +1,21 @@
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 import { getSettings } from 'soapbox/actions/settings';
+import { Avatar } from 'soapbox/components/ui';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
+import Search from 'soapbox/features/compose/components/search';
 import ComposeButton from 'soapbox/features/ui/components/compose-button';
 import { useAppSelector, useOwnAccount, useLogo } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
+import { IconSwitchVertical } from '@tabler/icons';
+
 
 import SidebarNavigationLink from './sidebar-navigation-link';
 
 import type { Menu } from 'soapbox/components/dropdown_menu';
+import ProfileDropdown from 'soapbox/features/ui/components/profile-dropdown';
 
 const messages = defineMessages({
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
@@ -155,6 +161,29 @@ const SidebarNavigation = () => {
   return (
     <div>
       <div className='flex flex-col space-y-2'>
+        <div className='flex flex-col gap-5'>
+          {
+            account && (
+              <div className='flex gap-3 items-center'>
+                <ProfileDropdown account={account}>
+                  <button id='test'>
+                    <Avatar src={account.avatar} size={36} />
+                  </button>
+                </ProfileDropdown>
+                <div>
+                  <label htmlFor='test' className='block capitalize text-lg font-bold leading-none' onClick={() => document.querySelector('#test').click()}>
+                    { account.username }&nbsp;<IconSwitchVertical className='inline w-[14px] h-[14px] text-gray-700 dark:text-gray-400' />
+                  </label>
+                  <Link className='text-xs underline' to='/settings/profile'>
+                    <FormattedMessage id='settings.edit_profile' defaultMessage='Edit profile' />
+                  </Link>
+                </div>
+              </div>
+            )
+          }
+          <Search openInRoute autosuggest />
+        </div>
+
         <SidebarNavigationLink
           to='/'
           icon={require('@tabler/icons/home.svg')}

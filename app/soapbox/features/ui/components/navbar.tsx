@@ -98,7 +98,7 @@ const Navbar = () => {
               </div>
             )}
 
-            <Link to="/search">
+            <Link to='/search'>
               <IconButton
                 src={require('@tabler/icons/search.svg')}
                 className='bg-transparent text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 lg:hidden cursor-pointer'
