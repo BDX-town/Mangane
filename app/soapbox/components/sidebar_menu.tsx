@@ -148,9 +148,9 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
           'hidden': !sidebarOpen,
         })}
         role='button'
+        tabIndex={0}
         onClick={handleClose}
       />
-
       <div className='sidebar-menu'>
         <div className='relative overflow-y-scroll overflow-auto h-full w-full'>
           <div className='p-4'>
