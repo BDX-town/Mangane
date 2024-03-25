@@ -132,7 +132,6 @@ const defaultSettings = ImmutableMap({
   }),
 
   public: ImmutableMap({
-    bubble: true,
     shows: ImmutableMap({
       reblog: true,
       reply: true,

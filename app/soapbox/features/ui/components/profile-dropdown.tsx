@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { fetchOwnAccounts, logOut, switchAccount } from 'soapbox/actions/auth';
 import Account from 'soapbox/components/account';
-import { Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
+import { Menu, MenuButton, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 

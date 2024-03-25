@@ -31,7 +31,7 @@ const ActionsModal: React.FC<IActionsModal> = ({ status, actions, onClick, onClo
           {...compProps}
           rel='noopener'
           data-index={i}
-          className={classNames({ active, destructive })}
+          className={classNames({ active, destructive }, 'w-full')}
           data-method={isLogout ? 'delete' : null}
         >
           {icon && <Icon title={text} src={icon} role='presentation' tabIndex={-1} />}

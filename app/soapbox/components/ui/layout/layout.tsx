@@ -20,7 +20,7 @@ const Layout: LayoutComponent = ({ children }) => (
 /** Left sidebar container in the UI. */
 const Sidebar: React.FC = ({ children }) => (
   <div className='hidden lg:block lg:col-span-3'>
-    <StickyBox offsetTop={80} className='pb-4'>
+    <StickyBox offsetTop={32} style={{ height: 'calc(100vh - 32px)' }}>
       {children}
     </StickyBox>
   </div>
@@ -40,7 +40,7 @@ const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, classN
 /** Right sidebar container in the UI. */
 const Aside: React.FC = ({ children }) => (
   <aside className='hidden lg:block lg:col-span-3'>
-    <StickyBox offsetTop={80} className='space-y-6 pb-12' >
+    <StickyBox offsetTop={32} className='space-y-6 pb-12' >
       {children}
     </StickyBox>
   </aside>
