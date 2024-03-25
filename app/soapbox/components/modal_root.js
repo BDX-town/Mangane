@@ -219,8 +219,8 @@ class ModalRoot extends React.PureComponent {
         <div
           role='dialog'
           className={classNames({
-            'my-2 mx-auto relative pointer-events-none flex items-center': true,
-            'p-4 md:p-0': type !== 'MEDIA',
+            'h-full mx-auto relative pointer-events-none flex items-center': true,
+            'md:p-0': type !== 'MEDIA',
           })}
           style={{ minHeight: 'calc(100% - 3.5rem)' }}
         >

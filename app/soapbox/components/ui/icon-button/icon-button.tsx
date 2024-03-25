@@ -25,7 +25,7 @@ const IconButton = React.forwardRef((props: IIconButton, ref: React.ForwardedRef
     <button
       ref={ref}
       type='button'
-      className={classNames('flex items-center space-x-2 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 dark:ring-offset-0 focus:ring-primary-500', {
+      className={classNames('flex items-center gap-2 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 dark:ring-offset-0 focus:ring-primary-500', {
         'bg-white dark:bg-transparent': !transparent,
         'border border-solid bg-transparent border-gray-400 dark:border-gray-800 hover:border-primary-300 dark:hover:border-primary-700 focus:border-primary-500 text-gray-900 dark:text-gray-100 focus:ring-primary-500': theme === 'outlined',
         'opacity-50': filteredProps.disabled,

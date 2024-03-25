@@ -91,6 +91,7 @@ class ComposeForm extends ImmutablePureComponent {
     scheduledAt: PropTypes.instanceOf(Date),
     features: PropTypes.object.isRequired,
     spoilerForced: PropTypes.bool,
+    scheduledStatus: PropTypes.array,
   };
 
   static defaultProps = {
@@ -263,7 +264,8 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars, scheduledStatusCount, features, spoilerForced } = this.props;
+    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars, scheduledStatus, features, spoilerForced } = this.props;
+
     const condensed = shouldCondense && !this.state.composeFocused && this.isEmpty() && !this.props.isUploading;
     const disabled = this.props.isSubmitting;
     const text     = [this.props.spoilerText, countableText(this.props.text)].join('');
@@ -298,7 +300,7 @@ class ComposeForm extends ImmutablePureComponent {
 
     return (
       <Stack className='w-full' space={1} ref={this.setForm} onClick={this.handleClick}>
-        {scheduledStatusCount > 0 && (
+        {scheduledStatus.size > 0 && (
           <Warning
             message={(
               <FormattedMessage

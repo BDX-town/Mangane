@@ -4,7 +4,8 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { fetchTags, followTag, unfollowTag } from 'soapbox/actions/tags';
 import Icon from 'soapbox/components/icon';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import { Button, Column, IconButton, Spinner, Text } from 'soapbox/components/ui';
+import SubNavigation from 'soapbox/components/sub_navigation';
+import { Button, Column, Spinner, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
@@ -35,7 +36,12 @@ const FollowButton: React.FC<IFollowButton> = ({ id }) => {
 
 
   return (
-    <IconButton className='mx-3' style={{ background: 'transparent' }} onClick={onClick} src={isFollow ? require('@tabler/icons/minus.svg') : require('@tabler/icons/plus.svg')} text={text} />
+    <Button theme='ghost' classNames='text-xs gap-1 flex-row-reverse' style={{ background: 'transparent' }} onClick={onClick}>
+      <Icon src={isFollow ? require('@tabler/icons/minus.svg') : require('@tabler/icons/plus.svg')} />
+      {
+        text
+      }
+    </Button>
   );
 };
 
@@ -58,30 +64,32 @@ const FollowedHashtags = () => {
 
 
   return (
-    <Column label={intl.formatMessage(messages.heading)}>
+    <Column label={intl.formatMessage(messages.heading)} transparent withHeader={false}>
+      <div className='px-4 pt-4 sm:p-0'>
+        <SubNavigation message={intl.formatMessage(messages.heading)} />
+      </div>
       {
         !tags ? (
           <Spinner />
         ) : (
           <ScrollableList
-            className='flex flex-col gap-2'
+            className='flex flex-col gap-2 px-2'
             scrollKey='followed_hashtags'
             emptyMessage={<FormattedMessage id='column.tags.empty' defaultMessage="You don't follow any hashtag yet." />}
           >
             {
               tags?.map((tag) => (
-                <div className='p-1 bg-gray-100 dark:bg-slate-900 rounded flex flex-wrap justify-between items-center'>
+                <div className='p-2 bg-white dark:bg-slate-900 rounded-lg'>
                   <div className='flex items-center grow'>
-                    <Icon src={require('@tabler/icons/hash.svg')} />
                     <Text tag='span' weight='semibold'>
-                      { tag.name }
+                      #{ tag.name }
                     </Text>
                   </div>
-                  <div className='flex items-center gap-3 grow shrink justify-end'>
+                  <hr className='bg-gray-100 dark:border-slate-800 mt-2 mb-3' />
+                  <div className='flex items-center gap-1 grow shrink justify-between mt-1 text-sm'>
                     <FollowButton id={tag.name} />
-                    <span className='dark:text-slate-800 text-gray-300' >|</span>
-                    <Button theme='link' to={`/tag/${tag.name}`}>
-                      <div className='flex items-center'>
+                    <Button theme='primary' to={`/tag/${tag.name}`}>
+                      <div className='flex items-center text-xs'>
                         <FormattedMessage id='column.tags.see' defaultMessage='See' />
                         &nbsp;
                         <Icon src={require('@tabler/icons/arrow-right.svg')} />

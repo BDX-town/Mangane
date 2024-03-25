@@ -9,15 +9,18 @@ interface IThumbNavigationLink {
   count?: number,
   src: string,
   text: string | React.ReactElement,
-  to: string,
+  to?: string,
   exact?: boolean,
   paths?: Array<string>,
+  onClick?: React.MouseEventHandler,
+  active?: boolean,
 }
 
-const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, src, text, to, exact, paths }): JSX.Element => {
+const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, src, text, to, exact, paths, onClick, active }): JSX.Element => {
   const { pathname } = useLocation();
 
   const isActive = (): boolean => {
+    if (active) return active;
     if (paths) {
       return paths.some(path =>  pathname.startsWith(path));
     } else {
@@ -25,17 +28,19 @@ const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, src, text,
     }
   };
 
-  const active = isActive();
+  const internalActive = isActive();
+
+  const Wrapper = React.useMemo(() => ({ children }) => to ? <NavLink to={to} exact={exact} className='thumb-navigation__link'>{ children }</NavLink> : <button className='thumb-navigation__link' onClick={onClick}>{ children }</button>, [to, onClick, exact]);
 
   return (
-    <NavLink to={to} exact={exact} className='thumb-navigation__link'>
+    <Wrapper>
       {count !== undefined ? (
         <IconWithCounter
           src={src}
           className={classNames({
             'h-5 w-5': true,
-            'text-gray-600 dark:text-gray-300': !active,
-            'text-primary-600': active,
+            'text-gray-600 dark:text-gray-300': !internalActive,
+            'text-primary-600': internalActive,
           })}
           count={count}
         />
@@ -44,8 +49,8 @@ const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, src, text,
           src={src}
           className={classNames({
             'h-5 w-5': true,
-            'text-gray-600 dark:text-gray-300': !active,
-            'text-primary-600': active,
+            'text-gray-600 dark:text-gray-300': !internalActive,
+            'text-primary-600': internalActive,
           })}
         />
       )}
@@ -53,7 +58,7 @@ const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, src, text,
       <Text tag='span' size='xs'>
         {text}
       </Text>
-    </NavLink>
+    </Wrapper>
   );
 };
 

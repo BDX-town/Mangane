@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { EmojiReact as EmojiReactType } from 'soapbox/utils/emoji_reacts';
+
 import Emoji from '../emoji/emoji';
 
 interface IEmojiReact extends React.ImgHTMLAttributes<HTMLImageElement> {
@@ -12,18 +13,18 @@ interface IEmojiReact extends React.ImgHTMLAttributes<HTMLImageElement> {
 const EmojiReact: React.FC<IEmojiReact> = (props): JSX.Element | null => {
   const { emoji, alt, ...rest } = props;
 
-  if(emoji.get("url")) {
+  if (emoji.get('url')) {
     return (
-        <img
-          draggable='false'
-          alt={alt || emoji.get("name")}
-          src={emoji.get("url")}
-          {...rest}
-        />
-      );
+      <img
+        draggable='false'
+        alt={alt || emoji.get('name')}
+        src={emoji.get('url')}
+        {...rest}
+      />
+    );
   }
 
-  return <Emoji emoji={emoji.get("name")} alt={alt} {...rest} />
+  return <Emoji emoji={emoji.get('name')} alt={alt} {...rest} />;
 };
 
 export default EmojiReact;

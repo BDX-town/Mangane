@@ -1,37 +1,23 @@
+import { IconSwitchVertical } from '@tabler/icons';
 import React from 'react';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
 
-import { getSettings } from 'soapbox/actions/settings';
-import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
+import { Avatar, Divider } from 'soapbox/components/ui';
+import Search from 'soapbox/features/compose/components/search';
 import ComposeButton from 'soapbox/features/ui/components/compose-button';
+import ProfileDropdown from 'soapbox/features/ui/components/profile-dropdown';
 import { useAppSelector, useOwnAccount, useLogo } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
 
+
 import SidebarNavigationLink from './sidebar-navigation-link';
-
-import type { Menu } from 'soapbox/components/dropdown_menu';
-
-const messages = defineMessages({
-  follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
-  bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
-  lists: { id: 'column.lists', defaultMessage: 'Lists' },
-  developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
-  dashboard: { id: 'tabs_bar.dashboard', defaultMessage: 'Dashboard' },
-  all: { id: 'tabs_bar.all', defaultMessage: 'All' },
-  fediverse: { id: 'tabs_bar.fediverse', defaultMessage: 'Explore' },
-  settings: { id: 'tabs_bar.settings', defaultMessage: 'Settings' },
-  direct: { id: 'column.direct', defaultMessage: 'Direct messages' },
-  directory: { id: 'navigation_bar.profile_directory', defaultMessage: 'Profile directory' },
-  tags: { id: 'navigation_bar.tags', defaultMessage: 'Hashtags' },
-});
 
 /** Desktop sidebar with links to different views in the app. */
 const SidebarNavigation = () => {
-  const intl = useIntl();
 
   const logo = useLogo();
   const instance = useAppSelector((state) => state.instance);
-  const settings = useAppSelector((state) => getSettings(state));
   const account = useOwnAccount();
   const notificationCount = useAppSelector((state) => state.notifications.get('unread'));
   const chatsCount = useAppSelector((state) => state.chats.items.reduce((acc, curr) => acc + Math.min(curr.unread || 0, 1), 0));
@@ -39,122 +25,33 @@ const SidebarNavigation = () => {
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
 
   const features = getFeatures(instance);
-  const bubbleTimeline = features.bubbleTimeline && settings.getIn(['public', 'bubble']);
-
-  const makeMenu = (): Menu => {
-    const menu: Menu = [];
-
-    if (account) {
-      if (account.locked || followRequestsCount > 0) {
-        menu.push({
-          to: '/follow_requests',
-          text: intl.formatMessage(messages.follow_requests),
-          icon: require('@tabler/icons/user-plus.svg'),
-          count: followRequestsCount,
-        });
-      }
-
-      // we only want to add this option is it's not already shown
-      // so only when chats are supported
-      if (features.chats) {
-        menu.push({
-          to: '/messages',
-          text: intl.formatMessage(messages.direct),
-          icon: require('@tabler/icons/mail.svg'),
-        });
-      }
-
-      if (features.bookmarks) {
-        menu.push({
-          to: '/bookmarks',
-          text: intl.formatMessage(messages.bookmarks),
-          icon: require('@tabler/icons/bookmark.svg'),
-        });
-      }
-
-      if (features.lists) {
-        menu.push({
-          to: '/lists',
-          text: intl.formatMessage(messages.lists),
-          icon: require('@tabler/icons/list.svg'),
-        });
-      }
-
-      if (features.followTags) {
-        menu.push({
-          to: '/followed_hashtags',
-          text: intl.formatMessage(messages.tags),
-          icon: require('@tabler/icons/hash.svg'),
-        });
-      }
-
-      if (features.profileDirectory) {
-        menu.push({
-          to: '/directory',
-          text: intl.formatMessage(messages.directory),
-          icon: require('@tabler/icons/folder.svg'),
-        });
-      }
-
-      if (settings.get('isDeveloper')) {
-        menu.push({
-          to: '/developers',
-          icon: require('@tabler/icons/code.svg'),
-          text: intl.formatMessage(messages.developers),
-        });
-      }
-
-      if (account.staff) {
-        menu.push({
-          to: '/soapbox/admin',
-          icon: require('@tabler/icons/dashboard.svg'),
-          text: intl.formatMessage(messages.dashboard),
-          count: dashboardCount,
-        });
-      }
-
-      menu.push({
-        to: '/settings',
-        icon: require('@tabler/icons/settings.svg'),
-        text: intl.formatMessage(messages.settings),
-      });
-
-    }
-
-    return menu;
-  };
-
-  const menu = makeMenu();
-
-  /** Conditionally render the supported messages link */
-  const renderMessagesLink = (): React.ReactNode => {
-    if (features.chats) {
-      return (
-        <SidebarNavigationLink
-          to='/chats'
-          icon={require('@tabler/icons/messages.svg')}
-          count={chatsCount}
-          text={<FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' />}
-        />
-      );
-    }
-
-    if (features.directTimeline || features.conversations) {
-      return (
-        <SidebarNavigationLink
-          to='/messages'
-          icon={require('@tabler/icons/mail.svg')}
-          text={<FormattedMessage id='column.direct' defaultMessage='Direct messages' />}
-        />
-      );
-    }
-
-    return null;
-  };
 
   return (
-    <div>
-      <div className='flex flex-col space-y-2'>
+    <div className='flex flex-col gap-2 h-full overflow-hidden'>
+      <div className='flex flex-col gap-5 mb-5'>
+        {
+          account && (
+            <div className='flex gap-3 items-center'>
+              <Avatar src={account.avatar} size={36} />
+              <div>
+                <ProfileDropdown account={account}>
+                  <div className='block capitalize text-lg font-bold leading-none'>
+                    { account.username }&nbsp;<IconSwitchVertical className='inline w-[14px] h-[14px] text-gray-700 dark:text-gray-400' />
+                  </div>
+                </ProfileDropdown>
+                <Link
+                  className='block text-xs underline' to='/settings/profile'
+                >
+                  <FormattedMessage id='settings.edit_profile' defaultMessage='Edit profile' />
+                </Link>
+              </div>
+            </div>
+          )
+        }
+        <Search openInRoute autosuggest />
+      </div>
+      <div className='flex flex-col gap-2 shrink min-h-0 overflow-y-auto'>
+
         <SidebarNavigationLink
           to='/'
           icon={require('@tabler/icons/home.svg')}
@@ -178,14 +75,26 @@ const SidebarNavigation = () => {
         }
 
         {
+          features.federating && features.bubbleTimeline && (
+            <SidebarNavigationLink
+              icon={require('@tabler/icons/hexagon.svg')}
+              text={<FormattedMessage id='tabs_bar.bubble' defaultMessage='Featured' />}
+              to='/timeline/bubble'
+            />
+          )
+        }
+
+        {
           features.federating && (
             <SidebarNavigationLink
-              icon={!bubbleTimeline ? require('icons/fediverse.svg') : require('@tabler/icons/hexagon.svg')}
+              icon={require('icons/fediverse.svg')}
               text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Explore' />}
               to='/timeline/fediverse'
             />
           )
         }
+
+        <Divider />
 
         {account && (
           <>
@@ -196,25 +105,112 @@ const SidebarNavigation = () => {
               text={<FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />}
             />
 
-            {renderMessagesLink()}
+            {
+              features.chats && (
+                <SidebarNavigationLink
+                  to='/chats'
+                  icon={require('@tabler/icons/messages.svg')}
+                  count={chatsCount}
+                  text={<FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' />}
+                />
+              )
+            }
+
+            {
+              (features.directTimeline || features.conversations) && (
+                <SidebarNavigationLink
+                  to='/messages'
+                  icon={require('@tabler/icons/mail.svg')}
+                  text={<FormattedMessage id='column.direct' defaultMessage='Direct messages' />}
+                />
+              )
+            }
+
+            {
+              features.bookmarks && (
+                <SidebarNavigationLink
+                  to='/bookmarks'
+                  icon={require('@tabler/icons/bookmark.svg')}
+                  text={<FormattedMessage id='column.bookmarks' defaultMessage='Bookmarks' />}
+                />
+              )
+            }
+
+            {
+              features.lists && (
+                <SidebarNavigationLink
+                  to='/lists'
+                  icon={require('@tabler/icons/list.svg')}
+                  text={<FormattedMessage id='column.lists' defaultMessage='Lists' />}
+                />
+              )
+            }
+
+            {
+              features.followTags && (
+                <SidebarNavigationLink
+                  to='/followed_hashtags'
+                  icon={require('@tabler/icons/hash.svg')}
+                  text={<FormattedMessage id='navigation_bar.tags' defaultMessage='Hashtags' />}
+                />
+              )
+            }
+
+            <Divider />
+
+            {
+              account.locked && (
+                <SidebarNavigationLink
+                  to='/follow_requests'
+                  icon={require('@tabler/icons/user-plus.svg')}
+                  text={<FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' />}
+                  count={followRequestsCount}
+                />
+              )
+            }
           </>
         )}
 
-        {menu.length > 0 && (
-          <DropdownMenu items={menu}>
+        {
+          features.profileDirectory && (
             <SidebarNavigationLink
-              icon={require('@tabler/icons/dots-circle-horizontal.svg')}
-              count={dashboardCount}
-              text={<FormattedMessage id='tabs_bar.more' defaultMessage='More' />}
+              to='/directory'
+              icon={require('@tabler/icons/folder.svg')}
+              text={<FormattedMessage id='navigation_bar.profile_directory' defaultMessage='Profile directory' />}
             />
-          </DropdownMenu>
-        )}
-      </div>
+          )
+        }
 
+        {
+          account?.staff && (
+            <SidebarNavigationLink
+              to='/soapbox/admin'
+              icon={require('@tabler/icons/dashboard.svg')}
+              text={<FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />}
+              count={dashboardCount}
+            />
+          )
+        }
+
+        {
+          account && (
+            <SidebarNavigationLink
+              to='/settings'
+              icon={require('@tabler/icons/settings.svg')}
+              text={<FormattedMessage id='tabs_bar.settings' defaultMessage='Settings' />}
+              count={dashboardCount}
+            />
+          )
+        }
+
+      </div>
       {account && (
-        <ComposeButton />
+        <div className='pb-4'>
+          <ComposeButton />
+        </div>
       )}
     </div>
+
   );
 };
 

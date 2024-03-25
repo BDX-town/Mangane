@@ -15,6 +15,7 @@ const messages = defineMessages({
   passwordFieldLabel: { id: 'security.fields.password.label', defaultMessage: 'Password' },
   submit: { id: 'security.submit', defaultMessage: 'Save changes' },
   cancel: { id: 'common.cancel', defaultMessage: 'Cancel' },
+  description: { id: 'edit_email.description', defaultMessage: 'To change your email, you must re-enter your password' },
 });
 
 const initialState = { email: '', password: '' };
@@ -41,9 +42,10 @@ const EditEmail = () => {
       dispatch(snackbar.success(intl.formatMessage(messages.updateEmailSuccess)));
     }).finally(() => {
       setLoading(false);
-    }).catch(() => {
+    }).catch((msg) => {
+      console.error(msg);
       setState((prevState) => ({ ...prevState, password: '' }));
-      dispatch(snackbar.error(intl.formatMessage(messages.updateEmailFail)));
+      dispatch(snackbar.error(`${intl.formatMessage(messages.updateEmailFail)}: ${msg}`));
     });
   }, [email, password, dispatch, intl]);
 
@@ -61,6 +63,11 @@ const EditEmail = () => {
         </CardHeader>
 
         <CardBody>
+          <p className='mb-2 text-gray-600 dark:text-gray-300'>
+            {
+              intl.formatMessage(messages.description)
+            }
+          </p>
           <Form onSubmit={handleSubmit}>
             <FormGroup labelText={intl.formatMessage(messages.emailFieldLabel)}>
               <Input

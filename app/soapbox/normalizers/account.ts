@@ -44,6 +44,7 @@ export const AccountRecord = ImmutableRecord({
   moved: null as EmbeddedEntity<any>,
   note: '',
   pleroma: ImmutableMap<string, any>(),
+  akkoma: ImmutableMap<string, any>(),
   source: ImmutableMap<string, any>(),
   statuses_count: 0,
   uri: '',
