@@ -41,12 +41,12 @@ import { isStandalone } from 'soapbox/utils/state';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
 
 import BackgroundShapes from './components/background_shapes';
-import Navbar from './components/navbar';
 import BundleContainer from './containers/bundle_container';
 import {
   Status,
   CommunityTimeline,
   PublicTimeline,
+  BubbleTimeline,
   RemoteTimeline,
   AccountTimeline,
   AccountGallery,
@@ -188,6 +188,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       */}
       {features.federating && <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} publicRoute />}
       {features.federating && <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />}
+      {features.federating && features.bubbleTimeline && <WrappedRoute path='/timeline/bubble' exact page={HomePage} component={BubbleTimeline} content={children} publicRoute />}
       {features.federating && <WrappedRoute path='/timeline/:instance' exact page={HomePage} component={RemoteTimeline} content={children} />}
 
       {features.conversations && <WrappedRoute path='/conversations' page={DefaultPage} component={Conversations} content={children} />}
@@ -654,7 +655,6 @@ const UI: React.FC = ({ children }) => {
         <BackgroundShapes />
 
         <div className='z-10 flex flex-col'>
-          <Navbar />
           <Layout>
             <Layout.Sidebar>
               {!standalone && <SidebarNavigation />}
@@ -681,7 +681,7 @@ const UI: React.FC = ({ children }) => {
               {Component => <Component />}
             </BundleContainer>
           )}
-          <ThumbNavigation />
+          <ThumbNavigation className='lg:hidden' />
 
           <BundleContainer fetchComponent={ProfileHoverCard}>
             {Component => <Component />}

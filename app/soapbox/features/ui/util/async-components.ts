@@ -10,6 +10,10 @@ export function PublicTimeline() {
   return import(/* webpackChunkName: "features/public_timeline" */'../../public_timeline');
 }
 
+export function BubbleTimeline() {
+  return import(/* webpackChunkName: "features/public_timeline" */'../../bubble_timeline');
+}
+
 export function RemoteTimeline() {
   return import(/* webpackChunkName: "features/remote_timeline" */'../../remote_timeline');
 }

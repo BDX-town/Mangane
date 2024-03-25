@@ -3,8 +3,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { changeSetting } from 'soapbox/actions/settings';
-import { connectPublicStream } from 'soapbox/actions/streaming';
-import { expandPublicTimeline } from 'soapbox/actions/timelines';
+import { expandBubbleTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { Button, Column, Text } from 'soapbox/components/ui';
@@ -14,10 +13,10 @@ import PinnedHostsPicker from '../remote_timeline/components/pinned_hosts_picker
 import Timeline from '../ui/components/timeline';
 
 const messages = defineMessages({
-  title: { id: 'column.public', defaultMessage: 'Explore' },
+  title: { id: 'tabs_bar.bubble', defaultMessage: 'Featured' },
 });
 
-const CommunityTimeline = () => {
+const BubbleTimeline = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
@@ -27,26 +26,21 @@ const CommunityTimeline = () => {
   const siteTitle = useAppSelector((state) => state.instance.title);
   const showExplanationBox = settings.get('showExplanationBox');
 
-
   const dismissExplanationBox = React.useCallback(() => {
     dispatch(changeSetting(['showExplanationBox'], false));
   }, [dispatch]);
 
   const handleLoadMore = React.useCallback((maxId: string) => {
-    dispatch(expandPublicTimeline({ maxId, onlyMedia }));
+    dispatch(expandBubbleTimeline({ maxId, onlyMedia }));
   }, [dispatch, onlyMedia]);
 
   const handleRefresh = React.useCallback(() => {
-    return dispatch(expandPublicTimeline({ onlyMedia } as any));
+    return dispatch(expandBubbleTimeline({ onlyMedia } as any));
   }, [dispatch, onlyMedia]);
 
   useEffect(() => {
-    dispatch(expandPublicTimeline({ onlyMedia } as any));
-    const disconnect = dispatch(connectPublicStream({ onlyMedia }));
-
-    return () => {
-      disconnect();
-    };
+    dispatch(expandBubbleTimeline({ onlyMedia } as any));
+    // bubble timeline doesnt have streaming for now
   }, [onlyMedia]);
 
   return (
@@ -75,6 +69,9 @@ const CommunityTimeline = () => {
             ),
           }}
         />
+        <p className='mt-2'>
+          <FormattedMessage id='fediverse_tab.explanation_box.bubble' defaultMessage='This timeline shows you all the statuses published on a selection of other instances curated by your moderators.' />
+        </p>
         <div className='text-right'>
           <Button theme='link' onClick={dismissExplanationBox}>
             <FormattedMessage id='fediverse_tab.explanation_box.dismiss' defaultMessage="Don\'t show again" />
@@ -83,8 +80,8 @@ const CommunityTimeline = () => {
       </div>}
       <PullToRefresh onRefresh={handleRefresh}>
         <Timeline
-          scrollKey={'public_timeline'}
-          timelineId={`public${onlyMedia ? ':media' : ''}`}
+          scrollKey={'bubble_timeline'}
+          timelineId={`bubble${onlyMedia ? ':media' : ''}`}
           onLoadMore={handleLoadMore}
           emptyMessage={<FormattedMessage id='empty_column.public' defaultMessage='There is nothing here! Write something publicly, or manually follow users from other servers to fill it up' />}
           divideType='space'
@@ -94,4 +91,4 @@ const CommunityTimeline = () => {
   );
 };
 
-export default CommunityTimeline;
+export default BubbleTimeline;

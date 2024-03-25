@@ -86,8 +86,6 @@ const messages = defineMessages({
   privacy_followers_only: { id: 'preferences.options.privacy_followers_only', defaultMessage: 'Followers-only' },
   content_type_plaintext: { id: 'preferences.options.content_type_plaintext', defaultMessage: 'Plain text' },
   content_type_markdown: { id: 'preferences.options.content_type_markdown', defaultMessage: 'Markdown' },
-  bubble_timeline_label: { id: 'preferences.options.bubble_timeline_label', defaultMessage: 'Curated timeline' },
-  bubble_timeline_hint: { id: 'preferences.options.bubble_timeline_hint', defaultMessage: 'Replace the fediverse timeline with the Akkoma bubble timeline showing public statuses from a list of handpicked instances.' },
 });
 
 const Preferences = () => {
@@ -125,17 +123,6 @@ const Preferences = () => {
   return (
     <Form>
       <List>
-        {
-          features.bubbleTimeline && (
-            <ListItem
-              label={intl.formatMessage(messages.bubble_timeline_label)}
-              hint={intl.formatMessage(messages.bubble_timeline_hint)}
-            >
-              <SettingToggle settings={settings} settingPath={['public', 'bubble']} onChange={onToggleChange} />
-            </ListItem>
-          )
-        }
-
         <ListItem
           label={<FormattedMessage id='home.column_settings.show_reblogs' defaultMessage='Show reposts' />}
           hint={<FormattedMessage id='preferences.hints.feed' defaultMessage='In your home feed' />}
