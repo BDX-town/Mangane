@@ -110,6 +110,11 @@ const ThumbNavigation: React.FC<{ className?: string }> = ({ className = '', ...
 
   const onOpenSidebar = React.useCallback(() => dispatch(openSidebar()), [dispatch, openSidebar]);
 
+  // we close community menu when route changes
+  React.useEffect(() => {
+    setShowCommunityMenu(null);
+  }, [pathname]);
+
   return (
     <>
       <div className={`thumb-navigation flex items-center ${className}`}>
