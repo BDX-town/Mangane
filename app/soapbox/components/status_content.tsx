@@ -18,10 +18,6 @@ import type { Status, Mention } from 'soapbox/types/entities';
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 const BIG_EMOJI_LIMIT = 10;
 
-type Point = [
-  x: number,
-  y: number,
-]
 
 interface IReadMoreButton {
   onClick: React.MouseEventHandler,
@@ -132,7 +128,6 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
   const [collapsed, setCollapsed] = useState(false);
   const [onlyEmoji, setOnlyEmoji] = useState(false);
 
-  const startXY = useRef<Point>();
   const node = useRef<HTMLDivElement>(null);
 
   const { greentext } = useSoapboxConfig();
@@ -214,29 +209,6 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     updateStatusLinks();
   });
 
-  const handleMouseDown: React.EventHandler<React.MouseEvent> = (e) => {
-    startXY.current = [e.clientX, e.clientY];
-  };
-
-  const handleMouseUp: React.EventHandler<React.MouseEvent> = (e) => {
-    if (!startXY.current) return;
-    const target = e.target as HTMLElement;
-    const parentNode = target.parentNode as HTMLElement;
-
-    const [startX, startY] = startXY.current;
-    const [deltaX, deltaY] = [Math.abs(e.clientX - startX), Math.abs(e.clientY - startY)];
-
-    if (target.localName === 'button' || target.localName === 'a' || (parentNode && (parentNode.localName === 'button' || parentNode.localName === 'a'))) {
-      return;
-    }
-
-    if (deltaX + deltaY < 5 && e.button === 0 && onClick) {
-      onClick();
-    }
-
-    startXY.current = undefined;
-  };
-
   const handleSpoilerClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -280,7 +252,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
 
   return (
     <>
-      <div className={`${className} flex flex-col gap-2`} ref={node} tabIndex={0} style={directionStyle} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
+      <div className={`${className} flex flex-col gap-2`} ref={node} tabIndex={0} style={directionStyle}>
         {
           // post has a spoiler or was filtered
           (status.spoiler_text.length > 0 || status.filtered) && (
