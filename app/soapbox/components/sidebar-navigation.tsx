@@ -198,7 +198,6 @@ const SidebarNavigation = () => {
               to='/settings'
               icon={require('@tabler/icons/settings.svg')}
               text={<FormattedMessage id='tabs_bar.settings' defaultMessage='Settings' />}
-              count={dashboardCount}
             />
           )
         }
