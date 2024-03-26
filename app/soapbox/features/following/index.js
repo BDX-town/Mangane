@@ -33,16 +33,17 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
   const features = getFeatures(state.get('instance'));
 
   let accountId = -1;
+  let account = null;
   if (accountFetchError) {
     accountId = null;
   } else {
-    const account = findAccountByUsername(state, username);
+    account = findAccountByUsername(state, username);
     accountId = account ? account.getIn(['id'], null) : -1;
   }
 
   const diffCount = getFollowDifference(state, accountId, 'following');
   const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
-  const unavailable = (me === accountId) ? false : (isBlocked && !features.blockersVisible);
+  const unavailable = (me === accountId) ? false : ((isBlocked && !features.blockersVisible) || account?.pleroma?.get('hide_followers'));
 
   return {
     accountId,
