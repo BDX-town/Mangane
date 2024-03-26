@@ -129,12 +129,15 @@
     padding-right: 26px; // 10px + 16px
   }
 
-  @keyframes fade {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+  @media (hover: hover) {
+    @keyframes fade {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    opacity: 1;
+    animation: fade 150ms linear;
   }
-  opacity: 1;
-  animation: fade 150ms linear;
 
   .video-player,
   .audio-player {
