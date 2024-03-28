@@ -32,8 +32,7 @@ import UploadButtonContainer from '../containers/upload_button_container';
 import WarningContainer from '../containers/warning_container';
 import { countableText } from '../util/counter';
 
-
-
+import LanguageDropdown from './../components/language_dropdown';
 import TextCharacterCounter from './text_character_counter';
 import VisualCharacterCounter from './visual_character_counter';
 
@@ -397,6 +396,7 @@ class ComposeForm extends ImmutablePureComponent {
               /> : <SpoilerButtonContainer />
             )}
             {features.richText && <MarkdownButtonContainer />}
+            <LanguageDropdown />
           </div>
 
           <div className='flex items-center mt-2 space-x-4 ml-auto'>
