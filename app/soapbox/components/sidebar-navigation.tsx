@@ -32,7 +32,9 @@ const SidebarNavigation = () => {
         {
           account && (
             <div className='flex gap-3 items-center'>
-              <Avatar src={account.avatar} size={36} />
+              <Link to={`/@${account.acct}`}>
+                <Avatar src={account.avatar} size={36} />
+              </Link>
               <div>
                 <ProfileDropdown account={account}>
                   <div className='block capitalize text-lg font-bold leading-none'>
