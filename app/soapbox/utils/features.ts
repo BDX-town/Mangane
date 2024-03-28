@@ -287,12 +287,6 @@ const getInstanceFeatures = (instance: Instance) => {
     emojiReactsRGI: (v.software === PLEROMA || v.software === AKKOMA) && gte(v.version, '2.2.49'),
 
     /**
-     * Sign in with an Ethereum wallet.
-     * @see POST /oauth/token
-     */
-    ethereumLogin: v.software === MITRA,
-
-    /**
      * Ability to address recipients of a status explicitly (with `to`).
      * @see POST /api/v1/statuses
      */
