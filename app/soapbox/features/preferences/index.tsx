@@ -75,6 +75,10 @@ const languages = {
   'zh-TW': '繁體中文（臺灣）',
 };
 
+// This is temporary, need to use full range of ISO languages like here.
+// https://akkoma.dev/AkkomaGang/akkoma-fe/issues/386
+const postLanguages = languages;
+
 const messages = defineMessages({
   heading: { id: 'column.preferences', defaultMessage: 'Preferences' },
   display_media_default: { id: 'preferences.fields.display_media.default', defaultMessage: 'Hide media marked as sensitive' },
@@ -178,6 +182,13 @@ const Preferences = () => {
             />
           </ListItem>
         )}
+        <ListItem label={<FormattedMessage id='preferences.fields.post_language' defaultMessage='Default post language' />}>
+          <SelectDropdown
+            items={postLanguages}
+            defaultValue={settings.get('defaultPostLanguage') as string | undefined}
+            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['defaultPostLanguage'])}
+          />
+        </ListItem>
       </List>
 
       <List>
@@ -211,4 +222,4 @@ const Preferences = () => {
   );
 };
 
-export { Preferences as default, languages };
+export { Preferences as default, languages, postLanguages };
