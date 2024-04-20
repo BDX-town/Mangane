@@ -291,6 +291,8 @@ const updateSetting = (state: State, path: string[], value: StatusVisibility | s
       return state.set('default_privacy', value as StatusVisibility).set('privacy', value as StatusVisibility);
     case 'defaultContentType':
       return state.set('default_content_type', value).set('content_type', value);
+    case 'defaultPostLanguage':
+      return state.set('default_language', value).set('language', value);
     default:
       return state;
   }
