@@ -76,7 +76,7 @@ const languages = {
 };
 
 // This is temporary, need to use full range of ISO languages like here.
-// https://akkoma.dev/AkkomaGang/akkoma-fe/issues/386
+// https://akkoma.dev/AkkomaGang/akkoma-fe/pulls/387
 const postLanguages = languages;
 
 const messages = defineMessages({
