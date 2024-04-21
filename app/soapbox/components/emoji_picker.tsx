@@ -9,7 +9,7 @@ import { createSelector } from 'reselect';
 
 import { IconButton } from 'soapbox/components/ui';
 import { useTheme } from 'soapbox/hooks';
-import { isMobile } from 'soapbox/is_mobile';
+import { isMobile, isUserTouching } from 'soapbox/is_mobile';
 
 const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
@@ -53,7 +53,7 @@ interface IWrapper {
 const Wrapper: React.FC<IWrapper> = ({ show, onClose, children }) => {
   if (!show) return null;
   return ReactDOM.createPortal(
-    <div className='emoji-picker fixed top-0 left-0 w-screen h-screen bg-gray-800 z-[100]'>
+    <div className='emoji-picker fixed top-0 left-0 w-screen h-screen bg-gray-800 z-[100]' onKeyPress={(e) => e.stopPropagation()}>
       <div className='bg-white dark:bg-slate-800  flex flex-col overflow-hidden sm:rounded-lg absolute top-1/2 left-1/2 -translate-x-[50%] -translate-y-[50%] '>
         <div className='p-1'>
           <IconButton
@@ -110,6 +110,7 @@ export const EmojiPickerModal: React.FC<IEmojiPickerModal> = ({ custom_emojis = 
   return (
     <Wrapper show={active} onClose={handleClose}>
       <Picker
+        autoFocus={!isUserTouching()}
         theme={theme}
         dynamicWidth={isMobile(window.innerWidth)}
         categories={['frequent', 'custom', 'people', 'nature', 'foods', 'activity', 'places', 'objects', 'symbols', 'flags']}
