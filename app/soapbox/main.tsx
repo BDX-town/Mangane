@@ -13,7 +13,6 @@ import { store } from 'soapbox/store';
 import { printConsoleWarning } from 'soapbox/utils/console';
 
 import { default as Soapbox } from './containers/soapbox';
-import * as monitoring from './monitoring';
 import * as perf from './performance';
 import ready from './ready';
 
@@ -24,9 +23,6 @@ const messages = defineMessages({
 
 function main() {
   perf.start('main()');
-
-  // Sentry
-  monitoring.start();
 
   // Print console warning
   if (BuildConfig.NODE_ENV === 'production') {

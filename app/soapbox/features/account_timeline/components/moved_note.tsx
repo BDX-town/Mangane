@@ -19,7 +19,7 @@ const MovedNote: React.FC<IMovedNote> = ({ from, to }) => {
   return (
     <div className='account__moved-note'>
       <div className='account__moved-note__message'>
-        <div className='account__moved-note__icon-wrapper'><Icon src={require('feather-icons/dist/icons/briefcase.svg')} className='account__moved-note__icon' fixedWidth /></div>
+        <div className='account__moved-note__icon-wrapper'><Icon src={require('@tabler/icons/briefcase.svg')} className='account__moved-note__icon' fixedWidth /></div>
         <FormattedMessage id='account.moved_to' defaultMessage='{name} has moved to:' values={{ name: <bdi><strong dangerouslySetInnerHTML={displayNameHtml} /></bdi> }} />
       </div>
 

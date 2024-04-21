@@ -6,7 +6,6 @@ import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import * as BuildConfig from 'soapbox/build_config';
 import { Text, Stack } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import { captureException } from 'soapbox/monitoring';
 import KVStore from 'soapbox/storage/kv_store';
 import sourceCode from 'soapbox/utils/code';
 
@@ -55,8 +54,6 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
   textarea: HTMLTextAreaElement | null = null;
 
   componentDidCatch(error: any, info: any): void {
-    captureException(error);
-
     this.setState({
       hasError: true,
       error,
