@@ -298,6 +298,7 @@ const submitCompose = (routerHistory?: History, force = false) =>
       content_type: state.compose.content_type,
       poll: state.compose.poll,
       scheduled_at: state.compose.schedule,
+      language: state.compose.language,
       to,
     };
 
