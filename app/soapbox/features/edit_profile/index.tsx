@@ -422,7 +422,7 @@ const EditProfile: React.FC = () => {
               hint={<FormattedMessage id='edit_profile.hints.hide_network' defaultMessage='Who you follow and who follows you will not be shown on your profile' />}
             >
               <Toggle
-                checked={account ? hidesNetwork(account) : false}
+                checked={data.hide_followers && data.hide_followers_count && data.hide_follows && data.hide_follows_count}
                 onChange={handleHideNetworkChange}
               />
             </ListItem>
