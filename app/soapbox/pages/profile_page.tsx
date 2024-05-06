@@ -122,7 +122,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
             </BundleContainer>
           </Widget>
         )}
-        {(features.accountEndorsements && account && isLocal(account)) ? (
+        {(features.accountEndorsements && account && isLocal(account) && me) ? (
           <BundleContainer fetchComponent={PinnedAccountsPanel}>
             {Component => <Component account={account} limit={5} key='pinned-accounts-panel' />}
           </BundleContainer>
