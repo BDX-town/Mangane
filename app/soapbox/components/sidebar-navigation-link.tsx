@@ -37,7 +37,7 @@ const SidebarNavigationLink = React.forwardRef((props: ISidebarNavigationLink, r
       ref={ref}
       onClick={handleClick}
       className={classNames({
-        'flex items-center p-3 text-sm font-semibold space-x-4 rounded-full group hover:bg-primary-200/80 dark:hover:bg-primary-900/60 hover:text-primary-600 dark:hover:text-gray-200': true,
+        'flex items-center p-3 text-sm font-semibold space-x-4 rounded-full group hover:bg-primary-200/80 dark:hover:bg-primary-900/60 hover:text-primary-600 dark:hover:text-gray-200 outline-offset-[-2px]': true,
         'text-gray-500 dark:text-gray-400': !isActive,
         'text-primary-600 dark:text-white': isActive,
       })}
