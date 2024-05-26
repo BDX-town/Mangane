@@ -943,7 +943,7 @@
   "remote_interaction.reply": "Proceed to reply",
   "remote_interaction.reply_title": "Reply to a post remotely",
   "remote_interaction.user_not_found_error": "Couldn't find given user",
-  "remote_timeline.filter_message": "Fil de l'instance {instance}",
+  "remote_timeline.filter_message": "Vous consultez le fil local de l'instance {instance}.",
   "reply_indicator.cancel": "Annuler",
   "reply_mentions.account.add": "Add to mentions",
   "reply_mentions.account.remove": "Remove from mentions",

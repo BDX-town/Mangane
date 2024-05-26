@@ -1,19 +1,20 @@
 import React, { useEffect, useRef } from 'react';
-import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { connectRemoteStream } from 'soapbox/actions/streaming';
 import { expandRemoteTimeline } from 'soapbox/actions/timelines';
 import Column from 'soapbox/features/ui/components/column';
-import { useAppDispatch, useSettings } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is_mobile';
+import { makeGetRemoteInstance } from 'soapbox/selectors';
 
 import Timeline from '../ui/components/timeline';
 
-import PinnedHostsPicker from './components/pinned_hosts_picker';
+import { ButtonPin } from './components/ButtonPin';
 
-const messages = defineMessages({
-  title: { id: 'remote_timeline.filter_message', defaultMessage: 'You are viewing the timeline of {instance}.' },
-});
+
+
+
 
 interface IRemoteTimeline {
   params?: {
@@ -21,9 +22,22 @@ interface IRemoteTimeline {
   }
 }
 
+const Heading = ({ instance }: {instance: string }) => {
+  const getRemoteInstance = makeGetRemoteInstance();
+  const meta = useAppSelector((s) => getRemoteInstance(s, instance));
+  return (
+    <div className='flex gap-2 items-center'>
+      {
+        meta.get('favicon') && <img alt={`${instance} favicon`} src={meta.get('favicon') as string} width={24} height={24} />
+      }
+      { instance }
+      <ButtonPin instance={instance} width={20} height={20}  />
+    </div>
+  );
+};
+
 /** View statuses from a remote instance. */
 const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
-  const intl = useIntl();
   const dispatch = useAppDispatch();
 
   const instance = params?.instance as string;
@@ -58,13 +72,17 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
     }
   }, [onlyMedia]);
 
+  const completeTimelineId = `${timelineId}${onlyMedia ? ':media' : ''}:${instance}`;
+
   return (
     <div className='pt-3'>
-      <Column label={instance} heading={intl.formatMessage(messages.title, { instance })} transparent withHeader={false}>
-        {instance && <PinnedHostsPicker host={instance} />}
+      <Column label={instance} heading={<Heading instance={instance} />} transparent withHeader={false}>
+        <div className='mb-4'>
+          { instance && <FormattedMessage id='remote_timeline.filter_message' defaultMessage='You are viewing the local timeline of {instance}.' values={{ instance }} />}
+        </div>
         <Timeline
           scrollKey={`${timelineId}_${instance}_timeline`}
-          timelineId={`${timelineId}${onlyMedia ? ':media' : ''}:${instance}`}
+          timelineId={completeTimelineId}
           onLoadMore={handleLoadMore}
           emptyMessage={
             <FormattedMessage
