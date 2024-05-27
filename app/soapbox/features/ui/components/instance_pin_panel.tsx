@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-
 import { getPinnedHosts } from 'soapbox/actions/remote_timeline';
 import { Widget, Stack, Text } from 'soapbox/components/ui';
-import { ButtonPin } from 'soapbox/features/remote_timeline/components/ButtonPin';
+import { ButtonPin } from 'soapbox/features/remote_timeline/components/button-pin';
 import { useAppSelector } from 'soapbox/hooks';
 
 

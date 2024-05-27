@@ -10,7 +10,6 @@ import SubNavigation from 'soapbox/components/sub_navigation';
 import { Button, Column, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
 
-import PinnedHostsPicker from '../remote_timeline/components/pinned_hosts_picker';
 import Timeline from '../ui/components/timeline';
 
 const messages = defineMessages({
@@ -54,7 +53,6 @@ const CommunityTimeline = () => {
       <div className='px-4 pt-1 sm:p-0'>
         <SubNavigation message={intl.formatMessage(messages.title)} />
       </div>
-      <PinnedHostsPicker />
       {showExplanationBox && <div className='mb-4'>
         <Text size='lg' weight='bold' className='mb-2'>
           <FormattedMessage id='fediverse_tab.explanation_box.title' defaultMessage='What is the Fediverse?' />

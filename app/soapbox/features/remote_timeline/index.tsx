@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { connectRemoteStream } from 'soapbox/actions/streaming';
 import { expandRemoteTimeline } from 'soapbox/actions/timelines';
+import SubNavigation from 'soapbox/components/sub_navigation';
 import Column from 'soapbox/features/ui/components/column';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is_mobile';
@@ -10,11 +11,7 @@ import { makeGetRemoteInstance } from 'soapbox/selectors';
 
 import Timeline from '../ui/components/timeline';
 
-import { ButtonPin } from './components/ButtonPin';
-
-
-
-
+import { ButtonPin } from './components/button-pin';
 
 interface IRemoteTimeline {
   params?: {
@@ -76,8 +73,13 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
 
   return (
     <div className='pt-3'>
-      <Column label={instance} heading={<Heading instance={instance} />} transparent withHeader={false}>
-        <div className='mb-4'>
+      <Column label={instance} transparent withHeader={false}>
+        <div className='px-4 pt-1 sm:p-0'>
+          <SubNavigation>
+            <Heading instance={instance} />
+          </SubNavigation>
+        </div>
+        <div className='mb-4 px-4 sm:p-0'>
           { instance && <FormattedMessage id='remote_timeline.filter_message' defaultMessage='You are viewing the local timeline of {instance}.' values={{ instance }} />}
         </div>
         <Timeline

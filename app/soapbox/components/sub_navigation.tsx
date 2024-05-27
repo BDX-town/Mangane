@@ -15,22 +15,15 @@ const messages = defineMessages({
 });
 
 interface ISubNavigation {
-  message: String,
+  message?: String,
   settings?: React.ComponentType,
+  children?: React.ReactNode,
 }
 
-const SubNavigation: React.FC<ISubNavigation> = ({ message }) => {
+const SubNavigation: React.FC<ISubNavigation> = ({ message, children }) => {
   const intl = useIntl();
-  // const dispatch = useAppDispatch();
   const history = useHistory();
 
-  // const ref = useRef(null);
-
-  // const [scrolled, setScrolled] = useState(false);
-
-  // const onOpenSettings = () => {
-  //   dispatch(openModal('COMPONENT', { component: Settings }));
-  // };
 
   const handleBackClick = () => {
     if (window.history && window.history.length === 1) {
@@ -40,42 +33,12 @@ const SubNavigation: React.FC<ISubNavigation> = ({ message }) => {
     }
   };
 
-  // const handleBackKeyUp = (e) => {
-  //   if (e.key === 'Enter') {
-  //     handleClick();
-  //   }
-  // }
-
-  // const handleOpenSettings = () => {
-  //   onOpenSettings();
-  // }
-
-  // useEffect(() => {
-  //   const handleScroll = throttle(() => {
-  //     if (this.node) {
-  //       const { offsetTop } = this.node;
-
-  //       if (offsetTop > 0) {
-  //         setScrolled(true);
-  //       } else {
-  //         setScrolled(false);
-  //       }
-  //     }
-  //   }, 150, { trailing: true });
-
-  //   window.addEventListener('scroll', handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll);
-  //   };
-  // }, []);
-
   return (
     <CardHeader
       aria-label={intl.formatMessage(messages.back)}
       onBackClick={handleBackClick}
     >
-      <CardTitle title={message} />
+      { !children ? <CardTitle title={message} /> : children }
     </CardHeader>
   );
 };

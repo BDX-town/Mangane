@@ -3,54 +3,45 @@ import ReactDOM from 'react-dom';
 import { FormattedMessage } from 'react-intl';
 import { usePopper } from 'react-popper';
 import { useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
+import { getPinnedHosts } from 'soapbox/actions/remote_timeline';
 import { openSidebar } from 'soapbox/actions/sidebar';
 import ThumbNavigationLink from 'soapbox/components/thumb_navigation-link';
+import { Text } from 'soapbox/components/ui';
 import { useAppSelector, useLogo, useOwnAccount } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
 
 import { Avatar } from './ui';
 
-const CommunityTimelineMenu = ({ referenceElement, onClose }: { referenceElement: HTMLElement, onClose: React.MouseEventHandler }) => {
-  const [popperElement, setPopperElement] = React.useState<HTMLElement | null>(null);
+const PinnedHosts = () => {
+  const pinnedHosts = useAppSelector((s) => getPinnedHosts(s));
+  if (pinnedHosts.isEmpty()) return null;
+  return (
+    <div className='max-w-[100vw] overflow-x-auto'>
+      <div className='bg-white dark:bg-slate-900 px-4 py-1 rounded-full shadow-md w-max flex gap-3'>
+        {
+          pinnedHosts.map((instance) => (
+            <Link className='flex flex-col items-center gap-1' to={`/timeline/${instance.get('host')}`}>
+              <img src={instance.get('favicon')} width={16} height={16} />
+              <Text size='xs'>{ instance.get('host') }</Text>
+            </Link>
+          ))
+        }
+      </div>
+    </div>
+  );
+};
 
-  const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    placement: 'top',
-    modifiers: [
-      {
-        name: 'offset',
-        options: {
-          offset: [0, 10],
-        },
-      },
-    ],
-  });
+const Communities = () => {
 
   const features = getFeatures(useAppSelector((state) => state.instance));
   const instance = useAppSelector((state) => state.instance);
   const logo = useLogo();
 
-  const handleClickOutside = React.useCallback((e) => {
-    if (popperElement.contains(e.target)) return;
-    onClose(e);
-  }, [popperElement]);
 
-  React.useEffect(() => {
-    window.addEventListener('click', handleClickOutside);
-
-    return () => window.removeEventListener('click', handleClickOutside);
-  }, [handleClickOutside]);
-
-  return ReactDOM.createPortal(
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-    <div
-      ref={setPopperElement}
-      onClick={onClose}
-      className='bg-white dark:bg-slate-900 px-3 py-2 rounded-full shadow-md w-max z-50 flex gap-2'
-      style={styles.popper}
-      {...attributes.popper}
-    >
+  return (
+    <div className='bg-white dark:bg-slate-900 px-3 py-2 rounded-full shadow-md w-max flex gap-2'>
       {
         features.federating ? (
           <ThumbNavigationLink
@@ -90,6 +81,48 @@ const CommunityTimelineMenu = ({ referenceElement, onClose }: { referenceElement
           />
         )
       }
+    </div>
+  );
+};
+
+const CommunityTimelineMenu = ({ referenceElement, onClose }: { referenceElement: HTMLElement, onClose: React.MouseEventHandler }) => {
+  const [popperElement, setPopperElement] = React.useState<HTMLElement | null>(null);
+
+  const { styles, attributes } = usePopper(referenceElement, popperElement, {
+    placement: 'top',
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: [0, 10],
+        },
+      },
+    ],
+  });
+
+
+  const handleClickOutside = React.useCallback((e) => {
+    if (popperElement.contains(e.target)) return;
+    onClose(e);
+  }, [popperElement]);
+
+  React.useEffect(() => {
+    window.addEventListener('click', handleClickOutside);
+
+    return () => window.removeEventListener('click', handleClickOutside);
+  }, [handleClickOutside]);
+
+  return ReactDOM.createPortal(
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    <div
+      ref={setPopperElement}
+      onClick={onClose}
+      className='z-50 flex flex-col gap-1'
+      style={styles.popper}
+      {...attributes.popper}
+    >
+      <PinnedHosts />
+      <Communities />
     </div>,
     document.body,
   );
