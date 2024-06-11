@@ -19,7 +19,7 @@ const PinnedHosts = () => {
   if (pinnedHosts.isEmpty()) return null;
   return (
     <div className='max-w-[100vw] overflow-x-auto'>
-      <div className='bg-white dark:bg-slate-900 px-4 py-1 rounded-full shadow-md w-max flex gap-3'>
+      <div className='bg-white dark:bg-slate-900 px-4 py-1 rounded-full shadow-md w-max flex gap-3 mx-auto'>
         {
           pinnedHosts.map((instance) => (
             <Link className='flex flex-col items-center gap-1' to={`/timeline/${instance.get('host')}`}>
