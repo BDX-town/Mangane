@@ -21,33 +21,46 @@ interface IProfileStats {
 const ProfileStats: React.FC<IProfileStats> = ({ account, onClickHandler }) => {
   const intl = useIntl();
 
+  const FollowersWrapper = React.useMemo(() =>
+    ({ children }) => account.pleroma?.get('hide_followers') ? <>{ children }</> : <NavLink to={`/@${account.acct}/followers`} onClick={onClickHandler} title={account.pleroma?.get('hide_followers_count') ? null : intl.formatNumber(account.followers_count)} className='hover:underline'>{ children }</NavLink>
+  , [account, onClickHandler, intl]);
+
+  const FollowingWrapper = React.useMemo(() =>
+    ({ children }) => account.pleroma?.get('hide_follows') ? <>{ children }</> : <NavLink to={`/@${account.acct}/following`} onClick={onClickHandler} title={account.pleroma?.get('hide_follows_count') ? null : intl.formatNumber(account.following_count)} className='hover:underline'>{ children }</NavLink>
+  , [account, onClickHandler, intl]);
+
+
   if (!account) {
     return null;
   }
 
   return (
     <HStack alignItems='center' space={3}>
-      <NavLink to={`/@${account.acct}/followers`} onClick={onClickHandler} title={intl.formatNumber(account.followers_count)} className='hover:underline'>
+      <FollowersWrapper>
         <HStack alignItems='center' space={1}>
           <Text theme='primary' weight='bold' size='sm'>
-            {shortNumberFormat(account.followers_count)}
+            {
+              account.pleroma?.get('hide_followers_count') ? '-' : shortNumberFormat(account.followers_count)
+            }
           </Text>
           <Text weight='bold' size='sm'>
             {intl.formatMessage(messages.followers)}
           </Text>
         </HStack>
-      </NavLink>
+      </FollowersWrapper>
 
-      <NavLink to={`/@${account.acct}/following`} onClick={onClickHandler} title={intl.formatNumber(account.following_count)} className='hover:underline'>
+      <FollowingWrapper>
         <HStack alignItems='center' space={1}>
           <Text theme='primary' weight='bold' size='sm'>
-            {shortNumberFormat(account.following_count)}
+            {
+              account.pleroma?.get('hide_follows_count') ? '-' : shortNumberFormat(account.following_count)
+            }
           </Text>
           <Text weight='bold' size='sm'>
             {intl.formatMessage(messages.follows)}
           </Text>
         </HStack>
-      </NavLink>
+      </FollowingWrapper>
     </HStack>
   );
 };

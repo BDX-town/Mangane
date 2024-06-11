@@ -128,7 +128,7 @@ const ThumbNavigation: React.FC<{ className?: string }> = ({ className = '', ...
         <ThumbNavigationLink
           active={pathname.startsWith('/timeline')}
           src={require('@tabler/icons/building-community.svg')}
-          text={<FormattedMessage id='navigation.community' defaultMessage='Communauté' />}
+          text={<FormattedMessage id='navigation.community' defaultMessage='Community' />}
           onClick={handleCommunityClick}
         />
 
