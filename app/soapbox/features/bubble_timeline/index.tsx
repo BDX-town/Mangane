@@ -44,7 +44,7 @@ const BubbleTimeline = () => {
 
   return (
     <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
-      <div className='px-4 pt-1 sm:p-0'>
+      <div className='px-4 pt-4 sm:p-0'>
         <SubNavigation message={intl.formatMessage(messages.title)} />
       </div>
       {showExplanationBox && <div className='mb-4'>
