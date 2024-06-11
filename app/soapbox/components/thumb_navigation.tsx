@@ -23,7 +23,7 @@ const PinnedHosts = () => {
         {
           pinnedHosts.map((instance) => (
             <Link className='flex flex-col items-center gap-1' to={`/timeline/${instance.get('host')}`}>
-              <img src={instance.get('favicon')} width={16} height={16} />
+              <img alt={instance.get('host')} src={instance.get('favicon')} width={16} height={16} />
               <Text size='xs'>{ instance.get('host') }</Text>
             </Link>
           ))
