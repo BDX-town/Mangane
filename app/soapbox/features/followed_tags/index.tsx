@@ -73,13 +73,13 @@ const FollowedHashtags = () => {
           <Spinner />
         ) : (
           <ScrollableList
-            className='flex flex-col gap-2 px-2'
+            className='flex flex-col gap-2'
             scrollKey='followed_hashtags'
             emptyMessage={<FormattedMessage id='column.tags.empty' defaultMessage="You don't follow any hashtag yet." />}
           >
             {
               tags?.map((tag) => (
-                <div className='p-2 bg-white dark:bg-slate-900 rounded-lg'>
+                <div className='p-2 bg-white dark:bg-slate-800 rounded-lg'>
                   <div className='flex items-center grow'>
                     <Text tag='span' weight='semibold'>
                       #{ tag.name }

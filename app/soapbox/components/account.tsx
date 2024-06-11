@@ -20,7 +20,7 @@ interface IInstanceFavicon {
   account: AccountEntity,
 }
 
-const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account }) => {
+export const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account }) => {
   const history = useHistory();
 
   const handleClick: React.MouseEventHandler = (e) => {
