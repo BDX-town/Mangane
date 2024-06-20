@@ -196,16 +196,19 @@
   }
 } // end .compose-form
 
-.privacy-dropdown__dropdown {
-  @apply absolute bg-white dark:bg-slate-900 z-[1000] rounded-md shadow-lg ml-10 text-sm;
 
-  &.top {
-    transform-origin: 50% 100%;
+@keyframes dropdown__dropdown-spawn {
+  0% {
+    opacity: 0;
   }
 
-  &.bottom {
-    transform-origin: 50% 0;
+  100% {
+    opacity: 1;
   }
+}
+
+.privacy-dropdown__dropdown, .language-dropdown__dropdown {
+  animation: 0.2s ease dropdown__dropdown-spawn;
 }
 
 .privacy-dropdown__option {

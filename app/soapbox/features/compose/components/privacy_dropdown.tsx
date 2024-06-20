@@ -2,14 +2,10 @@ import classNames from 'classnames';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import React, { useState, useRef, useEffect } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
-import { spring } from 'react-motion';
-// @ts-ignore
-import Overlay from 'react-overlays/lib/Overlay';
+import { usePopper } from 'react-popper';
 
 import { IconButton, Icon } from 'soapbox/components/ui';
 import { useFeatures, useLogo } from 'soapbox/hooks';
-
-import Motion from '../../ui/util/optional_motion';
 
 const messages = defineMessages({
   public_short: { id: 'privacy.public.short', defaultMessage: 'Public' },
@@ -31,20 +27,23 @@ interface IPrivacyDropdownMenu {
   style?: React.CSSProperties,
   items: any[],
   value: string,
-  placement: string,
   onClose: () => void,
   onChange: (value: string | null) => void,
   unavailable?: boolean,
+  reference: HTMLElement,
 }
 
-const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, placement, value, onClose, onChange }) => {
-  const node = useRef<HTMLDivElement>(null);
+const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, value, onClose, onChange, reference }) => {
+  const [node, setNode] = useState<HTMLElement>(null);
   const focusedItem = useRef<HTMLDivElement>(null);
 
-  const [mounted, setMounted] = useState<boolean>(false);
+
+  const { top } = reference.getBoundingClientRect();
+
+  const { attributes, styles } = usePopper(reference, node, { placement: top * 2 < window.innerHeight ? 'bottom' : 'top' });
 
   const handleDocumentClick = (e: MouseEvent | TouchEvent) => {
-    if (node.current && !node.current.contains(e.target as HTMLElement)) {
+    if (node && !node.contains(e.target as HTMLElement)) {
       onClose();
     }
   };
@@ -62,23 +61,23 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, pla
         handleClick(e);
         break;
       case 'ArrowDown':
-        element = node.current?.childNodes[index + 1] || node.current?.firstChild;
+        element = node?.childNodes[index + 1] || node?.firstChild;
         break;
       case 'ArrowUp':
-        element = node.current?.childNodes[index - 1] || node.current?.lastChild;
+        element = node?.childNodes[index - 1] || node?.lastChild;
         break;
       case 'Tab':
         if (e.shiftKey) {
-          element = node.current?.childNodes[index - 1] || node.current?.lastChild;
+          element = node?.childNodes[index - 1] || node?.lastChild;
         } else {
-          element = node.current?.childNodes[index + 1] || node.current?.firstChild;
+          element = node?.childNodes[index + 1] || node?.firstChild;
         }
         break;
       case 'Home':
-        element = node.current?.firstChild;
+        element = node?.firstChild;
         break;
       case 'End':
-        element = node.current?.lastChild;
+        element = node?.lastChild;
         break;
     }
 
@@ -104,7 +103,6 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, pla
     document.addEventListener('touchend', handleDocumentClick, listenerOptions);
 
     focusedItem.current?.focus({ preventScroll: true });
-    setMounted(true);
 
     return () => {
       document.removeEventListener('click', handleDocumentClick, false);
@@ -113,27 +111,20 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, pla
   }, []);
 
   return (
-    <Motion defaultStyle={{ opacity: 0, scaleX: 0.85, scaleY: 0.75 }} style={{ opacity: spring(1, { damping: 35, stiffness: 400 }), scaleX: spring(1, { damping: 35, stiffness: 400 }), scaleY: spring(1, { damping: 35, stiffness: 400 }) }}>
-      {({ opacity, scaleX, scaleY }) => (
-        // It should not be transformed when mounting because the resulting
-        // size will be used to determine the coordinate of the menu by
-        // react-overlays
-        <div className={`privacy-dropdown__dropdown ${placement}`} style={{ ...style, opacity: opacity, transform: mounted ? `scale(${scaleX}, ${scaleY})` : undefined }} role='listbox' ref={node}>
-          {items.map(item => (
-            <div role='option' tabIndex={0} key={item.value} data-index={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={classNames('privacy-dropdown__option', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
-              <div className='privacy-dropdown__option__icon'>
-                <Icon size={16} src={item.icon} />
-              </div>
+    <div className={'privacy-dropdown__dropdown absolute bg-white dark:bg-slate-900 z-[1000] rounded-md shadow-lg ml-10 text-sm'} style={{ ...style, ...styles.popper }} role='listbox' ref={setNode} {...attributes.popper}>
+      {items.map(item => (
+        <div role='option' tabIndex={0} key={item.value} data-index={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={classNames('privacy-dropdown__option', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
+          <div className='privacy-dropdown__option__icon'>
+            <Icon size={16} src={item.icon} />
+          </div>
 
-              <div className='privacy-dropdown__option__content'>
-                <strong>{item.text}</strong>
-                {item.meta}
-              </div>
-            </div>
-          ))}
+          <div className='privacy-dropdown__option__content'>
+            <strong>{item.text}</strong>
+            {item.meta}
+          </div>
         </div>
-      )}
-    </Motion>
+      ))}
+    </div>
   );
 };
 
@@ -162,7 +153,6 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
   const features = useFeatures();
 
   const [open, setOpen] = useState(false);
-  const [placement, setPlacement] = useState('bottom');
 
   const options = [
     { icon: require('@tabler/icons/world.svg'), value: 'public', text: intl.formatMessage(messages.public_short), meta: intl.formatMessage(messages.public_long) },
@@ -183,11 +173,9 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
         });
       }
     } else {
-      const { top } = e.currentTarget.getBoundingClientRect();
       if (open) {
         activeElement.current?.focus();
       }
-      setPlacement(top * 2 < innerHeight ? 'bottom' : 'top');
       setOpen(!open);
     }
     e.stopPropagation();
@@ -239,7 +227,7 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
   const valueOption = options.find(item => item.value === value);
 
   return (
-    <div className={classNames('privacy-dropdown', placement, { active: open })} onKeyDown={handleKeyDown} ref={node}>
+    <div className={classNames('privacy-dropdown', { active: open })} onKeyDown={handleKeyDown} ref={node}>
       <div className={classNames('privacy-dropdown__value', { active: valueOption && options.indexOf(valueOption) === 0 })}>
         <IconButton
           className='text-gray-400 hover:text-gray-600'
@@ -251,15 +239,17 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
         />
       </div>
 
-      <Overlay show={open} placement={placement} target={node.current}>
-        <PrivacyDropdownMenu
-          items={options}
-          value={value}
-          onClose={handleClose}
-          onChange={onChange}
-          placement={placement}
-        />
-      </Overlay>
+      {
+        open && (
+          <PrivacyDropdownMenu
+            items={options}
+            value={value}
+            onClose={handleClose}
+            onChange={onChange}
+            reference={node.current}
+          />
+        )
+      }
     </div>
   );
 };
