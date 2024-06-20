@@ -396,7 +396,7 @@ class ComposeForm extends ImmutablePureComponent {
               /> : <SpoilerButtonContainer />
             )}
             {features.richText && <MarkdownButtonContainer />}
-            <LanguageDropdown />
+            <LanguageDropdown onChange={() => null} />
           </div>
 
           <div className='flex items-center mt-2 space-x-4 ml-auto'>

@@ -1,28 +1,14 @@
 import classNames from 'classnames';
 import { supportsPassiveEvents } from 'detect-passive-events';
-import React, { useState, useRef, useEffect } from 'react';
-import { useIntl, defineMessages } from 'react-intl';
+import ISO6391 from 'iso-639-1';
+import { debounce } from 'lodash';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { usePopper } from 'react-popper';
 import { useDispatch } from 'react-redux';
 
 import { closeModal, openModal } from 'soapbox/actions/modals';
-import { Button, Icon } from 'soapbox/components/ui';
-import { useAppSelector, useFeatures, useLogo } from 'soapbox/hooks';
+import { Input } from 'soapbox/components/ui';
 import { isUserTouching } from 'soapbox/is_mobile';
-
-const messages = defineMessages({
-  public_short: { id: 'language.public.short', defaultMessage: 'Public' },
-  public_long: { id: 'language.public.long', defaultMessage: 'Post to public timelines' },
-  unlisted_short: { id: 'language.unlisted.short', defaultMessage: 'Unlisted' },
-  unlisted_long: { id: 'language.unlisted.long', defaultMessage: 'Do not post to public timelines' },
-  local_short: { id: 'language.local.short', defaultMessage: 'Local-only' },
-  local_long: { id: 'language.local.long', defaultMessage: 'Status is only visible to people on this instance' },
-  private_short: { id: 'language.private.short', defaultMessage: 'Followers-only' },
-  private_long: { id: 'language.private.long', defaultMessage: 'Post to followers only' },
-  direct_short: { id: 'language.direct.short', defaultMessage: 'Direct' },
-  direct_long: { id: 'language.direct.long', defaultMessage: 'Post to mentioned users only' },
-  change_language: { id: 'language.change', defaultMessage: 'Adjust post language' },
-});
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
@@ -38,8 +24,8 @@ interface ILanguageDropdownMenu {
 
 const LanguageDropdownMenu: React.FC<ILanguageDropdownMenu> = ({ style, items, value, onClose, onChange, reference }) => {
   const [node, setNode] = useState<HTMLElement | null>(null);
+  const list = useRef<HTMLDivElement>(null);
   const focusedItem = useRef<HTMLDivElement>(null);
-
 
   const { top } = reference.getBoundingClientRect();
 
@@ -64,23 +50,23 @@ const LanguageDropdownMenu: React.FC<ILanguageDropdownMenu> = ({ style, items, v
         handleClick(e);
         break;
       case 'ArrowDown':
-        element = node?.childNodes[index + 1] || node?.firstChild;
+        element = list.current?.childNodes[index + 1] || list.current?.firstChild;
         break;
       case 'ArrowUp':
-        element = node?.childNodes[index - 1] || node?.lastChild;
+        element = list.current?.childNodes[index - 1] || list.current?.lastChild;
         break;
       case 'Tab':
         if (e.shiftKey) {
-          element = node?.childNodes[index - 1] || node?.lastChild;
+          element = list.current?.childNodes[index - 1] || list.current?.lastChild;
         } else {
-          element = node?.childNodes[index + 1] || node?.firstChild;
+          element = list.current?.childNodes[index + 1] || list.current?.firstChild;
         }
         break;
       case 'Home':
-        element = node?.firstChild;
+        element = list.current?.firstChild;
         break;
       case 'End':
-        element = node?.lastChild;
+        element = list.current?.lastChild;
         break;
     }
 
@@ -113,20 +99,33 @@ const LanguageDropdownMenu: React.FC<ILanguageDropdownMenu> = ({ style, items, v
     };
   }, []);
 
-  return (
-    <div className={'language-dropdown__dropdown absolute bg-white dark:bg-slate-900 z-[1000] rounded-md shadow-lg ml-10 text-sm'} style={{ ...style, ...styles.popper }} role='listbox' ref={setNode} {...attributes.popper}>
-      {items.map(item => (
-        <div role='option' tabIndex={0} key={item.value} data-index={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={classNames('language-dropdown__option', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
-          <div className='language-dropdown__option__icon'>
-            <Icon size={16} src={item.icon} />
-          </div>
+  const [currentItems, setCurrentItems] = useState(items);
 
-          <div className='language-dropdown__option__content'>
-            <strong>{item.text}</strong>
-            {item.meta}
+  const onSearchChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(debounce((e) => {
+    const search = e.target.value.toUpperCase().normalize('NFC');
+    if (search.length === 0) {
+      setCurrentItems(items);
+      return;
+    }
+    setCurrentItems(items.filter((i) => i.label.toUpperCase().normalize('NFC').indexOf(search) !== -1));
+  }, 500), [items]);
+
+
+  return (
+    <div className={'absolute bg-white dark:bg-slate-900 z-[1000] rounded-md shadow-lg ml-10 text-sm'} style={{ ...style, ...styles.popper }} role='listbox' ref={setNode} {...attributes.popper}>
+      <div className='p-2'>
+        <Input autoFocus onChange={onSearchChange} />
+      </div>
+      <div className='h-[300px] overflow-y-auto' ref={list}>
+        {currentItems.map(item => (
+          <div role='option' tabIndex={0} key={item.value} data-index={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={classNames('p-3 cursor-pointer hover:bg-gray-100', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
+            <div className='language-dropdown__option__content'>
+              <strong>{item.value}</strong>&nbsp;{item.label}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
+
     </div>
   );
 };
@@ -136,32 +135,23 @@ interface ILanguageDropdown {
   onChange: (value: string | null) => void,
 }
 
+const ALL_OPTIONS = ISO6391.getAllCodes().map((code) => ({ value: code, label: ISO6391.getNativeName(code) }));
+
 const LanguageDropdown: React.FC<ILanguageDropdown> = ({
   onChange,
   value,
 }) => {
-  const intl = useIntl();
   const node = useRef<HTMLDivElement>(null);
   const activeElement = useRef<HTMLElement | null>(null);
-  const logo = useLogo();
   const dispatch = useDispatch();
-  const features = useFeatures();
 
   const [open, setOpen] = useState(false);
-
-  const options = [
-    { icon: require('@tabler/icons/world.svg'), value: 'public', text: intl.formatMessage(messages.public_short), meta: intl.formatMessage(messages.public_long) },
-    { icon: require('@tabler/icons/eye-off.svg'), value: 'unlisted', text: intl.formatMessage(messages.unlisted_short), meta: intl.formatMessage(messages.unlisted_long) },
-    ...(features.localOnlyPrivacy ? [{ icon: logo, value: 'local', text: intl.formatMessage(messages.local_short), meta: intl.formatMessage(messages.local_long) }] : []),
-    { icon: require('@tabler/icons/lock.svg'), value: 'private', text: intl.formatMessage(messages.private_short), meta: intl.formatMessage(messages.private_long) },
-    { icon: require('@tabler/icons/mail.svg'), value: 'direct', text: intl.formatMessage(messages.direct_short), meta: intl.formatMessage(messages.direct_long) },
-  ];
 
   const handleToggle: React.MouseEventHandler<HTMLButtonElement> = React.useCallback((e) => {
     e.stopPropagation();
     if (isUserTouching()) {
       if (open) dispatch(closeModal('ACTIONS'));
-      else dispatch(openModal('ACTIONS', { actions: options.map(option => ({ ...option, active: option.value === value })), onClick: handleModalActionClick }));
+      else dispatch(openModal('ACTIONS', { actions: ALL_OPTIONS.map(option => ({ ...option, active: option.value === value })), onClick: handleModalActionClick }));
     } else {
       if (open) activeElement.current?.focus();
       setOpen(!open);
@@ -169,10 +159,10 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({
   }, [open, dispatch]);
 
   const handleModalActionClick: React.MouseEventHandler = (e) => {
-    e.preventDefault();
-    const { value } = options[e.currentTarget.getAttribute('data-index') as any];
-    dispatch(closeModal('ACTIONS'));
-    onChange(value);
+    // e.preventDefault();
+    // const { value } = options[e.currentTarget.getAttribute('data-index') as any];
+    // dispatch(closeModal('ACTIONS'));
+    // onChange(value);
   };
 
   const handleKeyDown: React.KeyboardEventHandler = e => {
@@ -205,11 +195,9 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({
     setOpen(false);
   };
 
-  const valueOption = options.find(item => item.value === value);
-
   return (
     <div className={classNames('language-dropdown', { active: open })} onKeyDown={handleKeyDown} ref={node}>
-      <div className={classNames('language-dropdown__value', { active: valueOption && options.indexOf(valueOption) === 0 })}>
+      <div className={classNames('language-dropdown__value')}>
         <button
           className='text-gray-400 hover:text-gray-600 border-0 bg-transparent px-1 font-bold'
           onClick={handleToggle}
@@ -223,7 +211,7 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({
       {
         open && (
           <LanguageDropdownMenu
-            items={options}
+            items={ALL_OPTIONS}
             value={value}
             onClose={handleClose}
             onChange={onChange}
