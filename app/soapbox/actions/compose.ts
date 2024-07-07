@@ -62,6 +62,7 @@ const COMPOSE_SPOILERNESS_CHANGE = 'COMPOSE_SPOILERNESS_CHANGE';
 const COMPOSE_TYPE_CHANGE = 'COMPOSE_TYPE_CHANGE';
 const COMPOSE_SPOILER_TEXT_CHANGE = 'COMPOSE_SPOILER_TEXT_CHANGE';
 const COMPOSE_VISIBILITY_CHANGE  = 'COMPOSE_VISIBILITY_CHANGE';
+const COMPOSE_LANGUAGE_CHANGE  = 'COMPOSE_LANGUAGE_CHANGE';
 const COMPOSE_LISTABILITY_CHANGE = 'COMPOSE_LISTABILITY_CHANGE';
 const COMPOSE_COMPOSING_CHANGE = 'COMPOSE_COMPOSING_CHANGE';
 
@@ -626,6 +627,11 @@ const changeComposeVisibility = (value: string) => ({
   value,
 });
 
+const changeComposeLanguage = (value: string) => ({
+  type: COMPOSE_LANGUAGE_CHANGE,
+  value,
+});
+
 const insertEmojiCompose = (position: number, emoji: string, needsSpace: boolean) => ({
   type: COMPOSE_EMOJI_INSERT,
   position,
@@ -798,6 +804,7 @@ export {
   changeComposeContentType,
   changeComposeSpoilerText,
   changeComposeVisibility,
+  changeComposeLanguage,
   insertEmojiCompose,
   changeComposing,
   addPoll,

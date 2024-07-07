@@ -23,6 +23,7 @@ import Warning from '../components/warning';
 import MarkdownButtonContainer from '../containers/markdown_button_container';
 import PollButtonContainer from '../containers/poll_button_container';
 import PrivacyDropdownContainer from '../containers/privacy_dropdown_container';
+import LanguageDropdownContainer from '../containers/language_dropdown_container';
 import QuotedStatusContainer from '../containers/quoted_status_container';
 import ReplyIndicatorContainer from '../containers/reply_indicator_container';
 import ScheduleButtonContainer from '../containers/schedule_button_container';
@@ -396,7 +397,7 @@ class ComposeForm extends ImmutablePureComponent {
               /> : <SpoilerButtonContainer />
             )}
             {features.richText && <MarkdownButtonContainer />}
-            <LanguageDropdown onChange={() => null} />
+            <LanguageDropdownContainer />
           </div>
 
           <div className='flex items-center mt-2 space-x-4 ml-auto'>
