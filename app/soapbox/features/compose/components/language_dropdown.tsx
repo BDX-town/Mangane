@@ -27,6 +27,7 @@ const LanguageDropdownMenu: React.FC<ILanguageDropdownMenu> = ({ style, items, v
   const list = useRef<HTMLDivElement>(null);
   const focusedItem = useRef<HTMLDivElement>(null);
 
+
   const { top } = reference.getBoundingClientRect();
 
   const { attributes, styles } = usePopper(reference, node, { placement: top * 2 < window.innerHeight ? 'bottom' : 'top' });
@@ -91,7 +92,9 @@ const LanguageDropdownMenu: React.FC<ILanguageDropdownMenu> = ({ style, items, v
     document.addEventListener('click', handleDocumentClick, false);
     document.addEventListener('touchend', handleDocumentClick, listenerOptions);
 
-    focusedItem.current?.focus({ preventScroll: true });
+    focusedItem.current?.focus();
+
+
 
     return () => {
       document.removeEventListener('click', handleDocumentClick, false);
@@ -133,12 +136,14 @@ const LanguageDropdownMenu: React.FC<ILanguageDropdownMenu> = ({ style, items, v
 interface ILanguageDropdown {
   value: string,
   onChange: (value: string | null) => void,
+  defaultValue: string,
 }
 
 const ALL_OPTIONS = ISO6391.getAllCodes().map((code) => ({ value: code, label: ISO6391.getNativeName(code) }));
 
 const LanguageDropdown: React.FC<ILanguageDropdown> = ({
   onChange,
+  defaultValue,
   value,
 }) => {
   const node = useRef<HTMLDivElement>(null);
@@ -204,7 +209,7 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({
           onMouseDown={handleMouseDown}
           onKeyDown={handleButtonKeyDown}
         >
-          fr
+          { value || defaultValue }
         </button>
       </div>
 

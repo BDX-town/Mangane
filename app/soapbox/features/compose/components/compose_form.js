@@ -20,10 +20,10 @@ import PollForm from '../components/polls/poll-form';
 import ReplyMentions from '../components/reply_mentions';
 import UploadForm from '../components/upload_form';
 import Warning from '../components/warning';
+import LanguageDropdownContainer from '../containers/language_dropdown_container';
 import MarkdownButtonContainer from '../containers/markdown_button_container';
 import PollButtonContainer from '../containers/poll_button_container';
 import PrivacyDropdownContainer from '../containers/privacy_dropdown_container';
-import LanguageDropdownContainer from '../containers/language_dropdown_container';
 import QuotedStatusContainer from '../containers/quoted_status_container';
 import ReplyIndicatorContainer from '../containers/reply_indicator_container';
 import ScheduleButtonContainer from '../containers/schedule_button_container';
@@ -33,7 +33,6 @@ import UploadButtonContainer from '../containers/upload_button_container';
 import WarningContainer from '../containers/warning_container';
 import { countableText } from '../util/counter';
 
-import LanguageDropdown from './../components/language_dropdown';
 import TextCharacterCounter from './text_character_counter';
 import VisualCharacterCounter from './visual_character_counter';
 
