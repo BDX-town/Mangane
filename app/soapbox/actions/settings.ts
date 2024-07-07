@@ -27,6 +27,7 @@ const messages = defineMessages({
   saveSuccess: { id: 'settings.save.success', defaultMessage: 'Your preferences have been saved!' },
 });
 
+const locale = navigator.language.split(/[-_]/)[0] || 'en';
 const defaultSettings = ImmutableMap({
   onboarded: false,
   skinTone: 1,
@@ -41,8 +42,9 @@ const defaultSettings = ImmutableMap({
   missingDescriptionModal: false,
   defaultPrivacy: 'public',
   defaultContentType: 'text/plain',
+  defaultPostLanguage: locale,
   themeMode: 'system',
-  locale: navigator.language.split(/[-_]/)[0] || 'en',
+  locale,
   showExplanationBox: true,
   explanationBox: true,
   autoloadTimelines: true,
