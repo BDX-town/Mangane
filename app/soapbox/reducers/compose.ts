@@ -34,6 +34,7 @@ import {
   COMPOSE_TYPE_CHANGE,
   COMPOSE_SPOILER_TEXT_CHANGE,
   COMPOSE_VISIBILITY_CHANGE,
+  COMPOSE_LANGUAGE_CHANGE,
   COMPOSE_COMPOSING_CHANGE,
   COMPOSE_EMOJI_INSERT,
   COMPOSE_UPLOAD_CHANGE_REQUEST,
@@ -252,12 +253,14 @@ const getAccountSettings = (account: ImmutableMap<string, any>) => {
   return account.getIn(['pleroma', 'settings_store', FE_NAME], ImmutableMap()) as ImmutableMap<string, any>;
 };
 
+const locale = navigator.language.split(/[-_]/)[0] || 'en';
+
 const importAccount = (state: State, account: APIEntity) => {
   const settings = getAccountSettings(ImmutableMap(fromJS(account)));
 
   const defaultPrivacy = settings.get('defaultPrivacy', 'public');
   const defaultContentType = settings.get('defaultContentType', 'text/plain');
-  const defaultPostLanguage = settings.get('defaultPostLanguage', '');
+  const defaultPostLanguage = settings.get('defaultPostLanguage', locale);
 
   return state.merge({
     default_privacy: defaultPrivacy,
@@ -275,7 +278,7 @@ const updateAccount = (state: State, account: APIEntity) => {
 
   const defaultPrivacy = settings.get('defaultPrivacy');
   const defaultContentType = settings.get('defaultContentType');
-  const defaultPostLanguage = settings.get('defaultPostLanguage', '');
+  const defaultPostLanguage = settings.get('defaultPostLanguage', locale);
 
   return state.withMutations(state => {
     if (defaultPrivacy) state.set('default_privacy', defaultPrivacy);
@@ -332,6 +335,10 @@ export default function compose(state = ReducerRecord({ idempotencyKey: uuid(), 
     case COMPOSE_SPOILER_TEXT_CHANGE:
       return state
         .set('spoiler_text', action.text)
+        .set('idempotencyKey', uuid());
+    case COMPOSE_LANGUAGE_CHANGE:
+      return state
+        .set('language', action.value)
         .set('idempotencyKey', uuid());
     case COMPOSE_VISIBILITY_CHANGE:
       return state

@@ -34,7 +34,7 @@ const ActionsModal: React.FC<IActionsModal> = ({ status, actions, onClick, onClo
           className={classNames({ active, destructive }, 'w-full')}
           data-method={isLogout ? 'delete' : null}
         >
-          {icon && <Icon title={text} src={icon} role='presentation' tabIndex={-1} />}
+          {icon && <Icon title={text as string} src={icon} role='presentation' tabIndex={-1} />}
           <div>
             <div className={classNames({ 'actions-modal__item-label': !!meta })}>{text}</div>
             <div>{meta}</div>
