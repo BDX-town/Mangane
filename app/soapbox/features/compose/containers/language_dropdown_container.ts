@@ -8,7 +8,7 @@ import LanguageDropdown from '../components/language_dropdown';
 const mapStateToProps = state => ({
   isModalOpen: Boolean(state.get('modals').size && state.get('modals').last().modalType === 'ACTIONS'),
   value: state.getIn(['compose', 'language']),
-  defaultValue: state.getIn(['settings', 'defaultPostLanguage']),
+  defaultValue: state.getIn(['settings', 'defaultPostLanguage']) || 'en',
   unavailable: !!state.getIn(['compose', 'id']),
 });
 
