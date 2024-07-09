@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import { supportsPassiveEvents } from 'detect-passive-events';
-import ISO6391 from 'iso-639-1';
+import ISO6391, { LanguageCode } from 'iso-639-1';
 import { debounce } from 'lodash';
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { usePopper } from 'react-popper';
 import { useDispatch } from 'react-redux';
 
@@ -17,7 +17,7 @@ interface ILanguageDropdownMenu {
   items: any[],
   value: string,
   onClose: () => void,
-  onChange: (value: string | null) => void,
+  onChange: (option: { value: LanguageCode }) => void,
   unavailable?: boolean,
   reference: HTMLElement,
 }
@@ -39,9 +39,9 @@ const LanguageDropdownMenu: React.FC<ILanguageDropdownMenu> = ({ style, items, v
   };
 
   const handleKeyDown: React.KeyboardEventHandler = e => {
-    const value = e.currentTarget.getAttribute('data-index');
-    const index = items.findIndex(item => item.value === value);
+    const index = Number.parseInt(e.currentTarget.getAttribute('data-index'), 10);
     let element: ChildNode | undefined | null = undefined;
+
 
     switch (e.key) {
       case 'Escape':
@@ -51,16 +51,16 @@ const LanguageDropdownMenu: React.FC<ILanguageDropdownMenu> = ({ style, items, v
         handleClick(e);
         break;
       case 'ArrowDown':
-        element = list.current?.childNodes[index + 1] || list.current?.firstChild;
+        element = list.current?.querySelector(`[data-index='${index + 1}']`) || list.current?.firstChild;
         break;
       case 'ArrowUp':
-        element = list.current?.childNodes[index - 1] || list.current?.lastChild;
+        element = list.current?.querySelector(`[data-index='${index - 1}']`) || list.current?.lastChild;
         break;
       case 'Tab':
         if (e.shiftKey) {
-          element = list.current?.childNodes[index - 1] || list.current?.lastChild;
+          element = list.current?.querySelector(`[data-index='${index - 1}']`) || list.current?.lastChild;
         } else {
-          element = list.current?.childNodes[index + 1] || list.current?.firstChild;
+          element = list.current?.querySelector(`[data-index='${index + 1}']`) || list.current?.firstChild;
         }
         break;
       case 'Home':
@@ -73,29 +73,23 @@ const LanguageDropdownMenu: React.FC<ILanguageDropdownMenu> = ({ style, items, v
 
     if (element) {
       (element as HTMLElement).focus();
-      onChange((element as HTMLElement).getAttribute('data-index'));
       e.preventDefault();
       e.stopPropagation();
     }
   };
 
   const handleClick: React.EventHandler<any> = (e: MouseEvent | KeyboardEvent) => {
-    const value = (e.currentTarget as HTMLElement)?.getAttribute('data-index');
+    const option = items.find((it => it.value === (e.currentTarget as HTMLElement)?.getAttribute('data-value')));
 
     e.preventDefault();
 
     onClose();
-    onChange(value);
+    onChange(option);
   };
 
   useEffect(() => {
     document.addEventListener('click', handleDocumentClick, false);
     document.addEventListener('touchend', handleDocumentClick, listenerOptions);
-
-    focusedItem.current?.focus();
-
-
-
     return () => {
       document.removeEventListener('click', handleDocumentClick, false);
       document.removeEventListener('touchend', handleDocumentClick);
@@ -119,11 +113,11 @@ const LanguageDropdownMenu: React.FC<ILanguageDropdownMenu> = ({ style, items, v
       <div className='p-2'>
         <Input autoFocus onChange={onSearchChange} />
       </div>
-      <div className='h-[300px] overflow-y-auto' ref={list}>
-        {currentItems.map(item => (
-          <div role='option' tabIndex={0} key={item.value} data-index={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={classNames('p-3 cursor-pointer hover:bg-gray-100', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
+      <div className='h-[250px] overflow-y-auto' ref={list}>
+        {currentItems.map((item, index) => (
+          <div role='option' tabIndex={0} key={item.value + index} data-index={index} data-value={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={classNames('p-3 cursor-pointer hover:bg-gray-100', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
             <div className='language-dropdown__option__content'>
-              <strong>{item.value}</strong>&nbsp;{item.label}
+              <strong className='text-primary-600'>{item.value}</strong>&nbsp;{item.label}
             </div>
           </div>
         ))}
@@ -140,6 +134,12 @@ interface ILanguageDropdown {
 }
 
 const ALL_OPTIONS = ISO6391.getAllCodes().map((code) => ({ value: code, label: ISO6391.getNativeName(code) }));
+const STORAGE_KEY = 'soapbox:language_dropdown';
+
+
+function dedup(items: any[]) {
+  return Array.from(new Set(items.map((i) => JSON.stringify(i)))).map((i) => JSON.parse(i));
+}
 
 const LanguageDropdown: React.FC<ILanguageDropdown> = ({
   onChange,
@@ -152,22 +152,35 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({
 
   const [open, setOpen] = useState(false);
 
+  const buildOptions = useCallback(() => {
+    const previousChoices = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    return [...previousChoices, ...ALL_OPTIONS];
+  }, []);
+
+  const options = useMemo(() => buildOptions(), [buildOptions, value]);
+
   const handleToggle: React.MouseEventHandler<HTMLButtonElement> = React.useCallback((e) => {
     e.stopPropagation();
     if (isUserTouching()) {
       if (open) dispatch(closeModal('ACTIONS'));
-      else dispatch(openModal('ACTIONS', { actions: ALL_OPTIONS.map(option => ({ ...option, active: option.value === value })), onClick: handleModalActionClick }));
+      else dispatch(openModal('ACTIONS', { actions: options.map(option => ({ ...option, text:  <><strong className='text-primary-600'>{option.value}</strong>&nbsp;{option.label}</>, active: option.value === value })), onClick: handleModalActionClick }));
     } else {
       if (open) activeElement.current?.focus();
       setOpen(!open);
     }
   }, [open, dispatch]);
 
+  const onInternalChange = useCallback((option: { value: LanguageCode }) => {
+    const previousChoices = dedup([option, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')]).slice(0, 3);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(previousChoices));
+    onChange(option.value);
+  }, [onChange]);
+
   const handleModalActionClick: React.MouseEventHandler = (e) => {
-    // e.preventDefault();
-    // const { value } = options[e.currentTarget.getAttribute('data-index') as any];
-    // dispatch(closeModal('ACTIONS'));
-    // onChange(value);
+    e.preventDefault();
+    const option = ALL_OPTIONS[e.currentTarget.getAttribute('data-index') as any];
+    dispatch(closeModal('ACTIONS'));
+    onInternalChange(option);
   };
 
   const handleKeyDown: React.KeyboardEventHandler = e => {
@@ -216,10 +229,10 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({
       {
         open && (
           <LanguageDropdownMenu
-            items={ALL_OPTIONS}
+            items={options}
             value={value}
             onClose={handleClose}
-            onChange={onChange}
+            onChange={onInternalChange}
             reference={node.current as HTMLElement}
           />
         )
