@@ -48,7 +48,7 @@ location /api {
 }
 
 location / {
-  root /opt/soapbox;
+  root /opt/mangane;
   try_files $uri index.html;
 }
 ```
@@ -126,7 +126,7 @@ If you use Akkoma or Pleroma packaged application for [Yunohost](https://yunohos
 
 #### Deploy on Mastodon
 
-Mangane is developed and tested only for Pleroma and Akkoma, this mean that there is _no_ explicit support to be installed as a frontend for a Mastodon instance.  If you want to try anyway, procede with caution. See the Soapbox (version 2) outdated documentation on [installing over Mastodon](./docs/administration/mastodon.md).
+Mangane is developed and tested only for Pleroma and Akkoma, this mean that there is _no_ explicit support to be installed as a frontend for a Mastodon instance.  If you want to try anyway, procede with caution.
 
 # Upgrade
 
