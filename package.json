@@ -2,7 +2,7 @@
   "name": "mangane-fe",
   "version": "intergalactic-doggo",
   "displayName": "Mangane",
-  "description": "Devanture pour https://bdx.town",
+  "description": "Alternative Akkoma frontend",
   "homepage": "https://bdx.town",
   "repository": {
     "type": "git",
