@@ -1,10 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { logOut } from 'soapbox/actions/auth';
 import { Text } from 'soapbox/components/ui';
 import emojify from 'soapbox/features/emoji/emoji';
 import { useSoapboxConfig, useOwnAccount, useTheme } from 'soapbox/hooks';
@@ -36,14 +34,6 @@ const LinkFooter: React.FC = (): JSX.Element => {
 
   return (
     <div className='space-y-2'>
-      <div className='flex flex-wrap items-center divide-x-dot text-gray-400'>
-        {account && <>
-          {account.admin && (
-            <FooterLink to='/soapbox/config'><FormattedMessage id='navigation_bar.soapbox_config' defaultMessage='Mangane config' /></FooterLink>
-          )}
-        </>}
-      </div>
-
       <Text theme='muted' size='sm'>
         {soapboxConfig.linkFooterMessage ? (
           <span
@@ -51,8 +41,8 @@ const LinkFooter: React.FC = (): JSX.Element => {
             dangerouslySetInnerHTML={{ __html: emojify(soapboxConfig.linkFooterMessage) }}
           />
         ) : (
-          <div className='mt-4 flex flex-col gap-2'>
-            <img alt='Mangane logo' src={darkMode ? manganeDark : mangane} className='w-[24px] h-[24px] opacity-90' />
+          <div className='mt-4 gap-2'>
+            <img alt='Mangane logo' src={darkMode ? manganeDark : mangane} className='inline-block align-[initial] w-[24px] h-[24px] opacity-90' />
             <FormattedMessage
               id='getting_started.open_source_notice'
               defaultMessage='{code_name} is open source software. You can contribute or report issues at {code_link} ({code_version}).'
@@ -65,6 +55,13 @@ const LinkFooter: React.FC = (): JSX.Element => {
           </div>
         )}
       </Text>
+      <div className='flex flex-wrap items-center divide-x-dot text-gray-400'>
+        {account && <>
+          {account.admin && (
+            <FooterLink to='/soapbox/config'><FormattedMessage id='navigation_bar.soapbox_config' defaultMessage='Mangane config' /></FooterLink>
+          )}
+        </>}
+      </div>
     </div>
   );
 };

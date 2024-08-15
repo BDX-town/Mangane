@@ -9,6 +9,7 @@ import {
   PromoPanel,
   FundingPanel,
   BirthdayPanel,
+  InstancePinPanel,
   AnnouncementsPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
@@ -26,7 +27,7 @@ const HomePage: React.FC = ({ children }) => {
 
   return (
     <>
-      <Layout.Main className='pt-3 sm:pt-0 dark:divide-slate-800 space-y-3'>
+      <Layout.Main className='sm:pt-0 dark:divide-slate-800 space-y-3'>
         {features.feedUserFiltering && <FeedCarousel />}
         {children}
       </Layout.Main>
@@ -53,6 +54,9 @@ const HomePage: React.FC = ({ children }) => {
           </BundleContainer>
         )}
         <BundleContainer fetchComponent={PromoPanel}>
+          {Component => <Component />}
+        </BundleContainer>
+        <BundleContainer fetchComponent={InstancePinPanel}>
           {Component => <Component />}
         </BundleContainer>
         {features.birthdays && (

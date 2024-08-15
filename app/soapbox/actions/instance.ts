@@ -1,10 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import get from 'lodash/get';
 
 import KVStore from 'soapbox/storage/kv_store';
 import { RootState } from 'soapbox/store';
 import { getAuthUserUrl } from 'soapbox/utils/auth';
-import { parseVersion } from 'soapbox/utils/features';
 
 import api from '../api';
 
@@ -30,12 +28,6 @@ export const rememberInstance = createAsyncThunk(
     return await KVStore.getItemOrError(`instance:${host}`);
   },
 );
-
-/** We may need to fetch nodeinfo on Pleroma < 2.1 */
-const needsNodeinfo = (instance: Record<string, any>): boolean => {
-  const v = parseVersion(get(instance, 'version'));
-  return v.software === 'Pleroma' && !get(instance, ['pleroma', 'metadata']);
-};
 
 export const fetchInstance = createAsyncThunk<void, void, { state: RootState }>(
   'instance/fetch',
