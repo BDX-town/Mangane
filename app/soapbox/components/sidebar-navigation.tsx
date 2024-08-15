@@ -27,7 +27,7 @@ const SidebarNavigation = () => {
   const features = getFeatures(instance);
 
   return (
-    <div className='flex flex-col gap-2 h-full overflow-hidden'>
+    <div className='flex flex-col gap-2 h-full'>
       <div className='flex flex-col gap-5 mb-5'>
         {
           account && (
