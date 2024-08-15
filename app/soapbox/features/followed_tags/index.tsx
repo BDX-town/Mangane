@@ -79,13 +79,13 @@ const FollowedHashtags = () => {
           >
             {
               tags?.map((tag) => (
-                <div className='p-2 bg-white dark:bg-slate-800 rounded-lg'>
-                  <div className='flex items-center grow'>
+                <div className='p-3 bg-white dark:bg-slate-800 shadow-sm dark:shadow-inset rounded-lg'>
+                  <div className='flex items-center grow pl-2'>
                     <Text tag='span' weight='semibold'>
                       #{ tag.name }
                     </Text>
                   </div>
-                  <hr className='bg-gray-100 dark:border-slate-800 mt-2 mb-3' />
+                  <hr className='bg-gray-100 dark:border-slate-800 mt-1 mb-2' />
                   <div className='flex items-center gap-1 grow shrink justify-between mt-1 text-sm'>
                     <FollowButton id={tag.name} />
                     <Button theme='primary' to={`/tag/${tag.name}`}>

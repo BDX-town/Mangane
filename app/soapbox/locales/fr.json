@@ -846,6 +846,7 @@
   "preferences.fields.dyslexic_font_label": "Mode dyslexique",
   "preferences.fields.expand_spoilers_label": "Toujours étendre les publications sensibles",
   "preferences.fields.language_label": "Langage",
+  "preferences.fields.post_language": "Langue de rédaction par défaut",
   "preferences.fields.media_display_label": "Media",
   "preferences.fields.missing_description_modal_label": "Show confirmation dialog before sending a post without media descriptions",
   "preferences.fields.privacy_label": "Confidentialité par défaut des publications",

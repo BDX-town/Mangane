@@ -20,6 +20,7 @@ import PollForm from '../components/polls/poll-form';
 import ReplyMentions from '../components/reply_mentions';
 import UploadForm from '../components/upload_form';
 import Warning from '../components/warning';
+import LanguageDropdownContainer from '../containers/language_dropdown_container';
 import MarkdownButtonContainer from '../containers/markdown_button_container';
 import PollButtonContainer from '../containers/poll_button_container';
 import PrivacyDropdownContainer from '../containers/privacy_dropdown_container';
@@ -31,8 +32,6 @@ import SpoilerButtonContainer from '../containers/spoiler_button_container';
 import UploadButtonContainer from '../containers/upload_button_container';
 import WarningContainer from '../containers/warning_container';
 import { countableText } from '../util/counter';
-
-
 
 import TextCharacterCounter from './text_character_counter';
 import VisualCharacterCounter from './visual_character_counter';
@@ -397,6 +396,7 @@ class ComposeForm extends ImmutablePureComponent {
               /> : <SpoilerButtonContainer />
             )}
             {features.richText && <MarkdownButtonContainer />}
+            <LanguageDropdownContainer />
           </div>
 
           <div className='flex items-center mt-2 space-x-4 ml-auto'>
