@@ -773,12 +773,32 @@
         "id": "profile_dropdown.switch_account"
       },
       {
+        "defaultMessage": "Home",
+        "id": "tabs_bar.home"
+      },
+      {
         "defaultMessage": "All",
         "id": "tabs_bar.all"
       },
       {
+        "defaultMessage": "Featured",
+        "id": "tabs_bar.bubble"
+      },
+      {
         "defaultMessage": "Explore",
         "id": "tabs_bar.fediverse"
+      },
+      {
+        "defaultMessage": "Notifications",
+        "id": "tabs_bar.notifications"
+      },
+      {
+        "defaultMessage": "Chats",
+        "id": "tabs_bar.chats"
+      },
+      {
+        "defaultMessage": "Settings",
+        "id": "tabs_bar.settings"
       }
     ],
     "path": "app/soapbox/components/sidebar_menu.json"
@@ -786,8 +806,36 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Follow requests",
-        "id": "navigation_bar.follow_requests"
+        "defaultMessage": "Edit profile",
+        "id": "settings.edit_profile"
+      },
+      {
+        "defaultMessage": "Home",
+        "id": "tabs_bar.home"
+      },
+      {
+        "defaultMessage": "All",
+        "id": "tabs_bar.all"
+      },
+      {
+        "defaultMessage": "Featured",
+        "id": "tabs_bar.bubble"
+      },
+      {
+        "defaultMessage": "Explore",
+        "id": "tabs_bar.fediverse"
+      },
+      {
+        "defaultMessage": "Notifications",
+        "id": "tabs_bar.notifications"
+      },
+      {
+        "defaultMessage": "Chats",
+        "id": "tabs_bar.chats"
+      },
+      {
+        "defaultMessage": "Direct messages",
+        "id": "column.direct"
       },
       {
         "defaultMessage": "Bookmarks",
@@ -798,52 +846,24 @@
         "id": "column.lists"
       },
       {
-        "defaultMessage": "Developers",
-        "id": "navigation.developers"
+        "defaultMessage": "Hashtags",
+        "id": "navigation_bar.tags"
       },
       {
-        "defaultMessage": "Dashboard",
-        "id": "tabs_bar.dashboard"
-      },
-      {
-        "defaultMessage": "All",
-        "id": "tabs_bar.all"
-      },
-      {
-        "defaultMessage": "Explore",
-        "id": "tabs_bar.fediverse"
-      },
-      {
-        "defaultMessage": "Settings",
-        "id": "tabs_bar.settings"
-      },
-      {
-        "defaultMessage": "Direct messages",
-        "id": "column.direct"
+        "defaultMessage": "Follow requests",
+        "id": "navigation_bar.follow_requests"
       },
       {
         "defaultMessage": "Profile directory",
         "id": "navigation_bar.profile_directory"
       },
       {
-        "defaultMessage": "Hashtags",
-        "id": "navigation_bar.tags"
+        "defaultMessage": "Dashboard",
+        "id": "tabs_bar.dashboard"
       },
       {
-        "defaultMessage": "Chats",
-        "id": "tabs_bar.chats"
-      },
-      {
-        "defaultMessage": "Home",
-        "id": "tabs_bar.home"
-      },
-      {
-        "defaultMessage": "Notifications",
-        "id": "tabs_bar.notifications"
-      },
-      {
-        "defaultMessage": "More",
-        "id": "tabs_bar.more"
+        "defaultMessage": "Settings",
+        "id": "tabs_bar.settings"
       }
     ],
     "path": "app/soapbox/components/sidebar-navigation.json"
@@ -1165,24 +1185,28 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Chats",
-        "id": "navigation.chats"
+        "defaultMessage": "All",
+        "id": "tabs_bar.all"
       },
       {
-        "defaultMessage": "Messages",
-        "id": "navigation.direct_messages"
+        "defaultMessage": "Featured",
+        "id": "tabs_bar.bubble"
+      },
+      {
+        "defaultMessage": "Explore",
+        "id": "tabs_bar.fediverse"
       },
       {
         "defaultMessage": "Home",
         "id": "navigation.home"
       },
       {
-        "defaultMessage": "All",
-        "id": "tabs_bar.all"
+        "defaultMessage": "Community",
+        "id": "navigation.community"
       },
       {
-        "defaultMessage": "Explore",
-        "id": "tabs_bar.fediverse"
+        "defaultMessage": "Search",
+        "id": "column.search"
       },
       {
         "defaultMessage": "Alerts",
@@ -2240,6 +2264,39 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Featured",
+        "id": "tabs_bar.bubble"
+      },
+      {
+        "defaultMessage": "What is the Fediverse?",
+        "id": "fediverse_tab.explanation_box.title"
+      },
+      {
+        "defaultMessage": "{site_title} is part of the Fediverse, a social network made up of thousands of independent social media sites (aka \"servers\"). The posts you see here are from 3rd-party servers. You have the freedom to engage with them, or to block any server you don't like. Pay attention to the full username after the second @ symbol to know which server a post is from. To see only {site_title} posts, visit {local}.",
+        "id": "fediverse_tab.explanation_box.explanation"
+      },
+      {
+        "defaultMessage": "the {site_title} tab",
+        "id": "empty_column.home.local_tab"
+      },
+      {
+        "defaultMessage": "This timeline shows you all the statuses published on a selection of other instances curated by your moderators.",
+        "id": "fediverse_tab.explanation_box.bubble"
+      },
+      {
+        "defaultMessage": "Don\\'t show again",
+        "id": "fediverse_tab.explanation_box.dismiss"
+      },
+      {
+        "defaultMessage": "There is nothing here! Write something publicly, or manually follow users from other servers to fill it up",
+        "id": "empty_column.public"
+      }
+    ],
+    "path": "app/soapbox/features/bubble_timeline/index.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Audio notification on",
         "id": "chats.audio_toggle_on"
       },
@@ -2393,6 +2450,55 @@
       }
     ],
     "path": "app/soapbox/features/compose/components/compose_form.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Public",
+        "id": "language.public.short"
+      },
+      {
+        "defaultMessage": "Post to public timelines",
+        "id": "language.public.long"
+      },
+      {
+        "defaultMessage": "Unlisted",
+        "id": "language.unlisted.short"
+      },
+      {
+        "defaultMessage": "Do not post to public timelines",
+        "id": "language.unlisted.long"
+      },
+      {
+        "defaultMessage": "Local-only",
+        "id": "language.local.short"
+      },
+      {
+        "defaultMessage": "Status is only visible to people on this instance",
+        "id": "language.local.long"
+      },
+      {
+        "defaultMessage": "Followers-only",
+        "id": "language.private.short"
+      },
+      {
+        "defaultMessage": "Post to followers only",
+        "id": "language.private.long"
+      },
+      {
+        "defaultMessage": "Direct",
+        "id": "language.direct.short"
+      },
+      {
+        "defaultMessage": "Post to mentioned users only",
+        "id": "language.direct.long"
+      },
+      {
+        "defaultMessage": "Adjust post language",
+        "id": "language.change"
+      }
+    ],
+    "path": "app/soapbox/features/compose/components/language_dropdown.json"
   },
   {
     "descriptors": [
@@ -4690,14 +4796,6 @@
         "id": "preferences.options.content_type_markdown"
       },
       {
-        "defaultMessage": "Curated timeline",
-        "id": "preferences.options.bubble_timeline_label"
-      },
-      {
-        "defaultMessage": "Replace the fediverse timeline with the Akkoma bubble timeline showing public statuses from a list of handpicked instances.",
-        "id": "preferences.options.bubble_timeline_hint"
-      },
-      {
         "defaultMessage": "Show reposts",
         "id": "home.column_settings.show_reblogs"
       },
@@ -4728,6 +4826,10 @@
       {
         "defaultMessage": "Default post format",
         "id": "preferences.fields.content_type_label"
+      },
+      {
+        "defaultMessage": "Default post language",
+        "id": "preferences.fields.post_language"
       },
       {
         "defaultMessage": "Show confirmation dialog before reposting",
@@ -4817,10 +4919,6 @@
         "id": "empty_column.home.local_tab"
       },
       {
-        "defaultMessage": "This timeline shows you all the statuses published on a selection of other instances curated by your moderators.",
-        "id": "fediverse_tab.explanation_box.bubble"
-      },
-      {
         "defaultMessage": "Don\\'t show again",
         "id": "fediverse_tab.explanation_box.dismiss"
       },
@@ -4847,7 +4945,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "You are viewing the timeline of {instance}.",
+        "defaultMessage": "You are viewing the local timeline of {instance}.",
         "id": "remote_timeline.filter_message"
       },
       {
@@ -5973,20 +6071,12 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Mangane config",
-        "id": "navigation_bar.soapbox_config"
-      },
-      {
-        "defaultMessage": "Follow requests",
-        "id": "navigation_bar.follow_requests"
-      },
-      {
-        "defaultMessage": "Logout",
-        "id": "navigation_bar.logout"
-      },
-      {
         "defaultMessage": "{code_name} is open source software. You can contribute or report issues at {code_link} ({code_version}).",
         "id": "getting_started.open_source_notice"
+      },
+      {
+        "defaultMessage": "Mangane config",
+        "id": "navigation_bar.soapbox_config"
       }
     ],
     "path": "app/soapbox/features/ui/components/link_footer.json"
