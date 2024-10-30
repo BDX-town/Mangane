@@ -14,9 +14,10 @@ interface IThumbNavigationLink {
   paths?: Array<string>,
   onClick?: React.MouseEventHandler,
   active?: boolean,
+  className?: string,
 }
 
-const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, src, text, to, exact, paths, onClick, active }): JSX.Element => {
+const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, src, text, to, exact, paths, onClick, active, className }): JSX.Element => {
   const { pathname } = useLocation();
 
   const isActive = (): boolean => {
@@ -30,7 +31,7 @@ const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, src, text,
 
   const internalActive = isActive();
 
-  const Wrapper = React.useMemo(() => ({ children }) => to ? <NavLink to={to} exact={exact} className='thumb-navigation__link'>{ children }</NavLink> : <button className='thumb-navigation__link' onClick={onClick}>{ children }</button>, [to, onClick, exact]);
+  const Wrapper = React.useMemo(() => ({ children }) => to ? <NavLink to={to} exact={exact} className={`${className} thumb-navigation__link`}>{ children }</NavLink> : <button className={`${className} thumb-navigation__link`} onClick={onClick}>{ children }</button>, [to, onClick, exact]);
 
   return (
     <Wrapper>
