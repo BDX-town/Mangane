@@ -141,9 +141,9 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     e.stopPropagation();
   };
 
+
   const handleShareClick = () => {
     navigator.share({
-      text: status.search_index,
       url: status.uri,
     }).catch((e) => {
       if (e.name !== 'AbortError') console.error(e);
