@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { closeModal, openModal } from 'soapbox/actions/modals';
 import { Input } from 'soapbox/components/ui';
 import { isUserTouching } from 'soapbox/is_mobile';
+import { option } from 'yargs';
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
@@ -176,12 +177,12 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({
     onChange(option.value);
   }, [onChange]);
 
-  const handleModalActionClick: React.MouseEventHandler = (e) => {
+  const handleModalActionClick: React.MouseEventHandler = useCallback((e) => {
     e.preventDefault();
-    const option = ALL_OPTIONS[e.currentTarget.getAttribute('data-index') as any];
+    const option = options[e.currentTarget.getAttribute('data-index') as any];
     dispatch(closeModal('ACTIONS'));
     onInternalChange(option);
-  };
+  }, [options, dispatch, onInternalChange]);
 
   const handleKeyDown: React.KeyboardEventHandler = e => {
     switch (e.key) {
