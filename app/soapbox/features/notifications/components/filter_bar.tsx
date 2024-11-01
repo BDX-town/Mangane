@@ -81,7 +81,7 @@ const NotificationFilterBar = () => {
       name: 'pleroma:emoji_reaction',
     });
     items.push({
-      text: <Icon src={require('feather-icons/dist/icons/repeat.svg')} />,
+      text: <Icon src={require('@tabler/icons/repeat.svg')} />,
       title: intl.formatMessage(messages.boosts),
       action: onClick('reblog'),
       name: 'reblog',

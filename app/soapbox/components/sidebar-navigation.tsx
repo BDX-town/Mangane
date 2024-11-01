@@ -27,12 +27,14 @@ const SidebarNavigation = () => {
   const features = getFeatures(instance);
 
   return (
-    <div className='flex flex-col gap-2 h-full overflow-hidden'>
+    <div className='flex flex-col gap-2 h-full'>
       <div className='flex flex-col gap-5 mb-5'>
         {
           account && (
             <div className='flex gap-3 items-center'>
-              <Avatar src={account.avatar} size={36} />
+              <Link to={`/@${account.acct}`}>
+                <Avatar src={account.avatar} size={36} />
+              </Link>
               <div>
                 <ProfileDropdown account={account}>
                   <div className='block capitalize text-lg font-bold leading-none'>
@@ -198,7 +200,6 @@ const SidebarNavigation = () => {
               to='/settings'
               icon={require('@tabler/icons/settings.svg')}
               text={<FormattedMessage id='tabs_bar.settings' defaultMessage='Settings' />}
-              count={dashboardCount}
             />
           )
         }
