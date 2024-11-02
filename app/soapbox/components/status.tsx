@@ -1,5 +1,6 @@
+/* eslint-disable jsx-a11y/interactive-supports-focus */
 import classNames from 'classnames';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { NavLink, useHistory } from 'react-router-dom';
@@ -50,6 +51,7 @@ export interface IStatus {
   withDismiss?: boolean,
 }
 
+
 const Status: React.FC<IStatus> = (props) => {
   const {
     status,
@@ -77,22 +79,22 @@ const Status: React.FC<IStatus> = (props) => {
 
   const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
 
-  const actualStatus = getActualStatus(status);
+  const actualStatus = useMemo(() => getActualStatus(status), [status]) ;
 
   const logo = useLogo();
 
   // Track height changes we know about to compensate scrolling.
   useEffect(() => {
     didShowCard.current = Boolean(!muted && !hidden && status?.card);
-  }, []);
+  }, [muted, hidden, status]);
 
   useEffect(() => {
     setShowMedia(defaultMediaVisibility(status, displayMedia));
-  }, [status.id]);
+  }, [displayMedia, status, status.id]);
 
-  const handleToggleMediaVisibility = (): void => {
+  const handleToggleMediaVisibility = useCallback((): void => {
     setShowMedia(!showMedia);
-  };
+  }, [showMedia]);
 
   const handleClick = (): void => {
     if (onClick) {
@@ -106,7 +108,7 @@ const Status: React.FC<IStatus> = (props) => {
     dispatch(toggleStatusHidden(actualStatus));
   };
 
-  const handleHotkeyOpenMedia = (e?: KeyboardEvent): void => {
+  const handleHotkeyOpenMedia = useCallback((e?: KeyboardEvent): void => {
     const status = actualStatus;
     const firstAttachment = status.media_attachments.first();
 
@@ -119,18 +121,18 @@ const Status: React.FC<IStatus> = (props) => {
         dispatch(openModal('MEDIA', { media: status.media_attachments, index: 0 }));
       }
     }
-  };
+  }, [actualStatus, dispatch]);
 
-  const handleHotkeyReply = (e?: KeyboardEvent): void => {
+  const handleHotkeyReply = useCallback((e?: KeyboardEvent): void => {
     e?.preventDefault();
     dispatch(replyComposeWithConfirmation(actualStatus, intl));
-  };
+  }, [actualStatus, dispatch, intl]);
 
-  const handleHotkeyFavourite = (): void => {
+  const handleHotkeyFavourite = useCallback((): void => {
     toggleFavourite(actualStatus);
-  };
+  }, [actualStatus]);
 
-  const handleHotkeyBoost = (e?: KeyboardEvent): void => {
+  const handleHotkeyBoost = useCallback((e?: KeyboardEvent): void => {
     const modalReblog = () => dispatch(toggleReblog(actualStatus));
     const boostModal = settings.get('boostModal');
     if ((e && e.shiftKey) || !boostModal) {
@@ -138,44 +140,44 @@ const Status: React.FC<IStatus> = (props) => {
     } else {
       dispatch(openModal('BOOST', { status: actualStatus, onReblog: modalReblog }));
     }
-  };
+  }, [actualStatus, dispatch, settings]);
 
-  const handleHotkeyMention = (e?: KeyboardEvent): void => {
+  const handleHotkeyMention = useCallback((e?: KeyboardEvent): void => {
     e?.preventDefault();
     dispatch(mentionCompose(actualStatus.account as AccountEntity));
-  };
+  }, [actualStatus.account, dispatch]);
 
-  const handleHotkeyOpen = (): void => {
+  const handleHotkeyOpen = useCallback((): void => {
     history.push(`/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`);
-  };
+  }, [actualStatus, history]);
 
-  const handleHotkeyOpenProfile = (): void => {
+  const handleHotkeyOpenProfile = useCallback((): void => {
     history.push(`/@${actualStatus.getIn(['account', 'acct'])}`);
-  };
+  }, [actualStatus, history]);
 
-  const handleHotkeyMoveUp = (e?: KeyboardEvent): void => {
+  const handleHotkeyMoveUp = useCallback((e?: KeyboardEvent): void => {
     if (onMoveUp) {
       onMoveUp(status.id, featured);
     }
-  };
+  }, [featured, onMoveUp, status.id]);
 
-  const handleHotkeyMoveDown = (e?: KeyboardEvent): void => {
+  const handleHotkeyMoveDown = useCallback((e?: KeyboardEvent): void => {
     if (onMoveDown) {
       onMoveDown(status.id, featured);
     }
-  };
+  }, [featured, onMoveDown, status.id]);
 
-  const handleHotkeyToggleHidden = (): void => {
+  const handleHotkeyToggleHidden = useCallback((): void => {
     dispatch(toggleStatusHidden(actualStatus));
-  };
+  }, [actualStatus, dispatch]);
 
-  const handleHotkeyToggleSensitive = (): void => {
+  const handleHotkeyToggleSensitive = useCallback((): void => {
     handleToggleMediaVisibility();
-  };
+  }, [handleToggleMediaVisibility]);
 
-  const handleHotkeyReact = (): void => {
+  const handleHotkeyReact = useCallback((): void => {
     _expandEmojiSelector();
-  };
+  }, []);
 
   const _expandEmojiSelector = (): void => {
     const firstEmoji: HTMLDivElement | null | undefined = node.current?.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
@@ -191,34 +193,24 @@ const Status: React.FC<IStatus> = (props) => {
       case 'private': return require('@tabler/icons/lock.svg');
       case 'direct': return require('@tabler/icons/mail.svg');
     }
-  }, [actualStatus?.visibility]);
+  }, [actualStatus?.visibility, logo]);
 
-  if (!status) return null;
 
-  if (hidden) {
-    return (
-      <div ref={node}>
-        {actualStatus.getIn(['account', 'display_name']) || actualStatus.getIn(['account', 'username'])}
-        {actualStatus.content}
-      </div>
-    );
-  }
-
-  let quote;
-
-  if (actualStatus.quote) {
-    if (actualStatus.pleroma.get('quote_visible', true) === false) {
-      quote = (
-        <div className='quoted-status-tombstone'>
-          <p><FormattedMessage id='statuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
-        </div>
-      );
-    } else {
-      quote = <QuotedStatus statusId={actualStatus.quote as string} />;
+  const quote = useMemo(() => {
+    if (actualStatus.quote) {
+      if (actualStatus.pleroma.get('quote_visible', true) === false) {
+        return (
+          <div className='quoted-status-tombstone'>
+            <p><FormattedMessage id='statuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
+          </div>
+        );
+      } else {
+        return <QuotedStatus statusId={actualStatus.quote as string} />;
+      }
     }
-  }
+  }, [actualStatus.pleroma, actualStatus.quote]);
 
-  const handlers = muted ? undefined : {
+  const handlers = useMemo(() => muted ? undefined : {
     reply: handleHotkeyReply,
     favourite: handleHotkeyFavourite,
     boost: handleHotkeyBoost,
@@ -231,11 +223,23 @@ const Status: React.FC<IStatus> = (props) => {
     toggleSensitive: handleHotkeyToggleSensitive,
     openMedia: handleHotkeyOpenMedia,
     react: handleHotkeyReact,
-  };
+  }, [handleHotkeyBoost, handleHotkeyFavourite, handleHotkeyMention, handleHotkeyMoveDown, handleHotkeyMoveUp, handleHotkeyOpen, handleHotkeyOpenMedia, handleHotkeyOpenProfile, handleHotkeyReact, handleHotkeyReply, handleHotkeyToggleHidden, handleHotkeyToggleSensitive, muted]);
 
 
 
   const statusUrl = `/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`;
+
+  if (!status) return null;
+
+  if (hidden) {
+    return (
+      <div ref={node}>
+        {actualStatus.getIn(['account', 'display_name']) || actualStatus.getIn(['account', 'username'])}
+        {actualStatus.content}
+      </div>
+    );
+  }
+
 
   return (
     <HotKeys handlers={handlers} data-testid='status'>

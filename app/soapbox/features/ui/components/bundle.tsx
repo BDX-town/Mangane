@@ -1,21 +1,9 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 
 const emptyComponent = () => null;
 const noop = () => { };
 
-class Bundle extends React.PureComponent {
-
-  static propTypes = {
-    fetchComponent: PropTypes.func.isRequired,
-    loading: PropTypes.func,
-    error: PropTypes.func,
-    children: PropTypes.func.isRequired,
-    renderDelay: PropTypes.number,
-    onFetch: PropTypes.func,
-    onFetchSuccess: PropTypes.func,
-    onFetchFail: PropTypes.func,
-  }
+class Bundle extends React.PureComponent<{ fetchComponent: any, loading: any, error: any, renderDelay: any, children: any  }> {
 
   static defaultProps = {
     loading: emptyComponent,
@@ -27,6 +15,10 @@ class Bundle extends React.PureComponent {
   }
 
   static cache = new Map
+
+  unmounted: boolean = false;
+  timeout;
+  timestamp: Date;
 
   state = {
     mod: undefined,
@@ -44,6 +36,7 @@ class Bundle extends React.PureComponent {
   }
 
   componentWillUnmount() {
+    this.unmounted = true;
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
@@ -52,6 +45,8 @@ class Bundle extends React.PureComponent {
   load = (props) => {
     const { fetchComponent, onFetch, onFetchSuccess, onFetchFail, renderDelay } = props || this.props;
     const cachedMod = Bundle.cache.get(fetchComponent);
+
+    if (this.unmounted) return Promise.resolve();
 
     if (fetchComponent === undefined) {
       this.setState({ mod: null });
@@ -76,10 +71,12 @@ class Bundle extends React.PureComponent {
     return fetchComponent()
       .then((mod) => {
         Bundle.cache.set(fetchComponent, mod);
+        if (this.unmounted) return;
         this.setState({ mod: mod.default });
         onFetchSuccess();
       })
       .catch((error) => {
+        if (this.unmounted) return;
         this.setState({ mod: null });
         onFetchFail(error);
       });
@@ -88,7 +85,7 @@ class Bundle extends React.PureComponent {
   render() {
     const { loading: Loading, error: Error, children, renderDelay } = this.props;
     const { mod, forceRender } = this.state;
-    const elapsed = this.timestamp ? (new Date() - this.timestamp) : renderDelay;
+    const elapsed = this.timestamp ? (new Date().getTime() - this.timestamp.getTime()) : renderDelay;
 
     if (mod === undefined) {
       return (elapsed >= renderDelay || forceRender) ? <Loading /> : null;
