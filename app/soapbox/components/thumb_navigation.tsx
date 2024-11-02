@@ -10,7 +10,6 @@ import { openSidebar } from 'soapbox/actions/sidebar';
 import ThumbNavigationLink from 'soapbox/components/thumb_navigation-link';
 import { Text } from 'soapbox/components/ui';
 import { useAppSelector, useLogo, useOwnAccount } from 'soapbox/hooks';
-import instance from 'soapbox/reducers/instance';
 import { getFeatures } from 'soapbox/utils/features';
 
 import { Avatar } from './ui';
@@ -29,7 +28,7 @@ const PinnedHosts = () => {
 
   useEffect(() => {
     setBottom(calculateBottom(node.current));
-    node.current.scrollBy(0, 100000000);
+    node.current?.scrollBy(0, 100000000);
   }, [pinnedHosts]);
 
   if (pinnedHosts.isEmpty()) return null;
