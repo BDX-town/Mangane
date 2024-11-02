@@ -1,6 +1,6 @@
 {
   "name": "mangane-fe",
-  "version": "intergalactic-doggo",
+  "version": "1.12.1",
   "displayName": "Mangane",
   "description": "Devanture pour https://bdx.town",
   "homepage": "https://bdx.town",
@@ -27,7 +27,7 @@
     "lint": "${npm_execpath} run lint:js && ${npm_execpath} run lint:sass",
     "lint:js": "npx eslint --ext .js,.jsx,.ts,.tsx . --cache",
     "lint:sass": "npx stylelint app/styles/**/*.scss",
-    "prepare": "husky install"
+    "prepare": "npx husky"
   },
   "license": "AGPL-3.0-or-later",
   "browserslist": [
@@ -108,6 +108,7 @@
     "browserslist": "^4.16.6",
     "cheerio": "^1.0.0-rc.10",
     "classnames": "^2.2.5",
+    "commit-and-tag-version": "^12.5.0",
     "copy-webpack-plugin": "^9.0.1",
     "core-js": "^3.15.2",
     "cryptocurrency-icons": "^0.18.0",
@@ -206,6 +207,8 @@
     "wicg-inert": "^3.1.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
     "@jedmao/redux-mock-store": "^3.0.5",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react-hooks": "^8.0.1",
@@ -225,7 +228,7 @@
     "eslint-plugin-react": "^7.25.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "fake-indexeddb": "^3.1.7",
-    "husky": "^7.0.2",
+    "husky": "^9.1.6",
     "jest": "^28.1.2",
     "jest-environment-jsdom": "^28.1.2",
     "jest-junit": "^14.0.0",

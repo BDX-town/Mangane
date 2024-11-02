@@ -1,39 +1,21 @@
 # Changelog
-All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [Unreleased]
+### [1.12.1](https://github.com/BDX-town/Mangane/compare/v2.0.0...v1.12.1) (2024-11-02)
 
-### Added
-- Compatibility: rudimentary support for Takahē.
-- UI: added backdrop blur behind modals.
-- Admin: let admins configure media preview for attachment thumbnails.
-- Login: accept `?server` param in external login, eg `fe.soapbox.pub/login/external?server=gleasonator.com`.
-- Backups: restored Pleroma backups functionality.
-- Export: restored "Export data" to CSV.
 
-### Changed
-- Posts: letterbox images to 19:6 again.
-- Status Info: moved context (repost, pinned) to improve UX.
-- Posts: remove file icon from empty link previews.
-- Settings: moved "Import data" under settings.
+### Bug Fixes
 
-### Fixed
-- Layout: use accent color for "floating action button" (mobile compose button).
-- ServiceWorker: don't serve favicon, robots.txt, and others from ServiceWorker.
-- Datepicker: correctly default to the current year.
-- Scheduled posts: fix page crashing on deleting a scheduled post.
-- Events: don't crash when searching for a location.
-- Search: fixes an abort error when using the navbar search component.
-- Posts: fix monospace font in Markdown code blocks.
-- Modals: fix action buttons overflow
-- Editing: don't insert edited posts to the top of the feed.
-- Modals: close modal when navigating to a different page.
-- Modals: fix "View context" button in media modal.
-- Posts: let unauthenticated users to translate posts if allowed by backend.
-- Chats: fix jumpy scrollbar.
+* '0' Showing above instance name on the home page ([64c37d9](https://github.com/BDX-town/Mangane/commit/64c37d964616007d7678e360d89fc11e1b2b15eb))
+* Change scope button no longer works ([88637f5](https://github.com/BDX-town/Mangane/commit/88637f55fb1485b229a46db6a56fdcedc87c90a3))
+* crash when no pinned hosts on mobile ([2044309](https://github.com/BDX-town/Mangane/commit/2044309fd5fb65f02d9ebd534ab626e54d32022d))
+* markdown dropped from quote replies ([448da63](https://github.com/BDX-town/Mangane/commit/448da6347a115065a798a8d788abedbc3ffc347c))
+* markdown post background not distinguished ([be7bc65](https://github.com/BDX-town/Mangane/commit/be7bc65e4b5dcbfbeefaa23e942b70a6532975c1))
+* Poll duration menu shows as all-white except for the option you're hovering over ([057c86d](https://github.com/BDX-town/Mangane/commit/057c86da755b95b95b314117ae5cb6494a00b063))
+* post content is not truncated or wrapped in reply box ([c7fc5e6](https://github.com/BDX-town/Mangane/commit/c7fc5e65f821044df36b54f0a114098574f8bfbd))
+* Unable to approve follower requests from notifications ([e45623e](https://github.com/BDX-town/Mangane/commit/e45623eef62b7d66f58cb0339e03fe7504c623cf))
+* When I visit a link to a status, the user's avatar is focused ([a3afeb6](https://github.com/BDX-town/Mangane/commit/a3afeb6c54595a47131c82887c4e100c64e1b9ff))
 
 ## [3.0.0] - 2022-12-25
 
