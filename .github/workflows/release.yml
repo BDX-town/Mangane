@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    branches: [ "master" ]
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Bump version
+      run: |
+        git config --global user.name 'BDX.town'
+        git config --global user.email 'BDX-town@users.noreply.github.com'
+        npx commit-and-tag-version
+        git push --follow-tag origin master
+
