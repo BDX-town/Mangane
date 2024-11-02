@@ -21,11 +21,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Bump version
-      run: |
-          npx yarn
-          npx commit-and-tag-version
-
     - id: set_var
       run: |
           content=`cat ./package.json`
@@ -38,6 +33,7 @@ jobs:
 
     - name: Build
       run: |
+        npx yarn
         # Build one time for release
         export NODE_ENV=production
         yarn build
