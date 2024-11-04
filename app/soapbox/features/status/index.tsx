@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { debounce } from 'lodash';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -119,6 +119,56 @@ const getDescendantsIds = createSelector([
   return descendantsIds;
 });
 
+
+const renderTombstone = (id: string, handleMoveUp, handleMoveDown) => {
+  return (
+    <div className='py-4 pb-8'>
+      <Tombstone
+        key={id}
+        id={id}
+        onMoveUp={handleMoveUp}
+        onMoveDown={handleMoveDown}
+      />
+    </div>
+  );
+};
+
+const renderStatus = (id: string, status, handleMoveUp, handleMoveDown) => {
+  return (
+    <ThreadStatus
+      key={id}
+      id={id}
+      focusedStatusId={status!.id}
+      onMoveUp={handleMoveUp}
+      onMoveDown={handleMoveDown}
+    />
+  );
+};
+
+const renderPendingStatus = (id: string) => {
+  const idempotencyKey = id.replace(/^末pending-/, '');
+
+  return (
+    <PendingStatus
+      className='thread__status'
+      key={id}
+      idempotencyKey={idempotencyKey}
+    />
+  );
+};
+
+const renderChildren = (list: ImmutableOrderedSet<string>, status, handleMoveUp, handleMoveDown) => {
+  return list.map(id => {
+    if (id.endsWith('-tombstone')) {
+      return renderTombstone(id, handleMoveUp, handleMoveDown);
+    } else if (id.startsWith('末pending-')) {
+      return renderPendingStatus(id);
+    } else {
+      return renderStatus(id, status, handleMoveUp, handleMoveDown);
+    }
+  });
+};
+
 type DisplayMedia = 'default' | 'hide_all' | 'show_all';
 type RouteParams = { statusId: string };
 
@@ -159,6 +209,9 @@ const Thread: React.FC<IThread> = (props) => {
     };
   });
 
+  console.log(ancestorsIds);
+  console.log(descendantsIds);
+
   const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
   const [isLoaded, setIsLoaded] = useState<boolean>(!!status);
   const [next, setNext] = useState<string>();
@@ -168,12 +221,12 @@ const Thread: React.FC<IThread> = (props) => {
   const scroller = useRef<VirtuosoHandle>(null);
 
   /** Fetch the status (and context) from the API. */
-  const fetchData = async() => {
+  const fetchData = useCallback(async() => {
     const { params } = props;
     const { statusId } = params;
     const { next } = await dispatch(fetchStatusWithContext(statusId));
     setNext(next);
-  };
+  }, [dispatch, props]);
 
   // Load data.
   useEffect(() => {
@@ -182,11 +235,11 @@ const Thread: React.FC<IThread> = (props) => {
     }).catch(error => {
       setIsLoaded(true);
     });
-  }, [props.params.statusId]);
+  }, [fetchData, props.params.statusId]);
 
-  const handleToggleMediaVisibility = () => {
+  const handleToggleMediaVisibility = useCallback(() => {
     setShowMedia(!showMedia);
-  };
+  }, [showMedia]);
 
   const handleHotkeyReact = () => {
     if (statusRef.current) {
@@ -195,15 +248,15 @@ const Thread: React.FC<IThread> = (props) => {
     }
   };
 
-  const handleFavouriteClick = (status: StatusEntity) => {
+  const handleFavouriteClick = useCallback((status: StatusEntity) => {
     if (status.favourited) {
       dispatch(unfavourite(status));
     } else {
       dispatch(favourite(status));
     }
-  };
+  }, [dispatch]);
 
-  const handleReplyClick = (status: StatusEntity) => {
+  const handleReplyClick = useCallback((status: StatusEntity) => {
     if (askReplyConfirmation) {
       dispatch(openModal('CONFIRM', {
         message: intl.formatMessage(messages.replyMessage),
@@ -213,13 +266,13 @@ const Thread: React.FC<IThread> = (props) => {
     } else {
       dispatch(replyCompose(status));
     }
-  };
+  }, [askReplyConfirmation, dispatch, intl]);
 
-  const handleModalReblog = (status: StatusEntity) => {
+  const handleModalReblog = useCallback((status: StatusEntity) => {
     dispatch(reblog(status));
-  };
+  }, [dispatch]);
 
-  const handleReblogClick = (status: StatusEntity, e?: React.MouseEvent) => {
+  const handleReblogClick = useCallback((status: StatusEntity, e?: React.MouseEvent) => {
     dispatch((_, getState) => {
       const boostModal = getSettings(getState()).get('boostModal');
       if (status.reblogged) {
@@ -232,21 +285,21 @@ const Thread: React.FC<IThread> = (props) => {
         }
       }
     });
-  };
+  }, [dispatch, handleModalReblog]);
 
-  const handleMentionClick = (account: AccountEntity) => {
+  const handleMentionClick = useCallback((account: AccountEntity) => {
     dispatch(mentionCompose(account));
-  };
+  }, [dispatch]);
 
-  const handleOpenMedia = (media: ImmutableList<AttachmentEntity>, index: number) => {
+  const handleOpenMedia = useCallback((media: ImmutableList<AttachmentEntity>, index: number) => {
     dispatch(openModal('MEDIA', { media, index }));
-  };
+  }, [dispatch]);
 
-  const handleOpenVideo = (media: ImmutableList<AttachmentEntity>, time: number) => {
+  const handleOpenVideo = useCallback((media: ImmutableList<AttachmentEntity>, time: number) => {
     dispatch(openModal('VIDEO', { media, time }));
-  };
+  }, [dispatch]);
 
-  const handleHotkeyOpenMedia = (e?: KeyboardEvent) => {
+  const handleHotkeyOpenMedia = useCallback((e?: KeyboardEvent) => {
     const { onOpenMedia, onOpenVideo } = props;
     const firstAttachment = status?.media_attachments.get(0);
 
@@ -259,61 +312,18 @@ const Thread: React.FC<IThread> = (props) => {
         onOpenMedia(status.media_attachments, 0);
       }
     }
-  };
+  }, [props, status]);
 
-  const handleToggleHidden = (status: StatusEntity) => {
+  const handleToggleHidden = useCallback((status: StatusEntity) => {
     if (status.hidden) {
       dispatch(revealStatus(status.id));
     } else {
       dispatch(hideStatus(status.id));
     }
-  };
+  }, [dispatch]);
 
-  const handleHotkeyMoveUp = () => {
-    handleMoveUp(status!.id);
-  };
 
-  const handleHotkeyMoveDown = () => {
-    handleMoveDown(status!.id);
-  };
-
-  const handleHotkeyReply = (e?: KeyboardEvent) => {
-    e?.preventDefault();
-    handleReplyClick(status!);
-  };
-
-  const handleHotkeyFavourite = () => {
-    handleFavouriteClick(status!);
-  };
-
-  const handleHotkeyBoost = () => {
-    handleReblogClick(status!);
-  };
-
-  const handleHotkeyMention = (e?: KeyboardEvent) => {
-    e?.preventDefault();
-    const { account } = status!;
-    if (!account || typeof account !== 'object') return;
-    handleMentionClick(account);
-  };
-
-  const handleHotkeyOpenProfile = () => {
-    history.push(`/@${status!.getIn(['account', 'acct'])}`);
-  };
-
-  const handleHotkeyToggleHidden = () => {
-    handleToggleHidden(status!);
-  };
-
-  const handleHotkeyToggleSensitive = () => {
-    handleToggleMediaVisibility();
-  };
-
-  const handleTranslate = React.useCallback((status: StatusEntity, language: string) => {
-    dispatch(translateStatus(status.id, language));
-  }, []);
-
-  const handleMoveUp = (id: string) => {
+  const handleMoveUp = useCallback((id: string) => {
     if (id === status?.id) {
       _selectChild(ancestorsIds.size - 1);
     } else {
@@ -326,9 +336,9 @@ const Thread: React.FC<IThread> = (props) => {
         _selectChild(index - 1);
       }
     }
-  };
+  }, [ancestorsIds, descendantsIds, status?.id]);
 
-  const handleMoveDown = (id: string) => {
+  const handleMoveDown = useCallback((id: string) => {
     if (id === status?.id) {
       _selectChild(ancestorsIds.size + 1);
     } else {
@@ -341,7 +351,52 @@ const Thread: React.FC<IThread> = (props) => {
         _selectChild(index + 1);
       }
     }
-  };
+  }, [ancestorsIds, descendantsIds, status?.id]);
+
+  const handleHotkeyMoveUp = useCallback(() => {
+    handleMoveUp(status!.id);
+  }, [handleMoveUp, status]);
+
+  const handleHotkeyMoveDown = useCallback(() => {
+    handleMoveDown(status!.id);
+  }, [handleMoveDown, status]);
+
+  const handleHotkeyReply = useCallback((e?: KeyboardEvent) => {
+    e?.preventDefault();
+    handleReplyClick(status!);
+  }, [handleReplyClick, status]);
+
+  const handleHotkeyFavourite = useCallback(() => {
+    handleFavouriteClick(status!);
+  }, [handleFavouriteClick, status]);
+
+  const handleHotkeyBoost = useCallback(() => {
+    handleReblogClick(status!);
+  }, [handleReblogClick, status]);
+
+  const handleHotkeyMention = useCallback((e?: KeyboardEvent) => {
+    e?.preventDefault();
+    const { account } = status!;
+    if (!account || typeof account !== 'object') return;
+    handleMentionClick(account);
+  }, [handleMentionClick, status]);
+
+  const handleHotkeyOpenProfile = useCallback(() => {
+    history.push(`/@${status!.getIn(['account', 'acct'])}`);
+  }, [history, status]);
+
+  const handleHotkeyToggleHidden = useCallback(() => {
+    handleToggleHidden(status!);
+  }, [handleToggleHidden, status]);
+
+  const handleHotkeyToggleSensitive = useCallback(() => {
+    handleToggleMediaVisibility();
+  }, [handleToggleMediaVisibility]);
+
+  const handleTranslate = React.useCallback((status: StatusEntity, language: string) => {
+    dispatch(translateStatus(status.id, language));
+  }, [dispatch]);
+
 
   const _selectChild = (index: number) => {
     scroller.current?.scrollIntoView({
@@ -357,59 +412,11 @@ const Thread: React.FC<IThread> = (props) => {
     });
   };
 
-  const renderTombstone = (id: string) => {
-    return (
-      <div className='py-4 pb-8'>
-        <Tombstone
-          key={id}
-          id={id}
-          onMoveUp={handleMoveUp}
-          onMoveDown={handleMoveDown}
-        />
-      </div>
-    );
-  };
-
-  const renderStatus = (id: string) => {
-    return (
-      <ThreadStatus
-        key={id}
-        id={id}
-        focusedStatusId={status!.id}
-        onMoveUp={handleMoveUp}
-        onMoveDown={handleMoveDown}
-      />
-    );
-  };
-
-  const renderPendingStatus = (id: string) => {
-    const idempotencyKey = id.replace(/^末pending-/, '');
-
-    return (
-      <PendingStatus
-        className='thread__status'
-        key={id}
-        idempotencyKey={idempotencyKey}
-      />
-    );
-  };
-
-  const renderChildren = (list: ImmutableOrderedSet<string>) => {
-    return list.map(id => {
-      if (id.endsWith('-tombstone')) {
-        return renderTombstone(id);
-      } else if (id.startsWith('末pending-')) {
-        return renderPendingStatus(id);
-      } else {
-        return renderStatus(id);
-      }
-    });
-  };
 
   // Reset media visibility if status changes.
   useEffect(() => {
     setShowMedia(defaultMediaVisibility(status, displayMedia));
-  }, [status?.id]);
+  }, [displayMedia, status, status?.id]);
 
   // Scroll focused status into view when thread updates.
   useEffect(() => {
@@ -433,28 +440,18 @@ const Thread: React.FC<IThread> = (props) => {
     }
   }, 300, { leading: true }), [next, status]);
 
-  const handleOpenCompareHistoryModal = (status: StatusEntity) => {
+  const handleOpenCompareHistoryModal = useCallback(() => (status: StatusEntity) => {
     dispatch(openModal('COMPARE_HISTORY', {
       statusId: status.id,
     }));
-  };
+  }, [dispatch]);
 
   const hasAncestors = ancestorsIds.size > 0;
   const hasDescendants = descendantsIds.size > 0;
 
-  if (!status && isLoaded) {
-    return (
-      <MissingIndicator />
-    );
-  } else if (!status) {
-    return (
-      <PlaceholderStatus />
-    );
-  }
-
   type HotkeyHandlers = { [key: string]: (keyEvent?: KeyboardEvent) => void };
 
-  const handlers: HotkeyHandlers = {
+  const handlers: HotkeyHandlers = useMemo(() => ({
     moveUp: handleHotkeyMoveUp,
     moveDown: handleHotkeyMoveDown,
     reply: handleHotkeyReply,
@@ -466,13 +463,13 @@ const Thread: React.FC<IThread> = (props) => {
     toggleSensitive: handleHotkeyToggleSensitive,
     openMedia: handleHotkeyOpenMedia,
     react: handleHotkeyReact,
-  };
+  }), [handleHotkeyBoost, handleHotkeyFavourite, handleHotkeyMention, handleHotkeyMoveDown, handleHotkeyMoveUp, handleHotkeyOpenMedia, handleHotkeyOpenProfile, handleHotkeyReply, handleHotkeyToggleHidden, handleHotkeyToggleSensitive]);
 
-  const username = String(status.getIn(['account', 'acct']));
-  const titleMessage = status.visibility === 'direct' ? messages.titleDirect : messages.title;
+  const username = String(status?.getIn(['account', 'acct']));
+  const titleMessage = status?.visibility === 'direct' ? messages.titleDirect : messages.title;
 
-  const focusedStatus = (
-    <div className={classNames('thread__detailed-status', { 'pb-4': hasDescendants })} key={status.id}>
+  const focusedStatus = useMemo(() => status && (
+    <div className={classNames('thread__detailed-status', { 'pb-4': hasDescendants })} key={status?.id}>
       <HotKeys handlers={handlers}>
         <div
           ref={statusRef}
@@ -507,18 +504,29 @@ const Thread: React.FC<IThread> = (props) => {
         <hr className='mt-2 dark:border-slate-600' />
       )}
     </div>
-  );
+  ), [handleOpenCompareHistoryModal, handleOpenMedia, handleOpenVideo, handleToggleHidden, handleToggleMediaVisibility, handleTranslate, handlers, hasDescendants, intl, showMedia, status]);
 
-  const children: JSX.Element[] = [];
+  const children = useMemo(() => {
+    const res = [];
+    if (hasAncestors) {
+      res.push(...renderChildren(ancestorsIds, status, handleMoveUp, handleMoveDown).toArray());
+    }
+    res.push(focusedStatus);
+    if (hasDescendants) {
+      res.push(...renderChildren(descendantsIds, status, handleMoveUp, handleMoveDown).toArray());
+    }
 
-  if (hasAncestors) {
-    children.push(...renderChildren(ancestorsIds).toArray());
-  }
+    return res;
+  }, [hasAncestors, focusedStatus, hasDescendants, ancestorsIds, status, handleMoveUp, handleMoveDown, descendantsIds]);
 
-  children.push(focusedStatus);
-
-  if (hasDescendants) {
-    children.push(...renderChildren(descendantsIds).toArray());
+  if (!status && isLoaded) {
+    return (
+      <MissingIndicator />
+    );
+  } else if (!status) {
+    return (
+      <PlaceholderStatus />
+    );
   }
 
   return (
