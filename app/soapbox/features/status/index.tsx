@@ -209,9 +209,6 @@ const Thread: React.FC<IThread> = (props) => {
     };
   });
 
-  console.log(ancestorsIds);
-  console.log(descendantsIds);
-
   const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
   const [isLoaded, setIsLoaded] = useState<boolean>(!!status);
   const [next, setNext] = useState<string>();
@@ -227,6 +224,7 @@ const Thread: React.FC<IThread> = (props) => {
     const { next } = await dispatch(fetchStatusWithContext(statusId));
     setNext(next);
   }, [dispatch, props]);
+
 
   // Load data.
   useEffect(() => {
@@ -426,7 +424,7 @@ const Thread: React.FC<IThread> = (props) => {
     });
 
     setImmediate(() => statusRef.current?.querySelector<HTMLDivElement>('.detailed-status')?.focus());
-  }, [props.params.statusId, status?.id, ancestorsIds.size, isLoaded]);
+  }, [props.params.statusId, status?.id, ancestorsIds.size]);
 
   const handleRefresh = () => {
     return fetchData();
@@ -512,6 +510,13 @@ const Thread: React.FC<IThread> = (props) => {
       res.push(...renderChildren(ancestorsIds, status, handleMoveUp, handleMoveDown).toArray());
     }
     res.push(focusedStatus);
+    // we show at least a placeholder by reply to show we are loading
+    // something
+    if (!hasDescendants && status?.replies_count > 0) {
+      for (let i = 0; i < status?.replies_count; i++) {
+        res.push(<PlaceholderStatus thread />);
+      }
+    }
     if (hasDescendants) {
       res.push(...renderChildren(descendantsIds, status, handleMoveUp, handleMoveDown).toArray());
     }
