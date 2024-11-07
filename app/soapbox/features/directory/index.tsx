@@ -45,7 +45,7 @@ const Directory = () => {
     } finally {
       setLoading(false);
     }
-  }, [order, local]);
+  }, [dispatch, order, local]);
 
   useEffect(() => {
     load();
@@ -68,7 +68,7 @@ const Directory = () => {
     } finally {
       setLoading(false);
     }
-  }, [order, local]);
+  }, [dispatch, order, local]);
 
   return (
     <Column icon='address-book-o' label={intl.formatMessage(messages.title)}>
