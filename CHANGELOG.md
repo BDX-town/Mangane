@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.13.0 (2024-11-07)
+
+
+### Features
+
+* add placeholder when loading descendants [#345](https://github.com/BDX-town/Mangane/issues/345) ([ff275d6](https://github.com/BDX-town/Mangane/commit/ff275d677121b7b3ea95a381e9ce00dc642712c2))
+
 ## 1.12.16 (2024-11-02)
 
 ## 1.12.15 (2024-11-02)
