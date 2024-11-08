@@ -10,7 +10,7 @@ import Ad from 'soapbox/features/ads/components/ad';
 import FeedSuggestions from 'soapbox/features/feed-suggestions/feed-suggestions';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
-import { useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 import useAds from 'soapbox/queries/ads';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
@@ -62,6 +62,9 @@ const StatusList: React.FC<IStatusList> = ({
   const soapboxConfig = useSoapboxConfig();
   const adsInterval = Number(soapboxConfig.extensions.getIn(['ads', 'interval'], 40)) || 0;
   const node = useRef<VirtuosoHandle>(null);
+
+  const suggestedProfiles = useAppSelector((state) => state.suggestions.items);
+  const areSuggestedProfilesLoaded = useAppSelector((state) => state.suggestions.isLoading);
 
   const getFeaturedStatusCount = () => {
     return featuredStatusIds?.size || 0;
@@ -167,9 +170,10 @@ const StatusList: React.FC<IStatusList> = ({
     ));
   };
 
-  const renderFeedSuggestions = (): React.ReactNode => {
+  const renderFeedSuggestions = useCallback((): React.ReactNode => {
+    if (!areSuggestedProfilesLoaded && suggestedProfiles.size === 0) return null;
     return <FeedSuggestions key='suggestions' />;
-  };
+  }, [areSuggestedProfilesLoaded, suggestedProfiles.size]);
 
   const renderStatuses = (): React.ReactNode[] => {
     if (isLoading || statusIds.size > 0) {
@@ -181,7 +185,8 @@ const StatusList: React.FC<IStatusList> = ({
         if (statusId === null) {
           acc.push(renderLoadGap(index));
         } else if (statusId.startsWith('末suggestions-')) {
-          acc.push(renderFeedSuggestions());
+          const suggestions = renderFeedSuggestions();
+          if (suggestions) acc.push(suggestions);
         } else if (statusId.startsWith('末pending-')) {
           acc.push(renderPendingStatus(statusId));
         } else {
