@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.13.1 (2024-11-09)
+
+
+### Bug Fixes
+
+* remove unecessary spacing bewteen posts [#346](https://github.com/BDX-town/Mangane/issues/346) ([4d85690](https://github.com/BDX-town/Mangane/commit/4d856908b1cd1187107fd8901f97e035709fabe4))
+
 ## 1.13.0 (2024-11-07)
 
 
