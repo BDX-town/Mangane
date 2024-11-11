@@ -53,10 +53,7 @@ const renderPendingStatus = (statusId: string) => {
   );
 };
 
-const RenderFeedSuggestions = (): React.ReactNode => {
-  const suggestedProfiles = useAppSelector((state) => state.suggestions.items);
-  const areSuggestedProfilesLoaded = useAppSelector((state) => state.suggestions.isLoading);
-
+const renderFeedSuggestions = (suggestedProfiles, areSuggestedProfilesLoaded): React.ReactNode => {
   if (!areSuggestedProfilesLoaded && suggestedProfiles.size === 0) return null;
 
   return <FeedSuggestions key='suggestions' />;
@@ -94,14 +91,14 @@ const renderFeaturedStatuses = (featuredStatusIds, handleMoveUp, handleMoveDown,
   ));
 };
 
-const renderStatuses = (isLoading, statusIds, onLoadMore, handleMoveUp, handleMoveDown, timelineId): React.ReactNode[] => {
+const renderStatuses = (isLoading, statusIds, onLoadMore, handleMoveUp, handleMoveDown, timelineId, suggestedProfiles, areSuggestedProfilesLoaded): React.ReactNode[] => {
   if (isLoading || statusIds.size > 0) {
     return statusIds.toList().reduce((acc, statusId, index) => {
 
       if (statusId === null) {
         acc.push(renderLoadGap(index, statusIds, onLoadMore, isLoading));
       } else if (statusId.startsWith('末suggestions-')) {
-        const suggestions = RenderFeedSuggestions();
+        const suggestions = renderFeedSuggestions(suggestedProfiles, areSuggestedProfilesLoaded);
         if (suggestions) acc.push(suggestions);
       } else if (statusId.startsWith('末pending-')) {
         acc.push(renderPendingStatus(statusId));
@@ -124,9 +121,9 @@ const renderStatuses = (isLoading, statusIds, onLoadMore, handleMoveUp, handleMo
 
 
 
-const renderScrollableContent = (featuredStatusIds, isLoading, statusIds, onLoadMore, handleMoveUp, handleMoveDown, timelineId) => {
+const renderScrollableContent = (featuredStatusIds, isLoading, statusIds, onLoadMore, handleMoveUp, handleMoveDown, timelineId, suggestedProfiles, areSuggestedProfilesLoaded) => {
   const featuredStatuses = renderFeaturedStatuses(featuredStatusIds, handleMoveUp, handleMoveDown, timelineId);
-  const statuses = renderStatuses(isLoading, statusIds, onLoadMore, handleMoveUp, handleMoveDown, timelineId);
+  const statuses = renderStatuses(isLoading, statusIds, onLoadMore, handleMoveUp, handleMoveDown, timelineId, suggestedProfiles, areSuggestedProfilesLoaded);
 
   if (featuredStatuses && statuses) {
     return featuredStatuses.concat(statuses);
@@ -150,6 +147,9 @@ const StatusList: React.FC<IStatusList> = ({
   ...other
 }) => {
   const node = useRef<VirtuosoHandle>(null);
+
+  const suggestedProfiles = useAppSelector((state) => state.suggestions.items);
+  const areSuggestedProfilesLoaded = useAppSelector((state) => state.suggestions.isLoading);
 
 
   const getFeaturedStatusCount = useCallback(() => {
@@ -194,7 +194,7 @@ const StatusList: React.FC<IStatusList> = ({
   }, 300, { leading: true }), [onLoadMore, lastStatusId, statusIds.last()]);
 
 
-  const scrollableContent = useMemo(() => renderScrollableContent(featuredStatusIds, isLoading, statusIds, onLoadMore, handleMoveUp, handleMoveDown, timelineId), [featuredStatusIds, handleMoveDown, handleMoveUp, isLoading, onLoadMore, statusIds, timelineId]);
+  const scrollableContent = useMemo(() => renderScrollableContent(featuredStatusIds, isLoading, statusIds, onLoadMore, handleMoveUp, handleMoveDown, timelineId, suggestedProfiles, areSuggestedProfilesLoaded), [areSuggestedProfilesLoaded, featuredStatusIds, handleMoveDown, handleMoveUp, isLoading, onLoadMore, statusIds, suggestedProfiles, timelineId]);
 
   if (isPartial) {
     return (
