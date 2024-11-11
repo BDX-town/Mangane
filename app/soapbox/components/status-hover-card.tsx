@@ -64,19 +64,6 @@ export const StatusHoverCard: React.FC<IStatusHoverCard> = ({ visible = true }) 
 
   if (!statusId) return null;
 
-  const renderStatus = (statusId: string) => {
-    return (
-      // @ts-ignore
-      <StatusContainer
-        key={statusId}
-        id={statusId}
-        hoverable={false}
-        hideActionBar
-        muted
-      />
-    );
-  };
-
   return (
     <div
       className={classNames({
@@ -92,7 +79,13 @@ export const StatusHoverCard: React.FC<IStatusHoverCard> = ({ visible = true }) 
     >
       <Card className='relative'>
         <CardBody>
-          {renderStatus(statusId)}
+          <StatusContainer
+            key={statusId}
+            id={statusId}
+            hoverable={false}
+            hideActionBar
+            muted
+          />
         </CardBody>
       </Card>
     </div>

@@ -9,10 +9,7 @@ import trimStart from 'lodash/trimStart';
 import { toTailwind } from 'soapbox/utils/tailwind';
 import { generateAccent } from 'soapbox/utils/theme';
 
-import { normalizeAd } from './ad';
-
 import type {
-  Ad,
   PromoPanelItem,
   FooterItem,
   CryptoAddress,
@@ -81,7 +78,6 @@ export const CryptoAddressRecord = ImmutableRecord({
 });
 
 export const SoapboxConfigRecord = ImmutableRecord({
-  ads: ImmutableList<Ad>(),
   appleAppId: null,
   authProvider: '',
   customRegProvider: '',
@@ -130,11 +126,6 @@ export const SoapboxConfigRecord = ImmutableRecord({
 }, 'SoapboxConfig');
 
 type SoapboxConfigMap = ImmutableMap<string, any>;
-
-const normalizeAds = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
-  const ads = ImmutableList<Record<string, any>>(soapboxConfig.get('ads'));
-  return soapboxConfig.set('ads', ads.map(normalizeAd));
-};
 
 const normalizeCryptoAddress = (address: unknown): CryptoAddress => {
   return CryptoAddressRecord(ImmutableMap(fromJS(address))).update('ticker', ticker => {
@@ -200,7 +191,6 @@ export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
       normalizeFooterLinks(soapboxConfig);
       maybeAddMissingColors(soapboxConfig);
       normalizeCryptoAddresses(soapboxConfig);
-      normalizeAds(soapboxConfig);
     }),
   );
 };

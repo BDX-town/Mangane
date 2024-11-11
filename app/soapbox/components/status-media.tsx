@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import { openModal } from 'soapbox/actions/modals';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
@@ -24,6 +24,18 @@ interface IStatusMedia {
   onToggleVisibility?: () => void,
 }
 
+const renderLoadingMediaGallery = (): JSX.Element => {
+  return <div className='media_gallery' style={{ height: '285px' }} />;
+};
+
+const renderLoadingVideoPlayer = (): JSX.Element => {
+  return <div className='media-spoiler-video' style={{ height: '285px' }} />;
+};
+
+const renderLoadingAudioPlayer = (): JSX.Element => {
+  return <div className='media-spoiler-audio' style={{ height: '285px' }} />;
+};
+
 /** Render media attachments for a status. */
 const StatusMedia: React.FC<IStatusMedia> = ({
   status,
@@ -35,36 +47,25 @@ const StatusMedia: React.FC<IStatusMedia> = ({
   const dispatch = useAppDispatch();
   const [mediaWrapperWidth, setMediaWrapperWidth] = useState<number | undefined>(undefined);
 
-  const size = status.media_attachments.size;
-  const firstAttachment = status.media_attachments.first();
+  const size = useMemo(() => status.media_attachments.size, [status.media_attachments]);
+  const firstAttachment = useMemo(() => status.media_attachments.first(), [status.media_attachments]);
 
   let media = null;
 
-  const setRef = (c: HTMLDivElement): void => {
+  const setRef = useCallback((c: HTMLDivElement): void => {
     if (c) {
       setMediaWrapperWidth(c.offsetWidth);
     }
-  };
+  }, []);
 
-  const renderLoadingMediaGallery = (): JSX.Element => {
-    return <div className='media_gallery' style={{ height: '285px' }} />;
-  };
 
-  const renderLoadingVideoPlayer = (): JSX.Element => {
-    return <div className='media-spoiler-video' style={{ height: '285px' }} />;
-  };
-
-  const renderLoadingAudioPlayer = (): JSX.Element => {
-    return <div className='media-spoiler-audio' style={{ height: '285px' }} />;
-  };
-
-  const openMedia = (media: ImmutableList<Attachment>, index: number) => {
+  const openMedia = useCallback((media: ImmutableList<Attachment>, index: number) => {
     dispatch(openModal('MEDIA', { media, index }));
-  };
+  }, [dispatch]);
 
-  const openVideo = (media: Attachment, time: number): void => {
+  const openVideo = useCallback((media: Attachment, time: number): void => {
     dispatch(openModal('VIDEO', { media, time }));
-  };
+  }, [dispatch]);
 
   if (size > 0 && firstAttachment) {
     if (muted) {
