@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.13.2 (2024-11-11)
+
+
+### Bug Fixes
+
+* some mentions are not detected by backend ([#349](https://github.com/BDX-town/Mangane/issues/349)) ([7c87c06](https://github.com/BDX-town/Mangane/commit/7c87c063602f841df856ae4ffc2a1bbd4c76a8a7))
+
 ## 1.13.1 (2024-11-09)
 
 
