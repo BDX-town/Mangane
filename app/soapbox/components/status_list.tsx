@@ -9,6 +9,7 @@ import StatusContainer from 'soapbox/containers/status_container';
 import FeedSuggestions from 'soapbox/features/feed-suggestions/feed-suggestions';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
+import { useAppSelector } from 'soapbox/hooks';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
@@ -52,7 +53,12 @@ const renderPendingStatus = (statusId: string) => {
   );
 };
 
-const renderFeedSuggestions = (): React.ReactNode => {
+const RenderFeedSuggestions = (): React.ReactNode => {
+  const suggestedProfiles = useAppSelector((state) => state.suggestions.items);
+  const areSuggestedProfilesLoaded = useAppSelector((state) => state.suggestions.isLoading);
+
+  if (!areSuggestedProfilesLoaded && suggestedProfiles.size === 0) return null;
+
   return <FeedSuggestions key='suggestions' />;
 };
 
@@ -95,7 +101,8 @@ const renderStatuses = (isLoading, statusIds, onLoadMore, handleMoveUp, handleMo
       if (statusId === null) {
         acc.push(renderLoadGap(index, statusIds, onLoadMore, isLoading));
       } else if (statusId.startsWith('末suggestions-')) {
-        acc.push(renderFeedSuggestions());
+        const suggestions = RenderFeedSuggestions();
+        if (suggestions) acc.push(suggestions);
       } else if (statusId.startsWith('末pending-')) {
         acc.push(renderPendingStatus(statusId));
       } else {
@@ -143,6 +150,7 @@ const StatusList: React.FC<IStatusList> = ({
   ...other
 }) => {
   const node = useRef<VirtuosoHandle>(null);
+
 
   const getFeaturedStatusCount = useCallback(() => {
     return featuredStatusIds?.size || 0;
@@ -211,11 +219,8 @@ const StatusList: React.FC<IStatusList> = ({
       placeholderComponent={PlaceholderStatus}
       placeholderCount={20}
       ref={node}
-      className={classNames('divide-y divide-solid divide-gray-200 dark:divide-slate-700', {
+      className={classNames('flex flex-col gap-3 divide-y divide-solid divide-gray-200 dark:divide-slate-700', {
         'divide-none': divideType !== 'border',
-      })}
-      itemClassName={classNames({
-        'pb-3': divideType !== 'border',
       })}
       {...other}
     >

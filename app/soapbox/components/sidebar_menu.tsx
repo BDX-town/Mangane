@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
@@ -102,19 +102,19 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
   const [switcher, setSwitcher] = React.useState(false);
 
-  const onClose = () => dispatch(closeSidebar());
+  const onClose = useCallback(() => dispatch(closeSidebar()), [dispatch]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setSwitcher(false);
     onClose();
-  };
+  }, [onClose]);
 
-  const handleSwitchAccount = (account: AccountEntity): React.MouseEventHandler => {
+  const handleSwitchAccount = useCallback((account: AccountEntity): React.MouseEventHandler => {
     return (e) => {
       e.preventDefault();
       dispatch(switchAccount(account.id));
     };
-  };
+  }, [dispatch]);
 
   const onClickLogOut: React.MouseEventHandler = (e) => {
     e.preventDefault();
@@ -127,17 +127,17 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
     setSwitcher((prevState) => (!prevState));
   };
 
-  const renderAccount = (account: AccountEntity) => (
+  const renderAccount = useCallback((account: AccountEntity) => (
     <a href='#' className='block py-2' onClick={handleSwitchAccount(account)} key={account.id}>
       <div className='pointer-events-none'>
         <Account account={account} showProfileHoverCard={false} withRelationship={false} withLinkToProfile={false} />
       </div>
     </a>
-  );
+  ), [handleSwitchAccount]);
 
   React.useEffect(() => {
     dispatch(fetchOwnAccounts());
-  }, []);
+  }, [dispatch]);
 
   if (!account || !sidebarOpen) return null;
 

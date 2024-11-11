@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import classNames from 'classnames';
 import React from 'react';
 import { FormattedMessage, FormattedNumber, defineMessages } from 'react-intl';
@@ -53,22 +54,22 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
             <FormattedMessage id='account.follows_you' defaultMessage='Follows you' />
           </span>
         </div>}
-      <div className='directory__card__img'>
+      <div className='directory__card__img absolute w-full'>
         <img src={autoPlayGif ? account.header : account.header_static} alt='' className='parallax' />
       </div>
 
-      <div className='px-4 py-3'>
-        <Permalink href={account.url} to={`/@${account.acct}`}>
-          <div className='flex justify-between items-end min-h-[30px]'>
-            <Avatar className='absolute border-solid border-4 border-white dark:border-slate-700' account={account} size={100} />
-            <div className='text-right grow'>
-              <ActionButton account={account} small />
-            </div>
+      <div className='px-4 py-3 mt-[70px]'>
+        <div className='flex justify-between items-end min-h-[30px]'>
+          <Permalink href={account.url} to={`/@${account.acct}`}>
+            <Avatar className='border-solid border-4 border-white dark:border-slate-700' account={account} size={100} />
+          </Permalink>
+          <div className='text-right'>
+            <ActionButton account={account} small />
           </div>
-          <Text className='mt-3 leading-5' size='lg'>
-            <DisplayName account={account} />
-          </Text>
-        </Permalink>
+        </div>
+        <Text className='mt-3 leading-5' size='lg'>
+          <DisplayName account={account} />
+        </Text>
       </div>
 
       <div className='h-24 overflow-hidden px-4 py-3 grow'>

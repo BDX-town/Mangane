@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
 import { useSoapboxConfig } from 'soapbox/hooks';
+import { MentionRecord } from 'soapbox/normalizers';
 import { addGreentext } from 'soapbox/utils/greentext';
 import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich_content';
 
@@ -14,6 +15,7 @@ import Poll from './polls/poll';
 import { Button, Text } from './ui';
 
 import type { Status, Mention } from 'soapbox/types/entities';
+
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 const BIG_EMOJI_LIMIT = 10;
@@ -169,7 +171,24 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
       link.setAttribute('rel', 'nofollow noopener');
       link.setAttribute('target', '_blank');
 
-      const mention = status.mentions.find(mention => link.href === `${mention.url}`);
+      // some clients seem to publish mention without adding them to the mentions array
+      // but by adding a data-user attr, so we try to build something here
+      let undetectedMention = null;
+      if (link.getAttribute('data-user')) {
+        const matchs = link.href.match(/https:\/\/([^/]+)\/@([^/]+)/);
+        if (matchs && matchs.length >= 3) {
+          undetectedMention = MentionRecord({
+            id: link.getAttribute('data-user'),
+            url: link.href,
+            acct: `${matchs[2]}@${matchs[1]}`,
+          });
+        }
+      }
+
+      const mention = (
+        status.mentions.find(mention => link.href === `${mention.url}`)
+        || undetectedMention
+      );
 
       // Add event listeners on mentions and hashtags
       if (mention) {

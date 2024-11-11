@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.13.2 (2024-11-11)
+
+
+### Bug Fixes
+
+* some mentions are not detected by backend ([#349](https://github.com/BDX-town/Mangane/issues/349)) ([7c87c06](https://github.com/BDX-town/Mangane/commit/7c87c063602f841df856ae4ffc2a1bbd4c76a8a7))
+
+## 1.13.1 (2024-11-09)
+
+
+### Bug Fixes
+
+* remove unecessary spacing bewteen posts [#346](https://github.com/BDX-town/Mangane/issues/346) ([4d85690](https://github.com/BDX-town/Mangane/commit/4d856908b1cd1187107fd8901f97e035709fabe4))
+
+## 1.13.0 (2024-11-07)
+
+
+### Features
+
+* add placeholder when loading descendants [#345](https://github.com/BDX-town/Mangane/issues/345) ([ff275d6](https://github.com/BDX-town/Mangane/commit/ff275d677121b7b3ea95a381e9ce00dc642712c2))
+
 ## 1.12.16 (2024-11-02)
 
 ## 1.12.15 (2024-11-02)
