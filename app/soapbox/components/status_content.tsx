@@ -1,10 +1,12 @@
 import classNames from 'classnames';
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import ReactDOM from 'react-dom';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
-import { useSoapboxConfig } from 'soapbox/hooks';
+import { Mention as MentionElement } from 'soapbox/components/mention';
+import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 import { MentionRecord } from 'soapbox/normalizers';
 import { addGreentext } from 'soapbox/utils/greentext';
 import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich_content';
@@ -14,7 +16,8 @@ import { isRtl } from '../rtl';
 import Poll from './polls/poll';
 import { Button, Text } from './ui';
 
-import type { Status, Mention } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/types/entities';
+import { makeGetAccount } from 'soapbox/selectors';
 
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
@@ -122,6 +125,8 @@ interface IStatusContent {
   collapsable?: boolean,
 }
 
+const getGlobalAccount = makeGetAccount();
+
 /** Renders the text content of a status */
 const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onExpandedToggle, onClick, collapsable = false }) => {
   const history = useHistory();
@@ -134,15 +139,9 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
 
   const { greentext } = useSoapboxConfig();
 
-  const onMentionClick = (mention: Mention, e: MouseEvent) => {
-    if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
-      e.preventDefault();
-      e.stopPropagation();
-      history.push(`/@${mention.acct}`);
-    }
-  };
+  const getAccount = useAppSelector((state) => getGlobalAccount.bind(this, state));
 
-  const onHashtagClick = (hashtag: string, e: MouseEvent) => {
+  const onHashtagClick = useCallback((hashtag: string, e: MouseEvent) => {
     hashtag = hashtag.replace(/^#/, '').toLowerCase();
 
     if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
@@ -150,14 +149,14 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
       e.stopPropagation();
       history.push(`/tag/${hashtag}`);
     }
-  };
+  }, [history]);
 
   /** For regular links, just stop propogation */
-  const onLinkClick = (e: MouseEvent) => {
+  const onLinkClick = useCallback((e: MouseEvent) => {
     e.stopPropagation();
-  };
+  }, []);
 
-  const updateStatusLinks = () => {
+  const updateStatusLinks = useCallback(() => {
     if (!node.current) return;
 
     const links = node.current.querySelectorAll('a');
@@ -192,8 +191,11 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
 
       // Add event listeners on mentions and hashtags
       if (mention) {
-        link.addEventListener('click', onMentionClick.bind(link, mention), false);
-        link.setAttribute('title', mention.acct);
+        const wrapper = document.createElement('span');
+        const account = getAccount(mention.id);
+        ReactDOM.render(<MentionElement mention={mention} account={account} />, wrapper);
+        link.parentElement.insertBefore(wrapper, link);
+        link.remove();
       } else if (link.textContent?.charAt(0) === '#' || (link.previousSibling?.textContent?.charAt(link.previousSibling.textContent.length - 1) === '#')) {
         link.addEventListener('click', onHashtagClick.bind(link, link.text), false);
       } else {
@@ -201,9 +203,9 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
         link.addEventListener('click', onLinkClick.bind(link), false);
       }
     });
-  };
+  }, [getAccount, onHashtagClick, onLinkClick, status.mentions]);
 
-  const maybeSetCollapsed = (): void => {
+  const maybeSetCollapsed = useCallback((): void => {
     if (!node.current) return;
 
     if (collapsable && onClick && !collapsed && status.spoiler_text.length === 0) {
@@ -211,16 +213,16 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
         setCollapsed(true);
       }
     }
-  };
+  }, [collapsable, collapsed, onClick, status.spoiler_text.length]);
 
-  const maybeSetOnlyEmoji = (): void => {
+  const maybeSetOnlyEmoji = useCallback((): void => {
     if (!node.current) return;
     const only = isOnlyEmoji(node.current, BIG_EMOJI_LIMIT, true);
 
     if (only !== onlyEmoji) {
       setOnlyEmoji(only);
     }
-  };
+  }, []);
 
   useEffect(() => {
     maybeSetCollapsed();
@@ -228,7 +230,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     updateStatusLinks();
   });
 
-  const handleSpoilerClick: React.EventHandler<React.MouseEvent> = (e) => {
+  const handleSpoilerClick: React.EventHandler<React.MouseEvent> = useCallback((e) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -238,7 +240,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     } else {
       setHidden(!hidden);
     }
-  };
+  }, [hidden, onExpandedToggle]);
 
   const parsedHtml = useMemo((): string => {
     const { contentHtml: html } = status;
@@ -248,7 +250,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     } else {
       return html;
     }
-  }, [status.contentHtml]);
+  }, [greentext, status]);
 
   if (status.content.length === 0) {
     return null;
