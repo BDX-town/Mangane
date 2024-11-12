@@ -125,12 +125,6 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, displayWidth, onOpenMedia
   return (
     <div className='account-gallery__item' style={{ width, height }}>
       <a className='media-gallery__item-thumbnail rounded overflow-hidden' href={status.get('url')} target='_blank' onClick={handleClick} title={title}>
-        <Blurhash
-          hash={attachment.get('blurhash')}
-          className={classNames('media-gallery__preview', {
-            'media-gallery__preview--hidden': visible,
-          })}
-        />
         {visible && thumbnail}
         {!visible && icon}
       </a>

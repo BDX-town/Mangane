@@ -539,13 +539,6 @@ class Video extends React.PureComponent {
         onKeyDown={this.handleKeyDown}
         tabIndex={0}
       >
-        <Blurhash
-          hash={blurhash}
-          className={classNames('media-gallery__preview', {
-            'media-gallery__preview--hidden': revealed,
-          })}
-        />
-
         {revealed && <video
           ref={this.setVideoRef}
           src={src}

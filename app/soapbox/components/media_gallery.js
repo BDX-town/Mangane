@@ -156,7 +156,6 @@ class Item extends React.PureComponent {
       return (
         <div className={classNames('media-gallery__item', { standalone })} key={attachment.get('id')} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
           <a className='media-gallery__item-thumbnail' href={attachment.get('remote_url')} target='_blank' style={{ cursor: 'pointer' }}>
-            <Blurhash hash={attachment.get('blurhash')} className='media-gallery__preview' />
             <span className='media-gallery__item__icons'>{attachmentIcon}</span>
             <span className='media-gallery__filename__label'>{filename}</span>
           </a>
@@ -250,12 +249,6 @@ class Item extends React.PureComponent {
             +{total - ATTACHMENT_LIMIT + 1}
           </div>
         )}
-        <Blurhash
-          hash={attachment.get('blurhash')}
-          className={classNames('media-gallery__preview', {
-            'media-gallery__preview--hidden': visible && this.state.loaded,
-          })}
-        />
         {visible && thumbnail}
       </div>
     );

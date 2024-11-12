@@ -174,13 +174,6 @@ const Card: React.FC<ICard> = ({
 
   let embed: React.ReactNode = '';
 
-  const canvas = (
-    <Blurhash
-      className='absolute w-full h-full inset-0 -z-10'
-      hash={card.blurhash}
-    />
-  );
-
   const thumbnail = (
     <div
       style={{
@@ -204,7 +197,6 @@ const Card: React.FC<ICard> = ({
 
       embed = (
         <div className='status-card__image'>
-          {canvas}
           {thumbnail}
 
           <div className='absolute inset-0 flex items-center justify-center'>
@@ -255,7 +247,6 @@ const Card: React.FC<ICard> = ({
         },
       )}
       >
-        {canvas}
         {thumbnail}
       </div>
     );
