@@ -37,7 +37,7 @@ const SidebarNavigation = () => {
               </Link>
               <div>
                 <ProfileDropdown account={account}>
-                  <div className='block capitalize text-lg font-bold leading-none'>
+                  <div className='block text-lg font-bold leading-none'>
                     { account.username }&nbsp;<IconSwitchVertical className='inline w-[14px] h-[14px] text-gray-700 dark:text-gray-400' />
                   </div>
                 </ProfileDropdown>
