@@ -5,7 +5,6 @@ module.exports = {
     'eslint:recommended',
     'plugin:import/typescript',
     'plugin:compat/recommended',
-    'plugin:react-hooks/recommended',
   ],
 
   env: {
@@ -19,7 +18,7 @@ module.exports = {
     ATTACHMENT_HOST: false,
   },
 
-  parser: '@typescript-eslint/parser',
+  parser: 'babel-eslint',
 
   plugins: [
     'react',
