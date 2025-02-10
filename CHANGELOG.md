@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.13.5 (2025-02-10)
+
+
+### Bug Fixes
+
+* set maxHeight for compose textarea. ([#351](https://github.com/BDX-town/Mangane/issues/351)) ([8870dd0](https://github.com/BDX-town/Mangane/commit/8870dd074f9b11cd380b1f83d030e9f5832b15cd))
+
 ## 1.13.4 (2025-01-13)
 
 ## 1.13.3 (2024-11-11)
