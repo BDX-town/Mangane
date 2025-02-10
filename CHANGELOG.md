@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.13.6 (2025-02-10)
+
+
+### Bug Fixes
+
+* don't capitalize profile names on profile selector ([#352](https://github.com/BDX-town/Mangane/issues/352)) ([7b507bb](https://github.com/BDX-town/Mangane/commit/7b507bbc7d712a1ae5833fc697a48ef6e8b4b485))
+
 ## 1.13.5 (2025-02-10)
 
 
