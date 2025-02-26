@@ -349,7 +349,7 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     followTags: any([
       v.software === MASTODON && gte(v.compatVersion, '4.0.0'),
-      v.software === AKKOMA,
+      (v.software === AKKOMA || v.software === PLEROMA),
     ]),
 
     /**
