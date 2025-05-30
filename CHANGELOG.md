@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.14.0 (2025-05-30)
+
+
+### Features
+
+* pleroma now can follow hashtags too ([#364](https://github.com/BDX-town/Mangane/issues/364)) ([baea276](https://github.com/BDX-town/Mangane/commit/baea276af4b50b387789e4301d772e43426caef4))
+
 ## 1.13.7 (2025-05-30)
 
 ## 1.13.6 (2025-02-10)
