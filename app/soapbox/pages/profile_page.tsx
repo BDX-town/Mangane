@@ -9,7 +9,6 @@ import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
   WhoToFollowPanel,
   ProfileInfoPanel,
-  ProfileMediaPanel,
   ProfileFieldsPanel,
   SignUpPanel,
   PinnedAccountsPanel,
@@ -112,9 +111,6 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
             {Component => <Component key='sign-up-panel' />}
           </BundleContainer>
         )}
-        <BundleContainer fetchComponent={ProfileMediaPanel}>
-          {Component => <Component account={account} />}
-        </BundleContainer>
         {account && !account.fields.isEmpty() && (
           <Widget title={<FormattedMessage id='profile_fields_panel.title' defaultMessage='Profile fields' />}>
             <BundleContainer fetchComponent={ProfileFieldsPanel}>
