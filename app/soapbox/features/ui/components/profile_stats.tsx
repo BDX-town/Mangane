@@ -3,6 +3,7 @@ import { useIntl, defineMessages } from 'react-intl';
 import { NavLink } from 'react-router-dom';
 
 import { HStack, Text } from 'soapbox/components/ui';
+import { useAppSelector } from 'soapbox/hooks';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 import type { Account } from 'soapbox/types/entities';
@@ -20,13 +21,14 @@ interface IProfileStats {
 /** Display follower and following counts for an account. */
 const ProfileStats: React.FC<IProfileStats> = ({ account, onClickHandler }) => {
   const intl = useIntl();
+  const isMe = useAppSelector(state => state.me === account.id);
 
   const FollowersWrapper = React.useMemo(() =>
-    ({ children }) => account.pleroma?.get('hide_followers') ? <>{ children }</> : <NavLink to={`/@${account.acct}/followers`} onClick={onClickHandler} title={account.pleroma?.get('hide_followers_count') ? null : intl.formatNumber(account.followers_count)} className='hover:underline'>{ children }</NavLink>
+    ({ children }) => (!isMe && account.pleroma?.get('hide_followers')) ? <>{ children }</> : <NavLink to={`/@${account.acct}/followers`} onClick={onClickHandler} title={(!isMe && account.pleroma?.get('hide_followers_count')) ? null : intl.formatNumber(account.followers_count)} className='hover:underline'>{ children }</NavLink>
   , [account, onClickHandler, intl]);
 
   const FollowingWrapper = React.useMemo(() =>
-    ({ children }) => account.pleroma?.get('hide_follows') ? <>{ children }</> : <NavLink to={`/@${account.acct}/following`} onClick={onClickHandler} title={account.pleroma?.get('hide_follows_count') ? null : intl.formatNumber(account.following_count)} className='hover:underline'>{ children }</NavLink>
+    ({ children }) => (!isMe && account.pleroma?.get('hide_follows')) ? <>{ children }</> : <NavLink to={`/@${account.acct}/following`} onClick={onClickHandler} title={(!isMe && account.pleroma?.get('hide_follows_count')) ? null : intl.formatNumber(account.following_count)} className='hover:underline'>{ children }</NavLink>
   , [account, onClickHandler, intl]);
 
 
@@ -40,7 +42,7 @@ const ProfileStats: React.FC<IProfileStats> = ({ account, onClickHandler }) => {
         <HStack alignItems='center' space={1}>
           <Text theme='primary' weight='bold' size='sm'>
             {
-              account.pleroma?.get('hide_followers_count') ? '-' : shortNumberFormat(account.followers_count)
+              (account.pleroma?.get('hide_followers_count')) ? '-' : shortNumberFormat(account.followers_count)
             }
           </Text>
           <Text weight='bold' size='sm'>
@@ -53,7 +55,7 @@ const ProfileStats: React.FC<IProfileStats> = ({ account, onClickHandler }) => {
         <HStack alignItems='center' space={1}>
           <Text theme='primary' weight='bold' size='sm'>
             {
-              account.pleroma?.get('hide_follows_count') ? '-' : shortNumberFormat(account.following_count)
+              (account.pleroma?.get('hide_follows_count')) ? '-' : shortNumberFormat(account.following_count)
             }
           </Text>
           <Text weight='bold' size='sm'>
