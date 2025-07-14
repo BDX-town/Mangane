@@ -11,6 +11,15 @@ const getDomainFromURL = (account: Account): string => {
   }
 };
 
+export function getAcctFormURL(maybeEncodedUrl: string) {
+  if (!maybeEncodedUrl) return null;
+  const url = new URL(decodeURIComponent(maybeEncodedUrl));
+  const domain = url.host;
+  const user = url.pathname.split('/').pop().replace(/@/g, '');
+  if (!domain || !user) return null;
+  return `@${user}@${domain}`;
+}
+
 export const getDomain = (account: Account): string => {
   const domain = account.acct.split('@')[1];
   return domain ? domain : getDomainFromURL(account);

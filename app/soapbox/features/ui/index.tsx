@@ -116,6 +116,7 @@ import {
   AuthTokenList,
   ProfileFields,
   FollowedHashtags,
+  AuthorizeInteraction,
 } from './util/async-components';
 import { WrappedRoute } from './util/react_router_helpers';
 
@@ -177,6 +178,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
   // Ex: use /login instead of /auth, but redirect /auth to /login
   return (
     <Switch>
+      <WrappedRoute path='/authorize_interaction' page={EmptyPage} component={AuthorizeInteraction} exact />
       <WrappedRoute path='/email-confirmation' page={EmptyPage} component={EmailConfirmation} publicRoute exact />
       <WrappedRoute path='/logout' page={EmptyPage} component={LogoutPage} publicRoute exact />
 

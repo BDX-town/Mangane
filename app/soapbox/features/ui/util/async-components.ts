@@ -1,3 +1,7 @@
+export function AuthorizeInteraction() {
+  return import('../../authorize_interaction');
+}
+
 export function Notifications() {
   return import(/* webpackChunkName: "features/notifications" */'../../notifications');
 }
