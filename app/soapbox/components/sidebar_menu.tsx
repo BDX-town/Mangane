@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
@@ -97,6 +97,11 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
 
+  const hasBubble = useMemo(() => {
+    const localBubbleInstance = instance.pleroma.getIn(['metadata', 'federation', 'local_bubble_instances']) as undefined | ImmutableList<string>;
+    if (!localBubbleInstance) return false;
+    return localBubbleInstance.size > 0;
+  }, [instance.pleroma]);
 
   const closeButtonRef = React.useRef(null);
 
@@ -240,7 +245,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                 }
 
                 {
-                  features.federating && features.bubbleTimeline && (
+                  features.federating && features.bubbleTimeline && hasBubble && (
                     <SidebarLink
                       onClick={onClose}
                       icon={require('@tabler/icons/hexagon.svg')}

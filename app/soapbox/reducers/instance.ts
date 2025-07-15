@@ -17,7 +17,7 @@ import type { AnyAction } from 'redux';
 const initialState = normalizeInstance(ImmutableMap());
 
 const nodeinfoToInstance = (nodeinfo: ImmutableMap<string, any>) => {
-  const data = nodeinfo.get("data");
+  const data = nodeinfo.get('data');
   // Match Pleroma's develop branch
   return normalizeInstance(ImmutableMap({
     pleroma: ImmutableMap({
@@ -25,7 +25,10 @@ const nodeinfoToInstance = (nodeinfo: ImmutableMap<string, any>) => {
         account_activation_required: data.getIn(['metadata', 'accountActivationRequired']),
         features: data.getIn(['metadata', 'features']),
         staff_accounts: data.getIn(['metadata', 'staffAccounts']),
-        federation: data.getIn(['metadata', 'federation']),
+        federation: ImmutableMap({
+          ...data.getIn(['metadata', 'federation']),
+          local_bubble_instances: data.getIn(['metadata', 'localBubbleInstances']),
+        }),
         fields_limits: ImmutableMap({
           max_fields: data.getIn(['metadata', 'fieldsLimits', 'maxFields']),
         }),
