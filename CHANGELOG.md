@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.15.0 (2025-07-16)
+
+
+### Features
+
+* do not show bubble navigation when no bubble timelines set ([#371](https://github.com/BDX-town/Mangane/issues/371)) ([1ec3f13](https://github.com/BDX-town/Mangane/commit/1ec3f130457b9d88f9f3ea34d512eb0faa764ee3))
+
 ## 1.14.0 (2025-05-30)
 
 
