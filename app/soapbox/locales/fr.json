@@ -454,7 +454,7 @@
   "edit_profile.hints.bot": "Ce compte réalise essentiellement des actions automatiques",
   "edit_profile.hints.discoverable": "Afficher votre profil dans l'annuaire",
   "edit_profile.hints.header": "PNG, GIF or JPG. Sera réduit à {size}",
-  "edit_profile.hints.hide_network": "Les comptes que vous suivez et qui vous suit ne sont pas visibles sur votre profil",
+  "edit_profile.hints.hide_network": "Les comptes que vous suivez et ceux qui vous suivent ne sont pas affichés sur votre profil.",
   "edit_profile.hints.locked": "Vous validez les nouveaux followers",
   "edit_profile.hints.meta_fields": "Vous pouvez afficher jusqu'à {count, plural, one {# champ libre} other {# champs libres}} sur votre profil.",
   "edit_profile.hints.status_expiry": "Supprime les statuts après x jours (laisser vide pour désactiver)",
