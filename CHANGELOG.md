@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.14.1 (2025-07-16)
+
+
+### Bug Fixes
+
+* authorize_interaction not being found when remote following an user ([#366](https://github.com/BDX-town/Mangane/issues/366)) ([e8bf608](https://github.com/BDX-town/Mangane/commit/e8bf60888c11d797954371c5402ae0d186e4a6ba))
+
 ## 1.14.0 (2025-05-30)
 
 
