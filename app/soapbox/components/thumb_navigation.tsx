@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { FormattedMessage } from 'react-intl';
 import { usePopper } from 'react-popper';
@@ -56,6 +56,12 @@ const Communities = () => {
   const instance = useAppSelector((state) => state.instance);
   const logo = useLogo();
 
+  const hasBubble = useMemo(() => {
+    const localBubbleInstance = instance.pleroma.getIn(['metadata', 'federation', 'local_bubble_instances']) as undefined | ImmutableList<string>;
+    if (!localBubbleInstance) return false;
+    return localBubbleInstance.size > 0;
+  }, [instance.pleroma]);
+
 
   return (
     <div className='border-[1px] border-solid border-slate-500 bg-white dark:bg-slate-900 px-3 py-2 rounded-full shadow-md w-max flex gap-2 border-grey-700'>
@@ -80,7 +86,7 @@ const Communities = () => {
       }
 
       {
-        features.federating && features.bubbleTimeline && (
+        features.federating && features.bubbleTimeline && hasBubble && (
           <ThumbNavigationLink
             className='py-0'
             src={require('@tabler/icons/hexagon.svg')}

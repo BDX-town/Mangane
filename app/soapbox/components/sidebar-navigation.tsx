@@ -1,5 +1,6 @@
 import { IconSwitchVertical } from '@tabler/icons';
-import React from 'react';
+import { List as ImmutableList } from 'immutable';
+import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
@@ -13,6 +14,7 @@ import { getFeatures } from 'soapbox/utils/features';
 
 import SidebarNavigationLink from './sidebar-navigation-link';
 
+
 /** Desktop sidebar with links to different views in the app. */
 const SidebarNavigation = () => {
 
@@ -25,6 +27,11 @@ const SidebarNavigation = () => {
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
 
   const features = getFeatures(instance);
+  const hasBubble = useMemo(() => {
+    const localBubbleInstance = instance.pleroma.getIn(['metadata', 'federation', 'local_bubble_instances']) as undefined | ImmutableList<string>;
+    if (!localBubbleInstance) return false;
+    return localBubbleInstance.size > 0;
+  }, [instance.pleroma]);
 
   return (
     <div className='flex flex-col gap-2 h-full'>
@@ -77,7 +84,7 @@ const SidebarNavigation = () => {
         }
 
         {
-          features.federating && features.bubbleTimeline && (
+          features.federating && features.bubbleTimeline && hasBubble && (
             <SidebarNavigationLink
               icon={require('@tabler/icons/hexagon.svg')}
               text={<FormattedMessage id='tabs_bar.bubble' defaultMessage='Featured' />}
