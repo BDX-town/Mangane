@@ -492,13 +492,10 @@ const Thread: React.FC<IThread> = (props) => {
             onTranslate={handleTranslate}
           />
 
-          <hr className='mb-2 dark:border-slate-600' />
+          <hr className='mb-3 dark:border-slate-600' />
 
           <StatusActionBar
             status={status}
-            expandable={false}
-            space='expand'
-            withLabels
           />
         </div>
       </HotKeys>
