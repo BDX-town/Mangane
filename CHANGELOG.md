@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.15.0 (2025-07-16)
+
+
+### Features
+
+* change fediverse icon to use asterism ([#370](https://github.com/BDX-town/Mangane/issues/370)) ([a1d11c4](https://github.com/BDX-town/Mangane/commit/a1d11c40bc9fff77095ee9dc7534d7d55a991009))
+
 ## 1.14.0 (2025-05-30)
 
 
