@@ -135,6 +135,7 @@ const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismi
 
   const handleEditClick = React.useCallback<React.EventHandler<React.MouseEvent>>(() => {
     dispatch(editStatus(status.id));
+    history.push('/statuses/new');
   }, [dispatch, status.id]);
 
   const handlePinClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {

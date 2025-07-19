@@ -1,5 +1,5 @@
 // import throttle from 'lodash/throttle';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 // import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -15,7 +15,7 @@ const messages = defineMessages({
 });
 
 interface ISubNavigation {
-  message?: String,
+  message?: ReactNode,
   settings?: React.ComponentType,
   children?: React.ReactNode,
 }

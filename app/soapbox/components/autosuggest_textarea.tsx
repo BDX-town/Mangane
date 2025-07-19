@@ -246,7 +246,7 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
   render() {
     const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, children, condensed, id } = this.props;
     const { suggestionsHidden } = this.state;
-    const style = { direction: 'ltr', minRows: 10, maxHeight: '80vh' };
+    const style = { direction: 'ltr', minRows: 10 };
 
     if (isRtl(value)) {
       style.direction = 'rtl';

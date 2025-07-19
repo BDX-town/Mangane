@@ -378,7 +378,7 @@ class ComposeForm extends ImmutablePureComponent {
         <QuotedStatusContainer />
 
         <div
-          className={classNames('flex flex-wrap items-center justify-between', {
+          className={classNames('backdrop-blur-xl gap-2 rounded-lg border-[1px] border-solid border-slate-200 dark:border-slate-700 flex flex-wrap items-center justify-between sticky bottom-3 !bg-opacity-90 bg-white dark:bg-slate-800 shadow-lg p-2', {
             'hidden': condensed,
           })}
         >
@@ -399,7 +399,7 @@ class ComposeForm extends ImmutablePureComponent {
             <LanguageDropdownContainer />
           </div>
 
-          <div className='flex items-center mt-2 space-x-4 ml-auto'>
+          <div className='flex items-center grow justify-end space-x-4'>
             {maxTootChars && (
               <div className='flex items-center space-x-1'>
                 <TextCharacterCounter max={maxTootChars} text={text} />

@@ -1,13 +1,14 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals';
 import { Button } from 'soapbox/components/ui';
 
 const ComposeButton = () => {
-  const dispatch = useDispatch();
-  const onOpenCompose = () => dispatch(openModal('COMPOSE'));
+  const history = useHistory();
+  const onOpenCompose = () => {
+    history.push('/statuses/new');
+  };
 
   return (
     <div className='mt-4'>
