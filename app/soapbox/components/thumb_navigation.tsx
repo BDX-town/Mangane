@@ -1,3 +1,4 @@
+import { List as ImmutableList } from 'immutable';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { FormattedMessage } from 'react-intl';
@@ -11,6 +12,7 @@ import ThumbNavigationLink from 'soapbox/components/thumb_navigation-link';
 import { Text } from 'soapbox/components/ui';
 import { useAppSelector, useLogo, useOwnAccount } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
+
 
 import { Avatar } from './ui';
 
@@ -64,7 +66,7 @@ const Communities = () => {
 
 
   return (
-    <div className='border-[1px] border-solid border-slate-500 bg-white dark:bg-slate-900 px-3 py-2 rounded-full shadow-md w-max flex gap-2 border-grey-700'>
+    <div className='rounded-2xl bg-white !bg-opacity-60 border-solid border-[1px] border-slate-100 dark:border-slate-700 dark:bg-slate-800 backdrop-blur-xl w-max flex gap-2 p-2'>
       {
         features.federating ? (
           <ThumbNavigationLink
@@ -177,7 +179,7 @@ const ThumbNavigation: React.FC<{ className?: string }> = ({ className = '', ...
 
   return (
     <>
-      <div className={`thumb-navigation flex items-center ${className}`}>
+      <div className={`thumb-navigation fixed lg:hidden rounded-2xl bottom-2 mx-auto bg-white !bg-opacity-60 border-solid border-[1px] border-slate-100 dark:border-slate-700 dark:bg-slate-800 backdrop-blur-xl left-0 right-0 shadow-2xl w-[95%] flex z-50 flex items-center ${className}`}>
         <ThumbNavigationLink
           src={require('@tabler/icons/home.svg')}
           text={<FormattedMessage id='navigation.home' defaultMessage='Home' />}

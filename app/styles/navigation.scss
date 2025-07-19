@@ -1,5 +1,4 @@
 .thumb-navigation {
-  @apply fixed lg:hidden bottom-0 bg-white dark:bg-slate-800 border-t border-solid border-gray-200 dark:border-gray-700 left-0 right-0 shadow-2xl w-full flex z-50;
   padding-bottom: env(safe-area-inset-bottom); /* iOS PWA */
   overflow-x: auto;
   scrollbar-width: thin;
@@ -7,33 +6,5 @@
 
   &::-webkit-scrollbar {
     display: none;
-  }
-
-  &__link {
-    @apply px-2 py-2.5 space-y-1 flex flex-col flex-1 items-center text-gray-600 text-lg;
-    // padding: 8px 10px;
-    // display: flex;
-    // flex-direction: column;
-    // align-items: center;
-    // justify-content: end;
-    // color: var(--primary-text-color);
-    // text-decoration: none;
-    // font-size: 20px;
-    // width: 55px;
-
-    // span {
-    //   margin-top: 1px;
-    //   text-align: center;
-    //   font-size: 1.2rem;
-    // }
-
-    // .svg-icon {
-    //   width: 24px;
-    //   height: 24px;
-
-    //   svg {
-    //     stroke-width: 1px;
-    //   }
-    // }
   }
 }
