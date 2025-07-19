@@ -125,7 +125,6 @@ const editStatus = (id: string) => (dispatch: AppDispatch, getState: () => RootS
   api(getState).get(`/api/v1/statuses/${id}/source`).then(response => {
     dispatch({ type: STATUS_FETCH_SOURCE_SUCCESS });
     dispatch(setComposeToStatus(status, response.data.text, response.data.spoiler_text, response.data.content_type));
-    dispatch(openModal('COMPOSE'));
   }).catch(error => {
     dispatch({ type: STATUS_FETCH_SOURCE_FAIL, error });
 
