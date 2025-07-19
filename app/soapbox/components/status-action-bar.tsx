@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { List as ImmutableList } from 'immutable';
 import React, { useMemo } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
@@ -79,21 +78,19 @@ const messages = defineMessages({
   blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
 });
 
+
 interface IStatusActionBar {
   status: Status,
   withDismiss?: boolean,
-  withLabels?: boolean,
   expandable?: boolean,
-  space?: 'expand' | 'compact',
 }
 
-const StatusActionBar: React.FC<IStatusActionBar> = ({
-  status,
-  withDismiss = false,
-  withLabels = false,
-  expandable = true,
-  space = 'compact',
-}) => {
+interface IStatusActionBarMenu {
+  status: Status,
+  withDismiss?: boolean,
+}
+
+const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismiss = false }) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
@@ -101,108 +98,12 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const me = useAppSelector(state => state.me);
   const features = useFeatures();
   const settings = useSettings();
-  const soapboxConfig = useSoapboxConfig();
 
   const account = useOwnAccount();
   const isStaff = account ? account.staff : false;
   const isAdmin = account ? account.admin : false;
 
-  const quotePosts = useMemo(() => features.quotePosts && soapboxConfig.quotePosts, [features, soapboxConfig]);
-
-  if (!status) {
-    return null;
-  }
-
-  const onOpenUnauthorizedModal = (action?: string) => {
-    dispatch(openModal('UNAUTHORIZED', {
-      action,
-      ap_id: status.url,
-    }));
-  };
-
-  const handleReplyClick: React.MouseEventHandler = (e) => {
-    if (me) {
-      dispatch((_, getState) => {
-        const state = getState();
-        if (state.compose.text.trim().length !== 0) {
-          dispatch(openModal('CONFIRM', {
-            message: intl.formatMessage(messages.replyMessage),
-            confirm: intl.formatMessage(messages.replyConfirm),
-            onConfirm: () => dispatch(replyCompose(status)),
-          }));
-        } else {
-          dispatch(replyCompose(status));
-        }
-      });
-    } else {
-      onOpenUnauthorizedModal('REPLY');
-    }
-
-    e.stopPropagation();
-  };
-
-
-  const handleShareClick = () => {
-    navigator.share({
-      url: status.uri,
-    }).catch((e) => {
-      if (e.name !== 'AbortError') console.error(e);
-    });
-  };
-
-  const handleFavouriteClick: React.EventHandler<React.MouseEvent> = (e) => {
-    if (me) {
-      dispatch(toggleFavourite(status));
-    } else {
-      onOpenUnauthorizedModal('FAVOURITE');
-    }
-
-    e.stopPropagation();
-  };
-
-  const handleBookmarkClick: React.EventHandler<React.MouseEvent> = (e) => {
-    e.stopPropagation();
-    dispatch(toggleBookmark(status));
-  };
-
-  const handleReblogClick: React.EventHandler<React.MouseEvent> = e => {
-    e.stopPropagation();
-
-    if (me) {
-      const modalReblog = () => dispatch(toggleReblog(status));
-      const boostModal = settings.get('boostModal');
-      if ((e && e.shiftKey) || !boostModal) {
-        modalReblog();
-      } else {
-        dispatch(openModal('BOOST', { status, onReblog: modalReblog }));
-      }
-    } else {
-      onOpenUnauthorizedModal('REBLOG');
-    }
-  };
-
-  const handleQuoteClick: React.EventHandler<React.MouseEvent> = (e) => {
-    e.stopPropagation();
-
-    if (me) {
-      dispatch((_, getState) => {
-        const state = getState();
-        if (state.compose.text.trim().length !== 0) {
-          dispatch(openModal('CONFIRM', {
-            message: intl.formatMessage(messages.replyMessage),
-            confirm: intl.formatMessage(messages.replyConfirm),
-            onConfirm: () => dispatch(quoteCompose(status)),
-          }));
-        } else {
-          dispatch(quoteCompose(status));
-        }
-      });
-    } else {
-      onOpenUnauthorizedModal('REBLOG');
-    }
-  };
-
-  const doDeleteStatus = (withRedraft = false) => {
+  const doDeleteStatus = React.useCallback((withRedraft = false) => {
     dispatch((_, getState) => {
       const deleteModal = settings.get('deleteModal');
       if (!deleteModal) {
@@ -217,49 +118,52 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         }));
       }
     });
-  };
+  }, [dispatch, intl, messages.deleteHeading, messages.redraftHeading, messages.deleteMessage, messages.redraftMessage, messages.deleteConfirm, messages.redraftConfirm, settings, status.id]);
 
-  const handleDeleteClick: React.EventHandler<React.MouseEvent> = (e) => {
+
+
+
+  const handleDeleteClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
     doDeleteStatus();
-  };
+  }, [doDeleteStatus]);
 
-  const handleRedraftClick: React.EventHandler<React.MouseEvent> = (e) => {
+  const handleRedraftClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
     doDeleteStatus(true);
-  };
+  }, [doDeleteStatus]);
 
-  const handleEditClick: React.EventHandler<React.MouseEvent> = () => {
+  const handleEditClick = React.useCallback<React.EventHandler<React.MouseEvent>>(() => {
     dispatch(editStatus(status.id));
-  };
+  }, [dispatch, status.id]);
 
-  const handlePinClick: React.EventHandler<React.MouseEvent> = (e) => {
+  const handlePinClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
     dispatch(togglePin(status));
-  };
+  }, [dispatch, status]);
 
-  const handleMentionClick: React.EventHandler<React.MouseEvent> = (e) => {
+  const handleMentionClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
     dispatch(mentionCompose(status.account as Account));
-  };
+  }, [dispatch, status.account]);
 
-  const handleDirectClick: React.EventHandler<React.MouseEvent> = (e) => {
+  const handleDirectClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
     dispatch(directCompose(status.account as Account));
-  };
+  }, [dispatch, status.account]);
 
-  const handleChatClick: React.EventHandler<React.MouseEvent> = (e) => {
+  const handleChatClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
     const account = status.account as Account;
     dispatch(launchChat(account.id, history));
-  };
+  }, [dispatch, status.account, history]);
 
-  const handleMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
+  const handleMuteClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
     dispatch(initMuteModal(status.account as Account));
-  };
+  }, [dispatch, status.account]);
 
-  const handleBlockClick: React.EventHandler<React.MouseEvent> = (e) => {
+  const handleBlockClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
 
     const account = status.get('account') as Account;
@@ -275,31 +179,31 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         dispatch(initReport(account, status));
       },
     }));
-  };
+  }, [dispatch, intl, messages.blockConfirm, messages.blockAndReport, status]);
 
-  const handleOpen: React.EventHandler<React.MouseEvent> = (e) => {
+  const handleOpen = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
     history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.id}`);
-  };
+  }, [history, status]);
 
-  const handleEmbed = () => {
+  const handleEmbed = React.useCallback(() => {
     dispatch(openModal('EMBED', {
       url: status.get('url'),
       onError: (error: any) => dispatch(showAlertForError(error)),
     }));
-  };
+  }, [dispatch, status]);
 
-  const handleReport: React.EventHandler<React.MouseEvent> = (e) => {
+  const handleReport = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
     dispatch(initReport(status.account as Account, status));
-  };
+  }, [dispatch, status.account, status]);
 
-  const handleConversationMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
+  const handleConversationMuteClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
     dispatch(toggleMuteStatus(status));
-  };
+  }, [dispatch, status]);
 
-  const handleCopy: React.EventHandler<React.MouseEvent> = (e) => {
+  const handleCopy = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     const { url }  = status;
     const textarea = document.createElement('textarea');
 
@@ -318,42 +222,36 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     } finally {
       document.body.removeChild(textarea);
     }
-  };
+  }, [status]);
 
-  const handleDeactivateUser: React.EventHandler<React.MouseEvent> = (e) => {
+  const handleDeactivateUser = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
     dispatch(deactivateUserModal(intl, status.getIn(['account', 'id']) as string));
-  };
+  }, [dispatch, intl, status]);
 
-  const handleDeleteUser: React.EventHandler<React.MouseEvent> = (e) => {
+  const handleDeleteUser = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
     dispatch(deleteUserModal(intl, status.getIn(['account', 'id']) as string));
-  };
+  }, [dispatch, intl, status]);
 
-  const handleDeleteStatus: React.EventHandler<React.MouseEvent> = (e) => {
+  const handleDeleteStatus = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
     dispatch(deleteStatusModal(intl, status.id));
-  };
+  }, [dispatch, intl, status.id]);
 
-  const handleToggleStatusSensitivity: React.EventHandler<React.MouseEvent> = (e) => {
+  const handleToggleStatusSensitivity = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
     dispatch(toggleStatusSensitivityModal(intl, status.id, status.sensitive));
-  };
+  }, [dispatch, intl, status.id, status.sensitive]);
 
-  const _makeMenu = (publicStatus: boolean) => {
+
+  const menu = useMemo(() => {
+    const publicStatus = ['public', 'unlisted', 'local'].includes(status.visibility);
     const mutingConversation = status.muted;
     const ownAccount = status.getIn(['account', 'id']) === me;
     const username = String(status.getIn(['account', 'username']));
 
     const menu: Menu = [];
-
-    if (expandable) {
-      menu.push({
-        text: intl.formatMessage(messages.open),
-        action: handleOpen,
-        icon: require('@tabler/icons/arrows-vertical.svg'),
-      });
-    }
 
     if (publicStatus) {
       menu.push({
@@ -375,12 +273,16 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       return menu;
     }
 
-    if (features.bookmarks) {
-      menu.push({
-        text: intl.formatMessage(status.bookmarked ? messages.unbookmark : messages.bookmark),
-        action: handleBookmarkClick,
-        icon: status.bookmarked ? require('@tabler/icons/bookmark-off.svg') : require('@tabler/icons/bookmark.svg'),
-      });
+
+
+    if (ownAccount) {
+      if (publicStatus) {
+        menu.push({
+          text: intl.formatMessage(status.pinned ? messages.unpin : messages.pin),
+          action: handlePinClick,
+          icon: mutingConversation ? require('@tabler/icons/pinned-off.svg') : require('@tabler/icons/pin.svg'),
+        });
+      }
     }
 
     menu.push(null);
@@ -395,28 +297,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     }
 
     if (ownAccount) {
-      if (publicStatus) {
-        menu.push({
-          text: intl.formatMessage(status.pinned ? messages.unpin : messages.pin),
-          action: handlePinClick,
-          icon: mutingConversation ? require('@tabler/icons/pinned-off.svg') : require('@tabler/icons/pin.svg'),
-        });
-      } else {
-        if (status.visibility === 'private') {
-          menu.push({
-            text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog_private),
-            action: handleReblogClick,
-            icon: require('@tabler/icons/repeat.svg'),
-          });
-        }
-      }
-
-      menu.push({
-        text: intl.formatMessage(messages.delete),
-        action: handleDeleteClick,
-        icon: require('@tabler/icons/trash.svg'),
-        destructive: true,
-      });
       if (features.editStatuses) {
         menu.push({
           text: intl.formatMessage(messages.edit),
@@ -431,6 +311,13 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           destructive: true,
         });
       }
+
+      menu.push({
+        text: intl.formatMessage(messages.delete),
+        action: handleDeleteClick,
+        icon: require('@tabler/icons/trash.svg'),
+        destructive: true,
+      });
     } else {
       menu.push({
         text: intl.formatMessage(messages.mention, { name: username }),
@@ -516,24 +403,166 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     }
 
     return menu;
-  };
+  }, [
+    status,
+    me,
+    features,
+    withDismiss,
+    intl,
+    isStaff,
+    isAdmin,
+    handleOpen,
+    handleCopy,
+    handleEmbed,
+    handleConversationMuteClick,
+    handlePinClick,
+    handleDeleteClick,
+    handleEditClick,
+    handleRedraftClick,
+    handleMentionClick,
+    handleChatClick,
+    handleDirectClick,
+    handleMuteClick,
+    handleBlockClick,
+    handleReport,
+    handleToggleStatusSensitivity,
+    handleDeactivateUser,
+    handleDeleteUser,
+    handleDeleteStatus,
+  ]);
 
-  const publicStatus = ['public', 'unlisted', 'local'].includes(status.visibility);
 
-  const replyCount = status.replies_count;
-  const reblogCount = status.reblogs_count;
-  const favouriteCount = status.favourites_count;
+  return (
+    <DropdownMenuContainer items={menu} status={status}>
+      <StatusActionButton
+        title={intl.formatMessage(messages.more)}
+        icon={require('@tabler/icons/dots.svg')}
+      />
+    </DropdownMenuContainer>
+  );
+};
 
-  const emojiReactCount = reduceEmoji(
-    (status.pleroma.get('emoji_reactions') || ImmutableList()) as ImmutableList<any>,
-    favouriteCount,
-    status.favourited,
-    null,
-  ).reduce((acc, cur) => acc + cur.get('count'), 0);
+const StatusActionBar: React.FC<IStatusActionBar> = ({
+  status,
+  withDismiss = false,
+}) => {
+  const intl = useIntl();
+  const dispatch = useAppDispatch();
 
-  const meEmojiReact = getReactForStatus(status, null);
+  const me = useAppSelector(state => state.me);
+  const features = useFeatures();
+  const settings = useSettings();
+  const soapboxConfig = useSoapboxConfig();
 
-  const reactMessages = {
+  const quotePosts = useMemo(() => features.quotePosts && soapboxConfig.quotePosts, [features, soapboxConfig]);
+  const onOpenUnauthorizedModal = React.useCallback((action?: string) => {
+    dispatch(openModal('UNAUTHORIZED', {
+      action,
+      ap_id: status.url,
+    }));
+  }, [dispatch, status.url]);
+
+  const handleBookmarkClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
+    e.stopPropagation();
+    dispatch(toggleBookmark(status));
+  }, [dispatch, status]);
+
+
+
+  const handleReplyClick = React.useCallback<React.MouseEventHandler>((e) => {
+    if (me) {
+      dispatch((_, getState) => {
+        const state = getState();
+        if (state.compose.text.trim().length !== 0) {
+          dispatch(openModal('CONFIRM', {
+            message: intl.formatMessage(messages.replyMessage),
+            confirm: intl.formatMessage(messages.replyConfirm),
+            onConfirm: () => dispatch(replyCompose(status)),
+          }));
+        } else {
+          dispatch(replyCompose(status));
+        }
+      });
+    } else {
+      onOpenUnauthorizedModal('REPLY');
+    }
+
+    e.stopPropagation();
+  }, [me, dispatch, intl, messages.replyMessage, messages.replyConfirm, status, onOpenUnauthorizedModal]);
+
+  const handleShareClick = React.useCallback(() => {
+    navigator.share({
+      url: status.uri,
+    }).catch((e) => {
+      if (e.name !== 'AbortError') console.error(e);
+    });
+  }, [status.uri]);
+
+  const handleFavouriteClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
+    if (me) {
+      dispatch(toggleFavourite(status));
+    } else {
+      onOpenUnauthorizedModal('FAVOURITE');
+    }
+
+    e.stopPropagation();
+  }, [me, dispatch, status, onOpenUnauthorizedModal]);
+
+  const handleReblogClick = React.useCallback<React.EventHandler<React.MouseEvent>>(e => {
+    e.stopPropagation();
+
+    if (me) {
+      const modalReblog = () => dispatch(toggleReblog(status));
+      const boostModal = settings.get('boostModal');
+      if ((e && e.shiftKey) || !boostModal) {
+        modalReblog();
+      } else {
+        dispatch(openModal('BOOST', { status, onReblog: modalReblog }));
+      }
+    } else {
+      onOpenUnauthorizedModal('REBLOG');
+    }
+  }, [me, dispatch, status, settings, onOpenUnauthorizedModal]);
+
+  const handleQuoteClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
+    e.stopPropagation();
+
+    if (me) {
+      dispatch((_, getState) => {
+        const state = getState();
+        if (state.compose.text.trim().length !== 0) {
+          dispatch(openModal('CONFIRM', {
+            message: intl.formatMessage(messages.replyMessage),
+            confirm: intl.formatMessage(messages.replyConfirm),
+            onConfirm: () => dispatch(quoteCompose(status)),
+          }));
+        } else {
+          dispatch(quoteCompose(status));
+        }
+      });
+    } else {
+      onOpenUnauthorizedModal('REBLOG');
+    }
+  }, [me, dispatch, intl, messages.replyMessage, messages.replyConfirm, status, onOpenUnauthorizedModal]);
+
+  const publicStatus = useMemo(() => ['public', 'unlisted', 'local'].includes(status.visibility), [status.visibility]);
+
+  const replyCount = useMemo(() => status.replies_count, [status.replies_count]);
+  const reblogCount = useMemo(() => status.reblogs_count, [status.reblogs_count]);
+  const favouriteCount = useMemo(() => status.favourites_count, [status.favourites_count]);
+
+  const emojiReactCount = useMemo(() =>
+    reduceEmoji(
+      (status.pleroma.get('emoji_reactions') || ImmutableList()) as ImmutableList<any>,
+      favouriteCount,
+      status.favourited,
+      null,
+    ).reduce((acc, cur) => acc + cur.get('count'), 0)
+  , [status.pleroma, favouriteCount, status.favourited]);
+
+  const meEmojiReact = useMemo(() => getReactForStatus(status, null), [status]);
+
+  const reactMessages = useMemo(() => ({
     '👍': messages.reactionLike,
     '❤️': messages.reactionHeart,
     '😆': messages.reactionLaughing,
@@ -541,52 +570,59 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     '😢': messages.reactionCry,
     '😩': messages.reactionWeary,
     '': messages.favourite,
-  };
+  }), []);
 
-  const meEmojiTitle = intl.formatMessage(reactMessages[meEmojiReact?.get('name') || ''] || messages.favourite);
+  const meEmojiTitle = useMemo(
+    () => intl.formatMessage(reactMessages[meEmojiReact?.get('name') || ''] || messages.favourite),
+    [intl, reactMessages, meEmojiReact, messages.favourite],
+  );
 
-  const menu = _makeMenu(publicStatus);
-  let reblogIcon = require('@tabler/icons/repeat.svg');
-  let replyTitle;
+  const reblogIcon = useMemo(() => {
+    if (status.visibility === 'direct') {
+      return require('@tabler/icons/mail.svg');
+    } else if (status.visibility === 'private') {
+      return require('@tabler/icons/lock.svg');
+    }
+    return require('@tabler/icons/repeat.svg');
+  }, [status.visibility]);
 
-  if (status.visibility === 'direct') {
-    reblogIcon = require('@tabler/icons/mail.svg');
-  } else if (status.visibility === 'private') {
-    reblogIcon = require('@tabler/icons/lock.svg');
+  const reblogMenu = useMemo(() => [
+    {
+      text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog),
+      action: handleReblogClick,
+      icon: require('@tabler/icons/repeat.svg'),
+    },
+    {
+      text: intl.formatMessage(messages.quotePost),
+      action: handleQuoteClick,
+      icon: require('@tabler/icons/quote.svg'),
+      disabled: status.visibility !== 'public' && status.visibility !== 'unlisted',
+    },
+  ], [intl, status.reblogged, messages.cancel_reblog_private, messages.reblog, messages.quotePost, handleReblogClick, handleQuoteClick, status.visibility]);
+
+  const replyTitle = useMemo(() => {
+    if (!status.in_reply_to_id) {
+      return intl.formatMessage(messages.reply);
+    } else {
+      return intl.formatMessage(messages.replyAll);
+    }
+  }, [status.in_reply_to_id, intl, messages.reply, messages.replyAll]);
+
+  const canShare = useMemo(() => ('share' in navigator) && status.visibility === 'public', [status.visibility]);
+
+  if (!status) {
+    return null;
   }
-
-  const reblogMenu = [{
-    text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog),
-    action: handleReblogClick,
-    icon: require('@tabler/icons/repeat.svg'),
-  }, {
-    text: intl.formatMessage(messages.quotePost),
-    action: handleQuoteClick,
-    icon: require('@tabler/icons/quote.svg'),
-    disabled: status.visibility !== 'public' && status.visibility !== 'unlisted',
-  }];
-
-  if (!status.in_reply_to_id) {
-    replyTitle = intl.formatMessage(messages.reply);
-  } else {
-    replyTitle = intl.formatMessage(messages.replyAll);
-  }
-
-  const canShare = ('share' in navigator) && status.visibility === 'public';
 
   return (
     <div
-      className={classNames('flex flex-row', {
-        'justify-between': space === 'expand',
-        'space-x-2': space === 'compact',
-      })}
+      className='flex flex-row justify-between gap-3'
     >
       <StatusActionButton
         title={replyTitle}
         icon={require('@tabler/icons/message-circle-2.svg')}
         onClick={handleReplyClick}
         count={replyCount}
-        text={withLabels ? intl.formatMessage(messages.reply) : undefined}
       />
 
       {(quotePosts && me) ? (
@@ -602,7 +638,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
             title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
             active={status.reblogged}
             count={reblogCount}
-            text={withLabels ? intl.formatMessage(messages.reblog) : undefined}
           />
         </DropdownMenuContainer>
       ) : (
@@ -614,7 +649,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           active={status.reblogged}
           onClick={handleReblogClick}
           count={reblogCount}
-          text={withLabels ? intl.formatMessage(messages.reblog) : undefined}
         />
       )}
 
@@ -628,7 +662,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
             active={Boolean(meEmojiReact)}
             count={emojiReactCount}
             emoji={meEmojiReact}
-            text={withLabels ? meEmojiTitle : undefined}
           />
         </EmojiButtonWrapper>
       ) : (
@@ -640,9 +673,21 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           onClick={handleFavouriteClick}
           active={Boolean(meEmojiReact)}
           count={favouriteCount}
-          text={withLabels ? meEmojiTitle : undefined}
         />
       )}
+
+      {
+        features.bookmarks && (
+          <StatusActionButton
+            color='yellow'
+            active={status.bookmarked}
+            title={intl.formatMessage(status.bookmarked ? messages.unbookmark : messages.bookmark)}
+            icon={require('@tabler/icons/bookmark.svg')}
+            onClick={handleBookmarkClick}
+            // text={withLabels && (intl.formatMessage(status.bookmarked ? messages.unbookmark : messages.bookmark))}
+          />
+        )
+      }
 
       {canShare && (
         <StatusActionButton
@@ -651,13 +696,9 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           onClick={handleShareClick}
         />
       )}
-
-      <DropdownMenuContainer items={menu} status={status}>
-        <StatusActionButton
-          title={intl.formatMessage(messages.more)}
-          icon={require('@tabler/icons/dots.svg')}
-        />
-      </DropdownMenuContainer>
+      <div className='shrink w-[55%] text-right'>
+        <StatusActionBarMenu status={status} withDismiss={withDismiss} />
+      </div>
     </div>
   );
 };

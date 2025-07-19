@@ -8,6 +8,7 @@ import { shortNumberFormat } from 'soapbox/utils/numbers';
 const COLORS = {
   accent: 'accent',
   success: 'success',
+  yellow: 'yellow',
 };
 
 type Color = keyof typeof COLORS;
@@ -92,6 +93,7 @@ const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButt
           'text-black dark:text-white': active && emoji,
           'text-accent-300 hover:text-accent-300 dark:hover:text-accent-300': active && !emoji && color === COLORS.accent,
           'text-success-600 hover:text-success-600 dark:hover:text-success-600': active && !emoji && color === COLORS.success,
+          'text-yellow-600 hover:text-yellow-600 dark:hover:text-yellow-600': active && !emoji && color === COLORS.yellow,
           'space-x-0.5': !text,
           'space-x-2': text,
         },
