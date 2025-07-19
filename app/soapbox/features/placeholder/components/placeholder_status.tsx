@@ -14,8 +14,13 @@ const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ thread = false }) => 
   <div
     className={classNames({
       'status-placeholder bg-white dark:bg-slate-800': true,
-      'shadow-xl dark:shadow-inset sm:rounded-xl px-4 py-6 sm:p-5': !thread,
+      'shadow-xl dark:shadow-inset sm:rounded-xl px-4 py-6 sm:p-5 from-primary-500/10 dark:from-primary-200/10 to-white dark:via-slate-800 dark:to-slate-800': !thread,
     })}
+    style={
+      {
+        background: 'linear-gradient(to bottom, var(--tw-gradient-from) 0px, var(--tw-gradient-to) 50px, var(--tw-gradient-to) 100%)',
+      }
+    }
   >
     <div className='w-full animate-pulse overflow-hidden'>
       <div>
