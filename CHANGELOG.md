@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.16.0 (2025-07-19)
+
+
+### Features
+
+* better looking status on phone ([#380](https://github.com/BDX-town/Mangane/issues/380)) ([c5f8bcf](https://github.com/BDX-town/Mangane/commit/c5f8bcf81fbad950590addb6d8c8442eb86a743a))
+
 ## 1.15.0 (2025-07-16)
 
 
