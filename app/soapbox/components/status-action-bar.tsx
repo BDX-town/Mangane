@@ -608,7 +608,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     }
   }, [status.in_reply_to_id, intl, messages.reply, messages.replyAll]);
 
-  const canShare = useMemo(() => ('share' in navigator) && status.visibility === 'public', [status.visibility]);
+  const canShare = useMemo(() => ('share' in navigator) && publicStatus, [publicStatus]);
 
   if (!status) {
     return null;
