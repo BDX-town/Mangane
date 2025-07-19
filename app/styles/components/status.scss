@@ -181,7 +181,7 @@
 }
 
 .status__wrapper {
-  @apply bg-white dark:bg-slate-800 px-4 py-6 shadow-xl dark:shadow-inset sm:p-5 sm:rounded-xl;
+  @apply bg-white dark:bg-slate-800 px-4 py-6 sm:shadow-sm dark:shadow-inset sm:p-5 sm:rounded-xl;
 }
 
 [column-type=filled] .status__wrapper,

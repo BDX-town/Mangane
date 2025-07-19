@@ -49,6 +49,7 @@ export interface IStatus {
   hideActionBar?: boolean,
   hoverable?: boolean,
   withDismiss?: boolean,
+  thread?:boolean
 }
 
 
@@ -67,6 +68,7 @@ const Status: React.FC<IStatus> = (props) => {
     group,
     hideActionBar,
     withDismiss,
+    thread = false,
   } = props;
   const intl = useIntl();
   const history = useHistory();
@@ -244,7 +246,7 @@ const Status: React.FC<IStatus> = (props) => {
   return (
     <HotKeys handlers={handlers} data-testid='status'>
       <div
-        className={classNames('status cursor-pointer', { focusable })}
+        className={classNames('status cursor-pointer ', { focusable })}
         tabIndex={focusable && !muted ? 0 : undefined}
         data-featured={featured ? 'true' : null}
         aria-label={textForScreenReader(intl, actualStatus, intl.formatMessage(
@@ -269,11 +271,17 @@ const Status: React.FC<IStatus> = (props) => {
 
         <div
           className={classNames('status__wrapper', `status-${actualStatus.visibility}`, {
+            'from-primary-500/10 dark:from-primary-200/10 to-white dark:via-slate-800 dark:to-slate-800': !thread,
             'status-reply': !!status.in_reply_to_id,
             muted,
             read: unread === false,
           })}
           data-id={status.id}
+          style={
+            {
+              background: 'linear-gradient(to bottom, var(--tw-gradient-from) 0px, var(--tw-gradient-to) 50px, var(--tw-gradient-to) 100%)',
+            }
+          }
         >
 
           <div className={classNames('flex items-center', { 'mb-3': status.reblog && typeof status.reblog === 'object' })}>
