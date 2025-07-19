@@ -13,7 +13,7 @@ import {
   rejectFollowRequest,
 } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
-import { Button, HStack, Text } from 'soapbox/components/ui';
+import { Button, HStack, Spinner, Text } from 'soapbox/components/ui';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
@@ -206,15 +206,15 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
       // Awaiting acceptance
       return (
         <div className='flex flex-col gap-1'>
-          <Text size='xs' theme='muted'>
-            { intl.formatMessage(messages.awaiting_approval) }
-          </Text>
           <Button
             size='sm'
+            classNames='flex gap-1'
             theme='secondary'
-            text={intl.formatMessage(messages.requested)}
             onClick={handleFollow}
-          />
+          >
+            <Spinner  withText={false} size={16} />
+            {intl.formatMessage(messages.awaiting_approval)}
+          </Button>
         </div>
       );
     } else if (!account.relationship?.blocking && !account.relationship?.muting) {
