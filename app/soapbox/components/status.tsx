@@ -49,7 +49,7 @@ export interface IStatus {
   hideActionBar?: boolean,
   hoverable?: boolean,
   withDismiss?: boolean,
-  thread?:boolean
+  timeline?:boolean
 }
 
 
@@ -68,7 +68,7 @@ const Status: React.FC<IStatus> = (props) => {
     group,
     hideActionBar,
     withDismiss,
-    thread = false,
+    timeline = false,
   } = props;
   const intl = useIntl();
   const history = useHistory();
@@ -271,7 +271,7 @@ const Status: React.FC<IStatus> = (props) => {
 
         <div
           className={classNames('status__wrapper', `status-${actualStatus.visibility}`, {
-            'from-primary-500/10 dark:from-primary-200/10 to-white dark:via-slate-800 dark:to-slate-800': !thread,
+            'from-primary-500/10 dark:from-primary-200/10 to-white dark:via-slate-800 dark:to-slate-800': timeline,
             'status-reply': !!status.in_reply_to_id,
             muted,
             read: unread === false,

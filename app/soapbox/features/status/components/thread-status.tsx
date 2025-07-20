@@ -43,9 +43,9 @@ const ThreadStatus: React.FC<IThreadStatus> = (props): JSX.Element => {
       {renderConnector()}
       {isLoaded ? (
         // @ts-ignore FIXME
-        <StatusContainer {...props} thread />
+        <StatusContainer {...props} />
       ) : (
-        <PlaceholderStatus thread />
+        <PlaceholderStatus />
       )}
     </div>
   );
