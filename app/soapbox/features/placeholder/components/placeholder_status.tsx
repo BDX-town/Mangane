@@ -6,15 +6,15 @@ import PlaceholderDisplayName from './placeholder_display_name';
 import PlaceholderStatusContent from './placeholder_status_content';
 
 interface IPlaceholderStatus {
-  thread?: boolean
+  timeline?: boolean
 }
 
 /** Fake status to display while data is loading. */
-const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ thread = false }) => (
+const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ timeline = false }) => (
   <div
     className={classNames({
       'status-placeholder bg-white dark:bg-slate-800': true,
-      'shadow-xl dark:shadow-inset sm:rounded-xl px-4 py-6 sm:p-5 from-primary-500/10 dark:from-primary-200/10 to-white dark:via-slate-800 dark:to-slate-800': !thread,
+      'shadow-xl dark:shadow-inset sm:rounded-xl px-4 py-6 sm:p-5 from-primary-500/10 dark:from-primary-200/10 to-white dark:via-slate-800 dark:to-slate-800': timeline,
     })}
     style={
       {

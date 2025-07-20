@@ -82,6 +82,7 @@ const renderFeaturedStatuses = (featuredStatusIds, handleMoveUp, handleMoveDown,
   return featuredStatusIds.toArray().map(statusId => (
     <StatusContainer
       key={`f-${statusId}`}
+      timeline={!!timelineId}
       id={statusId}
       featured
       onMoveUp={handleMoveUp}
@@ -104,6 +105,7 @@ const renderStatuses = (isLoading, statusIds, onLoadMore, handleMoveUp, handleMo
         acc.push(renderPendingStatus(statusId));
       } else {
         acc.push(<StatusContainer
+          timeline={!!timelineId}
           key={statusId}
           id={statusId}
           onMoveUp={handleMoveUp}
@@ -133,6 +135,10 @@ const renderScrollableContent = (featuredStatusIds, isLoading, statusIds, onLoad
 };
 
 
+const makePlaceholder = ({ timelineId }: {timelineId: string}) => (props) => {
+  return <PlaceholderStatus {...props} timeline={!!timelineId} />;
+};
+
 
 /** Feed of statuses, built atop ScrollableList. */
 const StatusList: React.FC<IStatusList> = ({
@@ -146,6 +152,7 @@ const StatusList: React.FC<IStatusList> = ({
   isPartial,
   ...other
 }) => {
+  const Placeholder = useMemo(() => makePlaceholder({ timelineId }), [timelineId]);
   const node = useRef<VirtuosoHandle>(null);
 
   const suggestedProfiles = useAppSelector((state) => state.suggestions.items);
@@ -216,7 +223,7 @@ const StatusList: React.FC<IStatusList> = ({
       isLoading={isLoading}
       showLoading={isLoading && statusIds.size === 0}
       onLoadMore={handleLoadOlder}
-      placeholderComponent={PlaceholderStatus}
+      placeholderComponent={Placeholder}
       placeholderCount={20}
       ref={node}
       className={classNames('flex flex-col sm:gap-3 divide-y divide-solid divide-gray-200 dark:divide-slate-700', {
