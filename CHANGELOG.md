@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.16.1 (2025-07-20)
+
+
+### Bug Fixes
+
+* various ui fixes after last release ([#383](https://github.com/BDX-town/Mangane/issues/383)) ([f6b35ed](https://github.com/BDX-town/Mangane/commit/f6b35edf8b831c56eba8c00bf8548cd9527028e3))
+
 ## 1.16.0 (2025-07-19)
 
 
