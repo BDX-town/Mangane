@@ -1,7 +1,7 @@
 'use strict';
 
 import debounce from 'lodash/debounce';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -604,14 +604,14 @@ const UI: React.FC = ({ children }) => {
     history.push('/follow_requests');
   };
 
-  const handleOpenComposeModal = () => {
-    dispatch(openModal('COMPOSE'));
-  };
+  const handleGoToCompose = useCallback(() => {
+    history.push('/statuses/new');
+  }, [history]);
 
-  const shouldHideFAB = (): boolean => {
-    const path = location.pathname;
+  const shouldHideFAB = useMemo(() => {
+    const path = window.location.pathname;
     return Boolean(path.match(/^\/posts\/|^\/search|^\/getting-started|^\/chats/));
-  };
+  }, [window.location.pathname]);
 
   // Wait for login to succeed or fail
   if (me === null) return null;
@@ -634,19 +634,6 @@ const UI: React.FC = ({ children }) => {
     goToRequests: handleHotkeyGoToRequests,
   };
 
-  const fabElem = (
-    <button
-      key='floating-action-button'
-      onClick={handleOpenComposeModal}
-      className='floating-action-button'
-      aria-label={intl.formatMessage(messages.publish)}
-    >
-      <Icon src={require('@tabler/icons/pencil-plus.svg')} />
-    </button>
-  );
-
-  const floatingActionButton = shouldHideFAB() ? null : fabElem;
-
   const style: React.CSSProperties = {
     pointerEvents: dropdownMenuIsOpen ? 'none' : undefined,
   };
@@ -667,7 +654,16 @@ const UI: React.FC = ({ children }) => {
             </SwitchingColumnsArea>
           </Layout>
 
-          {me && floatingActionButton}
+          {me && !shouldHideFAB && (
+            <button
+              key='floating-action-button'
+              onClick={handleGoToCompose}
+              className='floating-action-button'
+              aria-label={intl.formatMessage(messages.publish)}
+            >
+              <Icon src={require('@tabler/icons/pencil-plus.svg')} />
+            </button>
+          )}
 
           <BundleContainer fetchComponent={UploadArea}>
             {Component => <Component active={draggingOver} onClose={closeUploadModal} />}
