@@ -1,7 +1,7 @@
 'use strict';
 
 import debounce from 'lodash/debounce';
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -351,40 +351,7 @@ const UI: React.FC = ({ children }) => {
   const streamingUrl = useAppSelector(state => state.instance.urls.get('streaming_api'));
   const standalone = useAppSelector(isStandalone);
 
-  const shouldHideFAB = useMemo(() => {
-    const path = window.location.pathname;
-    return Boolean(path.match(/^\/posts\/|^\/search|^\/getting-started|^\/chats/));
-  }, [window.location.pathname]);
-
-  const handlers = useMemo(() => {
-    if (!me) return undefined;
-    return {
-      help: handleHotkeyToggleHelp,
-      new: handleHotkeyNew,
-      search: handleHotkeySearch,
-      forceNew: handleHotkeyForceNew,
-      back: handleHotkeyBack,
-      goToHome: handleHotkeyGoToHome,
-      goToNotifications: handleHotkeyGoToNotifications,
-      goToFavourites: handleHotkeyGoToFavourites,
-      goToPinned: handleHotkeyGoToPinned,
-      goToProfile: handleHotkeyGoToProfile,
-      goToBlocked: handleHotkeyGoToBlocked,
-      goToMuted: handleHotkeyGoToMuted,
-      goToRequests: handleHotkeyGoToRequests,
-    };
-    // eslint-disable-next-line
-  }, [me, account]);
-
-  const style: React.CSSProperties = useMemo(() => ({
-    pointerEvents: dropdownMenuIsOpen ? 'none' : undefined,
-  }), [dropdownMenuIsOpen]);
-
-  const dataTransferIsText = useCallback((dataTransfer: DataTransfer | null) => {
-    return (dataTransfer && Array.from(dataTransfer.types).includes('text/plain') && dataTransfer.items.length === 1);
-  }, []);
-
-  const handleDragEnter = useCallback((e: DragEvent) => {
+  const handleDragEnter = (e: DragEvent) => {
     e.preventDefault();
 
     if (e.target && !dragTargets.current.includes(e.target)) {
@@ -394,9 +361,9 @@ const UI: React.FC = ({ children }) => {
     if (e.dataTransfer && Array.from(e.dataTransfer.types).includes('Files')) {
       setDraggingOver(true);
     }
-  }, []);
+  };
 
-  const handleDragOver = useCallback((e: DragEvent) => {
+  const handleDragOver = (e: DragEvent) => {
     if (dataTransferIsText(e.dataTransfer)) return false;
     e.preventDefault();
     e.stopPropagation();
@@ -410,9 +377,9 @@ const UI: React.FC = ({ children }) => {
     }
 
     return false;
-  }, [dataTransferIsText]);
+  };
 
-  const handleDrop = useCallback((e: DragEvent) => {
+  const handleDrop = (e: DragEvent) => {
     if (!me) return;
 
     if (dataTransferIsText(e.dataTransfer)) return;
@@ -424,9 +391,9 @@ const UI: React.FC = ({ children }) => {
     if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
       dispatch(uploadCompose(e.dataTransfer.files, intl));
     }
-  }, [me, dispatch, intl, dataTransferIsText]);
+  };
 
-  const handleDragLeave = useCallback((e: DragEvent) => {
+  const handleDragLeave = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -437,41 +404,45 @@ const UI: React.FC = ({ children }) => {
     }
 
     setDraggingOver(false);
-  }, []);
+  };
 
-  const closeUploadModal = useCallback(() => {
+  const dataTransferIsText = (dataTransfer: DataTransfer | null) => {
+    return (dataTransfer && Array.from(dataTransfer.types).includes('text/plain') && dataTransfer.items.length === 1);
+  };
+
+  const closeUploadModal = () => {
     setDraggingOver(false);
-  }, []);
+  };
 
-  const handleServiceWorkerPostMessage = useCallback(({ data }: MessageEvent) => {
+  const handleServiceWorkerPostMessage = ({ data }: MessageEvent) => {
     if (data.type === 'navigate') {
       history.push(data.path);
     } else {
       console.warn('Unknown message type:', data.type);
     }
-  }, [history]);
+  };
 
-  const connectStreaming = useCallback(() => {
+  const connectStreaming = () => {
     if (!disconnect.current && accessToken && streamingUrl) {
       disconnect.current = dispatch(connectUserStream());
     }
-  }, [accessToken, streamingUrl, dispatch]);
+  };
 
-  const disconnectStreaming = useCallback(() => {
+  const disconnectStreaming = () => {
     if (disconnect.current) {
       disconnect.current();
       disconnect.current = null;
     }
-  }, []);
+  };
 
   const handleResize = useCallback(debounce(() => {
     setMobile(isMobile(window.innerWidth));
   }, 500, {
     trailing: true,
-  }), []);
+  }), [setMobile]);
 
   /** Load initial data when a user is logged in */
-  const loadAccountData = useCallback(() => {
+  const loadAccountData = () => {
     if (!account) return;
 
     dispatch(expandHomeTimeline({}, () => {
@@ -507,99 +478,8 @@ const UI: React.FC = ({ children }) => {
     }
 
     setTimeout(() => dispatch(fetchScheduledStatuses()), 1100);
-  }, [account, dispatch, features.chats]);
+  };
 
-  // Hotkey handlers
-  const handleHotkeyNew = useCallback((e?: KeyboardEvent) => {
-    e?.preventDefault();
-    if (!node.current) return;
-
-    const element = node.current.querySelector('textarea#compose-textarea') as HTMLTextAreaElement;
-
-    if (element) {
-      element.focus();
-    }
-  }, []);
-
-  const handleHotkeySearch = useCallback((e?: KeyboardEvent) => {
-    e?.preventDefault();
-    if (!node.current) return;
-
-    const element = node.current.querySelector('input#search') as HTMLInputElement;
-
-    if (element) {
-      element.focus();
-    }
-  }, []);
-
-  const handleHotkeyForceNew = useCallback((e?: KeyboardEvent) => {
-    handleHotkeyNew(e);
-    dispatch(resetCompose());
-  }, [dispatch, handleHotkeyNew]);
-
-  const handleHotkeyBack = useCallback(() => {
-    if (window.history && window.history.length === 1) {
-      history.push('/');
-    } else {
-      history.goBack();
-    }
-  }, [history]);
-
-  const setHotkeysRef: React.LegacyRef<HotKeys> = useCallback((c: any) => {
-    hotkeys.current = c;
-
-    if (!me || !hotkeys.current) return;
-
-    // @ts-ignore
-    hotkeys.current.__mousetrap__.stopCallback = (_e, element) => {
-      return ['TEXTAREA', 'SELECT', 'INPUT'].includes(element.tagName);
-    };
-  }, [me]);
-
-  const handleHotkeyToggleHelp = useCallback(() => {
-    dispatch(openModal('HOTKEYS'));
-  }, [dispatch]);
-
-  const handleHotkeyGoToHome = useCallback(() => {
-    history.push('/');
-  }, [history]);
-
-  const handleHotkeyGoToNotifications = useCallback(() => {
-    history.push('/notifications');
-  }, [history]);
-
-  const handleHotkeyGoToFavourites = useCallback(() => {
-    if (!account) return;
-    history.push(`/@${account.username}/favorites`);
-  }, [account, history]);
-
-  const handleHotkeyGoToPinned = useCallback(() => {
-    if (!account) return;
-    history.push(`/@${account.username}/pins`);
-  }, [account, history]);
-
-  const handleHotkeyGoToProfile = useCallback(() => {
-    if (!account) return;
-    history.push(`/@${account.username}`);
-  }, [account, history]);
-
-  const handleHotkeyGoToBlocked = useCallback(() => {
-    history.push('/blocks');
-  }, [history]);
-
-  const handleHotkeyGoToMuted = useCallback(() => {
-    history.push('/mutes');
-  }, [history]);
-
-  const handleHotkeyGoToRequests = useCallback(() => {
-    history.push('/follow_requests');
-  }, [history]);
-
-  const handleGoToCompose = useCallback(() => {
-    history.push('/statuses/new');
-  }, [history]);
-
-  // Effects
   useEffect(() => {
     window.addEventListener('resize', handleResize, { passive: true });
     document.addEventListener('dragenter', handleDragEnter, false);
@@ -623,27 +503,156 @@ const UI: React.FC = ({ children }) => {
       document.removeEventListener('dragleave', handleDragLeave);
       disconnectStreaming();
     };
-  }, [handleResize, handleDragEnter, handleDragOver, handleDrop, handleDragLeave, handleServiceWorkerPostMessage, disconnectStreaming]);
+  }, []);
 
   useEffect(() => {
     connectStreaming();
-  }, [accessToken, streamingUrl, connectStreaming]);
+  }, [accessToken, streamingUrl]);
 
   // The user has logged in
   useEffect(() => {
     loadAccountData();
     dispatch(fetchCustomEmojis());
-  }, [!!account, loadAccountData, dispatch]);
+  }, [!!account]);
 
   useEffect(() => {
     dispatch(registerPushNotifications());
-  }, [vapidKey, dispatch]);
+  }, [vapidKey]);
+
+  const handleHotkeyNew = (e?: KeyboardEvent) => {
+    e?.preventDefault();
+    if (!node.current) return;
+
+    const element = node.current.querySelector('textarea#compose-textarea') as HTMLTextAreaElement;
+
+    if (element) {
+      element.focus();
+    }
+  };
+
+  const handleHotkeySearch = (e?: KeyboardEvent) => {
+    e?.preventDefault();
+    if (!node.current) return;
+
+    const element = node.current.querySelector('input#search') as HTMLInputElement;
+
+    if (element) {
+      element.focus();
+    }
+  };
+
+  const handleHotkeyForceNew = (e?: KeyboardEvent) => {
+    handleHotkeyNew(e);
+    dispatch(resetCompose());
+  };
+
+  const handleHotkeyBack = () => {
+    if (window.history && window.history.length === 1) {
+      history.push('/');
+    } else {
+      history.goBack();
+    }
+  };
+
+  const setHotkeysRef: React.LegacyRef<HotKeys> = (c: any) => {
+    hotkeys.current = c;
+
+    if (!me || !hotkeys.current) return;
+
+    // @ts-ignore
+    hotkeys.current.__mousetrap__.stopCallback = (_e, element) => {
+      return ['TEXTAREA', 'SELECT', 'INPUT'].includes(element.tagName);
+    };
+  };
+
+  const handleHotkeyToggleHelp = () => {
+    dispatch(openModal('HOTKEYS'));
+  };
+
+  const handleHotkeyGoToHome = () => {
+    history.push('/');
+  };
+
+  const handleHotkeyGoToNotifications = () => {
+    history.push('/notifications');
+  };
+
+  const handleHotkeyGoToFavourites = () => {
+    if (!account) return;
+    history.push(`/@${account.username}/favorites`);
+  };
+
+  const handleHotkeyGoToPinned = () => {
+    if (!account) return;
+    history.push(`/@${account.username}/pins`);
+  };
+
+  const handleHotkeyGoToProfile = () => {
+    if (!account) return;
+    history.push(`/@${account.username}`);
+  };
+
+  const handleHotkeyGoToBlocked = () => {
+    history.push('/blocks');
+  };
+
+  const handleHotkeyGoToMuted = () => {
+    history.push('/mutes');
+  };
+
+  const handleHotkeyGoToRequests = () => {
+    history.push('/follow_requests');
+  };
+
+  const handleOpenComposeModal = () => {
+    dispatch(openModal('COMPOSE'));
+  };
+
+  const shouldHideFAB = (): boolean => {
+    const path = location.pathname;
+    return Boolean(path.match(/^\/posts\/|^\/search|^\/getting-started|^\/chats/));
+  };
 
   // Wait for login to succeed or fail
   if (me === null) return null;
 
+  type HotkeyHandlers = { [key: string]: (keyEvent?: KeyboardEvent) => void };
+
+  const handlers: HotkeyHandlers = {
+    help: handleHotkeyToggleHelp,
+    new: handleHotkeyNew,
+    search: handleHotkeySearch,
+    forceNew: handleHotkeyForceNew,
+    back: handleHotkeyBack,
+    goToHome: handleHotkeyGoToHome,
+    goToNotifications: handleHotkeyGoToNotifications,
+    goToFavourites: handleHotkeyGoToFavourites,
+    goToPinned: handleHotkeyGoToPinned,
+    goToProfile: handleHotkeyGoToProfile,
+    goToBlocked: handleHotkeyGoToBlocked,
+    goToMuted: handleHotkeyGoToMuted,
+    goToRequests: handleHotkeyGoToRequests,
+  };
+
+  const fabElem = (
+    <button
+      key='floating-action-button'
+      onClick={handleOpenComposeModal}
+      className='floating-action-button'
+      aria-label={intl.formatMessage(messages.publish)}
+    >
+      <Icon src={require('@tabler/icons/pencil-plus.svg')} />
+    </button>
+  );
+
+  const floatingActionButton = shouldHideFAB() ? null : fabElem;
+
+  const style: React.CSSProperties = {
+    pointerEvents: dropdownMenuIsOpen ? 'none' : undefined,
+  };
+
   return (
-    <HotKeys keyMap={keyMap} handlers={handlers} ref={setHotkeysRef} attach={window} focused>
+    <HotKeys keyMap={keyMap} handlers={me ? handlers : undefined} ref={setHotkeysRef} attach={window} focused>
       <div ref={node} style={style}>
         <BackgroundShapes />
 
@@ -658,16 +667,7 @@ const UI: React.FC = ({ children }) => {
             </SwitchingColumnsArea>
           </Layout>
 
-          {me && !shouldHideFAB && (
-            <button
-              key='floating-action-button'
-              onClick={handleGoToCompose}
-              className='floating-action-button'
-              aria-label={intl.formatMessage(messages.publish)}
-            >
-              <Icon src={require('@tabler/icons/pencil-plus.svg')} />
-            </button>
-          )}
+          {me && floatingActionButton}
 
           <BundleContainer fetchComponent={UploadArea}>
             {Component => <Component active={draggingOver} onClose={closeUploadModal} />}
