@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.16.3 (2025-07-21)
+
+
+### Bug Fixes
+
+* compose fab button should redirect to compose page ([8c88dee](https://github.com/BDX-town/Mangane/commit/8c88dee7a349066f69e7e8ef71b44fc03c615a8c))
+
 ## 1.16.2 (2025-07-20)
 
 ## 1.16.1 (2025-07-20)
