@@ -11,7 +11,7 @@ import { fetchFollowRequests } from 'soapbox/actions/accounts';
 import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin';
 import { fetchAnnouncements } from 'soapbox/actions/announcements';
 import { fetchChats } from 'soapbox/actions/chats';
-import { uploadCompose, resetCompose } from 'soapbox/actions/compose';
+import { uploadCompose, resetCompose, compose } from 'soapbox/actions/compose';
 import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
 import { fetchFilters } from 'soapbox/actions/filters';
 import { fetchMarker } from 'soapbox/actions/markers';
@@ -281,7 +281,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact page={StatusPage} component={Status} content={children} />
       <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
 
-      <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />
+      <WrappedRoute path='/statuses/compose' page={DefaultPage} component={NewStatus} content={children} exact />
       <WrappedRoute path='/statuses/:statusId' exact page={StatusPage} component={Status} content={children} />
       {features.scheduledStatuses && <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />}
 
@@ -605,8 +605,8 @@ const UI: React.FC = ({ children }) => {
   };
 
   const handleGoToCompose = useCallback(() => {
-    history.push('/statuses/new');
-  }, [history]);
+    dispatch(compose(history, intl));
+  }, [history, intl]);
 
   const shouldHideFAB = useMemo(() => {
     const path = window.location.pathname;
