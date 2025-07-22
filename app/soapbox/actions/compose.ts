@@ -1,4 +1,5 @@
 import axios, { AxiosError, Canceler } from 'axios';
+import { History } from 'history';
 import { List as ImmutableList } from 'immutable';
 import throttle from 'lodash/throttle';
 import { defineMessages, IntlShape } from 'react-intl';
@@ -20,7 +21,6 @@ import { openModal, closeModal } from './modals';
 import { getSettings } from './settings';
 import { createStatus } from './statuses';
 
-import type { History } from 'history';
 import type { Emoji } from 'soapbox/components/autosuggest_emoji';
 import type { AutoSuggestion } from 'soapbox/components/autosuggest_input';
 import type { AppDispatch, RootState } from 'soapbox/store';
@@ -98,8 +98,8 @@ const messages = defineMessages({
   uploadErrorLimit: { id: 'upload_error.limit', defaultMessage: 'File upload limit exceeded.' },
   uploadErrorPoll: { id: 'upload_error.poll', defaultMessage: 'File upload not allowed with polls.' },
   view: { id: 'snackbar.view', defaultMessage: 'View' },
-  replyConfirm: { id: 'confirmations.reply.confirm', defaultMessage: 'Reply' },
-  replyMessage: { id: 'confirmations.reply.message', defaultMessage: 'Replying now will overwrite the message you are currently composing. Are you sure you want to proceed?' },
+  composeConfirm: { id: 'confirmations.reply.confirm', defaultMessage: 'Just do' },
+  composeMessage: { id: 'confirmations.reply.message', defaultMessage: 'Doing this now will overwrite the message you are currently composing. Are you sure you want to proceed?' },
 });
 
 const COMPOSE_PANEL_BREAKPOINT = 600 + (285 * 1) + (10 * 1);
@@ -110,7 +110,7 @@ const ensureComposeIsVisible = (getState: () => RootState, routerHistory: Histor
   }
 };
 
-const setComposeToStatus = (status: Status, rawText: string, spoilerText?: string, contentType?: string | false, withRedraft?: boolean) =>
+const setComposeToStatus = (history: History, status: Status, rawText: string, spoilerText?: string, contentType?: string | false, withRedraft?: boolean) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const { instance } = getState();
     const { explicitAddressing } = getFeatures(instance);
@@ -125,6 +125,7 @@ const setComposeToStatus = (status: Status, rawText: string, spoilerText?: strin
       v: parseVersion(instance.version),
       withRedraft,
     });
+    history.push('/statuses/compose');
   };
 
 const changeCompose = (text: string) => ({
@@ -138,6 +139,8 @@ const replyCompose = (status: Status) =>
     const instance = state.instance;
     const { explicitAddressing } = getFeatures(instance);
 
+    dispatch(cancelQuoteCompose());
+
     dispatch({
       type: COMPOSE_REPLY,
       status: status,
@@ -148,13 +151,18 @@ const replyCompose = (status: Status) =>
     dispatch(openModal('COMPOSE'));
   };
 
+const compose = (history: History, intl: IntlShape) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    history.push('/statuses/compose');
+  };
+
 const replyComposeWithConfirmation = (status: Status, intl: IntlShape) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     if (state.compose.text.trim().length !== 0) {
       dispatch(openModal('CONFIRM', {
-        message: intl.formatMessage(messages.replyMessage),
-        confirm: intl.formatMessage(messages.replyConfirm),
+        message: intl.formatMessage(messages.composeMessage),
+        confirm: intl.formatMessage(messages.composeConfirm),
         onConfirm: () => dispatch(replyCompose(status)),
       }));
     } else {
@@ -166,20 +174,36 @@ const cancelReplyCompose = () => ({
   type: COMPOSE_REPLY_CANCEL,
 });
 
-const quoteCompose = (status: Status) =>
+const quoteComposeWithConfirmation = (history: History, status: Status, intl: IntlShape) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const instance = state.instance;
     const { explicitAddressing } = getFeatures(instance);
 
-    dispatch({
-      type: COMPOSE_QUOTE,
-      status: status,
-      account: state.accounts.get(state.me),
-      explicitAddressing,
-    });
+    if (state.compose.text.trim().length !== 0) {
+      dispatch(openModal('CONFIRM', {
+        message: intl.formatMessage(messages.composeMessage),
+        confirm: intl.formatMessage(messages.composeConfirm),
+        onConfirm: () =>  {
+          dispatch({
+            type: COMPOSE_QUOTE,
+            status: status,
+            account: state.accounts.get(state.me),
+            explicitAddressing,
+          });
+          history.push('/statuses/compose');
+        },
+      }));
+    } else {
+      dispatch({
+        type: COMPOSE_QUOTE,
+        status: status,
+        account: state.accounts.get(state.me),
+        explicitAddressing,
+      });
+      history.push('/statuses/compose');
+    }
 
-    dispatch(openModal('COMPOSE'));
   };
 
 const cancelQuoteCompose = () => ({
@@ -764,13 +788,13 @@ export {
   COMPOSE_REMOVE_FROM_MENTIONS,
   COMPOSE_LANGUAGE_CHANGE,
   COMPOSE_SET_STATUS,
+  compose,
   ensureComposeIsVisible,
   setComposeToStatus,
   changeCompose,
-  replyCompose,
   replyComposeWithConfirmation,
   cancelReplyCompose,
-  quoteCompose,
+  quoteComposeWithConfirmation,
   cancelQuoteCompose,
   resetCompose,
   mentionCompose,
