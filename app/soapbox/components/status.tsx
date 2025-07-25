@@ -278,9 +278,9 @@ const Status: React.FC<IStatus> = (props) => {
           })}
           data-id={status.id}
           style={
-            {
+            timeline ? {
               background: 'linear-gradient(to bottom, var(--tw-gradient-from) 0px, var(--tw-gradient-to) 50px, var(--tw-gradient-to) 100%)',
-            }
+            } : undefined
           }
         >
 

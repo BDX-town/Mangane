@@ -49,6 +49,7 @@ const Bookmarks: React.FC = () => {
           onLoadMore={() => handleLoadMore(dispatch)}
           emptyMessage={emptyMessage}
           divideType='space'
+          timelineId=':bookmarks:'
         />
       </PullToRefresh>
     </Column>
