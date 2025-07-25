@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.16.4 (2025-07-25)
+
+
+### Bug Fixes
+
+* transparent background on bookmarks ([2c824ca](https://github.com/BDX-town/Mangane/commit/2c824cac946672654a93b7627897f5a6e4d37311))
+
 ## 1.16.3 (2025-07-21)
 
 
