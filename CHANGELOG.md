@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.16.9 (2025-07-27)
+
+
+### Bug Fixes
+
+* click on compose should reset if editing or quoting ([4155622](https://github.com/BDX-town/Mangane/commit/41556224a041e868f632bd9d54a4bb3d9a31d49c))
+
 ## 1.16.8 (2025-07-27)
 
 ## 1.16.7 (2025-07-27)
