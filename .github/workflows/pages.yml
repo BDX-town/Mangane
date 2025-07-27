@@ -2,9 +2,12 @@ name: Build and Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - master  # ou la branche de votre choix
+    tags:        
+      - '*'
   workflow_dispatch:  # Permet de lancer manuellement
+
+permissions:
+  contents: write
 
 jobs:
   build-and-deploy:
@@ -35,4 +38,4 @@ jobs:
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: static/Mangane
+          folder: static
