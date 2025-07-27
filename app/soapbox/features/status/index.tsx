@@ -8,8 +8,8 @@ import { useHistory } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
 import {
-  replyCompose,
   mentionCompose,
+  replyComposeWithConfirmation,
 } from 'soapbox/actions/compose';
 import {
   favourite,
@@ -138,7 +138,6 @@ const Thread: React.FC<IThread> = (props) => {
   const me = useAppSelector(state => state.me);
   const status = useAppSelector(state => getStatus(state, { id: props.params.statusId }));
   const displayMedia = settings.get('displayMedia') as DisplayMedia;
-  const askReplyConfirmation = useAppSelector(state => state.compose.text.trim().length !== 0);
 
   const { ancestorsIds, descendantsIds } = useAppSelector(state => {
     let ancestorsIds = ImmutableOrderedSet<string>();
@@ -204,15 +203,7 @@ const Thread: React.FC<IThread> = (props) => {
   };
 
   const handleReplyClick = (status: StatusEntity) => {
-    if (askReplyConfirmation) {
-      dispatch(openModal('CONFIRM', {
-        message: intl.formatMessage(messages.replyMessage),
-        confirm: intl.formatMessage(messages.replyConfirm),
-        onConfirm: () => dispatch(replyCompose(status)),
-      }));
-    } else {
-      dispatch(replyCompose(status));
-    }
+    dispatch(replyComposeWithConfirmation(status, intl));
   };
 
   const handleModalReblog = (status: StatusEntity) => {

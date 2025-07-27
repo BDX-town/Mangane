@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { blockAccount } from 'soapbox/actions/accounts';
 import { showAlertForError } from 'soapbox/actions/alerts';
 import { launchChat } from 'soapbox/actions/chats';
-import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose';
+import { directCompose, mentionCompose, quoteComposeWithConfirmation, replyComposeWithConfirmation } from 'soapbox/actions/compose';
 import { toggleBookmark, toggleFavourite, togglePin, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { deactivateUserModal, deleteStatusModal, deleteUserModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
@@ -107,18 +107,18 @@ const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismi
     dispatch((_, getState) => {
       const deleteModal = settings.get('deleteModal');
       if (!deleteModal) {
-        dispatch(deleteStatus(status.id, withRedraft));
+        dispatch(deleteStatus(history, status.id, withRedraft));
       } else {
         dispatch(openModal('CONFIRM', {
           icon: withRedraft ? require('@tabler/icons/edit.svg') : require('@tabler/icons/trash.svg'),
           heading: intl.formatMessage(withRedraft ? messages.redraftHeading : messages.deleteHeading),
           message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
           confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
-          onConfirm: () => dispatch(deleteStatus(status.id, withRedraft)),
+          onConfirm: () => dispatch(deleteStatus(history, status.id, withRedraft)),
         }));
       }
     });
-  }, [dispatch, intl, messages.deleteHeading, messages.redraftHeading, messages.deleteMessage, messages.redraftMessage, messages.deleteConfirm, messages.redraftConfirm, settings, status.id]);
+  }, [history, dispatch, intl, messages.deleteHeading, messages.redraftHeading, messages.deleteMessage, messages.redraftMessage, messages.deleteConfirm, messages.redraftConfirm, settings, status.id]);
 
 
 
@@ -134,9 +134,8 @@ const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismi
   }, [doDeleteStatus]);
 
   const handleEditClick = React.useCallback<React.EventHandler<React.MouseEvent>>(() => {
-    dispatch(editStatus(status.id));
-    history.push('/statuses/new');
-  }, [dispatch, status.id]);
+    dispatch(editStatus(history, status.id));
+  }, [history, dispatch, status.id]);
 
   const handlePinClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
@@ -452,6 +451,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const me = useAppSelector(state => state.me);
   const features = useFeatures();
+  const history = useHistory();
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
 
@@ -472,18 +472,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleReplyClick = React.useCallback<React.MouseEventHandler>((e) => {
     if (me) {
-      dispatch((_, getState) => {
-        const state = getState();
-        if (state.compose.text.trim().length !== 0) {
-          dispatch(openModal('CONFIRM', {
-            message: intl.formatMessage(messages.replyMessage),
-            confirm: intl.formatMessage(messages.replyConfirm),
-            onConfirm: () => dispatch(replyCompose(status)),
-          }));
-        } else {
-          dispatch(replyCompose(status));
-        }
-      });
+      dispatch(replyComposeWithConfirmation(status, intl));
     } else {
       onOpenUnauthorizedModal('REPLY');
     }
@@ -529,18 +518,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     e.stopPropagation();
 
     if (me) {
-      dispatch((_, getState) => {
-        const state = getState();
-        if (state.compose.text.trim().length !== 0) {
-          dispatch(openModal('CONFIRM', {
-            message: intl.formatMessage(messages.replyMessage),
-            confirm: intl.formatMessage(messages.replyConfirm),
-            onConfirm: () => dispatch(quoteCompose(status)),
-          }));
-        } else {
-          dispatch(quoteCompose(status));
-        }
-      });
+      dispatch(quoteComposeWithConfirmation(history, status, intl));
     } else {
       onOpenUnauthorizedModal('REBLOG');
     }
