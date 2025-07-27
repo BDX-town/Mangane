@@ -153,6 +153,13 @@ const replyCompose = (status: Status) =>
 
 const compose = (history: History, intl: IntlShape) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
+    // if we were editing a status before, we clear because editing is not a long lasting action
+    // we clear existing quote as this is not a long lasting action
+    const state = getState();
+    if (state.compose.id || state.compose.quote) {
+      dispatch(resetCompose());
+    }
+
     history.push('/statuses/compose');
   };
 
