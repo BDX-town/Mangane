@@ -50,6 +50,7 @@ const customApp = custom('app');
 export const messages = defineMessages({
   loggedOut: { id: 'auth.logged_out', defaultMessage: 'Logged out.' },
   invalidCredentials: { id: 'auth.invalid_credentials', defaultMessage: 'Wrong username or password' },
+  approvalRequired: { id: 'auth.approval_required', defaultMessage: 'If your account is new, it may still be awaiting admin review' },
 });
 
 const noOp = () => new Promise(f => f(undefined));
@@ -218,15 +219,19 @@ const normalizeUsername = (username: string): string => {
 };
 
 export const logIn = (username: string, password: string) =>
-  (dispatch: AppDispatch) => dispatch(getAuthApp()).then(() => {
+  (dispatch: AppDispatch, getState: () => RootState) => dispatch(getAuthApp()).then(() => {
     return dispatch(createUserToken(normalizeUsername(username), password));
   }).catch((error: AxiosError) => {
+    const state = getState();
     if ((error.response?.data as any).error === 'mfa_required') {
       // If MFA is required, throw the error and handle it in the component.
       throw error;
     } else {
       // Return "wrong password" message.
       dispatch(snackbar.error(messages.invalidCredentials));
+      if (state.instance.approval_required) {
+        dispatch(snackbar.info(messages.approvalRequired));
+      }
     }
     throw error;
   });
