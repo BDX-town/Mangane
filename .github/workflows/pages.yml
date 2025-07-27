@@ -31,6 +31,7 @@ jobs:
       - name: Build with BACKEND_URL
         env:
           BACKEND_URL: https://bdx.town
+          FE_SUBDIRECTORY: Mangane
         run: |
           export NODE_ENV=production
           yarn build
