@@ -480,7 +480,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     e.stopPropagation();
   }, [me, dispatch, intl, messages.replyMessage, messages.replyConfirm, status, onOpenUnauthorizedModal]);
 
-  const handleShareClick = React.useCallback(() => {
+  const handleShareClick = React.useCallback((e) => {
+    e.stopPropagation();
     navigator.share({
       url: status.uri,
     }).catch((e) => {
