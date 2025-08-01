@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.16.10 (2025-08-01)
+
+
+### Bug Fixes
+
+* action bar icons are not centered ([#392](https://github.com/BDX-town/Mangane/issues/392)) ([ca4e449](https://github.com/BDX-town/Mangane/commit/ca4e449a2eb81b985e10c6adcd4262e971c88982))
+
 ## 1.16.9 (2025-07-27)
 
 
