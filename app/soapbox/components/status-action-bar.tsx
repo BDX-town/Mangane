@@ -596,7 +596,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   return (
     <div
-      className='flex flex-row justify-between gap-3'
+      className='flex flex-row justify-between items-center gap-3'
     >
       <StatusActionButton
         title={replyTitle}
