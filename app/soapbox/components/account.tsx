@@ -40,7 +40,7 @@ interface IProfilePopper {
   wrapper: (children: any) => React.ReactElement<any, any>
 }
 
-const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children }): any =>
+export const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children }): any =>
   condition ? wrapper(children) : children;
 
 interface IAccount {
@@ -86,26 +86,22 @@ const Account = ({
   withAccountNote = false,
   withDate = false,
   withLinkToProfile = true,
-  withRelationship = true,
   showEdit = false,
   emoji,
 }: IAccount) => {
   const overflowRef = React.useRef<HTMLDivElement>(null);
   const actionRef = React.useRef<HTMLDivElement>(null);
-  // @ts-ignore
   const isOnScreen = useOnScreen(overflowRef);
 
   const [style, setStyle] = React.useState<React.CSSProperties>({ visibility: 'hidden' });
 
   const me = useAppSelector((state) => state.me);
   const username = useAppSelector((state) => account ? getAcct(account, displayFqn(state)) : null);
-
-  const handleAction = () => {
-    // @ts-ignore
+  const handleAction = React.useCallback(() => {
     onActionClick(account);
-  };
+  }, [onActionClick, account]);
 
-  const renderAction = () => {
+  const renderAction = React.useCallback(() => {
     if (action) {
       return action;
     }
@@ -131,7 +127,7 @@ const Account = ({
     }
 
     return null;
-  };
+  }, [action, hideActions, onActionClick, actionIcon, actionTitle, handleAction, account, me, actionType]);
 
   React.useEffect(() => {
     const style: React.CSSProperties = {};
@@ -144,7 +140,11 @@ const Account = ({
     }
 
     setStyle(style);
-  }, [isOnScreen, overflowRef, actionRef]);
+  }, [isOnScreen, overflowRef, actionRef, avatarSize]);
+
+  const LinkEl: any = React.useMemo(() => withLinkToProfile ? Link : 'div', [withLinkToProfile]);
+
+  const internalTimestamp = React.useMemo(() => withDate ? account.created_at : timestamp, [timestamp, withDate]);
 
   if (!account) {
     return null;
@@ -158,10 +158,6 @@ const Account = ({
       </>
     );
   }
-
-  if (withDate) timestamp = account.created_at;
-
-  const LinkEl: any = withLinkToProfile ? Link : 'div';
 
   return (
     <div data-testid='account' className='shrink-0 group block w-full' ref={overflowRef}>
@@ -217,16 +213,16 @@ const Account = ({
                   <InstanceFavicon account={account} />
                 )}
 
-                {(timestamp) ? (
+                {(internalTimestamp) ? (
                   <>
                     <Text tag='span' theme='muted' size='sm'>&middot;</Text>
 
                     {timestampUrl ? (
                       <Link to={timestampUrl} className='hover:underline'>
-                        <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
+                        <RelativeTimestamp timestamp={internalTimestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
                       </Link>
                     ) : (
-                      <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
+                      <RelativeTimestamp timestamp={internalTimestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
                     )}
                   </>
                 ) : null}

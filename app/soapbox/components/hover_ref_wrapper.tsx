@@ -24,24 +24,24 @@ interface IHoverRefWrapper {
 export const HoverRefWrapper: React.FC<IHoverRefWrapper> = ({ accountId, children, inline = false, className }) => {
   const dispatch = useAppDispatch();
   const ref = useRef<HTMLDivElement>(null);
-  const Elem: keyof JSX.IntrinsicElements = inline ? 'span' : 'div';
+  const Elem: keyof JSX.IntrinsicElements = React.useMemo(() => inline ? 'span' : 'div', [inline]);
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = React.useCallback(() => {
     if (!isMobile(window.innerWidth)) {
       dispatch(fetchAccount(accountId));
       showProfileHoverCard(dispatch, ref, accountId);
     }
-  };
+  }, [dispatch, accountId]);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = React.useCallback(() => {
     showProfileHoverCard.cancel();
     setTimeout(() => dispatch(closeProfileHoverCard()), 300);
-  };
+  }, [dispatch]);
 
-  const handleClick = () => {
+  const handleClick = React.useCallback(() => {
     showProfileHoverCard.cancel();
     dispatch(closeProfileHoverCard(true));
-  };
+  }, [dispatch]);
 
   return (
     <Elem
