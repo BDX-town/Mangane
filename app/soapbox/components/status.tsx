@@ -15,6 +15,8 @@ import QuotedStatus from 'soapbox/features/status/containers/quoted_status_conta
 import { useAppDispatch, useSettings, useLogo } from 'soapbox/hooks';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status';
 
+import { ProfilePopper } from './account';
+import HoverRefWrapper from './hover_ref_wrapper';
 import StatusActionBar from './status-action-bar';
 import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
@@ -288,25 +290,30 @@ const Status: React.FC<IStatus> = (props) => {
             <div className='grow min-w-0'>
               {
                 status.reblog && typeof status.reblog === 'object' && (
-                  <NavLink
-                    to={`/@${status.getIn(['account', 'acct'])}`}
-                    onClick={(event) => event.stopPropagation()}
-                    className='flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 hover:underline'
+                  <ProfilePopper
+                    condition
+                    wrapper={(children) => <HoverRefWrapper className='relative' accountId={status.getIn(['account', 'id']) as string} inline>{children}</HoverRefWrapper>}
                   >
-                    <Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />
+                    <NavLink
+                      to={`/@${status.getIn(['account', 'acct'])}`}
+                      onClick={(event) => event.stopPropagation()}
+                      className='flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 hover:underline'
+                    >
+                      <Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />
 
-                    <HStack alignItems='center'>
-                      <FormattedMessage
-                        id='status.reblogged_by'
-                        defaultMessage='{name} reposted'
-                        values={{
-                          name: <bdi className='max-w-[100px] truncate pr-1'>
-                            <strong className='text-gray-800 dark:text-gray-200' dangerouslySetInnerHTML={{ __html: String(status.getIn(['account', 'display_name_html'])) }} />
-                          </bdi>,
-                        }}
-                      />
-                    </HStack>
-                  </NavLink>
+                      <HStack alignItems='center'>
+                        <FormattedMessage
+                          id='status.reblogged_by'
+                          defaultMessage='{name} reposted'
+                          values={{
+                            name: <bdi className='max-w-[100px] truncate pr-1'>
+                              <strong className='text-gray-800 dark:text-gray-200' dangerouslySetInnerHTML={{ __html: String(status.getIn(['account', 'display_name_html'])) }} />
+                            </bdi>,
+                          }}
+                        />
+                      </HStack>
+                    </NavLink>
+                  </ProfilePopper>
                 )
               }
             </div>
