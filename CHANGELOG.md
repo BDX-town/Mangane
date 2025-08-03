@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.17.0 (2025-08-03)
+
+
+### Features
+
+* add share_target ([#397](https://github.com/BDX-town/Mangane/issues/397)) ([1a97e3a](https://github.com/BDX-town/Mangane/commit/1a97e3aeab3986fe686ce3aee8c3a5451c71570c))
+
 ## 1.16.10 (2025-08-01)
 
 
