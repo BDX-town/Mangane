@@ -17,5 +17,15 @@
         }
     ], 
     "start_url": "/",
-    "display": "standalone"
+    "display": "standalone",
+    "share_target": {
+        "action": "/share",
+        "method": "POST",
+        "enctype": "multipart/form-data",
+        "params": {
+            "title": "name",
+            "text": "description",
+            "url": "link"
+        }
+    }
 }

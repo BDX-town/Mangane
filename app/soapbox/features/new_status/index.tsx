@@ -1,6 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
+import { useDispatch } from 'react-redux';
 
+import { changeCompose } from 'soapbox/actions/compose';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { Column } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
@@ -18,6 +20,7 @@ const messages = defineMessages({
 const NewStatus = () => {
   const intl = useIntl();
 
+  const dispatch = useDispatch();
   const statusId = useAppSelector((state) => state.compose.id);
   const privacy = useAppSelector((state) => state.compose.privacy);
   const inReplyTo = useAppSelector((state) => state.compose.in_reply_to);
@@ -36,6 +39,15 @@ const NewStatus = () => {
       return intl.formatMessage(messages.compose);
     }
   }, [intl, statusId, privacy, inReplyTo, quote]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('text')) {
+      dispatch(
+        changeCompose(params.get('text')),
+      );
+    }
+  }, [dispatch]);
 
   return (
     <Column label={renderTitle} transparent withHeader={false}>
