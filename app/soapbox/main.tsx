@@ -34,6 +34,31 @@ function main() {
 
     ReactDOM.render(<Soapbox />, mountNode);
 
+    // this allows to debug service workers
+    if (BuildConfig.NODE_ENV === 'development') {
+      const registerServiceWorker = async() => {
+        if ('serviceWorker' in navigator) {
+          try {
+            const registration = await navigator.serviceWorker.register('/share_target.js', {
+              scope: '/',
+            });
+            if (registration.installing) {
+              console.debug('Service worker installing');
+            } else if (registration.waiting) {
+              console.debug('Service worker installed');
+            } else if (registration.active) {
+              console.debug('Service worker active');
+            }
+          } catch (error) {
+            console.error(`Registration failed with ${error}`);
+          }
+        }
+      };
+
+      // …
+
+      registerServiceWorker();
+    }
     if (BuildConfig.NODE_ENV === 'production') {
       // avoid offline in dev mode because it's harder to debug
       // https://github.com/NekR/offline-plugin/pull/201#issuecomment-285133572

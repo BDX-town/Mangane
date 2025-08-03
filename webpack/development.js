@@ -3,8 +3,10 @@ console.log('Running in development mode'); // eslint-disable-line no-console
 
 const { join } = require('path');
 
+const CopyPlugin = require('copy-webpack-plugin');
 const { merge } = require('webpack-merge');
 
+const { output } = require('./configuration');
 const sharedConfig = require('./shared');
 
 const watchOptions = {};
@@ -112,5 +114,15 @@ module.exports = merge(sharedConfig, {
     },
     proxy: makeProxyConfig(),
   },
-  plugins: [],
+  plugins: [
+    new CopyPlugin({
+      patterns: [{
+        from: join(__dirname, '..', 'app/soapbox/service_worker'),
+        to: join(output.path),
+      }],
+      options: {
+        concurrency: 100,
+      },
+    }),
+  ],
 });
