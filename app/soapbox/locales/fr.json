@@ -78,7 +78,7 @@
   "account_note.save": "Enregistrer",
   "account_note.target": "Note for @{target}",
   "account_search.placeholder": "Search for an account",
-  "actualStatus.edited": "Edited {date}",
+  "actualStatus.edited": "Édité le {date}",
   "actualStatuses.quote_tombstone": "Post is unavailable.",
   "actualStatuses.translate": "Traduire",
   "actualStatuses.translate_done": "Traduit en {locale}",
