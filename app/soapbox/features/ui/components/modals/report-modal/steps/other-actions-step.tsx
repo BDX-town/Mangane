@@ -30,6 +30,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
   const features = useFeatures();
   const intl = useIntl();
 
+  const selectedStatusIds = useAppSelector((state) => state.reports.new.status_ids);
   const statusIds = useAppSelector((state) => OrderedSet(state.timelines.get(`account:${account.id}:with_replies`)!.items).union(state.reports.new.status_ids) as OrderedSet<string>);
   const isBlocked = useAppSelector((state) => state.reports.new.block);
   const isForward = useAppSelector((state) => state.reports.new.forward);
@@ -48,7 +49,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
 
   useEffect(() => {
     dispatch(fetchRules());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Stack space={4}>
@@ -61,8 +62,8 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
           <FormGroup labelText={intl.formatMessage(messages.addAdditionalStatuses)}>
             {showAdditionalStatuses ? (
               <Stack space={2}>
-                <div className='bg-gray-100 dark:bg-slate-600 rounded-lg p-4'>
-                  {statusIds.map((statusId) => <StatusCheckBox id={statusId} key={statusId} />)}
+                <div className='flex flex-col gap-4'>
+                  {statusIds.map((statusId) => <StatusCheckBox id={statusId} disabled={statusId === selectedStatusIds.first()} key={statusId} />)}
                 </div>
 
                 <div>

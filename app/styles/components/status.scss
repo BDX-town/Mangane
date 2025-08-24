@@ -189,43 +189,6 @@
   @apply rounded-none shadow-none p-4;
 }
 
-.status-check-box {
-  border-bottom: 1px solid var(--background-color);
-  display: flex;
-
-  .status-check-box__status {
-    margin: 10px 0 10px 10px;
-    flex: 1;
-
-    .media-gallery {
-      max-width: 250px;
-    }
-
-    .status__content {
-      padding: 0;
-      white-space: normal;
-    }
-
-    .video-player,
-    .audio-player {
-      margin-top: 8px;
-      max-width: 250px;
-    }
-
-    .media-gallery__item-thumbnail {
-      cursor: default;
-    }
-  }
-}
-
-.status-check-box-toggle {
-  align-items: center;
-  display: flex;
-  flex: 0 0 auto;
-  justify-content: center;
-  padding: 10px;
-}
-
 .status__content {
   @apply text-gray-900 dark:text-gray-100 break-words relative;
 
