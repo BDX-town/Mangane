@@ -28,9 +28,8 @@ jobs:
       - name: Install dependencies
         run: npx yarn
 
-      - name: Build with BACKEND_URL
+      - name: Build
         env:
-          BACKEND_URL: https://bdx.town
           FE_SUBDIRECTORY: Mangane
         run: |
           export NODE_ENV=production
