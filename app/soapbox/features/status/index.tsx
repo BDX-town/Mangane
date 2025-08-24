@@ -463,38 +463,36 @@ const Thread: React.FC<IThread> = (props) => {
   const titleMessage = status.visibility === 'direct' ? messages.titleDirect : messages.title;
 
   const focusedStatus = (
-    <div className={classNames('thread__detailed-status', { 'pb-4': hasDescendants })} key={status.id}>
-      <HotKeys handlers={handlers}>
-        <div
-          ref={statusRef}
-          className='detailed-status__wrapper focusable'
-          tabIndex={0}
-          // FIXME: no "reblogged by" text is added for the screen reader
-          aria-label={textForScreenReader(intl, status)}
-        >
-          <DetailedStatus
-            status={status}
-            onOpenVideo={handleOpenVideo}
-            onOpenMedia={handleOpenMedia}
-            onToggleHidden={handleToggleHidden}
-            showMedia={showMedia}
-            onToggleMediaVisibility={handleToggleMediaVisibility}
-            onOpenCompareHistoryModal={handleOpenCompareHistoryModal}
-            onTranslate={handleTranslate}
-          />
-
-          <hr className='mb-3 dark:border-slate-600' />
-
-          <StatusActionBar
-            status={status}
-          />
-        </div>
-      </HotKeys>
-
-      {hasDescendants && (
-        <hr className='mt-2 dark:border-slate-600' />
-      )}
-    </div>
+    <>
+      <div className={classNames('thread__detailed-status')} key={status.id}>
+        <HotKeys handlers={handlers}>
+          <div
+            ref={statusRef}
+            className='detailed-status__wrapper focusable'
+            tabIndex={0}
+            // FIXME: no "reblogged by" text is added for the screen reader
+            aria-label={textForScreenReader(intl, status)}
+          >
+            <DetailedStatus
+              status={status}
+              onOpenVideo={handleOpenVideo}
+              onOpenMedia={handleOpenMedia}
+              onToggleHidden={handleToggleHidden}
+              showMedia={showMedia}
+              onToggleMediaVisibility={handleToggleMediaVisibility}
+              onOpenCompareHistoryModal={handleOpenCompareHistoryModal}
+              onTranslate={handleTranslate}
+            />
+            <StatusActionBar
+              status={status}
+            />
+          </div>
+        </HotKeys>
+      </div>
+      {
+        hasDescendants && <hr className='my-5 border-gray-200 dark:border-gray-700' />
+      }
+    </>
   );
 
   const children: JSX.Element[] = [];
@@ -516,7 +514,6 @@ const Thread: React.FC<IThread> = (props) => {
           <SubNavigation message={intl.formatMessage(titleMessage, { username })} />
         </div>
       </Sticky>
-
       <PullToRefresh onRefresh={handleRefresh}>
         <Stack space={2}>
           <div ref={node} className='thread'>

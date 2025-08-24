@@ -6,15 +6,12 @@ import Icon from 'soapbox/components/icon';
 import StatusMedia from 'soapbox/components/status-media';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import StatusContent from 'soapbox/components/status_content';
-import { HStack, Stack, Text, Button } from 'soapbox/components/ui';
+import { HStack, Text, Button } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
 import { useAppSelector, useOwnAccount, useLogo } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
 import { getActualStatus } from 'soapbox/utils/status';
-
-
-
 
 import StatusInteractionBar from './status-interaction-bar';
 
@@ -120,9 +117,29 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
               <Icon className='text-gray-300 dark:text-slate-500' src={require('@tabler/icons/note.svg')} />
             )
           }
-          <Icon aria-hidden src={privacyIcon} className='h-5 w-5 shrink-0 text-gray-400 dark:text-gray-600' />
-        </div>
+          <div className='flex items-center gap-2'>
+            <span className='text-gray-400 dark:text-gray-600 text-xs'>
+              <a href={actualStatus.url} target='_blank' rel='noopener' className='hover:underline'>
+                <FormattedDate value={new Date(actualStatus.created_at)} hour12={false} year='numeric' month='2-digit' day='2-digit' hour='2-digit' minute='2-digit' />
+              </a>
 
+              {actualStatus.edited_at && (
+                <>
+                  {' · '}
+                  <div
+                    className='inline hover:underline'
+                    onClick={handleOpenCompareHistoryModal}
+                    role='button'
+                    tabIndex={0}
+                  >
+                    <FormattedMessage id='actualStatus.edited' defaultMessage='Edited {date}' values={{ date: intl.formatDate(new Date(actualStatus.edited_at), { hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) }} />
+                  </div>
+                </>
+              )}
+            </span>
+            <Icon aria-hidden src={privacyIcon} className='h-5 w-5 shrink-0 text-gray-400 dark:text-gray-600' />
+          </div>
+        </div>
         <div className='mb-3'>
           <AccountContainer
             key={account.id}
@@ -132,15 +149,12 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             hideActions
           />
         </div>
-
         <StatusReplyMentions status={actualStatus} />
-
         <StatusContent
           status={actualStatus}
           expanded={!actualStatus.hidden}
           onExpandedToggle={handleExpandedToggle}
         />
-
         {
           actualStatus.translations.get(locale) && !actualStatus.hidden && (
             <>
@@ -160,7 +174,6 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             </>
           )
         }
-
         {!actualStatus.hidden && (
           <>
             <StatusMedia
@@ -171,38 +184,9 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             { quote }
           </>
         )}
-
-        <HStack justifyContent='between' alignItems='center' className='py-2'>
+        <HStack justifyContent='end' alignItems='center' className='py-2'>
           <StatusInteractionBar status={actualStatus} />
-
-          <Stack space={1} className='items-end mb-3'>
-            <span>
-              <a href={actualStatus.url} target='_blank' rel='noopener' className='hover:underline'>
-                <Text tag='span' theme='muted' size='sm'>
-                  <FormattedDate value={new Date(actualStatus.created_at)} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
-                </Text>
-              </a>
-
-              {actualStatus.edited_at && (
-                <>
-                  {' · '}
-                  <div
-                    className='inline hover:underline'
-                    onClick={handleOpenCompareHistoryModal}
-                    role='button'
-                    tabIndex={0}
-                  >
-                    <Text tag='span' theme='muted' size='sm'>
-                      <FormattedMessage id='actualStatus.edited' defaultMessage='Edited {date}' values={{ date: intl.formatDate(new Date(actualStatus.edited_at), { hour12: false, month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }) }} />
-                    </Text>
-                  </div>
-                </>
-              )}
-            </span>
-          </Stack>
         </HStack>
-
-
       </div>
     </div>
   );
