@@ -87,12 +87,12 @@ const ReportModal = ({ onClose }: IReportModal) => {
   const ruleIds = useAppSelector((state) => state.reports.new.rule_ids);
   const selectedStatusIds = useAppSelector((state) => state.reports.new.status_ids);
 
-  const isReportingAccount = useMemo(() => selectedStatusIds.size === 0, []);
+  const isReportingAccount = useMemo(() => selectedStatusIds.size === 0, [selectedStatusIds.size]);
   const shouldRequireRule = rules.length > 0;
 
   const [currentStep, setCurrentStep] = useState<Steps>(Steps.ONE);
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     dispatch(submitReport())
       .then(() => setCurrentStep(Steps.THREE))
       .catch((error: AxiosError) => dispatch(submitReportFail(error)));
@@ -100,9 +100,9 @@ const ReportModal = ({ onClose }: IReportModal) => {
     if (isBlocked && account) {
       dispatch(blockAccount(account.id));
     }
-  };
+  }, [account, dispatch, isBlocked]);
 
-  const handleNextStep = () => {
+  const handleNextStep = useCallback(() => {
     switch (currentStep) {
       case Steps.ONE:
         setCurrentStep(Steps.TWO);
@@ -117,7 +117,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
       default:
         break;
     }
-  };
+  }, [currentStep, dispatch, handleSubmit, onClose]);
 
   const renderSelectedStatuses = useCallback(() => {
     switch (selectedStatusIds.size) {
@@ -130,7 +130,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
       default:
         return <SelectedStatus statusId={selectedStatusIds.first()} />;
     }
-  }, [selectedStatusIds.size]);
+  }, [intl, selectedStatusIds]);
 
   const confirmationText = useMemo(() => {
     switch (currentStep) {
@@ -141,7 +141,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
       default:
         return intl.formatMessage(messages.next);
     }
-  }, [currentStep]);
+  }, [currentStep, intl]);
 
   const isConfirmationButtonDisabled = useMemo(() => {
     if (currentStep === Steps.THREE) {
@@ -168,7 +168,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
     if (account) {
       dispatch(expandAccountTimeline(account.id, { withReplies: true, maxId: null }));
     }
-  }, [account]);
+  }, [account, dispatch]);
 
   if (!account) {
     return null;

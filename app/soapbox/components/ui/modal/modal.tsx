@@ -83,7 +83,7 @@ const Modal: React.FC<IModal> = ({
   }, [skipFocus, buttonRef]);
 
   return (
-    <div data-testid='modal' className={classNames('block w-full p-6 mx-auto text-left align-middle transition-all bg-white dark:bg-slate-800 text-black dark:text-white shadow-xl rounded-2xl pointer-events-auto', widths[width])}>
+    <div data-testid='modal' className={classNames('block w-full p-6 mx-auto text-left align-middle transition-all bg-white dark:bg-slate-800 text-black dark:text-white shadow-xl rounded-2xl pointer-events-auto max-h-screen overflow-y-auto', widths[width])}>
       <div className='sm:flex sm:items-start w-full justify-between'>
         <div className='w-full'>
           {title && (

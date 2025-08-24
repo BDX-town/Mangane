@@ -126,7 +126,7 @@ interface IStatusContent {
 const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onExpandedToggle, onClick, collapsable = false }) => {
   const history = useHistory();
 
-  const [hidden, setHidden] = useState(true);
+  const [hidden, setHidden] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [onlyEmoji, setOnlyEmoji] = useState(false);
 

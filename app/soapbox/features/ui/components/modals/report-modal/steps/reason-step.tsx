@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
@@ -12,6 +12,7 @@ import type { ReducerAccount } from 'soapbox/reducers/accounts';
 
 const messages = defineMessages({
   placeholder: { id: 'report.placeholder', defaultMessage: 'Additional comments' },
+  placeholderDescription: { id: 'report.placeholder-description', defaultMessage: 'Please explain the reason of your report' },
   reasonForReporting: { id: 'report.reason.title', defaultMessage: 'Reason for reporting' },
 });
 
@@ -36,13 +37,13 @@ const ReasonStep = (_props: IReasonStep) => {
   const shouldRequireRule = rules.length > 0;
 
   const selectedStatusIds = useAppSelector((state) => state.reports.new.status_ids);
-  const isReportingAccount = useMemo(() => selectedStatusIds.size === 0, []);
+  const isReportingAccount = useMemo(() => selectedStatusIds.size === 0, [selectedStatusIds.size]);
 
-  const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleCommentChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
     dispatch(changeReportComment(event.target.value));
-  };
+  }, [dispatch]);
 
-  const handleRulesScrolling = () => {
+  const handleRulesScrolling = useCallback(() => {
     if (rulesListRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = rulesListRef.current;
 
@@ -58,9 +59,9 @@ const ReasonStep = (_props: IReasonStep) => {
         setNearTop(false);
       }
     }
-  };
+  }, []);
 
-  const filterRuleType = (rule: any) => {
+  const filterRuleType = useCallback((rule: any) => {
     const ruleTypeToFilter = isReportingAccount ? 'account' : 'content';
 
     if (rule.rule_type) {
@@ -68,11 +69,11 @@ const ReasonStep = (_props: IReasonStep) => {
     }
 
     return true;
-  };
+  }, [isReportingAccount]);
 
   useEffect(() => {
     dispatch(fetchRules());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (rules.length > 0 && rulesListRef.current) {
@@ -82,7 +83,7 @@ const ReasonStep = (_props: IReasonStep) => {
         setNearBottom(true);
       }
     }
-  }, [rules, rulesListRef.current]);
+  }, [rules]);
 
   return (
     <Stack space={4}>
@@ -157,7 +158,7 @@ const ReasonStep = (_props: IReasonStep) => {
 
       <FormGroup labelText={intl.formatMessage(messages.placeholder)}>
         <Textarea
-          placeholder={intl.formatMessage(messages.placeholder)}
+          placeholder={intl.formatMessage(messages.placeholderDescription)}
           value={comment}
           onChange={handleCommentChange}
         />
