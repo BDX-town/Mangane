@@ -333,6 +333,7 @@ const UI: React.FC = ({ children }) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
+  const location = useLocation();
   const [draggingOver, setDraggingOver] = useState<boolean>(false);
   const [mobile, setMobile] = useState<boolean>(isMobile(window.innerWidth));
 
@@ -606,12 +607,12 @@ const UI: React.FC = ({ children }) => {
 
   const handleGoToCompose = useCallback(() => {
     dispatch(compose(history, intl));
-  }, [history, intl]);
+  }, [dispatch, history, intl]);
 
   const shouldHideFAB = useMemo(() => {
-    const path = window.location.pathname;
-    return Boolean(path.match(/^\/posts\/|^\/search|^\/getting-started|^\/chats/));
-  }, [window.location.pathname]);
+    const path = location.pathname;
+    return Boolean(path.match(/^\/statuses\/compose|^\/posts\/|^\/search|^\/getting-started|^\/chats/));
+  }, [location.pathname]);
 
   // Wait for login to succeed or fail
   if (me === null) return null;
