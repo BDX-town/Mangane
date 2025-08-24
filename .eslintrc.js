@@ -5,6 +5,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:import/typescript',
     'plugin:compat/recommended',
+    'plugin:react-hooks/recommended-legacy',
   ],
 
   env: {
