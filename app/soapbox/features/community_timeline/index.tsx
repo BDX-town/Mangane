@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { connectCommunityStream } from 'soapbox/actions/streaming';
 import { expandCommunityTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import SubNavigation from 'soapbox/components/sub_navigation';
+import TimelineSettings from 'soapbox/components/timeline_settings';
 import { Column } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
 
@@ -17,6 +18,8 @@ const messages = defineMessages({
 const CommunityTimeline = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+
+  const [showSettings, setShowSettings] = useState(true);
 
   const instance = useAppSelector((state) => state.instance);
   const settings = useSettings();
@@ -42,20 +45,25 @@ const CommunityTimeline = () => {
   }, [onlyMedia]);
 
   return (
-    <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
-      <div className='px-4 pt-4 sm:p-0'>
-        <SubNavigation message={instance.title} />
-      </div>
-      <PullToRefresh onRefresh={handleRefresh}>
-        <Timeline
-          scrollKey={`${timelineId}_timeline`}
-          timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}
-          onLoadMore={handleLoadMore}
-          emptyMessage={<FormattedMessage id='empty_column.community' defaultMessage='The local timeline is empty. Write something publicly to get the ball rolling!' />}
-          divideType='space'
-        />
-      </PullToRefresh>
-    </Column>
+    <>
+      <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
+        <div className='px-4 pt-4 sm:p-0'>
+          <SubNavigation message={instance.title} />
+        </div>
+        <PullToRefresh onRefresh={handleRefresh}>
+          <Timeline
+            scrollKey={`${timelineId}_timeline`}
+            timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}
+            onLoadMore={handleLoadMore}
+            emptyMessage={<FormattedMessage id='empty_column.community' defaultMessage='The local timeline is empty. Write something publicly to get the ball rolling!' />}
+            divideType='space'
+          />
+        </PullToRefresh>
+      </Column>
+      {
+        showSettings && <TimelineSettings timeline='community' onClose={() => setShowSettings(false)} />
+      }
+    </>
   );
 };
 

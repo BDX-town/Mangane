@@ -597,6 +597,7 @@
   "header.register.label": "Register",
   "home.column_settings.show_reblogs": "Show reposts",
   "home.column_settings.show_replies": "Show replies",
+  "home.column_settings.only_media": "Show only media",
   "import_data.actions.import": "Import",
   "import_data.actions.import_blocks": "Import blocks",
   "import_data.actions.import_follows": "Import follows",
