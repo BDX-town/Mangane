@@ -354,7 +354,7 @@ const Status: React.FC<IStatus> = (props) => {
 
             {
               !actualStatus.hidden && (
-                <>
+                <div className='pt-1'>
                   <StatusMedia
                     status={actualStatus}
                     muted={muted}
@@ -363,7 +363,7 @@ const Status: React.FC<IStatus> = (props) => {
                     onToggleVisibility={handleToggleMediaVisibility}
                   />
                   { quote  }
-                </>
+                </div>
 
               )
             }
