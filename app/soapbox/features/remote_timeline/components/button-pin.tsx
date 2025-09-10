@@ -32,7 +32,7 @@ export const ButtonPin = ({ instance, ...props }: { instance: string } & SVGAttr
   }), [props, onClick]);
 
   if (hover) {
-    return pinned ? <IconPinnedOff {...finalProps} /> : <IconPinned {...finalProps} />;
+    return pinned ? <IconPinnedOff className='cursor-pointer' {...finalProps} /> : <IconPinned className='cursor-pointer' {...finalProps} />;
   }
 
   return pinned ? <IconPinned {...finalProps} className='text-accent-300' /> : <IconPin {...finalProps} />;

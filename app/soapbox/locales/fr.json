@@ -598,6 +598,7 @@
   "header.register.label": "S'inscrire",
   "home.column_settings.show_reblogs": "Afficher les partages",
   "home.column_settings.show_replies": "Afficher les réponses",
+  "home.column_settings.only_media": "Afficher uniquement les medias",
   "import_data.actions.import": "Importer",
   "import_data.actions.import_blocks": "Importer les comptes bloqués",
   "import_data.actions.import_follows": "Importer les comptes suivis",

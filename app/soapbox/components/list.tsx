@@ -4,17 +4,18 @@ import { v4 as uuidv4 } from 'uuid';
 
 import Icon from './icon';
 
-const List: React.FC = ({ children }) => (
-  <div className='space-y-0.5'>{children}</div>
+const List = ({ children, className = '' }: { children: React.ReactNode, className?: string}) => (
+  <div className={`${className} space-y-0.5`} >{children}</div>
 );
 
 interface IListItem {
   label: React.ReactNode,
   hint?: React.ReactNode,
   onClick?: () => void,
+  className?: string,
 }
 
-const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick }) => {
+const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick, className }) => {
   const id = uuidv4();
   const domId = `list-group-${id}`;
 
@@ -39,6 +40,7 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick }) => {
       className={classNames({
         'flex items-center justify-between px-3 py-2 first:rounded-t-lg last:rounded-b-lg bg-gradient-to-r from-gradient-start/10 to-gradient-end/10 dark:from-slate-900/25 dark:to-slate-900/50': true,
         'cursor-pointer hover:from-gradient-start/20 hover:to-gradient-end/20 dark:hover:from-slate-900/40 dark:hover:to-slate-900/75': typeof onClick !== 'undefined',
+        className,
       })}
       {...linkProps}
     >
