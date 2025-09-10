@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.17.2 (2025-09-10)
+
+
+### Bug Fixes
+
+* hide fab on compose page ([#405](https://github.com/BDX-town/Mangane/issues/405)) ([db43d4c](https://github.com/BDX-town/Mangane/commit/db43d4c65f66490a097990ed14f51553d9af37ac))
+
 ## 1.17.1 (2025-08-24)
 
 ## 1.17.0 (2025-08-03)
