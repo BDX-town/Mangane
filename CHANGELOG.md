@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.18.0 (2025-09-13)
+
+
+### Features
+
+* add timeline settings ([#410](https://github.com/BDX-town/Mangane/issues/410)) ([c000a22](https://github.com/BDX-town/Mangane/commit/c000a22066d1e93504af5b8b75e5dad80c2aabbb))
+
 ## 1.17.2 (2025-09-10)
 
 
