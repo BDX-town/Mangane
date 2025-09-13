@@ -152,7 +152,7 @@ const replaceHomeTimeline = (
   }));
 };
 
-const expandTimeline = (timelineId: string, path: string, params: Record<string, any> = {}, done = noOp) =>
+const expandTimeline = (timelineId: string, path: string, params: Partial<{ all: any[], none: any[], instance: string, any: any[], since_id: string, max_id: string, exclude_replies: boolean, with_muted: boolean, only_media: boolean, local: boolean, pinned: boolean, limit: number }>, done = noOp) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const timeline = getState().timelines.get(timelineId) || {} as Record<string, any>;
     const isLoadingMore = !!params.max_id;
@@ -192,17 +192,17 @@ const expandHomeTimeline = ({ accountId, maxId }: Record<string, any> = {}, done
   return expandTimeline('home', endpoint, params, done);
 };
 
-const expandPublicTimeline = ({ maxId, onlyMedia }: Record<string, any> = {}, done = noOp) =>
-  expandTimeline(`public${onlyMedia ? ':media' : ''}`, '/api/v1/timelines/public', { max_id: maxId, only_media: !!onlyMedia }, done);
+const expandPublicTimeline = ({ maxId, onlyMedia, excludeReplies }: Record<string, any> = {}, done = noOp) =>
+  expandTimeline(`public${onlyMedia ? ':media' : ''}${excludeReplies ? ':exclude_replies' : ''}`, '/api/v1/timelines/public', { max_id: maxId, only_media: !!onlyMedia, exclude_replies: excludeReplies }, done);
 
-const expandBubbleTimeline = ({ maxId, onlyMedia }: Record<string, any> = {}, done = noOp) =>
-  expandTimeline(`bubble${onlyMedia ? ':media' : ''}`, '/api/v1/timelines/bubble', { max_id: maxId, only_media: !!onlyMedia }, done);
+const expandBubbleTimeline = ({ maxId, onlyMedia, excludeReplies }: Record<string, any> = {}, done = noOp) =>
+  expandTimeline(`bubble${onlyMedia ? ':media' : ''}${excludeReplies ? ':exclude_replies' : ''}`, '/api/v1/timelines/bubble', { max_id: maxId, only_media: !!onlyMedia, exclude_replies: excludeReplies }, done);
 
-const expandRemoteTimeline = (instance: string, { maxId, onlyMedia }: Record<string, any> = {}, done = noOp) =>
-  expandTimeline(`remote${onlyMedia ? ':media' : ''}:${instance}`, '/api/v1/timelines/public', { local: false, instance: instance, max_id: maxId, only_media: !!onlyMedia }, done);
+const expandRemoteTimeline = (instance: string, { maxId, onlyMedia, excludeReplies }: Record<string, any> = {}, done = noOp) =>
+  expandTimeline(`remote:${instance}${onlyMedia ? ':media' : ''}${excludeReplies ? ':exclude_replies' : ''}`, '/api/v1/timelines/public', { local: false, instance: instance, max_id: maxId, only_media: !!onlyMedia, exclude_replies: excludeReplies }, done);
 
-const expandCommunityTimeline = ({ maxId, onlyMedia }: Record<string, any> = {}, done = noOp) =>
-  expandTimeline(`community${onlyMedia ? ':media' : ''}`, '/api/v1/timelines/public', { local: true, max_id: maxId, only_media: !!onlyMedia }, done);
+const expandCommunityTimeline = ({ maxId, onlyMedia, excludeReplies }: Record<string, any> = {}, done = noOp) =>
+  expandTimeline(`community${onlyMedia ? ':media' : ''}${excludeReplies ? ':exclude_replies' : ''}`, '/api/v1/timelines/public', { local: true, max_id: maxId, only_media: !!onlyMedia, exclude_replies: excludeReplies }, done);
 
 const expandDirectTimeline = ({ maxId }: Record<string, any> = {}, done = noOp) =>
   expandTimeline('direct', '/api/v1/timelines/direct', { max_id: maxId }, done);
