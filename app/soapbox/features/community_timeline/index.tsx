@@ -50,8 +50,8 @@ const CommunityTimeline = () => {
   return (
     <>
       <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
-        <div className='px-4 pt-4 sm:p-0 flex justify-between'>
-          <SubNavigation message={instance.title} />
+        <div className='px-4 py-4 flex justify-between items-center'>
+          <SubNavigation className='mb-0' message={instance.title} />
           <IconButton
             src={!showSettings ? require('@tabler/icons/chevron-down.svg') : require('@tabler/icons/chevron-up.svg')}
             onClick={() => setShowSettings(!showSettings)}
