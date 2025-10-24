@@ -899,7 +899,7 @@
   "registration.acceptance": "By registering, you agree to the {terms} and {privacy}.",
   "registration.agreement": "I agree to the {tos}.",
   "registration.captcha.hint": "Click the image to get a new captcha",
-  "registration.captcha.placeholder": "Saisissez le texte visible dans l'image",
+  "registration.captcha.placeholder": "Enter the text visible in the image",
   "registration.closed_message": "{instance} is not accepting new members",
   "registration.closed_title": "Registrations Closed",
   "registration.confirmation_modal.close": "Close",
