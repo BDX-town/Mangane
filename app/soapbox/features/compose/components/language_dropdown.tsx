@@ -147,7 +147,6 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({
   defaultValue,
   value,
 }) => {
-  console.log(value)
   const node = useRef<HTMLDivElement>(null);
   const activeElement = useRef<HTMLElement | null>(null);
   const dispatch = useDispatch();
