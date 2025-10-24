@@ -83,8 +83,8 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
   return (
     <div className='pt-3'>
       <Column label={instance} transparent withHeader={false}>
-        <div className='px-4 pt-4 sm:p-0 flex justify-between'>
-          <SubNavigation>
+        <div className='px-4 py-4 flex justify-between items-center'>
+          <SubNavigation className='mb-0'>
             <Heading instance={instance} />
           </SubNavigation>
           <IconButton

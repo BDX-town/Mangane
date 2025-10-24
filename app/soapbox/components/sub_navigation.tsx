@@ -18,9 +18,10 @@ interface ISubNavigation {
   message?: ReactNode,
   settings?: React.ComponentType,
   children?: React.ReactNode,
+  className?: string,
 }
 
-const SubNavigation: React.FC<ISubNavigation> = ({ message, children }) => {
+const SubNavigation: React.FC<ISubNavigation> = ({ message, children, className }) => {
   const intl = useIntl();
   const history = useHistory();
 
@@ -35,6 +36,7 @@ const SubNavigation: React.FC<ISubNavigation> = ({ message, children }) => {
 
   return (
     <CardHeader
+      className={className}
       aria-label={intl.formatMessage(messages.back)}
       onBackClick={handleBackClick}
     >
