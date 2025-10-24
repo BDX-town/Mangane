@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.18.1 (2025-10-24)
+
+
+### Bug Fixes
+
+* bad locale for captcha registration en ([#412](https://github.com/BDX-town/Mangane/issues/412)) ([78d7af0](https://github.com/BDX-town/Mangane/commit/78d7af098788fcdabbf3b9ea631cdfe4c0125ed9))
+
 ## 1.18.0 (2025-09-13)
 
 
