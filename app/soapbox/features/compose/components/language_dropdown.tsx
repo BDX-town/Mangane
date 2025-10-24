@@ -116,7 +116,7 @@ const LanguageDropdownMenu: React.FC<ILanguageDropdownMenu> = ({ style, items, v
       </div>
       <div className='h-[250px] overflow-y-auto' ref={list}>
         {currentItems.map((item, index) => (
-          <div role='option' tabIndex={0} key={item.value + index} data-index={index} data-value={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={classNames('p-3 cursor-pointer hover:bg-gray-100', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
+          <div role='option' tabIndex={0} key={item.value + index} data-index={index} data-value={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={classNames('p-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
             <div className='language-dropdown__option__content'>
               <strong className='text-primary-600'>{item.value}</strong>&nbsp;{item.label}
             </div>
@@ -147,6 +147,7 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({
   defaultValue,
   value,
 }) => {
+  console.log(value)
   const node = useRef<HTMLDivElement>(null);
   const activeElement = useRef<HTMLElement | null>(null);
   const dispatch = useDispatch();
@@ -183,36 +184,37 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({
     dispatch(closeModal('ACTIONS'));
     onInternalChange(option);
   }, [options, dispatch, onInternalChange]);
+  
 
-  const handleKeyDown: React.KeyboardEventHandler = e => {
-    switch (e.key) {
-      case 'Escape':
-        handleClose();
-        break;
-    }
-  };
-
-  const handleMouseDown = () => {
+  const handleMouseDown = useCallback(() => {
     if (!open) {
       activeElement.current = document.activeElement as HTMLElement | null;
     }
-  };
+  }, []);
 
-  const handleButtonKeyDown: React.KeyboardEventHandler = (e) => {
+  const handleButtonKeyDown: React.KeyboardEventHandler = useCallback((e) => {
     switch (e.key) {
       case ' ':
       case 'Enter':
         handleMouseDown();
         break;
     }
-  };
+  }, [handleMouseDown]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     if (open) {
       activeElement.current?.focus();
     }
     setOpen(false);
-  };
+  }, []);
+
+  const handleKeyDown: React.KeyboardEventHandler = useCallback(e => {
+    switch (e.key) {
+      case 'Escape':
+        handleClose();
+        break;
+    }
+  }, [handleClose]);
 
   return (
     <div className={classNames('language-dropdown', { active: open })} onKeyDown={handleKeyDown} ref={node}>
