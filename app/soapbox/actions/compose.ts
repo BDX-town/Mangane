@@ -133,7 +133,7 @@ const changeCompose = (text: string) => ({
   text: text,
 });
 
-const replyCompose = (status: Status) =>
+export const replyCompose = (status: Status) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const instance = state.instance;
@@ -147,8 +147,6 @@ const replyCompose = (status: Status) =>
       account: state.accounts.get(state.me),
       explicitAddressing,
     });
-
-    dispatch(openModal('COMPOSE'));
   };
 
 const compose = (history: History, intl: IntlShape) =>

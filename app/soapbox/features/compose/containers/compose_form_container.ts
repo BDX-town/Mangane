@@ -84,10 +84,10 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 });
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
-  return Object.assign({}, ownProps, {
+  return Object.assign({}, {
     ...stateProps,
     ...dispatchProps,
-  });
+  }, ownProps);
 }
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps, mergeProps)(ComposeForm));
