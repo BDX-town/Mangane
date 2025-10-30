@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.18.2 (2025-10-30)
+
+
+### Bug Fixes
+
+* page header lacks padding on mobile (list view) ([#421](https://github.com/BDX-town/Mangane/issues/421)) ([d1f243f](https://github.com/BDX-town/Mangane/commit/d1f243fce59d32f603a065d449bd1ee6d4ca9fb1))
+
 ## 1.18.1 (2025-10-24)
 
 
