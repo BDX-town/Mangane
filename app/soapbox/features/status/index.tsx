@@ -484,10 +484,13 @@ const Thread: React.FC<IThread> = (props) => {
     };
   }, [actualStatus, dispatch]);
 
-  const handleComposeSubmit = useCallback((router, group) => {
-    dispatch(submitCompose(router, group));
-    // TODO: do something
-  }, [dispatch]);
+  const handleComposeSubmit = useCallback(async (router, group) => {
+    const status = await dispatch(submitCompose(router, group));
+    if (status) {
+      const url = new URL(status.url);
+      history.push(url.pathname);
+    }
+  }, [dispatch, history]);
 
   const focusedStatus = useMemo(() => !actualStatus ? null : (
     <>
