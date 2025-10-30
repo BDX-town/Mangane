@@ -133,7 +133,7 @@ const changeCompose = (text: string) => ({
   text: text,
 });
 
-const replyCompose = (status: Status) =>
+export const replyCompose = (status: Status) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const instance = state.instance;
@@ -147,8 +147,6 @@ const replyCompose = (status: Status) =>
       account: state.accounts.get(state.me),
       explicitAddressing,
     });
-
-    dispatch(openModal('COMPOSE'));
   };
 
 const compose = (history: History, intl: IntlShape) =>
@@ -280,8 +278,8 @@ const validateSchedule = (state: RootState) => {
 };
 
 const submitCompose = (routerHistory?: History, force = false) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
+  async(dispatch: AppDispatch, getState: () => RootState) => {
+    if (!isLoggedIn(getState)) return null;
     const state = getState();
 
     const status   = state.compose.text;
@@ -291,11 +289,11 @@ const submitCompose = (routerHistory?: History, force = false) =>
 
     if (!validateSchedule(state)) {
       dispatch(snackbar.error(messages.scheduleError));
-      return;
+      return null;
     }
 
     if ((!status || !status.length) && media.size === 0) {
-      return;
+      return null;
     }
 
     if (!force && needsDescriptions(state)) {
@@ -305,7 +303,7 @@ const submitCompose = (routerHistory?: History, force = false) =>
           dispatch(submitCompose(routerHistory, true));
         },
       }));
-      return;
+      return null;
     }
 
     const mentions: string[] | null = status.match(/(?:^|\s)@([a-z\d_-]+(?:@[^@\s]+)?)/gi);
@@ -334,14 +332,17 @@ const submitCompose = (routerHistory?: History, force = false) =>
       to,
     };
 
-    dispatch(createStatus(params, idempotencyKey, statusId)).then(function(data) {
+    try {
+      const data = await dispatch(createStatus(params, idempotencyKey, statusId));
       if (!statusId && data.visibility === 'direct' && getState().conversations.mounted <= 0 && routerHistory) {
         routerHistory.push('/messages');
       }
       handleComposeSubmit(dispatch, getState, data, status, !!statusId);
-    }).catch(function(error) {
+      return data;
+    } catch (error) {
       dispatch(submitComposeFail(error));
-    });
+    }
+    return null;
   };
 
 const submitComposeRequest = () => ({

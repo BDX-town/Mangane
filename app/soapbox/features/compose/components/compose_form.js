@@ -25,7 +25,6 @@ import MarkdownButtonContainer from '../containers/markdown_button_container';
 import PollButtonContainer from '../containers/poll_button_container';
 import PrivacyDropdownContainer from '../containers/privacy_dropdown_container';
 import QuotedStatusContainer from '../containers/quoted_status_container';
-import ReplyIndicatorContainer from '../containers/reply_indicator_container';
 import ScheduleButtonContainer from '../containers/schedule_button_container';
 import ScheduleFormContainer from '../containers/schedule_form_container';
 import SpoilerButtonContainer from '../containers/spoiler_button_container';
@@ -319,8 +318,6 @@ class ComposeForm extends ImmutablePureComponent {
         )}
 
         <WarningContainer />
-
-        {!shouldCondense && <ReplyIndicatorContainer />}
 
         {!shouldCondense && <ReplyMentions />}
 

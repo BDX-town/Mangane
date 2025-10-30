@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { blockAccount } from 'soapbox/actions/accounts';
 import { showAlertForError } from 'soapbox/actions/alerts';
 import { launchChat } from 'soapbox/actions/chats';
-import { directCompose, mentionCompose, quoteComposeWithConfirmation, replyComposeWithConfirmation } from 'soapbox/actions/compose';
+import { directCompose, mentionCompose, quoteComposeWithConfirmation } from 'soapbox/actions/compose';
 import { toggleBookmark, toggleFavourite, togglePin, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { deactivateUserModal, deleteStatusModal, deleteUserModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
@@ -118,10 +118,7 @@ const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismi
         }));
       }
     });
-  }, [history, dispatch, intl, messages.deleteHeading, messages.redraftHeading, messages.deleteMessage, messages.redraftMessage, messages.deleteConfirm, messages.redraftConfirm, settings, status.id]);
-
-
-
+  }, [history, dispatch, intl, settings, status.id]);
 
   const handleDeleteClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
@@ -179,12 +176,7 @@ const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismi
         dispatch(initReport(account, status));
       },
     }));
-  }, [dispatch, intl, messages.blockConfirm, messages.blockAndReport, status]);
-
-  const handleOpen = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
-    e.stopPropagation();
-    history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.id}`);
-  }, [history, status]);
+  }, [dispatch, intl, status]);
 
   const handleEmbed = React.useCallback(() => {
     dispatch(openModal('EMBED', {
@@ -196,7 +188,7 @@ const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismi
   const handleReport = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
     dispatch(initReport(status.account as Account, status));
-  }, [dispatch, status.account, status]);
+  }, [dispatch, status]);
 
   const handleConversationMuteClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
@@ -403,33 +395,7 @@ const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismi
     }
 
     return menu;
-  }, [
-    status,
-    me,
-    features,
-    withDismiss,
-    intl,
-    isStaff,
-    isAdmin,
-    handleOpen,
-    handleCopy,
-    handleEmbed,
-    handleConversationMuteClick,
-    handlePinClick,
-    handleDeleteClick,
-    handleEditClick,
-    handleRedraftClick,
-    handleMentionClick,
-    handleChatClick,
-    handleDirectClick,
-    handleMuteClick,
-    handleBlockClick,
-    handleReport,
-    handleToggleStatusSensitivity,
-    handleDeactivateUser,
-    handleDeleteUser,
-    handleDeleteStatus,
-  ]);
+  }, [status, me, features, withDismiss, intl, isStaff, isAdmin, handleCopy, handleEmbed, handleConversationMuteClick, handlePinClick, handleDeleteClick, handleEditClick, handleRedraftClick, handleMentionClick, handleChatClick, handleDirectClick, handleMuteClick, handleBlockClick, handleReport, handleToggleStatusSensitivity, handleDeactivateUser, handleDeleteUser, handleDeleteStatus]);
 
 
   return (
@@ -468,17 +434,10 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     dispatch(toggleBookmark(status));
   }, [dispatch, status]);
 
-
-
-  const handleReplyClick = React.useCallback<React.MouseEventHandler>((e) => {
-    if (me) {
-      dispatch(replyComposeWithConfirmation(status, intl));
-    } else {
-      onOpenUnauthorizedModal('REPLY');
-    }
-
+  const handleOpen = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
-  }, [me, dispatch, intl, messages.replyMessage, messages.replyConfirm, status, onOpenUnauthorizedModal]);
+    history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.id}`);
+  }, [history, status]);
 
   const handleShareClick = React.useCallback((e) => {
     e.stopPropagation();
@@ -523,7 +482,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     } else {
       onOpenUnauthorizedModal('REBLOG');
     }
-  }, [me, dispatch, intl, messages.replyMessage, messages.replyConfirm, status, onOpenUnauthorizedModal]);
+  }, [me, dispatch, history, status, intl, onOpenUnauthorizedModal]);
 
   const publicStatus = useMemo(() => ['public', 'unlisted', 'local'].includes(status.visibility), [status.visibility]);
 
@@ -554,7 +513,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const meEmojiTitle = useMemo(
     () => intl.formatMessage(reactMessages[meEmojiReact?.get('name') || ''] || messages.favourite),
-    [intl, reactMessages, meEmojiReact, messages.favourite],
+    [intl, reactMessages, meEmojiReact],
   );
 
   const reblogIcon = useMemo(() => {
@@ -578,7 +537,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       icon: require('@tabler/icons/quote.svg'),
       disabled: status.visibility !== 'public' && status.visibility !== 'unlisted',
     },
-  ], [intl, status.reblogged, messages.cancel_reblog_private, messages.reblog, messages.quotePost, handleReblogClick, handleQuoteClick, status.visibility]);
+  ], [intl, status.reblogged, handleReblogClick, handleQuoteClick, status.visibility]);
 
   const replyTitle = useMemo(() => {
     if (!status.in_reply_to_id) {
@@ -586,7 +545,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     } else {
       return intl.formatMessage(messages.replyAll);
     }
-  }, [status.in_reply_to_id, intl, messages.reply, messages.replyAll]);
+  }, [status.in_reply_to_id, intl]);
 
   const canShare = useMemo(() => ('share' in navigator) && publicStatus, [publicStatus]);
 
@@ -601,7 +560,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       <StatusActionButton
         title={replyTitle}
         icon={require('@tabler/icons/message-circle-2.svg')}
-        onClick={handleReplyClick}
+        onClick={handleOpen}
         count={replyCount}
       />
 
