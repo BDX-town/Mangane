@@ -9,7 +9,6 @@ import { useDispatch } from 'react-redux';
 import { closeModal, openModal } from 'soapbox/actions/modals';
 import { Input } from 'soapbox/components/ui';
 import { isUserTouching } from 'soapbox/is_mobile';
-import { option } from 'yargs';
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
@@ -33,11 +32,11 @@ const LanguageDropdownMenu: React.FC<ILanguageDropdownMenu> = ({ style, items, v
 
   const { attributes, styles } = usePopper(reference, node, { placement: top * 2 < window.innerHeight ? 'bottom' : 'top' });
 
-  const handleDocumentClick = (e: MouseEvent | TouchEvent) => {
+  const handleDocumentClick = useCallback((e: MouseEvent | TouchEvent) => {
     if (node && !node.contains(e.target as HTMLElement)) {
       onClose();
     }
-  };
+  }, [node, onClose]);
 
   const handleKeyDown: React.KeyboardEventHandler = e => {
     const index = Number.parseInt(e.currentTarget.getAttribute('data-index'), 10);
@@ -95,24 +94,27 @@ const LanguageDropdownMenu: React.FC<ILanguageDropdownMenu> = ({ style, items, v
       document.removeEventListener('click', handleDocumentClick, false);
       document.removeEventListener('touchend', handleDocumentClick);
     };
-  }, []);
+  }, [handleDocumentClick]);
 
   const [currentItems, setCurrentItems] = useState(items);
 
-  const onSearchChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(debounce((e) => {
+  const onSearchChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
     const search = e.target.value.toUpperCase().normalize('NFC');
     if (search.length === 0) {
       setCurrentItems(items);
       return;
     }
     setCurrentItems(items.filter((i) => i.label.toUpperCase().normalize('NFC').indexOf(search) !== -1));
-  }, 500), [items]);
+  }, [items]);
 
+  const onSearchChangeDebounced = useMemo(() => {
+    return debounce(onSearchChange, 500);
+  }, [onSearchChange]);
 
   return (
     <div className={'absolute bg-white dark:bg-slate-900 z-[1000] rounded-md shadow-lg ml-10 text-sm'} style={{ ...style, ...styles.popper }} role='listbox' ref={setNode} {...attributes.popper}>
       <div className='p-2'>
-        <Input autoFocus onChange={onSearchChange} />
+        <Input autoFocus onChange={onSearchChangeDebounced} />
       </div>
       <div className='h-[250px] overflow-y-auto' ref={list}>
         {currentItems.map((item, index) => (
@@ -147,7 +149,7 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({
   defaultValue,
   value,
 }) => {
-  const node = useRef<HTMLDivElement>(null);
+  const [node, setNode] = useState(null);
   const activeElement = useRef<HTMLElement | null>(null);
   const dispatch = useDispatch();
 
@@ -158,7 +160,21 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({
     return [...previousChoices, ...ALL_OPTIONS];
   }, []);
 
-  const options = useMemo(() => buildOptions(), [buildOptions, value]);
+  const options = useMemo(() => buildOptions(), [buildOptions]);
+
+  const onInternalChange = useCallback((option: { value: LanguageCode }) => {
+    const previousChoices = dedup([option, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')]).slice(0, 3);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(previousChoices));
+    onChange(option.value);
+  }, [onChange]);
+
+
+  const handleModalActionClick: React.MouseEventHandler = useCallback((e) => {
+    e.preventDefault();
+    const option = options[e.currentTarget.getAttribute('data-index') as any];
+    dispatch(closeModal('ACTIONS'));
+    onInternalChange(option);
+  }, [options, dispatch, onInternalChange]);
 
   const handleToggle: React.MouseEventHandler<HTMLButtonElement> = React.useCallback((e) => {
     e.stopPropagation();
@@ -169,27 +185,13 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({
       if (open) activeElement.current?.focus();
       setOpen(!open);
     }
-  }, [open, dispatch]);
-
-  const onInternalChange = useCallback((option: { value: LanguageCode }) => {
-    const previousChoices = dedup([option, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')]).slice(0, 3);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(previousChoices));
-    onChange(option.value);
-  }, [onChange]);
-
-  const handleModalActionClick: React.MouseEventHandler = useCallback((e) => {
-    e.preventDefault();
-    const option = options[e.currentTarget.getAttribute('data-index') as any];
-    dispatch(closeModal('ACTIONS'));
-    onInternalChange(option);
-  }, [options, dispatch, onInternalChange]);
-  
+  }, [open, dispatch, options, handleModalActionClick, value]);
 
   const handleMouseDown = useCallback(() => {
     if (!open) {
       activeElement.current = document.activeElement as HTMLElement | null;
     }
-  }, []);
+  }, [open]);
 
   const handleButtonKeyDown: React.KeyboardEventHandler = useCallback((e) => {
     switch (e.key) {
@@ -205,7 +207,7 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({
       activeElement.current?.focus();
     }
     setOpen(false);
-  }, []);
+  }, [open]);
 
   const handleKeyDown: React.KeyboardEventHandler = useCallback(e => {
     switch (e.key) {
@@ -216,7 +218,7 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({
   }, [handleClose]);
 
   return (
-    <div className={classNames('language-dropdown', { active: open })} onKeyDown={handleKeyDown} ref={node}>
+    <div className={classNames('language-dropdown', { active: open })} onKeyDown={handleKeyDown} ref={setNode}>
       <div className={classNames('language-dropdown__value')}>
         <button
           className='text-gray-400 hover:text-gray-600 border-0 bg-transparent px-1 font-bold'
@@ -235,7 +237,7 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({
             value={value}
             onClose={handleClose}
             onChange={onInternalChange}
-            reference={node.current as HTMLElement}
+            reference={node as HTMLElement}
           />
         )
       }
