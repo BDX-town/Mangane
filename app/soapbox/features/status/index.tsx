@@ -479,9 +479,6 @@ const Thread: React.FC<IThread> = (props) => {
   useEffect(() => {
     if (!actualStatus) return undefined;
     dispatch(replyCompose(actualStatus));
-    return () => {
-      dispatch(resetCompose());
-    };
   }, [actualStatus, dispatch]);
 
   const handleComposeSubmit = useCallback(async (router, group) => {

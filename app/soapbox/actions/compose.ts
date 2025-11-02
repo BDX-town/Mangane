@@ -179,36 +179,19 @@ const cancelReplyCompose = () => ({
   type: COMPOSE_REPLY_CANCEL,
 });
 
-const quoteComposeWithConfirmation = (history: History, status: Status, intl: IntlShape) =>
+const quoteCompose = (history: History, status: Status) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const instance = state.instance;
     const { explicitAddressing } = getFeatures(instance);
 
-    if (state.compose.text.trim().length !== 0) {
-      dispatch(openModal('CONFIRM', {
-        message: intl.formatMessage(messages.composeMessage),
-        confirm: intl.formatMessage(messages.composeConfirm),
-        onConfirm: () =>  {
-          dispatch({
-            type: COMPOSE_QUOTE,
-            status: status,
-            account: state.accounts.get(state.me),
-            explicitAddressing,
-          });
-          history.push('/statuses/compose');
-        },
-      }));
-    } else {
-      dispatch({
-        type: COMPOSE_QUOTE,
-        status: status,
-        account: state.accounts.get(state.me),
-        explicitAddressing,
-      });
-      history.push('/statuses/compose');
-    }
-
+    dispatch({
+      type: COMPOSE_QUOTE,
+      status: status,
+      account: state.accounts.get(state.me),
+      explicitAddressing,
+    });
+    history.push('/statuses/compose');
   };
 
 const cancelQuoteCompose = () => ({
@@ -802,7 +785,7 @@ export {
   changeCompose,
   replyComposeWithConfirmation,
   cancelReplyCompose,
-  quoteComposeWithConfirmation,
+  quoteCompose,
   cancelQuoteCompose,
   resetCompose,
   mentionCompose,
