@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { blockAccount } from 'soapbox/actions/accounts';
 import { showAlertForError } from 'soapbox/actions/alerts';
 import { launchChat } from 'soapbox/actions/chats';
-import { directCompose, mentionCompose, quoteComposeWithConfirmation } from 'soapbox/actions/compose';
+import { directCompose, mentionCompose, quoteCompose } from 'soapbox/actions/compose';
 import { toggleBookmark, toggleFavourite, togglePin, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { deactivateUserModal, deleteStatusModal, deleteUserModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
@@ -478,11 +478,11 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     e.stopPropagation();
 
     if (me) {
-      dispatch(quoteComposeWithConfirmation(history, status, intl));
+      dispatch(quoteCompose(history, status));
     } else {
       onOpenUnauthorizedModal('REBLOG');
     }
-  }, [me, dispatch, history, status, intl, onOpenUnauthorizedModal]);
+  }, [me, dispatch, history, status, onOpenUnauthorizedModal]);
 
   const publicStatus = useMemo(() => ['public', 'unlisted', 'local'].includes(status.visibility), [status.visibility]);
 

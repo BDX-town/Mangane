@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
-import { changeCompose } from 'soapbox/actions/compose';
+import { changeCompose, resetCompose } from 'soapbox/actions/compose';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { Column } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
@@ -12,7 +12,6 @@ import ComposeFormContainer from '../compose/containers/compose_form_container';
 const messages = defineMessages({
   edit: { id: 'navigation_bar.compose_edit', defaultMessage: 'Edit post' },
   direct: { id: 'navigation_bar.compose_direct', defaultMessage: 'Direct message' },
-  reply: { id: 'navigation_bar.compose_reply', defaultMessage: 'Reply to post' },
   quote: { id: 'navigation_bar.compose_quote', defaultMessage: 'Quote post' },
   compose: { id: 'navigation_bar.compose', defaultMessage: 'Compose new post' },
 });
@@ -26,19 +25,24 @@ const NewStatus = () => {
   const inReplyTo = useAppSelector((state) => state.compose.in_reply_to);
   const quote = useAppSelector((state) => state.compose.quote);
 
+  useEffect(() => {
+    if (inReplyTo && !statusId && !quote) {
+      // we should not be there replying so let's reset the composition
+      dispatch(resetCompose());
+    }
+  }, [dispatch, inReplyTo, quote, statusId]);
+
   const renderTitle = useMemo(() => {
     if (statusId) {
       return intl.formatMessage(messages.edit);
     } else if (privacy === 'direct') {
       return intl.formatMessage(messages.direct);
-    } else if (inReplyTo) {
-      return intl.formatMessage(messages.reply);
     } else if (quote) {
       return intl.formatMessage(messages.quote);
     } else {
       return intl.formatMessage(messages.compose);
     }
-  }, [intl, statusId, privacy, inReplyTo, quote]);
+  }, [statusId, privacy, quote, intl]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
