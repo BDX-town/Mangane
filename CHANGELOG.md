@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.18.3 (2025-11-02)
+
+
+### Bug Fixes
+
+* reply in thread does not prevent editing nor quoting ([#425](https://github.com/BDX-town/Mangane/issues/425)) ([d1990c5](https://github.com/BDX-town/Mangane/commit/d1990c538b9c766ef834fda17dd1ce82a5af6e27))
+
 ## 1.18.2 (2025-10-30)
 
 
