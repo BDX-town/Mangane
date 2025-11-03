@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 
 import { getSettings } from 'soapbox/actions/settings';
@@ -50,7 +50,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
 
   const canTranslate = React.useMemo(() =>
     ownAccount && features.translations && actualStatus.language !== locale
-  , [ownAccount, features, actualStatus]);
+  , [ownAccount, features.translations, actualStatus.language, locale]);
 
   const handleExpandedToggle = () => {
     onToggleHidden(status);
@@ -62,7 +62,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
 
   const handleTranslateStatus = React.useCallback(() => {
     onTranslate(status, locale);
-  }, [status, locale]);
+  }, [onTranslate, status, locale]);
 
   const privacyIcon = React.useMemo(() => {
     switch (actualStatus?.visibility) {
@@ -73,50 +73,55 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
       case 'private': return require('@tabler/icons/lock.svg');
       case 'direct': return require('@tabler/icons/mail.svg');
     }
-  }, [actualStatus?.visibility]);
+  }, [actualStatus, logo]);
+
+
+
+  const quote = useMemo(() => {
+    if (actualStatus?.quote) {
+      if (actualStatus?.pleroma.get('quote_visible', true) === false) {
+        return (
+          <div className='quoted-actualStatus-tombstone'>
+            <p><FormattedMessage id='actualStatuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
+          </div>
+        );
+      } else {
+        return <QuotedStatus statusId={actualStatus.quote as string} />;
+      }
+    }
+    return null;
+  }, [actualStatus]);
+
+  const translationStatus = useMemo(() => {
+    if (!canTranslate) return (
+      <div className='text-gray-400 dark:text-gray-600 font-bold'>
+        {actualStatus.language}
+      </div>
+    );
+    return (
+      !actualStatus?.translations.get(locale) ? (
+        <Button theme='link' size='sm'  onClick={handleTranslateStatus}>
+          <Icon className='mr-1' src={require('@tabler/icons/language.svg')} />
+          <FormattedMessage id='actualStatuses.translate' defaultMessage='Translate' />
+        </Button>
+      ) : (
+        <Text theme='subtle' className='flex items-center' size='xs'>
+          <Icon className='mr-1' src={require('@tabler/icons/check.svg')} />
+          <FormattedMessage id='actualStatuses.translated' defaultMessage='Translate' />
+        </Text>
+      )
+    );
+  }, [actualStatus, canTranslate, handleTranslateStatus, locale]);
+
 
   if (!actualStatus) return null;
   if (!account || typeof account !== 'object') return null;
-
-
-
-  let quote;
-
-  if (actualStatus.quote) {
-    if (actualStatus.pleroma.get('quote_visible', true) === false) {
-      quote = (
-        <div className='quoted-actualStatus-tombstone'>
-          <p><FormattedMessage id='actualStatuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
-        </div>
-      );
-    } else {
-      quote = <QuotedStatus statusId={actualStatus.quote as string} />;
-    }
-  }
-
-
 
   return (
     <div className='border-box'>
       <div ref={node} className='detailed-actualStatus' tabIndex={-1}>
         <div className='mb-4 flex items-center justify-between gap-1'>
-          {
-            canTranslate ? (
-              !actualStatus.translations.get(locale) ? (
-                <Button theme='link' size='sm'  onClick={handleTranslateStatus}>
-                  <Icon className='mr-1' src={require('@tabler/icons/language.svg')} />
-                  <FormattedMessage id='actualStatuses.translate' defaultMessage='Translate' />
-                </Button>
-              ) : (
-                <Text theme='subtle' className='flex items-center' size='xs'>
-                  <Icon className='mr-1' src={require('@tabler/icons/check.svg')} />
-                  <FormattedMessage id='actualStatuses.translated' defaultMessage='Translate' />
-                </Text>
-              )
-            ) : (
-              <Icon className='text-gray-300 dark:text-slate-500' src={require('@tabler/icons/note.svg')} />
-            )
-          }
+          {translationStatus}
           <div className='flex items-center gap-2'>
             <span className='text-gray-400 dark:text-gray-600 text-xs'>
               <a href={actualStatus.url} target='_blank' rel='noopener' className='hover:underline'>
