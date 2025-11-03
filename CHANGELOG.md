@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.18.4 (2025-11-03)
+
+
+### Bug Fixes
+
+* hide fab on posts to avoid missclick when writing replies ([#426](https://github.com/BDX-town/Mangane/issues/426)) ([a20b890](https://github.com/BDX-town/Mangane/commit/a20b8906f05d20047110c676b677a6f4b7b61214))
+
 ## 1.18.3 (2025-11-02)
 
 
