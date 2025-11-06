@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.18.5 (2025-11-06)
+
+
+### Bug Fixes
+
+* default language is not applied when composing ([#428](https://github.com/BDX-town/Mangane/issues/428)) ([59bcb4a](https://github.com/BDX-town/Mangane/commit/59bcb4afe4247a98489f9345a23037b53ad0bbf7))
+
 ## 1.18.4 (2025-11-03)
 
 
