@@ -179,7 +179,7 @@ const Thread: React.FC<IThread> = (props) => {
 
   /** Fetch the status (and context) from the API. */
   const fetchDataRef = useRef(null);
-  const fetchData = useCallback(async() => {
+  const fetchData = useCallback(async () => {
     try {
       const time = new Date().getTime();
       fetchDataRef.current = time;
@@ -437,7 +437,7 @@ const Thread: React.FC<IThread> = (props) => {
     return fetchData();
   }, [fetchData]);
 
-  const handleLoadMore = useCallback(async() => {
+  const handleLoadMore = useCallback(async () => {
     if (!next || !actualStatus) return;
     try {
       const { next: _next } = await dispatch(fetchNext(actualStatus.id, next));
@@ -477,7 +477,7 @@ const Thread: React.FC<IThread> = (props) => {
   const titleMessage = actualStatus?.visibility === 'direct' ? messages.titleDirect : messages.title;
 
   useEffect(() => {
-    if (!actualStatus) return undefined;
+    if (!actualStatus || !me) return undefined;
     dispatch(replyCompose(actualStatus));
   }, [actualStatus, dispatch]);
 
@@ -516,10 +516,15 @@ const Thread: React.FC<IThread> = (props) => {
           </div>
         </HotKeys>
       </div>
-      <hr className='my-5 border-gray-200 dark:border-gray-700' />
-      <div className='py-4'>
-        <ComposeFormContainer autoFocus={false} onSubmit={handleComposeSubmit} />
-      </div>
+      {
+        me && <>
+          <hr className='my-5 border-gray-200 dark:border-gray-700' />
+          <div className='py-4'>
+            <ComposeFormContainer autoFocus={false} onSubmit={handleComposeSubmit} />
+          </div>
+        </>
+      }
+
     </>
   ), [actualStatus, handlers, intl, handleOpenVideo, handleOpenMedia, handleToggleHidden, showMedia, handleToggleMediaVisibility, handleOpenCompareHistoryModal, handleTranslate, handleComposeSubmit]);
 
