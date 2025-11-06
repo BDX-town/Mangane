@@ -133,7 +133,6 @@ const LanguageDropdownMenu: React.FC<ILanguageDropdownMenu> = ({ style, items, v
 interface ILanguageDropdown {
   value: string,
   onChange: (value: string | null) => void,
-  defaultValue: string,
 }
 
 const ALL_OPTIONS = ISO6391.getAllCodes().map((code) => ({ value: code, label: ISO6391.getNativeName(code) }));
@@ -146,7 +145,6 @@ function dedup(items: any[]) {
 
 const LanguageDropdown: React.FC<ILanguageDropdown> = ({
   onChange,
-  defaultValue,
   value,
 }) => {
   const [node, setNode] = useState(null);
@@ -226,7 +224,7 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({
           onMouseDown={handleMouseDown}
           onKeyDown={handleButtonKeyDown}
         >
-          { value || defaultValue }
+          { value }
         </button>
       </div>
 

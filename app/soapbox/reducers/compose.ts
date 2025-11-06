@@ -84,7 +84,7 @@ export const ReducerRecord = ImmutableRecord({
   default_content_type: 'text/plain',
   default_privacy: 'public' as StatusVisibility,
   default_sensitive: false,
-  default_language: null as string | null,
+  default_language: 'en' as string | null,
   focusDate: null as Date | null,
   idempotencyKey: '',
   id: null as string | null,
@@ -151,6 +151,8 @@ function clearAll(state: State) {
     default_content_type: state.default_content_type,
     privacy: state.default_privacy,
     default_privacy: state.default_privacy,
+    language: state.default_language,
+    default_language: state.default_language,
     idempotencyKey: uuid(),
   });
 }
@@ -360,7 +362,6 @@ export default function compose(state = ReducerRecord({ idempotencyKey: uuid(), 
         map.set('caretPosition', null);
         map.set('idempotencyKey', uuid());
         map.set('content_type', state.default_content_type);
-
         if (action.status.get('spoiler_text', '').length > 0) {
           map.set('spoiler', true);
           map.set('spoiler_text', action.status.spoiler_text);

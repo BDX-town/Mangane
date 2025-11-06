@@ -6,7 +6,7 @@ import { shouldHaveCard } from 'soapbox/utils/status';
 
 import api, { getNextLink } from '../api';
 
-import { cancelQuoteCompose, setComposeToStatus } from './compose';
+import { setComposeToStatus } from './compose';
 import { importFetchedStatus, importFetchedStatuses } from './importer';
 import { openModal } from './modals';
 import { deleteFromTimelines } from './timelines';
