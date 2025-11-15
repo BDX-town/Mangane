@@ -2,7 +2,7 @@
   "name": "mangane-fe",
   "version": "1.18.6",
   "displayName": "Mangane",
-  "description": "Devanture pour https://bdx.town",
+  "description": "Alternative frontend for Akkoma",
   "homepage": "https://bdx.town",
   "repository": {
     "type": "git",
