@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.18.6 (2025-11-15)
+
+
+### Bug Fixes
+
+* reply_to is not reset when quoting ([#432](https://github.com/BDX-town/Mangane/issues/432)) ([87ec423](https://github.com/BDX-town/Mangane/commit/87ec423afa7d6a7b45ae261c29acb7e344ef2310))
+
 ## 1.18.5 (2025-11-06)
 
 
