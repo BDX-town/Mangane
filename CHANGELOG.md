@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.18.6 (2025-11-15)
+
+
+### Bug Fixes
+
+* reply composing is reset when selecting an emoji ([#431](https://github.com/BDX-town/Mangane/issues/431)) ([867a2de](https://github.com/BDX-town/Mangane/commit/867a2deb6814c6babd9f067ed4b7d77fd8dd55f8))
+
 ## 1.18.5 (2025-11-06)
 
 
