@@ -10,8 +10,6 @@ import { createSelector } from 'reselect';
 import {
   mentionCompose,
   replyCompose,
-  replyComposeWithConfirmation,
-  resetCompose,
   submitCompose,
 } from 'soapbox/actions/compose';
 import {
@@ -179,7 +177,7 @@ const Thread: React.FC<IThread> = (props) => {
 
   /** Fetch the status (and context) from the API. */
   const fetchDataRef = useRef(null);
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async() => {
     try {
       const time = new Date().getTime();
       fetchDataRef.current = time;
@@ -215,10 +213,6 @@ const Thread: React.FC<IThread> = (props) => {
       dispatch(favourite(status));
     }
   }, [dispatch]);
-
-  const handleReplyClick = useCallback((status: StatusEntity) => {
-    dispatch(replyComposeWithConfirmation(status, intl));
-  }, [dispatch, intl]);
 
   const handleModalReblog = useCallback((status: StatusEntity) => {
     dispatch(reblog(status));
@@ -275,11 +269,6 @@ const Thread: React.FC<IThread> = (props) => {
   }, [dispatch]);
 
 
-
-  const handleHotkeyReply = useCallback((e?: KeyboardEvent) => {
-    e?.preventDefault();
-    handleReplyClick(actualStatus!);
-  }, [handleReplyClick, actualStatus]);
 
   const handleHotkeyFavourite = useCallback(() => {
     handleFavouriteClick(actualStatus!);
@@ -437,7 +426,7 @@ const Thread: React.FC<IThread> = (props) => {
     return fetchData();
   }, [fetchData]);
 
-  const handleLoadMore = useCallback(async () => {
+  const handleLoadMore = useCallback(async() => {
     if (!next || !actualStatus) return;
     try {
       const { next: _next } = await dispatch(fetchNext(actualStatus.id, next));
@@ -462,7 +451,6 @@ const Thread: React.FC<IThread> = (props) => {
   const handlers: HotkeyHandlers = useMemo(() => ({
     moveUp: handleHotkeyMoveUp,
     moveDown: handleHotkeyMoveDown,
-    reply: handleHotkeyReply,
     favourite: handleHotkeyFavourite,
     boost: handleHotkeyBoost,
     mention: handleHotkeyMention,
@@ -471,17 +459,19 @@ const Thread: React.FC<IThread> = (props) => {
     toggleSensitive: handleHotkeyToggleSensitive,
     openMedia: handleHotkeyOpenMedia,
     react: handleHotkeyReact,
-  }), [handleHotkeyBoost, handleHotkeyFavourite, handleHotkeyMention, handleHotkeyMoveDown, handleHotkeyMoveUp, handleHotkeyOpenMedia, handleHotkeyOpenProfile, handleHotkeyReact, handleHotkeyReply, handleHotkeyToggleHidden, handleHotkeyToggleSensitive]);
+  }), [handleHotkeyBoost, handleHotkeyFavourite, handleHotkeyMention, handleHotkeyMoveDown, handleHotkeyMoveUp, handleHotkeyOpenMedia, handleHotkeyOpenProfile, handleHotkeyReact, handleHotkeyToggleHidden, handleHotkeyToggleSensitive]);
 
   const username = String(actualStatus?.getIn(['account', 'acct']) || '');
   const titleMessage = actualStatus?.visibility === 'direct' ? messages.titleDirect : messages.title;
 
+  const composingReplyTo = useRef(null);
   useEffect(() => {
-    if (!actualStatus || !me) return undefined;
+    if (!actualStatus || !me || composingReplyTo.current === actualStatus.id) return undefined;
     dispatch(replyCompose(actualStatus));
-  }, [actualStatus, dispatch]);
+    composingReplyTo.current = actualStatus.id;
+  }, [actualStatus, dispatch, me]);
 
-  const handleComposeSubmit = useCallback(async (router, group) => {
+  const handleComposeSubmit = useCallback(async(router, group) => {
     const status = await dispatch(submitCompose(router, group));
     if (status) {
       const url = new URL(status.url);
@@ -526,7 +516,7 @@ const Thread: React.FC<IThread> = (props) => {
       }
 
     </>
-  ), [actualStatus, handlers, intl, handleOpenVideo, handleOpenMedia, handleToggleHidden, showMedia, handleToggleMediaVisibility, handleOpenCompareHistoryModal, handleTranslate, handleComposeSubmit]);
+  ), [actualStatus, handlers, intl, handleOpenVideo, handleOpenMedia, handleToggleHidden, showMedia, handleToggleMediaVisibility, handleOpenCompareHistoryModal, handleTranslate, me, handleComposeSubmit]);
 
 
   const children = useMemo(() => {
