@@ -373,6 +373,7 @@ export default function compose(state = ReducerRecord({ idempotencyKey: uuid(), 
     case COMPOSE_QUOTE:
       return state.withMutations(map => {
         map.set('quote', action.status.get('id'));
+        map.set('in_reply_to', null);
         map.set('to', ImmutableOrderedSet());
         map.set('text', '');
         map.set('privacy', privacyPreference(action.status.visibility, state.default_privacy));
