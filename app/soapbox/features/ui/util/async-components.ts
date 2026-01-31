@@ -314,18 +314,6 @@ export function MfaForm() {
   return import(/* webpackChunkName: "features/security/mfa_form" */'../../security/mfa_form');
 }
 
-export function ChatIndex() {
-  return import(/* webpackChunkName: "features/chats" */'../../chats');
-}
-
-export function ChatRoom() {
-  return import(/* webpackChunkName: "features/chats/chat_room" */'../../chats/chat-room');
-}
-
-export function ChatPanes() {
-  return import(/* webpackChunkName: "features/chats/components/chat_panes" */'../../chats/components/chat-panes');
-}
-
 export function ServerInfo() {
   return import(/* webpackChunkName: "features/server_info" */'../../server_info');
 }
