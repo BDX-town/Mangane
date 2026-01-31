@@ -291,10 +291,10 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     }
 
                     {
-                      (features.directTimeline || features.conversations) && (
+                      (features.conversations) && (
                         <SidebarLink
                           onClick={onClose}
-                          to='/messages'
+                          to='/conversations'
                           icon={require('@tabler/icons/mail.svg')}
                           text={<FormattedMessage id='column.direct' defaultMessage='Direct messages' />}
                         />
