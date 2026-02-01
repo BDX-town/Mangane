@@ -201,7 +201,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <Redirect from='/timelines/home' to='/' />
       <Redirect from='/timelines/public/local' to='/timeline/local' />
       <Redirect from='/timelines/public' to='/timeline/fediverse' />
-      <Redirect from='/timelines/direct' to='/messages' />
+      <Redirect from='/timelines/direct' to='/conversations' />
 
       {/* Pleroma FE web routes */}
       <Redirect from='/main/all' to='/timeline/fediverse' />
