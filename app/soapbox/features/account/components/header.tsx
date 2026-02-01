@@ -152,7 +152,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   };
 
   const onDirect = () => {
-    dispatch(directCompose(account));
+    dispatch(directCompose(history, account));
   };
 
   const onReblogToggle = () => {

@@ -129,8 +129,8 @@ const SidebarNavigation = () => {
               (features.conversations) && (
                 <SidebarNavigationLink
                   to='/conversations'
-                  icon={require('@tabler/icons/mail.svg')}
-                  text={<FormattedMessage id='column.direct' defaultMessage='Direct messages' />}
+                  icon={require('@tabler/icons/messages.svg')}
+                  text={<FormattedMessage id='column.direct' defaultMessage='Conversations' />}
                 />
               )
             }

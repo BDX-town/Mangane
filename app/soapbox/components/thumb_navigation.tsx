@@ -133,7 +133,7 @@ const CommunityTimelineMenu = ({ referenceElement, onClose }: { referenceElement
   const handleClickOutside = React.useCallback((e) => {
     if (popperElement.contains(e.target)) return;
     onClose(e);
-  }, [popperElement]);
+  }, [onClose, popperElement]);
 
   React.useEffect(() => {
     window.addEventListener('click', handleClickOutside);
