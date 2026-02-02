@@ -16,6 +16,7 @@ import { fetchVerificationConfig } from 'soapbox/actions/verification';
 import * as BuildConfig from 'soapbox/build_config';
 import GdprBanner from 'soapbox/components/gdpr-banner';
 import Helmet from 'soapbox/components/helmet';
+import InlineStyle from 'soapbox/components/inline-style';
 import LoadingScreen from 'soapbox/components/loading-screen';
 import AuthLayout from 'soapbox/features/auth_layout';
 import PublicLayout from 'soapbox/features/public_layout';
@@ -269,10 +270,11 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
       <Helmet>
         <html lang={locale} className={classNames('h-full', { dark: darkMode })} />
         <body className={bodyClass} />
-        {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
-        {darkMode && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
         <meta name='theme-color' content={soapboxConfig.brandColor} />
       </Helmet>
+
+      <InlineStyle id='theme'>{`:root{${themeCss}}`}</InlineStyle>
+      {darkMode && <InlineStyle>{':root { color-scheme: dark; }'}</InlineStyle>}
 
       {children}
     </>

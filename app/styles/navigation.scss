@@ -1,5 +1,5 @@
 .thumb-navigation {
-  padding-bottom: env(safe-area-inset-bottom); /* iOS PWA */
+  margin-bottom: env(safe-area-inset-bottom); /* iOS PWA */
   overflow-x: auto;
   scrollbar-width: thin;
   scrollbar-color: #fff;

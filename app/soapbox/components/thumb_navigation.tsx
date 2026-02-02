@@ -133,7 +133,7 @@ const CommunityTimelineMenu = ({ referenceElement, onClose }: { referenceElement
   const handleClickOutside = React.useCallback((e) => {
     if (popperElement.contains(e.target)) return;
     onClose(e);
-  }, [popperElement]);
+  }, [onClose, popperElement]);
 
   React.useEffect(() => {
     window.addEventListener('click', handleClickOutside);
@@ -170,7 +170,7 @@ const ThumbNavigation: React.FC<{ className?: string }> = ({ className = '', ...
     setShowCommunityMenu(e.currentTarget);
   }, []);
 
-  const onOpenSidebar = React.useCallback(() => dispatch(openSidebar()), [dispatch, openSidebar]);
+  const onOpenSidebar = React.useCallback(() => dispatch(openSidebar()), [dispatch]);
 
   // we close community menu when route changes
   React.useEffect(() => {

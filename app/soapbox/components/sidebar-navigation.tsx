@@ -22,7 +22,6 @@ const SidebarNavigation = () => {
   const instance = useAppSelector((state) => state.instance);
   const account = useOwnAccount();
   const notificationCount = useAppSelector((state) => state.notifications.get('unread'));
-  const chatsCount = useAppSelector((state) => state.chats.items.reduce((acc, curr) => acc + Math.min(curr.unread || 0, 1), 0));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
 
@@ -115,22 +114,11 @@ const SidebarNavigation = () => {
             />
 
             {
-              features.chats && (
+              (features.conversations) && (
                 <SidebarNavigationLink
-                  to='/chats'
+                  to='/conversations'
                   icon={require('@tabler/icons/messages.svg')}
-                  count={chatsCount}
-                  text={<FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' />}
-                />
-              )
-            }
-
-            {
-              (features.directTimeline || features.conversations) && (
-                <SidebarNavigationLink
-                  to='/messages'
-                  icon={require('@tabler/icons/mail.svg')}
-                  text={<FormattedMessage id='column.direct' defaultMessage='Direct messages' />}
+                  text={<FormattedMessage id='column.direct' defaultMessage='Conversations' />}
                 />
               )
             }

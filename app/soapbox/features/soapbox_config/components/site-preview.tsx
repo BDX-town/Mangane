@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { defaultSettings } from 'soapbox/actions/settings';
+import InlineStyle from 'soapbox/components/inline-style';
 import SiteLogo from 'soapbox/components/site-logo';
 import BackgroundShapes from 'soapbox/features/ui/components/background_shapes';
 import { useSystemTheme } from 'soapbox/hooks';
@@ -36,7 +37,7 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
 
   return (
     <div className={bodyClass}>
-      <style>{`.site-preview {${generateThemeCss(soapboxConfig)}}`}</style>
+      <InlineStyle>{`.site-preview {${generateThemeCss(soapboxConfig)}}`}</InlineStyle>
       <BackgroundShapes position='absolute' />
 
       <div className='absolute p-2 rounded-lg overflow-hidden bg-accent-500 text-white self-center z-20'>

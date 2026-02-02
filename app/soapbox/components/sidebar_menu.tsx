@@ -34,7 +34,7 @@ const messages = defineMessages({
   invites: { id: 'navigation_bar.invites', defaultMessage: 'Invites' },
   developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
   addAccount: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
-  direct: { id: 'column.direct', defaultMessage: 'Direct messages' },
+  direct: { id: 'column.direct', defaultMessage: 'Conversations' },
   directory: { id: 'navigation_bar.profile_directory', defaultMessage: 'Profile directory' },
   dashboard: { id: 'tabs_bar.dashboard', defaultMessage: 'Dashboard' },
   tags: { id: 'navigation_bar.tags', defaultMessage: 'Hashtags' },
@@ -93,7 +93,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
 
   const notificationCount = useAppSelector((state) => state.notifications.get('unread'));
-  const chatsCount = useAppSelector((state) => state.chats.items.reduce((acc, curr) => acc + Math.min(curr.unread || 0, 1), 0));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
 
@@ -279,24 +278,12 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     />
 
                     {
-                      features.chats && (
+                      (features.conversations) && (
                         <SidebarLink
-                          to='/chats'
+                          onClick={onClose}
+                          to='/conversations'
                           icon={require('@tabler/icons/messages.svg')}
-                          count={chatsCount}
-                          onClick={onClose}
-                          text={<FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' />}
-                        />
-                      )
-                    }
-
-                    {
-                      (features.directTimeline || features.conversations) && (
-                        <SidebarLink
-                          onClick={onClose}
-                          to='/messages'
-                          icon={require('@tabler/icons/mail.svg')}
-                          text={<FormattedMessage id='column.direct' defaultMessage='Direct messages' />}
+                          text={<FormattedMessage id='column.direct' defaultMessage='Conversations' />}
                         />
                       )
                     }

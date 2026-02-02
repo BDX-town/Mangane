@@ -30,10 +30,6 @@ export function HashtagTimeline() {
   return import(/* webpackChunkName: "features/hashtag_timeline" */'../../hashtag_timeline');
 }
 
-export function DirectTimeline() {
-  return import(/* webpackChunkName: "features/direct_timeline" */'../../direct_timeline');
-}
-
 export function Conversations() {
   return import(/* webpackChunkName: "features/conversations" */'../../conversations');
 }
@@ -312,18 +308,6 @@ export function PasswordResetConfirm() {
 
 export function MfaForm() {
   return import(/* webpackChunkName: "features/security/mfa_form" */'../../security/mfa_form');
-}
-
-export function ChatIndex() {
-  return import(/* webpackChunkName: "features/chats" */'../../chats');
-}
-
-export function ChatRoom() {
-  return import(/* webpackChunkName: "features/chats/chat_room" */'../../chats/chat-room');
-}
-
-export function ChatPanes() {
-  return import(/* webpackChunkName: "features/chats/components/chat_panes" */'../../chats/components/chat-panes');
 }
 
 export function ServerInfo() {
