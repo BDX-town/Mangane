@@ -212,26 +212,25 @@ const mentionCompose = (account: Account) =>
     dispatch(openModal('COMPOSE'));
   };
 
-const directCompose = (account: Account) =>
+const directCompose = (history: History, account: Account) =>
   (dispatch: AppDispatch) => {
+    dispatch(resetCompose());
     dispatch({
       type: COMPOSE_DIRECT,
       account: account,
     });
-
-    dispatch(openModal('COMPOSE'));
+    history.push('/statuses/compose');
   };
 
-const directComposeById = (accountId: string) =>
+const directComposeById = (history: History, accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const account = getState().accounts.get(accountId);
-
+    dispatch(resetCompose());
     dispatch({
       type: COMPOSE_DIRECT,
       account: account,
     });
-
-    dispatch(openModal('COMPOSE'));
+    history.push('/statuses/compose');
   };
 
 const handleComposeSubmit = (dispatch: AppDispatch, getState: () => RootState, data: APIEntity, status: string, edit?: boolean) => {

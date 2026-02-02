@@ -55,11 +55,12 @@ const ConversationsList: React.FC = () => {
       scrollKey='direct'
       ref={ref}
       isLoading={isLoading}
-      showLoading={isLoading && conversations.size === 0}
+      showLoading={isLoading}
       emptyMessage={<FormattedMessage id='empty_column.direct' defaultMessage="You don't have any direct messages yet. When you send or receive one, it will show up here." />}
     >
       {conversations.map((item: any) => (
         <Conversation
+          className='my-3'
           key={item.id}
           conversationId={item.id}
           onMoveUp={handleMoveUp}

@@ -34,7 +34,7 @@ const messages = defineMessages({
   invites: { id: 'navigation_bar.invites', defaultMessage: 'Invites' },
   developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
   addAccount: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
-  direct: { id: 'column.direct', defaultMessage: 'Direct messages' },
+  direct: { id: 'column.direct', defaultMessage: 'Conversations' },
   directory: { id: 'navigation_bar.profile_directory', defaultMessage: 'Profile directory' },
   dashboard: { id: 'tabs_bar.dashboard', defaultMessage: 'Dashboard' },
   tags: { id: 'navigation_bar.tags', defaultMessage: 'Hashtags' },
@@ -278,12 +278,12 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     />
 
                     {
-                      (features.directTimeline || features.conversations) && (
+                      (features.conversations) && (
                         <SidebarLink
                           onClick={onClose}
-                          to='/messages'
-                          icon={require('@tabler/icons/mail.svg')}
-                          text={<FormattedMessage id='column.direct' defaultMessage='Direct messages' />}
+                          to='/conversations'
+                          icon={require('@tabler/icons/messages.svg')}
+                          text={<FormattedMessage id='column.direct' defaultMessage='Conversations' />}
                         />
                       )
                     }

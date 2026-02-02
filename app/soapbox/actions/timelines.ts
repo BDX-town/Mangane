@@ -204,9 +204,6 @@ const expandRemoteTimeline = (instance: string, { maxId, onlyMedia, excludeRepli
 const expandCommunityTimeline = ({ maxId, onlyMedia, excludeReplies }: Record<string, any> = {}, done = noOp) =>
   expandTimeline(`community${onlyMedia ? ':media' : ''}${excludeReplies ? ':exclude_replies' : ''}`, '/api/v1/timelines/public', { local: true, max_id: maxId, only_media: !!onlyMedia, exclude_replies: excludeReplies }, done);
 
-const expandDirectTimeline = ({ maxId }: Record<string, any> = {}, done = noOp) =>
-  expandTimeline('direct', '/api/v1/timelines/direct', { max_id: maxId }, done);
-
 const expandAccountTimeline = (accountId: string, { maxId, withReplies }: Record<string, any> = {}) =>
   expandTimeline(`account:${accountId}${withReplies ? ':with_replies' : ''}`, `/api/v1/accounts/${accountId}/statuses`, { exclude_replies: !withReplies, max_id: maxId, with_muted: true });
 
@@ -307,7 +304,6 @@ export {
   expandPublicTimeline,
   expandRemoteTimeline,
   expandCommunityTimeline,
-  expandDirectTimeline,
   expandAccountTimeline,
   expandAccountFeaturedTimeline,
   expandAccountMediaTimeline,

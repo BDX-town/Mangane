@@ -753,7 +753,7 @@
         "id": "profile_dropdown.add_account"
       },
       {
-        "defaultMessage": "Direct messages",
+        "defaultMessage": "Conversations",
         "id": "column.direct"
       },
       {
@@ -834,7 +834,7 @@
         "id": "tabs_bar.chats"
       },
       {
-        "defaultMessage": "Direct messages",
+        "defaultMessage": "Conversations",
         "id": "column.direct"
       },
       {
@@ -2836,7 +2836,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Direct messages",
+        "defaultMessage": "Conversations",
         "id": "column.direct"
       },
       {
@@ -3096,7 +3096,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Direct messages",
+        "defaultMessage": "Conversations",
         "id": "column.direct"
       },
       {

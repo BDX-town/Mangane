@@ -30,10 +30,6 @@ export function HashtagTimeline() {
   return import(/* webpackChunkName: "features/hashtag_timeline" */'../../hashtag_timeline');
 }
 
-export function DirectTimeline() {
-  return import(/* webpackChunkName: "features/direct_timeline" */'../../direct_timeline');
-}
-
 export function Conversations() {
   return import(/* webpackChunkName: "features/conversations" */'../../conversations');
 }

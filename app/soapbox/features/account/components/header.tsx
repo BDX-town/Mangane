@@ -134,7 +134,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   }, [account, dispatch]);
 
   const onDirect = useCallback(() => {
-    dispatch(directCompose(account));
+    dispatch(directCompose(history, account));
   }, [account, dispatch]);
 
   const onReblogToggle = useCallback(() => {

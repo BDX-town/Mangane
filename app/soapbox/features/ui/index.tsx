@@ -51,7 +51,6 @@ import {
   HomeTimeline,
   Followers,
   Following,
-  DirectTimeline,
   Conversations,
   HashtagTimeline,
   Notifications,
@@ -188,10 +187,6 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.federating && <WrappedRoute path='/timeline/:instance' exact page={HomePage} component={RemoteTimeline} content={children} />}
 
       {features.conversations && <WrappedRoute path='/conversations' page={DefaultPage} component={Conversations} content={children} />}
-      {features.directTimeline && <WrappedRoute path='/messages' page={DefaultPage} component={DirectTimeline} content={children} />}
-      {(features.conversations && !features.directTimeline) && (
-        <WrappedRoute path='/messages' page={DefaultPage} component={Conversations} content={children} />
-      )}
 
       {/* Mastodon web routes */}
       <Redirect from='/web/:path1/:path2/:path3' to='/:path1/:path2/:path3' />
@@ -200,7 +195,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <Redirect from='/timelines/home' to='/' />
       <Redirect from='/timelines/public/local' to='/timeline/local' />
       <Redirect from='/timelines/public' to='/timeline/fediverse' />
-      <Redirect from='/timelines/direct' to='/messages' />
+      <Redirect from='/timelines/direct' to='/conversations' />
 
       {/* Pleroma FE web routes */}
       <Redirect from='/main/all' to='/timeline/fediverse' />
