@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.18.8 (2026-01-31)
+
+
+### Bug Fixes
+
+* commit lint ([4b4154f](https://github.com/BDX-town/Mangane/commit/4b4154f5f61ef1bb46e94d17c05f02563ee42fe9))
+
 ## 1.18.7 (2025-11-15)
 
 ## 1.18.6 (2025-11-15)
