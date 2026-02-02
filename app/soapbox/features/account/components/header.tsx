@@ -133,9 +133,10 @@ const Header: React.FC<IHeader> = ({ account }) => {
     dispatch(mentionCompose(account));
   }, [account, dispatch]);
 
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const onDirect = useCallback(() => {
     dispatch(directCompose(history, account));
-  }, [account, dispatch]);
+  }, [account, dispatch, history]);
 
   const onReblogToggle = useCallback(() => {
     if (!account) return null;
@@ -629,7 +630,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
     }
 
     return menu;
-  }, [account, features.accountEndorsements, features.lists, features.privacyScopes, features.removeFromFollowers, features.searchFromAccount, features.suggestionsV2, features.unrestrictedLists, handleShare, intl, onAddToList, onBlock, onBlockDomain, onChat, onDeactivateUser, onDemoteToUser, onDirect, onEndorseToggle, onMention, onMute, onPromoteToAdmin, onPromoteToModerator, onReblogToggle, onRemoveDonor, onRemoveFromFollowers, onReport, onSearch, onSetDonor, onSuggestUser, onUnblockDomain, onUnsuggestUser, onUnverifyUser, onVerifyUser, ownAccount]);
+  }, [account, features.accountEndorsements, features.lists, features.privacyScopes, features.removeFromFollowers, features.searchFromAccount, features.suggestionsV2, features.unrestrictedLists, handleShare, intl, onAddToList, onBlock, onBlockDomain, onDeactivateUser, onDemoteToUser, onDirect, onEndorseToggle, onMention, onMute, onPromoteToAdmin, onPromoteToModerator, onReblogToggle, onRemoveDonor, onRemoveFromFollowers, onReport, onSearch, onSetDonor, onSuggestUser, onUnblockDomain, onUnsuggestUser, onUnverifyUser, onVerifyUser, ownAccount]);
 
   const makeInfo = useCallback(() => {
     if (!account) return null;

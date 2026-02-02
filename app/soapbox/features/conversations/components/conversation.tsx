@@ -71,7 +71,7 @@ const Conversation: React.FC<IConversation> = ({ conversationId, onMoveUp, onMov
           />
         </div>
         <div className='flex justify-between mt-3 items-end gap-2'>
-          <div style={{ 'whiteSpace': 'nowrap' }} className='overflow-x-hidden text-ellipsis text-gray-700 dark:text-gray-300' dangerouslySetInnerHTML={{ __html: lastStatus.contentHtml.replace(/<br.*>/, '') }} />
+          <div style={{ 'whiteSpace': 'nowrap' }} className='overflow-x-hidden text-ellipsis text-gray-700 dark:text-gray-300' dangerouslySetInnerHTML={{ __html: lastStatus.contentHtml.replace(/<br ?\/?>/g, '') }} />
           <div className='text-gray-300 dark:text-gray-300 text-xs'>
             {new Date(lastStatus.get('created_at')).toLocaleDateString(undefined, { day: '2-digit', month: '2-digit', year: 'numeric' })}
           </div>
