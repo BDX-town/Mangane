@@ -7,7 +7,6 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { blockAccount, followAccount, pinAccount, removeFromFollowers, unblockAccount, unmuteAccount, unpinAccount } from 'soapbox/actions/accounts';
 import { verifyUser, unverifyUser, setDonor, removeDonor, promoteToAdmin, promoteToModerator, demoteToUser, suggestUsers, unsuggestUsers } from 'soapbox/actions/admin';
-import { launchChat } from 'soapbox/actions/chats';
 import { mentionCompose, directCompose } from 'soapbox/actions/compose';
 import { blockDomain, unblockDomain } from 'soapbox/actions/domain_blocks';
 import { openModal } from 'soapbox/actions/modals';
@@ -193,11 +192,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
       accountId: account.id,
     }));
   }, [account, dispatch]);
-
-  const onChat = useCallback(() => {
-    if (!account) return null;
-    dispatch(launchChat(account.id, history));
-  }, [account, dispatch, history]);
 
   const onDeactivateUser = useCallback(() => {
     if (!account) return null;
@@ -409,13 +403,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
         icon: require('@tabler/icons/at.svg'),
       });
 
-      if (account.getIn(['pleroma', 'accepts_chat_messages']) === true) {
-        menu.push({
-          text: intl.formatMessage(messages.chat, { name: account.username }),
-          action: onChat,
-          icon: require('@tabler/icons/messages.svg'),
-        });
-      } else if (features.privacyScopes) {
+      if (features.privacyScopes) {
         menu.push({
           text: intl.formatMessage(messages.direct, { name: account.username }),
           action: onDirect,

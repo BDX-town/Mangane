@@ -9,10 +9,9 @@ FaviconService.initFaviconService();
 
 const getNotifTotals = (state: RootState): number => {
   const notifications = state.notifications.unread || 0;
-  const chats = state.chats.items.reduce((acc: any, curr: any) => acc + Math.min(curr.get('unread', 0), 1), 0);
   const reports = state.admin.openReports.count();
   const approvals = state.admin.awaitingApproval.count();
-  return notifications + chats + reports + approvals;
+  return notifications + reports + approvals;
 };
 
 const Helmet: React.FC = ({ children }) => {
