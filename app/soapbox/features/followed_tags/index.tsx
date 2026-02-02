@@ -23,7 +23,7 @@ const FollowButton: React.FC<IFollowButton> = ({ id }) => {
   const onClick = React.useCallback(() => {
     const action = isFollow ? unfollowTag : followTag;
     dispatch(action(id));
-  }, [isFollow, id]);
+  }, [isFollow, dispatch, id]);
 
   const text = React.useMemo(() => {
     return isFollow ? (

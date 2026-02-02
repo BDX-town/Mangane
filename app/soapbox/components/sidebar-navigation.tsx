@@ -114,11 +114,11 @@ const SidebarNavigation = () => {
             />
 
             {
-              (features.directTimeline || features.conversations) && (
+              (features.conversations) && (
                 <SidebarNavigationLink
-                  to='/messages'
-                  icon={require('@tabler/icons/mail.svg')}
-                  text={<FormattedMessage id='column.direct' defaultMessage='Direct messages' />}
+                  to='/conversations'
+                  icon={require('@tabler/icons/messages.svg')}
+                  text={<FormattedMessage id='column.direct' defaultMessage='Conversations' />}
                 />
               )
             }

@@ -144,8 +144,8 @@ const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismi
 
   const handleDirectClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
-    dispatch(directCompose(status.account as Account));
-  }, [dispatch, status.account]);
+    dispatch(directCompose(history, status.account as Account));
+  }, [dispatch, history, status.account]);
 
   const handleMuteClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
