@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.19.0 (2026-02-02)
+
+
+### Features
+
+* rework conversations ui ([#443](https://github.com/BDX-town/Mangane/issues/443)) ([1336424](https://github.com/BDX-town/Mangane/commit/13364241ca11305fd089ff8a67e1db7672682243))
+
 ## 1.18.8 (2026-01-31)
 
 
