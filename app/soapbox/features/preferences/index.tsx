@@ -11,6 +11,7 @@ import { useFeatures, useSettings } from 'soapbox/hooks';
 
 import ThemeToggle from '../ui/components/theme-toggle';
 
+
 const languages = {
   en: 'English',
   ar: 'العربية',
@@ -110,19 +111,19 @@ const Preferences = () => {
     default: intl.formatMessage(messages.display_media_default),
     hide_all: intl.formatMessage(messages.display_media_hide_all),
     show_all: intl.formatMessage(messages.display_media_show_all),
-  }), []);
+  }), [intl]);
 
   const defaultPrivacyOptions = React.useMemo(() => ({
     public: intl.formatMessage(messages.privacy_public),
     ...(features.localOnlyPrivacy ? { local: intl.formatMessage(messages.privacy_local) } : {}),
     unlisted: intl.formatMessage(messages.privacy_unlisted),
     private: intl.formatMessage(messages.privacy_followers_only),
-  }), []);
+  }), [features.localOnlyPrivacy, intl]);
 
   const defaultContentTypeOptions = React.useMemo(() => ({
     'text/plain': intl.formatMessage(messages.content_type_plaintext),
     'text/markdown': intl.formatMessage(messages.content_type_markdown),
-  }), []);
+  }), [intl]);
 
   return (
     <Form>
