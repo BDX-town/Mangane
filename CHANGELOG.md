@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.19.1 (2026-02-02)
+
+
+### Bug Fixes
+
+* crashs after updates on profile and conversations ([7d33a65](https://github.com/BDX-town/Mangane/commit/7d33a656ef86826730190998b5ac203912675154))
+
 ## 1.19.0 (2026-02-02)
 
 
