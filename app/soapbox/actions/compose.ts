@@ -214,6 +214,7 @@ const mentionCompose = (account: Account) =>
 
 const directCompose = (history: History, account: Account) =>
   (dispatch: AppDispatch) => {
+    dispatch(resetCompose());
     dispatch({
       type: COMPOSE_DIRECT,
       account: account,
