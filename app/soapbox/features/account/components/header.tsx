@@ -1,7 +1,7 @@
 'use strict';
 
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -108,27 +108,10 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const features = useFeatures();
   const ownAccount = useOwnAccount();
 
-  if (!account) {
-    return (
-      <div className='-mt-4 -mx-4'>
-        <div>
-          <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50' />
-        </div>
 
-        <div className='px-4 sm:px-6'>
-          <div className='-mt-12 flex items-end space-x-5'>
-            <div className='flex relative'>
-              <div
-                className='h-24 w-24 bg-gray-400 rounded-full ring-4 ring-white dark:ring-gray-800'
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
-  const onBlock = () => {
+  const onBlock = useCallback(() => {
+    if (!account) return null;
     if (account.relationship?.blocking) {
       dispatch(unblockAccount(account.id));
     } else {
@@ -145,49 +128,52 @@ const Header: React.FC<IHeader> = ({ account }) => {
         },
       }));
     }
-  };
+  }, [account, dispatch, intl]);
 
-  const onMention = () => {
+  const onMention = useCallback(() => {
     dispatch(mentionCompose(account));
-  };
+  }, [account, dispatch]);
 
-  const onDirect = () => {
+  const onDirect = useCallback(() => {
     dispatch(directCompose(account));
-  };
+  }, [account, dispatch]);
 
-  const onReblogToggle = () => {
+  const onReblogToggle = useCallback(() => {
+    if (!account) return null;
     if (account.relationship?.showing_reblogs) {
       dispatch(followAccount(account.id, { reblogs: false }));
     } else {
       dispatch(followAccount(account.id, { reblogs: true }));
     }
-  };
+  }, [account, dispatch]);
 
-  const onEndorseToggle = () => {
+  const onEndorseToggle = useCallback(() => {
+    if (!account) return null;
     if (account.relationship?.endorsed) {
       dispatch(unpinAccount(account.id))
         .then(() => dispatch(snackbar.success(intl.formatMessage(messages.userUnendorsed, { acct: account.acct }))))
-        .catch(() => {});
+        .catch(() => { });
     } else {
       dispatch(pinAccount(account.id))
         .then(() => dispatch(snackbar.success(intl.formatMessage(messages.userEndorsed, { acct: account.acct }))))
-        .catch(() => {});
+        .catch(() => { });
     }
-  };
+  }, [account, dispatch, intl]);
 
-  const onReport = () => {
+  const onReport = useCallback(() => {
     dispatch(initReport(account));
-  };
+  }, [account, dispatch]);
 
-  const onMute = () => {
+  const onMute = useCallback(() => {
+    if (!account) return null;
     if (account.relationship?.muting) {
       dispatch(unmuteAccount(account.id));
     } else {
       dispatch(initMuteModal(account));
     }
-  };
+  }, [account, dispatch]);
 
-  const onBlockDomain = (domain: string) => {
+  const onBlockDomain = useCallback((domain: string) => {
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/ban.svg'),
       heading: <FormattedMessage id='confirmations.domain_block.heading' defaultMessage='Block {domain}' values={{ domain }} />,
@@ -195,100 +181,113 @@ const Header: React.FC<IHeader> = ({ account }) => {
       confirm: intl.formatMessage(messages.blockDomainConfirm),
       onConfirm: () => dispatch(blockDomain(domain)),
     }));
-  };
+  }, [dispatch, intl]);
 
-  const onUnblockDomain = (domain: string) => {
+  const onUnblockDomain = useCallback((domain: string) => {
     dispatch(unblockDomain(domain));
-  };
+  }, [dispatch]);
 
-  const onAddToList = () => {
+  const onAddToList = useCallback(() => {
+    if (!account) return null;
     dispatch(openModal('LIST_ADDER', {
       accountId: account.id,
     }));
-  };
+  }, [account, dispatch]);
 
-  const onChat = () => {
+  const onChat = useCallback(() => {
+    if (!account) return null;
     dispatch(launchChat(account.id, history));
-  };
+  }, [account, dispatch, history]);
 
-  const onDeactivateUser = () => {
+  const onDeactivateUser = useCallback(() => {
+    if (!account) return null;
     dispatch(deactivateUserModal(intl, account.id));
-  };
+  }, [account, dispatch, intl]);
 
-  const onVerifyUser = () => {
+  const onVerifyUser = useCallback(() => {
+    if (!account) return null;
     const message = intl.formatMessage(messages.userVerified, { acct: account.acct });
 
     dispatch(verifyUser(account.id))
       .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
-  };
+      .catch(() => { });
+  }, [account, dispatch, intl]);
 
-  const onUnverifyUser = () => {
+  const onUnverifyUser = useCallback(() => {
+    if (!account) return null;
     const message = intl.formatMessage(messages.userUnverified, { acct: account.acct });
 
     dispatch(unverifyUser(account.id))
       .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
-  };
+      .catch(() => { });
+  }, [account, dispatch, intl]);
 
-  const onSetDonor = () => {
+  const onSetDonor = useCallback(() => {
+    if (!account) return null;
     const message = intl.formatMessage(messages.setDonorSuccess, { acct: account.acct });
 
     dispatch(setDonor(account.id))
       .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
-  };
+      .catch(() => { });
+  }, [account, dispatch, intl]);
 
-  const onRemoveDonor = () => {
+  const onRemoveDonor = useCallback(() => {
+    if (!account) return null;
     const message = intl.formatMessage(messages.removeDonorSuccess, { acct: account.acct });
 
     dispatch(removeDonor(account.id))
       .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
-  };
+      .catch(() => { });
+  }, [account, dispatch, intl]);
 
-  const onPromoteToAdmin = () => {
+  const onPromoteToAdmin = useCallback(() => {
+    if (!account) return null;
     const message = intl.formatMessage(messages.promotedToAdmin, { acct: account.acct });
 
     dispatch(promoteToAdmin(account.id))
       .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
-  };
+      .catch(() => { });
+  }, [account, dispatch, intl]);
 
-  const onPromoteToModerator = () => {
+  const onPromoteToModerator = useCallback(() => {
+    if (!account) return null;
     const messageType = account.admin ? messages.demotedToModerator : messages.promotedToModerator;
     const message = intl.formatMessage(messageType, { acct: account.acct });
 
     dispatch(promoteToModerator(account.id))
       .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
-  };
+      .catch(() => { });
+  }, [account, dispatch, intl]);
 
-  const onDemoteToUser = () => {
+  const onDemoteToUser = useCallback(() => {
+    if (!account) return null;
     const message = intl.formatMessage(messages.demotedToUser, { acct: account.acct });
 
     dispatch(demoteToUser(account.id))
       .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
-  };
+      .catch(() => { });
+  }, [account, dispatch, intl]);
 
-  const onSuggestUser = () => {
+  const onSuggestUser = useCallback(() => {
+    if (!account) return null;
     const message = intl.formatMessage(messages.userSuggested, { acct: account.acct });
 
     dispatch(suggestUsers([account.id]))
       .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
-  };
+      .catch(() => { });
+  }, [account, dispatch, intl]);
 
-  const onUnsuggestUser = () => {
+  const onUnsuggestUser = useCallback(() => {
+    if (!account) return null;
     const message = intl.formatMessage(messages.userUnsuggested, { acct: account.acct });
 
     dispatch(unsuggestUsers([account.id]))
       .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
-  };
+      .catch(() => { });
+  }, [account, dispatch, intl]);
 
-  const onRemoveFromFollowers = () => {
+  const onRemoveFromFollowers = useCallback(() => {
+    if (!account) return null;
     dispatch((_, getState) => {
       const unfollowModal = getSettings(getState()).get('unfollowModal');
       if (unfollowModal) {
@@ -301,14 +300,15 @@ const Header: React.FC<IHeader> = ({ account }) => {
         dispatch(removeFromFollowers(account.id));
       }
     });
-  };
+  }, [account, dispatch, intl]);
 
-  const onSearch = () => {
+  const onSearch = useCallback(() => {
+    if (!account.id) return null;
     dispatch(setSearchAccount(account.id));
     history.push('/search');
-  };
+  }, [account, dispatch, history]);
 
-  const onAvatarClick = () => {
+  const onAvatarClick = useCallback(() => {
     const avatar_url = account.avatar;
     const avatar = ImmutableMap({
       type: 'image',
@@ -317,16 +317,16 @@ const Header: React.FC<IHeader> = ({ account }) => {
       description: '',
     });
     dispatch(openModal('MEDIA', { media: ImmutableList.of(avatar), index: 0 }));
-  };
+  }, [account, dispatch]);
 
-  const handleAvatarClick: React.MouseEventHandler = (e) => {
+  const handleAvatarClick: React.MouseEventHandler = useCallback((e) => {
     if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
       onAvatarClick();
     }
-  };
+  }, [onAvatarClick]);
 
-  const onHeaderClick = () => {
+  const onHeaderClick = useCallback(() => {
     const header_url = account.header;
     const header = ImmutableMap({
       type: 'image',
@@ -335,25 +335,26 @@ const Header: React.FC<IHeader> = ({ account }) => {
       description: '',
     });
     dispatch(openModal('MEDIA', { media: ImmutableList.of(header), index: 0 }));
-  };
+  }, [account, dispatch]);
 
-  const handleHeaderClick: React.MouseEventHandler = (e) => {
+  const handleHeaderClick: React.MouseEventHandler = useCallback((e) => {
     if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
       onHeaderClick();
     }
-  };
+  }, [onHeaderClick]);
 
-  const handleShare = () => {
+  const handleShare = useCallback(() => {
     navigator.share({
       text: `@${account.acct}`,
       url: account.url,
     }).catch((e) => {
       if (e.name !== 'AbortError') console.error(e);
     });
-  };
+  }, [account]);
 
-  const makeMenu = () => {
+  const makeMenu = useCallback(() => {
+    if (!account) return null;
     const menu: MenuType = [];
 
     if (!account || !ownAccount) {
@@ -640,9 +641,10 @@ const Header: React.FC<IHeader> = ({ account }) => {
     }
 
     return menu;
-  };
+  }, [account, features.accountEndorsements, features.lists, features.privacyScopes, features.removeFromFollowers, features.searchFromAccount, features.suggestionsV2, features.unrestrictedLists, handleShare, intl, onAddToList, onBlock, onBlockDomain, onChat, onDeactivateUser, onDemoteToUser, onDirect, onEndorseToggle, onMention, onMute, onPromoteToAdmin, onPromoteToModerator, onReblogToggle, onRemoveDonor, onRemoveFromFollowers, onReport, onSearch, onSetDonor, onSuggestUser, onUnblockDomain, onUnsuggestUser, onUnverifyUser, onVerifyUser, ownAccount]);
 
-  const makeInfo = () => {
+  const makeInfo = useCallback(() => {
+    if (!account) return null;
     const info: React.ReactNode[] = [];
 
     if (!account || !ownAccount) return info;
@@ -684,38 +686,9 @@ const Header: React.FC<IHeader> = ({ account }) => {
     }
 
     return info;
-  };
+  }, [account, ownAccount]);
 
-  // const renderMessageButton = () => {
-  //   if (!ownAccount || !account || account.id === ownAccount?.id) {
-  //     return null;
-  //   }
-
-  //   const canChat = account.getIn(['pleroma', 'accepts_chat_messages']) === true;
-
-  //   if (canChat) {
-  //     return (
-  //       <IconButton
-  //         src={require('@tabler/icons/messages.svg')}
-  //         onClick={onChat}
-  //         title={intl.formatMessage(messages.chat, { name: account.username })}
-  //       />
-  //     );
-  //   } else {
-  //     return (
-  //       <IconButton
-  //         src={require('@tabler/icons/mail.svg')}
-  //         onClick={onDirect}
-  //         title={intl.formatMessage(messages.direct, { name: account.username })}
-  //         theme='outlined'
-  //         className='px-2'
-  //         iconClassName='w-4 h-4'
-  //       />
-  //     );
-  //   }
-  // };
-
-  const renderShareButton = () => {
+  const renderShareButton = useCallback(() => {
     const canShare = 'share' in navigator;
 
     if (!(account && ownAccount?.id && account.id === ownAccount?.id && canShare)) {
@@ -732,10 +705,30 @@ const Header: React.FC<IHeader> = ({ account }) => {
         iconClassName='w-4 h-4'
       />
     );
-  };
+  }, [account, handleShare, intl, ownAccount?.id]);
 
   const info = makeInfo();
   const menu = makeMenu();
+
+  if (!account) {
+    return (
+      <div className='-mt-4 -mx-4'>
+        <div>
+          <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50' />
+        </div>
+
+        <div className='px-4 sm:px-6'>
+          <div className='-mt-12 flex items-end space-x-5'>
+            <div className='flex relative'>
+              <div
+                className='h-24 w-24 bg-gray-400 rounded-full ring-4 ring-white dark:ring-gray-800'
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='-mt-4 -mx-4'>
@@ -818,10 +811,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
                   </MenuList>
                 </Menu>
               )}
-
               {renderShareButton()}
-              {/* {renderMessageButton()} */}
-
               <ActionButton account={account} />
             </div>
           </div>
