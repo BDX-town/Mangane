@@ -170,7 +170,7 @@ const ThumbNavigation: React.FC<{ className?: string }> = ({ className = '', ...
     setShowCommunityMenu(e.currentTarget);
   }, []);
 
-  const onOpenSidebar = React.useCallback(() => dispatch(openSidebar()), [dispatch, openSidebar]);
+  const onOpenSidebar = React.useCallback(() => dispatch(openSidebar()), [dispatch]);
 
   // we close community menu when route changes
   React.useEffect(() => {

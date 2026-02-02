@@ -4,8 +4,6 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { blockAccount } from 'soapbox/actions/accounts';
-import { showAlertForError } from 'soapbox/actions/alerts';
-import { launchChat } from 'soapbox/actions/chats';
 import { directCompose, mentionCompose, quoteCompose } from 'soapbox/actions/compose';
 import { toggleBookmark, toggleFavourite, togglePin, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
@@ -148,12 +146,6 @@ const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismi
     e.stopPropagation();
     dispatch(directCompose(history, status.account as Account));
   }, [dispatch, history, status.account]);
-
-  const handleChatClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
-    e.stopPropagation();
-    const account = status.account as Account;
-    dispatch(launchChat(account.id, history));
-  }, [dispatch, status.account, history]);
 
   const handleMuteClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
@@ -317,13 +309,7 @@ const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismi
         icon: require('@tabler/icons/at.svg'),
       });
 
-      if (status.getIn(['account', 'pleroma', 'accepts_chat_messages']) === true) {
-        menu.push({
-          text: intl.formatMessage(messages.chat, { name: username }),
-          action: handleChatClick,
-          icon: require('@tabler/icons/messages.svg'),
-        });
-      } else if (features.privacyScopes) {
+      if (features.privacyScopes) {
         menu.push({
           text: intl.formatMessage(messages.direct, { name: username }),
           action: handleDirectClick,
@@ -395,7 +381,7 @@ const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismi
     }
 
     return menu;
-  }, [status, me, features, withDismiss, intl, isStaff, isAdmin, handleCopy, handleEmbed, handleConversationMuteClick, handlePinClick, handleDeleteClick, handleEditClick, handleRedraftClick, handleMentionClick, handleChatClick, handleDirectClick, handleMuteClick, handleBlockClick, handleReport, handleToggleStatusSensitivity, handleDeactivateUser, handleDeleteUser, handleDeleteStatus]);
+  }, [status, me, features, withDismiss, intl, isStaff, isAdmin, handleCopy, handleEmbed, handleConversationMuteClick, handlePinClick, handleDeleteClick, handleEditClick, handleRedraftClick, handleMentionClick, handleDirectClick, handleMuteClick, handleBlockClick, handleReport, handleToggleStatusSensitivity, handleDeactivateUser, handleDeleteUser, handleDeleteStatus]);
 
 
   return (

@@ -15,9 +15,6 @@ import aliases from './aliases';
 import announcements from './announcements';
 import auth from './auth';
 import backups from './backups';
-import chat_message_lists from './chat_message_lists';
-import chat_messages from './chat_messages';
-import chats from './chats';
 import compose from './compose';
 import contexts from './contexts';
 import conversations from './conversations';
@@ -107,9 +104,6 @@ const reducers = {
   me,
   auth,
   admin,
-  chats,
-  chat_messages,
-  chat_message_lists,
   profile_hover_card,
   status_hover_card,
   backups,

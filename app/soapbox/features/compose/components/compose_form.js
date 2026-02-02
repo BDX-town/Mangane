@@ -341,7 +341,7 @@ class ComposeForm extends ImmutablePureComponent {
             searchTokens={[':']}
             id='cw-spoiler-input'
             className='border-none shadow-none px-0 py-2 text-base'
-            autoFocus
+            autoFocus={shouldAutoFocus}
           />
         </div>
 

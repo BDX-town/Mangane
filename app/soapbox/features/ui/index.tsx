@@ -1,6 +1,5 @@
 'use strict';
 
-import debounce from 'lodash/debounce';
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
@@ -10,7 +9,6 @@ import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
 import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin';
 import { fetchAnnouncements } from 'soapbox/actions/announcements';
-import { fetchChats } from 'soapbox/actions/chats';
 import { uploadCompose, resetCompose, compose } from 'soapbox/actions/compose';
 import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
 import { fetchFilters } from 'soapbox/actions/filters';
@@ -86,9 +84,6 @@ import {
   ImportData,
   Backups,
   MfaForm,
-  ChatIndex,
-  ChatRoom,
-  ChatPanes,
   ServerInfo,
   Dashboard,
   ModerationLog,
@@ -126,7 +121,6 @@ import 'soapbox/components/status';
 
 const EmptyPage = HomePage;
 
-const isMobile = (width: number): boolean => width <= 1190;
 
 const messages = defineMessages({
   beforeUnload: { id: 'ui.beforeunload', defaultMessage: 'Your draft will be lost if you leave.' },
@@ -255,9 +249,6 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.suggestions && <WrappedRoute path='/suggestions' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />}
       {features.profileDirectory && <WrappedRoute path='/directory' publicRoute page={DefaultPage} component={Directory} content={children} />}
 
-      {features.chats && <WrappedRoute path='/chats' exact page={DefaultPage} component={ChatIndex} content={children} />}
-      {features.chats && <WrappedRoute path='/chats/:chatId' page={DefaultPage} component={ChatRoom} content={children} />}
-
       <WrappedRoute path='/follow_requests' page={DefaultPage} component={FollowRequests} content={children} />
       <WrappedRoute path='/followed_hashtags' page={DefaultPage} component={FollowedHashtags} content={children} />
       <WrappedRoute path='/blocks' page={DefaultPage} component={Blocks} content={children} />
@@ -330,7 +321,6 @@ const UI: React.FC = ({ children }) => {
 
   const location = useLocation();
   const [draggingOver, setDraggingOver] = useState<boolean>(false);
-  const [mobile, setMobile] = useState<boolean>(isMobile(window.innerWidth));
 
   const dragTargets = useRef<EventTarget[]>([]);
   const disconnect = useRef<any>(null);
@@ -339,7 +329,6 @@ const UI: React.FC = ({ children }) => {
 
   const me = useAppSelector(state => state.me);
   const account = useOwnAccount();
-  const features = useFeatures();
   const vapidKey = useAppSelector(state => getVapidKey(state));
 
   const dropdownMenuIsOpen = useAppSelector(state => state.dropdown_menu.openId !== null);
@@ -431,12 +420,6 @@ const UI: React.FC = ({ children }) => {
     }
   };
 
-  const handleResize = useCallback(debounce(() => {
-    setMobile(isMobile(window.innerWidth));
-  }, 500, {
-    trailing: true,
-  }), [setMobile]);
-
   /** Load initial data when a user is logged in */
   const loadAccountData = () => {
     if (!account) return;
@@ -451,10 +434,6 @@ const UI: React.FC = ({ children }) => {
       .catch(console.error);
 
     dispatch(fetchAnnouncements());
-
-    if (features.chats) {
-      dispatch(fetchChats());
-    }
 
     if (account.staff) {
       dispatch(fetchReports({ resolved: false }));
@@ -477,7 +456,6 @@ const UI: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
-    window.addEventListener('resize', handleResize, { passive: true });
     document.addEventListener('dragenter', handleDragEnter, false);
     document.addEventListener('dragover', handleDragOver, false);
     document.addEventListener('drop', handleDrop, false);
@@ -492,7 +470,6 @@ const UI: React.FC = ({ children }) => {
     }
 
     return () => {
-      window.removeEventListener('resize', handleResize);
       document.removeEventListener('dragenter', handleDragEnter);
       document.removeEventListener('dragover', handleDragOver);
       document.removeEventListener('drop', handleDrop);
@@ -667,11 +644,6 @@ const UI: React.FC = ({ children }) => {
 
           {me && (
             <BundleContainer fetchComponent={SidebarMenu}>
-              {Component => <Component />}
-            </BundleContainer>
-          )}
-          {me && features.chats && !mobile && (
-            <BundleContainer fetchComponent={ChatPanes}>
               {Component => <Component />}
             </BundleContainer>
           )}

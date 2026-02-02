@@ -13,7 +13,7 @@ import {
   rejectFollowRequest,
 } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
-import { Button, HStack, Spinner, Text } from 'soapbox/components/ui';
+import { Button, HStack, Spinner } from 'soapbox/components/ui';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';

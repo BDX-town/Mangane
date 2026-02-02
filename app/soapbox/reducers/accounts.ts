@@ -28,13 +28,11 @@ import {
   ADMIN_USERS_UNSUGGEST_REQUEST,
   ADMIN_USERS_UNSUGGEST_FAIL,
 } from 'soapbox/actions/admin';
-import { CHATS_FETCH_SUCCESS, CHATS_EXPAND_SUCCESS, CHAT_FETCH_SUCCESS } from 'soapbox/actions/chats';
 import {
   ACCOUNT_IMPORT,
   ACCOUNTS_IMPORT,
   ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP,
 } from 'soapbox/actions/importer';
-import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { normalizeAccount } from 'soapbox/normalizers/account';
 import { normalizeId } from 'soapbox/utils/normalizers';
 
@@ -43,7 +41,6 @@ import type { AnyAction } from 'redux';
 type AccountRecord = ReturnType<typeof normalizeAccount>;
 type AccountMap = ImmutableMap<string, any>;
 type APIEntity = Record<string, any>;
-type APIEntities = Array<APIEntity>;
 
 export interface ReducerAccount extends AccountRecord {
   moved: string | null,
@@ -71,15 +68,6 @@ const normalizeAccounts = (state: State, accounts: ImmutableList<AccountMap>) =>
 
   return state;
 };
-
-const importAccountFromChat = (
-  state: State,
-  chat: APIEntity,
-): State => fixAccount(state, chat.account);
-
-const importAccountsFromChats = (state: State, chats: APIEntities): State =>
-  state.withMutations(mutable =>
-    chats.forEach(chat => importAccountFromChat(mutable, chat)));
 
 const addTags = (
   state: State,
@@ -250,12 +238,6 @@ export default function accounts(state: State = initialState, action: AnyAction)
       return normalizeAccounts(state, action.accounts);
     case ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP:
       return fixAccount(state, { id: -1, username: action.username });
-    case CHATS_FETCH_SUCCESS:
-    case CHATS_EXPAND_SUCCESS:
-      return importAccountsFromChats(state, action.chats);
-    case CHAT_FETCH_SUCCESS:
-    case STREAMING_CHAT_UPDATE:
-      return importAccountsFromChats(state, [action.chat]);
     case ADMIN_USERS_TAG_REQUEST:
     case ADMIN_USERS_TAG_SUCCESS:
     case ADMIN_USERS_UNTAG_FAIL:

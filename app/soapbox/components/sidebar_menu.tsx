@@ -93,7 +93,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
 
   const notificationCount = useAppSelector((state) => state.notifications.get('unread'));
-  const chatsCount = useAppSelector((state) => state.chats.items.reduce((acc, curr) => acc + Math.min(curr.unread || 0, 1), 0));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
 
@@ -277,18 +276,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                       onClick={onClose}
                       text={<FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />}
                     />
-
-                    {
-                      features.chats && (
-                        <SidebarLink
-                          to='/chats'
-                          icon={require('@tabler/icons/messages.svg')}
-                          count={chatsCount}
-                          onClick={onClose}
-                          text={<FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' />}
-                        />
-                      )
-                    }
 
                     {
                       (features.conversations) && (
