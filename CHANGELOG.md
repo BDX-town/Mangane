@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.19.3 (2026-02-03)
+
+
+### Bug Fixes
+
+* replace br with space instead of nothing, always rounded corners ([#447](https://github.com/BDX-town/Mangane/issues/447)) ([b0af57c](https://github.com/BDX-town/Mangane/commit/b0af57c8541457206bc11cecb8ea39d2349acec7))
+
 ## 1.19.2 (2026-02-03)
 
 
