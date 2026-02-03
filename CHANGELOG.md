@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.19.2 (2026-02-03)
+
+
+### Bug Fixes
+
+* move snack to the top ([#445](https://github.com/BDX-town/Mangane/issues/445)) ([1546993](https://github.com/BDX-town/Mangane/commit/15469937611680440f96faa20a9655bb0ec72f1a))
+
 ## 1.19.1 (2026-02-02)
 
 
