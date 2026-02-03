@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.19.2 (2026-02-03)
+
+
+### Bug Fixes
+
+* language selection dropdown goes under post media ([#448](https://github.com/BDX-town/Mangane/issues/448)) ([461f309](https://github.com/BDX-town/Mangane/commit/461f3095c9a439aad006637bcbea0a301fdb743c))
+
 ## 1.19.1 (2026-02-02)
 
 
