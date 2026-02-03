@@ -69,7 +69,7 @@ const SnackbarContainer: React.FC = () => {
   const notifications = alerts.toArray().map(buildAlert);
 
   return (
-    <div role='assertive' data-testid='toast' className='z-1000 fixed inset-0 flex items-end px-4 py-6 pointer-events-none pt-16 lg:pt-20 sm:items-start'>
+    <div role='assertive' data-testid='toast' className='z-1000 fixed inset-0 flex items-start px-4 pointer-events-none pt-4'>
       <NotificationStack
         onDismiss={onDismiss}
         onClick={onDismiss}
