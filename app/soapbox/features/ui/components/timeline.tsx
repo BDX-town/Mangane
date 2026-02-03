@@ -1,6 +1,6 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import debounce from 'lodash/debounce';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { defineMessages } from 'react-intl';
 
@@ -19,6 +19,8 @@ interface ITimeline extends Omit<IStatusList, 'statusIds' | 'isLoading' | 'hasMo
   timelineId: string,
 }
 
+const getStatusIds = makeGetStatusIds();
+
 /** Scrollable list of statuses from a timeline in the Redux store. */
 const Timeline: React.FC<ITimeline> = ({
   timelineId,
@@ -26,7 +28,6 @@ const Timeline: React.FC<ITimeline> = ({
   ...rest
 }) => {
   const dispatch = useAppDispatch();
-  const getStatusIds = useCallback(makeGetStatusIds, [])();
 
   const lastStatusId = useAppSelector(state => (state.timelines.get(timelineId)?.items || ImmutableOrderedSet()).last() as string | undefined);
   const statusIds = useAppSelector(state => getStatusIds(state, { type: timelineId }));
@@ -44,13 +45,21 @@ const Timeline: React.FC<ITimeline> = ({
     dispatch(dequeueTimeline(timelineId, onLoadMore));
   };
 
-  const handleScrollToTop = useCallback(debounce(() => {
+  const handleScrollToTop = useMemo(() => debounce(() => {
     dispatch(scrollTopTimeline(timelineId, true));
-  }, 100), [timelineId]);
+  }, 100), [dispatch, timelineId]);
 
-  const handleScroll = useCallback(debounce(() => {
+  const handleScroll = useMemo(() => debounce(() => {
     dispatch(scrollTopTimeline(timelineId, false));
-  }, 100), [timelineId]);
+  }, 100), [dispatch, timelineId]);
+
+  const handleScrollToTopDebounced = useCallback(() => {
+    handleScrollToTop();
+  }, [handleScrollToTop]);
+
+  const handleScrollDebounced = useCallback(() => {
+    handleScroll();
+  }, [handleScroll]);
 
   return (
     <>
@@ -64,8 +73,8 @@ const Timeline: React.FC<ITimeline> = ({
       }
       <StatusList
         timelineId={timelineId}
-        onScrollToTop={handleScrollToTop}
-        onScroll={handleScroll}
+        onScrollToTop={handleScrollToTopDebounced}
+        onScroll={handleScrollDebounced}
         lastStatusId={lastStatusId}
         statusIds={statusIds}
         isLoading={isLoading}

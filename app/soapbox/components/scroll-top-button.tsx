@@ -1,5 +1,5 @@
 import throttle from 'lodash/throttle';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useIntl, MessageDescriptor } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
@@ -49,15 +49,17 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
       }
       timer.current = null;
     }, 250);
-  }, [autoload, autoloadThreshold, onClick, count]);
+  }, [count, autoload, getScrollTop, autoloadThreshold, onClick]);
 
-  const handleScroll = useCallback(throttle(() => {
+  const handleScroll = useMemo(() => throttle(() => {
     if (getScrollTop() > threshold) {
       setScrolled(true);
     } else {
       setScrolled(false);
     }
-  }, 150, { trailing: true }), [threshold]);
+  }, 150, { trailing: true }), [getScrollTop, threshold]);
+
+  const handleScrollThrottled = useCallback(() => handleScroll(), [handleScroll]);
 
   const scrollUp = React.useCallback(() => {
     window.scrollTo({ top: 0 });
@@ -69,12 +71,12 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScrollThrottled);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleScrollThrottled);
     };
-  }, [onClick]);
+  }, [handleScrollThrottled, onClick]);
 
   useEffect(() => {
     maybeUnload();
