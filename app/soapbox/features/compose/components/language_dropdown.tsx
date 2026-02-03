@@ -3,6 +3,7 @@ import { supportsPassiveEvents } from 'detect-passive-events';
 import ISO6391, { LanguageCode } from 'iso-639-1';
 import { debounce } from 'lodash';
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { usePopper } from 'react-popper';
 import { useDispatch } from 'react-redux';
 
@@ -112,21 +113,22 @@ const LanguageDropdownMenu: React.FC<ILanguageDropdownMenu> = ({ style, items, v
   }, [onSearchChange]);
 
   return (
-    <div className={'absolute bg-white dark:bg-slate-900 z-[1000] rounded-md shadow-lg ml-10 text-sm'} style={{ ...style, ...styles.popper }} role='listbox' ref={setNode} {...attributes.popper}>
-      <div className='p-2'>
-        <Input autoFocus onChange={onSearchChangeDebounced} />
-      </div>
-      <div className='h-[250px] overflow-y-auto' ref={list}>
-        {currentItems.map((item, index) => (
-          <div role='option' tabIndex={0} key={item.value + index} data-index={index} data-value={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={classNames('p-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
-            <div className='language-dropdown__option__content'>
-              <strong className='text-primary-600'>{item.value}</strong>&nbsp;{item.label}
+    createPortal(
+      <div className={'absolute bg-white dark:bg-slate-900 rounded-md shadow-lg ml-10 text-sm'} style={{ ...style, ...styles.popper }} role='listbox' ref={setNode} {...attributes.popper}>
+        <div className='p-2'>
+          <Input autoFocus onChange={onSearchChangeDebounced} />
+        </div>
+        <div className='h-[250px] overflow-y-auto' ref={list}>
+          {currentItems.map((item, index) => (
+            <div role='option' tabIndex={0} key={item.value + index} data-index={index} data-value={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={classNames('p-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
+              <div className='language-dropdown__option__content'>
+                <strong className='text-primary-600'>{item.value}</strong>&nbsp;{item.label}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-
-    </div>
+          ))}
+        </div>
+      </div>, document.body,
+    )
   );
 };
 
