@@ -89,7 +89,7 @@ const setFailed = (state: State, timelineId: string, failed: boolean) => {
   return state.update(timelineId, TimelineRecord(), timeline => timeline.set('loadingFailed', failed));
 };
 
-const expandNormalizedTimeline = (state: State, timelineId: string, statuses: ImmutableList<ImmutableMap<string, any>>, next: string | null, isPartial: boolean, isLoadingRecent: boolean, isLoadingMore: boolean) => {
+const expandNormalizedTimeline = (state: State, timelineId: string, statuses: ImmutableList<ImmutableMap<string, any>>, next: string | null, isPartial: boolean, isLoadingNewer: boolean, isLoadingOlder: boolean) => {
   let newIds = getStatusIds(statuses);
   let unseens = ImmutableOrderedSet<any>();
 
@@ -99,7 +99,7 @@ const expandNormalizedTimeline = (state: State, timelineId: string, statuses: Im
       timeline.set('loadingFailed', false);
       timeline.set('isPartial', isPartial);
 
-      if (!next && !isLoadingRecent) timeline.set('hasMore', false);
+      if (!next && !isLoadingNewer) timeline.set('hasMore', false);
 
       // Pinned timelines can be replaced entirely
       if (timelineId.endsWith(':pinned')) {
@@ -111,7 +111,7 @@ const expandNormalizedTimeline = (state: State, timelineId: string, statuses: Im
         // we need to sort between queue and actual list to avoid
         // messing with user position in the timeline by inserting inseen statuses
         unseens = ImmutableOrderedSet<any>();
-        if (!isLoadingMore
+        if (!isLoadingOlder
           && timeline.items.count() > 0
           && newIds.first() > timeline.items.first()
         ) {
@@ -341,7 +341,7 @@ export default function timelines(state: State = initialState, action: AnyAction
     case TIMELINE_EXPAND_FAIL:
       return handleExpandFail(state, action.timeline);
     case TIMELINE_EXPAND_SUCCESS:
-      return expandNormalizedTimeline(state, action.timeline, fromJS(action.statuses) as ImmutableList<ImmutableMap<string, any>>, action.next, action.partial, action.isLoadingRecent, action.isLoadingMore);
+      return expandNormalizedTimeline(state, action.timeline, fromJS(action.statuses) as ImmutableList<ImmutableMap<string, any>>, action.next, action.partial, action.isLoadingNewer, action.isLoadingOlder);
     case TIMELINE_UPDATE:
       return updateTimeline(state, action.timeline, action.statusId);
     case TIMELINE_UPDATE_QUEUE:

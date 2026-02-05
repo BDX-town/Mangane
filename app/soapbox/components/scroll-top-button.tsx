@@ -1,5 +1,5 @@
 import throttle from 'lodash/throttle';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useIntl, MessageDescriptor } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
@@ -49,15 +49,19 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
       }
       timer.current = null;
     }, 250);
-  }, [autoload, autoloadThreshold, onClick, count]);
+  }, [count, autoload, getScrollTop, autoloadThreshold, onClick]);
 
-  const handleScroll = useCallback(throttle(() => {
-    if (getScrollTop() > threshold) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
-  }, 150, { trailing: true }), [threshold]);
+  const handleScrollThrottled = useMemo(() => {
+    return throttle(() => {
+      if (getScrollTop() > threshold) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    }, 150, { trailing: true });
+  }, [getScrollTop, threshold]);
+
+  const handleScroll = useCallback(() => handleScrollThrottled(), [handleScrollThrottled]);
 
   const scrollUp = React.useCallback(() => {
     window.scrollTo({ top: 0 });
@@ -74,7 +78,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [onClick]);
+  }, [handleScroll, onClick]);
 
   useEffect(() => {
     maybeUnload();
@@ -87,7 +91,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
   return (
     <div className='left-1/2 -translate-x-1/2 fixed top-2 z-50'>
       <button
-        className='flex items-center bg-primary-600 hover:bg-primary-700 hover:scale-105 active:scale-100 transition-transform text-white rounded-full px-4 py-2 space-x-1.5 cursor-pointer whitespace-nowrap' 
+        className='flex items-center bg-primary-600 hover:bg-primary-700 hover:scale-105 active:scale-100 transition-transform text-white rounded-full px-4 py-2 space-x-1.5 cursor-pointer whitespace-nowrap'
         onClick={handleClick}
       >
         <Icon src={require('@tabler/icons/arrow-bar-to-up.svg')} />

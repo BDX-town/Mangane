@@ -155,7 +155,7 @@ const replaceHomeTimeline = (
 const expandTimeline = (timelineId: string, path: string, params: Partial<{ all: any[], none: any[], instance: string, any: any[], since_id: string, max_id: string, exclude_replies: boolean, with_muted: boolean, only_media: boolean, local: boolean, pinned: boolean, limit: number }>, done = noOp) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const timeline = getState().timelines.get(timelineId) || {} as Record<string, any>;
-    const isLoadingMore = !!params.max_id;
+    const isLoadingOlder = !!params.max_id;
 
     if (timeline.isLoading) {
       done();
@@ -166,17 +166,17 @@ const expandTimeline = (timelineId: string, path: string, params: Partial<{ all:
       params.since_id = timeline.getIn(['items', 0]);
     }
 
-    const isLoadingRecent = !!params.since_id;
+    const isLoadingNewer = !!params.since_id;
 
-    dispatch(expandTimelineRequest(timelineId, isLoadingMore));
+    dispatch(expandTimelineRequest(timelineId, isLoadingOlder));
 
     return api(getState).get(path, { params }).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedStatuses(response.data));
-      dispatch(expandTimelineSuccess(timelineId, response.data, next ? next.uri : null, response.status === 206, isLoadingRecent, isLoadingMore));
+      dispatch(expandTimelineSuccess(timelineId, response.data, next ? next.uri : null, response.status === 206, isLoadingNewer, isLoadingOlder));
       done();
     }).catch(error => {
-      dispatch(expandTimelineFail(timelineId, error, isLoadingMore));
+      dispatch(expandTimelineFail(timelineId, error, isLoadingOlder));
       done();
     });
   };
@@ -234,15 +234,15 @@ const expandTimelineRequest = (timeline: string, isLoadingMore: boolean) => ({
   skipLoading: !isLoadingMore,
 });
 
-const expandTimelineSuccess = (timeline: string, statuses: APIEntity[], next: string | null, partial: boolean, isLoadingRecent: boolean, isLoadingMore: boolean) => ({
+const expandTimelineSuccess = (timeline: string, statuses: APIEntity[], next: string | null, partial: boolean, isLoadingNewer: boolean, isLoadingOlder: boolean) => ({
   type: TIMELINE_EXPAND_SUCCESS,
   timeline,
   statuses,
   next,
   partial,
-  isLoadingRecent,
-  skipLoading: !isLoadingMore,
-  isLoadingMore,
+  isLoadingNewer,
+  skipLoading: !isLoadingOlder,
+  isLoadingOlder,
 });
 
 const expandTimelineFail = (timeline: string, error: AxiosError, isLoadingMore: boolean) => ({
