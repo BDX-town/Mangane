@@ -89,46 +89,37 @@ const setFailed = (state: State, timelineId: string, failed: boolean) => {
   return state.update(timelineId, TimelineRecord(), timeline => timeline.set('loadingFailed', failed));
 };
 
-const expandNormalizedTimeline = (state: State, timelineId: string, statuses: ImmutableList<ImmutableMap<string, any>>, next: string | null, isPartial: boolean, isLoadingNewer: boolean, isLoadingOlder: boolean) => {
-  let newIds = getStatusIds(statuses);
-  let unseens = ImmutableOrderedSet<any>();
-
+const expandNormalizedTimeline = (state: State, timelineId: string, retrievedStatus: ImmutableList<ImmutableMap<string, any>>, next: string | null, isPartial: boolean, isLoadingNewer: boolean, isLoadingOlder: boolean) => {
+  let retrievedStatusIds = getStatusIds(retrievedStatus);
+  let unpublishedStatusIds = ImmutableOrderedSet<any>();
   return state.withMutations((s) => {
     s.update(timelineId, TimelineRecord(), timeline => timeline.withMutations(timeline => {
       timeline.set('isLoading', false);
       timeline.set('loadingFailed', false);
       timeline.set('isPartial', isPartial);
-
       if (!next && !isLoadingNewer) timeline.set('hasMore', false);
-
       // Pinned timelines can be replaced entirely
       if (timelineId.endsWith(':pinned')) {
-        timeline.set('items', newIds);
+        timeline.set('items', retrievedStatusIds);
         return;
       }
+      // if we arent loading older or newer posts and that we are not building the initial render
+      if (!isLoadingNewer && !isLoadingOlder && timeline.items.count() > 0) {
+        unpublishedStatusIds = retrievedStatusIds.subtract(timeline.items);
+        retrievedStatusIds = retrievedStatusIds.subtract(unpublishedStatusIds);
+      }
 
-      if (!newIds.isEmpty()) {
-        // we need to sort between queue and actual list to avoid
-        // messing with user position in the timeline by inserting inseen statuses
-        unseens = ImmutableOrderedSet<any>();
-        if (!isLoadingOlder
-          && timeline.items.count() > 0
-          && newIds.first() > timeline.items.first()
-        ) {
-          unseens = newIds.subtract(timeline.items);
-        }
-
-        newIds = newIds.subtract(unseens);
-        timeline.update('items', oldIds => {
-          if (newIds.first() > oldIds.first()!) {
-            return mergeStatusIds(oldIds, newIds);
+      if (!retrievedStatusIds.isEmpty()) {
+        timeline.update('items', statusInTimelineIds => {
+          if (isLoadingOlder) {
+            return mergeStatusIds(retrievedStatusIds, statusInTimelineIds);
           } else {
-            return mergeStatusIds(newIds, oldIds);
+            return mergeStatusIds(statusInTimelineIds, retrievedStatusIds);
           }
         });
       }
     }));
-    unseens.forEach((statusId) => s.set(timelineId, updateTimelineQueue(s, timelineId, statusId).get(timelineId)));
+    unpublishedStatusIds.forEach((statusId) => s.set(timelineId, updateTimelineQueue(s, timelineId, statusId).get(timelineId)));
   });
 };
 
