@@ -1,6 +1,6 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import debounce from 'lodash/debounce';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { defineMessages } from 'react-intl';
 
@@ -19,6 +19,8 @@ interface ITimeline extends Omit<IStatusList, 'statusIds' | 'isLoading' | 'hasMo
   timelineId: string,
 }
 
+const getStatusIds = makeGetStatusIds();
+
 /** Scrollable list of statuses from a timeline in the Redux store. */
 const Timeline: React.FC<ITimeline> = ({
   timelineId,
@@ -26,7 +28,6 @@ const Timeline: React.FC<ITimeline> = ({
   ...rest
 }) => {
   const dispatch = useAppDispatch();
-  const getStatusIds = useCallback(makeGetStatusIds, [])();
 
   const lastStatusId = useAppSelector(state => (state.timelines.get(timelineId)?.items || ImmutableOrderedSet()).last() as string | undefined);
   const statusIds = useAppSelector(state => getStatusIds(state, { type: timelineId }));
@@ -44,13 +45,21 @@ const Timeline: React.FC<ITimeline> = ({
     dispatch(dequeueTimeline(timelineId, onLoadMore));
   };
 
-  const handleScrollToTop = useCallback(debounce(() => {
-    dispatch(scrollTopTimeline(timelineId, true));
-  }, 100), [timelineId]);
+  const handleScrollToTopDebounced = useMemo(() => {
+    return debounce(() => {
+      dispatch(scrollTopTimeline(timelineId, true));
+    }, 100);
+  }, [dispatch, timelineId]);
 
-  const handleScroll = useCallback(debounce(() => {
-    dispatch(scrollTopTimeline(timelineId, false));
-  }, 100), [timelineId]);
+  const handleScrollToTop = useCallback(() => handleScrollToTopDebounced(), [handleScrollToTopDebounced]);
+
+  const handleScrollDebounced = useMemo(() => {
+    return debounce(() => {
+      dispatch(scrollTopTimeline(timelineId, false));
+    }, 100);
+  }, [dispatch, timelineId]);
+
+  const handleScroll = useCallback(() => handleScrollDebounced(), [handleScrollDebounced]);
 
   return (
     <>
