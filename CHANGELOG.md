@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.19.4 (2026-02-08)
+
+
+### Bug Fixes
+
+* sometimes loading older post does not work ([#449](https://github.com/BDX-town/Mangane/issues/449)) ([507236c](https://github.com/BDX-town/Mangane/commit/507236c978b27c4eac334088bf0f105c15438d4a))
+
 ## 1.19.3 (2026-02-03)
 
 
