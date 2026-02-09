@@ -48,7 +48,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
         onClick();
       }
       timer.current = null;
-    }, 250);
+    }, 1000);
   }, [count, autoload, getScrollTop, autoloadThreshold, onClick]);
 
   const handleScrollThrottled = useMemo(() => {

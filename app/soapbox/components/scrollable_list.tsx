@@ -107,29 +107,31 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   const autoloadMore = settings.get('autoloadMore');
 
   // Preserve scroll position
-  const scrollDataKey = `soapbox:scrollData:${scrollKey}`;
+  const scrollDataKey = useMemo(() => `soapbox:scrollData:${scrollKey}`, [scrollKey]);
   const scrollData: SavedScrollPosition | null = useMemo(() => JSON.parse(sessionStorage.getItem(scrollDataKey)!), [scrollDataKey]);
   const topIndex = useRef<number>(scrollData ? scrollData.index : 0);
   const topOffset = useRef<number>(scrollData ? scrollData.offset : 0);
 
-  /** Normalized children. */
-  const elements = Array.from(children || []);
+  const showPlaceholder = useMemo(() => showLoading && Placeholder && placeholderCount > 0, [Placeholder, placeholderCount, showLoading]);
 
-  const showPlaceholder = showLoading && Placeholder && placeholderCount > 0;
+  const data = useMemo(() => {
+    /** Normalized children. */
+    const elements = Array.from(children || []);
+    // NOTE: We are doing some trickery to load a feed of placeholders
+    // Virtuoso's `EmptyPlaceholder` unfortunately doesn't work for our use-case
+    const res = showPlaceholder ? Array(placeholderCount).fill('') : elements;
+    // Add a placeholder at the bottom for loading
+    // (Don't use Virtuoso's `Footer` component because it doesn't preserve its height)
+    if (hasMore && (autoloadMore || isLoading) && Placeholder) {
+      res.push(<Placeholder />);
+    } else if (hasMore && (autoloadMore || isLoading)) {
+      res.push(<Spinner />);
+    }
+    return res;
+  }, [Placeholder, autoloadMore, children, hasMore, isLoading, placeholderCount, showPlaceholder]);
 
-  // NOTE: We are doing some trickery to load a feed of placeholders
-  // Virtuoso's `EmptyPlaceholder` unfortunately doesn't work for our use-case
-  const data = showPlaceholder ? Array(placeholderCount).fill('') : elements;
-
-  // Add a placeholder at the bottom for loading
-  // (Don't use Virtuoso's `Footer` component because it doesn't preserve its height)
-  if (hasMore && (autoloadMore || isLoading) && Placeholder) {
-    data.push(<Placeholder />);
-  } else if (hasMore && (autoloadMore || isLoading)) {
-    data.push(<Spinner />);
-  }
-
-  const handleScroll = useCallback(debounce(() => {
+  // eslint-disable-next-line react-hooks/refs
+  const handleScrollDebounced = useMemo(() => debounce(() => {
     // HACK: Virtuoso has no better way to get this...
     const node = document.querySelector(`[data-virtuoso-scroller] [data-item-index="${topIndex.current}"]`);
     if (node) {
@@ -138,6 +140,8 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
       topOffset.current = 0;
     }
   }, 150, { trailing: true }), []);
+
+  const handleScroll = useCallback(() => handleScrollDebounced(), [handleScrollDebounced]);
 
   useEffect(() => {
     document.addEventListener('scroll', handleScroll);
@@ -150,7 +154,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
       }
       document.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [handleScroll, scrollDataKey, scrollKey]);
 
   /* Render an empty state instead of the scrollable list. */
   const renderEmpty = (): JSX.Element => {
@@ -178,11 +182,11 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
     }
   };
 
-  const handleEndReached = () => {
+  const handleEndReached = useCallback(() => {
     if (autoloadMore && hasMore && onLoadMore) {
       onLoadMore();
     }
-  };
+  }, [autoloadMore, hasMore, onLoadMore]);
 
   const loadMore = () => {
     if (autoloadMore || !hasMore || !onLoadMore) {
@@ -192,12 +196,12 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
     }
   };
 
-  const handleRangeChange = (range: ListRange) => {
+  const handleRangeChange = useCallback((range: ListRange) => {
     // HACK: using the first index can be buggy.
     // Track the second item instead, unless the endIndex comes before it (eg one 1 item in view).
     topIndex.current = Math.min(range.startIndex + 1, range.endIndex);
     handleScroll();
-  };
+  }, [handleScroll]);
 
   /** Figure out the initial index to scroll to. */
   const initialIndex = useMemo<number | IndexLocationWithAlign>(() => {
@@ -213,7 +217,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
     }
 
     return 0;
-  }, [showLoading, initialTopMostItemIndex]);
+  }, [showLoading, initialTopMostItemIndex, scrollData, history.action]);
 
   return (
     <Virtuoso
