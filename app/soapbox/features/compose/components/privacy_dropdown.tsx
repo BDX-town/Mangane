@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { supportsPassiveEvents } from 'detect-passive-events';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useIntl, defineMessages } from 'react-intl';
 import { usePopper } from 'react-popper';
 
@@ -42,13 +43,23 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, val
 
   const { attributes, styles } = usePopper(reference, node, { placement: top * 2 < window.innerHeight ? 'bottom' : 'top' });
 
-  const handleDocumentClick = (e: MouseEvent | TouchEvent) => {
+  const handleDocumentClick = useCallback((e: MouseEvent | TouchEvent) => {
     if (node && !node.contains(e.target as HTMLElement)) {
       onClose();
     }
-  };
+  }, [node, onClose]);
 
-  const handleKeyDown: React.KeyboardEventHandler = e => {
+  const handleClick: React.EventHandler<any> = useCallback((e: MouseEvent | KeyboardEvent) => {
+    const value = (e.currentTarget as HTMLElement)?.getAttribute('data-index');
+
+    e.preventDefault();
+
+    onClose();
+    onChange(value);
+  }, [onChange, onClose]);
+
+
+  const handleKeyDown: React.KeyboardEventHandler = useCallback(e => {
     const value = e.currentTarget.getAttribute('data-index');
     const index = items.findIndex(item => item.value === value);
     let element = null;
@@ -87,16 +98,7 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, val
       e.preventDefault();
       e.stopPropagation();
     }
-  };
-
-  const handleClick: React.EventHandler<any> = (e: MouseEvent | KeyboardEvent) => {
-    const value = (e.currentTarget as HTMLElement)?.getAttribute('data-index');
-
-    e.preventDefault();
-
-    onClose();
-    onChange(value);
-  };
+  }, [handleClick, items, node?.childNodes, node?.firstChild, node?.lastChild, onChange, onClose]);
 
   useEffect(() => {
     document.addEventListener('click', handleDocumentClick, false);
@@ -108,9 +110,9 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, val
       document.removeEventListener('click', handleDocumentClick, false);
       document.removeEventListener('touchend', handleDocumentClick);
     };
-  }, []);
+  }, [handleDocumentClick]);
 
-  return (
+  return createPortal(
     <div className={'privacy-dropdown__dropdown absolute bg-white dark:bg-slate-900 z-[1000] rounded-md shadow-lg ml-10 text-sm'} style={{ ...style, ...styles.popper }} role='listbox' ref={setNode} {...attributes.popper}>
       {items.map(item => (
         <div role='option' tabIndex={0} key={item.value} data-index={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={classNames('privacy-dropdown__option', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
@@ -125,7 +127,7 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, val
         </div>
       ))}
     </div>
-  );
+    , document.body);
 };
 
 interface IPrivacyDropdown {
@@ -147,7 +149,7 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
   unavailable,
 }) => {
   const intl = useIntl();
-  const node = useRef<HTMLDivElement>(null);
+  const [node, setNode] = useState<HTMLDivElement>(null);
   const activeElement = useRef<HTMLElement | null>(null);
   const logo = useLogo();
   const features = useFeatures();
@@ -227,7 +229,7 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
   const valueOption = options.find(item => item.value === value);
 
   return (
-    <div className={classNames('privacy-dropdown', { active: open })} onKeyDown={handleKeyDown} ref={node}>
+    <div className={classNames('privacy-dropdown', { active: open })} onKeyDown={handleKeyDown} ref={setNode}>
       <div className={classNames('privacy-dropdown__value', { active: valueOption && options.indexOf(valueOption) === 0 })}>
         <IconButton
           className='text-gray-400 hover:text-gray-600'
@@ -240,13 +242,13 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
       </div>
 
       {
-        open && (
+        open && node && (
           <PrivacyDropdownMenu
             items={options}
             value={value}
             onClose={handleClose}
             onChange={onChange}
-            reference={node.current}
+            reference={node}
           />
         )
       }
