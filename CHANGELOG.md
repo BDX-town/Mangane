@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.19.5 (2026-02-14)
+
+
+### Bug Fixes
+
+* timeline jump ([#450](https://github.com/BDX-town/Mangane/issues/450)) ([170d464](https://github.com/BDX-town/Mangane/commit/170d4642608ae0a4cce49422d43d1b7c4296847d))
+
 ## 1.19.4 (2026-02-08)
 
 
