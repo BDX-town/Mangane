@@ -37,13 +37,12 @@ const Timeline: React.FC<ITimeline> = ({
   const totalQueuedItemsCount = useAppSelector(state => state.timelines.get(timelineId)?.totalQueuedItemsCount || 0);
   const isFilteringFeed = useAppSelector(state => !!state.timelines.get(timelineId)?.feedAccountId);
 
-  const handleDequeueTimeline = () => {
+  const handleDequeueTimeline = useCallback(() => {
     if (isFilteringFeed) {
       return;
     }
-
     dispatch(dequeueTimeline(timelineId, onLoadMore));
-  };
+  }, [dispatch, isFilteringFeed, onLoadMore, timelineId]);
 
   const handleScrollToTopDebounced = useMemo(() => {
     return debounce(() => {
