@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { changeSetting } from 'soapbox/actions/settings';
-import { expandBubbleTimeline } from 'soapbox/actions/timelines';
+import { dequeueTimeline, expandBubbleTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import TimelineSettings from 'soapbox/components/timeline_settings';
@@ -29,6 +29,8 @@ const BubbleTimeline = () => {
   const siteTitle = useAppSelector((state) => state.instance.title);
   const showExplanationBox = settings.get('showExplanationBox');
 
+  const timelineId = useMemo(() => `bubble${onlyMedia ? ':media' : ''}${excludeReplies ? ':exclude_replies' : ''}`, [excludeReplies, onlyMedia]);
+
   const dismissExplanationBox = React.useCallback(() => {
     dispatch(changeSetting(['showExplanationBox'], false));
   }, [dispatch]);
@@ -37,9 +39,10 @@ const BubbleTimeline = () => {
     dispatch(expandBubbleTimeline({ maxId, onlyMedia, excludeReplies }));
   }, [dispatch, excludeReplies, onlyMedia]);
 
-  const handleRefresh = React.useCallback(() => {
-    return dispatch(expandBubbleTimeline({ onlyMedia, excludeReplies } as any));
-  }, [dispatch, excludeReplies, onlyMedia]);
+  const handleRefresh = React.useCallback(async() => {
+    await dispatch(expandBubbleTimeline({ onlyMedia, excludeReplies } as any));
+    return dispatch(dequeueTimeline(timelineId));
+  }, [dispatch, excludeReplies, onlyMedia, timelineId]);
 
   useEffect(() => {
     dispatch(expandBubbleTimeline({ onlyMedia, excludeReplies } as any));
@@ -92,7 +95,7 @@ const BubbleTimeline = () => {
         <PullToRefresh onRefresh={handleRefresh}>
           <Timeline
             scrollKey={'bubble_timeline'}
-            timelineId={`bubble${onlyMedia ? ':media' : ''}${excludeReplies ? ':exclude_replies' : ''}`}
+            timelineId={timelineId}
             onLoadMore={handleLoadMore}
             emptyMessage={<FormattedMessage id='empty_column.public' defaultMessage='There is nothing here! Write something publicly, or manually follow users from other servers to fill it up' />}
             divideType='space'

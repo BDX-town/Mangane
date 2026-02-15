@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { connectCommunityStream } from 'soapbox/actions/streaming';
-import { expandCommunityTimeline } from 'soapbox/actions/timelines';
+import { dequeueTimeline, expandCommunityTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import TimelineSettings from 'soapbox/components/timeline_settings';
@@ -16,27 +16,29 @@ const messages = defineMessages({
   settings: { id: 'settings.settings', defaultMessage: 'Settings' },
 });
 
+const timelineId = 'community';
+
 const CommunityTimeline = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
   const instance = useAppSelector((state) => state.instance);
-  const timelineId = 'community';
 
   const [showSettings, setShowSettings] = useState(false);
   const settings = useSettings();
   const onlyMedia = settings.getIn([timelineId, 'other', 'onlyMedia']);
   const excludeReplies = settings.getIn([timelineId, 'shows', 'reply']);
 
+  const completeTimelineId = useMemo(() => `${timelineId}${onlyMedia ? ':media' : ''}${excludeReplies ? ':exclude_replies' : ''}`, [excludeReplies, onlyMedia]);
 
-
-  const handleLoadMore = (maxId: string) => {
+  const handleLoadMore = useCallback((maxId: string) => {
     dispatch(expandCommunityTimeline({ maxId, onlyMedia, excludeReplies }));
-  };
+  }, [dispatch, excludeReplies, onlyMedia]);
 
-  const handleRefresh = () => {
-    return dispatch(expandCommunityTimeline({ onlyMedia, excludeReplies }));
-  };
+  const handleRefresh =  useCallback(async() => {
+    await dispatch(expandCommunityTimeline({ onlyMedia, excludeReplies }));
+    return dispatch(dequeueTimeline(completeTimelineId));
+  }, [completeTimelineId, dispatch, excludeReplies, onlyMedia]);
 
   useEffect(() => {
     dispatch(expandCommunityTimeline({ onlyMedia, excludeReplies }));
@@ -64,7 +66,7 @@ const CommunityTimeline = () => {
         <PullToRefresh onRefresh={handleRefresh}>
           <Timeline
             scrollKey={`${timelineId}_timeline`}
-            timelineId={`${timelineId}${onlyMedia ? ':media' : ''}${excludeReplies ? ':exclude_replies' : ''}`}
+            timelineId={completeTimelineId}
             onLoadMore={handleLoadMore}
             emptyMessage={<FormattedMessage id='empty_column.community' defaultMessage='The local timeline is empty. Write something publicly to get the ball rolling!' />}
             divideType='space'

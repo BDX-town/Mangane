@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
-import { expandHomeTimeline } from 'soapbox/actions/timelines';
+import { dequeueTimeline, expandHomeTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Column, Stack, Text } from 'soapbox/components/ui';
 import Timeline from 'soapbox/features/ui/components/timeline';
@@ -15,6 +15,8 @@ import { clearFeedAccountId } from '../../actions/timelines';
 const messages = defineMessages({
   title: { id: 'column.home', defaultMessage: 'Home' },
 });
+
+const timelineId = 'home';
 
 const HomeTimeline: React.FC = () => {
   const intl = useIntl();
@@ -28,13 +30,20 @@ const HomeTimeline: React.FC = () => {
   const siteTitle = useAppSelector(state => state.instance.title);
   const currentAccountRelationship = useAppSelector(state => currentAccountId ? state.relationships.get(currentAccountId) : null);
 
-  const handleLoadMore = (maxId: string) => {
+  const handleLoadMore = useCallback((maxId: string) => {
     dispatch(expandHomeTimeline({ maxId, accountId: currentAccountId }));
-  };
+  }, [currentAccountId, dispatch]);
+
+  const stopPolling = useCallback(() => {
+    if (polling.current) {
+      clearInterval(polling.current);
+      polling.current = null;
+    }
+  }, []);
 
   // Mastodon generates the feed in Redis, and can return a partial timeline
   // (HTTP 206) for new users. Poll until we get a full page of results.
-  const checkIfReloadNeeded = () => {
+  const checkIfReloadNeeded = useCallback(() => {
     if (isPartial) {
       polling.current = setInterval(() => {
         dispatch(expandHomeTimeline());
@@ -42,18 +51,13 @@ const HomeTimeline: React.FC = () => {
     } else {
       stopPolling();
     }
-  };
+  }, [dispatch, isPartial, stopPolling]);
 
-  const stopPolling = () => {
-    if (polling.current) {
-      clearInterval(polling.current);
-      polling.current = null;
-    }
-  };
 
-  const handleRefresh = () => {
-    return dispatch(expandHomeTimeline({ maxId: null, accountId: currentAccountId }));
-  };
+  const handleRefresh = useCallback(async() => {
+    await dispatch(expandHomeTimeline({ maxId: null, accountId: currentAccountId }));
+    return dispatch(dequeueTimeline(timelineId));
+  }, [currentAccountId, dispatch]);
 
   useEffect(() => {
     checkIfReloadNeeded();
@@ -61,14 +65,14 @@ const HomeTimeline: React.FC = () => {
     return () => {
       stopPolling();
     };
-  }, [isPartial]);
+  }, [checkIfReloadNeeded, isPartial, stopPolling]);
 
   useEffect(() => {
     // Check to see if we still follow the user that is selected in the Feed Carousel.
     if (currentAccountId) {
       dispatch(fetchRelationships([currentAccountId]));
     }
-  }, []);
+  }, [currentAccountId, dispatch]);
 
   useEffect(() => {
     // If we unfollowed the currently selected user from the Feed Carousel,
@@ -80,7 +84,7 @@ const HomeTimeline: React.FC = () => {
         dispatch(fetchSuggestionsForTimeline());
       }));
     }
-  }, [currentAccountId]);
+  }, [currentAccountId, currentAccountRelationship, dispatch]);
 
   return (
     <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
@@ -88,7 +92,7 @@ const HomeTimeline: React.FC = () => {
         <Timeline
           scrollKey='home_timeline'
           onLoadMore={handleLoadMore}
-          timelineId='home'
+          timelineId={timelineId}
           divideType='space'
           showAds
           emptyMessage={
