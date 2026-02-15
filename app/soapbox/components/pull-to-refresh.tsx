@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PTRComponent from 'react-simple-pull-to-refresh';
 
 import { Spinner } from 'soapbox/components/ui';
@@ -14,14 +14,14 @@ interface IPullToRefresh {
  * Wrapper around a third-party PTR component with Soapbox defaults.
  */
 const PullToRefresh: React.FC<IPullToRefresh> = ({ children, onRefresh, ...rest }): JSX.Element => {
-  const handleRefresh = () => {
+  const handleRefresh = useCallback(() => {
     if (onRefresh) {
       return onRefresh();
     } else {
       // If not provided, do nothing
       return Promise.resolve();
     }
-  };
+  }, [onRefresh]);
 
   return (
     <PTRComponent

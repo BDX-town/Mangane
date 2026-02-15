@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { changeSetting } from 'soapbox/actions/settings';
 import { connectPublicStream } from 'soapbox/actions/streaming';
-import { expandPublicTimeline } from 'soapbox/actions/timelines';
+import { dequeueTimeline, expandPublicTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import TimelineSettings from 'soapbox/components/timeline_settings';
@@ -30,6 +30,7 @@ const CommunityTimeline = () => {
   const siteTitle = useAppSelector((state) => state.instance.title);
   const showExplanationBox = settings.get('showExplanationBox');
 
+  const timelineId = useMemo(() => `public${onlyMedia ? ':media' : ''}${excludeReplies ? ':exclude_replies' : ''}`, [excludeReplies, onlyMedia]);
 
   const dismissExplanationBox = React.useCallback(() => {
     dispatch(changeSetting(['showExplanationBox'], false));
@@ -39,9 +40,10 @@ const CommunityTimeline = () => {
     dispatch(expandPublicTimeline({ maxId, onlyMedia, excludeReplies }));
   }, [dispatch, excludeReplies, onlyMedia]);
 
-  const handleRefresh = React.useCallback(() => {
-    return dispatch(expandPublicTimeline({ onlyMedia, excludeReplies }));
-  }, [dispatch, excludeReplies, onlyMedia]);
+  const handleRefresh = React.useCallback(async() => {
+    await dispatch(expandPublicTimeline({ onlyMedia, excludeReplies }));
+    return dispatch(dequeueTimeline(timelineId));
+  }, [dispatch, excludeReplies, onlyMedia, timelineId]);
 
   useEffect(() => {
     dispatch(expandPublicTimeline({ onlyMedia, excludeReplies }));
@@ -94,7 +96,7 @@ const CommunityTimeline = () => {
       <PullToRefresh onRefresh={handleRefresh}>
         <Timeline
           scrollKey={'public_timeline'}
-          timelineId={`public${onlyMedia ? ':media' : ''}${excludeReplies ? ':exclude_replies' : ''}`}
+          timelineId={timelineId}
           onLoadMore={handleLoadMore}
           emptyMessage={<FormattedMessage id='empty_column.public' defaultMessage='There is nothing here! Write something publicly, or manually follow users from other servers to fill it up' />}
           divideType='space'

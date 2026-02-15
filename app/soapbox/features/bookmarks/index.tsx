@@ -1,5 +1,5 @@
 import debounce from 'lodash/debounce';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from 'soapbox/actions/bookmarks';
@@ -27,13 +27,11 @@ const Bookmarks: React.FC = () => {
 
   React.useEffect(() => {
     dispatch(fetchBookmarkedStatuses());
-  }, []);
+  }, [dispatch]);
 
-  const handleRefresh = () => {
+  const handleRefresh = useCallback(() => {
     return dispatch(fetchBookmarkedStatuses());
-  };
-
-  const emptyMessage = <FormattedMessage id='empty_column.bookmarks' defaultMessage="You don't have any bookmarks yet. When you add one, it will show up here." />;
+  }, [dispatch]);
 
   return (
     <Column transparent withHeader={false}>
@@ -47,7 +45,7 @@ const Bookmarks: React.FC = () => {
           hasMore={hasMore}
           isLoading={typeof isLoading === 'boolean' ? isLoading : true}
           onLoadMore={() => handleLoadMore(dispatch)}
-          emptyMessage={emptyMessage}
+          emptyMessage={<FormattedMessage id='empty_column.bookmarks' defaultMessage="You don't have any bookmarks yet. When you add one, it will show up here." />}
           divideType='space'
           timelineId=':bookmarks:'
         />
