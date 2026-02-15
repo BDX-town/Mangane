@@ -56,7 +56,7 @@ const HomeTimeline: React.FC = () => {
 
   const handleRefresh = useCallback(async() => {
     await dispatch(expandHomeTimeline({ maxId: null, accountId: currentAccountId }));
-    return dequeueTimeline(timelineId);
+    return dispatch(dequeueTimeline(timelineId));
   }, [currentAccountId, dispatch]);
 
   useEffect(() => {

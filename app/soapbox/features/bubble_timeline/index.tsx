@@ -41,7 +41,7 @@ const BubbleTimeline = () => {
 
   const handleRefresh = React.useCallback(async() => {
     await dispatch(expandBubbleTimeline({ onlyMedia, excludeReplies } as any));
-    return dequeueTimeline(timelineId);
+    return dispatch(dequeueTimeline(timelineId));
   }, [dispatch, excludeReplies, onlyMedia, timelineId]);
 
   useEffect(() => {

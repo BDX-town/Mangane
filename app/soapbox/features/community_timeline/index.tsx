@@ -37,7 +37,7 @@ const CommunityTimeline = () => {
 
   const handleRefresh =  useCallback(async() => {
     await dispatch(expandCommunityTimeline({ onlyMedia, excludeReplies }));
-    return dequeueTimeline(completeTimelineId);
+    return dispatch(dequeueTimeline(completeTimelineId));
   }, [completeTimelineId, dispatch, excludeReplies, onlyMedia]);
 
   useEffect(() => {
