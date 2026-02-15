@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import debounce from 'lodash/debounce';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { createSelector } from 'reselect';
 
@@ -60,36 +60,27 @@ const Notifications = () => {
 
   const node = useRef<VirtuosoHandle>(null);
   const column = useRef<HTMLDivElement>(null);
-  const scrollableContentRef = useRef<ImmutableList<JSX.Element> | null>(null);
 
-  // const handleLoadGap = (maxId) => {
-  //   dispatch(expandNotifications({ maxId }));
-  // };
-
-  const handleLoadOlder = useCallback(debounce(() => {
+  const handleLoadOlderDebounced = useMemo(() => debounce(() => {
     const last = notifications.last();
     dispatch(expandNotifications({ maxId: last && last.get('id') }));
-  }, 300, { leading: true }), [notifications]);
+  }, 300, { leading: true }), [dispatch, notifications]);
 
-  const handleScrollToTop = useCallback(debounce(() => {
+  const handleLoadOlder = useCallback(() => handleLoadOlderDebounced(), [handleLoadOlderDebounced]);
+
+  const handleScrollToTopDebounced = useMemo(() => debounce(() => {
     dispatch(scrollTopNotifications(true));
-  }, 100), []);
+  }, 100), [dispatch]);
 
-  const handleScroll = useCallback(debounce(() => {
+  const handleScrollToTop = useCallback(() => handleScrollToTopDebounced(), [handleScrollToTopDebounced]);
+
+  const handleScrollDebounced = useMemo(() => debounce(() => {
     dispatch(scrollTopNotifications(false));
-  }, 100), []);
+  }, 100), [dispatch]);
 
-  const handleMoveUp = (id: string) => {
-    const elementIndex = notifications.findIndex(item => item !== null && item.get('id') === id) - 1;
-    _selectChild(elementIndex);
-  };
+  const handleScroll = useCallback(() => handleScrollDebounced(), [handleScrollDebounced]);
 
-  const handleMoveDown = (id: string) => {
-    const elementIndex = notifications.findIndex(item => item !== null && item.get('id') === id) + 1;
-    _selectChild(elementIndex);
-  };
-
-  const _selectChild = (index: number) => {
+  const _selectChild = useCallback((index: number) => {
     node.current?.scrollIntoView({
       index,
       behavior: 'smooth',
@@ -102,87 +93,78 @@ const Notifications = () => {
         }
       },
     });
-  };
-
-  const handleDequeueNotifications = () => {
-    dispatch(dequeueNotifications());
-  };
-
-  const handleRefresh = () => {
-    return dispatch(expandNotifications());
-  };
-
-  useEffect(() => {
-    handleDequeueNotifications();
-    dispatch(scrollTopNotifications(true));
-
-    return () => {
-      handleLoadOlder.cancel();
-      handleScrollToTop.cancel();
-      handleScroll.cancel();
-      dispatch(scrollTopNotifications(false));
-    };
   }, []);
 
-  const emptyMessage = activeFilter === 'all'
-    ? <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />
-    : <FormattedMessage id='empty_column.notifications_filtered' defaultMessage="You don't have any notifications of this type yet." />;
+  const handleMoveUp = useCallback((id: string) => {
+    const elementIndex = notifications.findIndex(item => item !== null && item.get('id') === id) - 1;
+    _selectChild(elementIndex);
+  }, [notifications, _selectChild]);
 
-  let scrollableContent: ImmutableList<JSX.Element> | null = null;
+  const handleMoveDown = useCallback((id: string) => {
+    const elementIndex = notifications.findIndex(item => item !== null && item.get('id') === id) + 1;
+    _selectChild(elementIndex);
+  }, [notifications, _selectChild]);
 
-  const filterBarContainer = showFilterBar
-    ? (<FilterBar />)
-    : null;
+  const handleDequeueNotifications = useCallback(() => {
+    dispatch(dequeueNotifications());
+  }, [dispatch]);
 
-  if (isLoading && scrollableContentRef.current) {
-    scrollableContent = scrollableContentRef.current;
-  } else if (notifications.size > 0 || hasMore) {
-    scrollableContent = notifications.map((item) => (
-      <Notification
-        key={item.id}
-        notification={item}
-        onMoveUp={handleMoveUp}
-        onMoveDown={handleMoveDown}
-      />
-    ));
-  } else {
-    scrollableContent = null;
-  }
+  const handleRefresh = useCallback(async() => {
+    await dispatch(expandNotifications());
+    return dispatch(dequeueNotifications());
+  }, [dispatch]);
 
-  scrollableContentRef.current = scrollableContent;
-
-  const scrollContainer = (
-    <ScrollableList
-      ref={node}
-      scrollKey='notifications'
-      isLoading={isLoading}
-      showLoading={isLoading && notifications.size === 0}
-      hasMore={hasMore}
-      emptyMessage={emptyMessage}
-      placeholderComponent={PlaceholderNotification}
-      placeholderCount={20}
-      onLoadMore={handleLoadOlder}
-      onScrollToTop={handleScrollToTop}
-      onScroll={handleScroll}
-      className={classNames({
-        'divide-y divide-gray-200 dark:divide-gray-600 divide-solid': notifications.size > 0,
-        'space-y-2': notifications.size === 0,
-      })}
-    >
-      {scrollableContent as ImmutableList<JSX.Element>}
-    </ScrollableList>
-  );
+  useEffect(() => {
+    return () => {
+      handleLoadOlderDebounced.cancel();
+      handleScrollToTopDebounced.cancel();
+      handleScrollDebounced.cancel();
+      dispatch(scrollTopNotifications(false));
+    };
+  }, [dispatch, handleLoadOlderDebounced, handleScrollDebounced, handleScrollToTopDebounced]);
 
   return (
     <Column ref={column} label={intl.formatMessage(messages.title)} withHeader={false}>
-      {filterBarContainer}
+      {showFilterBar
+        ? (<FilterBar />)
+        : null}
       <ScrollTopButton
         onClick={handleDequeueNotifications}
         count={totalQueuedNotificationsCount}
         message={messages.queue}
       />
       <PullToRefresh onRefresh={handleRefresh}>
-        {scrollContainer}
+        <ScrollableList
+          ref={node}
+          scrollKey='notifications'
+          isLoading={isLoading}
+          showLoading={isLoading && notifications.size === 0}
+          hasMore={hasMore}
+          emptyMessage={activeFilter === 'all'
+            ? <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />
+            : <FormattedMessage id='empty_column.notifications_filtered' defaultMessage="You don't have any notifications of this type yet." />
+          }
+          placeholderComponent={PlaceholderNotification}
+          placeholderCount={20}
+          onLoadMore={handleLoadOlder}
+          onScrollToTop={handleScrollToTop}
+          onScroll={handleScroll}
+          className={classNames({
+            'divide-y divide-gray-200 dark:divide-gray-600 divide-solid': notifications.size > 0,
+            'space-y-2': notifications.size === 0,
+          })}
+        >
+          {
+            notifications?.map((item) => (
+              <Notification
+                key={item.id}
+                notification={item}
+                onMoveUp={handleMoveUp}
+                onMoveDown={handleMoveDown}
+              />
+            ))
+          }
+        </ScrollableList>
       </PullToRefresh>
     </Column>
   );
