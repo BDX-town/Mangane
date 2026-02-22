@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -163,31 +163,19 @@ const Notification: React.FC<INotificaton> = (props) => {
   const type = notification.type;
   const { account, status } = notification;
 
-  const getHandlers = () => ({
-    reply: handleMention,
-    favourite: handleHotkeyFavourite,
-    boost: handleHotkeyBoost,
-    mention: handleMention,
-    open: handleOpen,
-    openProfile: handleOpenProfile,
-    moveUp: handleMoveUp,
-    moveDown: handleMoveDown,
-    toggleHidden: handleHotkeyToggleHidden,
-  });
+  const handleOpenProfile = useCallback(() => {
+    if (account && typeof account === 'object') {
+      history.push(`/@${account.acct}`);
+    }
+  }, [account, history]);
 
-  const handleOpen = () => {
+  const handleOpen = useCallback(() => {
     if (status && typeof status === 'object' && account && typeof account === 'object') {
       history.push(`/@${account.acct}/posts/${status.id}`);
     } else {
       handleOpenProfile();
     }
-  };
-
-  const handleOpenProfile = () => {
-    if (account && typeof account === 'object') {
-      history.push(`/@${account.acct}`);
-    }
-  };
+  }, [status, account, history, handleOpenProfile]);
 
   const handleMention = useCallback((e?: KeyboardEvent) => {
     e?.preventDefault();
@@ -195,7 +183,7 @@ const Notification: React.FC<INotificaton> = (props) => {
     if (account && typeof account === 'object') {
       dispatch(mentionCompose(account));
     }
-  }, [account]);
+  }, [account, dispatch]);
 
   const handleHotkeyFavourite = useCallback((e?: KeyboardEvent) => {
     if (status && typeof status === 'object') {
@@ -205,7 +193,7 @@ const Notification: React.FC<INotificaton> = (props) => {
         dispatch(favourite(status));
       }
     }
-  }, [status]);
+  }, [dispatch, status]);
 
   const handleHotkeyBoost = useCallback((e?: KeyboardEvent) => {
     if (status && typeof status === 'object') {
@@ -224,7 +212,7 @@ const Notification: React.FC<INotificaton> = (props) => {
         }
       });
     }
-  }, [status]);
+  }, [dispatch, status]);
 
   const handleHotkeyToggleHidden = useCallback((e?: KeyboardEvent) => {
     if (status && typeof status === 'object') {
@@ -234,19 +222,19 @@ const Notification: React.FC<INotificaton> = (props) => {
         dispatch(hideStatus(status.id));
       }
     }
-  }, [status]);
+  }, [dispatch, status]);
 
-  const handleMoveUp = () => {
+  const handleMoveUp = useCallback(() => {
     if (onMoveUp) {
       onMoveUp(notification.id);
     }
-  };
+  }, [onMoveUp, notification.id]);
 
-  const handleMoveDown = () => {
+  const handleMoveDown = useCallback(() => {
     if (onMoveDown) {
       onMoveDown(notification.id);
     }
-  };
+  }, [onMoveDown, notification.id]);
 
   const renderIcon = (): React.ReactNode => {
     if (type === 'pleroma:emoji_reaction' && notification.emoji) {
@@ -332,8 +320,20 @@ const Notification: React.FC<INotificaton> = (props) => {
     )
   ) : '';
 
+  const handlers = useMemo(() => ({
+    reply: handleMention,
+    favourite: handleHotkeyFavourite,
+    boost: handleHotkeyBoost,
+    mention: handleMention,
+    open: handleOpen,
+    openProfile: handleOpenProfile,
+    moveUp: handleMoveUp,
+    moveDown: handleMoveDown,
+    toggleHidden: handleHotkeyToggleHidden,
+  }), [handleMention, handleHotkeyFavourite, handleHotkeyBoost, handleOpen, handleOpenProfile, handleMoveUp, handleMoveDown, handleHotkeyToggleHidden]);
+
   return (
-    <HotKeys handlers={getHandlers()} data-testid='notification'>
+    <HotKeys handlers={handlers} data-testid='notification'>
       <div
         className='notification focusable'
         tabIndex={0}
@@ -366,4 +366,4 @@ const Notification: React.FC<INotificaton> = (props) => {
   );
 };
 
-export default Notification;
+export default React.memo(Notification);
