@@ -479,6 +479,14 @@ const Thread: React.FC<IThread> = (props) => {
     }
   }, [dispatch, history]);
 
+  const onDeleteStatus = useCallback(() => {
+    if (actualStatus?.in_reply_to_id) {
+      history.push(`/notice/${actualStatus.in_reply_to_id}`);
+    } else {
+      history.push('/');
+    }
+  }, [actualStatus, history]);
+
   const focusedStatus = useMemo(() => !actualStatus ? null : (
     <>
       <div className={classNames('thread__detailed-status')} key={actualStatus.id}>
@@ -502,6 +510,7 @@ const Thread: React.FC<IThread> = (props) => {
             />
             <StatusActionBar
               status={actualStatus}
+              onDelete={onDeleteStatus}
             />
           </div>
         </HotKeys>

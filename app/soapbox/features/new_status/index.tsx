@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
-import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
-import { changeCompose, resetCompose } from 'soapbox/actions/compose';
+import { changeCompose, resetCompose, submitCompose } from 'soapbox/actions/compose';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { Column } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import ComposeFormContainer from '../compose/containers/compose_form_container';
 
@@ -19,10 +19,11 @@ const messages = defineMessages({
 const NewStatus = () => {
   const intl = useIntl();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const statusId = useAppSelector((state) => state.compose.id);
   const privacy = useAppSelector((state) => state.compose.privacy);
   const inReplyTo = useAppSelector((state) => state.compose.in_reply_to);
+  const history = useHistory();
   const quote = useAppSelector((state) => state.compose.quote);
 
   useEffect(() => {
@@ -53,13 +54,21 @@ const NewStatus = () => {
     }
   }, [dispatch]);
 
+  const handleComposeSubmit = useCallback(async(router, group) => {
+    const status = await dispatch(submitCompose(router, group));
+    if (status) {
+      const url = new URL(status.url);
+      history.push(url.pathname);
+    }
+  }, [dispatch, history]);
+
   return (
     <Column label={renderTitle} transparent withHeader={false}>
       <div className='px-4 pt-4 sm:p-0'>
         <SubNavigation message={renderTitle} />
       </div>
       <div className='block w-full p-6 mx-auto text-left align-middle transition-all bg-white dark:bg-slate-800 text-black dark:text-white rounded-none sm:rounded-2xl pointer-events-auto max-w-xl'>
-        <ComposeFormContainer />
+        <ComposeFormContainer  onSubmit={handleComposeSubmit} />
       </div>
 
     </Column>

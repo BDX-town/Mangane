@@ -4,6 +4,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { blockAccount } from 'soapbox/actions/accounts';
+import { showAlertForError } from 'soapbox/actions/alerts';
 import { directCompose, mentionCompose, quoteCompose } from 'soapbox/actions/compose';
 import { toggleBookmark, toggleFavourite, togglePin, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
@@ -81,14 +82,16 @@ interface IStatusActionBar {
   status: Status,
   withDismiss?: boolean,
   expandable?: boolean,
+  onDelete?: () => void
 }
 
 interface IStatusActionBarMenu {
   status: Status,
   withDismiss?: boolean,
+  onDelete?: () => void
 }
 
-const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismiss = false }) => {
+const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismiss = false, onDelete }) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
@@ -106,17 +109,21 @@ const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismi
       const deleteModal = settings.get('deleteModal');
       if (!deleteModal) {
         dispatch(deleteStatus(history, status.id, withRedraft));
+        if (onDelete) onDelete();
       } else {
         dispatch(openModal('CONFIRM', {
           icon: withRedraft ? require('@tabler/icons/edit.svg') : require('@tabler/icons/trash.svg'),
           heading: intl.formatMessage(withRedraft ? messages.redraftHeading : messages.deleteHeading),
           message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
           confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
-          onConfirm: () => dispatch(deleteStatus(history, status.id, withRedraft)),
+          onConfirm: () => {
+            dispatch(deleteStatus(history, status.id, withRedraft));
+            if (onDelete) onDelete();
+          },
         }));
       }
     });
-  }, [history, dispatch, intl, settings, status.id]);
+  }, [dispatch, settings, history, status.id, onDelete, intl]);
 
   const handleDeleteClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
@@ -397,6 +404,7 @@ const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismi
 const StatusActionBar: React.FC<IStatusActionBar> = ({
   status,
   withDismiss = false,
+  onDelete,
 }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -622,7 +630,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         />
       )}
       <div className='shrink w-[55%] text-right'>
-        <StatusActionBarMenu status={status} withDismiss={withDismiss} />
+        <StatusActionBarMenu status={status} withDismiss={withDismiss} onDelete={onDelete} />
       </div>
     </div>
   );
