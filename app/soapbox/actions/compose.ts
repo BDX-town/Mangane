@@ -2,7 +2,6 @@ import axios, { AxiosError, Canceler } from 'axios';
 // @ts-expect-error no typdef
 // eslint-disable-next-line import/extensions, import/no-unresolved
 import { eld } from 'eld/small';
-import { History } from 'history';
 import { List as ImmutableList } from 'immutable';
 import { debounce } from 'lodash';
 import throttle from 'lodash/throttle';
@@ -109,13 +108,11 @@ const messages = defineMessages({
 
 const COMPOSE_PANEL_BREAKPOINT = 600 + (285 * 1) + (10 * 1);
 
-const ensureComposeIsVisible = (getState: () => RootState, routerHistory: History) => {
-  if (!getState().compose.mounted && window.innerWidth < COMPOSE_PANEL_BREAKPOINT) {
-    routerHistory.push('/posts/new');
-  }
+const ensureComposeIsVisible = (getState: () => RootState): boolean => {
+  return !getState().compose.mounted && window.innerWidth < COMPOSE_PANEL_BREAKPOINT;
 };
 
-const setComposeToStatus = (history: History, status: Status, rawText: string, spoilerText?: string, contentType?: string | false, withRedraft?: boolean) =>
+const setComposeToStatus = (status: Status, rawText: string, spoilerText?: string, contentType?: string | false, withRedraft?: boolean) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const { instance } = getState();
     const { explicitAddressing } = getFeatures(instance);
@@ -130,7 +127,6 @@ const setComposeToStatus = (history: History, status: Status, rawText: string, s
       v: parseVersion(instance.version),
       withRedraft,
     });
-    history.push('/statuses/compose');
   };
 
 const changeCompose = (text: string) => ({
@@ -154,16 +150,12 @@ export const replyCompose = (status: Status) =>
     });
   };
 
-const compose = (history: History, intl: IntlShape) =>
+const compose = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    // if we were editing a status before, we clear because editing is not a long lasting action
-    // we clear existing quote as this is not a long lasting action
     const state = getState();
     if (state.compose.id || state.compose.quote) {
       dispatch(resetCompose());
     }
-
-    history.push('/statuses/compose');
   };
 
 const replyComposeWithConfirmation = (status: Status, intl: IntlShape) =>
@@ -184,7 +176,7 @@ const cancelReplyCompose = () => ({
   type: COMPOSE_REPLY_CANCEL,
 });
 
-const quoteCompose = (history: History, status: Status) =>
+const quoteCompose = (status: Status) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const instance = state.instance;
@@ -196,7 +188,6 @@ const quoteCompose = (history: History, status: Status) =>
       account: state.accounts.get(state.me),
       explicitAddressing,
     });
-    history.push('/statuses/compose');
   };
 
 const cancelQuoteCompose = () => ({
@@ -217,17 +208,16 @@ const mentionCompose = (account: Account) =>
     dispatch(openModal('COMPOSE'));
   };
 
-const directCompose = (history: History, account: Account) =>
+const directCompose = (account: Account) =>
   (dispatch: AppDispatch) => {
     dispatch(resetCompose());
     dispatch({
       type: COMPOSE_DIRECT,
       account: account,
     });
-    history.push('/statuses/compose');
   };
 
-const directComposeById = (history: History, accountId: string) =>
+const directComposeById = (accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const account = getState().accounts.get(accountId);
     dispatch(resetCompose());
@@ -235,7 +225,6 @@ const directComposeById = (history: History, accountId: string) =>
       type: COMPOSE_DIRECT,
       account: account,
     });
-    history.push('/statuses/compose');
   };
 
 const handleComposeSubmit = (dispatch: AppDispatch, getState: () => RootState, data: APIEntity, status: string, edit?: boolean) => {
@@ -264,7 +253,7 @@ const validateSchedule = (state: RootState) => {
   return schedule.getTime() > fiveMinutesFromNow.getTime();
 };
 
-const submitCompose = (routerHistory?: History, force = false) =>
+const submitCompose = (force = false, afterSubmit?: (data: APIEntity) => void) =>
   async(dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return null;
     const state = getState();
@@ -287,7 +276,7 @@ const submitCompose = (routerHistory?: History, force = false) =>
       dispatch(openModal('MISSING_DESCRIPTION', {
         onContinue: () => {
           dispatch(closeModal('MISSING_DESCRIPTION'));
-          dispatch(submitCompose(routerHistory, true));
+          dispatch(submitCompose(true, afterSubmit));
         },
       }));
       return null;
@@ -321,10 +310,8 @@ const submitCompose = (routerHistory?: History, force = false) =>
 
     try {
       const data = await dispatch(createStatus(params, idempotencyKey, statusId));
-      if (!statusId && data.visibility === 'direct' && getState().conversations.mounted <= 0 && routerHistory) {
-        routerHistory.push('/messages');
-      }
       handleComposeSubmit(dispatch, getState, data, status, !!statusId);
+      afterSubmit?.(data);
       return data;
     } catch (error) {
       dispatch(submitComposeFail(error));

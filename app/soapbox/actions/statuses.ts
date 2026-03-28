@@ -1,5 +1,3 @@
-import { History } from 'history';
-
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
 import { shouldHaveCard } from 'soapbox/utils/status';
@@ -115,7 +113,7 @@ const createStatus = (params: Record<string, any>, idempotencyKey: string, statu
   };
 };
 
-const editStatus = (history: History, id: string) => (dispatch: AppDispatch, getState: () => RootState) => {
+const editStatus = (id: string) => (dispatch: AppDispatch, getState: () => RootState) => {
   let status = getState().statuses.get(id)!;
 
   if (status.poll) {
@@ -126,7 +124,7 @@ const editStatus = (history: History, id: string) => (dispatch: AppDispatch, get
 
   api(getState).get(`/api/v1/statuses/${id}/source`).then(response => {
     dispatch({ type: STATUS_FETCH_SOURCE_SUCCESS });
-    dispatch(setComposeToStatus(history, status, response.data.text, response.data.spoiler_text, response.data.content_type));
+    dispatch(setComposeToStatus(status, response.data.text, response.data.spoiler_text, response.data.content_type));
   }).catch(error => {
     dispatch({ type: STATUS_FETCH_SOURCE_FAIL, error });
 
@@ -149,7 +147,7 @@ const fetchStatus = (id: string) => {
   };
 };
 
-const deleteStatus = (history: History, id: string, withRedraft = false) => {
+const deleteStatus = (id: string, withRedraft = false) => {
   return (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return null;
 
@@ -168,7 +166,7 @@ const deleteStatus = (history: History, id: string, withRedraft = false) => {
         dispatch(deleteFromTimelines(id));
 
         if (withRedraft) {
-          dispatch(setComposeToStatus(history, status, response.data.text, response.data.spoiler_text, response.data.pleroma?.content_type, withRedraft));
+          dispatch(setComposeToStatus(status, response.data.text, response.data.spoiler_text, response.data.pleroma?.content_type, withRedraft));
           dispatch(openModal('COMPOSE'));
         }
       })

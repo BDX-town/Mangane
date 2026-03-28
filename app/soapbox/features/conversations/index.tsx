@@ -35,7 +35,8 @@ const ConversationsTimeline = () => {
   }, [dispatch]);
 
   const handleSuggestion = (accountId: string) => {
-    dispatch(directComposeById(history, accountId));
+    dispatch(directComposeById(accountId));
+    history.push('/statuses/compose');
   };
 
   return (

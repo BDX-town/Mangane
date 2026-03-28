@@ -135,7 +135,8 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const onDirect = useCallback(() => {
-    dispatch(directCompose(history, account));
+    dispatch(directCompose(account));
+    history.push('/statuses/compose');
   }, [account, dispatch, history]);
 
   const onReblogToggle = useCallback(() => {

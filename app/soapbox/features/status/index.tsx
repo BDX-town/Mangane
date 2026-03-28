@@ -471,12 +471,11 @@ const Thread: React.FC<IThread> = (props) => {
     composingReplyTo.current = actualStatus.id;
   }, [actualStatus, dispatch, me]);
 
-  const handleComposeSubmit = useCallback(async(router, group) => {
-    const status = await dispatch(submitCompose(router, group));
-    if (status) {
-      const url = new URL(status.url);
+  const handleComposeSubmit = useCallback((_router, _group) => {
+    dispatch(submitCompose(false, (data) => {
+      const url = new URL(data.url);
       history.push(url.pathname);
-    }
+    }));
   }, [dispatch, history]);
 
   const onDeleteStatus = useCallback(() => {

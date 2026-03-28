@@ -108,7 +108,7 @@ const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismi
     dispatch((_, getState) => {
       const deleteModal = settings.get('deleteModal');
       if (!deleteModal) {
-        dispatch(deleteStatus(history, status.id, withRedraft));
+        dispatch(deleteStatus(status.id, withRedraft));
         if (onDelete) onDelete();
       } else {
         dispatch(openModal('CONFIRM', {
@@ -117,13 +117,13 @@ const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismi
           message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
           confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
           onConfirm: () => {
-            dispatch(deleteStatus(history, status.id, withRedraft));
+            dispatch(deleteStatus(status.id, withRedraft));
             if (onDelete) onDelete();
           },
         }));
       }
     });
-  }, [dispatch, settings, history, status.id, onDelete, intl]);
+  }, [dispatch, settings, status.id, onDelete, intl]);
 
   const handleDeleteClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
@@ -136,7 +136,8 @@ const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismi
   }, [doDeleteStatus]);
 
   const handleEditClick = React.useCallback<React.EventHandler<React.MouseEvent>>(() => {
-    dispatch(editStatus(history, status.id));
+    dispatch(editStatus(status.id));
+    history.push('/statuses/compose');
   }, [history, dispatch, status.id]);
 
   const handlePinClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
@@ -151,7 +152,8 @@ const StatusActionBarMenu: React.FC<IStatusActionBarMenu> = ({ status, withDismi
 
   const handleDirectClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
     e.stopPropagation();
-    dispatch(directCompose(history, status.account as Account));
+    dispatch(directCompose(status.account as Account));
+    history.push('/statuses/compose');
   }, [dispatch, history, status.account]);
 
   const handleMuteClick = React.useCallback<React.EventHandler<React.MouseEvent>>((e) => {
@@ -472,7 +474,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     e.stopPropagation();
 
     if (me) {
-      dispatch(quoteCompose(history, status));
+      dispatch(quoteCompose(status));
+      history.push('/statuses/compose');
     } else {
       onOpenUnauthorizedModal('REBLOG');
     }

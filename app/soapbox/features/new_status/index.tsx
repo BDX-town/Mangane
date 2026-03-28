@@ -54,12 +54,11 @@ const NewStatus = () => {
     }
   }, [dispatch]);
 
-  const handleComposeSubmit = useCallback(async(router, group) => {
-    const status = await dispatch(submitCompose(router, group));
-    if (status) {
-      const url = new URL(status.url);
+  const handleComposeSubmit = useCallback((_router, _group) => {
+    dispatch(submitCompose(false, (data) => {
+      const url = new URL(data.url);
       history.push(url.pathname);
-    }
+    }));
   }, [dispatch, history]);
 
   return (
