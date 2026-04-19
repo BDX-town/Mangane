@@ -11,6 +11,7 @@ import {
   changeComposeSpoilerText,
   insertEmojiCompose,
   uploadCompose,
+  detectLanguage,
 } from 'soapbox/actions/compose';
 import { getFeatures } from 'soapbox/utils/features';
 
@@ -51,6 +52,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onChange(text) {
     dispatch(changeCompose(text));
+    dispatch(detectLanguage);
   },
 
   onSubmit(router, group) {

@@ -1,6 +1,10 @@
 import axios, { AxiosError, Canceler } from 'axios';
+// @ts-expect-error no typdef
+// eslint-disable-next-line import/extensions, import/no-unresolved
+import { eld } from 'eld/small';
 import { History } from 'history';
 import { List as ImmutableList } from 'immutable';
+import { debounce } from 'lodash';
 import throttle from 'lodash/throttle';
 import { defineMessages, IntlShape } from 'react-intl';
 
@@ -25,6 +29,7 @@ import type { Emoji } from 'soapbox/components/autosuggest_emoji';
 import type { AutoSuggestion } from 'soapbox/components/autosuggest_input';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { Account, APIEntity, Status, Tag } from 'soapbox/types/entities';
+
 
 const { CancelToken, isCancel } = axios;
 
@@ -641,9 +646,10 @@ const changeComposeVisibility = (value: string) => ({
   value,
 });
 
-const changeComposeLanguage = (value: string) => ({
+const changeComposeLanguage = (value: string, byUser: boolean = true) => ({
   type: COMPOSE_LANGUAGE_CHANGE,
   value,
+  byUser,
 });
 
 const insertEmojiCompose = (position: number, emoji: string, needsSpace: boolean) => ({
@@ -729,6 +735,18 @@ const removeFromMentions = (accountId: string) =>
       account: acct,
     });
   };
+
+const detectLanguage = debounce((dispatch: AppDispatch, getState: () => RootState) => {
+  const state = getState();
+  const text = state.getIn(['compose', 'text']) as string;
+  const currentLanguage = state.getIn(['compose', 'language']) as string;
+  const setLanguage = state.getIn(['compose', 'set_language']) as boolean;
+  // user set another language manually we dont want to mess with that
+  if (setLanguage) return;
+  const { language, isReliable } = eld.detect(text);
+  if (!language || !isReliable() || language === currentLanguage) return;
+  dispatch(changeComposeLanguage(language, false));
+}, 1000);
 
 export {
   COMPOSE_CHANGE,
@@ -820,6 +838,7 @@ export {
   changeComposeSpoilerText,
   changeComposeVisibility,
   changeComposeLanguage,
+  detectLanguage,
   insertEmojiCompose,
   changeComposing,
   addPoll,
