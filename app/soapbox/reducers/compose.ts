@@ -85,6 +85,8 @@ export const ReducerRecord = ImmutableRecord({
   default_privacy: 'public' as StatusVisibility,
   default_sensitive: false,
   default_language: 'en' as string | null,
+  // did user manually set post language
+  set_language: false,
   focusDate: null as Date | null,
   idempotencyKey: '',
   id: null as string | null,
@@ -149,6 +151,7 @@ function clearAll(state: State) {
   return ReducerRecord({
     content_type: state.default_content_type,
     default_content_type: state.default_content_type,
+    set_language: false,
     privacy: state.default_privacy,
     default_privacy: state.default_privacy,
     language: state.default_language,
@@ -341,6 +344,7 @@ export default function compose(state = ReducerRecord({ idempotencyKey: uuid(), 
     case COMPOSE_LANGUAGE_CHANGE:
       return state
         .set('language', action.value)
+        .set('set_language', action.byUser)
         .set('idempotencyKey', uuid());
     case COMPOSE_VISIBILITY_CHANGE:
       return state
@@ -468,6 +472,7 @@ export default function compose(state = ReducerRecord({ idempotencyKey: uuid(), 
         map.set('content_type', action.contentType || 'text/plain');
         map.set('quote', action.status.get('quote'));
         map.set('language', action.status.get('language'));
+        map.set('set_language', true);
 
         if ((action.v?.software === PLEROMA || action.v?.software === AKKOMA) && action.withRedraft && hasIntegerMediaIds(action.status)) {
           map.set('media_attachments', ImmutableList());
