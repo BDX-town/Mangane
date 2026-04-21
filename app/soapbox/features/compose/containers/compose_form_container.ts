@@ -45,6 +45,7 @@ const mapStateToProps = (state: ImmutableMap<string, any>)  => {
     // we only want to keep scheduled status that werent sent, since server does not push that information to client when scheduled status are posted
     scheduledStatus: (state.get('scheduled_statuses') as ImmutableMap<number, { scheduled_at: string}>).filter((s) => new Date(s.scheduled_at).getTime() > now),
     features: getFeatures(instance),
+    conversationsMounted: state.getIn(['conversations', 'mounted']) as number,
   };
 };
 
@@ -55,9 +56,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     dispatch(detectLanguage);
   },
 
-  onSubmit(router, group) {
-    dispatch(submitCompose(router, group));
-  },
+  _dispatch: dispatch,
 
   onClearSuggestions() {
     dispatch(clearComposeSuggestions());
@@ -86,10 +85,16 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 });
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
-  return Object.assign({}, {
+  const { _dispatch: dispatch, ...restDispatchProps } = dispatchProps;
+  const defaultOnSubmit = async(router, _group) => {
+    await dispatch(submitCompose(false));
+  };
+  return {
     ...stateProps,
-    ...dispatchProps,
-  }, ownProps);
+    ...restDispatchProps,
+    ...ownProps,
+    onSubmit: ownProps.onSubmit ?? defaultOnSubmit,
+  };
 }
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps, mergeProps)(ComposeForm));

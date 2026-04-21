@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -9,11 +9,11 @@ import { Button } from 'soapbox/components/ui';
 const ComposeButton = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const intl = useIntl();
 
   const onOpenCompose = useCallback(() => {
-    dispatch(compose(history, intl));
-  }, [history]);
+    dispatch(compose());
+    history.push('/statuses/compose');
+  }, [dispatch, history]);
 
   return (
     <div className='mt-4'>

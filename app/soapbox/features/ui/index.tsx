@@ -578,8 +578,9 @@ const UI: React.FC = ({ children }) => {
   };
 
   const handleGoToCompose = useCallback(() => {
-    dispatch(compose(history, intl));
-  }, [dispatch, history, intl]);
+    dispatch(compose());
+    history.push('/statuses/compose');
+  }, [dispatch, history]);
 
   const shouldHideFAB = useMemo(() => {
     const path = location.pathname;

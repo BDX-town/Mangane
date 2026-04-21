@@ -471,13 +471,20 @@ const Thread: React.FC<IThread> = (props) => {
     composingReplyTo.current = actualStatus.id;
   }, [actualStatus, dispatch, me]);
 
-  const handleComposeSubmit = useCallback(async(router, group) => {
-    const status = await dispatch(submitCompose(router, group));
-    if (status) {
-      const url = new URL(status.url);
+  const handleComposeSubmit = useCallback((_router, _group) => {
+    dispatch(submitCompose(false, (data) => {
+      const url = new URL(data.url);
       history.push(url.pathname);
-    }
+    }));
   }, [dispatch, history]);
+
+  const onDeleteStatus = useCallback(() => {
+    if (actualStatus?.in_reply_to_id) {
+      history.push(`/notice/${actualStatus.in_reply_to_id}`);
+    } else {
+      history.push('/');
+    }
+  }, [actualStatus, history]);
 
   const focusedStatus = useMemo(() => !actualStatus ? null : (
     <>
@@ -502,6 +509,7 @@ const Thread: React.FC<IThread> = (props) => {
             />
             <StatusActionBar
               status={actualStatus}
+              onDelete={onDeleteStatus}
             />
           </div>
         </HotKeys>
