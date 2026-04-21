@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.21.0 (2026-04-21)
+
+
+### Features
+
+* redirect after delete and post ([#453](https://github.com/BDX-town/Mangane/issues/453)) ([1c7128c](https://github.com/BDX-town/Mangane/commit/1c7128c4b5456c6ee4b02159fa62712f60b52b10))
+
 ## 1.20.0 (2026-04-19)
 
 
