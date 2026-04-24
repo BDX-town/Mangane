@@ -117,7 +117,7 @@ module.exports = {
     new HtmlWebpackHarddiskPlugin(),
     new CopyPlugin({
       patterns: [{
-        from: join(__dirname, '../node_modules/twemoji/assets/svg'),
+        from: join(__dirname, '../node_modules/twemoji/assets'),
         to: join(output.path, 'packs/emoji'),
       }, {
         from: join(__dirname, '..', 'app', FE_INSTANCE_SOURCE_DIR),
@@ -150,6 +150,7 @@ module.exports = {
     fallback: {
       path: require.resolve('path-browserify'),
       util: require.resolve('util'),
+      'process/browser': require.resolve('process/browser'),
     },
   },
 

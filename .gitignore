@@ -30,3 +30,5 @@ yarn-error.log*
 /AUTH
 /CORS
 /ROUTER
+
+.yarn/install-state.gz
