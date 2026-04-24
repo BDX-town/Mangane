@@ -150,6 +150,7 @@ module.exports = {
     fallback: {
       path: require.resolve('path-browserify'),
       util: require.resolve('util'),
+      'process/browser': require.resolve('process/browser'),
     },
   },
 
