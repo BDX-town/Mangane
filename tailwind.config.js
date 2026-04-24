@@ -49,12 +49,17 @@ module.exports = {
         'sea-blue': true,
       }),
       animation: {
+        'fadein': 'fadein 1s ease-in-out',
         'sonar-scale-4': 'sonar-scale-4 3s linear infinite',
         'sonar-scale-3': 'sonar-scale-3 3s 0.5s linear infinite',
         'sonar-scale-2': 'sonar-scale-2 3s 1s linear infinite',
         'sonar-scale-1': 'sonar-scale-1 3s 1.5s linear infinite',
       },
       keyframes: {
+        'fadein': {
+          from: { opacity: 0 },
+          to: { opacity: 1 },
+        },
         'sonar-scale-4': {
           from: { opacity: '0.4' },
           to: { opacity: 0, transform: 'scale(4)' },

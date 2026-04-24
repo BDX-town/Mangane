@@ -10,8 +10,8 @@ interface LayoutComponent extends React.FC {
 
 /** Layout container, to hold Sidebar, Main, and Aside. */
 const Layout: LayoutComponent = ({ children }) => (
-  <div className='sm:pt-4 relative'>
-    <div className='max-w-3xl mx-auto sm:px-6 md:max-w-7xl md:px-8 md:grid md:grid-cols-12 md:gap-8'>
+  <div className='relative'>
+    <div className='max-w-3xl mx-auto sm:px-6 md:max-w-7xl md:px-8 md:flex md:gap-8 md:max-h-screen'>
       {children}
     </div>
   </div>
@@ -19,30 +19,27 @@ const Layout: LayoutComponent = ({ children }) => (
 
 /** Left sidebar container in the UI. */
 const Sidebar: React.FC = ({ children }) => (
-  <div className='hidden lg:block lg:col-span-3'>
-    <StickyBox offsetTop={32} style={{ height: 'calc(100vh - 32px)' }}>
+  <div className='hidden lg:block lg:col-span-3 md:min-w-[300px] md:max-w-[300px]'>
       {children}
-    </StickyBox>
   </div>
 );
 
 /** Center column container in the UI. */
 const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className }) => (
   <main
-    className={classNames({
-      'md:col-span-12 lg:col-span-6 xl:col-span-6 pb-36': true,
-    }, className)}
+    className={classNames(
+      "md:w-full md:min-w-0 md:overflow-y-auto",
+      className,
+    )}
   >
     {children}
   </main>
 );
 
 /** Right sidebar container in the UI. */
-const Aside: React.FC = ({ children }) => (
-  <aside className='hidden lg:block lg:col-span-3'>
-    <StickyBox offsetTop={32} className='space-y-6 pb-12' >
+const Aside: React.FC<{ className?: string }> = ({ children, className }) => (
+  <aside className={`hidden lg:block lg:col-span-3 md:min-w-[200px] md:max-w-[200px] ${className || ''}`}>
       {children}
-    </StickyBox>
   </aside>
 );
 

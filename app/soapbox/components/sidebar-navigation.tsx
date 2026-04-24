@@ -33,7 +33,7 @@ const SidebarNavigation = () => {
   }, [instance.pleroma]);
 
   return (
-    <div className='flex flex-col gap-2 h-full'>
+    <div className='flex flex-col gap-2 h-full py-4'>
       <div className='flex flex-col gap-5 mb-5'>
         {
           account && (
@@ -201,9 +201,7 @@ const SidebarNavigation = () => {
 
       </div>
       {account && (
-        <div className='pb-4'>
           <ComposeButton />
-        </div>
       )}
     </div>
 
