@@ -11,11 +11,11 @@ import LinkFooter from '../features/ui/components/link_footer';
 const AdminPage: React.FC = ({ children }) => {
   return (
     <>
-      <Layout.Main>
+      <Layout.Main className='animate-fadein'>
         {children}
       </Layout.Main>
 
-      <Layout.Aside>
+      <Layout.Aside className="animate-fadein py-4">
         <BundleContainer fetchComponent={LatestAccountsPanel}>
           {Component => <Component limit={5} />}
         </BundleContainer>

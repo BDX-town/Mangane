@@ -18,11 +18,11 @@ const DefaultPage: React.FC = ({ children }) => {
 
   return (
     <>
-      <Layout.Main>
+      <Layout.Main className='animate-fadein'>
         {children}
       </Layout.Main>
 
-      <Layout.Aside>
+      <Layout.Aside className='animate-fadein py-4'>
         {!me && (
           <BundleContainer fetchComponent={SignUpPanel}>
             {Component => <Component key='sign-up-panel' />}
