@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkmangane_fe=self.webpackChunkmangane_fe||[]).push([[207],{994:function(e,n,r){r.r(n),r.d(n,{default:function(){return f}});var a=r(2),t=r(1),u=r(26),c=r(115);function f(){var e=(0,t.useRef)((0,c.Nl)(new URLSearchParams(window.location.search).get("uri")));return(0,a.A)(u.rd,{to:e.current?"/".concat(e.current):"/404"})}}}]);
+//# sourceMappingURL=207-b5f1d64d0928099bd535.chunk.js.map
