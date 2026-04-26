@@ -33,6 +33,7 @@ jobs:
 
     - name: Build
       run: |
+        corepack enable
         npx yarn
         # Build one time for release
         export NODE_ENV=production
