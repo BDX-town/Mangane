@@ -33,6 +33,7 @@ jobs:
 
     - name: Build
       run: |
+        git config --global core.autocrlf false
         corepack enable
         npx yarn
         # Build one time for release
