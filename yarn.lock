@@ -13504,7 +13504,7 @@ __metadata:
     ts-jest: "npm:^28.0.5"
     ts-loader: "npm:^9.3.0"
     tslib: "npm:^2.3.1"
-    twemoji: "https://github.com/twitter/twemoji#v14.0.2"
+    twemoji: "npm:14.0.2"
     typescript: "npm:^4.4.4"
     util: "npm:^0.12.4"
     uuid: "npm:^8.3.2"
@@ -19065,15 +19065,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"twemoji@https://github.com/twitter/twemoji#v14.0.2":
+"twemoji@npm:14.0.2":
   version: 14.0.2
-  resolution: "twemoji@https://github.com/twitter/twemoji.git#commit=3842717316973e82d972597308acfd8b4ddd9a27"
+  resolution: "twemoji@npm:14.0.2"
   dependencies:
     fs-extra: "npm:^8.0.1"
     jsonfile: "npm:^5.0.0"
     twemoji-parser: "npm:14.0.0"
     universalify: "npm:^0.1.2"
-  checksum: bd9d9d0e3c116e86da780ac04680080f58c0f3e70e8178faf762086616121a4b8f75c968d0249bedbe64fd10b3bf1886ca349c4a4b72f8d255ca83094ced9aa2
+  checksum: e98caf0df63477d25d9bbfbdc32774249310bb2f4c6f2e99f51fea9be74461dee517200ff1864ac858ea3ea45cd02979d6c3cef630fd1a60d1de61f97ff5e3bf
   languageName: node
   linkType: hard
 
