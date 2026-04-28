@@ -7,15 +7,16 @@ interface ILoadMore {
   onClick: React.MouseEventHandler,
   disabled?: boolean,
   visible?: Boolean,
+  className?: string,
 }
 
-const LoadMore: React.FC<ILoadMore> = ({ onClick, disabled, visible = true }) => {
+const LoadMore: React.FC<ILoadMore> = ({ className, onClick, disabled, visible = true }) => {
   if (!visible) {
     return null;
   }
 
   return (
-    <Button theme='primary' block disabled={disabled || !visible} onClick={onClick}>
+    <Button classNames={className} theme='primary' block disabled={disabled || !visible} onClick={onClick}>
       <FormattedMessage id='status.load_more' defaultMessage='Load more' />
     </Button>
   );

@@ -49,7 +49,7 @@ module.exports = {
         'sea-blue': true,
       }),
       animation: {
-        'fadein': 'fadein 1s ease-in-out',
+        'fadein': 'fadein 0.7s ease-in-out',
         'sonar-scale-4': 'sonar-scale-4 3s linear infinite',
         'sonar-scale-3': 'sonar-scale-3 3s 0.5s linear infinite',
         'sonar-scale-2': 'sonar-scale-2 3s 1s linear infinite',

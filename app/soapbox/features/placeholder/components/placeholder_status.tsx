@@ -14,7 +14,7 @@ const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ timeline = false }) =
   <div
     className={classNames({
       'status-placeholder bg-white dark:bg-slate-800': true,
-      'shadow-xl dark:shadow-inset sm:rounded-xl px-4 py-6 sm:p-5 from-primary-500/10 dark:from-primary-200/10 to-white dark:via-slate-800 dark:to-slate-800': timeline,
+      'sm:shadow-sm dark:shadow-inset sm:rounded-xl px-4 py-6 sm:p-5 from-primary-500/10 dark:from-primary-200/10 to-white dark:via-slate-800 dark:to-slate-800': timeline,
     })}
     style={
       {

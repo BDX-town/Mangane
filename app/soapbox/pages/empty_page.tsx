@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Layout } from '../components/ui';
 
-const EmptyPage: React.FC = ({ children }) => {
+const EmptyPage: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <>
-      <Layout.Main>
+      <Layout.Main className='py-4'>
         {children}
       </Layout.Main>
 
