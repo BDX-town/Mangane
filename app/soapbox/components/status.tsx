@@ -246,7 +246,7 @@ const Status: React.FC<IStatus> = (props) => {
 
 
   return (
-    <HotKeys handlers={handlers} data-testid='status'>
+    <HotKeys handlers={handlers} data-testid='status' data-statusid={actualStatus.id}>
       <div
         className={classNames('status cursor-pointer ', { focusable })}
         tabIndex={focusable && !muted ? 0 : undefined}

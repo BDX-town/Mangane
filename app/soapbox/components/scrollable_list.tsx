@@ -1,5 +1,5 @@
 import debounce from 'lodash/debounce';
-import React, { useEffect, useRef, useMemo, useCallback, useImperativeHandle, useState } from 'react';
+import React, { useEffect, useRef, useMemo, useCallback, useImperativeHandle, useState, useLayoutEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle, ListRange, IndexLocationWithAlign } from 'react-virtuoso';
 
@@ -7,6 +7,7 @@ import { useSettings } from 'soapbox/hooks';
 
 import LoadMore from './load_more';
 import { Card, Spinner, Text } from './ui';
+import classNames from 'classnames';
 
 interface IScrollableList {
   /** Unique key to preserve the scroll position when navigating back. */
@@ -41,25 +42,46 @@ interface IScrollableList {
   style?: React.CSSProperties,
 }
 
+function findClosestScrollableAncestor(el: HTMLElement) {
+  if(!el) return undefined
+  if(el.scrollHeight > el.clientHeight) return el
+  return findClosestScrollableAncestor(el.parentElement)
+}
+
+interface IScrollRestorer {
+  scrollDataKey: string;
+  scrollData: number | null;
+  root: HTMLDivElement | null;
+  onReady: () => void;
+}
+
+// we are storing scroll data here so it resets on each reload 
+const SCROLL_DATA = {}
+
 const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, children, hasMore, onLoadMore, isLoading, placeholderComponent: Placeholder, placeholderCount = 0, showLoading, ...rest }: IScrollableList, ref) => {
 
-  const root = useRef<HTMLDivElement>(null);
+  const [root, setRoot] = useState<HTMLDivElement>(null)
+  const [ready, setReady] = useState(false)
   const footer = useRef<HTMLDivElement>(null);
 
-  useImperativeHandle(ref, () => root.current)
+  useImperativeHandle(ref, () => root, [root])
 
   const settings = useSettings();
   const autoloadMore = settings.get('autoloadMore');
 
   const [userRequestedLoadMore, setUserRequestedLoadMore] = useState(false)
 
+  const scrollDataKey = useMemo(() => `soapbox:scrollData:${scrollKey}`, [scrollKey]);
+  const scrollData: number | null = useMemo(() => SCROLL_DATA[scrollDataKey], [scrollDataKey]);
+
   const onInternalLoadMore = useCallback(() => {
     setUserRequestedLoadMore(true)
     if(onLoadMore) onLoadMore()
   }, [onLoadMore])
 
+  // handle autoload more
   useEffect(() => {
-    if(!footer.current || !root.current || !autoloadMore || !hasMore || !onLoadMore || isLoading) return;
+    if(!footer.current || !autoloadMore || !hasMore || !onLoadMore || isLoading) return undefined;
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if(entry.isIntersecting) onInternalLoadMore()
@@ -69,12 +91,52 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
     return () => observer.disconnect()
   }, [onInternalLoadMore, autoloadMore, hasMore, onLoadMore, isLoading])
 
+  // handle scroll position restoring and saving
+  useLayoutEffect(() => {
+    if (!root) return undefined;
+
+    const scrollable = findClosestScrollableAncestor(root);
+    let debounceTimer: ReturnType<typeof setTimeout> | undefined;
+    let fallback: ReturnType<typeof setTimeout> | undefined;
+    let observer: ResizeObserver | undefined;
+
+    if (!isNaN(scrollData) && scrollable) {
+      const doScroll = () => {
+        clearTimeout(debounceTimer);
+        clearTimeout(fallback);
+        observer?.disconnect();
+        scrollable.scrollTo(0, scrollData);
+        setReady(true)
+      };
+
+      observer = new ResizeObserver(() => {
+        clearTimeout(debounceTimer);
+        if (scrollable.scrollHeight > scrollData) {
+          debounceTimer = setTimeout(doScroll, 150);
+        }
+      });
+      observer.observe(root);
+      fallback = setTimeout(doScroll, 3000);
+    } else {
+      setReady(true);
+    }
+
+    return () => {
+      clearTimeout(debounceTimer);
+      clearTimeout(fallback);
+      observer?.disconnect();
+      const scrollPos = root.getBoundingClientRect().top * -1;
+      SCROLL_DATA[scrollDataKey] = scrollPos
+    };
+  }, [scrollDataKey, root, scrollData]);
 
   return (
     <div
-      ref={root}
+      ref={setRoot}
       id={id}
-      className={className}
+      className={classNames(className, {
+        'opacity-0': !ready,
+      })}
       style={style}
     >
       { children }
