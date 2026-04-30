@@ -67,7 +67,9 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
   const [root, setRoot] = useState<HTMLElement>(null)
 
   const [start, setStart] = useState(0)
+  const [startHeight, setStartHeight] = useState(0)
   const [end, setEnd] = useState(0)
+  const [endHeight, setEndHeight] = useState(0)
 
   useImperativeHandle(ref, () => root, [root])
 
@@ -103,30 +105,54 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
   }, [children, start, end])
 
   const startRef = useRef(start)
+  const startHeightRef = useRef<number[]>([]) // may desync with start here, please find something
+
+  const updateStartSize = useCallback(() => {
+    let height = 0
+    startHeightRef.current.forEach((d) => height += d)
+    setStartHeight(height)
+  }, [])
+
   const popStart = useCallback((e: HTMLElement) => {
     console.log("popStart", e)
-    setStart(startRef.current + 1)
+    startHeightRef.current.push(e.getBoundingClientRect().height)
     startRef.current += 1
-  }, [])
+    updateStartSize()
+    setStart(startRef.current)
+  }, [updateStartSize])
 
   const pushStart = useCallback(() => {
     console.log("pushStart")
-    setStart(Math.max(0, startRef.current - 1))
+    startHeightRef.current.pop()
     startRef.current = Math.max(0, startRef.current - 1)
-  }, [])
+    updateStartSize()
+    setStart(startRef.current)
+  }, [updateStartSize])
 
   const endRef = useRef(end)
+  const endHeightRef = useRef<number[]>([]) // may desync with end here, please find something
+
+  const updateEndSize = useCallback(() => {
+    let height = 0
+    endHeightRef.current.forEach((d) => height += d)
+    setEndHeight(height)
+  }, [])
+
   const popEnd = useCallback((e: HTMLElement) => {
     console.log("popEnd", e)
-    setEnd(endRef.current + 1)
+    endHeightRef.current.push(e.getBoundingClientRect().height)
     endRef.current += 1
-  }, [])
+    setEnd(endRef.current)
+    updateEndSize()
+  }, [updateEndSize])
 
   const pushEnd = useCallback(() => {
     console.log("pushEnd")
-    setEnd(Math.max(0, endRef.current - 1))
+    endHeightRef.current.pop()
     endRef.current = Math.max(0, endRef.current - 1)
-  }, [])
+    setEnd(endRef.current)
+    updateEndSize()
+  }, [updateEndSize])
 
   useLayoutEffect(() => {
     if(!root || isLoading) return undefined;
@@ -158,7 +184,7 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
     return () => observer.disconnect()
   }, [root, actualChildren, popStart, pushStart, popEnd, pushEnd])
 
-  console.log(start, actualChildren.length)
+  console.log(start, startHeight, endHeight, actualChildren.length)
 
   useEffect(() => {
     console.log("CHILDREN")
@@ -215,7 +241,7 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
       })}
       style={style}
     >
-      <div ref={top} style={{ height: `${0}px`}} />
+      <div ref={top} style={{ height: `${startHeight}px`}} />
       { actualChildren }
       <div className='pb-3' ref={footer}>
         {
@@ -229,7 +255,7 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
           )
         }
       </div>
-      <div ref={bottom} />
+      <div ref={bottom} style={{ height: `${endHeight}px`}} />
     </div>
   )
 })
