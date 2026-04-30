@@ -155,7 +155,7 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
   }, [updateEndSize])
 
   useLayoutEffect(() => {
-    if(!root || isLoading) return undefined;
+    if(!root) return undefined;
     const scrollable = findClosestScrollableAncestor(root.parentElement);
     const scrollableViewport = scrollable?.getBoundingClientRect() || { height: visualViewport.height }
     const observer = new IntersectionObserver((entries) => {
