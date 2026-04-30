@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 type UseDimensionsRect = { width: number, height: number };
-type UseDimensionsResult = [Element | null, any, any]
+type UseDimensionsResult = [Element | null, (e: Element) => void, UseDimensionsRect]
 
 const defaultState: UseDimensionsRect = {
   width: 0,
