@@ -60,35 +60,37 @@ const SCROLL_DATA = {}
 
 const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, children, hasMore, onLoadMore, isLoading, placeholderComponent: Placeholder, placeholderCount = 0, showLoading, ...rest }: IScrollableList, ref) => {
 
-  const [ready, setReady] = useState(true)
   const footer = useRef<HTMLDivElement>(null);
   const top = useRef<HTMLDivElement>(null)
   const bottom = useRef<HTMLDivElement>(null)
-  const [root, setRoot] = useState<HTMLElement>(null)
+  const root = useRef<HTMLDivElement>(null)
 
-  const [start, setStart] = useState(0)
-  const [startHeight, setStartHeight] = useState(0)
-  const [end, setEnd] = useState(0)
-  const [endHeight, setEndHeight] = useState(0)
+  const [scrollableAncestor, setScrollableAncestor] = useState<HTMLElement>(null)
+  const scrollDataKey = useMemo(() => `soapbox:scrollData:${scrollKey}`, [scrollKey]);
+  const scrollData: [number, number, number] | null = useMemo(() => SCROLL_DATA[scrollDataKey], [scrollDataKey]);
+  const [start, setStart] = useState(scrollData ? scrollData[0] : 0)
+  const [end, setEnd] = useState(scrollData ? scrollData[1] : 0)
 
   useImperativeHandle(ref, () => root, [root])
 
   const settings = useSettings();
   const autoloadMore = settings.get('autoloadMore');
 
-  const [userRequestedLoadMore, setUserRequestedLoadMore] = useState(false)
-
-  const scrollDataKey = useMemo(() => `soapbox:scrollData:${scrollKey}`, [scrollKey]);
-  const scrollData: number | null = useMemo(() => SCROLL_DATA[scrollDataKey], [scrollDataKey]);
+  const [userRequestedLoadMore, setUserRequestedLoadMore] = useState(!!scrollData)
 
   const onInternalLoadMore = useCallback(() => {
     setUserRequestedLoadMore(true)
     if(onLoadMore) onLoadMore()
   }, [onLoadMore])
 
+  const actualChildren = useMemo(() => {
+    const childs = React.Children.toArray(children)
+    return childs.slice(start, childs.length - end)
+  }, [children, start, end])
+
   // handle autoload more
   useEffect(() => {
-    if(!footer.current || !autoloadMore || !hasMore || !onLoadMore || isLoading) return undefined;
+    if(!footer.current || !autoloadMore || !hasMore || !onLoadMore || isLoading || actualChildren.length === 0) return undefined;
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if(entry.isIntersecting) onInternalLoadMore()
@@ -96,80 +98,79 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
     })
     observer.observe(footer.current)
     return () => observer.disconnect()
-  }, [onInternalLoadMore, autoloadMore, hasMore, onLoadMore, isLoading])
-
-
-  const actualChildren = useMemo(() => {
-    const childs = React.Children.toArray(children)
-    return childs.slice(start, childs.length - end)
-  }, [children, start, end])
+  }, [onInternalLoadMore, autoloadMore, hasMore, onLoadMore, isLoading, actualChildren])
 
   const startRef = useRef(start)
-  const startHeightRef = useRef<number[]>([]) // may desync with start here, please find something
-
-  const updateStartSize = useCallback(() => {
-    let height = 0
-    startHeightRef.current.forEach((d) => height += d)
-    setStartHeight(height)
-  }, [])
 
   const popStart = useCallback((e: HTMLElement) => {
-    console.log("popStart", e)
-    startHeightRef.current.push(e.getBoundingClientRect().height)
+    // console.log("popStart", e)
     startRef.current += 1
-    updateStartSize()
     setStart(startRef.current)
-  }, [updateStartSize])
-
-  const pushStart = useCallback(() => {
-    console.log("pushStart")
-    startHeightRef.current.pop()
-    startRef.current = Math.max(0, startRef.current - 1)
-    updateStartSize()
-    setStart(startRef.current)
-  }, [updateStartSize])
-
-  const endRef = useRef(end)
-  const endHeightRef = useRef<number[]>([]) // may desync with end here, please find something
-
-  const updateEndSize = useCallback(() => {
-    let height = 0
-    endHeightRef.current.forEach((d) => height += d)
-    setEndHeight(height)
   }, [])
 
+  const pushStart = useCallback(() => {
+    // console.log("pushStart")
+    startRef.current = Math.max(0, startRef.current - 1)
+    setStart(startRef.current)
+  }, [])
+
+  const endRef = useRef(end)
+
   const popEnd = useCallback((e: HTMLElement) => {
-    console.log("popEnd", e)
-    endHeightRef.current.push(e.getBoundingClientRect().height)
+    // console.log("popEnd", e)
     endRef.current += 1
     setEnd(endRef.current)
-    updateEndSize()
-  }, [updateEndSize])
+  }, [])
 
   const pushEnd = useCallback(() => {
-    console.log("pushEnd")
-    endHeightRef.current.pop()
+    // console.log("pushEnd")
     endRef.current = Math.max(0, endRef.current - 1)
     setEnd(endRef.current)
-    updateEndSize()
-  }, [updateEndSize])
+  }, [])
 
-  useLayoutEffect(() => {
-    if(!root) return undefined;
-    const scrollable = findClosestScrollableAncestor(root.parentElement);
-    const scrollableViewport = scrollable?.getBoundingClientRect() || { height: visualViewport.height }
+  // managing closest scrollable ancestor 
+  useEffect(() => {
+    if(!root.current) return undefined
+    const ancestor = findClosestScrollableAncestor(root.current)
+    setScrollableAncestor(ancestor)
+    if(!ancestor) return undefined
+    ancestor.classList.add("[scrollbar-width:none]", "[&::-webkit-scrollbar]:hidden")
+    return () => {
+      ancestor.classList.remove("[scrollbar-width:none]", "[&::-webkit-scrollbar]:hidden")
+    }
+  }, [scrollData])
+
+  // handle scroll position saving
+  useEffect(() => {
+    if (!scrollableAncestor) return undefined;
+    return () => {
+      SCROLL_DATA[scrollDataKey] = [startRef.current, endRef.current, scrollableAncestor.scrollTop]
+      // console.log("SAVING", scrollDataKey, SCROLL_DATA[scrollDataKey])
+    };
+  }, [scrollableAncestor, scrollDataKey]);
+
+  // handle scroll position restoring, start and end are restored with useState 
+  useEffect(() => {
+    if (!scrollableAncestor || !scrollData) return undefined;
+    scrollableAncestor.scrollTop = scrollData[2]
+  }, [scrollableAncestor, scrollData])
+
+  // watching for elements leaving and entering "screen" (screen height*2 up and down) 
+  // top and bottom sentries are used to push elements back
+  useEffect(() => {
+    if(!root.current || !scrollableAncestor) return undefined;
+    const scrollableViewport = scrollableAncestor.getBoundingClientRect()
     const observer = new IntersectionObserver((entries) => {
-      // console.log(entries)
       entries.forEach((e) => {
         if(e.target === footer.current) return
         if(e.target === top.current) { 
-          if(e.isIntersecting && e.boundingClientRect.bottom < 0) { // the top sentry is back into root 
+          if(e.isIntersecting) { // the top sentry is back into root 
             pushStart()
           }
           return;
         }
         if(e.target === bottom.current) { 
-          if(e.isIntersecting && e.boundingClientRect.bottom > 0) { // the bottom sentry is back into root 
+          if(e.isIntersecting) { // the bottom sentry is back into root 
             pushEnd()
           }
           return;
@@ -177,71 +178,21 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
         if(!e.isIntersecting && e.boundingClientRect.bottom <= 0) popStart(e.target)
         if(!e.isIntersecting && e.boundingClientRect.bottom > 0) popEnd(e.target)
       })
-    }, { root: scrollable ?? null, rootMargin: `${scrollableViewport.height}px 0px ${scrollableViewport.height}px 0px`})
-    root.childNodes.forEach((n: Element) => {
+    }, { root: scrollableAncestor, rootMargin: `${scrollableViewport.height}px 0px ${scrollableViewport.height}px 0px`})
+    root.current.childNodes.forEach((n: Element) => {
       observer.observe(n)
     })
     return () => observer.disconnect()
-  }, [root, actualChildren, popStart, pushStart, popEnd, pushEnd])
-
-  console.log(start, startHeight, endHeight, actualChildren.length)
-
-  useEffect(() => {
-    console.log("CHILDREN")
-  }, [children])
-
-
-
-  // handle scroll position restoring and saving
-  // useLayoutEffect(() => {
-  //   if (!root) return undefined;
-
-  //   const scrollable = findClosestScrollableAncestor(root);
-  //   let debounceTimer: ReturnType<typeof setTimeout> | undefined;
-  //   let fallback: ReturnType<typeof setTimeout> | undefined;
-  //   let observer: ResizeObserver | undefined;
-
-  //   if (!isNaN(scrollData) && scrollable) {
-  //     const doScroll = () => {
-  //       clearTimeout(debounceTimer);
-  //       clearTimeout(fallback);
-  //       observer?.disconnect();
-  //       scrollable.scrollTo(0, scrollData);
-  //       setReady(true)
-  //     };
-
-  //     observer = new ResizeObserver(() => {
-  //       clearTimeout(debounceTimer);
-  //       if (scrollable.scrollHeight > scrollData) {
-  //         debounceTimer = setTimeout(doScroll, 150);
-  //       }
-  //     });
-  //     observer.observe(root);
-  //     fallback = setTimeout(doScroll, 3000);
-  //   } else {
-  //     setReady(true);
-  //   }
-
-  //   return () => {
-  //     clearTimeout(debounceTimer);
-  //     clearTimeout(fallback);
-  //     observer?.disconnect();
-  //     const scrollPos = root.getBoundingClientRect().top * -1;
-  //     SCROLL_DATA[scrollDataKey] = scrollPos
-  //   };
-  // }, [scrollDataKey, root, scrollData]);
-
+  }, [scrollableAncestor, actualChildren, popStart, pushStart, popEnd, pushEnd])
 
   return (
     <div
-      ref={setRoot}
+      ref={root}
       id={id}
-      className={classNames(className, {
-        'opacity-0': !ready,
-      })}
+      className={className}
       style={style}
     >
-      <div ref={top} style={{ height: `${startHeight}px`}} />
+      <div ref={top} />
       { actualChildren }
       <div className='pb-3' ref={footer}>
         {
@@ -255,7 +206,7 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
           )
         }
       </div>
-      <div ref={bottom} style={{ height: `${endHeight}px`}} />
+      <div ref={bottom} />
     </div>
   )
 })
