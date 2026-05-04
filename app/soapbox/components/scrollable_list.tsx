@@ -68,9 +68,14 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
   const settings = useSettings();
   const autoloadMore = settings.get('autoloadMore');
 
+  const childrenCount = useMemo(() => React.Children.count(children), [children])
+
   const onInternalLoadMore = useCallback(() => {
+    console.log("loading more")
     if (onLoadMore) onLoadMore()
   }, [onLoadMore])
+
+
 
   const actualChildren = useMemo(() => {
     const childs = React.Children.toArray(children)
@@ -78,43 +83,32 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
   }, [children, start, end])
 
   // debug
-  useEffect(() => { console.log('scrollKey', scrollKey) }, [scrollKey])
-  useEffect(() => { console.log('id', id) }, [id])
-  useEffect(() => { console.log('className', className) }, [className])
-  useEffect(() => { console.log('style', style) }, [style])
-  useEffect(() => { console.log('children', children) }, [children])
-  useEffect(() => { console.log('hasMore', hasMore) }, [hasMore])
-  useEffect(() => { console.log('onLoadMore', onLoadMore) }, [onLoadMore])
-  useEffect(() => { console.log('isLoading', isLoading) }, [isLoading])
-  useEffect(() => { console.log('Placeholder', Placeholder) }, [Placeholder])
-  useEffect(() => { console.log('placeholderCount', placeholderCount) }, [placeholderCount])
-  useEffect(() => { console.log('showLoading', showLoading) }, [showLoading])
-  useEffect(() => { console.log('scrollableAncestor', scrollableAncestor) }, [scrollableAncestor])
-  useEffect(() => { console.log('start', start) }, [start])
-  useEffect(() => { console.log('end', end) }, [end])
-  useEffect(() => { console.log('scrollDataKey', scrollDataKey) }, [scrollDataKey])
-  useEffect(() => { console.log('autoloadMore', autoloadMore) }, [autoloadMore])
-  useEffect(() => { console.log('actualChildren', actualChildren) }, [actualChildren])
+  // useEffect(() => { console.log('scrollKey', scrollKey) }, [scrollKey])
+  // useEffect(() => { console.log('id', id) }, [id])
+  // useEffect(() => { console.log('className', className) }, [className])
+  // useEffect(() => { console.log('style', style) }, [style])
+  // useEffect(() => { console.log('children', children) }, [children])
+  // useEffect(() => { console.log('hasMore', hasMore) }, [hasMore])
+  // useEffect(() => { console.log('onLoadMore', onLoadMore) }, [onLoadMore])
+  // useEffect(() => { console.log('isLoading', isLoading) }, [isLoading])
+  // useEffect(() => { console.log('Placeholder', Placeholder) }, [Placeholder])
+  // useEffect(() => { console.log('placeholderCount', placeholderCount) }, [placeholderCount])
+  // useEffect(() => { console.log('showLoading', showLoading) }, [showLoading])
+  // useEffect(() => { console.log('scrollableAncestor', scrollableAncestor) }, [scrollableAncestor])
+  // useEffect(() => { console.log('start', start) }, [start])
+  // useEffect(() => { console.log('end', end) }, [end])
+  // useEffect(() => { console.log('scrollDataKey', scrollDataKey) }, [scrollDataKey])
+  // useEffect(() => { console.log('autoloadMore', autoloadMore) }, [autoloadMore])
+  // useEffect(() => { console.log('actualChildren', actualChildren) }, [actualChildren])
 
-  // handle autoload more
-  useEffect(() => {
-    if (!footer.current || !autoloadMore || !hasMore || !onLoadMore || isLoading || actualChildren.length === 0) return undefined;
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) onInternalLoadMore()
-      })
-    })
-    observer.observe(footer.current)
-    return () => observer.disconnect()
-  }, [onInternalLoadMore, autoloadMore, hasMore, onLoadMore, isLoading, actualChildren])
 
   const startRef = useRef(start)
 
   const popStart = useCallback((e: HTMLElement) => {
     // console.log("popStart", e)
-    startRef.current = Math.min(startRef.current + 1, React.Children.count(children) - 1)
+    startRef.current = Math.min(startRef.current + 1, childrenCount - 1)
     setStart(startRef.current)
-  }, [children])
+  }, [childrenCount])
 
   const pushStart = useCallback(() => {
     // console.log("pushStart")
@@ -126,15 +120,15 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
 
   const popEnd = useCallback((e: HTMLElement) => {
     // console.log("popEnd", e)
-    endRef.current = Math.min(endRef.current + 1, React.Children.count(children) - 1)
+    endRef.current = Math.min(endRef.current + 1, childrenCount - 1)
     setEnd(endRef.current)
-  }, [children])
+  }, [childrenCount])
 
   const pushEnd = useCallback(() => {
     // console.log("pushEnd")
     endRef.current = Math.max(0, endRef.current - 1)
     setEnd(endRef.current)
-  }, [])
+  }, [autoloadMore])
 
 
   // managing closest scrollable ancestor 
@@ -182,7 +176,6 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
     const scrollableViewport = scrollableAncestor.getBoundingClientRect()
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
-        if (e.target === footer.current) return
         if (e.target === top.current) {
           if (e.isIntersecting) { // the top sentry is back into root 
             pushStart()
@@ -200,6 +193,7 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
       })
     }, { root: scrollableAncestor, rootMargin: `${scrollableViewport.height}px 0px ${scrollableViewport.height}px 0px` })
     root.current.childNodes.forEach((n: Element) => {
+      if(n === footer.current) return
       observer.observe(n)
     })
     return () => observer.disconnect()
@@ -221,7 +215,7 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
         {
           isLoading && (
             <div className='flex flex-col gap-3'>
-              {(Placeholder && (placeholderCount > 0)) ? new Array(placeholderCount).fill(undefined).map((_, index) => <Placeholder key={index} />) : <Spinner />}
+              {(Placeholder && (placeholderCount > 0 || childrenCount > 0)) ? new Array(childrenCount > 0 ? 1 : placeholderCount).fill(undefined).map((_, index) => <Placeholder key={index} />) : <Spinner />}
             </div>
           )
         }
