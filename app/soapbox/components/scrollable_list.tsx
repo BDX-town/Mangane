@@ -127,14 +127,14 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
 
   // managing closest scrollable ancestor 
   // cleaner way of doing that would be to actually make this node scrollable, yet, given you dont always now parent layout it's hard to make sure 
-  // itś
+  // itś always 100% min-height
   useLayoutEffect(() => { // this needs to be called before layout changes 
     if (!root.current) return undefined
     let ancestor;
     let timer;
     const callback = () => {
       if(timer) clearTimeout(timer)
-      timer = setTimeout(() => {
+      timer = setTimeout(() => { // using this timer allows to restore scroll pos precisely as media may take time to load / be rendered 
         ancestor = findClosestScrollableAncestor(root.current)
         console.log("ANCESTOR", ancestor)
         if (ancestor) {
@@ -164,6 +164,7 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
 
   // watching for elements leaving and entering "screen" (screen height*2 up and down) 
   // top and bottom sentries are used to push elements back
+  // this is doing the actual virtual scrolling
   useEffect(() => {
     if (!root.current || !scrollableAncestor) return undefined;
     const scrollableViewport = scrollableAncestor.getBoundingClientRect()
