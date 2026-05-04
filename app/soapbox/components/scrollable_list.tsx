@@ -126,29 +126,36 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
 
 
   // managing closest scrollable ancestor 
+  // cleaner way of doing that would be to actually make this node scrollable, yet, given you dont always now parent layout it's hard to make sure 
+  // itś
   useLayoutEffect(() => { // this needs to be called before layout changes 
     if (!root.current) return undefined
     let ancestor;
+    let timer;
     const callback = () => {
-      ancestor = findClosestScrollableAncestor(root.current)
-      console.log("ANCESTOR", ancestor)
-      if (ancestor) {
-        observer.disconnect() // we prevent calling of all this again if we have an ancestor 
-        ancestor.classList.add("[scrollbar-width:none]", "[&::-webkit-scrollbar]:hidden")
-        if (SCROLL_DATA[scrollDataKey]) {
-          console.log("RESTORING", scrollDataKey, SCROLL_DATA[scrollDataKey])
-          ancestor.scrollTop = SCROLL_DATA[scrollDataKey][2]
+      if(timer) clearTimeout(timer)
+      timer = setTimeout(() => {
+        ancestor = findClosestScrollableAncestor(root.current)
+        console.log("ANCESTOR", ancestor)
+        if (ancestor) {
+          observer.disconnect() // we prevent calling of all this again if we have an ancestor 
+          ancestor.classList.add("[scrollbar-width:none]", "[&::-webkit-scrollbar]:hidden")
+          if (SCROLL_DATA[scrollDataKey]) {
+            console.log("RESTORING", scrollDataKey, SCROLL_DATA[scrollDataKey])
+            ancestor.scrollTop = SCROLL_DATA[scrollDataKey][2]
+          }
         }
-      }
-      setScrollableAncestor(ancestor)
+        setScrollableAncestor(ancestor)
+      }, 250)
     }
-    const observer = new MutationObserver(callback);
-    observer.observe(root.current, { childList: true });
+    const observer = new ResizeObserver(callback);
+    observer.observe(root.current);
     callback()
     return () => {
+      if(timer) clearTimeout(timer)
       observer.disconnect()
-      ancestor.classList.remove("[scrollbar-width:none]", "[&::-webkit-scrollbar]:hidden")
-      if (scrollDataKey) {
+      ancestor?.classList.remove("[scrollbar-width:none]", "[&::-webkit-scrollbar]:hidden")
+      if (scrollDataKey && ancestor) {
         SCROLL_DATA[scrollDataKey] = [startRef.current, endRef.current, ancestor.scrollTop]
         console.log("SAVING", scrollDataKey, SCROLL_DATA[scrollDataKey])
       }
