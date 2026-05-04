@@ -414,10 +414,10 @@ const Thread: React.FC<IThread> = (props) => {
 
   // Scroll focused status into view when thread updates.
   useEffect(() => {
-    scroller.current?.scrollToIndex({
-      index: ancestorsIds.size,
-      offset: -80,
-    });
+    // scroller.current?.scrollToIndex({
+    //   index: ancestorsIds.size,
+    //   offset: -80,
+    // });
 
     setImmediate(() => statusRef.current?.querySelector<HTMLDivElement>('.detailed-status')?.focus());
   }, [props.params.statusId, actualStatus?.id, ancestorsIds.size, isLoaded]);

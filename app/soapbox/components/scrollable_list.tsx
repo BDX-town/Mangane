@@ -43,8 +43,8 @@ interface IScrollableList {
 }
 
 function findClosestScrollableAncestor(el: HTMLElement) {
-  if(!el) return undefined
-  if(el.scrollHeight > el.clientHeight) return el
+  if (!el) return undefined
+  if (el.scrollHeight > el.clientHeight) return el
   return findClosestScrollableAncestor(el.parentElement)
 }
 
@@ -66,21 +66,17 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
   const root = useRef<HTMLDivElement>(null)
 
   const [scrollableAncestor, setScrollableAncestor] = useState<HTMLElement>(null)
-  const scrollDataKey = useMemo(() => `soapbox:scrollData:${scrollKey}`, [scrollKey]);
-  const scrollData: [number, number, number] | null = useMemo(() => SCROLL_DATA[scrollDataKey], [scrollDataKey]);
-  const [start, setStart] = useState(scrollData ? scrollData[0] : 0)
-  const [end, setEnd] = useState(scrollData ? scrollData[1] : 0)
+  const scrollDataKey = useMemo(() => scrollKey ? `soapbox:scrollData:${scrollKey}` : undefined, [scrollKey]);
+  const [start, setStart] = useState(SCROLL_DATA[scrollDataKey] ? SCROLL_DATA[scrollDataKey][0] : 0)
+  const [end, setEnd] = useState(SCROLL_DATA[scrollDataKey] ? SCROLL_DATA[scrollDataKey][1] : 0)
 
-  useImperativeHandle(ref, () => root, [root])
+  useImperativeHandle(ref, () => root.current)
 
   const settings = useSettings();
   const autoloadMore = settings.get('autoloadMore');
 
-  const [userRequestedLoadMore, setUserRequestedLoadMore] = useState(!!scrollData)
-
   const onInternalLoadMore = useCallback(() => {
-    setUserRequestedLoadMore(true)
-    if(onLoadMore) onLoadMore()
+    if (onLoadMore) onLoadMore()
   }, [onLoadMore])
 
   const actualChildren = useMemo(() => {
@@ -90,10 +86,10 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
 
   // handle autoload more
   useEffect(() => {
-    if(!footer.current || !autoloadMore || !hasMore || !onLoadMore || isLoading || actualChildren.length === 0) return undefined;
+    if (!footer.current || !autoloadMore || !hasMore || !onLoadMore || isLoading || actualChildren.length === 0) return undefined;
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if(entry.isIntersecting) onInternalLoadMore()
+        if (entry.isIntersecting) onInternalLoadMore()
       })
     })
     observer.observe(footer.current)
@@ -103,13 +99,13 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
   const startRef = useRef(start)
 
   const popStart = useCallback((e: HTMLElement) => {
-    // console.log("popStart", e)
+    console.log("popStart", e)
     startRef.current += 1
     setStart(startRef.current)
   }, [])
 
   const pushStart = useCallback(() => {
-    // console.log("pushStart")
+    console.log("pushStart")
     startRef.current = Math.max(0, startRef.current - 1)
     setStart(startRef.current)
   }, [])
@@ -128,57 +124,61 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
     setEnd(endRef.current)
   }, [])
 
+
   // managing closest scrollable ancestor 
-  useEffect(() => {
-    if(!root.current) return undefined
-    const ancestor = findClosestScrollableAncestor(root.current)
-    setScrollableAncestor(ancestor)
-    if(!ancestor) return undefined
-    ancestor.classList.add("[scrollbar-width:none]", "[&::-webkit-scrollbar]:hidden")
-    return () => {
-      ancestor.classList.remove("[scrollbar-width:none]", "[&::-webkit-scrollbar]:hidden")
+  useLayoutEffect(() => { // this needs to be called before layout changes 
+    if (!root.current) return undefined
+    let ancestor;
+    const callback = () => {
+      ancestor = findClosestScrollableAncestor(root.current)
+      console.log("ANCESTOR", ancestor)
+      if (ancestor) {
+        observer.disconnect() // we prevent calling of all this again if we have an ancestor 
+        ancestor.classList.add("[scrollbar-width:none]", "[&::-webkit-scrollbar]:hidden")
+        if (SCROLL_DATA[scrollDataKey]) {
+          console.log("RESTORING", scrollDataKey, SCROLL_DATA[scrollDataKey])
+          ancestor.scrollTop = SCROLL_DATA[scrollDataKey][2]
+        }
+      }
+      setScrollableAncestor(ancestor)
     }
-  }, [scrollData])
-
-  // handle scroll position saving
-  useEffect(() => {
-    if (!scrollableAncestor) return undefined;
+    const observer = new MutationObserver(callback);
+    observer.observe(root.current, { childList: true });
+    callback()
     return () => {
-      SCROLL_DATA[scrollDataKey] = [startRef.current, endRef.current, scrollableAncestor.scrollTop]
-      // console.log("SAVING", scrollDataKey, SCROLL_DATA[scrollDataKey])
-    };
-  }, [scrollableAncestor, scrollDataKey]);
-
-  // handle scroll position restoring, start and end are restored with useState 
-  useEffect(() => {
-    if (!scrollableAncestor || !scrollData) return undefined;
-    scrollableAncestor.scrollTop = scrollData[2]
-  }, [scrollableAncestor, scrollData])
+      observer.disconnect()
+      ancestor.classList.remove("[scrollbar-width:none]", "[&::-webkit-scrollbar]:hidden")
+      if (scrollDataKey) {
+        SCROLL_DATA[scrollDataKey] = [startRef.current, endRef.current, ancestor.scrollTop]
+        console.log("SAVING", scrollDataKey, SCROLL_DATA[scrollDataKey])
+      }
+    }
+  }, [scrollDataKey])
 
   // watching for elements leaving and entering "screen" (screen height*2 up and down) 
   // top and bottom sentries are used to push elements back
   useEffect(() => {
-    if(!root.current || !scrollableAncestor) return undefined;
+    if (!root.current || !scrollableAncestor) return undefined;
     const scrollableViewport = scrollableAncestor.getBoundingClientRect()
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
-        if(e.target === footer.current) return
-        if(e.target === top.current) { 
-          if(e.isIntersecting) { // the top sentry is back into root 
+        if (e.target === footer.current) return
+        if (e.target === top.current) {
+          if (e.isIntersecting) { // the top sentry is back into root 
             pushStart()
           }
           return;
         }
-        if(e.target === bottom.current) { 
-          if(e.isIntersecting) { // the bottom sentry is back into root 
+        if (e.target === bottom.current) {
+          if (e.isIntersecting) { // the bottom sentry is back into root 
             pushEnd()
           }
           return;
         }
-        if(!e.isIntersecting && e.boundingClientRect.bottom <= 0) popStart(e.target)
-        if(!e.isIntersecting && e.boundingClientRect.bottom > 0) popEnd(e.target)
+        if (!e.isIntersecting && e.boundingClientRect.bottom <= 0) popStart(e.target)
+        if (!e.isIntersecting && e.boundingClientRect.bottom > 0) popEnd(e.target)
       })
-    }, { root: scrollableAncestor, rootMargin: `${scrollableViewport.height}px 0px ${scrollableViewport.height}px 0px`})
+    }, { root: scrollableAncestor, rootMargin: `${scrollableViewport.height}px 0px ${scrollableViewport.height}px 0px` })
     root.current.childNodes.forEach((n: Element) => {
       observer.observe(n)
     })
@@ -193,15 +193,15 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
       style={style}
     >
       <div ref={top} />
-      { actualChildren }
+      {actualChildren}
       <div className='pb-3' ref={footer}>
         {
           !autoloadMore && hasMore && onLoadMore && <LoadMore visible={!isLoading} onClick={onInternalLoadMore} />
         }
-        { 
+        {
           isLoading && (
             <div className='flex flex-col gap-3'>
-              { (Placeholder && (placeholderCount > 0 || userRequestedLoadMore)) ? new Array(userRequestedLoadMore ? 1 : placeholderCount).fill(undefined).map((_, index) => <Placeholder key={index} />)  : <Spinner /> }
+              {(Placeholder && (placeholderCount > 0)) ? new Array(placeholderCount).fill(undefined).map((_, index) => <Placeholder key={index} />) : <Spinner />}
             </div>
           )
         }
