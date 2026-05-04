@@ -48,13 +48,6 @@ function findClosestScrollableAncestor(el: HTMLElement) {
   return findClosestScrollableAncestor(el.parentElement)
 }
 
-interface IScrollRestorer {
-  scrollDataKey: string;
-  scrollData: number | null;
-  root: HTMLDivElement | null;
-  onReady: () => void;
-}
-
 // we are storing scroll data here so it resets on each reload 
 const SCROLL_DATA = {}
 
@@ -84,6 +77,25 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
     return childs.slice(start, childs.length - end)
   }, [children, start, end])
 
+  // debug
+  useEffect(() => { console.log('scrollKey', scrollKey) }, [scrollKey])
+  useEffect(() => { console.log('id', id) }, [id])
+  useEffect(() => { console.log('className', className) }, [className])
+  useEffect(() => { console.log('style', style) }, [style])
+  useEffect(() => { console.log('children', children) }, [children])
+  useEffect(() => { console.log('hasMore', hasMore) }, [hasMore])
+  useEffect(() => { console.log('onLoadMore', onLoadMore) }, [onLoadMore])
+  useEffect(() => { console.log('isLoading', isLoading) }, [isLoading])
+  useEffect(() => { console.log('Placeholder', Placeholder) }, [Placeholder])
+  useEffect(() => { console.log('placeholderCount', placeholderCount) }, [placeholderCount])
+  useEffect(() => { console.log('showLoading', showLoading) }, [showLoading])
+  useEffect(() => { console.log('scrollableAncestor', scrollableAncestor) }, [scrollableAncestor])
+  useEffect(() => { console.log('start', start) }, [start])
+  useEffect(() => { console.log('end', end) }, [end])
+  useEffect(() => { console.log('scrollDataKey', scrollDataKey) }, [scrollDataKey])
+  useEffect(() => { console.log('autoloadMore', autoloadMore) }, [autoloadMore])
+  useEffect(() => { console.log('actualChildren', actualChildren) }, [actualChildren])
+
   // handle autoload more
   useEffect(() => {
     if (!footer.current || !autoloadMore || !hasMore || !onLoadMore || isLoading || actualChildren.length === 0) return undefined;
@@ -99,13 +111,13 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
   const startRef = useRef(start)
 
   const popStart = useCallback((e: HTMLElement) => {
-    console.log("popStart", e)
-    startRef.current += 1
+    // console.log("popStart", e)
+    startRef.current = Math.min(startRef.current + 1, React.Children.count(children) - 1)
     setStart(startRef.current)
-  }, [])
+  }, [children])
 
   const pushStart = useCallback(() => {
-    console.log("pushStart")
+    // console.log("pushStart")
     startRef.current = Math.max(0, startRef.current - 1)
     setStart(startRef.current)
   }, [])
@@ -114,9 +126,9 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
 
   const popEnd = useCallback((e: HTMLElement) => {
     // console.log("popEnd", e)
-    endRef.current += 1
+    endRef.current = Math.min(endRef.current + 1, React.Children.count(children) - 1)
     setEnd(endRef.current)
-  }, [])
+  }, [children])
 
   const pushEnd = useCallback(() => {
     // console.log("pushEnd")
