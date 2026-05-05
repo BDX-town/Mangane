@@ -14,7 +14,7 @@ const getNotifTotals = (state: RootState): number => {
   return notifications + reports + approvals;
 };
 
-const Helmet: React.FC = ({ children }) => {
+const Helmet: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const title = useAppSelector((state) => state.instance.title);
   const unreadCount = useAppSelector((state) => getNotifTotals(state));
   const demetricator = useSettings().get('demetricator');

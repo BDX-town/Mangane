@@ -87,7 +87,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
 
   return (
     <>
-      <Layout.Main>
+      <Layout.Main className='animate-fadein py-4'>
         <Column label={account ? `@${getAcct(account, displayFqn)}` : ''} withHeader={false}>
           <div className='space-y-4'>
             <Header account={account} />
@@ -105,7 +105,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
         </Column>
       </Layout.Main>
 
-      <Layout.Aside>
+      <Layout.Aside className="animate-fadein py-4">
         {!me && (
           <BundleContainer fetchComponent={SignUpPanel}>
             {Component => <Component key='sign-up-panel' />}

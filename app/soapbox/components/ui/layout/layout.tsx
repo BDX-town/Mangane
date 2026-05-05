@@ -1,48 +1,45 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import StickyBox from 'react-sticky-box';
 
 interface LayoutComponent extends React.FC {
-  Sidebar: React.FC,
+  Sidebar: React.FC<{ children?: ReactNode }>,
   Main: React.FC<React.HTMLAttributes<HTMLDivElement>>,
-  Aside: React.FC,
+  Aside: React.FC<{ children?: ReactNode, className?: string }>,
 }
 
 /** Layout container, to hold Sidebar, Main, and Aside. */
-const Layout: LayoutComponent = ({ children }) => (
-  <div className='sm:pt-4 relative'>
-    <div className='max-w-3xl mx-auto sm:px-6 md:max-w-7xl md:px-8 md:grid md:grid-cols-12 md:gap-8'>
+const Layout: LayoutComponent = ({ children }: { children?: ReactNode }) => (
+  <div className='relative'>
+    <div className='max-w-3xl mx-auto sm:px-6 md:max-w-7xl md:px-8 md:flex md:gap-8 md:max-h-screen'>
       {children}
     </div>
   </div>
 );
 
 /** Left sidebar container in the UI. */
-const Sidebar: React.FC = ({ children }) => (
-  <div className='hidden lg:block lg:col-span-3'>
-    <StickyBox offsetTop={32} style={{ height: 'calc(100vh - 32px)' }}>
+const Sidebar: React.FC<{ children?: ReactNode }> = ({ children }) => (
+  <div className='hidden lg:block lg:col-span-3 md:min-w-[300px] md:max-w-[300px]'>
       {children}
-    </StickyBox>
   </div>
 );
 
 /** Center column container in the UI. */
 const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className }) => (
   <main
-    className={classNames({
-      'md:col-span-12 lg:col-span-6 xl:col-span-6 pb-36': true,
-    }, className)}
+    className={classNames(
+      "md:w-full md:min-w-0 md:overflow-y-auto",
+      className,
+    )}
   >
     {children}
   </main>
 );
 
 /** Right sidebar container in the UI. */
-const Aside: React.FC = ({ children }) => (
-  <aside className='hidden lg:block lg:col-span-3'>
-    <StickyBox offsetTop={32} className='space-y-6 pb-12' >
+const Aside: React.FC<{ className?: string, children?: ReactNode }> = ({ children, className }) => (
+  <aside className={`hidden lg:block lg:col-span-3 md:min-w-[200px] md:max-w-[200px] ${className || ''}`}>
       {children}
-    </StickyBox>
   </aside>
 );
 

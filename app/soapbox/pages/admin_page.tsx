@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Layout } from 'soapbox/components/ui';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
@@ -8,14 +8,14 @@ import {
 
 import LinkFooter from '../features/ui/components/link_footer';
 
-const AdminPage: React.FC = ({ children }) => {
+const AdminPage: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <>
-      <Layout.Main>
+      <Layout.Main className='animate-fadein py-4'>
         {children}
       </Layout.Main>
 
-      <Layout.Aside>
+      <Layout.Aside className="animate-fadein py-4">
         <BundleContainer fetchComponent={LatestAccountsPanel}>
           {Component => <Component limit={5} />}
         </BundleContainer>

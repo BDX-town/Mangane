@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
@@ -12,17 +12,17 @@ import { useAppSelector, useFeatures } from 'soapbox/hooks';
 
 import { Layout } from '../components/ui';
 
-const DefaultPage: React.FC = ({ children }) => {
+const DefaultPage: React.FC<{ children: ReactNode }> = ({ children }) => {
   const me = useAppSelector(state => state.me);
   const features = useFeatures();
 
   return (
     <>
-      <Layout.Main>
+      <Layout.Main className='animate-fadein pt-4'>
         {children}
       </Layout.Main>
 
-      <Layout.Aside>
+      <Layout.Aside className='animate-fadein py-4'>
         {!me && (
           <BundleContainer fetchComponent={SignUpPanel}>
             {Component => <Component key='sign-up-panel' />}
