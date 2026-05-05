@@ -70,13 +70,6 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
 
   const childrenCount = useMemo(() => React.Children.count(children), [children])
 
-  const onInternalLoadMore = useCallback(() => {
-    console.log("loading more")
-    if (onLoadMore) onLoadMore()
-  }, [onLoadMore])
-
-
-
   const actualChildren = useMemo(() => {
     const childs = React.Children.toArray(children)
     return childs.slice(start, childs.length - end)
@@ -128,7 +121,11 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
     // console.log("pushEnd")
     endRef.current = Math.max(0, endRef.current - 1)
     setEnd(endRef.current)
-  }, [autoloadMore])
+    if(endRef.current == 0 && autoloadMore && hasMore && onLoadMore && !isLoading) {
+      // console.log('loading more');
+      onLoadMore()
+    }
+  }, [autoloadMore, hasMore, onLoadMore, isLoading])
 
 
   // managing closest scrollable ancestor 
@@ -203,14 +200,16 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
     <div
       ref={root}
       id={id}
-      className={className}
+      className={classNames(
+        className,
+      )}
       style={style}
     >
       <div ref={top} />
       {actualChildren}
       <div className='pb-3' ref={footer}>
         {
-          !autoloadMore && hasMore && onLoadMore && <LoadMore visible={!isLoading} onClick={onInternalLoadMore} />
+          !autoloadMore && hasMore && onLoadMore && <LoadMore visible={!isLoading} onClick={onLoadMore} />
         }
         {
           isLoading && (
