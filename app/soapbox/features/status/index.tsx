@@ -566,12 +566,10 @@ const Thread: React.FC<IThread> = (props) => {
               hasMore={!!next}
               onLoadMore={handleLoadMoreDebounced}
               placeholderComponent={() => <PlaceholderStatus />}
-              initialTopMostItemIndex={ancestorsIds.size}
             >
               {children}
             </ScrollableList>
           </div>
-
           {!me && <ThreadLoginCta />}
         </Stack>
       </PullToRefresh>
