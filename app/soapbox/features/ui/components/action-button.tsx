@@ -202,7 +202,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
     if (!account.relationship) {
       // Wait until the relationship is loaded
       return null;
-    } else if (account.relationship?.requested) {
+    } else if (true || account.relationship?.requested) {
       // Awaiting acceptance
       return (
         <div className='flex flex-col gap-1'>
@@ -213,7 +213,9 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
             onClick={handleFollow}
           >
             <Spinner  withText={false} size={16} />
-            {intl.formatMessage(messages.awaiting_approval)}
+            <div className="overflow-hidden text-ellipsis whitespace-nowrap max-w-[110px]">
+                {intl.formatMessage(messages.awaiting_approval)}
+            </div>
           </Button>
         </div>
       );
