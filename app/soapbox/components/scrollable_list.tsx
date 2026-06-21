@@ -1,5 +1,5 @@
 import debounce from 'lodash/debounce';
-import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useEffect, useRef, useMemo, useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle, ListRange, IndexLocationWithAlign } from 'react-virtuoso';
 
@@ -106,6 +106,22 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   const settings = useSettings();
   const autoloadMore = settings.get('autoloadMore');
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scrollParent, setScrollParent] = useState<HTMLElement | undefined>(undefined);
+
+  useEffect(() => {
+    let el: HTMLElement | null = containerRef.current;
+    while (el) {
+      el = el.parentElement;
+      if (!el) break;
+      const { overflowY } = window.getComputedStyle(el);
+      if (overflowY === 'auto' || overflowY === 'scroll') {
+        setScrollParent(el);
+        return;
+      }
+    }
+  }, []);
+
   // Preserve scroll position
   const scrollDataKey = useMemo(() => `soapbox:scrollData:${scrollKey}`, [scrollKey]);
   const scrollData: SavedScrollPosition | null = useMemo(() => JSON.parse(sessionStorage.getItem(scrollDataKey)!), [scrollDataKey]);
@@ -144,7 +160,8 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   const handleScroll = useCallback(() => handleScrollDebounced(), [handleScrollDebounced]);
 
   useEffect(() => {
-    document.addEventListener('scroll', handleScroll);
+    const scrollTarget: EventTarget = scrollParent ?? document;
+    scrollTarget.addEventListener('scroll', handleScroll);
     sessionStorage.removeItem(scrollDataKey);
 
     return () => {
@@ -152,9 +169,9 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
         const data: SavedScrollPosition = { index: topIndex.current, offset: topOffset.current };
         sessionStorage.setItem(scrollDataKey, JSON.stringify(data));
       }
-      document.removeEventListener('scroll', handleScroll);
+      scrollTarget.removeEventListener('scroll', handleScroll);
     };
-  }, [handleScroll, scrollDataKey, scrollKey]);
+  }, [handleScroll, scrollDataKey, scrollKey, scrollParent]);
 
   /* Render an empty state instead of the scrollable list. */
   const renderEmpty = (): JSX.Element => {
@@ -220,10 +237,11 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   }, [showLoading, initialTopMostItemIndex, scrollData, history.action]);
 
   return (
+    <div ref={containerRef}>
     <Virtuoso
       ref={ref}
       id={id}
-      useWindowScroll={useWindowScroll}
+      {...(scrollParent ? { customScrollParent: scrollParent } : { useWindowScroll })}
       className={className}
       data={data}
       startReached={onScrollToTop}
@@ -246,6 +264,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
         Footer: loadMore,
       }}
     />
+    </div>
   );
 });
 

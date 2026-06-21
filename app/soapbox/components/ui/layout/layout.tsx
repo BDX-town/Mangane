@@ -1,11 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
-import StickyBox from 'react-sticky-box';
 
 interface LayoutComponent extends React.FC {
   Sidebar: React.FC,
   Main: React.FC<React.HTMLAttributes<HTMLDivElement>>,
-  Aside: React.FC,
+  Aside: React.FC<{ className?: string }>,
 }
 
 /** Layout container, to hold Sidebar, Main, and Aside. */
@@ -20,18 +19,13 @@ const Layout: LayoutComponent = ({ children }) => (
 /** Left sidebar container in the UI. */
 const Sidebar: React.FC = ({ children }) => (
   <div className='hidden lg:block lg:col-span-3 md:min-w-[300px] md:max-w-[300px]'>
-      {children}
+    {children}
   </div>
 );
 
 /** Center column container in the UI. */
 const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className }) => (
-  <main
-    className={classNames(
-      "md:w-full md:min-w-0 md:overflow-y-auto",
-      className,
-    )}
-  >
+  <main className={classNames('md:w-full md:min-w-0 md:overflow-y-auto', className)}>
     {children}
   </main>
 );
@@ -39,7 +33,7 @@ const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, classN
 /** Right sidebar container in the UI. */
 const Aside: React.FC<{ className?: string }> = ({ children, className }) => (
   <aside className={`hidden lg:block lg:col-span-3 md:min-w-[200px] md:max-w-[200px] ${className || ''}`}>
-      {children}
+    {children}
   </aside>
 );
 
