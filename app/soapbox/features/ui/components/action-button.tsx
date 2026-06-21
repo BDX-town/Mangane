@@ -202,7 +202,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
     if (!account.relationship) {
       // Wait until the relationship is loaded
       return null;
-    } else if (true || account.relationship?.requested) {
+    } else if (account.relationship?.requested) {
       // Awaiting acceptance
       return (
         <div className='flex flex-col gap-1'>
