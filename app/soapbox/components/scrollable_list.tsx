@@ -76,35 +76,35 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
   }, [children, start, end])
 
   // debug
-  // useEffect(() => { console.log('scrollKey', scrollKey) }, [scrollKey])
-  // useEffect(() => { console.log('id', id) }, [id])
-  // useEffect(() => { console.log('className', className) }, [className])
-  // useEffect(() => { console.log('style', style) }, [style])
-  // useEffect(() => { console.log('children', children) }, [children])
-  // useEffect(() => { console.log('hasMore', hasMore) }, [hasMore])
-  // useEffect(() => { console.log('onLoadMore', onLoadMore) }, [onLoadMore])
-  // useEffect(() => { console.log('isLoading', isLoading) }, [isLoading])
-  // useEffect(() => { console.log('Placeholder', Placeholder) }, [Placeholder])
-  // useEffect(() => { console.log('placeholderCount', placeholderCount) }, [placeholderCount])
-  // useEffect(() => { console.log('showLoading', showLoading) }, [showLoading])
-  // useEffect(() => { console.log('scrollableAncestor', scrollableAncestor) }, [scrollableAncestor])
-  // useEffect(() => { console.log('start', start) }, [start])
-  // useEffect(() => { console.log('end', end) }, [end])
-  // useEffect(() => { console.log('scrollDataKey', scrollDataKey) }, [scrollDataKey])
-  // useEffect(() => { console.log('autoloadMore', autoloadMore) }, [autoloadMore])
-  // useEffect(() => { console.log('actualChildren', actualChildren) }, [actualChildren])
+  useEffect(() => { console.log('scrollKey', scrollKey) }, [scrollKey])
+  useEffect(() => { console.log('id', id) }, [id])
+  useEffect(() => { console.log('className', className) }, [className])
+  useEffect(() => { console.log('style', style) }, [style])
+  useEffect(() => { console.log('children', children) }, [children])
+  useEffect(() => { console.log('hasMore', hasMore) }, [hasMore])
+  useEffect(() => { console.log('onLoadMore', onLoadMore) }, [onLoadMore])
+  useEffect(() => { console.log('isLoading', isLoading) }, [isLoading])
+  useEffect(() => { console.log('Placeholder', Placeholder) }, [Placeholder])
+  useEffect(() => { console.log('placeholderCount', placeholderCount) }, [placeholderCount])
+  useEffect(() => { console.log('showLoading', showLoading) }, [showLoading])
+  useEffect(() => { console.log('scrollableAncestor', scrollableAncestor) }, [scrollableAncestor])
+  useEffect(() => { console.log('start', start) }, [start])
+  useEffect(() => { console.log('end', end) }, [end])
+  useEffect(() => { console.log('scrollDataKey', scrollDataKey) }, [scrollDataKey])
+  useEffect(() => { console.log('autoloadMore', autoloadMore) }, [autoloadMore])
+  useEffect(() => { console.log('actualChildren', actualChildren) }, [actualChildren])
 
 
   const startRef = useRef(start)
 
   const popStart = useCallback((e: HTMLElement) => {
-    // console.log("popStart", e)
+    console.log("popStart", e)
     startRef.current = Math.min(startRef.current + 1, childrenCount - 1)
     setStart(startRef.current)
   }, [childrenCount])
 
   const pushStart = useCallback(() => {
-    // console.log("pushStart")
+    console.log("pushStart")
     startRef.current = Math.max(0, startRef.current - 1)
     setStart(startRef.current)
   }, [])
@@ -112,17 +112,17 @@ const ScrollableList = React.forwardRef(({ scrollKey, id, className, style, chil
   const endRef = useRef(end)
 
   const popEnd = useCallback((e: HTMLElement) => {
-    // console.log("popEnd", e)
+    console.log("popEnd", e)
     endRef.current = Math.min(endRef.current + 1, childrenCount - 1)
     setEnd(endRef.current)
   }, [childrenCount])
 
   const pushEnd = useCallback(() => {
-    // console.log("pushEnd")
+    console.log("pushEnd")
     endRef.current = Math.max(0, endRef.current - 1)
     setEnd(endRef.current)
     if(endRef.current == 0 && autoloadMore && hasMore && onLoadMore && !isLoading) {
-      // console.log('loading more');
+      console.log('loading more');
       onLoadMore()
     }
   }, [autoloadMore, hasMore, onLoadMore, isLoading])

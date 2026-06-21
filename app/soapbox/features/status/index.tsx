@@ -1,11 +1,9 @@
 import classNames from 'classnames';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
-import { debounce } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
-import { createSelector } from 'reselect';
 
 import {
   mentionCompose,
@@ -23,8 +21,6 @@ import { getSettings } from 'soapbox/actions/settings';
 import {
   hideStatus,
   revealStatus,
-  fetchStatusWithContext,
-  fetchNext,
   translateStatus,
 } from 'soapbox/actions/statuses';
 import MissingIndicator from 'soapbox/components/missing_indicator';
@@ -38,7 +34,6 @@ import { Column, Stack } from 'soapbox/components/ui';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
-import { makeGetStatus } from 'soapbox/selectors';
 import { defaultMediaVisibility, textForScreenReader } from 'soapbox/utils/status';
 
 import ComposeFormContainer from '../compose/containers/compose_form_container';
@@ -46,9 +41,9 @@ import ComposeFormContainer from '../compose/containers/compose_form_container';
 import DetailedStatus from './components/detailed-status';
 import ThreadLoginCta from './components/thread-login-cta';
 import ThreadStatus from './components/thread-status';
+import { useThread } from './hooks/useThread';
 
 import type { VirtuosoHandle } from 'react-virtuoso';
-import type { RootState } from 'soapbox/store';
 import type {
   Account as AccountEntity,
   Attachment as AttachmentEntity,
@@ -75,54 +70,6 @@ const messages = defineMessages({
   blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
 });
 
-const getStatus = makeGetStatus();
-
-const getAncestorsIds = createSelector([
-  (_: RootState, statusId: string | undefined) => statusId,
-  (state: RootState) => state.contexts.inReplyTos,
-], (statusId, inReplyTos) => {
-  let ancestorsIds = ImmutableOrderedSet<string>();
-  let id: string | undefined = statusId;
-
-  while (id && !ancestorsIds.includes(id)) {
-    ancestorsIds = ImmutableOrderedSet([id]).union(ancestorsIds);
-    id = inReplyTos.get(id);
-  }
-
-  return ancestorsIds;
-});
-
-const getDescendantsIds = createSelector([
-  (_: RootState, statusId: string) => statusId,
-  (state: RootState) => state.contexts.replies,
-], (statusId, contextReplies) => {
-  let descendantsIds = ImmutableOrderedSet<string>();
-  const ids = [statusId];
-
-  while (ids.length > 0) {
-    const id = ids.shift();
-    if (!id) break;
-
-    const replies = contextReplies.get(id);
-
-    if (descendantsIds.includes(id)) {
-      break;
-    }
-
-    if (statusId !== id) {
-      descendantsIds = descendantsIds.union([id]);
-    }
-
-    if (replies) {
-      replies.reverse().forEach((reply: string) => {
-        ids.unshift(reply);
-      });
-    }
-  }
-
-  return descendantsIds;
-});
-
 type DisplayMedia = 'default' | 'hide_all' | 'show_all';
 type RouteParams = { statusId: string };
 
@@ -138,66 +85,28 @@ const Thread: React.FC<IThread> = (props) => {
   const dispatch = useAppDispatch();
 
   const settings = useSettings();
-
   const me = useAppSelector(state => state.me);
-  const status = useAppSelector(state => getStatus(state, { id: props.params.statusId }));
-  // yes this is ugly but this thing spams renders otherwise...
-  const statusKeys = useMemo(() => JSON.stringify(status), [status]);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const actualStatus = useMemo(() => status, [statusKeys]);
-
   const displayMedia = settings.get('displayMedia') as DisplayMedia;
 
-  const { ancestorsIds, descendantsIds } = useAppSelector(state => {
-    let ancestorsIds = ImmutableOrderedSet<string>();
-    let descendantsIds = ImmutableOrderedSet<string>();
-
-    if (actualStatus) {
-      const statusId = actualStatus.id;
-      ancestorsIds = getAncestorsIds(state, state.contexts.inReplyTos.get(statusId));
-      descendantsIds = getDescendantsIds(state, statusId);
-      ancestorsIds = ancestorsIds.delete(statusId).subtract(descendantsIds);
-      descendantsIds = descendantsIds.delete(statusId).subtract(ancestorsIds);
-    }
-
-    return {
-      status: actualStatus,
-      ancestorsIds,
-      descendantsIds,
-    };
-  });
+  const {
+    actualStatus,
+    ancestorsIds,
+    descendantsIds,
+    isLoaded,
+    next,
+    handleRefresh,
+    handleLoadMore,
+  } = useThread(props.params.statusId);
 
   const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(actualStatus, displayMedia));
-  const [isLoaded, setIsLoaded] = useState<boolean>(!!actualStatus);
-  const [next, setNext] = useState<string>();
 
   const node = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
   const scroller = useRef<VirtuosoHandle>(null);
 
-  /** Fetch the status (and context) from the API. */
-  const fetchDataRef = useRef(null);
-  const fetchData = useCallback(async() => {
-    try {
-      const time = new Date().getTime();
-      fetchDataRef.current = time;
-      const { next } = await dispatch(fetchStatusWithContext(props.params.statusId));
-      if (time < fetchDataRef.current) return; // this is not the last call, we stop there
-      setNext(next);
-    } catch (e) {
-      console.error(e);
-    }
-    setIsLoaded(true);
-  }, [dispatch, props.params.statusId]);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchData();
-  }, [fetchData, props.params.statusId]);
-
   const handleToggleMediaVisibility = useCallback(() => {
-    setShowMedia(!showMedia);
-  }, [showMedia]);
+    setShowMedia(prev => !prev);
+  }, []);
 
   const handleHotkeyReact = useCallback(() => {
     if (statusRef.current) {
@@ -268,8 +177,6 @@ const Thread: React.FC<IThread> = (props) => {
     }
   }, [dispatch]);
 
-
-
   const handleHotkeyFavourite = useCallback(() => {
     handleFavouriteClick(actualStatus!);
   }, [handleFavouriteClick, actualStatus]);
@@ -292,10 +199,6 @@ const Thread: React.FC<IThread> = (props) => {
   const handleHotkeyToggleHidden = useCallback(() => {
     handleToggleHidden(actualStatus!);
   }, [handleToggleHidden, actualStatus]);
-
-  const handleHotkeyToggleSensitive = useCallback(() => {
-    handleToggleMediaVisibility();
-  }, [handleToggleMediaVisibility]);
 
   const handleTranslate = React.useCallback((status: StatusEntity, language: string) => {
     dispatch(translateStatus(status.id, language));
@@ -334,8 +237,6 @@ const Thread: React.FC<IThread> = (props) => {
     handleMoveUp(actualStatus!.id);
   }, [handleMoveUp, actualStatus]);
 
-
-
   const handleMoveDown = useCallback((id: string) => {
     if (id === actualStatus?.id) {
       _selectChild(ancestorsIds.size + 1);
@@ -354,8 +255,6 @@ const Thread: React.FC<IThread> = (props) => {
   const handleHotkeyMoveDown = useCallback(() => {
     handleMoveDown(actualStatus!.id);
   }, [handleMoveDown, actualStatus]);
-
-
 
   const renderTombstone = useCallback((id: string) => {
     return (
@@ -419,24 +318,9 @@ const Thread: React.FC<IThread> = (props) => {
     //   offset: -80,
     // });
 
-    setImmediate(() => statusRef.current?.querySelector<HTMLDivElement>('.detailed-status')?.focus());
+    const id = setImmediate(() => statusRef.current?.querySelector<HTMLDivElement>('.detailed-status')?.focus());
+    return () => clearImmediate(id);
   }, [props.params.statusId, actualStatus?.id, ancestorsIds.size, isLoaded]);
-
-  const handleRefresh = useCallback(() => {
-    return fetchData();
-  }, [fetchData]);
-
-  const handleLoadMore = useCallback(async() => {
-    if (!next || !actualStatus) return;
-    try {
-      const { next: _next } = await dispatch(fetchNext(actualStatus.id, next));
-      setNext(_next);
-    } catch (e) {
-      console.error(e);
-    }
-  }, [dispatch, next, actualStatus]);
-
-  const handleLoadMoreDebounced = useMemo(() => debounce(handleLoadMore, 300, { leading: true }), [handleLoadMore]);
 
   const handleOpenCompareHistoryModal = useCallback((status: StatusEntity) => {
     dispatch(openModal('COMPARE_HISTORY', {
@@ -447,7 +331,6 @@ const Thread: React.FC<IThread> = (props) => {
   const hasAncestors = ancestorsIds.size > 0;
   const hasDescendants = descendantsIds.size > 0;
 
-
   const handlers: HotkeyHandlers = useMemo(() => ({
     moveUp: handleHotkeyMoveUp,
     moveDown: handleHotkeyMoveDown,
@@ -456,10 +339,10 @@ const Thread: React.FC<IThread> = (props) => {
     mention: handleHotkeyMention,
     openProfile: handleHotkeyOpenProfile,
     toggleHidden: handleHotkeyToggleHidden,
-    toggleSensitive: handleHotkeyToggleSensitive,
+    toggleSensitive: handleToggleMediaVisibility,
     openMedia: handleHotkeyOpenMedia,
     react: handleHotkeyReact,
-  }), [handleHotkeyBoost, handleHotkeyFavourite, handleHotkeyMention, handleHotkeyMoveDown, handleHotkeyMoveUp, handleHotkeyOpenMedia, handleHotkeyOpenProfile, handleHotkeyReact, handleHotkeyToggleHidden, handleHotkeyToggleSensitive]);
+  }), [handleHotkeyBoost, handleHotkeyFavourite, handleHotkeyMention, handleHotkeyMoveDown, handleHotkeyMoveUp, handleHotkeyOpenMedia, handleHotkeyOpenProfile, handleHotkeyReact, handleHotkeyToggleHidden, handleToggleMediaVisibility]);
 
   const username = String(actualStatus?.getIn(['account', 'acct']) || '');
   const titleMessage = actualStatus?.visibility === 'direct' ? messages.titleDirect : messages.title;
@@ -564,7 +447,7 @@ const Thread: React.FC<IThread> = (props) => {
               id='thread'
               ref={scroller}
               hasMore={!!next}
-              onLoadMore={handleLoadMoreDebounced}
+              onLoadMore={handleLoadMore}
               placeholderComponent={() => <PlaceholderStatus />}
             >
               {children}
