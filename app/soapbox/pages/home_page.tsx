@@ -27,7 +27,7 @@ const HomePage: React.FC = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
-      <Layout.Main className='dark:divide-slate-800 space-y-3 animate-fadein py-4'>
+      <Layout.Main className='dark:divide-slate-800 space-y-3 animate-fadein pt-0 sm:py-4'>
         {features.feedUserFiltering && <FeedCarousel />}
         {children}
       </Layout.Main>

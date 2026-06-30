@@ -88,7 +88,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
 
   return (
     <>
-      <Layout.Main className='animate-fadein py-4'>
+      <Layout.Main className='animate-fadein pt-0 sm:py-4'>
         <Column label={account ? `@${getAcct(account, displayFqn)}` : ''} withHeader={false}>
           <div className='space-y-4'>
             <Header account={account} />

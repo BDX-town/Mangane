@@ -1,5 +1,5 @@
 import debounce from 'lodash/debounce';
-import React, { useEffect, useRef, useMemo, useCallback, useState } from 'react';
+import React, { useEffect, useRef, useMemo, useCallback, useState, MouseEventHandler } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle, ListRange, IndexLocationWithAlign } from 'react-virtuoso';
 
@@ -79,6 +79,18 @@ interface IScrollableList extends VirtuosoProps<any, any> {
   useWindowScroll?: boolean
 }
 
+function findNearestScrollableParent(el: HTMLElement): HTMLElement | undefined {
+  while (el) {
+    el = el.parentElement;
+    if (!el) break;
+    const { overflowY } = window.getComputedStyle(el);
+    if (overflowY === 'auto' || overflowY === 'scroll') {
+      return el;
+    }
+  }
+  return undefined
+}
+
 /** Legacy ScrollableList with Virtuoso for backwards-compatibility. */
 const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   scrollKey,
@@ -106,20 +118,10 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   const settings = useSettings();
   const autoloadMore = settings.get('autoloadMore');
 
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [scrollParent, setScrollParent] = useState<HTMLElement | undefined>(undefined);
+  const [scrollParent, setScrollParentInternal] = useState<HTMLElement | undefined>(undefined);
 
-  useEffect(() => {
-    let el: HTMLElement | null = containerRef.current;
-    while (el) {
-      el = el.parentElement;
-      if (!el) break;
-      const { overflowY } = window.getComputedStyle(el);
-      if (overflowY === 'auto' || overflowY === 'scroll') {
-        setScrollParent(el);
-        return;
-      }
-    }
+  const setScrollParent = useCallback((e: HTMLElement) => {
+    setScrollParentInternal(findNearestScrollableParent(e));
   }, []);
 
   // Preserve scroll position
@@ -129,6 +131,22 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   const topOffset = useRef<number>(scrollData ? scrollData.offset : 0);
 
   const showPlaceholder = useMemo(() => showLoading && Placeholder && placeholderCount > 0, [Placeholder, placeholderCount, showLoading]);
+
+  const hasRestoredScrollRef = useRef(false);
+  const [ready, setReady] = useState(hasRestoredScrollRef.current || scrollData ? false : true);
+
+
+  const handleItemsRendered = useMemo(() => {
+    if (!scrollData) return undefined;
+    return debounce((_items: Array<{ index: number }>) => {
+      if (hasRestoredScrollRef.current) return;
+      setReady(true);
+      hasRestoredScrollRef.current = true;
+      (scrollParent || window).scrollBy(0, scrollData.offset);
+    }, 200);
+  }, [scrollData, scrollParent]);
+
+  useEffect(() => () => { handleItemsRendered?.cancel(); }, [handleItemsRendered]);
 
   const data = useMemo(() => {
     /** Normalized children. */
@@ -146,18 +164,16 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
     return res;
   }, [Placeholder, autoloadMore, children, hasMore, isLoading, placeholderCount, showPlaceholder]);
 
-  // eslint-disable-next-line react-hooks/refs
-  const handleScrollDebounced = useMemo(() => debounce(() => {
+
+  const handleScroll = useCallback(() => {
     // HACK: Virtuoso has no better way to get this...
-    const node = document.querySelector(`[data-virtuoso-scroller] [data-item-index="${topIndex.current}"]`);
+    const node = document.querySelector(`[data-virtuoso-scroller] [data-item-index="${topIndex.current}"]:nth-of-type(2)`);
     if (node) {
       topOffset.current = node.getBoundingClientRect().top * -1;
     } else {
       topOffset.current = 0;
     }
-  }, 150, { trailing: true }), []);
-
-  const handleScroll = useCallback(() => handleScrollDebounced(), [handleScrollDebounced]);
+  }, []);
 
   useEffect(() => {
     const scrollTarget: EventTarget = scrollParent ?? document;
@@ -229,7 +245,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
       return {
         align: 'start',
         index: scrollData.index,
-        offset: scrollData.offset,
+        offset: 0,
       };
     }
 
@@ -237,33 +253,34 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   }, [showLoading, initialTopMostItemIndex, scrollData, history.action]);
 
   return (
-    <div ref={containerRef}>
-    <Virtuoso
-      ref={ref}
-      id={id}
-      {...(scrollParent ? { customScrollParent: scrollParent } : { useWindowScroll })}
-      className={className}
-      data={data}
-      startReached={onScrollToTop}
-      endReached={handleEndReached}
-      isScrolling={isScrolling => isScrolling && onScroll && onScroll()}
-      itemContent={renderItem}
-      initialTopMostItemIndex={initialIndex}
-      rangeChanged={handleRangeChange}
-      style={style}
-      context={{
-        listClassName: className,
-        itemClassName,
-      }}
-      components={{
-        Header: () => <>{prepend}</>,
-        ScrollSeekPlaceholder: Placeholder as any,
-        EmptyPlaceholder: () => renderEmpty(),
-        List,
-        Item,
-        Footer: loadMore,
-      }}
-    />
+    <div ref={setScrollParent}>
+      <Virtuoso
+        ref={ref}
+        id={id}
+        {...(scrollParent ? { customScrollParent: scrollParent } : { useWindowScroll })}
+        className={`${className} transition-opacity ${ready ? 'opacity-100' : 'opacity-0'}`}
+        data={data}
+        startReached={onScrollToTop}
+        endReached={handleEndReached}
+        isScrolling={isScrolling => isScrolling && onScroll && onScroll()}
+        itemContent={renderItem}
+        initialTopMostItemIndex={initialIndex}
+        rangeChanged={handleRangeChange}
+        itemsRendered={handleItemsRendered}
+        style={style}
+        context={{
+          listClassName: className,
+          itemClassName,
+        }}
+        components={{
+          Header: () => <>{prepend}</>,
+          ScrollSeekPlaceholder: Placeholder as any,
+          EmptyPlaceholder: () => renderEmpty(),
+          List,
+          Item,
+          Footer: loadMore,
+        }}
+      />
     </div>
   );
 });

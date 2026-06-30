@@ -117,6 +117,7 @@ import { WrappedRoute } from './util/react_router_helpers';
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
 import 'soapbox/components/status';
+import StatusPage from 'soapbox/pages/status_page';
 
 const EmptyPage = HomePage;
 
@@ -263,11 +264,11 @@ const SwitchingColumnsArea: React.FC = ({ children }: { children: ReactNode }) =
       <WrappedRoute path='/@:username/favorites' component={FavouritedStatuses} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/about' component={ProfileFields} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/pins' component={PinnedStatuses} page={ProfilePage} content={children} />
-      <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact page={DefaultPage} component={Status} content={children} />
+      <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact page={StatusPage} component={Status} content={children} />
       <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
 
       <WrappedRoute path='/statuses/compose' page={DefaultPage} component={NewStatus} content={children} exact />
-      <WrappedRoute path='/statuses/:statusId' exact page={DefaultPage} component={Status} content={children} />
+      <WrappedRoute path='/statuses/:statusId' exact page={StatusPage} component={Status} content={children} />
       {features.scheduledStatuses && <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />}
 
       <WrappedRoute path='/settings/profile' page={DefaultPage} component={EditProfile} content={children} />
