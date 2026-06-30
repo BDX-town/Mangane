@@ -65,7 +65,7 @@ const ListTimeline: React.FC = () => {
 
   return (
     <Column label={title} transparent withHeader={false}>
-      <div className='px-4 py-4 flex justify-between items-center'>
+      <div className='px-4 pb-4 flex justify-between items-center'>
         <SubNavigation className='!mb-0' message={title} />
       </div>
       <Timeline

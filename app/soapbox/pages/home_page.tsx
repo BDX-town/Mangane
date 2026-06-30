@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import FeedCarousel from 'soapbox/features/feed-filtering/feed-carousel';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
@@ -18,7 +18,7 @@ import { Layout } from '../components/ui';
 import BundleContainer from '../features/ui/containers/bundle_container';
 // import GroupSidebarPanel from '../features/groups/sidebar_panel';
 
-const HomePage: React.FC = ({ children }) => {
+const HomePage: React.FC = ({ children }: { children: ReactNode }) => {
   const me = useAppSelector(state => state.me);
   const features = useFeatures();
   const soapboxConfig = useSoapboxConfig();
@@ -27,12 +27,12 @@ const HomePage: React.FC = ({ children }) => {
 
   return (
     <>
-      <Layout.Main className='sm:pt-0 dark:divide-slate-800 space-y-3 animate-fadein'>
+      <Layout.Main className='dark:divide-slate-800 space-y-3 animate-fadein py-4'>
         {features.feedUserFiltering && <FeedCarousel />}
         {children}
       </Layout.Main>
 
-      <Layout.Aside className="animate-fadein py-4">
+      <Layout.Aside className="animate-fadein py-4 lg:flex flex-col">
         {!me && (
           <BundleContainer fetchComponent={SignUpPanel}>
             {Component => <Component />}
@@ -69,6 +69,7 @@ const HomePage: React.FC = ({ children }) => {
             {Component => <Component limit={5} />}
           </BundleContainer>
         )}
+        <div className='grow' />
         <LinkFooter key='link-footer' />
       </Layout.Aside>
     </>

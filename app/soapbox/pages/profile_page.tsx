@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Redirect, useHistory } from 'react-router-dom';
 
@@ -21,6 +21,7 @@ interface IProfilePage {
   params?: {
     username?: string,
   },
+  children: ReactNode,
 }
 
 const getAccount = makeGetAccount();
@@ -87,7 +88,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
 
   return (
     <>
-      <Layout.Main className='animate-fadein'>
+      <Layout.Main className='animate-fadein py-4'>
         <Column label={account ? `@${getAcct(account, displayFqn)}` : ''} withHeader={false}>
           <div className='space-y-4'>
             <Header account={account} />

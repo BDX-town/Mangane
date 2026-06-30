@@ -1,14 +1,14 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 interface LayoutComponent extends React.FC {
   Sidebar: React.FC,
   Main: React.FC<React.HTMLAttributes<HTMLDivElement>>,
-  Aside: React.FC<{ className?: string }>,
+  Aside: React.FC<{ className?: string, children: ReactNode }>,
 }
 
 /** Layout container, to hold Sidebar, Main, and Aside. */
-const Layout: LayoutComponent = ({ children }) => (
+const Layout: LayoutComponent = ({ children }: { children: ReactNode }) => (
   <div className='relative'>
     <div className='max-w-3xl mx-auto sm:px-6 md:max-w-7xl md:px-8 md:flex md:gap-8 md:max-h-screen'>
       {children}
@@ -17,7 +17,7 @@ const Layout: LayoutComponent = ({ children }) => (
 );
 
 /** Left sidebar container in the UI. */
-const Sidebar: React.FC = ({ children }) => (
+const Sidebar: React.FC = ({ children }: { children: ReactNode }) => (
   <div className='hidden lg:block lg:col-span-3 md:min-w-[300px] md:max-w-[300px]'>
     {children}
   </div>
@@ -31,7 +31,7 @@ const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, classN
 );
 
 /** Right sidebar container in the UI. */
-const Aside: React.FC<{ className?: string }> = ({ children, className }) => (
+const Aside: React.FC<{ className?: string, children: ReactNode }> = ({ children, className }) => (
   <aside className={`hidden lg:block lg:col-span-3 md:min-w-[200px] md:max-w-[200px] ${className || ''}`}>
     {children}
   </aside>

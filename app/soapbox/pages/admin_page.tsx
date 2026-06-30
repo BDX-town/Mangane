@@ -11,7 +11,7 @@ import LinkFooter from '../features/ui/components/link_footer';
 const AdminPage: React.FC = ({ children }) => {
   return (
     <>
-      <Layout.Main className='animate-fadein'>
+      <Layout.Main className='animate-fadein py-4'>
         {children}
       </Layout.Main>
 

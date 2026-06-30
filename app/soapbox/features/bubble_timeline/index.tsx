@@ -52,7 +52,7 @@ const BubbleTimeline = () => {
   return (
     <>
       <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
-        <div className='px-4 py-4 flex justify-between items-center'>
+        <div className='px-4 pb-4 flex justify-between items-center'>
           <SubNavigation className='!mb-0' message={intl.formatMessage(messages.title)} />
           <IconButton
             src={!showSettings ? require('@tabler/icons/chevron-down.svg') : require('@tabler/icons/chevron-up.svg')}
