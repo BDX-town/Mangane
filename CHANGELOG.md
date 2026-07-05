@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.21.6 (2026-07-05)
+
+
+### Bug Fixes
+
+* better ux from waiting for approval follow button for verbose la… ([#459](https://github.com/BDX-town/Mangane/issues/459)) ([131a103](https://github.com/BDX-town/Mangane/commit/131a103913e7de8b0e5488fff7a7e7a95c4f110e))
+
 ## 1.21.5 (2026-04-26)
 
 ## 1.21.4 (2026-04-26)
