@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.21.8 (2026-07-05)
+
+
+### Bug Fixes
+
+* resolve flash on android ([e92a1e5](https://github.com/BDX-town/Mangane/commit/e92a1e5bce5381d2add6af01891b9cc060744187))
+
 ## 1.21.7 (2026-07-05)
 
 
