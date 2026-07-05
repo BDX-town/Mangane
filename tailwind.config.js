@@ -49,12 +49,18 @@ module.exports = {
         'sea-blue': true,
       }),
       animation: {
+        'fadein': 'fadein 0.5s ease-in-out',
         'sonar-scale-4': 'sonar-scale-4 3s linear infinite',
         'sonar-scale-3': 'sonar-scale-3 3s 0.5s linear infinite',
         'sonar-scale-2': 'sonar-scale-2 3s 1s linear infinite',
         'sonar-scale-1': 'sonar-scale-1 3s 1.5s linear infinite',
       },
       keyframes: {
+        'fadein': {
+          "0%": { opacity: 0 },
+          "25%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
         'sonar-scale-4': {
           from: { opacity: '0.4' },
           to: { opacity: 0, transform: 'scale(4)' },

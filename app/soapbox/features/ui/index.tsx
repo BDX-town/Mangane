@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo, ReactNode } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -32,7 +32,6 @@ import DefaultPage from 'soapbox/pages/default_page';
 // import GroupPage from 'soapbox/pages/group_page';
 import HomePage from 'soapbox/pages/home_page';
 import ProfilePage from 'soapbox/pages/profile_page';
-import StatusPage from 'soapbox/pages/status_page';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { ConfigDB } from 'soapbox/utils/config_db';
 import { isStandalone } from 'soapbox/utils/state';
@@ -118,6 +117,7 @@ import { WrappedRoute } from './util/react_router_helpers';
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
 import 'soapbox/components/status';
+import StatusPage from 'soapbox/pages/status_page';
 
 const EmptyPage = HomePage;
 
@@ -155,7 +155,7 @@ const keyMap = {
   openMedia: 'a',
 };
 
-const SwitchingColumnsArea: React.FC = ({ children }) => {
+const SwitchingColumnsArea: React.FC = ({ children }: { children: ReactNode }) => {
   const features = useFeatures();
   const { search } = useLocation();
 
@@ -181,10 +181,10 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
         NOTE: we cannot nest routes in a fragment
         https://stackoverflow.com/a/68637108
       */}
-      {features.federating && <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} publicRoute />}
-      {features.federating && <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />}
-      {features.federating && features.bubbleTimeline && <WrappedRoute path='/timeline/bubble' exact page={HomePage} component={BubbleTimeline} content={children} publicRoute />}
-      {features.federating && <WrappedRoute path='/timeline/:instance' exact page={HomePage} component={RemoteTimeline} content={children} />}
+      {features.federating && <WrappedRoute path='/timeline/local' exact page={DefaultPage} component={CommunityTimeline} content={children} publicRoute />}
+      {features.federating && <WrappedRoute path='/timeline/fediverse' exact page={DefaultPage} component={PublicTimeline} content={children} publicRoute />}
+      {features.federating && features.bubbleTimeline && <WrappedRoute path='/timeline/bubble' exact page={DefaultPage} component={BubbleTimeline} content={children} publicRoute />}
+      {features.federating && <WrappedRoute path='/timeline/:instance' exact page={DefaultPage} component={RemoteTimeline} content={children} />}
 
       {features.conversations && <WrappedRoute path='/conversations' page={DefaultPage} component={Conversations} content={children} />}
 
@@ -240,7 +240,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/tag/:id' publicRoute page={DefaultPage} component={HashtagTimeline} content={children} />
 
       {features.lists && <WrappedRoute path='/lists' page={DefaultPage} component={Lists} content={children} />}
-      {features.lists && <WrappedRoute path='/list/:id' page={HomePage} component={ListTimeline} content={children} />}
+      {features.lists && <WrappedRoute path='/list/:id' page={DefaultPage} component={ListTimeline} content={children} />}
       {features.bookmarks && <WrappedRoute path='/bookmarks' page={DefaultPage} component={Bookmarks} content={children} />}
 
       <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
@@ -314,7 +314,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
   );
 };
 
-const UI: React.FC = ({ children }) => {
+const UI: React.FC = ({ children }: { children: ReactNode}) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useDispatch();

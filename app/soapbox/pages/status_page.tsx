@@ -21,11 +21,11 @@ const StatusPage: React.FC<IStatusPage> = ({ children }) => {
 
   return (
     <>
-      <Layout.Main>
+      <Layout.Main className='animate-fadeIn sm:pt-4'>
         {children}
       </Layout.Main>
 
-      <Layout.Aside>
+      <Layout.Aside className='animate-fadeIn'>
         {!me && (
           <BundleContainer fetchComponent={SignUpPanel}>
             {Component => <Component key='sign-up-panel' />}
