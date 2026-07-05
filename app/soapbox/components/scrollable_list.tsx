@@ -167,7 +167,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
 
   const handleScroll = useCallback(() => {
     // HACK: Virtuoso has no better way to get this...
-    const node = document.querySelector(`[data-virtuoso-scroller] [data-item-index="${topIndex.current}"]:nth-of-type(2)`);
+    const node = document.querySelector(`[data-virtuoso-scroller] [data-item-index="${topIndex.current}"]`);
     if (node) {
       topOffset.current = node.getBoundingClientRect().top * -1;
     } else {
