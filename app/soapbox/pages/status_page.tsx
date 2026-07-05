@@ -41,6 +41,7 @@ const StatusPage: React.FC<IStatusPage> = ({ children }) => {
             {Component => <Component limit={5} key='wtf-panel' />}
           </BundleContainer>
         )}
+        <div className='grow' />
         <LinkFooter key='link-footer' />
       </Layout.Aside>
     </>
