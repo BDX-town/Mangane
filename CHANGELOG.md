@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.21.7 (2026-07-05)
+
+
+### Bug Fixes
+
+* rework layout to reduce clunkyness ([#460](https://github.com/BDX-town/Mangane/issues/460)) ([9c7105d](https://github.com/BDX-town/Mangane/commit/9c7105df31f989015cf11c11923f44302a0e3325))
+
 ## 1.21.6 (2026-07-05)
 
 
