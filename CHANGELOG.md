@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.21.10 (2026-07-05)
+
+
+### Bug Fixes
+
+* add spanner on status page too ([0b0149d](https://github.com/BDX-town/Mangane/commit/0b0149ddb9d85c6802e54d5e0e1a27f18bbbd72c))
+
 ## 1.21.9 (2026-07-05)
 
 ## 1.21.8 (2026-07-05)
