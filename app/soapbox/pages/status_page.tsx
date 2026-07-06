@@ -21,7 +21,7 @@ const StatusPage: React.FC<IStatusPage> = ({ children }) => {
 
   return (
     <>
-      <Layout.Main className='animate-fadeIn sm:pt-4'>
+      <Layout.Main className='animate-fadeIn pb-[110px] sm:pt-4 lg:pb-0'>
         {children}
       </Layout.Main>
 

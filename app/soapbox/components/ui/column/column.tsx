@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Helmet from 'soapbox/components/helmet';
@@ -18,7 +18,8 @@ export interface IColumn {
   /** Extra class name for top <div> element. */
   className?: string,
   /** Ref forwarded to column. */
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>,
+  children: ReactNode,
 }
 
 /** A backdrop for the main section of the UI. */

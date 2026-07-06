@@ -6,7 +6,6 @@ import {
   WhoToFollowPanel,
   TrendsPanel,
   SignUpPanel,
-  CtaBanner,
   PromoPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
@@ -19,7 +18,7 @@ const DefaultPage: React.FC = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
-      <Layout.Main className='animate-fadein py-4'>
+      <Layout.Main className='animate-fadein pb-[110px] sm:pt-4 lg:pb-0'>
         {children}
       </Layout.Main>
 

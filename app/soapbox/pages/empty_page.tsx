@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Layout } from '../components/ui';
 
-const EmptyPage: React.FC = ({ children }) => {
+const EmptyPage: React.FC = ({ children }: { children: ReactNode}) => {
   return (
     <>
-      <Layout.Main>
+      <Layout.Main className='animate-fadein pb-[110px] sm:pt-4 lg:pb-0'>
         {children}
       </Layout.Main>
 
-      <Layout.Aside />
+      <Layout.Aside> </Layout.Aside>
     </>
   );
 };
