@@ -584,7 +584,7 @@ const UI: React.FC = ({ children }: { children: ReactNode}) => {
 
   const shouldHideFAB = useMemo(() => {
     const path = location.pathname;
-    return Boolean(path.match(/^\/statuses|^\/compose|^\/posts\/|^\/search|^\/getting-started|^\/chats/));
+    return Boolean(path.match(/\/statuses|\/compose|\/posts\/|\/search|\/getting-started/));
   }, [location.pathname]);
 
   // Wait for login to succeed or fail
