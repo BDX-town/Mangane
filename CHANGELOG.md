@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.21.12 (2026-07-08)
+
+
+### Bug Fixes
+
+* rules to hide fab ([6ba13a9](https://github.com/BDX-town/Mangane/commit/6ba13a90d4d35afd9d9050305a04e75b65a0ff7e))
+
 ## 1.21.11 (2026-07-06)
 
 
