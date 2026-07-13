@@ -1,7 +1,7 @@
 import debounce from 'lodash/debounce';
-import React, { useEffect, useRef, useMemo, useCallback, useState, MouseEventHandler } from 'react';
+import React, { useEffect, useRef, useMemo, useCallback, useState, MouseEventHandler, useLayoutEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle, ListRange, IndexLocationWithAlign } from 'react-virtuoso';
+import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle, ListRange, IndexLocationWithAlign, ListItem } from 'react-virtuoso';
 
 import { useSettings } from 'soapbox/hooks';
 
@@ -125,28 +125,13 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   }, []);
 
   // Preserve scroll position
-  const scrollDataKey = useMemo(() => `soapbox:scrollData:${scrollKey}`, [scrollKey]);
+  const scrollDataKey = useMemo(() => scrollKey ? `soapbox:scrollData:${scrollKey}` : undefined, [scrollKey]);
   const scrollData: SavedScrollPosition | null = useMemo(() => JSON.parse(sessionStorage.getItem(scrollDataKey)!), [scrollDataKey]);
-  const topIndex = useRef<number>(scrollData ? scrollData.index : 0);
-  const topOffset = useRef<number>(scrollData ? scrollData.offset : 0);
+  const [ready, setReady] = useState(!scrollData);
 
   const showPlaceholder = useMemo(() => showLoading && Placeholder && placeholderCount > 0, [Placeholder, placeholderCount, showLoading]);
 
-  const hasRestoredScrollRef = useRef(false);
-  const [ready, setReady] = useState(hasRestoredScrollRef.current || scrollData ? false : true);
 
-
-  const handleItemsRendered = useMemo(() => {
-    if (!scrollData) return undefined;
-    return debounce((_items: Array<{ index: number }>) => {
-      if (hasRestoredScrollRef.current) return;
-      setReady(true);
-      hasRestoredScrollRef.current = true;
-      (scrollParent || window).scrollBy(0, scrollData.offset);
-    }, 200);
-  }, [scrollData, scrollParent]);
-
-  useEffect(() => () => { handleItemsRendered?.cancel(); }, [handleItemsRendered]);
 
   const data = useMemo(() => {
     /** Normalized children. */
@@ -165,29 +150,6 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   }, [Placeholder, autoloadMore, children, hasMore, isLoading, placeholderCount, showPlaceholder]);
 
 
-  const handleScroll = useCallback(() => {
-    // HACK: Virtuoso has no better way to get this...
-    const node = document.querySelector(`[data-virtuoso-scroller] [data-item-index="${topIndex.current}"]`);
-    if (node) {
-      topOffset.current = node.getBoundingClientRect().top * -1;
-    } else {
-      topOffset.current = 0;
-    }
-  }, []);
-
-  useEffect(() => {
-    const scrollTarget: EventTarget = scrollParent ?? document;
-    scrollTarget.addEventListener('scroll', handleScroll);
-    sessionStorage.removeItem(scrollDataKey);
-
-    return () => {
-      if (scrollKey) {
-        const data: SavedScrollPosition = { index: topIndex.current, offset: topOffset.current };
-        sessionStorage.setItem(scrollDataKey, JSON.stringify(data));
-      }
-      scrollTarget.removeEventListener('scroll', handleScroll);
-    };
-  }, [handleScroll, scrollDataKey, scrollKey, scrollParent]);
 
   /* Render an empty state instead of the scrollable list. */
   const renderEmpty = (): JSX.Element => {
@@ -229,18 +191,44 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
     }
   };
 
-  const handleRangeChange = useCallback((range: ListRange) => {
-    // HACK: using the first index can be buggy.
-    // Track the second item instead, unless the endIndex comes before it (eg one 1 item in view).
-    topIndex.current = Math.min(range.startIndex + 1, range.endIndex);
-    handleScroll();
-  }, [handleScroll]);
+  const firstVisibleItem = useRef<{index: number, offset: number} | undefined>(undefined)
+  const stabilizedTimer = useRef(null);
+  const handleItemsRendered = useCallback((items: ListItem<any>[]) => {
+    if(items.length == 0) {
+      firstVisibleItem.current = undefined
+      return;
+    };
+    firstVisibleItem.current = ({ 
+      index: items[0].index,
+      offset: items[0].offset
+    });
+    if(!ready && scrollDataKey && scrollData) {
+      clearTimeout(stabilizedTimer.current);
+      stabilizedTimer.current = setTimeout(() => {
+        const scrollTarget = scrollParent || document.documentElement
+        scrollTarget.scrollBy(0, scrollData.offset);
+        setReady(true)
+      }, 200)
+    }
+  }, [ready, scrollParent, scrollData, scrollDataKey])
+
+  useLayoutEffect(() => {
+    return () => {
+      clearTimeout(stabilizedTimer.current);
+      if(!firstVisibleItem.current || !scrollDataKey) return;
+      const scrollTarget = scrollParent || document.documentElement
+      const data: SavedScrollPosition = { 
+        ...firstVisibleItem.current,
+        offset: scrollTarget.scrollTop - firstVisibleItem.current.offset
+      };
+      sessionStorage.setItem(scrollDataKey, JSON.stringify(data));
+    }
+  }, [scrollParent, scrollDataKey])
 
   /** Figure out the initial index to scroll to. */
   const initialIndex = useMemo<number | IndexLocationWithAlign>(() => {
     if (showLoading) return 0;
     if (initialTopMostItemIndex) return initialTopMostItemIndex;
-
     if (scrollData && history.action === 'POP') {
       return {
         align: 'start',
@@ -265,7 +253,6 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
         isScrolling={isScrolling => isScrolling && onScroll && onScroll()}
         itemContent={renderItem}
         initialTopMostItemIndex={initialIndex}
-        rangeChanged={handleRangeChange}
         itemsRendered={handleItemsRendered}
         style={style}
         context={{
