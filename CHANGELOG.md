@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.22.0 (2026-07-14)
+
+
+### Features
+
+* better thread loading ([#463](https://github.com/BDX-town/Mangane/issues/463)) ([ce80c56](https://github.com/BDX-town/Mangane/commit/ce80c56f1dac0bec8f8065694585668615685e65))
+
 ## 1.21.13 (2026-07-14)
 
 
