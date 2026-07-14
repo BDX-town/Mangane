@@ -450,10 +450,11 @@ const Thread: React.FC<IThread> = (props) => {
       fetchDataRef.current = time;
       const { next } = await dispatch(fetchStatusWithContext(props.params.statusId));
       if (time < fetchDataRef.current) return; // this is not the last call, we stop there
-      setReady(true);
       setNext(next);
     } catch (e) {
       console.error(e);
+    } finally {
+      setReady(true);
     }
   }, [dispatch, props.params.statusId]);
 
