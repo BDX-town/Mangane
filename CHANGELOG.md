@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.22.1 (2026-07-14)
+
+
+### Bug Fixes
+
+* status page link footer position ([96b5f3d](https://github.com/BDX-town/Mangane/commit/96b5f3d12cfb6a91284526d19adb6f263906a8bc))
+
 ## 1.22.0 (2026-07-14)
 
 
