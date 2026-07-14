@@ -25,7 +25,7 @@ const StatusPage: React.FC<IStatusPage> = ({ children }) => {
         {children}
       </Layout.Main>
 
-      <Layout.Aside className='animate-fadeIn'>
+      <Layout.Aside className='animate-fadeIn py-4 lg:flex flex-col'>
         {!me && (
           <BundleContainer fetchComponent={SignUpPanel}>
             {Component => <Component key='sign-up-panel' />}
