@@ -161,39 +161,18 @@ const Thread: React.FC<IThread> = (props) => {
     }
 
     return {
-      status: actualStatus,
       ancestorsIds,
       descendantsIds,
     };
   });
 
   const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(actualStatus, displayMedia));
-  const [isLoaded, setIsLoaded] = useState<boolean>(!!actualStatus);
+  // fonction to load more context
   const [next, setNext] = useState<string>();
 
   const node = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
   const scroller = useRef<VirtuosoHandle>(null);
-
-  /** Fetch the status (and context) from the API. */
-  const fetchDataRef = useRef(null);
-  const fetchData = useCallback(async() => {
-    try {
-      const time = new Date().getTime();
-      fetchDataRef.current = time;
-      const { next } = await dispatch(fetchStatusWithContext(props.params.statusId));
-      if (time < fetchDataRef.current) return; // this is not the last call, we stop there
-      setNext(next);
-    } catch (e) {
-      console.error(e);
-    }
-    setIsLoaded(true);
-  }, [dispatch, props.params.statusId]);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchData();
-  }, [fetchData, props.params.statusId]);
 
   const handleToggleMediaVisibility = useCallback(() => {
     setShowMedia(!showMedia);
@@ -356,6 +335,50 @@ const Thread: React.FC<IThread> = (props) => {
   }, [handleMoveDown, actualStatus]);
 
 
+  const handleOpenCompareHistoryModal = useCallback((status: StatusEntity) => {
+    dispatch(openModal('COMPARE_HISTORY', {
+      statusId: status.id,
+    }));
+  }, [dispatch]);
+
+
+  const handlers: HotkeyHandlers = useMemo(() => ({
+    moveUp: handleHotkeyMoveUp,
+    moveDown: handleHotkeyMoveDown,
+    favourite: handleHotkeyFavourite,
+    boost: handleHotkeyBoost,
+    mention: handleHotkeyMention,
+    openProfile: handleHotkeyOpenProfile,
+    toggleHidden: handleHotkeyToggleHidden,
+    toggleSensitive: handleHotkeyToggleSensitive,
+    openMedia: handleHotkeyOpenMedia,
+    react: handleHotkeyReact,
+  }), [handleHotkeyBoost, handleHotkeyFavourite, handleHotkeyMention, handleHotkeyMoveDown, handleHotkeyMoveUp, handleHotkeyOpenMedia, handleHotkeyOpenProfile, handleHotkeyReact, handleHotkeyToggleHidden, handleHotkeyToggleSensitive]);
+
+  const username = String(actualStatus?.getIn(['account', 'acct']) || '');
+  const titleMessage = actualStatus?.visibility === 'direct' ? messages.titleDirect : messages.title;
+
+  const composingReplyTo = useRef(null);
+  useEffect(() => {
+    if (!actualStatus || !me || composingReplyTo.current === actualStatus.id) return undefined;
+    dispatch(replyCompose(actualStatus));
+    composingReplyTo.current = actualStatus.id;
+  }, [actualStatus, dispatch, me]);
+
+  const handleComposeSubmit = useCallback((_router, _group) => {
+    dispatch(submitCompose(false, (data) => {
+      const url = new URL(data.url);
+      history.push(url.pathname);
+    }));
+  }, [dispatch, history]);
+
+  const onDeleteStatus = useCallback(() => {
+    if (actualStatus?.in_reply_to_id) {
+      history.push(`/notice/${actualStatus.in_reply_to_id}`);
+    } else {
+      history.push('/');
+    }
+  }, [actualStatus, history]);
 
   const renderTombstone = useCallback((id: string) => {
     return (
@@ -406,27 +429,44 @@ const Thread: React.FC<IThread> = (props) => {
     });
   }, [renderPendingStatus, renderStatus, renderTombstone]);
 
+
+
   // Reset media visibility if status changes.
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    // setShowMedia(defaultMediaVisibility(status, displayMedia));
-  }, [displayMedia, actualStatus, actualStatus?.id]);
+    setShowMedia(defaultMediaVisibility(status, displayMedia));
+  }, [displayMedia, status]);
 
-  // Scroll focused status into view when thread updates.
+
+  // =============== DATA LOADING ============================================================
+
+  const [ready, setReady] = useState(false);
+
+  /** Fetch the status (and context) from the API. */
+  const fetchDataRef = useRef(null);
+  const fetchData = useCallback(async () => {
+    try {
+      const time = new Date().getTime();
+      fetchDataRef.current = time;
+      const { next } = await dispatch(fetchStatusWithContext(props.params.statusId));
+      if (time < fetchDataRef.current) return; // this is not the last call, we stop there
+      setReady(true);
+      setNext(next);
+    } catch (e) {
+      console.error(e);
+    }
+  }, [dispatch, props.params.statusId]);
+
   useEffect(() => {
-    scroller.current?.scrollToIndex({
-      index: ancestorsIds.size,
-      offset: -80,
-    });
-
-    setImmediate(() => statusRef.current?.querySelector<HTMLDivElement>('.detailed-status')?.focus());
-  }, [props.params.statusId, actualStatus?.id, ancestorsIds.size, isLoaded]);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchData();
+  }, [fetchData]);
 
   const handleRefresh = useCallback(() => {
     return fetchData();
   }, [fetchData]);
 
-  const handleLoadMore = useCallback(async() => {
+  const handleLoadMore = useCallback(async () => {
     if (!next || !actualStatus) return;
     try {
       const { next: _next } = await dispatch(fetchNext(actualStatus.id, next));
@@ -438,115 +478,81 @@ const Thread: React.FC<IThread> = (props) => {
 
   const handleLoadMoreDebounced = useMemo(() => debounce(handleLoadMore, 300, { leading: true }), [handleLoadMore]);
 
-  const handleOpenCompareHistoryModal = useCallback((status: StatusEntity) => {
-    dispatch(openModal('COMPARE_HISTORY', {
-      statusId: status.id,
-    }));
-  }, [dispatch]);
-
-  const hasAncestors = ancestorsIds.size > 0;
-  const hasDescendants = descendantsIds.size > 0;
-
-
-  const handlers: HotkeyHandlers = useMemo(() => ({
-    moveUp: handleHotkeyMoveUp,
-    moveDown: handleHotkeyMoveDown,
-    favourite: handleHotkeyFavourite,
-    boost: handleHotkeyBoost,
-    mention: handleHotkeyMention,
-    openProfile: handleHotkeyOpenProfile,
-    toggleHidden: handleHotkeyToggleHidden,
-    toggleSensitive: handleHotkeyToggleSensitive,
-    openMedia: handleHotkeyOpenMedia,
-    react: handleHotkeyReact,
-  }), [handleHotkeyBoost, handleHotkeyFavourite, handleHotkeyMention, handleHotkeyMoveDown, handleHotkeyMoveUp, handleHotkeyOpenMedia, handleHotkeyOpenProfile, handleHotkeyReact, handleHotkeyToggleHidden, handleHotkeyToggleSensitive]);
-
-  const username = String(actualStatus?.getIn(['account', 'acct']) || '');
-  const titleMessage = actualStatus?.visibility === 'direct' ? messages.titleDirect : messages.title;
-
-  const composingReplyTo = useRef(null);
   useEffect(() => {
-    if (!actualStatus || !me || composingReplyTo.current === actualStatus.id) return undefined;
-    dispatch(replyCompose(actualStatus));
-    composingReplyTo.current = actualStatus.id;
-  }, [actualStatus, dispatch, me]);
-
-  const handleComposeSubmit = useCallback((_router, _group) => {
-    dispatch(submitCompose(false, (data) => {
-      const url = new URL(data.url);
-      history.push(url.pathname);
-    }));
-  }, [dispatch, history]);
-
-  const onDeleteStatus = useCallback(() => {
-    if (actualStatus?.in_reply_to_id) {
-      history.push(`/notice/${actualStatus.in_reply_to_id}`);
-    } else {
-      history.push('/');
+    if (ready && ancestorsIds.size > 0) {
+      scroller.current.scrollIntoView({ index: ancestorsIds.size, align: 'center' });
     }
-  }, [actualStatus, history]);
+  }, [ancestorsIds.size, ready]);
 
-  const focusedStatus = useMemo(() => !actualStatus ? null : (
-    <>
-      <div className={classNames('thread__detailed-status')} key={actualStatus.id}>
-        <HotKeys handlers={handlers}>
-          <div
-            ref={statusRef}
-            className='detailed-status__wrapper focusable'
-            tabIndex={0}
-            // FIXME: no "reblogged by" text is added for the screen reader
-            aria-label={textForScreenReader(intl, actualStatus)}
-          >
-            <DetailedStatus
-              status={actualStatus}
-              onOpenVideo={handleOpenVideo}
-              onOpenMedia={handleOpenMedia}
-              onToggleHidden={handleToggleHidden}
-              showMedia={showMedia}
-              onToggleMediaVisibility={handleToggleMediaVisibility}
-              onOpenCompareHistoryModal={handleOpenCompareHistoryModal}
-              onTranslate={handleTranslate}
-            />
-            <StatusActionBar
-              status={actualStatus}
-              onDelete={onDeleteStatus}
-            />
-          </div>
-        </HotKeys>
-      </div>
-      {
-        me && <>
-          <hr className='my-5 border-gray-200 dark:border-gray-700' />
-          <div className='py-4'>
-            <ComposeFormContainer autoFocus={false} onSubmit={handleComposeSubmit} />
-          </div>
-        </>
-      }
-
-    </>
-  ), [actualStatus, handlers, intl, handleOpenVideo, handleOpenMedia, handleToggleHidden, showMedia, handleToggleMediaVisibility, handleOpenCompareHistoryModal, handleTranslate, me, handleComposeSubmit]);
-
-
-  const children = useMemo(() => {
-    const childs: JSX.Element[] = [];
-    if (hasAncestors) {
-      childs.push(...renderChildren(ancestorsIds).toArray());
+  const renderAncestors = useCallback(() => {
+    // if we have the context, let's show it
+    if (ready && ancestorsIds.size > 0) {
+      return renderChildren(ancestorsIds).toArray();
     }
-    childs.push(focusedStatus);
-    if (hasDescendants) {
-      childs.push(...renderChildren(descendantsIds).toArray());
+    // context is not fully loaded and either we dont have actual status yet or it is a reply
+    if (!actualStatus || actualStatus.in_reply_to_id) return [<PlaceholderStatus />];
+    return [];
+  }, [ready, ancestorsIds, actualStatus, renderChildren]);
+
+  const renderDescendants = useCallback(() => {
+    // if we have the context, let's show it
+    if (ready) {
+      if (descendantsIds.size > 0) return renderChildren(descendantsIds).toArray();
+      return [];
     }
-    return childs;
-  }, [ancestorsIds, descendantsIds, focusedStatus, hasAncestors, hasDescendants, renderChildren]);
+    // context is not fully loaded and either we dont have actual status
+    if (!actualStatus) return [<PlaceholderStatus />];
+    // or it has replies
+    return new Array(actualStatus.replies_count).fill(undefined).map(() => <PlaceholderStatus />);
+  }, [ready, actualStatus, renderChildren, descendantsIds]);
 
+  const renderActualStatus = useCallback(() => {
+    // we dont have actual status yet
+    if (!actualStatus) return [<PlaceholderStatus />];
+    return [(
+      <>
+        <div className={classNames('thread__detailed-status')} key={actualStatus.id}>
+          <HotKeys handlers={handlers}>
+            <div
+              ref={statusRef}
+              className='detailed-status__wrapper focusable'
+              tabIndex={0}
+              // FIXME: no "reblogged by" text is added for the screen reader
+              aria-label={textForScreenReader(intl, actualStatus)}
+            >
+              <DetailedStatus
+                status={actualStatus}
+                onOpenVideo={handleOpenVideo}
+                onOpenMedia={handleOpenMedia}
+                onToggleHidden={handleToggleHidden}
+                showMedia={showMedia}
+                onToggleMediaVisibility={handleToggleMediaVisibility}
+                onOpenCompareHistoryModal={handleOpenCompareHistoryModal}
+                onTranslate={handleTranslate}
+              />
+              <StatusActionBar
+                status={actualStatus}
+                onDelete={onDeleteStatus}
+              />
+            </div>
+          </HotKeys>
+        </div>
+        {
+          me && <>
+            <hr className='my-5 border-gray-200 dark:border-gray-700' />
+            <div className='py-4'>
+              <ComposeFormContainer autoFocus={false} onSubmit={handleComposeSubmit} />
+            </div>
+          </>
+        }
+      </>
+    )];
+  }, [actualStatus, handleComposeSubmit, handleOpenCompareHistoryModal, handleOpenMedia, handleOpenVideo, handleToggleHidden, handleToggleMediaVisibility, handleTranslate, handlers, intl, me, onDeleteStatus, showMedia]);
 
-  if (!actualStatus && isLoaded) {
+  if (!actualStatus && ready) {
+    // this need to be kept separate from children as it carries its own column
     return (
       <MissingIndicator />
-    );
-  } else if (!actualStatus) {
-    return (
-      <PlaceholderStatus />
     );
   }
 
@@ -568,7 +574,9 @@ const Thread: React.FC<IThread> = (props) => {
               placeholderComponent={() => <PlaceholderStatus />}
               initialTopMostItemIndex={ancestorsIds.size}
             >
-              {children}
+              {
+                [...renderAncestors(), ...renderActualStatus(), ...renderDescendants()]
+              }
             </ScrollableList>
           </div>
 
