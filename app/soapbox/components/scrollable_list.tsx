@@ -1,7 +1,7 @@
-import debounce from 'lodash/debounce';
-import React, { useEffect, useRef, useMemo, useCallback, useState, MouseEventHandler, useLayoutEffect } from 'react';
+import { debounce } from 'lodash';
+import React, { useRef, useMemo, useCallback, useState, useLayoutEffect, useImperativeHandle, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle, ListRange, IndexLocationWithAlign, ListItem } from 'react-virtuoso';
+import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle, IndexLocationWithAlign, ListItem } from 'react-virtuoso';
 
 import { useSettings } from 'soapbox/hooks';
 
@@ -18,6 +18,7 @@ type Context = {
 type SavedScrollPosition = {
   index: number,
   offset: number,
+  scrollTop: number
 }
 
 /** Custom Virtuoso Item component representing a single scrollable item. */
@@ -88,7 +89,7 @@ function findNearestScrollableParent(el: HTMLElement): HTMLElement | undefined {
       return el;
     }
   }
-  return undefined
+  return undefined;
 }
 
 /** Legacy ScrollableList with Virtuoso for backwards-compatibility. */
@@ -114,6 +115,9 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   style = {},
   useWindowScroll = true,
 }, ref) => {
+  const virtuoso = useRef<VirtuosoHandle>(null);
+
+  useImperativeHandle(ref, () => virtuoso.current);
   const history = useHistory();
   const settings = useSettings();
   const autoloadMore = settings.get('autoloadMore');
@@ -191,59 +195,59 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
     }
   };
 
-  const firstVisibleItem = useRef<{index: number, offset: number} | undefined>(undefined)
-  const stabilizedTimer = useRef(null);
-  const handleItemsRendered = useCallback((items: ListItem<any>[]) => {
-    if(items.length == 0) {
-      firstVisibleItem.current = undefined
-      return;
-    };
-    firstVisibleItem.current = ({ 
-      index: items[0].index,
-      offset: items[0].offset
-    });
-    if(!ready && scrollDataKey && scrollData) {
-      clearTimeout(stabilizedTimer.current);
-      stabilizedTimer.current = setTimeout(() => {
-        const scrollTarget = scrollParent || document.documentElement
-        scrollTarget.scrollBy(0, scrollData.offset);
-        setReady(true)
-      }, 200)
-    }
-  }, [ready, scrollParent, scrollData, scrollDataKey])
+  const firstVisibleItem = useRef<{index: number, offset: number, size: number } | undefined>(undefined);
 
   useLayoutEffect(() => {
+    if (!scrollDataKey) return undefined;
     return () => {
-      clearTimeout(stabilizedTimer.current);
-      if(!firstVisibleItem.current || !scrollDataKey) return;
-      const scrollTarget = scrollParent || document.documentElement
-      const data: SavedScrollPosition = { 
-        ...firstVisibleItem.current,
-        offset: scrollTarget.scrollTop - firstVisibleItem.current.offset
-      };
-      sessionStorage.setItem(scrollDataKey, JSON.stringify(data));
+      sessionStorage.setItem(scrollDataKey, JSON.stringify({ ...firstVisibleItem.current, scrollTop: (scrollParent || document.documentElement).scrollTop }));
+    };
+  }, [scrollParent, scrollDataKey]);
+
+  const mayRestoreScroll = useCallback((firstItem: { offset: number }) => {
+    if (scrollData && !ready && history.action === 'POP') {
+      // restoring offset is rather tricky as virtuoso offset arent always coherent between render.
+      // To ensure good restoration we keep the old firstVisibleItem offset and the last scrollTop, then uppon restore we scroll to the last scrollTop minus the difference between the
+      // stored firstVisibleItem and the current one
+      const diff = scrollData.offset - firstItem.offset;
+      const currentScrollTop = (scrollParent || document.documentElement).scrollTop;
+      virtuoso.current.scrollBy({ top: scrollData.scrollTop - diff - currentScrollTop });
     }
-  }, [scrollParent, scrollDataKey])
+    setReady(true);
+  }, [history.action, ready, scrollData, scrollParent]);
+
+  // eslint-disable-next-line react-hooks/refs
+  const mayRestoreScrollDebounced = useMemo(() => debounce(mayRestoreScroll, 200), [mayRestoreScroll]);
+  useEffect(() => () => mayRestoreScrollDebounced?.cancel(), [mayRestoreScrollDebounced]);
+
+  const handleItemsRendered = useCallback((items: ListItem<any>[]) => {
+    if (items.length === 0) {
+      firstVisibleItem.current = undefined;
+      return;
+    }
+    firstVisibleItem.current = {
+      index: items[0].index,
+      offset: items[0].offset,
+      size: items[0].size,
+    };
+    mayRestoreScrollDebounced(firstVisibleItem.current);
+  }, [mayRestoreScrollDebounced]);
 
   /** Figure out the initial index to scroll to. */
   const initialIndex = useMemo<number | IndexLocationWithAlign>(() => {
     if (showLoading) return 0;
     if (initialTopMostItemIndex) return initialTopMostItemIndex;
     if (scrollData && history.action === 'POP') {
-      return {
-        align: 'start',
-        index: scrollData.index,
-        offset: 0,
-      };
+      // offset is restored via other means
+      return scrollData.index;
     }
-
     return 0;
   }, [showLoading, initialTopMostItemIndex, scrollData, history.action]);
 
   return (
     <div ref={setScrollParent}>
       <Virtuoso
-        ref={ref}
+        ref={virtuoso}
         id={id}
         {...(scrollParent ? { customScrollParent: scrollParent } : { useWindowScroll })}
         className={`${className} transition-opacity ${ready ? 'opacity-100' : 'opacity-0'}`}
