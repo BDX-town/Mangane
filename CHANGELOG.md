@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.22.2 (2026-07-17)
+
+
+### Bug Fixes
+
+* better scroll restoration method ([057b045](https://github.com/BDX-town/Mangane/commit/057b04542ce624255b581b790bb0286257800551))
+
 ## 1.22.1 (2026-07-14)
 
 
