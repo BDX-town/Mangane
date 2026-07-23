@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { debounce } from 'lodash';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -47,7 +47,6 @@ import DetailedStatus from './components/detailed-status';
 import ThreadLoginCta from './components/thread-login-cta';
 import ThreadStatus from './components/thread-status';
 
-import type { VirtuosoHandle } from 'react-virtuoso';
 import type { RootState } from 'soapbox/store';
 import type {
   Account as AccountEntity,
@@ -172,7 +171,7 @@ const Thread: React.FC<IThread> = (props) => {
 
   const node = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
-  const scroller = useRef<VirtuosoHandle>(null);
+  const [scroller, setScroller] = useState<HTMLElement>(null);
 
   const handleToggleMediaVisibility = useCallback(() => {
     setShowMedia(!showMedia);
@@ -281,18 +280,8 @@ const Thread: React.FC<IThread> = (props) => {
   }, [dispatch]);
 
   const _selectChild = useCallback((index: number) => {
-    scroller.current?.scrollIntoView({
-      index,
-      behavior: 'smooth',
-      done: () => {
-        const element = document.querySelector<HTMLDivElement>(`#thread [data-index="${index}"] .focusable`);
-
-        if (element) {
-          element.focus();
-        }
-      },
-    });
-  }, []);
+    scroller?.children[index].scrollIntoView({ behavior: 'smooth' });
+  }, [scroller]);
 
   const handleMoveUp = useCallback((id: string) => {
     if (id === actualStatus?.id) {
@@ -444,7 +433,7 @@ const Thread: React.FC<IThread> = (props) => {
 
   /** Fetch the status (and context) from the API. */
   const fetchDataRef = useRef(null);
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async() => {
     try {
       const time = new Date().getTime();
       fetchDataRef.current = time;
@@ -467,7 +456,7 @@ const Thread: React.FC<IThread> = (props) => {
     return fetchData();
   }, [fetchData]);
 
-  const handleLoadMore = useCallback(async () => {
+  const handleLoadMore = useCallback(async() => {
     if (!next || !actualStatus) return;
     try {
       const { next: _next } = await dispatch(fetchNext(actualStatus.id, next));
@@ -478,12 +467,6 @@ const Thread: React.FC<IThread> = (props) => {
   }, [dispatch, next, actualStatus]);
 
   const handleLoadMoreDebounced = useMemo(() => debounce(handleLoadMore, 300, { leading: true }), [handleLoadMore]);
-
-  useEffect(() => {
-    if (ready && ancestorsIds.size > 0) {
-      scroller.current.scrollIntoView({ index: ancestorsIds.size, align: 'center' });
-    }
-  }, [ancestorsIds.size, ready]);
 
   const renderAncestors = useCallback(() => {
     // if we have the context, let's show it
@@ -507,12 +490,23 @@ const Thread: React.FC<IThread> = (props) => {
     return new Array(actualStatus.replies_count).fill(undefined).map(() => <PlaceholderStatus />);
   }, [ready, actualStatus, renderChildren, descendantsIds]);
 
+
+  const scrolled = useRef(false);
+  const scrollToActualStatus = useCallback((e: HTMLElement) => {
+    console.log('CMOI', scrolled.current, ready, ancestorsIds.size);
+    if (scrolled.current || !ready || ancestorsIds.size === 0) return;
+    console.log('CMOI');
+    e.scrollIntoView();
+    scrolled.current = true;
+
+  }, [ready, ancestorsIds]);
+
   const renderActualStatus = useCallback(() => {
     // we dont have actual status yet
     if (!actualStatus) return [<PlaceholderStatus />];
     return [(
       <>
-        <div className={classNames('thread__detailed-status')} key={actualStatus.id}>
+        <div className={classNames('thread__detailed-status')} key={actualStatus.id} ref={scrollToActualStatus}>
           <HotKeys handlers={handlers}>
             <div
               ref={statusRef}
@@ -548,7 +542,8 @@ const Thread: React.FC<IThread> = (props) => {
         }
       </>
     )];
-  }, [actualStatus, handleComposeSubmit, handleOpenCompareHistoryModal, handleOpenMedia, handleOpenVideo, handleToggleHidden, handleToggleMediaVisibility, handleTranslate, handlers, intl, me, onDeleteStatus, showMedia]);
+  }, [actualStatus, handleComposeSubmit, handleOpenCompareHistoryModal, handleOpenMedia, handleOpenVideo, handleToggleHidden, handleToggleMediaVisibility, handleTranslate, handlers, intl, me, onDeleteStatus, scrollToActualStatus, showMedia]);
+
 
   if (!actualStatus && ready) {
     // this need to be kept separate from children as it carries its own column
@@ -568,12 +563,10 @@ const Thread: React.FC<IThread> = (props) => {
         <Stack space={2}>
           <div ref={node} className='thread'>
             <ScrollableList
-              id='thread'
-              ref={scroller}
+              ref={setScroller}
               hasMore={!!next}
               onLoadMore={handleLoadMoreDebounced}
               placeholderComponent={() => <PlaceholderStatus />}
-              initialTopMostItemIndex={ancestorsIds.size}
             >
               {
                 [...renderAncestors(), ...renderActualStatus(), ...renderDescendants()]

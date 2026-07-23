@@ -51,6 +51,7 @@
     "@babel/preset-react": "^7.17.12",
     "@babel/preset-typescript": "^7.17.12",
     "@babel/runtime": "^7.18.3",
+    "@bdxtown/ruisseau": "../ruisseau",
     "@emoji-mart/data": "^1.1.1",
     "@emoji-mart/react": "^1.1.0",
     "@fontsource/inter": "^4.5.1",

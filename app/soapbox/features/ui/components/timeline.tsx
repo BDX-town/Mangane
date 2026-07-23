@@ -25,6 +25,7 @@ const getStatusIds = makeGetStatusIds();
 const Timeline: React.FC<ITimeline> = ({
   timelineId,
   onLoadMore,
+  children,
   ...rest
 }) => {
   const dispatch = useAppDispatch();
@@ -43,14 +44,6 @@ const Timeline: React.FC<ITimeline> = ({
     }
     dispatch(dequeueTimeline(timelineId, onLoadMore));
   }, [dispatch, isFilteringFeed, onLoadMore, timelineId]);
-
-  const handleScrollToTopDebounced = useMemo(() => {
-    return debounce(() => {
-      dispatch(scrollTopTimeline(timelineId, true));
-    }, 100);
-  }, [dispatch, timelineId]);
-
-  const handleScrollToTop = useCallback(() => handleScrollToTopDebounced(), [handleScrollToTopDebounced]);
 
   const handleScrollDebounced = useMemo(() => {
     return debounce(() => {
@@ -72,7 +65,6 @@ const Timeline: React.FC<ITimeline> = ({
       }
       <StatusList
         timelineId={timelineId}
-        onScrollToTop={handleScrollToTop}
         onScroll={handleScroll}
         lastStatusId={lastStatusId}
         statusIds={statusIds}
@@ -81,7 +73,9 @@ const Timeline: React.FC<ITimeline> = ({
         hasMore={hasMore}
         onLoadMore={onLoadMore}
         {...rest}
-      />
+      >
+        {children}
+      </StatusList>
     </>
   );
 };

@@ -10,7 +10,7 @@ interface LayoutComponent extends React.FC {
 /** Layout container, to hold Sidebar, Main, and Aside. */
 const Layout: LayoutComponent = ({ children }: { children: ReactNode }) => (
   <div className='relative'>
-    <div className='max-w-3xl mx-auto sm:px-6 md:max-w-7xl md:px-8 md:flex md:gap-8 md:max-h-screen'>
+    <div className='max-w-3xl mx-auto sm:px-6 md:max-w-7xl md:px-8 md:flex md:gap-8 max-h-screen overflow-y-auto'>
       {children}
     </div>
   </div>

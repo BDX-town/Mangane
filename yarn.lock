@@ -1554,6 +1554,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@bdxtown/ruisseau@file:../ruisseau::locator=mangane-fe%40workspace%3A.":
+  version: 0.0.0
+  resolution: "@bdxtown/ruisseau@file:../ruisseau#../ruisseau::hash=49fbce&locator=mangane-fe%40workspace%3A."
+  peerDependencies:
+    lodash: ^4.18.1
+    react: ^19.2.7
+    react-dom: ^19.2.7
+  checksum: f4ae64a2a316de2858489cae4aaa6dc95a3230a25c88b2376d1d2ce4ce190999a045693b1d3564d7362abf5657033d6a896748d38ac019876bb8ff5647da5453
+  languageName: node
+  linkType: hard
+
 "@commitlint/cli@npm:^19.5.0":
   version: 19.8.1
   resolution: "@commitlint/cli@npm:19.8.1"
@@ -13326,6 +13337,7 @@ __metadata:
     "@babel/preset-react": "npm:^7.17.12"
     "@babel/preset-typescript": "npm:^7.17.12"
     "@babel/runtime": "npm:^7.18.3"
+    "@bdxtown/ruisseau": ../ruisseau
     "@commitlint/cli": "npm:^19.5.0"
     "@commitlint/config-conventional": "npm:^19.5.0"
     "@emoji-mart/data": "npm:^1.1.1"

@@ -151,6 +151,9 @@ module.exports = {
       path: require.resolve('path-browserify'),
       util: require.resolve('util'),
       'process/browser': require.resolve('process/browser'),
+      'react/jsx-runtime': 'react/jsx-runtime.js',
+      'react/jsx-dev-runtime': 'react/jsx-dev-runtime.js',
+      'lodash/debounce': 'lodash/debounce.js',
     },
   },
 

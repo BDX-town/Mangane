@@ -107,17 +107,17 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
       </Layout.Main>
 
       <Layout.Aside className='animate-fadein py-4'>
-        {!me && (
-          <BundleContainer fetchComponent={SignUpPanel}>
-            {Component => <Component key='sign-up-panel' />}
-          </BundleContainer>
-        )}
         {account && !account.fields.isEmpty() && (
           <Widget title={<FormattedMessage id='profile_fields_panel.title' defaultMessage='Profile fields' />}>
             <BundleContainer fetchComponent={ProfileFieldsPanel}>
               {Component => <Component account={account} />}
             </BundleContainer>
           </Widget>
+        )}
+        {!me && (
+          <BundleContainer fetchComponent={SignUpPanel}>
+            {Component => <Component key='sign-up-panel' />}
+          </BundleContainer>
         )}
         {(features.accountEndorsements && account && isLocal(account) && me) ? (
           <BundleContainer fetchComponent={PinnedAccountsPanel}>
@@ -128,6 +128,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
             {Component => <Component limit={5} key='wtf-panel' />}
           </BundleContainer>
         )}
+        <div className='grow' />
         <LinkFooter key='link-footer' />
       </Layout.Aside>
     </>

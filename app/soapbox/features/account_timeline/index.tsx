@@ -47,25 +47,25 @@ const AccountTimeline: React.FC<IAccountTimeline> = ({ params, withReplies = fal
     dispatch(fetchAccountByUsername(params.username, history))
       .then(() => setAccountLoading(false))
       .catch(() => setAccountLoading(false));
-  }, [params.username]);
+  }, [dispatch, history, params.username]);
 
   useEffect(() => {
     if (account && !withReplies) {
       dispatch(expandAccountFeaturedTimeline(account.id));
     }
-  }, [account?.id, withReplies]);
+  }, [account, account?.id, dispatch, withReplies]);
 
   useEffect(() => {
     if (account && patronEnabled) {
       dispatch(fetchPatronAccount(account.url));
     }
-  }, [account?.url, patronEnabled]);
+  }, [account, account?.url, dispatch, patronEnabled]);
 
   useEffect(() => {
     if (account) {
       dispatch(expandAccountTimeline(account.id, { withReplies }));
     }
-  }, [account?.id, withReplies]);
+  }, [account, account?.id, dispatch, withReplies]);
 
   const handleLoadMore = (maxId: string) => {
     if (account) {
@@ -97,7 +97,7 @@ const AccountTimeline: React.FC<IAccountTimeline> = ({ params, withReplies = fal
 
   return (
     <StatusList
-      scrollKey='account_timeline'
+      scrollKey={`account_timeline-${account?.id}`}
       statusIds={statusIds}
       featuredStatusIds={showPins ? featuredStatusIds : undefined}
       isLoading={isLoading}
