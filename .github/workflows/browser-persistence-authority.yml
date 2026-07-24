@@ -1,0 +1,38 @@
+name: Browser persistence authority
+
+on:
+  pull_request:
+    paths:
+      - 'app/soapbox/reducers/auth.js'
+      - 'app/soapbox/storage/kv_store.ts'
+      - 'app/soapbox/service_worker/web_push_notifications.ts'
+      - 'config/browser-persistence-authority-inventory.json'
+      - 'scripts/check-browser-persistence-authority-inventory.js'
+      - 'scripts/__tests__/check-browser-persistence-authority-inventory.test.js'
+      - '.github/workflows/browser-persistence-authority.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/soapbox/reducers/auth.js'
+      - 'app/soapbox/storage/kv_store.ts'
+      - 'app/soapbox/service_worker/web_push_notifications.ts'
+      - 'config/browser-persistence-authority-inventory.json'
+      - 'scripts/check-browser-persistence-authority-inventory.js'
+      - 'scripts/__tests__/check-browser-persistence-authority-inventory.test.js'
+      - '.github/workflows/browser-persistence-authority.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify bounded browser persistence authority inventory
+        run: node scripts/check-browser-persistence-authority-inventory.js
+      - name: Run focused drift-gate tests
+        run: node --test scripts/__tests__/check-browser-persistence-authority-inventory.test.js

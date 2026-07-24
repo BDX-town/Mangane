@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-current-bounded",
+  "surfaces": [
+    {
+      "id": "auth-local-storage",
+      "path": "app/soapbox/reducers/auth.js",
+      "engine": "localStorage",
+      "scope": "deployment-multi-account",
+      "classification": "credential-authority",
+      "sensitive": true,
+      "requiredFragments": [
+        "const STORAGE_KEY = buildKey([NAMESPACE, 'auth']);",
+        "localStorage.getItem(STORAGE_KEY)",
+        "localStorage.setItem(STORAGE_KEY, JSON.stringify(state.toJS()))"
+      ]
+    },
+    {
+      "id": "auth-session-selection",
+      "path": "app/soapbox/reducers/auth.js",
+      "engine": "sessionStorage",
+      "scope": "tab-selected-account",
+      "classification": "selection-marker",
+      "sensitive": true,
+      "requiredFragments": [
+        "const SESSION_KEY = buildKey([NAMESPACE, 'auth', 'me']);",
+        "sessionStorage.getItem(SESSION_KEY)",
+        "sessionStorage.setItem(SESSION_KEY, me)"
+      ]
+    },
+    {
+      "id": "legacy-auth-app",
+      "path": "app/soapbox/reducers/auth.js",
+      "engine": "localStorage",
+      "scope": "deployment-legacy",
+      "classification": "deprecated-credential-duplicate",
+      "sensitive": true,
+      "requiredFragments": [
+        "localStorage.getItem('soapbox:auth:app')",
+        "TODO: Delete `soapbox:auth:app` and `soapbox:auth:user` localStorage?"
+      ]
+    },
+    {
+      "id": "legacy-auth-user",
+      "path": "app/soapbox/reducers/auth.js",
+      "engine": "localStorage",
+      "scope": "deployment-legacy",
+      "classification": "deprecated-credential-duplicate",
+      "sensitive": true,
+      "requiredFragments": [
+        "localStorage.getItem('soapbox:auth:user')",
+        "TODO: Delete `soapbox:auth:app` and `soapbox:auth:user` localStorage?"
+      ]
+    },
+    {
+      "id": "indexeddb-kv-store",
+      "path": "app/soapbox/storage/kv_store.ts",
+      "engine": "localForage/IndexedDB",
+      "scope": "origin-key-encoded",
+      "classification": "generic-snapshot-store",
+      "sensitive": true,
+      "requiredFragments": [
+        "name: 'soapbox'",
+        "driver: localforage.INDEXEDDB",
+        "storeName: 'keyvaluepairs'"
+      ]
+    },
+    {
+      "id": "auth-account-snapshot",
+      "path": "app/soapbox/reducers/auth.js",
+      "engine": "localForage/IndexedDB",
+      "scope": "account-url",
+      "classification": "account-snapshot",
+      "sensitive": true,
+      "requiredFragments": [
+        "const key = `authAccount:${account.url}`;",
+        "KVStore.getItem(key)",
+        "KVStore.setItem(key, account)"
+      ]
+    },
+    {
+      "id": "native-notification-data",
+      "path": "app/soapbox/service_worker/web_push_notifications.ts",
+      "engine": "NotificationOptions.data",
+      "scope": "notification-unbound-account-instance",
+      "classification": "unsafe-credential-duplicate",
+      "sensitive": true,
+      "requiredFragments": [
+        "access_token?: string",
+        "data:      { access_token, preferred_locale, id:",
+        "fetchFromApi(`/api/v1/statuses/${data.id}/reblog`, 'post', data.access_token)",
+        "fetchFromApi(`/api/v1/statuses/${data.id}/favourite`, 'post', data.access_token)"
+      ]
+    }
+  ],
+  "invariants": {
+    "credentialBearingSurfacesRemainExplicit": true,
+    "legacyCredentialCopiesRemainExplicit": true,
+    "notificationCredentialsRemainBlocked": true,
+    "accountAndInstanceScopeRequiredBeforeMigration": true
+  },
+  "explicitUnknowns": [
+    "Repository-wide localStorage and sessionStorage enumeration remains incomplete.",
+    "All localForage key prefixes and schemas are not yet enumerated.",
+    "Cache Storage, object URLs, uploads, drafts, outbox and telemetry buffers remain unverified.",
+    "Deterministic logout, account-removal and emergency-reset purge behavior is not proven."
+  ]
+}
