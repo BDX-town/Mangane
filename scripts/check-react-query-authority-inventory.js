@@ -26,7 +26,7 @@ for (const query of manifest.queries) {
   if (relative.startsWith('..') || path.isAbsolute(relative)) fail(`unsafe query source path ${query.path}`);
   const source = fs.readFileSync(absolute, 'utf8');
 
-  const useQueryIndex = source.indexOf('useQuery');
+  const useQueryIndex = source.lastIndexOf('useQuery');
   if (useQueryIndex < 0) fail(`${query.path} no longer calls useQuery`);
   const callStart = source.indexOf('(', useQueryIndex);
   if (callStart < 0) fail(`${query.path} contains an unparseable useQuery call`);
