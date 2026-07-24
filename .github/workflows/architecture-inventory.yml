@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'app/**'
+      - 'config/**'
       - 'webpack/**'
       - 'scripts/**'
       - '.github/workflows/architecture-inventory.yml'
@@ -12,6 +13,7 @@ on:
       - main
     paths:
       - 'app/**'
+      - 'config/**'
       - 'webpack/**'
       - 'scripts/**'
       - '.github/workflows/architecture-inventory.yml'
@@ -33,6 +35,13 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+
+      - name: Enforce architecture drift gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/check-routing-inventory.js
+          node scripts/check-redux-authority-inventory.js
 
       - name: Generate JSON and Markdown inventories
         shell: bash

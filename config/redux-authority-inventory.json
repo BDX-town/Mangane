@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-current-bounded",
+  "source": "app/soapbox/reducers/index.ts",
+  "reducers": [
+    "dropdown_menu", "timelines", "meta", "alerts", "modals", "user_lists", "domain_lists", "status_lists", "account_notes", "accounts", "accounts_counters", "statuses", "relationships", "settings", "push_notifications", "mutes", "reports", "contexts", "compose", "search", "notifications", "custom_emojis", "lists", "listEditor", "listAdder", "filters", "conversations", "suggestions", "polls", "trends", "groups", "group_relationships", "group_lists", "group_editor", "sidebar", "patron", "soapbox", "instance", "me", "auth", "admin", "profile_hover_card", "status_hover_card", "backups", "admin_log", "security", "scheduled_statuses", "pending_statuses", "aliases", "accounts_meta", "trending_statuses", "verification", "onboarding", "rules", "history", "announcements", "tags"
+  ],
+  "logoutWhitelist": ["instance", "soapbox", "custom_emojis", "auth"],
+  "invariants": {
+    "logoutAction": "AUTH_LOGGED_OUT",
+    "productionRedirect": "/login",
+    "stateFactory": "StateRecord",
+    "combiner": "combineReducers"
+  },
+  "explicitUnknowns": [
+    "Reducer-internal persistence, account scope, selectors and duplication are not yet exhaustively classified.",
+    "Logout retention safety for each whitelisted domain is not yet proven.",
+    "Dynamic state outside the root Redux registry remains covered by separate inventories."
+  ]
+}
