@@ -7,6 +7,7 @@ on:
       - 'config/**'
       - 'webpack/**'
       - 'scripts/**'
+      - 'package.json'
       - '.github/workflows/architecture-inventory.yml'
   push:
     branches:
@@ -16,6 +17,7 @@ on:
       - 'config/**'
       - 'webpack/**'
       - 'scripts/**'
+      - 'package.json'
       - '.github/workflows/architecture-inventory.yml'
   workflow_dispatch:
 
@@ -44,6 +46,7 @@ jobs:
           node scripts/check-redux-authority-inventory.js
           node scripts/check-browser-persistence-authority-inventory.js
           node scripts/check-html-safety-authority-inventory.js
+          node scripts/check-sentry-authority-inventory.js
 
       - name: Generate JSON and Markdown inventories
         shell: bash

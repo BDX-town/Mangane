@@ -1,0 +1,36 @@
+name: Sentry authority
+
+on:
+  pull_request:
+    paths:
+      - 'package.json'
+      - 'app/soapbox/build_config.js'
+      - 'config/sentry-authority-inventory.json'
+      - 'scripts/check-sentry-authority-inventory.js'
+      - 'scripts/__tests__/check-sentry-authority-inventory.test.js'
+      - '.github/workflows/sentry-authority.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'package.json'
+      - 'app/soapbox/build_config.js'
+      - 'config/sentry-authority-inventory.json'
+      - 'scripts/check-sentry-authority-inventory.js'
+      - 'scripts/__tests__/check-sentry-authority-inventory.test.js'
+      - '.github/workflows/sentry-authority.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify bounded Sentry authority inventory
+        run: node scripts/check-sentry-authority-inventory.js
+      - name: Run focused Sentry authority tests
+        run: node --test scripts/__tests__/check-sentry-authority-inventory.test.js

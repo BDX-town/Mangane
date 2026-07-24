@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-current-bounded",
+  "dependencies": {
+    "@sentry/browser": "^7.2.0",
+    "@sentry/react": "^7.2.0",
+    "@sentry/tracing": "^7.2.0"
+  },
+  "configurationSurface": {
+    "path": "app/soapbox/build_config.js",
+    "environmentKey": "SENTRY_DSN",
+    "requiredFragments": [
+      "SENTRY_DSN,",
+      "SENTRY_DSN,"
+    ]
+  },
+  "invariants": {
+    "dependencyPresenceDoesNotProveRuntimeInitialization": true,
+    "dsnExposureDoesNotProveConsentOrRedaction": true,
+    "productionTelemetryRequiresFailClosedRedaction": true,
+    "runtimeActivationRemainsBlockedUntilVerified": true
+  },
+  "explicitUnknowns": [
+    "Repository-wide Sentry initialization and capture call-site enumeration remains incomplete.",
+    "Consent, opt-out, sampling, retention and environment policy are not verified.",
+    "Event, breadcrumb, request, account and credential redaction behavior is not proven.",
+    "Source-map publication, release naming and build-artifact secret exposure remain unverified."
+  ]
+}
