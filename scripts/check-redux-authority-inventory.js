@@ -26,9 +26,14 @@ const actualReducers = reducerBlock[1]
   .filter(line => line && !line.startsWith('//'))
   .map(line => line.replace(/,$/, ''));
 
-const whitelistMatch = source.match(/const whitelist: string\[\] = \[([^\]]+)\]/);
+const whitelistMatch = source.match(/const whitelist: string\[\] = \[([^\]]+)\];/);
 if (!whitelistMatch) fail('cannot locate logout whitelist');
 const actualWhitelist = [...whitelistMatch[1].matchAll(/['"]([^'"]+)['"]/g)].map(match => match[1]);
+
+const whitelistMutations = source.match(/\bwhitelist\s*(?:\.(?:push|pop|shift|unshift|splice|sort|reverse|copyWithin|fill)\s*\(|\[[^\]]+\]\s*=|=\s*)/g) || [];
+if (whitelistMutations.length > 0) {
+  fail(`logout whitelist must remain immutable after initialization; found ${JSON.stringify(whitelistMutations)}`);
+}
 
 const compare = (label, expected, actual) => {
   const missing = expected.filter(value => !actual.includes(value));
@@ -45,8 +50,12 @@ for (const reducer of manifest.logoutWhitelist) {
   if (!manifest.reducers.includes(reducer)) fail(`logout whitelist references unknown reducer ${reducer}`);
 }
 
+const logoutAction = manifest.invariants.logoutAction;
+const escapedLogoutAction = logoutAction.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const logoutCase = new RegExp(`case\\s+${escapedLogoutAction}\\s*:`);
+if (!logoutCase.test(source)) fail(`source no longer handles logout action structurally: ${logoutAction}`);
+
 const fragments = [
-  manifest.invariants.logoutAction,
   `location.href = '${manifest.invariants.productionRedirect}'`,
   `const appReducer = ${manifest.invariants.combiner}(reducers, ${manifest.invariants.stateFactory})`,
   'return appReducer(logOut(state), action)',
