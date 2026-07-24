@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-current-bounded",
+  "surfaces": [
+    {
+      "id": "central-axios-client",
+      "path": "app/soapbox/api.ts",
+      "classification": "credential-bearing-http-client",
+      "requiredFragments": [
+        "const getAuthBaseURL = createSelector([",
+        "const baseURL = parseBaseURL(accountUrl) || parseBaseURL(authUserUrl);",
+        "baseURL: isURL(BuildConfig.BACKEND_URL) ? BuildConfig.BACKEND_URL : baseURL,",
+        "'Authorization': `Bearer ${accessToken}`",
+        "transformResponse: [maybeParseJSON]",
+        "const baseURL = me ? getAuthBaseURL(state, me) : '';",
+        "return baseClient(accessToken, baseURL);"
+      ],
+      "forbiddenFragmentsUntilReconciled": [
+        "timeout:",
+        "maxContentLength:",
+        "maxBodyLength:",
+        "interceptors.request",
+        "interceptors.response",
+        "axios-retry"
+      ]
+    },
+    {
+      "id": "auth-origin-token-selection",
+      "path": "app/soapbox/utils/auth.ts",
+      "classification": "broad-url-and-token-selector",
+      "requiredFragments": [
+        "new URL(url);",
+        "return new URL(url).origin;",
+        "const accountUrl = state.accounts.getIn([accountId, 'url']);",
+        "return state.auth.getIn(['users', accountUrl, 'access_token']) as string;",
+        "return ImmutableList([",
+        "]).find(isURL);"
+      ],
+      "forbiddenFragmentsUntilReconciled": [
+        "protocol === 'https:'",
+        "hostname === 'localhost'",
+        "isPrivate",
+        "allowedPorts"
+      ]
+    }
+  ],
+  "invariants": {
+    "credentialsMustBindToAccountAndOrigin": true,
+    "backendOverrideRequiresSharedUrlPolicy": true,
+    "mutationsMustNotRetryWithoutIdempotency": true,
+    "sharedClientSafetyControlsRemainBlocked": true,
+    "explicitUnknownsRemainPinned": true
+  },
+  "explicitUnknowns": [
+    "Repository-wide API, upload, streaming, retry, cancellation and error-handling call-site enumeration remains incomplete.",
+    "Token-to-account-and-origin binding is not proven by the current shared client and selector boundary.",
+    "Shared timeout, bounded-response, cancellation, retry/backoff, typed-error, rate-limit, redirect and content-type policies are not established.",
+    "BACKEND_URL and account-derived destinations are not proven to enforce HTTPS, credential-free URLs, safe ports, or public-network-only hosts.",
+    "Pagination next-link destinations and cross-instance redirect behavior remain unverified."
+  ]
+}
