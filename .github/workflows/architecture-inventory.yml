@@ -8,6 +8,7 @@ on:
       - 'webpack/**'
       - 'scripts/**'
       - 'package.json'
+      - 'yarn.lock'
       - '.github/workflows/architecture-inventory.yml'
   push:
     branches:
@@ -18,6 +19,7 @@ on:
       - 'webpack/**'
       - 'scripts/**'
       - 'package.json'
+      - 'yarn.lock'
       - '.github/workflows/architecture-inventory.yml'
   workflow_dispatch:
 

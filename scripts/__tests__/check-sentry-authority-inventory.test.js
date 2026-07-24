@@ -18,7 +18,7 @@ const run = (root = repositoryRoot) => execFileSync(process.execPath, [script], 
 
 const fixture = () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'sentry-authority-'));
-  for (const relativePath of ['config/sentry-authority-inventory.json', 'package.json', 'app/soapbox/build_config.js']) {
+  for (const relativePath of ['config/sentry-authority-inventory.json', 'package.json', 'yarn.lock', 'app/soapbox/build_config.js']) {
     const destination = path.join(root, relativePath);
     fs.mkdirSync(path.dirname(destination), { recursive: true });
     fs.copyFileSync(path.join(repositoryRoot, relativePath), destination);
@@ -34,14 +34,30 @@ const assertRunFails = (root, pattern) => assert.throws(() => run(root), error =
 test('verifies the bounded current Sentry authority inventory', () => {
   const report = JSON.parse(run());
   assert.equal(report.checkedDependencies, 3);
+  assert.equal(report.checkedLockfileResolutions, 3);
   assert.equal(report.configurationKey, 'SENTRY_DSN');
   assert.equal(report.explicitUnknowns, 4);
 });
 
-test('fails when a Sentry dependency drifts without reconciliation', () => {
+test('fails when a Sentry dependency range drifts without reconciliation', () => {
   const root = fixture();
   mutate(root, 'package.json', source => source.replace('"@sentry/react": "^7.2.0"', '"@sentry/react": "^8.0.0"'));
   assertRunFails(root, /package dependency @sentry\/react changed/);
+});
+
+test('fails when a Sentry lockfile resolution drifts', () => {
+  const root = fixture();
+  mutate(root, 'yarn.lock', source => source.replace('resolution: "@sentry/react@npm:7.120.4"', 'resolution: "@sentry/react@npm:7.120.5"'));
+  assertRunFails(root, /lockfile resolution for @sentry\/react changed/);
+});
+
+test('fails when a Sentry lockfile checksum drifts', () => {
+  const root = fixture();
+  mutate(root, 'yarn.lock', source => source.replace(
+    'checksum: d2a85d896acb229ca40ace559b65087f9b0a41f7596b5a015c4ac4533d4344410d858b1723c0eebffb0d6acdf01be558dfb4d85258652d3e1cdac8c207612319',
+    'checksum: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+  ));
+  assertRunFails(root, /lockfile resolution for @sentry\/tracing changed/);
 });
 
 test('fails when the build-time DSN surface disappears', () => {
