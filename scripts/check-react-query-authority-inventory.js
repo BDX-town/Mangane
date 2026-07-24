@@ -26,9 +26,14 @@ for (const query of manifest.queries) {
   if (relative.startsWith('..') || path.isAbsolute(relative)) fail(`unsafe query source path ${query.path}`);
   const source = fs.readFileSync(absolute, 'utf8');
 
+  const useQueryIndex = source.indexOf('useQuery');
+  if (useQueryIndex < 0) fail(`${query.path} no longer calls useQuery`);
+  const callStart = source.indexOf('(', useQueryIndex);
+  if (callStart < 0) fail(`${query.path} contains an unparseable useQuery call`);
+  const callPrefix = source.slice(callStart + 1, callStart + 300);
   const escapedKey = query.key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const keyPattern = new RegExp(`useQuery(?:<[^>]+>)?\\s*\\(\\s*\\[\\s*['\"]${escapedKey}['\"]\\s*\\]`);
-  if (!keyPattern.test(source)) fail(`${query.path} no longer declares exact unscoped query key ${query.key}`);
+  const keyPattern = new RegExp(`^\\s*\\[\\s*['\"]${escapedKey}['\"]\\s*\\]\\s*,`);
+  if (!keyPattern.test(callPrefix)) fail(`${query.path} no longer declares exact unscoped query key ${query.key}`);
   if (!source.includes(query.endpoint)) fail(`${query.path} no longer contains endpoint ${query.endpoint}`);
   if (query.usesStatefulApi && !/const\s+api\s*=\s*useApi\(\)/.test(source)) fail(`${query.path} no longer uses the stateful useApi client`);
   if (query.duplicatesIntoRedux && !/dispatch\s*\(\s*fetchTrendsSuccess\s*\(/.test(source)) fail(`${query.path} no longer records the verified React Query-to-Redux duplication boundary`);
