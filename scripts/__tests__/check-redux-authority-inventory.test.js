@@ -25,6 +25,11 @@ const fixture = () => {
   return root;
 };
 
+const mutateSource = (root, mutate) => {
+  const target = path.join(root, 'app/soapbox/reducers/index.ts');
+  fs.writeFileSync(target, mutate(fs.readFileSync(target, 'utf8')));
+};
+
 describe('Redux authority inventory drift gate', () => {
   it('verifies the current registry and logout retention set', () => {
     expect(JSON.parse(run())).toMatchObject({ reducers: 57, logoutWhitelist: ['instance', 'soapbox', 'custom_emojis', 'auth'] });
@@ -32,15 +37,25 @@ describe('Redux authority inventory drift gate', () => {
 
   it('fails when a reducer is added without inventory reconciliation', () => {
     const root = fixture();
-    const target = path.join(root, 'app/soapbox/reducers/index.ts');
-    fs.writeFileSync(target, fs.readFileSync(target, 'utf8').replace('  tags,\n};', '  tags,\n  unexpected_domain,\n};'));
+    mutateSource(root, source => source.replace('  tags,\n};', '  tags,\n  unexpected_domain,\n};'));
     expect(() => run(root)).toThrow(/reducers drifted/);
   });
 
-  it('fails when logout retention changes without review', () => {
+  it('fails when logout retention changes in the initializer', () => {
     const root = fixture();
-    const target = path.join(root, 'app/soapbox/reducers/index.ts');
-    fs.writeFileSync(target, fs.readFileSync(target, 'utf8').replace("'instance', 'soapbox', 'custom_emojis', 'auth'", "'instance', 'soapbox', 'custom_emojis', 'auth', 'me'"));
+    mutateSource(root, source => source.replace("'instance', 'soapbox', 'custom_emojis', 'auth'", "'instance', 'soapbox', 'custom_emojis', 'auth', 'me'"));
     expect(() => run(root)).toThrow(/logoutWhitelist drifted/);
+  });
+
+  it('fails when the logout whitelist is mutated after initialization', () => {
+    const root = fixture();
+    mutateSource(root, source => source.replace("const whitelist: string[] = ['instance', 'soapbox', 'custom_emojis', 'auth'];", "const whitelist: string[] = ['instance', 'soapbox', 'custom_emojis', 'auth'];\n  whitelist.push('me');"));
+    expect(() => run(root)).toThrow(/must remain immutable/);
+  });
+
+  it('fails when the logout switch no longer handles the exact action constant', () => {
+    const root = fixture();
+    mutateSource(root, source => source.replace('case AUTH_LOGGED_OUT:', "case 'AUTH_LOGGED_OUT_STANDALONE':"));
+    expect(() => run(root)).toThrow(/handles logout action structurally/);
   });
 });
