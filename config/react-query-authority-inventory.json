@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-current-bounded",
+  "queries": [
+    {
+      "path": "app/soapbox/queries/carousels.ts",
+      "key": "carouselAvatars",
+      "endpoint": "/api/v1/truth/carousels/avatars",
+      "usesStatefulApi": true,
+      "duplicatesIntoRedux": false
+    },
+    {
+      "path": "app/soapbox/queries/trends.ts",
+      "key": "trends",
+      "endpoint": "/api/v1/trends",
+      "usesStatefulApi": true,
+      "duplicatesIntoRedux": true
+    }
+  ],
+  "invariants": {
+    "keysAreCurrentlyUnscoped": true,
+    "accountAndInstanceDimensionsRequiredBeforeMigration": true
+  },
+  "explicitUnknowns": [
+    "Repository-wide React Query call-site enumeration remains incomplete.",
+    "Account and instance cache purge behavior is not proven.",
+    "Mutation and invalidation coverage remains unverified."
+  ]
+}
