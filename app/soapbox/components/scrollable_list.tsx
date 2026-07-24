@@ -8,7 +8,7 @@ import { useSettings } from 'soapbox/hooks';
 import LoadMore from './load_more';
 import { Card, Text } from './ui';
 
-interface IScrollableList extends HTMLProps<HTMLDivElement> {
+interface IScrollableList extends Omit<HTMLProps<HTMLDivElement>, 'onSeeking'> {
   /** Unique key to preserve the scroll position when navigating back. */
   scrollKey?: string,
   /** Pagination callback when the end of the list is reached. */
@@ -28,6 +28,8 @@ interface IScrollableList extends HTMLProps<HTMLDivElement> {
   /** Extra class names on the Virtuoso element. */
   className?: string,
   prepend?: ReactNode,
+  onSeeking?: (seeking: boolean) => void,
+  start?: number,
 }
 
 function findNearestScrollableAncestor(el: HTMLElement) {
@@ -40,6 +42,7 @@ function findNearestScrollableAncestor(el: HTMLElement) {
 const ScrollableList = React.forwardRef<HTMLElement, IScrollableList>(({
   scrollKey,
   children,
+  onSeeking,
   isLoading,
   emptyMessage,
   onLoadMore,
@@ -48,6 +51,7 @@ const ScrollableList = React.forwardRef<HTMLElement, IScrollableList>(({
   placeholderComponent: Placeholder,
   placeholderCount = 0,
   prepend,
+  start,
   ...rest
 }, ref) => {
   const settings = useSettings();
@@ -80,10 +84,10 @@ const ScrollableList = React.forwardRef<HTMLElement, IScrollableList>(({
     setScrollableParent(el || e);
   }, []);
 
-  useEffect(() => console.log("set", scrollableParent), [scrollableParent]);
+  // useEffect(() => console.log("set", scrollableParent), [scrollableParent]);
 
   return (
-    <Ruisseau ref={findScrollableParent} {...rest} name={scrollKey} className={`grow ${className}`} onEnd={onEnd} disabled={firstRender && isLoading} scrollElement={scrollableParent}>
+    <Ruisseau ref={findScrollableParent} {...rest} onSeeking={onSeeking} start={start} name={scrollKey} className={`grow ${className}`} onEnd={onEnd} disabled={firstRender && isLoading} scrollElement={scrollableParent}>
       {prepend}
       {children}
       {React.Children.count(children) === 0 && !isLoading && (

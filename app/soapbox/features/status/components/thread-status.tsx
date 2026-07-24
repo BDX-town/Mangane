@@ -11,11 +11,12 @@ interface IThreadStatus {
   focusedStatusId: string,
   onMoveUp: (id: string) => void,
   onMoveDown: (id: string) => void,
+  className?: string,
 }
 
 /** Status with reply-connector in threads. */
 const ThreadStatus: React.FC<IThreadStatus> = (props): JSX.Element => {
-  const { id, focusedStatusId } = props;
+  const { id, focusedStatusId, className } = props;
 
   const replyToId = useAppSelector(state => state.contexts.inReplyTos.get(id));
   const replyCount = useAppSelector(state => state.contexts.replies.get(id, ImmutableOrderedSet()).size);
@@ -39,7 +40,7 @@ const ThreadStatus: React.FC<IThreadStatus> = (props): JSX.Element => {
   };
 
   return (
-    <div className='thread__status'>
+    <div className={`thread__status ${className}`}>
       {renderConnector()}
       {isLoaded ? (
         // @ts-ignore FIXME

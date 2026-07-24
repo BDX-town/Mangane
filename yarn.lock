@@ -1556,12 +1556,12 @@ __metadata:
 
 "@bdxtown/ruisseau@file:../ruisseau::locator=mangane-fe%40workspace%3A.":
   version: 0.0.0
-  resolution: "@bdxtown/ruisseau@file:../ruisseau#../ruisseau::hash=49fbce&locator=mangane-fe%40workspace%3A."
+  resolution: "@bdxtown/ruisseau@file:../ruisseau#../ruisseau::hash=284a62&locator=mangane-fe%40workspace%3A."
   peerDependencies:
     lodash: ^4.18.1
     react: ^19.2.7
     react-dom: ^19.2.7
-  checksum: f4ae64a2a316de2858489cae4aaa6dc95a3230a25c88b2376d1d2ce4ce190999a045693b1d3564d7362abf5657033d6a896748d38ac019876bb8ff5647da5453
+  checksum: ee59a2e17ddf4eb6be3dcb1f5dbaf53600624f40d8bd257f24287d08955cf9955f136b9faf10d8d510dffd04baf1baa622f1ebefbfed7b6abd03849e7081e38b
   languageName: node
   linkType: hard
 
@@ -3480,6 +3480,13 @@ __metadata:
   dependencies:
     "@types/node": "npm:*"
   checksum: 598af5a5d699490e8bdd53b59757b514e41791cc7c857c45ed1d4ea50b90e7e5e64f59cd7f50da2c7d7c2d03ca0f1f865c6fe1a46065401b2dbf2e93645c4283
+  languageName: node
+  linkType: hard
+
+"@types/dom-to-image@npm:^2":
+  version: 2.6.7
+  resolution: "@types/dom-to-image@npm:2.6.7"
+  checksum: 2f5045f116fba81fade6df5f4c6435280a6bf693a10df4ef6b0b586339833e1fe70649ffa8dc2cd221e65c1a87bc81d4765a4b6ee30da457f2bc5be92de9aa90
   languageName: node
   linkType: hard
 
@@ -7925,6 +7932,13 @@ __metadata:
     domhandler: "npm:^5.0.2"
     entities: "npm:^4.2.0"
   checksum: d5ae2b7110ca3746b3643d3ef60ef823f5f078667baf530cec096433f1627ec4b6fa8c072f09d079d7cda915fd2c7bc1b7b935681e9b09e591e1e15f4040b8e2
+  languageName: node
+  linkType: hard
+
+"dom-to-image@npm:^2.6.0":
+  version: 2.6.0
+  resolution: "dom-to-image@npm:2.6.0"
+  checksum: 6c77851d2f301d2a4bbc3fa3f9d6f152bcc4f2a20b57185b9fa1fd81244c0c9a0c7f6deffb30461bba57d83f8b37d905fb5440d9bcda5b7221b968001a2c94fe
   languageName: node
   linkType: hard
 
@@ -13368,6 +13382,7 @@ __metadata:
     "@testing-library/react": "npm:^12.1.4"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@testing-library/user-event": "npm:^14.0.3"
+    "@types/dom-to-image": "npm:^2"
     "@types/escape-html": "npm:^1.0.1"
     "@types/http-link-header": "npm:^1.0.3"
     "@types/jest": "npm:^28.1.4"
@@ -13415,6 +13430,7 @@ __metadata:
     cssnano: "npm:^5.1.10"
     danger: "npm:^11.0.7"
     detect-passive-events: "npm:^2.0.0"
+    dom-to-image: "npm:^2.6.0"
     dotenv: "npm:^8.0.0"
     eld: "npm:^2.0.3"
     emoji-datasource: "npm:5.0.0"

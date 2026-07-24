@@ -10,7 +10,7 @@ interface LayoutComponent extends React.FC {
 /** Layout container, to hold Sidebar, Main, and Aside. */
 const Layout: LayoutComponent = ({ children }: { children: ReactNode }) => (
   <div className='relative'>
-    <div className='max-w-3xl mx-auto sm:px-6 md:max-w-7xl md:px-8 md:flex md:gap-8 max-h-screen overflow-y-auto'>
+    <div className='max-w-3xl mx-auto sm:px-6 md:max-w-7xl md:px-8 md:flex md:gap-8 h-screen overflow-y-auto grow'>
       {children}
     </div>
   </div>
@@ -18,21 +18,21 @@ const Layout: LayoutComponent = ({ children }: { children: ReactNode }) => (
 
 /** Left sidebar container in the UI. */
 const Sidebar: React.FC = ({ children }: { children: ReactNode }) => (
-  <div className='hidden lg:block lg:col-span-3 md:min-w-[300px] md:max-w-[300px]'>
+  <div className='hidden lg:block lg:col-span-3 md:min-w-[300px] md:max-w-[300px] sm:py-4'>
     {children}
   </div>
 );
 
 /** Center column container in the UI. */
 const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className }) => (
-  <main className={classNames('md:w-full md:min-w-0 md:overflow-y-auto', className)}>
+  <main className={classNames('md:w-full md:min-w-0 md:overflow-y-auto animate-fadein grow flex flex-col sm:pt-4', className)}>
     {children}
   </main>
 );
 
 /** Right sidebar container in the UI. */
 const Aside: React.FC<{ className?: string, children: ReactNode }> = ({ children, className }) => (
-  <aside className={`hidden lg:block lg:col-span-3 md:min-w-[200px] md:max-w-[200px] ${className || ''}`}>
+  <aside className={`hidden lg:flex flex-col lg:col-span-3 md:min-w-[200px] md:max-w-[200px] grow animate-fadein sm:py-4 ${className || ''}`}>
     {children}
   </aside>
 );

@@ -369,9 +369,11 @@ const Thread: React.FC<IThread> = (props) => {
     }
   }, [actualStatus, history]);
 
+  const [seeking, setSeeking] = useState(false);
+
   const renderTombstone = useCallback((id: string) => {
     return (
-      <div className='py-4 pb-8'>
+      <div className={'py-4 pb-8'}>
         <Tombstone
           key={id}
           id={id}
@@ -392,14 +394,14 @@ const Thread: React.FC<IThread> = (props) => {
         onMoveDown={handleMoveDown}
       />
     );
-  }, [handleMoveDown, handleMoveUp, actualStatus]);
+  }, [actualStatus, handleMoveUp, handleMoveDown]);
 
   const renderPendingStatus = useCallback((id: string) => {
     const idempotencyKey = id.replace(/^末pending-/, '');
 
     return (
       <PendingStatus
-        className='thread__status'
+        className={'thread__status'}
         key={id}
         idempotencyKey={idempotencyKey}
       />
@@ -473,10 +475,8 @@ const Thread: React.FC<IThread> = (props) => {
     if (ready && ancestorsIds.size > 0) {
       return renderChildren(ancestorsIds).toArray();
     }
-    // context is not fully loaded and either we dont have actual status yet or it is a reply
-    if (!actualStatus || actualStatus.in_reply_to_id) return [<PlaceholderStatus />];
     return [];
-  }, [ready, ancestorsIds, actualStatus, renderChildren]);
+  }, [ready, ancestorsIds, renderChildren]);
 
   const renderDescendants = useCallback(() => {
     // if we have the context, let's show it
@@ -490,23 +490,26 @@ const Thread: React.FC<IThread> = (props) => {
     return new Array(actualStatus.replies_count).fill(undefined).map(() => <PlaceholderStatus />);
   }, [ready, actualStatus, renderChildren, descendantsIds]);
 
+  const [actualStatusNode, setActualStatusNode] = useState<{ top: number, left: number, width: number, height: number} | undefined>(undefined);
 
-  const scrolled = useRef(false);
-  const scrollToActualStatus = useCallback((e: HTMLElement) => {
-    console.log('CMOI', scrolled.current, ready, ancestorsIds.size);
-    if (scrolled.current || !ready || ancestorsIds.size === 0) return;
-    console.log('CMOI');
-    e.scrollIntoView();
-    scrolled.current = true;
+  useEffect(() => {
+    if (!actualStatus || !actualStatus.in_reply_to_id) return;
+    const rect = {
+      top:  (scroller?.children[0].getBoundingClientRect().top - node.current?.getBoundingClientRect().top) * -1,
+      left: node.current?.getBoundingClientRect().left,
+      width: node.current?.getBoundingClientRect().width,
+      height: node.current?.getBoundingClientRect().height,
+    };
+    setActualStatusNode(rect);
+  }, [actualStatus, scroller]);
 
-  }, [ready, ancestorsIds]);
 
   const renderActualStatus = useCallback(() => {
     // we dont have actual status yet
     if (!actualStatus) return [<PlaceholderStatus />];
     return [(
       <>
-        <div className={classNames('thread__detailed-status')} key={actualStatus.id} ref={scrollToActualStatus}>
+        <div className={classNames('thread__detailed-status')} key={actualStatus.id}>
           <HotKeys handlers={handlers}>
             <div
               ref={statusRef}
@@ -542,8 +545,7 @@ const Thread: React.FC<IThread> = (props) => {
         }
       </>
     )];
-  }, [actualStatus, handleComposeSubmit, handleOpenCompareHistoryModal, handleOpenMedia, handleOpenVideo, handleToggleHidden, handleToggleMediaVisibility, handleTranslate, handlers, intl, me, onDeleteStatus, scrollToActualStatus, showMedia]);
-
+  }, [actualStatus, handleComposeSubmit, handleOpenCompareHistoryModal, handleOpenMedia, handleOpenVideo, handleToggleHidden, handleToggleMediaVisibility, handleTranslate, handlers, intl, me, onDeleteStatus, showMedia]);
 
   if (!actualStatus && ready) {
     // this need to be kept separate from children as it carries its own column
@@ -560,22 +562,29 @@ const Thread: React.FC<IThread> = (props) => {
         </div>
       </Sticky>
       <PullToRefresh onRefresh={handleRefresh}>
-        <Stack space={2}>
-          <div ref={node} className='thread'>
-            <ScrollableList
-              ref={setScroller}
-              hasMore={!!next}
-              onLoadMore={handleLoadMoreDebounced}
-              placeholderComponent={() => <PlaceholderStatus />}
-            >
-              {
-                [...renderAncestors(), ...renderActualStatus(), ...renderDescendants()]
-              }
-            </ScrollableList>
-          </div>
-
-          {!me && <ThreadLoginCta />}
-        </Stack>
+        <div ref={node} className={`thread ${(seeking) ? 'opacity-0' : 'opacity-100'}`}>
+          <ScrollableList
+            ref={setScroller}
+            onSeeking={setSeeking}
+            hasMore={!!next}
+            onLoadMore={handleLoadMoreDebounced}
+            placeholderComponent={() => <PlaceholderStatus />}
+            start={ready && ancestorsIds.size > 0 ? ancestorsIds.size : undefined}
+          >
+            {
+              [...renderAncestors(), ...renderActualStatus(), ...renderDescendants()]
+            }
+          </ScrollableList>
+        </div>
+        {
+          actualStatusNode && (seeking || !ready) && (
+            <div className={'fixed thread'} style={{ top: `${actualStatusNode.top}px`, left: `${actualStatusNode.left}px`, width: `${actualStatusNode.width}px`, height: `${actualStatusNode.height}px` }}>
+              {renderActualStatus()}
+              <PlaceholderStatus />
+            </div>
+          )
+        }
+        {!me && <ThreadLoginCta />}
       </PullToRefresh>
     </Column>
   );

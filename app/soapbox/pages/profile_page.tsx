@@ -88,7 +88,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
 
   return (
     <>
-      <Layout.Main className='animate-fadein pb-[110px] sm:pt-4 lg:pb-0'>
+      <Layout.Main className=''>
         <Column label={account ? `@${getAcct(account, displayFqn)}` : ''} withHeader={false}>
           <div className='space-y-4'>
             <Header account={account} />
@@ -106,7 +106,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
         </Column>
       </Layout.Main>
 
-      <Layout.Aside className='animate-fadein py-4'>
+      <Layout.Aside className=''>
         {account && !account.fields.isEmpty() && (
           <Widget title={<FormattedMessage id='profile_fields_panel.title' defaultMessage='Profile fields' />}>
             <BundleContainer fetchComponent={ProfileFieldsPanel}>
