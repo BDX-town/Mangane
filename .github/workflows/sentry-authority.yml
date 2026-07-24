@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'package.json'
+      - 'yarn.lock'
       - 'app/soapbox/build_config.js'
       - 'config/sentry-authority-inventory.json'
       - 'scripts/check-sentry-authority-inventory.js'
@@ -14,6 +15,7 @@ on:
       - main
     paths:
       - 'package.json'
+      - 'yarn.lock'
       - 'app/soapbox/build_config.js'
       - 'config/sentry-authority-inventory.json'
       - 'scripts/check-sentry-authority-inventory.js'
