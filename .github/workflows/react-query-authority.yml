@@ -1,0 +1,32 @@
+name: React Query authority
+
+on:
+  pull_request:
+    paths:
+      - 'app/soapbox/queries/**'
+      - 'config/react-query-authority-inventory.json'
+      - 'scripts/check-react-query-authority-inventory.js'
+      - 'scripts/__tests__/check-react-query-authority-inventory.test.js'
+      - '.github/workflows/react-query-authority.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/soapbox/queries/**'
+      - 'config/react-query-authority-inventory.json'
+      - 'scripts/check-react-query-authority-inventory.js'
+      - 'scripts/__tests__/check-react-query-authority-inventory.test.js'
+      - '.github/workflows/react-query-authority.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify bounded React Query authority inventory
+        run: node scripts/check-react-query-authority-inventory.js
