@@ -35,6 +35,12 @@ const mutate = (root, relativePath, transform) => {
   fs.writeFileSync(target, transform(fs.readFileSync(target, 'utf8')));
 };
 
+const mutateManifest = (root, transform) => mutate(root, 'config/html-safety-authority-inventory.json', source => {
+  const manifest = JSON.parse(source);
+  transform(manifest);
+  return `${JSON.stringify(manifest, null, 2)}\n`;
+});
+
 const assertRunFails = (root, pattern) => {
   assert.throws(() => run(root), error => pattern.test(`${error.stderr || ''}\n${error.message || ''}`));
 };
@@ -51,42 +57,47 @@ test('fails when the status body sink drifts without reconciliation', () => {
   assertRunFails(root, /status-body-html-sink/);
 });
 
-test('fails when a transformer is reclassified as a sanitizer', () => {
+test('fails when sanitizer verification is asserted', () => {
   const root = fixture();
-  mutate(root, 'config/html-safety-authority-inventory.json', source => {
-    const manifest = JSON.parse(source);
+  mutateManifest(root, manifest => {
     manifest.surfaces.find(surface => surface.id === 'compatibility-html-transformer').sanitizerVerified = true;
-    return `${JSON.stringify(manifest, null, 2)}\n`;
   });
   assertRunFails(root, /must not claim verified sanitization/);
 });
 
+test('fails when a transformer classification becomes sanitizer-like', () => {
+  const root = fixture();
+  mutateManifest(root, manifest => {
+    manifest.surfaces.find(surface => surface.id === 'compatibility-html-transformer').classification = 'verified-html-sanitizer';
+  });
+  assertRunFails(root, /classification changed without checker reconciliation/);
+});
+
 test('fails when a required surface is removed', () => {
   const root = fixture();
-  mutate(root, 'config/html-safety-authority-inventory.json', source => {
-    const manifest = JSON.parse(source);
+  mutateManifest(root, manifest => {
     manifest.surfaces = manifest.surfaces.filter(surface => surface.id !== 'status-spoiler-html-sink');
-    return `${JSON.stringify(manifest, null, 2)}\n`;
   });
   assertRunFails(root, /required HTML safety surface status-spoiler-html-sink/);
 });
 
+test('fails when a surface and the manifest required-id list shrink together', () => {
+  const root = fixture();
+  mutateManifest(root, manifest => {
+    manifest.surfaces = manifest.surfaces.filter(surface => surface.id !== 'status-spoiler-html-sink');
+    manifest.requiredSurfaceIds = manifest.requiredSurfaceIds.filter(id => id !== 'status-spoiler-html-sink');
+  });
+  assertRunFails(root, /externally pinned required surface status-spoiler-html-sink/);
+});
+
 test('fails when explicit unknowns silently shrink', () => {
   const root = fixture();
-  mutate(root, 'config/html-safety-authority-inventory.json', source => {
-    const manifest = JSON.parse(source);
-    manifest.explicitUnknowns.pop();
-    return `${JSON.stringify(manifest, null, 2)}\n`;
-  });
+  mutateManifest(root, manifest => { manifest.explicitUnknowns.pop(); });
   assertRunFails(root, /required explicit unknown is missing|explicitUnknowns changed/);
 });
 
 test('rejects source paths escaping the repository root', () => {
   const root = fixture();
-  mutate(root, 'config/html-safety-authority-inventory.json', source => {
-    const manifest = JSON.parse(source);
-    manifest.surfaces[0].path = '../outside.tsx';
-    return `${JSON.stringify(manifest, null, 2)}\n`;
-  });
+  mutateManifest(root, manifest => { manifest.surfaces[0].path = '../outside.tsx'; });
   assertRunFails(root, /unsafe source path/);
 });
