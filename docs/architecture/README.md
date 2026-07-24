@@ -27,6 +27,7 @@ Target architecture must always be read alongside the verified repository eviden
 - [`CURRENT_STATE.md`](./CURRENT_STATE.md) — verified dependency, runtime, risk and documentation baseline;
 - [`SOURCE_INVENTORY.md`](./SOURCE_INVENTORY.md) — verified bootstrap, routing, state, service-worker, accessibility and interaction ownership;
 - [`SECURITY_RUNTIME_INVENTORY.md`](./SECURITY_RUNTIME_INVENTORY.md) — verified authentication selectors, URL handling, HTTP-client behavior, push/share worker behavior, cache implications and required security contracts;
+- [`API_TRANSPORT_AUTHORITY_DRIFT_GATE.md`](./API_TRANSPORT_AUTHORITY_DRIFT_GATE.md) — executable bounded gate for the central credential-bearing Axios client and authentication URL/token-selection boundary;
 - [`AUTH_PERSISTENCE_INVENTORY.md`](./AUTH_PERSISTENCE_INVENTORY.md) — verified OAuth flows, plaintext browser credential persistence, multi-account indexing, logout limitations, IndexedDB account snapshots and legacy migration behavior;
 - [`REACT_QUERY_AND_CACHE_INVENTORY.md`](./REACT_QUERY_AND_CACHE_INVENTORY.md) — verified singleton cache defaults, account-transition risks, required query/mutation matrix and current enumeration blockers;
 - [`CONTENT_SAFETY_AND_TEST_INVENTORY.md`](./CONTENT_SAFETY_AND_TEST_INVENTORY.md) — verified shared HTML transformation behavior, test-command baseline, Jest coverage boundaries and remaining sanitization/CI blockers;
