@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-current-bounded",
+  "scope": "Repository-owned routing, continuation, basename, development proxy, and production app-shell sources directly inspected in Phase 0.",
+  "sources": [
+    {
+      "path": "app/soapbox/features/ui/index.tsx",
+      "owner": "primary-ui-router",
+      "requiredFragments": [
+        "<WrappedRoute path='/' exact",
+        "<Redirect from='/web/:path1/:path2/:path3'",
+        "<Redirect from='/users/:username/statuses/:statusId' to='/@:username/posts/:statusId' />",
+        "<Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />",
+        "history.push('/statuses/compose')",
+        "history.goBack()"
+      ]
+    },
+    {
+      "path": "app/soapbox/features/ui/util/react_router_helpers.tsx",
+      "owner": "authorization-route-wrapper",
+      "requiredFragments": [
+        "soapbox:redirect_uri",
+        "encodeURIComponent(`${history.location.pathname}${history.location.search}`)",
+        "<Redirect to='/login' />"
+      ]
+    },
+    {
+      "path": "app/soapbox/utils/redirect.ts",
+      "owner": "login-continuation-helper",
+      "requiredFragments": [
+        "soapbox:redirect-uri",
+        "localStorage.getItem(LOCAL_STORAGE_REDIRECT_KEY)",
+        "localStorage.removeItem(LOCAL_STORAGE_REDIRECT_KEY)",
+        "decodeURIComponent(redirectUri)"
+      ]
+    },
+    {
+      "path": "app/soapbox/build_config.js",
+      "owner": "build-path-normalization",
+      "requiredFragments": [
+        "FE_SUBDIRECTORY",
+        "sanitizeBasename",
+        "BACKEND_URL: sanitizeURL(BACKEND_URL)"
+      ]
+    },
+    {
+      "path": "webpack/shared.js",
+      "owner": "asset-and-html-output",
+      "requiredFragments": [
+        "publicPath: join(FE_SUBDIRECTORY, '/')",
+        "new HtmlWebpackPlugin(makeHtmlConfig())",
+        "new HtmlWebpackPlugin(makeHtmlConfig({ filename: '404.html' }))"
+      ]
+    },
+    {
+      "path": "webpack/development.js",
+      "owner": "development-proxy-and-spa-fallback",
+      "requiredFragments": [
+        "historyApiFallback",
+        "index: join(FE_SUBDIRECTORY, '/')",
+        "const backendEndpoints = [",
+        "'/api'",
+        "'/oauth'",
+        "'/.well-known/webfinger'"
+      ]
+    },
+    {
+      "path": "webpack/production.js",
+      "owner": "production-app-shell-and-navigation-exclusions",
+      "requiredFragments": [
+        "cacheMaps: [{",
+        "requestTypes: ['navigate']",
+        "appShell: join(FE_SUBDIRECTORY, '/')",
+        "'/.well-known'",
+        "'/admin'",
+        "'/api'",
+        "'/auth'",
+        "'/inbox'",
+        "'/objects'",
+        "pathname.endsWith('/embed')"
+      ]
+    }
+  ],
+  "invariants": {
+    "continuationKeysMustRemainExplicitlyDistinctUntilMigrated": [
+      "soapbox:redirect_uri",
+      "soapbox:redirect-uri"
+    ],
+    "developmentReservedPaths": [
+      "/api",
+      "/pleroma",
+      "/nodeinfo",
+      "/socket",
+      "/oauth",
+      "/.well-known/webfinger",
+      "/static",
+      "/main/ostatus",
+      "/ostatus_subscribe",
+      "/favicon.png"
+    ],
+    "productionNavigationExclusions": [
+      "/.well-known",
+      "/activities",
+      "/admin",
+      "/api",
+      "/auth",
+      "/inbox",
+      "/instance",
+      "/internal",
+      "/main/ostatus",
+      "/manifest.json",
+      "/media",
+      "/nodeinfo",
+      "/oauth",
+      "/objects",
+      "/ostatus_subscribe",
+      "/pghero",
+      "/pleroma",
+      "/proxy",
+      "/relay",
+      "/sidekiq",
+      "/socket",
+      "/static",
+      "/unsubscribe"
+    ],
+    "productionNavigationSuffixExclusions": [
+      "/embed"
+    ]
+  },
+  "explicitUnknowns": [
+    "Repository-wide navigation primitive enumeration is not yet exhaustive.",
+    "Production ingress, CDN, reverse-proxy, and backend rewrite configuration is external to this repository inventory.",
+    "Built service-worker runtime behavior has not yet been browser-verified."
+  ]
+}
