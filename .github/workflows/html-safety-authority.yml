@@ -1,0 +1,40 @@
+name: HTML safety authority
+
+on:
+  pull_request:
+    paths:
+      - 'app/soapbox/components/status_content.tsx'
+      - 'app/soapbox/utils/html.ts'
+      - 'config/html-safety-authority-inventory.json'
+      - 'scripts/check-html-safety-authority-inventory.js'
+      - 'scripts/__tests__/check-html-safety-authority-inventory.test.js'
+      - '.github/workflows/html-safety-authority.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/soapbox/components/status_content.tsx'
+      - 'app/soapbox/utils/html.ts'
+      - 'config/html-safety-authority-inventory.json'
+      - 'scripts/check-html-safety-authority-inventory.js'
+      - 'scripts/__tests__/check-html-safety-authority-inventory.test.js'
+      - '.github/workflows/html-safety-authority.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: html-safety-authority-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify bounded HTML safety authority inventory
+        run: node scripts/check-html-safety-authority-inventory.js
+      - name: Run focused adversarial tests
+        run: node --test scripts/__tests__/check-html-safety-authority-inventory.test.js

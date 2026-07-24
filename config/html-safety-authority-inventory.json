@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-current-bounded",
+  "surfaces": [
+    {
+      "id": "status-body-html-sink",
+      "path": "app/soapbox/components/status_content.tsx",
+      "classification": "remote-html-render-sink",
+      "sanitizerVerified": false,
+      "requiredFragments": [
+        "const { contentHtml: html } = status;",
+        "return addGreentext(html);",
+        "dangerouslySetInnerHTML={content}",
+        "link.setAttribute('rel', 'nofollow noopener')",
+        "link.setAttribute('target', '_blank')"
+      ]
+    },
+    {
+      "id": "status-spoiler-html-sink",
+      "path": "app/soapbox/components/status_content.tsx",
+      "classification": "remote-html-render-sink",
+      "sanitizerVerified": false,
+      "requiredFragments": [
+        "dangerouslySetInnerHTML={{ __html: status.spoilerHtml }}"
+      ]
+    },
+    {
+      "id": "plaintext-html-parser",
+      "path": "app/soapbox/utils/html.ts",
+      "classification": "html-to-text-transformer-not-sanitizer",
+      "sanitizerVerified": false,
+      "requiredFragments": [
+        "This function can still return unsafe HTML",
+        "wrapper.innerHTML = html.replace",
+        "return wrapper.textContent || '';"
+      ]
+    },
+    {
+      "id": "compatibility-html-transformer",
+      "path": "app/soapbox/utils/html.ts",
+      "classification": "html-transformer-not-sanitizer",
+      "sanitizerVerified": false,
+      "requiredFragments": [
+        "export const stripCompatibilityFeatures",
+        "node.innerHTML = html;",
+        "'.quote-inline'",
+        "'.recipients-inline'",
+        "return node.innerHTML;"
+      ]
+    }
+  ],
+  "requiredSurfaceIds": [
+    "status-body-html-sink",
+    "status-spoiler-html-sink",
+    "plaintext-html-parser",
+    "compatibility-html-transformer"
+  ],
+  "explicitUnknowns": [
+    "Repository-wide production dangerouslySetInnerHTML and innerHTML enumeration remains incomplete.",
+    "Sanitizer package, version, configuration and provenance for status content and spoiler HTML are not verified.",
+    "Allowed tags, attributes, URI schemes, SVG, MathML, CSS, iframe and custom-element behavior are not proven.",
+    "Caller and downstream-sink inventories for unescapeHTML and stripCompatibilityFeatures remain incomplete."
+  ],
+  "invariants": {
+    "transformersMustNotBeClassifiedAsSanitizers": true,
+    "statusHtmlSanitizerProvenanceRemainsBlocked": true,
+    "postInsertionLinkMutationIsNotSanitization": true,
+    "explicitUnknownsRemainPinned": true
+  }
+}

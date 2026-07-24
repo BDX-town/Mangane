@@ -43,6 +43,7 @@ jobs:
           node scripts/check-routing-inventory.js
           node scripts/check-redux-authority-inventory.js
           node scripts/check-browser-persistence-authority-inventory.js
+          node scripts/check-html-safety-authority-inventory.js
 
       - name: Generate JSON and Markdown inventories
         shell: bash
