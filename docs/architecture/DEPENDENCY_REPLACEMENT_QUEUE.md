@@ -23,4 +23,4 @@ For every direct package classified `unused-or-dynamically-referenced-unverified
 
 A queue item closes only with lockfile regeneration, updated inventory, targeted tests for the affected execution path, a fresh advisory snapshot, license reconciliation, and a clean install/build result. Suppressions without expiry, owner, and path-specific reachability evidence are prohibited.
 
-Machine-readable queued direct packages: **88**.
+Machine-readable queued direct packages: **85**.

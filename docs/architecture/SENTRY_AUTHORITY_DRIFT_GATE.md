@@ -1,28 +1,16 @@
-# Sentry Authority Drift Gate
+# Telemetry and Redaction Authority Drift Gate
 
-Status: **Current / bounded Phase 0 evidence**
+Status: **Phase 0E verified**
 
-This gate protects the directly verified Sentry dependency and build-configuration boundary from silent drift.
+The historical Sentry gate now protects the complete telemetry/logging boundary. `config/sentry-authority-inventory.json` is generated from application, worker, build, repository-tooling, test, fixture, and workflow sources.
 
-## Verified current boundary
+CI fails when:
 
-- `package.json` declares `@sentry/browser`, `@sentry/react`, and `@sentry/tracing` at `^7.2.0`.
-- `app/soapbox/build_config.js` reads and exports `SENTRY_DSN` through build-time configuration.
+- a logging, telemetry, DevTools, source-map, notification, clipboard, environment, error-boundary, or artifact callsite drifts;
+- a Sentry dependency, lockfile package, DSN, or capture call returns;
+- diagnostic protection is not installed before asynchronous startup;
+- development output bypasses bounded redaction;
+- production dynamic console output, source maps, or Redux DevTools are enabled;
+- the central redactor loses descriptor-only inspection, cycle protection, or fail-closed behavior.
 
-These facts do not establish that Sentry initializes at runtime, that telemetry is enabled, or that any event is safe to send.
-
-## Fail-closed behavior
-
-The checker fails when:
-
-- a pinned Sentry dependency changes or disappears;
-- the build-time `SENTRY_DSN` surface changes;
-- a required privacy or runtime invariant is removed;
-- an explicit Phase 0 unknown silently disappears;
-- a configuration path escapes the repository root.
-
-## Security boundary
-
-Production telemetry remains blocked until runtime initialization, capture call sites, consent, opt-out, sampling, retention, redaction, breadcrumbs, request metadata, account identifiers, credentials, source maps, and build artifacts are directly verified and adversarially tested.
-
-Dependency presence and DSN configuration are evidence of a possible telemetry surface, not proof of active or safe telemetry.
+The checker is `scripts/check-sentry-authority-inventory.js`; generator logic is in `scripts/telemetry-inventory-lib.js`; mutation tests are in `scripts/__tests__/check-sentry-authority-inventory.test.js`; browser adversarial tests are in `app/soapbox/utils/__tests__/diagnostics.test.ts`.

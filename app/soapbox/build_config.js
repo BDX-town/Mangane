@@ -13,7 +13,6 @@ const {
   FE_SUBDIRECTORY,
   FE_BUILD_DIR,
   FE_INSTANCE_SOURCE_DIR,
-  SENTRY_DSN,
 } = process.env;
 
 const sanitizeURL = url => {
@@ -44,5 +43,4 @@ module.exports = sanitize({
   FE_SUBDIRECTORY: sanitizeBasename(FE_SUBDIRECTORY),
   FE_BUILD_DIR: sanitizePath(FE_BUILD_DIR) || 'static',
   FE_INSTANCE_SOURCE_DIR: FE_INSTANCE_SOURCE_DIR || 'instance',
-  SENTRY_DSN,
 });

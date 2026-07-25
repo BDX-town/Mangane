@@ -1,40 +1,24 @@
 # Mangane Observability and CI Inventory
 
-Status: **Current / Phase 0 in progress**
+Status: **Phase 0E observability complete; Phase 0G CI baseline remains separate**
 
 Last updated: 2026-07-23
 
-This document records observability, crash-handling, build-time configuration, and CI evidence verified from exact repository paths. It does not claim that all telemetry initialization or workflow files have been enumerated.
+This document records observability, crash-handling, build-time configuration, and CI evidence verified from exact repository paths. Phase 0E now provides a complete generated telemetry authority; the broader CI baseline belongs to Phase 0G.
 
-## 1. Sentry dependency and configuration signals
+## 1. Telemetry baseline
 
-The package manifest declares:
-
-- `@sentry/browser`;
-- `@sentry/react`;
-- `@sentry/tracing`.
-
-`app/soapbox/build_config.js` reads `SENTRY_DSN` from the build process and exports it through a pre-evaluated build configuration object.
-
-Verified limitations:
-
-- the inspected application entry does not initialize Sentry;
-- the inspected root container does not initialize Sentry;
-- the inspected error boundary does not submit errors to Sentry;
-- the inspected webpack environment plugin only exposes `NODE_ENV`, while `SENTRY_DSN` is consumed through the separate pre-evaluation path;
-- no inspected source establishes consent, opt-out, sampling, `beforeSend` redaction, breadcrumb filtering, request-body filtering, authorization-header filtering, user-identity filtering, attachment filtering, or data-retention policy.
-
-Therefore the current evidence classification is:
+Phase 0E removed the dormant Sentry dependencies and `SENTRY_DSN` build input. Complete generated discovery finds no telemetry initialization or capture callsites. The current classification is:
 
 ```text
-Sentry packages: verified present
-SENTRY_DSN build input: verified present
-Runtime initialization: unverified
-Production event emission: unverified
-Consent and redaction: unverified
+Telemetry packages: absent
+Telemetry build input: absent
+Runtime capture callsites: zero
+Production event emission: disabled
+Development diagnostics: local, bounded, redacted before serialization
 ```
 
-Dependency presence or a DSN configuration field must not be treated as proof that Sentry is active or safely configured.
+Production source maps and Redux DevTools are disabled. Future telemetry is blocked by the explicit consent and opt-out contract.
 
 ## 2. Crash handling
 
@@ -96,10 +80,9 @@ Any future remote reporting path must redact before serialization rather than re
 - `BACKEND_URL`;
 - `FE_SUBDIRECTORY`;
 - `FE_BUILD_DIR`;
-- `FE_INSTANCE_SOURCE_DIR`;
-- `SENTRY_DSN`.
+- `FE_INSTANCE_SOURCE_DIR`.
 
-URLs and paths receive limited normalization, while `SENTRY_DSN` is exported without an inspected validation or redaction step.
+URLs and paths receive normalization. Phase 0E removed the former telemetry input.
 
 `webpack/shared.js` also reads instance-supplied `custom/snippets.html` and injects it into HTML template parameters. This is a separate high-risk content boundary requiring deployment and CSP review because build-time instance customization can add arbitrary markup outside React sanitization paths.
 
@@ -109,7 +92,6 @@ Required controls include:
 - explicit distinction between administrator-trusted markup and remote user content;
 - CSP and integrity behavior;
 - secret handling in build logs and generated assets;
-- proof that private DSN credentials are not exposed beyond what browser Sentry clients necessarily require;
 - reproducible-build and environment-variable documentation.
 
 ## 5. Verified package command baseline
@@ -154,33 +136,9 @@ This does not prove that CI is disabled. Possible explanations include:
 
 Until workflows and check runs are directly enumerated, CI enforcement remains **unverified**.
 
-## 7. Mandatory telemetry inventory
+## 7. Completed telemetry inventory
 
-Before Phase 0 closes, enumerate every use of:
-
-- Sentry initialization and integrations;
-- `captureException`, `captureMessage`, scopes, tags and user identity;
-- tracing and performance transactions;
-- console capture and breadcrumbs;
-- network instrumentation;
-- release and environment identifiers;
-- source-map upload;
-- consent and opt-out settings;
-- DSN overrides from instance customization;
-- any other analytics or error-reporting provider.
-
-For every outbound event, document:
-
-- trigger;
-- payload schema;
-- user/account/instance identifiers;
-- post, message, search, draft or media content exposure;
-- URLs and query parameters;
-- headers and request bodies;
-- redaction rules;
-- sampling;
-- retention and processor location;
-- user-visible consent and deletion controls.
+The generated manifest enumerates logging, telemetry, DevTools, source-map, notification, clipboard, environment, error-boundary, and artifact surfaces. It proves zero outbound telemetry events. Production diagnostics are disabled and development diagnostics pass through the central fail-closed redactor.
 
 ## 8. Mandatory CI inventory
 
@@ -204,7 +162,7 @@ No later phase may claim “CI clean” based only on a missing status response.
 
 The target architecture must provide:
 
-- telemetry disabled by default unless the project explicitly approves another policy;
+- telemetry disabled unless a later reviewed opt-in implementation satisfies the consent contract;
 - no raw credentials, authorization headers, request bodies, private content, drafts or search terms in events;
 - deterministic redaction tests;
 - account and instance identifiers minimized or pseudonymized;

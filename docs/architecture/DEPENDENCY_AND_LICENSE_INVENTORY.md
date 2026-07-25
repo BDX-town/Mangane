@@ -9,14 +9,14 @@ Generated from `package.json`, `yarn.lock`, installed package metadata, reposito
 - Machine-readable authority: [`config/dependency-authority-inventory.json`](../../config/dependency-authority-inventory.json)
 - Advisory snapshot: [`config/dependency-advisory-snapshot.json`](../../config/dependency-advisory-snapshot.json)
 - Drift and license checker: [`scripts/check-dependency-authority-inventory.js`](../../scripts/check-dependency-authority-inventory.js)
-- Resolved packages classified: **2015**
-- Direct packages with an owner, purpose, context, and usage evidence: **206**
-- Package names with multiple locked locators or versions: **232**
+- Resolved packages classified: **1993**
+- Direct packages with an owner, purpose, context, and usage evidence: **202**
+- Package names with multiple locked locators or versions: **230**
 - Packages with install scripts: **4**
 - Packages with native-binding indicators: **5**
 - Packages with install-time network indicators: **0**
 - Packages with network-capable package scripts: **45**
-- Packages with code-generation/build script indicators: **662**
+- Packages with code-generation/build script indicators: **658**
 - GitHub Actions use sites reviewed: **26** (24 not commit-pinned)
 
 Every lockfile locator has a classification, execution context, root reachability set, maintenance status, license disposition, install behavior, owner, and purpose in the machine-readable authority. A transitive package may inherit multiple roots and contexts.
@@ -70,9 +70,6 @@ The machine-readable `duplicatePackages` register records every package name wit
 | @reach/tabs | 0.16.4 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | @reach/tooltip | 0.16.2 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | @reduxjs/toolkit | 1.9.7 | runtime | browser | frontend-runtime-maintainers | 4 | none-recorded |
-| @sentry/browser | 7.120.4 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
-| @sentry/react | 7.120.4 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
-| @sentry/tracing | 7.120.4 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | @tabler/icons | 1.119.0 | runtime | browser, test | frontend-runtime-maintainers | 121 | none-recorded |
 | @tailwindcss/forms | 0.4.1 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
 | @tailwindcss/typography | 0.5.19 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
@@ -83,7 +80,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | @testing-library/user-event | 14.6.1 | test-only | test | test-infrastructure-maintainers | 10 | none-recorded |
 | @types/escape-html | 1.0.4 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/http-link-header | 1.0.7 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
-| @types/jest | 28.1.8 | build-only | build | build-and-release-maintainers | 2 | none-recorded |
+| @types/jest | 28.1.8 | build-only | build | build-and-release-maintainers | 3 | none-recorded |
 | @types/lodash | 4.17.24 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/object-assign | 4.0.33 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/object-fit-images | 3.2.5 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
@@ -128,7 +125,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | cssnano | 5.1.15 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | danger | 11.3.1 | build-only | node | build-and-release-maintainers | 1 | none-recorded |
 | detect-passive-events | 2.0.3 | runtime | browser | frontend-runtime-maintainers | 5 | none-recorded |
-| dompurify | 3.4.12 | runtime | browser, build | frontend-runtime-maintainers | 2 | none-recorded |
+| dompurify | 3.4.12 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | dotenv | 8.6.0 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
 | eld | 2.0.3 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | emoji-datasource | 5.0.0 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
@@ -164,7 +161,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | iso-639-1 | 3.1.5 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | jest-environment-jsdom | 28.1.3 | development-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | jest-junit | 14.0.1 | development-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
-| jest | 28.1.3 | build-only | build | build-and-release-maintainers | 2 | none-recorded |
+| jest | 28.1.3 | build-only | build | build-and-release-maintainers | 3 | none-recorded |
 | jsdoc | 3.6.11 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
 | libphonenumber-js | 1.12.41 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | line-awesome | 1.3.0 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
@@ -232,10 +229,9 @@ The machine-readable `duplicatePackages` register records every package name wit
 | tslib | 2.8.1 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | twemoji | 14.0.2 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | typescript | 4.9.5 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
-| util | 0.12.5 | build-only | node | build-and-release-maintainers | 17 | none-recorded |
+| util | 0.12.5 | build-only | node | build-and-release-maintainers | 18 | none-recorded |
 | uuid | 8.3.2 | runtime | browser | frontend-runtime-maintainers | 7 | none-recorded |
 | webpack-assets-manifest | 5.2.1 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
-| webpack-bundle-analyzer | 4.10.2 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
 | webpack-cli | 4.10.0 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | webpack-deadcode-plugin | 0.1.17 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
 | webpack-dev-server | 4.9.1 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
@@ -253,7 +249,6 @@ The machine-readable `duplicatePackages` register records every package name wit
 | (MIT OR Apache-2.0) | 2 | declared | retain-applicable-copyright-license-and-notice-text |
 | (MIT OR CC0-1.0) | 5 | declared | retain-applicable-copyright-license-and-notice-text, retain-provenance-and-confirm-jurisdictional-treatment |
 | (MPL-2.0 OR Apache-2.0) | 1 | declared | copyleft-source-and-license-compliance-review, retain-applicable-copyright-license-and-notice-text |
-| (WTFPL OR MIT) | 1 | declared | retain-applicable-copyright-license-and-notice-text |
 | 0BSD | 2 | declared | retain-provenance-and-confirm-jurisdictional-treatment |
 | Apache 2 | 1 | non-spdx-or-ambiguous-declaration | retain-applicable-copyright-license-and-notice-text |
 | Apache-2.0 | 47 | declared | retain-applicable-copyright-license-and-notice-text |
@@ -270,7 +265,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | CC0-1.0 | 5 | declared | retain-provenance-and-confirm-jurisdictional-treatment |
 | ISC | 110 | declared | retain-applicable-copyright-license-and-notice-text |
 | LicenseRef-TaffyDB-Ambiguous | 1 | conflict-requires-removal-or-counsel | legal-review-before-distribution |
-| MIT | 1720 | declared, verified-from-distribution | retain-applicable-copyright-license-and-notice-text |
+| MIT | 1699 | declared, verified-from-distribution | retain-applicable-copyright-license-and-notice-text |
 | MIT/X11 | 1 | non-spdx-or-ambiguous-declaration | retain-applicable-copyright-license-and-notice-text |
 | MPL-2.0 | 3 | declared | copyleft-source-and-license-compliance-review |
 | Public Domain | 1 | non-spdx-or-ambiguous-declaration | retain-provenance-and-confirm-jurisdictional-treatment |
@@ -290,7 +285,7 @@ Mangane remains AGPL-3.0-or-later. This inventory records dependency declaration
 | @babel/compat-data | 7.29.0 | false | false | false | true | true | @babel/core, @babel/plugin-proposal-object-rest-spread, @babel/plugin-transform-runtime, @babel/preset-env, @jest/globals, babel-jest, babel-plugin-react-intl, eslint-plugin-react-hooks, jest, stylelint |
 | @babel/preset-modules | 0.1.6-no-external-plugins | false | false | false | false | true | @babel/preset-env |
 | @bcoe/v8-coverage | 0.2.3 | false | false | false | false | true | jest |
-| @discoveryjs/json-ext | 0.5.7 | false | false | false | false | true | webpack-bundle-analyzer, webpack-cli |
+| @discoveryjs/json-ext | 0.5.7 | false | false | false | false | true | webpack-cli |
 | @emoji-mart/data | 1.2.1 | false | false | false | false | true | @emoji-mart/data |
 | @emoji-mart/react | 1.1.1 | false | false | false | false | true | @emoji-mart/react |
 | @es-joy/jsdoccomment | 0.46.0 | false | false | false | false | true | eslint-plugin-jsdoc |
@@ -351,10 +346,9 @@ Mangane remains AGPL-3.0-or-later. This inventory records dependency declaration
 | @webassemblyjs/floating-point-hex-parser | 1.13.2 | false | false | false | false | true | webpack |
 | @xtuc/long | 4.2.2 | false | false | false | false | true | webpack |
 | acorn-walk | 7.2.0 | false | false | false | false | true | jest-environment-jsdom |
-| acorn-walk | 8.3.5 | false | false | false | false | true | webpack-bundle-analyzer |
 | acorn | 5.7.4 | false | false | false | false | true | @lcdp/offline-plugin |
 | acorn | 7.4.1 | false | false | false | false | true | eslint, jest-environment-jsdom |
-| acorn | 8.16.0 | false | false | false | false | true | eslint-plugin-jsdoc, html-webpack-plugin, jest-environment-jsdom, terser-webpack-plugin, webpack, webpack-bundle-analyzer |
+| acorn | 8.16.0 | false | false | false | false | true | eslint-plugin-jsdoc, html-webpack-plugin, jest-environment-jsdom, terser-webpack-plugin, webpack |
 | agent-base | 6.0.2 | false | false | false | false | true | danger, jest-environment-jsdom |
 | ajv-formats | 2.1.1 | false | false | false | false | true | babel-plugin-react-intl, mini-css-extract-plugin, terser-webpack-plugin, webpack, webpack-dev-server |
 | ajv-keywords | 3.5.2 | false | false | false | false | true | babel-loader, babel-plugin-react-intl, copy-webpack-plugin, fork-ts-checker-webpack-plugin, webpack-assets-manifest |
@@ -583,10 +577,10 @@ Mangane remains AGPL-3.0-or-later. This inventory records dependency declaration
 | hasown | 2.0.3 | false | false | false | false | true | @babel/plugin-transform-runtime, @babel/preset-env, @lcdp/offline-plugin, @testing-library/react, array-includes, axios, babel-eslint, babel-plugin-preval, commit-and-tag-version, danger, eslint-plugin-import, eslint-plugin-jsx-a11y, eslint-plugin-react, is-nan, jest, jest-environment-jsdom, object.values, react-intl-translations-manager, stylelint, tailwindcss, util, webpack-cli, webpack-dev-server |
 | he | 1.2.0 | false | false | false | false | true | html-webpack-plugin |
 | history | 4.10.1 | false | false | false | false | true | history, react-router-dom |
-| hoist-non-react-statics | 3.3.2 | false | false | false | false | true | @sentry/react, react-intl, react-redux, react-router-dom |
+| hoist-non-react-statics | 3.3.2 | false | false | false | false | true | react-intl, react-redux, react-router-dom |
 | hosted-git-info | 4.1.0 | false | false | false | false | true | commit-and-tag-version, stylelint |
 | html-entities | 2.6.0 | false | false | false | false | true | webpack-dev-server |
-| html-escaper | 2.0.2 | false | false | false | false | true | jest, webpack-bundle-analyzer |
+| html-escaper | 2.0.2 | false | false | false | false | true | jest |
 | html-minifier-terser | 6.1.0 | false | false | false | false | true | html-webpack-plugin |
 | html-webpack-harddisk-plugin | 2.0.0 | false | false | false | false | true | html-webpack-harddisk-plugin |
 | html-webpack-plugin | 5.6.7 | false | false | false | false | true | html-webpack-plugin |
@@ -598,7 +592,7 @@ Mangane remains AGPL-3.0-or-later. This inventory records dependency declaration
 | icss-utils | 5.1.0 | false | false | false | false | true | css-loader |
 | ignore | 4.0.6 | false | false | false | false | true | eslint |
 | ignore | 5.3.2 | false | false | false | false | true | @typescript-eslint/eslint-plugin, @typescript-eslint/parser, copy-webpack-plugin, stylelint |
-| immediate | 3.0.6 | false | false | false | false | true | @sentry/browser, @sentry/react, localforage |
+| immediate | 3.0.6 | false | false | false | false | true | localforage |
 | immer | 9.0.21 | false | false | false | false | true | @reduxjs/toolkit |
 | import-meta-resolve | 4.2.0 | false | false | false | false | true | @commitlint/cli |
 | imports-loader | 4.0.1 | false | false | false | false | true | imports-loader |
@@ -674,12 +668,12 @@ Mangane remains AGPL-3.0-or-later. This inventory records dependency declaration
 | known-css-properties | 0.21.0 | false | false | false | true | true | stylelint |
 | language-tags | 1.0.9 | false | false | false | false | true | eslint-plugin-jsx-a11y |
 | libphonenumber-js | 1.12.41 | false | false | false | false | true | libphonenumber-js |
-| lie | 3.1.1 | false | false | false | false | true | @sentry/browser, @sentry/react, localforage |
+| lie | 3.1.1 | false | false | false | false | true | localforage |
 | lilconfig | 2.1.0 | false | false | false | false | true | cssnano |
 | lines-and-columns | 1.2.4 | false | false | false | false | true | @commitlint/cli, babel-plugin-preval, commit-and-tag-version, fork-ts-checker-webpack-plugin, jest, postcss-loader, stylelint, tailwindcss |
 | linkify-it | 3.0.3 | false | false | false | false | true | jsdoc |
 | listr2 | 9.0.5 | false | false | false | false | true | lint-staged |
-| localforage | 1.10.0 | false | false | false | false | true | @sentry/browser, @sentry/react, localforage |
+| localforage | 1.10.0 | false | false | false | false | true | localforage |
 | lodash-es | 4.18.1 | false | false | false | true | false | react-color |
 | lodash.camelcase | 4.3.0 | false | false | false | true | false | @commitlint/cli |
 | lodash.debounce | 4.0.8 | false | false | false | true | false | @babel/plugin-transform-runtime, @babel/preset-env |
@@ -737,7 +731,6 @@ Mangane remains AGPL-3.0-or-later. This inventory records dependency declaration
 | minimist | 1.2.8 | false | false | false | false | true | @commitlint/cli, @lcdp/offline-plugin, commit-and-tag-version, danger, eslint-plugin-import, react-intl-translations-manager, stylelint |
 | minipass | 7.1.3 | false | false | false | false | true | @jest/globals, @lcdp/offline-plugin, babel-jest, fork-ts-checker-webpack-plugin, jest, sass, tailwindcss, webpack-dev-server |
 | minizlib | 3.1.0 | false | false | false | false | true | @jest/globals, @lcdp/offline-plugin, babel-jest, fork-ts-checker-webpack-plugin, jest, sass, tailwindcss, webpack-dev-server |
-| mrmime | 2.0.1 | false | false | false | false | true | webpack-bundle-analyzer |
 | nan | 2.26.2 | false | true | false | false | false | @lcdp/offline-plugin |
 | natural-compare-lite | 1.4.0 | false | false | false | false | true | @typescript-eslint/eslint-plugin |
 | natural-compare | 1.4.0 | false | false | false | false | true | @jest/globals, eslint, jest |
@@ -906,7 +899,6 @@ Mangane remains AGPL-3.0-or-later. This inventory records dependency declaration
 | tiny-warning | 1.0.3 | false | false | false | false | true | @reach/menu-button, @reach/popover, @reach/portal, @reach/rect, @reach/tabs, @reach/tooltip, history, react-router-dom |
 | tinyexec | 1.1.1 | false | false | false | false | true | @commitlint/cli, lint-staged |
 | tinyglobby | 0.2.16 | false | false | false | false | true | @jest/globals, @lcdp/offline-plugin, babel-jest, fork-ts-checker-webpack-plugin, jest, sass, tailwindcss, webpack-dev-server |
-| totalist | 3.0.1 | false | false | false | false | true | webpack-bundle-analyzer |
 | tr46 | 0.0.3 | false | false | false | false | true | danger |
 | tr46 | 2.1.0 | false | false | false | false | true | fake-indexeddb |
 | tr46 | 3.0.0 | false | false | false | false | true | jest-environment-jsdom |
@@ -950,7 +942,6 @@ Mangane remains AGPL-3.0-or-later. This inventory records dependency declaration
 | webextension-polyfill-ts | 0.25.0 | false | false | false | false | true | @metamask/providers |
 | webextension-polyfill | 0.12.0 | false | false | false | false | true | @metamask/providers |
 | webextension-polyfill | 0.7.0 | false | false | false | false | true | @metamask/providers |
-| webpack-bundle-analyzer | 4.10.2 | false | false | false | false | true | webpack-bundle-analyzer |
 | webpack-dev-middleware | 5.3.4 | false | false | false | false | true | webpack-dev-server |
 | webpack-dev-server | 4.9.1 | false | false | false | false | true | webpack-dev-server |
 | webpack-merge | 5.10.0 | false | false | false | false | true | webpack-cli, webpack-merge |

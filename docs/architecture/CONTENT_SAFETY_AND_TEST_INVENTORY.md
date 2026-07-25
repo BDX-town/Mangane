@@ -4,7 +4,7 @@ Status: **Current / Phase 0D content-safety work complete**
 
 Last updated: 2026-07-25
 
-This document records content-safety and test-harness behavior verified directly from the current repository. Phase 0D's complete sink inventory and adversarial safety boundary are now executable; the broader Phase 0G CI/test baseline and Phase 0E telemetry work remain separate.
+This document records content-safety and test-harness behavior verified directly from the current repository. Phase 0D's sink boundary and Phase 0E's telemetry/redaction boundary are executable; the broader Phase 0G CI/test baseline remains separate.
 
 ## 1. Shared HTML utilities
 
@@ -159,9 +159,8 @@ Verified:
 
 Not yet verified in this separate test/CI workstream:
 
-- exact Sentry initialization, consent and redaction behavior;
 - all GitHub Actions workflows and required checks;
 - actual baseline test, lint, build and coverage outcomes;
 - browser and accessibility test coverage.
 
-These remaining items belong to Phase 0E–0G rather than Phase 0D.
+These remaining items belong to Phase 0G rather than Phase 0D.

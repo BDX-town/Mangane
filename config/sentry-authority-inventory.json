@@ -1,50 +1,1100 @@
 {
-  "schemaVersion": 1,
-  "status": "verified-current-bounded",
-  "dependencies": {
-    "@sentry/browser": "^7.2.0",
-    "@sentry/react": "^7.2.0",
-    "@sentry/tracing": "^7.2.0"
+  "schemaVersion": 2,
+  "status": "phase-0e-verified",
+  "telemetry": {
+    "productionEnabled": false,
+    "providers": [],
+    "sentryDependenciesPresent": false,
+    "sentryDsnBuildInputPresent": false,
+    "consentRequiredToEnableFutureTelemetry": true,
+    "optOutRequiredToEnableFutureTelemetry": true
   },
-  "lockfileResolutions": {
-    "@sentry/browser": {
-      "selector": "@sentry/browser@npm:^7.2.0",
-      "version": "7.120.4",
-      "resolution": "@sentry/browser@npm:7.120.4",
-      "checksum": "11cf09f94847f230698d3218c73d09e372a9ffefa039203d6c6bf64c7b8ac38c6452a760f40b2df798562a625031bf0ac92eb87c3380df4e8164a3da0aaaf216"
+  "diagnostics": {
+    "module": "app/soapbox/utils/diagnostics.ts",
+    "productionPolicy": "disabled-except-fixed-self-xss-notice",
+    "developmentPolicy": "local-only-redacted-bounded",
+    "serializationFailurePolicy": "replace-or-drop-never-raw",
+    "maxDepth": 6,
+    "maxKeys": 50,
+    "maxStringLength": 2048,
+    "maxTotalCharacters": 16384
+  },
+  "buildArtifacts": {
+    "productionSourceMaps": false,
+    "developmentSourceMaps": true,
+    "uploadedArtifacts": [
+      "architecture-inventory"
+    ],
+    "artifactRetentionDays": 30,
+    "artifactContainsRuntimeContent": false
+  },
+  "callsites": [
+    {
+      "id": "artifact-upload:.github/workflows/architecture-inventory.yml:107",
+      "kind": "artifact-upload",
+      "path": ".github/workflows/architecture-inventory.yml",
+      "line": 107,
+      "expression": "uses: actions/upload-artifact@v4",
+      "classification": "ci-controlled-artifact"
     },
-    "@sentry/react": {
-      "selector": "@sentry/react@npm:^7.2.0",
-      "version": "7.120.4",
-      "resolution": "@sentry/react@npm:7.120.4",
-      "checksum": "fdb84a475ebe016cda5df49cd01d51ef648eff1df6557a141f214c712f90dca6cc4dbe3fe33ff3152aeec61db39734a66d215f3664c726c3dd9b1dc3e6a6800c"
+    {
+      "id": "console:app/application.ts:18",
+      "kind": "console",
+      "path": "app/application.ts",
+      "line": 18,
+      "expression": "console.error(e);",
+      "classification": "startup-guarded-local-diagnostic"
     },
-    "@sentry/tracing": {
-      "selector": "@sentry/tracing@npm:^7.2.0",
-      "version": "7.120.4",
-      "resolution": "@sentry/tracing@npm:7.120.4",
-      "checksum": "d2a85d896acb229ca40ace559b65087f9b0a41f7596b5a015c4ac4533d4344410d858b1723c0eebffb0d6acdf01be558dfb4d85258652d3e1cdac8c207612319"
+    {
+      "id": "console:app/soapbox/actions/__tests__/rules.test.ts:24",
+      "kind": "console",
+      "path": "app/soapbox/actions/__tests__/rules.test.ts",
+      "line": 24,
+      "expression": "}).catch(console.error);",
+      "classification": "test-only"
+    },
+    {
+      "id": "console:app/soapbox/actions/__tests__/statuses.test.ts:28",
+      "kind": "console",
+      "path": "app/soapbox/actions/__tests__/statuses.test.ts",
+      "line": 28,
+      "expression": "}).catch(console.error);",
+      "classification": "test-only"
+    },
+    {
+      "id": "console:app/soapbox/actions/alerts.ts:66",
+      "kind": "console",
+      "path": "app/soapbox/actions/alerts.ts",
+      "line": 66,
+      "expression": "console.error(error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/actions/emoji_reacts.ts:49",
+      "kind": "console",
+      "path": "app/soapbox/actions/emoji_reacts.ts",
+      "line": 49,
+      "expression": "console.error(err);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/actions/me.ts:63",
+      "kind": "console",
+      "path": "app/soapbox/actions/me.ts",
+      "line": 63,
+      "expression": "KVStore.setItem(`authAccount:${account.url}`, account).catch(console.error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "notification-payload:app/soapbox/actions/notifications.ts:119",
+      "kind": "notification-payload",
+      "path": "app/soapbox/actions/notifications.ts",
+      "line": 119,
+      "expression": "serviceWorkerRegistration.showNotification(title, {",
+      "classification": "phase-0c-governed-sensitive-browser-surface"
+    },
+    {
+      "id": "console:app/soapbox/actions/notifications.ts:126",
+      "kind": "console",
+      "path": "app/soapbox/actions/notifications.ts",
+      "line": 126,
+      "expression": "}).catch(console.error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/actions/notifications.ts:127",
+      "kind": "console",
+      "path": "app/soapbox/actions/notifications.ts",
+      "line": 127,
+      "expression": "}).catch(console.error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/actions/notifications.ts:130",
+      "kind": "console",
+      "path": "app/soapbox/actions/notifications.ts",
+      "line": 130,
+      "expression": "console.warn(e);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/actions/push_notifications/registerer.ts:72",
+      "kind": "console",
+      "path": "app/soapbox/actions/push_notifications/registerer.ts",
+      "line": 72,
+      "expression": "console.warn('Your browser does not support Web Push Notifications.');",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/actions/push_notifications/registerer.ts:77",
+      "kind": "console",
+      "path": "app/soapbox/actions/push_notifications/registerer.ts",
+      "line": 77,
+      "expression": "console.error('The VAPID public key is not set. You will not be able to receive Web Push Notifications.');",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/actions/push_notifications/registerer.ts:123",
+      "kind": "console",
+      "path": "app/soapbox/actions/push_notifications/registerer.ts",
+      "line": 123,
+      "expression": "console.warn('Your browser supports Web Push Notifications, but does not seem to implement the VAPID protocol.');",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/actions/push_notifications/registerer.ts:125",
+      "kind": "console",
+      "path": "app/soapbox/actions/push_notifications/registerer.ts",
+      "line": 125,
+      "expression": "console.error('The VAPID public key seems to be invalid:', vapidKey);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/actions/push_notifications/registerer.ts:139",
+      "kind": "console",
+      "path": "app/soapbox/actions/push_notifications/registerer.ts",
+      "line": 139,
+      "expression": ".catch(console.warn);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/actions/push_notifications/registerer.ts:153",
+      "kind": "console",
+      "path": "app/soapbox/actions/push_notifications/registerer.ts",
+      "line": 153,
+      "expression": "}).catch(console.warn);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/actions/statuses.ts:102",
+      "kind": "console",
+      "path": "app/soapbox/actions/statuses.ts",
+      "line": 102,
+      "expression": "}).catch(console.error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/actions/streaming.ts:83",
+      "kind": "console",
+      "path": "app/soapbox/actions/streaming.ts",
+      "line": 83,
+      "expression": "console.error(error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "environment-read:app/soapbox/build_config.js:16",
+      "kind": "environment-read",
+      "path": "app/soapbox/build_config.js",
+      "line": 16,
+      "expression": "} = process.env;",
+      "classification": "application-surface"
+    },
+    {
+      "id": "clipboard:app/soapbox/components/autosuggest_textarea.tsx:194",
+      "kind": "clipboard",
+      "path": "app/soapbox/components/autosuggest_textarea.tsx",
+      "line": 194,
+      "expression": "if (e.clipboardData && e.clipboardData.files.length === 1) {",
+      "classification": "application-surface"
+    },
+    {
+      "id": "clipboard:app/soapbox/components/autosuggest_textarea.tsx:194",
+      "kind": "clipboard",
+      "path": "app/soapbox/components/autosuggest_textarea.tsx",
+      "line": 194,
+      "expression": "if (e.clipboardData && e.clipboardData.files.length === 1) {",
+      "classification": "application-surface"
+    },
+    {
+      "id": "clipboard:app/soapbox/components/autosuggest_textarea.tsx:195",
+      "kind": "clipboard",
+      "path": "app/soapbox/components/autosuggest_textarea.tsx",
+      "line": 195,
+      "expression": "this.props.onPaste(e.clipboardData.files);",
+      "classification": "application-surface"
+    },
+    {
+      "id": "console:app/soapbox/components/blurhash.tsx:50",
+      "kind": "console",
+      "path": "app/soapbox/components/blurhash.tsx",
+      "line": 50,
+      "expression": "console.error('Blurhash decoding failure', { err, hash });",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "error-boundary:app/soapbox/components/error_boundary.tsx:44",
+      "kind": "error-boundary",
+      "path": "app/soapbox/components/error_boundary.tsx",
+      "line": 44,
+      "expression": "componentDidCatch(error: any, info: any): void {",
+      "classification": "application-surface"
+    },
+    {
+      "id": "console:app/soapbox/components/status-action-bar.tsx:443",
+      "kind": "console",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "line": 443,
+      "expression": "if (e.name !== 'AbortError') console.error(e);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/features/account/components/header.tsx:348",
+      "kind": "console",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "line": 348,
+      "expression": "if (e.name !== 'AbortError') console.error(e);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/features/audio/index.js:343",
+      "kind": "console",
+      "path": "app/soapbox/features/audio/index.js",
+      "line": 343,
+      "expression": "console.error(err);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/features/auth_login/components/logout.tsx:16",
+      "kind": "console",
+      "path": "app/soapbox/features/auth_login/components/logout.tsx",
+      "line": 16,
+      "expression": ".catch(console.warn);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/features/developers/apps/create.tsx:70",
+      "kind": "console",
+      "path": "app/soapbox/features/developers/apps/create.tsx",
+      "line": 70,
+      "expression": "console.error(error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/features/edit_email/index.tsx:46",
+      "kind": "console",
+      "path": "app/soapbox/features/edit_email/index.tsx",
+      "line": 46,
+      "expression": "console.error(msg);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/features/edit_profile/index.tsx:229",
+      "kind": "console",
+      "path": "app/soapbox/features/edit_profile/index.tsx",
+      "line": 229,
+      "expression": "console.error(e);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/features/edit_profile/index.tsx:287",
+      "kind": "console",
+      "path": "app/soapbox/features/edit_profile/index.tsx",
+      "line": 287,
+      "expression": "}).catch(console.error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/features/external_login/components/external-login-form.tsx:38",
+      "kind": "console",
+      "path": "app/soapbox/features/external_login/components/external-login-form.tsx",
+      "line": 38,
+      "expression": "console.error(error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/features/onboarding/steps/avatar-selection-step.tsx:75",
+      "kind": "console",
+      "path": "app/soapbox/features/onboarding/steps/avatar-selection-step.tsx",
+      "line": 75,
+      "expression": "}).catch(console.error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/features/onboarding/steps/cover-photo-selection-step.tsx:76",
+      "kind": "console",
+      "path": "app/soapbox/features/onboarding/steps/cover-photo-selection-step.tsx",
+      "line": 76,
+      "expression": "}).catch(console.error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/features/soapbox_config/index.tsx:147",
+      "kind": "console",
+      "path": "app/soapbox/features/soapbox_config/index.tsx",
+      "line": 147,
+      "expression": "}).catch(console.error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/features/status/index.tsx:455",
+      "kind": "console",
+      "path": "app/soapbox/features/status/index.tsx",
+      "line": 455,
+      "expression": "console.error(e);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/features/status/index.tsx:476",
+      "kind": "console",
+      "path": "app/soapbox/features/status/index.tsx",
+      "line": 476,
+      "expression": "console.error(e);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/features/ui/index.tsx:408",
+      "kind": "console",
+      "path": "app/soapbox/features/ui/index.tsx",
+      "line": 408,
+      "expression": "console.warn('Unknown message type:', data.type);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/features/ui/index.tsx:436",
+      "kind": "console",
+      "path": "app/soapbox/features/ui/index.tsx",
+      "line": 436,
+      "expression": ".catch(console.error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/jest/test-helpers.tsx:34",
+      "kind": "console",
+      "path": "app/soapbox/jest/test-helpers.tsx",
+      "line": 34,
+      "expression": "log: console.log,",
+      "classification": "test-only"
+    },
+    {
+      "id": "console:app/soapbox/jest/test-helpers.tsx:35",
+      "kind": "console",
+      "path": "app/soapbox/jest/test-helpers.tsx",
+      "line": 35,
+      "expression": "warn: console.warn,",
+      "classification": "test-only"
+    },
+    {
+      "id": "console:app/soapbox/locales/messages.ts:24",
+      "kind": "console",
+      "path": "app/soapbox/locales/messages.ts",
+      "line": 24,
+      "expression": "console.error(error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/main.tsx:48",
+      "kind": "console",
+      "path": "app/soapbox/main.tsx",
+      "line": 48,
+      "expression": "console.debug('Service worker installing');",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/main.tsx:50",
+      "kind": "console",
+      "path": "app/soapbox/main.tsx",
+      "line": 50,
+      "expression": "console.debug('Service worker installed');",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/main.tsx:52",
+      "kind": "console",
+      "path": "app/soapbox/main.tsx",
+      "line": 52,
+      "expression": "console.debug('Service worker active');",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/main.tsx:55",
+      "kind": "console",
+      "path": "app/soapbox/main.tsx",
+      "line": 55,
+      "expression": "console.error(`Registration failed with ${error}`);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "notification-payload:app/soapbox/persistence/purge.ts:114",
+      "kind": "notification-payload",
+      "path": "app/soapbox/persistence/purge.ts",
+      "line": 114,
+      "expression": ".filter(notification => !accessToken || notification.data?.access_token === accessToken)",
+      "classification": "phase-0c-governed-sensitive-browser-surface"
+    },
+    {
+      "id": "console:app/soapbox/reducers/auth.js:277",
+      "kind": "console",
+      "path": "app/soapbox/reducers/auth.js",
+      "line": 277,
+      "expression": ".catch(console.error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/reducers/instance.ts:107",
+      "kind": "console",
+      "path": "app/soapbox/reducers/instance.ts",
+      "line": 107,
+      "expression": "KVStore.setItem(`instance:${host}`, instance).catch(console.error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/reducers/soapbox.js:44",
+      "kind": "console",
+      "path": "app/soapbox/reducers/soapbox.js",
+      "line": 44,
+      "expression": "KVStore.setItem(`soapbox_config:${host}`, soapboxConfig.toJS()).catch(console.error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "notification-payload:app/soapbox/service_worker/web_push_notifications.ts:102",
+      "kind": "notification-payload",
+      "path": "app/soapbox/service_worker/web_push_notifications.ts",
+      "line": 102,
+      "expression": "return self.registration.showNotification(group.title, group);",
+      "classification": "phase-0c-governed-sensitive-browser-surface"
+    },
+    {
+      "id": "notification-payload:app/soapbox/service_worker/web_push_notifications.ts:111",
+      "kind": "notification-payload",
+      "path": "app/soapbox/service_worker/web_push_notifications.ts",
+      "line": 111,
+      "expression": "return self.registration.showNotification(group.title, group);",
+      "classification": "phase-0c-governed-sensitive-browser-surface"
+    },
+    {
+      "id": "notification-payload:app/soapbox/service_worker/web_push_notifications.ts:114",
+      "kind": "notification-payload",
+      "path": "app/soapbox/service_worker/web_push_notifications.ts",
+      "line": 114,
+      "expression": "return self.registration.showNotification(options.title, options);",
+      "classification": "phase-0c-governed-sensitive-browser-surface"
+    },
+    {
+      "id": "notification-payload:app/soapbox/service_worker/web_push_notifications.ts:248",
+      "kind": "notification-payload",
+      "path": "app/soapbox/service_worker/web_push_notifications.ts",
+      "line": 248,
+      "expression": "newNotification.actions = [actionReblog(notification.data.preferred_locale), actionFavourite(notification.data.preferred_locale)];",
+      "classification": "phase-0c-governed-sensitive-browser-surface"
+    },
+    {
+      "id": "notification-payload:app/soapbox/service_worker/web_push_notifications.ts:248",
+      "kind": "notification-payload",
+      "path": "app/soapbox/service_worker/web_push_notifications.ts",
+      "line": 248,
+      "expression": "newNotification.actions = [actionReblog(notification.data.preferred_locale), actionFavourite(notification.data.preferred_locale)];",
+      "classification": "phase-0c-governed-sensitive-browser-surface"
+    },
+    {
+      "id": "notification-payload:app/soapbox/service_worker/web_push_notifications.ts:250",
+      "kind": "notification-payload",
+      "path": "app/soapbox/service_worker/web_push_notifications.ts",
+      "line": 250,
+      "expression": "return self.registration.showNotification(newNotification.title, newNotification);",
+      "classification": "phase-0c-governed-sensitive-browser-surface"
+    },
+    {
+      "id": "notification-payload:app/soapbox/service_worker/web_push_notifications.ts:259",
+      "kind": "notification-payload",
+      "path": "app/soapbox/service_worker/web_push_notifications.ts",
+      "line": 259,
+      "expression": "return self.registration.showNotification(newNotification.title, newNotification);",
+      "classification": "phase-0c-governed-sensitive-browser-surface"
+    },
+    {
+      "id": "notification-payload:app/soapbox/service_worker/web_push_notifications.ts:310",
+      "kind": "notification-payload",
+      "path": "app/soapbox/service_worker/web_push_notifications.ts",
+      "line": 310,
+      "expression": "resolve(openUrl(event.notification.data.url));",
+      "classification": "phase-0c-governed-sensitive-browser-surface"
+    },
+    {
+      "id": "notification-payload:app/soapbox/service_worker/web_push_notifications.ts:324",
+      "kind": "notification-payload",
+      "path": "app/soapbox/service_worker/web_push_notifications.ts",
+      "line": 324,
+      "expression": ".filter(notification => notification.data?.access_token === event.data.accessToken)",
+      "classification": "phase-0c-governed-sensitive-browser-surface"
+    },
+    {
+      "id": "devtools:app/soapbox/store.ts:22",
+      "kind": "devtools",
+      "path": "app/soapbox/store.ts",
+      "line": 22,
+      "expression": "devTools: BuildConfig.NODE_ENV !== 'production',",
+      "classification": "non-production-only"
+    },
+    {
+      "id": "console:app/soapbox/stream.ts:89",
+      "kind": "console",
+      "path": "app/soapbox/stream.ts",
+      "line": 89,
+      "expression": "console.error(e);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/stream.ts:132",
+      "kind": "console",
+      "path": "app/soapbox/stream.ts",
+      "line": 132,
+      "expression": "console.error(e);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/stream.ts:133",
+      "kind": "console",
+      "path": "app/soapbox/stream.ts",
+      "line": 133,
+      "expression": "console.error(`Could not parse the above streaming event.\\n${error}`);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "environment-read:app/soapbox/utils/code.js:19",
+      "kind": "environment-read",
+      "path": "app/soapbox/utils/code.js",
+      "line": 19,
+      "expression": "const { CI_COMMIT_TAG, CI_COMMIT_REF_NAME, CI_COMMIT_SHA } = process.env;",
+      "classification": "application-surface"
+    },
+    {
+      "id": "console:app/soapbox/utils/diagnostics.ts:100",
+      "kind": "console",
+      "path": "app/soapbox/utils/diagnostics.ts",
+      "line": 100,
+      "expression": "debug: console.debug.bind(console),",
+      "classification": "central-redaction-boundary"
+    },
+    {
+      "id": "console:app/soapbox/utils/diagnostics.ts:101",
+      "kind": "console",
+      "path": "app/soapbox/utils/diagnostics.ts",
+      "line": 101,
+      "expression": "error: console.error.bind(console),",
+      "classification": "central-redaction-boundary"
+    },
+    {
+      "id": "console:app/soapbox/utils/diagnostics.ts:102",
+      "kind": "console",
+      "path": "app/soapbox/utils/diagnostics.ts",
+      "line": 102,
+      "expression": "info: console.info.bind(console),",
+      "classification": "central-redaction-boundary"
+    },
+    {
+      "id": "console:app/soapbox/utils/diagnostics.ts:103",
+      "kind": "console",
+      "path": "app/soapbox/utils/diagnostics.ts",
+      "line": 103,
+      "expression": "log: console.log.bind(console),",
+      "classification": "central-redaction-boundary"
+    },
+    {
+      "id": "console:app/soapbox/utils/diagnostics.ts:104",
+      "kind": "console",
+      "path": "app/soapbox/utils/diagnostics.ts",
+      "line": 104,
+      "expression": "warn: console.warn.bind(console),",
+      "classification": "central-redaction-boundary"
+    },
+    {
+      "id": "environment-read:app/soapbox/utils/diagnostics.ts:113",
+      "kind": "environment-read",
+      "path": "app/soapbox/utils/diagnostics.ts",
+      "line": 113,
+      "expression": "const enabled = process.env.NODE_ENV === 'development';",
+      "classification": "central-redaction-boundary"
+    },
+    {
+      "id": "console:app/soapbox/utils/resize_image.ts:247",
+      "kind": "console",
+      "path": "app/soapbox/utils/resize_image.ts",
+      "line": 247,
+      "expression": "console.error(error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "console:app/soapbox/utils/rich_content.ts:21",
+      "kind": "console",
+      "path": "app/soapbox/utils/rich_content.ts",
+      "line": 21,
+      "expression": "console.error(e);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/check-api-transport-authority-inventory.test.js:14",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-api-transport-authority-inventory.test.js",
+      "line": 14,
+      "expression": "env: { ...process.env, API_TRANSPORT_INVENTORY_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
+      "id": "console:scripts/__tests__/check-bootstrap-provider-authority-inventory.test.js:21",
+      "kind": "console",
+      "path": "scripts/__tests__/check-bootstrap-provider-authority-inventory.test.js",
+      "line": 21,
+      "expression": "console.error(e);",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/check-browser-persistence-authority-inventory.test.js:14",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-browser-persistence-authority-inventory.test.js",
+      "line": 14,
+      "expression": "env: { ...process.env, BROWSER_PERSISTENCE_INVENTORY_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/check-dependency-authority-inventory.test.js:43",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-dependency-authority-inventory.test.js",
+      "line": 43,
+      "expression": "env: { ...process.env, DEPENDENCY_INVENTORY_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/check-dependency-authority-inventory.test.js:158",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-dependency-authority-inventory.test.js",
+      "line": 158,
+      "expression": "env: { ...process.env, DEPENDENCY_INVENTORY_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/check-dependency-authority-inventory.test.js:176",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-dependency-authority-inventory.test.js",
+      "line": 176,
+      "expression": "env: { ...process.env, DEPENDENCY_INVENTORY_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/check-error-recovery-authority-inventory.test.js:33",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-error-recovery-authority-inventory.test.js",
+      "line": 33,
+      "expression": "env: { ...process.env, ERROR_RECOVERY_INVENTORY_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/check-html-safety-authority-inventory.test.js:25",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-html-safety-authority-inventory.test.js",
+      "line": 25,
+      "expression": "env: { ...process.env, HTML_SAFETY_INVENTORY_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/check-push-worker-authority-inventory.test.js:14",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-push-worker-authority-inventory.test.js",
+      "line": 14,
+      "expression": "env: { ...process.env, PUSH_WORKER_INVENTORY_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
+      "id": "notification-payload:scripts/__tests__/check-push-worker-authority-inventory.test.js:133",
+      "kind": "notification-payload",
+      "path": "scripts/__tests__/check-push-worker-authority-inventory.test.js",
+      "line": 133,
+      "expression": "'resolve(openUrl(event.notification.data.url))',",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/check-react-query-authority-inventory.test.js:14",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-react-query-authority-inventory.test.js",
+      "line": 14,
+      "expression": "env: { ...process.env, REACT_QUERY_INVENTORY_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/check-redux-authority-inventory.test.js:13",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-redux-authority-inventory.test.js",
+      "line": 13,
+      "expression": "env: { ...process.env, REDUX_INVENTORY_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/check-routing-inventory.test.js:14",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-routing-inventory.test.js",
+      "line": 14,
+      "expression": "env: { ...process.env, ROUTING_INVENTORY_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/check-service-worker-cache-authority-inventory.test.js:14",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-service-worker-cache-authority-inventory.test.js",
+      "line": 14,
+      "expression": "env: { ...process.env, SERVICE_WORKER_CACHE_INVENTORY_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/check-share-target-authority-inventory.test.js:14",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-share-target-authority-inventory.test.js",
+      "line": 14,
+      "expression": "env: { ...process.env, SHARE_TARGET_INVENTORY_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/check-api-transport-authority-inventory.js:6",
+      "kind": "environment-read",
+      "path": "scripts/check-api-transport-authority-inventory.js",
+      "line": 6,
+      "expression": "const root = path.resolve(process.env.API_TRANSPORT_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-bootstrap-provider-authority-inventory.js:6",
+      "kind": "environment-read",
+      "path": "scripts/check-bootstrap-provider-authority-inventory.js",
+      "line": 6,
+      "expression": "const ROOT = path.resolve(process.env.BOOTSTRAP_PROVIDER_INVENTORY_ROOT || path.join(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "console:scripts/check-bootstrap-provider-authority-inventory.js:149",
+      "kind": "console",
+      "path": "scripts/check-bootstrap-provider-authority-inventory.js",
+      "line": 149,
+      "expression": "assertIncludes(application, '.catch(e=>{console.error(e);', 'polyfill failure behavior');",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "console:scripts/check-bootstrap-provider-authority-inventory.js:174",
+      "kind": "console",
+      "path": "scripts/check-bootstrap-provider-authority-inventory.js",
+      "line": 174,
+      "expression": "try { console.log(run()); } catch (error) { console.error(error.message); process.exitCode = 1; }",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "console:scripts/check-bootstrap-provider-authority-inventory.js:174",
+      "kind": "console",
+      "path": "scripts/check-bootstrap-provider-authority-inventory.js",
+      "line": 174,
+      "expression": "try { console.log(run()); } catch (error) { console.error(error.message); process.exitCode = 1; }",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-browser-persistence-authority-inventory.js:6",
+      "kind": "environment-read",
+      "path": "scripts/check-browser-persistence-authority-inventory.js",
+      "line": 6,
+      "expression": "const root = path.resolve(process.env.BROWSER_PERSISTENCE_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-dependency-authority-inventory.js:10",
+      "kind": "environment-read",
+      "path": "scripts/check-dependency-authority-inventory.js",
+      "line": 10,
+      "expression": "const root = path.resolve(process.env.DEPENDENCY_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-error-recovery-authority-inventory.js:6",
+      "kind": "environment-read",
+      "path": "scripts/check-error-recovery-authority-inventory.js",
+      "line": 6,
+      "expression": "const ROOT = path.resolve(process.env.ERROR_RECOVERY_INVENTORY_ROOT || path.join(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "error-boundary:scripts/check-error-recovery-authority-inventory.js:125",
+      "kind": "error-boundary",
+      "path": "scripts/check-error-recovery-authority-inventory.js",
+      "line": 125,
+      "expression": "'componentDidCatch(error: any, info: any): void',",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "console:scripts/check-error-recovery-authority-inventory.js:182",
+      "kind": "console",
+      "path": "scripts/check-error-recovery-authority-inventory.js",
+      "line": 182,
+      "expression": "console.log(run());",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "console:scripts/check-error-recovery-authority-inventory.js:184",
+      "kind": "console",
+      "path": "scripts/check-error-recovery-authority-inventory.js",
+      "line": 184,
+      "expression": "console.error(error.message); process.exitCode = 1;",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-html-safety-authority-inventory.js:9",
+      "kind": "environment-read",
+      "path": "scripts/check-html-safety-authority-inventory.js",
+      "line": 9,
+      "expression": "const root = path.resolve(process.env.HTML_SAFETY_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-live-dependency-advisories.js:12",
+      "kind": "environment-read",
+      "path": "scripts/check-live-dependency-advisories.js",
+      "line": 12,
+      "expression": "const root = path.resolve(process.env.DEPENDENCY_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-network-callsite-manifest.js:8",
+      "kind": "environment-read",
+      "path": "scripts/check-network-callsite-manifest.js",
+      "line": 8,
+      "expression": "const root = path.resolve(process.env.NETWORK_CALLSITE_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-persistence-manifest.js:8",
+      "kind": "environment-read",
+      "path": "scripts/check-persistence-manifest.js",
+      "line": 8,
+      "expression": "const root = path.resolve(process.env.PERSISTENCE_MANIFEST_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-push-worker-authority-inventory.js:6",
+      "kind": "environment-read",
+      "path": "scripts/check-push-worker-authority-inventory.js",
+      "line": 6,
+      "expression": "const root = path.resolve(process.env.PUSH_WORKER_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "notification-payload:scripts/check-push-worker-authority-inventory.js:52",
+      "kind": "notification-payload",
+      "path": "scripts/check-push-worker-authority-inventory.js",
+      "line": 52,
+      "expression": "{ functionName: 'handleNotificationClick', expression: 'resolve(openUrl(event.notification.data.url))' },",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-react-query-authority-inventory.js:6",
+      "kind": "environment-read",
+      "path": "scripts/check-react-query-authority-inventory.js",
+      "line": 6,
+      "expression": "const root = path.resolve(process.env.REACT_QUERY_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-redux-authority-inventory.js:6",
+      "kind": "environment-read",
+      "path": "scripts/check-redux-authority-inventory.js",
+      "line": 6,
+      "expression": "const root = path.resolve(process.env.REDUX_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-routing-inventory.js:6",
+      "kind": "environment-read",
+      "path": "scripts/check-routing-inventory.js",
+      "line": 6,
+      "expression": "const root = path.resolve(process.env.ROUTING_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-service-worker-cache-authority-inventory.js:6",
+      "kind": "environment-read",
+      "path": "scripts/check-service-worker-cache-authority-inventory.js",
+      "line": 6,
+      "expression": "const root = path.resolve(process.env.SERVICE_WORKER_CACHE_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-share-target-authority-inventory.js:6",
+      "kind": "environment-read",
+      "path": "scripts/check-share-target-authority-inventory.js",
+      "line": 6,
+      "expression": "const root = path.resolve(process.env.SHARE_TARGET_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "console:scripts/download-twemoji-assets.js:13",
+      "kind": "console",
+      "path": "scripts/download-twemoji-assets.js",
+      "line": 13,
+      "expression": "console.log(`Downloading twemoji ${TWEMOJI_TAG} SVG assets...`);",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "console:scripts/download-twemoji-assets.js:24",
+      "kind": "console",
+      "path": "scripts/download-twemoji-assets.js",
+      "line": 24,
+      "expression": "console.log('twemoji assets ready.');",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/generate-dependency-authority-inventory.js:13",
+      "kind": "environment-read",
+      "path": "scripts/generate-dependency-authority-inventory.js",
+      "line": 13,
+      "expression": "const root = path.resolve(process.env.DEPENDENCY_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/generate-html-safety-authority-inventory.js:8",
+      "kind": "environment-read",
+      "path": "scripts/generate-html-safety-authority-inventory.js",
+      "line": 8,
+      "expression": "const root = path.resolve(process.env.HTML_SAFETY_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "console:webpack/development.js:2",
+      "kind": "console",
+      "path": "webpack/development.js",
+      "line": 2,
+      "expression": "console.log('Running in development mode'); // eslint-disable-line no-console",
+      "classification": "build-tooling"
+    },
+    {
+      "id": "environment-read:webpack/development.js:19",
+      "kind": "environment-read",
+      "path": "webpack/development.js",
+      "line": 19,
+      "expression": "} = process.env;",
+      "classification": "build-tooling"
+    },
+    {
+      "id": "environment-read:webpack/development.js:60",
+      "kind": "environment-read",
+      "path": "webpack/development.js",
+      "line": 60,
+      "expression": "if (process.env.VAGRANT) {",
+      "classification": "build-tooling"
+    },
+    {
+      "id": "source-map-setting:webpack/development.js:78",
+      "kind": "source-map-setting",
+      "path": "webpack/development.js",
+      "line": 78,
+      "expression": "devtool: 'source-map',",
+      "classification": "build-tooling"
+    },
+    {
+      "id": "console:webpack/production.js:2",
+      "kind": "console",
+      "path": "webpack/production.js",
+      "line": 2,
+      "expression": "console.log('Running in production mode'); // eslint-disable-line no-console",
+      "classification": "build-tooling"
+    },
+    {
+      "id": "source-map-setting:webpack/production.js:16",
+      "kind": "source-map-setting",
+      "path": "webpack/production.js",
+      "line": 16,
+      "expression": "devtool: false,",
+      "classification": "build-tooling"
+    },
+    {
+      "id": "environment-read:webpack/rules/mark.js:1",
+      "kind": "environment-read",
+      "path": "webpack/rules/mark.js",
+      "line": 1,
+      "expression": "if (process.env.NODE_ENV === 'production') {",
+      "classification": "build-tooling"
+    },
+    {
+      "id": "console:webpack/test.js:2",
+      "kind": "console",
+      "path": "webpack/test.js",
+      "line": 2,
+      "expression": "console.log('Running in test mode'); // eslint-disable-line no-console",
+      "classification": "build-tooling"
+    },
+    {
+      "id": "console:webpack/translationRunner.js:43",
+      "kind": "console",
+      "path": "webpack/translationRunner.js",
+      "line": 43,
+      "expression": "console.error(`",
+      "classification": "build-tooling"
+    },
+    {
+      "id": "console:webpack/translationRunner.js:75",
+      "kind": "console",
+      "path": "webpack/translationRunner.js",
+      "line": 75,
+      "expression": "console.error(`",
+      "classification": "build-tooling"
+    },
+    {
+      "id": "console:webpack/translationRunner.js:126",
+      "kind": "console",
+      "path": "webpack/translationRunner.js",
+      "line": 126,
+      "expression": "console.log('unhandled element=', element);",
+      "classification": "build-tooling"
+    },
+    {
+      "id": "console:webpack/translationRunner.js:203",
+      "kind": "console",
+      "path": "webpack/translationRunner.js",
+      "line": 203,
+      "expression": "console.error(`${problems.length} messages found with errors or warnings:`);",
+      "classification": "build-tooling"
+    },
+    {
+      "id": "console:webpack/translationRunner.js:204",
+      "kind": "console",
+      "path": "webpack/translationRunner.js",
+      "line": 204,
+      "expression": "console.error('\\nLoc\\tIssue            \\tMessage ID');",
+      "classification": "build-tooling"
+    },
+    {
+      "id": "console:webpack/translationRunner.js:205",
+      "kind": "console",
+      "path": "webpack/translationRunner.js",
+      "line": 205,
+      "expression": "console.error('-'.repeat(60));",
+      "classification": "build-tooling"
+    },
+    {
+      "id": "console:webpack/translationRunner.js:209",
+      "kind": "console",
+      "path": "webpack/translationRunner.js",
+      "line": 209,
+      "expression": "console.error(`${color}${problem.language}\\t${problem.type}\\t${problem.id}\\x1b[0m`);",
+      "classification": "build-tooling"
+    },
+    {
+      "id": "console:webpack/translationRunner.js:211",
+      "kind": "console",
+      "path": "webpack/translationRunner.js",
+      "line": 211,
+      "expression": "console.error('\\n');",
+      "classification": "build-tooling"
     }
-  },
-  "configurationSurface": {
-    "path": "app/soapbox/build_config.js",
-    "environmentKey": "SENTRY_DSN",
-    "requiredFragments": [
-      "SENTRY_DSN,",
-      "SENTRY_DSN,"
-    ]
+  ],
+  "counts": {
+    "artifact-upload": 1,
+    "console": 73,
+    "notification-payload": 13,
+    "environment-read": 36,
+    "clipboard": 3,
+    "error-boundary": 2,
+    "devtools": 1,
+    "source-map-setting": 2
   },
   "invariants": {
-    "dependencyPresenceDoesNotProveRuntimeInitialization": true,
-    "dsnExposureDoesNotProveConsentOrRedaction": true,
-    "productionTelemetryRequiresFailClosedRedaction": true,
-    "runtimeActivationRemainsBlockedUntilVerified": true,
-    "trackedLockfileControlsInstalledSentryCode": true
-  },
-  "explicitUnknowns": [
-    "Repository-wide Sentry initialization and capture call-site enumeration remains incomplete.",
-    "Consent, opt-out, sampling, retention and environment policy are not verified.",
-    "Event, breadcrumb, request, account and credential redaction behavior is not proven.",
-    "Source-map publication, release naming and build-artifact secret exposure remain unverified."
-  ]
+    "everyLoggingAndTelemetryCallsiteRepresented": true,
+    "productionTelemetryDisabled": true,
+    "redactionBeforeDevelopmentSerialization": true,
+    "productionDeveloperToolsDisabled": true,
+    "productionSourceMapsDisabled": true,
+    "hostileGettersAndToJsonNotInvoked": true,
+    "futureTelemetryRequiresConsentOptOutSamplingRetentionDeletion": true
+  }
 }

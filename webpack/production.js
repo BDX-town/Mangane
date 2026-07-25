@@ -4,7 +4,6 @@ console.log('Running in production mode'); // eslint-disable-line no-console
 const { join } = require('path');
 
 const OfflinePlugin = require('@lcdp/offline-plugin');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { merge } = require('webpack-merge');
 
 const sharedConfig = require('./shared');
@@ -14,20 +13,17 @@ const joinPublicPath = (...paths) => join(FE_SUBDIRECTORY, ...paths);
 
 module.exports = merge(sharedConfig, {
   mode: 'production',
-  devtool: 'source-map',
+  devtool: false,
   stats: 'errors-warnings',
   bail: true,
+  output: {
+    clean: true,
+  },
   optimization: {
     minimize: true,
   },
 
   plugins: [
-    // Generates report.html
-    new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-      openAnalyzer: false,
-      logLevel: 'silent',
-    }),
     new OfflinePlugin({
       autoUpdate: true,
       caches: {

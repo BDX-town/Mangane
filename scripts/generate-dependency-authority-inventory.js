@@ -7,6 +7,7 @@ const path = require('node:path');
 const {
   buildInventory,
   parseAuditJsonLines,
+  parseLockfile,
 } = require('./dependency-inventory-lib');
 
 const root = path.resolve(process.env.DEPENDENCY_INVENTORY_ROOT || path.resolve(__dirname, '..'));
@@ -15,7 +16,10 @@ if (auditIndex === -1 || !process.argv[auditIndex + 1]) {
   throw new Error('usage: node scripts/generate-dependency-authority-inventory.js --audit <yarn-audit.jsonl>');
 }
 
-const auditRows = parseAuditJsonLines(path.resolve(process.argv[auditIndex + 1]));
+const auditRowsFromRegistry = parseAuditJsonLines(path.resolve(process.argv[auditIndex + 1]));
+const resolved = parseLockfile(path.join(root, 'yarn.lock')).entries;
+const auditRows = auditRowsFromRegistry.filter(advisory =>
+  resolved.some(entry => entry.name === advisory.package && advisory.treeVersions.includes(entry.version)));
 const inventory = buildInventory({ root, auditRows });
 const configDirectory = path.join(root, 'config');
 const docsDirectory = path.join(root, 'docs', 'architecture');

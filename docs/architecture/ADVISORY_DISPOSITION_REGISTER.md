@@ -2,7 +2,7 @@
 
 Status: **Current Phase 0A evidence**
 
-Audit snapshot totals: 4 critical, 50 high, 107 moderate, and 8 low findings. Deprecation notices emitted by Yarn are retained in the same snapshot.
+Audit snapshot totals: 4 critical, 49 high, 107 moderate, and 8 low findings. Deprecation notices emitted by Yarn are retained in the same snapshot.
 
 High and critical findings require a reachability record, owner, status, and concrete action. None is dismissed solely for being transitive. “Potentially reachable” is fail-closed: it remains remediation-required until an affected-code-path test or upgrade proves otherwise.
 
@@ -61,6 +61,5 @@ High and critical findings require a reachability record, owner, status, and con
 | high | undici 7.25.0 | [1121247](https://github.com/advisories/GHSA-hm92-r4w5-c3mj) | lockfile-present-no-execution-path-proven | cheerio | build-and-release-maintainers | upgrade-or-remove-before-phase-0g-baseline |
 | critical | websocket-driver 0.7.4 | [1123483](https://github.com/advisories/GHSA-xv26-6w52-cph6) | build-or-development-time-reachable | webpack-dev-server | build-and-release-maintainers | upgrade-or-remove-before-phase-0g-baseline |
 | high | ws 8.20.0 | [1123259](https://github.com/advisories/GHSA-96hv-2xvq-fx4p) | build-or-development-time-reachable | jest-environment-jsdom, webpack-dev-server | build-and-release-maintainers | upgrade-or-remove-before-phase-0g-baseline |
-| high | ws 7.5.10 | [1123260](https://github.com/advisories/GHSA-96hv-2xvq-fx4p) | build-or-development-time-reachable | webpack-bundle-analyzer | build-and-release-maintainers | upgrade-or-remove-before-phase-0g-baseline |
 
 Moderate and low findings remain in `config/dependency-advisory-snapshot.json` and the machine-readable inventory. Their lower severity does not constitute acceptance; they are tracked for the replacement and baseline work.

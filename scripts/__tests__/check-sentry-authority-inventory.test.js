@@ -1,87 +1,85 @@
 'use strict';
 
 const assert = require('node:assert/strict');
+const { spawnSync } = require('node:child_process');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { execFileSync } = require('node:child_process');
 const test = require('node:test');
 
 const repositoryRoot = path.resolve(__dirname, '..', '..');
-const script = path.join(repositoryRoot, 'scripts', 'check-sentry-authority-inventory.js');
-const run = (root = repositoryRoot) => execFileSync(process.execPath, [script], {
-  cwd: root,
-  env: { ...process.env, SENTRY_AUTHORITY_INVENTORY_ROOT: root },
-  encoding: 'utf8',
-  stdio: ['ignore', 'pipe', 'pipe'],
-});
-
+const checker = path.join(repositoryRoot, 'scripts', 'check-sentry-authority-inventory.js');
 const fixture = () => {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'sentry-authority-'));
-  for (const relativePath of ['config/sentry-authority-inventory.json', 'package.json', 'yarn.lock', 'app/soapbox/build_config.js']) {
-    const destination = path.join(root, relativePath);
-    fs.mkdirSync(path.dirname(destination), { recursive: true });
-    fs.copyFileSync(path.join(repositoryRoot, relativePath), destination);
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'telemetry-authority-'));
+  for (const relative of ['app', 'webpack', 'scripts', '.github', 'config/sentry-authority-inventory.json', 'package.json', 'yarn.lock']) {
+    fs.cpSync(path.join(repositoryRoot, relative), path.join(root, relative), { recursive: true });
   }
   return root;
 };
-const mutate = (root, relativePath, transform) => {
-  const target = path.join(root, relativePath);
+const run = root => spawnSync(process.execPath, [checker], {
+  cwd: repositoryRoot,
+  env: { ...process.env, SENTRY_AUTHORITY_INVENTORY_ROOT: root },
+  encoding: 'utf8',
+});
+const mutate = (root, relative, transform) => {
+  const target = path.join(root, relative);
   fs.writeFileSync(target, transform(fs.readFileSync(target, 'utf8')));
 };
-const assertRunFails = (root, pattern) => assert.throws(() => run(root), error => pattern.test(`${error.stderr || ''}\n${error.message || ''}`));
+const fails = (root, pattern) => {
+  const result = run(root);
+  assert.notEqual(result.status, 0);
+  assert.match(`${result.stderr}\n${result.stdout}`, pattern);
+};
 
-test('verifies the bounded current Sentry authority inventory', () => {
-  const report = JSON.parse(run());
-  assert.equal(report.checkedDependencies, 3);
-  assert.equal(report.checkedLockfileResolutions, 3);
-  assert.equal(report.configurationKey, 'SENTRY_DSN');
-  assert.equal(report.explicitUnknowns, 4);
+test('verifies the complete Phase 0E telemetry authority', () => {
+  const result = run(repositoryRoot);
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(JSON.parse(result.stdout).productionTelemetry, false);
 });
 
-test('fails when a Sentry dependency range drifts without reconciliation', () => {
+test('fails when a logging callsite is added without reconciliation', () => {
   const root = fixture();
-  mutate(root, 'package.json', source => source.replace('"@sentry/react": "^7.2.0"', '"@sentry/react": "^8.0.0"'));
-  assertRunFails(root, /package dependency @sentry\/react changed/);
+  fs.writeFileSync(path.join(root, 'app/soapbox/new-log.ts'), 'console.error(\'new\');\n');
+  fails(root, /manifest drifted/);
 });
 
-test('fails when a Sentry lockfile resolution drifts', () => {
+test('fails when telemetry code or a provider returns', () => {
   const root = fixture();
-  mutate(root, 'yarn.lock', source => source.replace('resolution: "@sentry/react@npm:7.120.4"', 'resolution: "@sentry/react@npm:7.120.5"'));
-  assertRunFails(root, /lockfile resolution for @sentry\/react changed/);
-});
-
-test('fails when a Sentry lockfile checksum drifts', () => {
-  const root = fixture();
-  mutate(root, 'yarn.lock', source => source.replace(
-    'checksum: d2a85d896acb229ca40ace559b65087f9b0a41f7596b5a015c4ac4533d4344410d858b1723c0eebffb0d6acdf01be558dfb4d85258652d3e1cdac8c207612319',
-    'checksum: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-  ));
-  assertRunFails(root, /lockfile resolution for @sentry\/tracing changed/);
-});
-
-test('fails when the build-time DSN surface disappears', () => {
-  const root = fixture();
-  mutate(root, 'app/soapbox/build_config.js', source => source.replace('  SENTRY_DSN,\n} = process.env;', '} = process.env;'));
-  assertRunFails(root, /no longer contains Sentry configuration evidence/);
-});
-
-test('fails when runtime activation uncertainty is silently removed', () => {
-  const root = fixture();
-  mutate(root, 'config/sentry-authority-inventory.json', source => {
-    const manifest = JSON.parse(source);
-    manifest.explicitUnknowns.shift();
-    return `${JSON.stringify(manifest, null, 2)}\n`;
+  mutate(root, 'package.json', source => {
+    const packageJson = JSON.parse(source);
+    packageJson.dependencies['@sentry/browser'] = '7.120.4';
+    return `${JSON.stringify(packageJson, null, 2)}\n`;
   });
-  assertRunFails(root, /explicitUnknowns changed|required explicit unknown/);
+  fails(root, /manifest drifted|Sentry dependencies/);
 });
 
-test('rejects configuration paths escaping the repository root', () => {
+test('fails when a high-confidence secret is added to a fixture', () => {
   const root = fixture();
-  mutate(root, 'config/sentry-authority-inventory.json', source => {
-    const manifest = JSON.parse(source);
-    manifest.configurationSurface.path = '../outside.js';
-    return `${JSON.stringify(manifest, null, 2)}\n`;
-  });
-  assertRunFails(root, /configuration surface changed|unsafe configuration path/);
+  const fakeToken = `ghp_${'abcdefghijklmnopqrstuvwxyz1234567890'}`;
+  fs.writeFileSync(path.join(root, 'app/soapbox/__fixtures__/leak.ts'), `export const token = '${fakeToken}';\n`);
+  fails(root, /manifest drifted|secret candidate/);
+});
+
+test('fails when startup redaction is removed', () => {
+  const root = fixture();
+  mutate(root, 'app/application.ts', source => source.replace('installDiagnosticConsolePolicy();', ''));
+  fails(root, /install diagnostic protection/);
+});
+
+test('fails when production source maps return', () => {
+  const root = fixture();
+  mutate(root, 'webpack/production.js', source => source.replace('devtool: false', 'devtool: \'source-map\''));
+  fails(root, /manifest drifted|source maps/);
+});
+
+test('fails when stale production artifacts are no longer cleaned', () => {
+  const root = fixture();
+  mutate(root, 'webpack/production.js', source => source.replace('clean: true', 'clean: false'));
+  fails(root, /output must be cleaned/);
+});
+
+test('fails when production Redux DevTools are enabled', () => {
+  const root = fixture();
+  mutate(root, 'app/soapbox/store.ts', source => source.replace('BuildConfig.NODE_ENV !== \'production\'', 'true'));
+  fails(root, /manifest drifted|Redux DevTools/);
 });

@@ -2374,20 +2374,6 @@
       ],
       "url": "https://github.com/advisories/GHSA-96hv-2xvq-fx4p",
       "vulnerableVersions": ">=8.0.0 <8.21.0"
-    },
-    {
-      "advisoryId": "1123260",
-      "dependents": [
-        "webpack-bundle-analyzer@npm:4.10.2"
-      ],
-      "issue": "ws: Memory exhaustion DoS from tiny fragments and data chunks",
-      "package": "ws",
-      "severity": "high",
-      "treeVersions": [
-        "7.5.10"
-      ],
-      "url": "https://github.com/advisories/GHSA-96hv-2xvq-fx4p",
-      "vulnerableVersions": ">=7.0.0 <7.5.11"
     }
   ]
 }

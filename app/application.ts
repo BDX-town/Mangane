@@ -1,4 +1,7 @@
 import loadPolyfills from './soapbox/load_polyfills';
+import { installDiagnosticConsolePolicy } from './soapbox/utils/diagnostics';
+
+installDiagnosticConsolePolicy();
 
 require('manifest.json');
 
