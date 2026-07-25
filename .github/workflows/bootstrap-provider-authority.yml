@@ -1,0 +1,46 @@
+name: Bootstrap provider authority
+
+on:
+  pull_request:
+    paths:
+      - 'app/application.ts'
+      - 'app/soapbox/main.tsx'
+      - 'app/soapbox/containers/soapbox.tsx'
+      - 'config/bootstrap-provider-authority-inventory.json'
+      - 'docs/architecture/BOOTSTRAP_PROVIDER_AUTHORITY_DRIFT_GATE.md'
+      - 'scripts/check-bootstrap-provider-authority-inventory.js'
+      - 'scripts/__tests__/check-bootstrap-provider-authority-inventory.test.js'
+      - '.github/workflows/bootstrap-provider-authority.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/application.ts'
+      - 'app/soapbox/main.tsx'
+      - 'app/soapbox/containers/soapbox.tsx'
+      - 'config/bootstrap-provider-authority-inventory.json'
+      - 'docs/architecture/BOOTSTRAP_PROVIDER_AUTHORITY_DRIFT_GATE.md'
+      - 'scripts/check-bootstrap-provider-authority-inventory.js'
+      - 'scripts/__tests__/check-bootstrap-provider-authority-inventory.test.js'
+      - '.github/workflows/bootstrap-provider-authority.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bootstrap-provider-authority-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  authority:
+    name: Verify bootstrap and root providers
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Verify authority inventory
+        run: node scripts/check-bootstrap-provider-authority-inventory.js
+      - name: Run focused adversarial tests
+        run: node --test scripts/__tests__/check-bootstrap-provider-authority-inventory.test.js
