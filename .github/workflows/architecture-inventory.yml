@@ -6,6 +6,7 @@ on:
       - 'app/**'
       - 'config/**'
       - 'docs/architecture/BOOTSTRAP_PROVIDER_AUTHORITY_DRIFT_GATE.md'
+      - 'docs/architecture/ERROR_RECOVERY_AUTHORITY_DRIFT_GATE.md'
       - 'docs/architecture/PUSH_WORKER_AUTHORITY_DRIFT_GATE.md'
       - 'docs/architecture/REACT_QUERY_AUTHORITY_DRIFT_GATE.md'
       - 'docs/architecture/SHARE_TARGET_AUTHORITY_DRIFT_GATE.md'
@@ -22,6 +23,7 @@ on:
       - 'app/**'
       - 'config/**'
       - 'docs/architecture/BOOTSTRAP_PROVIDER_AUTHORITY_DRIFT_GATE.md'
+      - 'docs/architecture/ERROR_RECOVERY_AUTHORITY_DRIFT_GATE.md'
       - 'docs/architecture/PUSH_WORKER_AUTHORITY_DRIFT_GATE.md'
       - 'docs/architecture/REACT_QUERY_AUTHORITY_DRIFT_GATE.md'
       - 'docs/architecture/SHARE_TARGET_AUTHORITY_DRIFT_GATE.md'
@@ -63,6 +65,7 @@ jobs:
           node scripts/check-share-target-authority-inventory.js
           node scripts/check-service-worker-cache-authority-inventory.js
           node scripts/check-bootstrap-provider-authority-inventory.js
+          node scripts/check-error-recovery-authority-inventory.js
       - name: Generate JSON and Markdown inventories
         shell: bash
         run: |
