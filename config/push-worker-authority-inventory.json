@@ -14,6 +14,22 @@
       "return client.navigate(url).then(client => client?.focus());",
       "self.addEventListener('push', handlePush);",
       "self.addEventListener('notificationclick', handleNotificationClick);"
+    ],
+    "requiredCallSiteBindings": [
+      "fetchFromApi(`/api/v1/notifications/${notification_id}`, 'get', access_token)",
+      "fetchFromApi(`/api/v1/statuses/${data.id}/reblog`, 'post', data.access_token)",
+      "fetchFromApi(`/api/v1/statuses/${data.id}/favourite`, 'post', data.access_token)",
+      "resolve(openUrl(event.notification.data.url))"
+    ]
+  },
+  "canonicalDocumentation": {
+    "path": "docs/architecture/PUSH_WORKER_AUTHORITY_DRIFT_GATE.md",
+    "requiredFragments": [
+      "A passing gate does **not** mean this behavior is safe or accepted target architecture.",
+      "Credential-bearing notification data is a release-blocking legacy boundary",
+      "The gate exists so the behavior cannot silently change, disappear from documentation, or be mistaken for a completed security contract.",
+      "safe same-origin notification destination policy",
+      "replacement of notification-resident bearer tokens with scoped session or action-capability handling"
     ]
   },
   "invariants": {
