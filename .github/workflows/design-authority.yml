@@ -1,0 +1,49 @@
+name: Design and accessibility authority
+
+on:
+  pull_request:
+    paths:
+      - 'app/soapbox/components/**'
+      - 'app/soapbox/containers/**'
+      - 'app/soapbox/features/**'
+      - 'app/soapbox/pages/**'
+      - 'app/styles/**'
+      - 'config/component-ownership-manifest.json'
+      - 'config/design-component-authority-inventory.json'
+      - 'docs/architecture/**'
+      - 'scripts/**design**'
+      - 'scripts/__tests__/check-design-component-authority-inventory.test.js'
+      - 'tailwind/**'
+      - 'tailwind.config.js'
+      - 'package.json'
+      - '.github/workflows/design-authority.yml'
+  push:
+    branches: [develop]
+    paths:
+      - 'app/soapbox/components/**'
+      - 'app/soapbox/containers/**'
+      - 'app/soapbox/features/**'
+      - 'app/soapbox/pages/**'
+      - 'app/styles/**'
+      - 'config/component-ownership-manifest.json'
+      - 'config/design-component-authority-inventory.json'
+      - 'scripts/**design**'
+      - 'tailwind/**'
+      - 'tailwind.config.js'
+
+permissions:
+  contents: read
+
+jobs:
+  design-authority:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 20
+      - name: Verify design, component, icon, interaction, and accessibility authority
+        run: node scripts/check-design-component-authority-inventory.js
+      - name: Run authority mutation tests
+        run: node --test scripts/__tests__/check-design-component-authority-inventory.test.js

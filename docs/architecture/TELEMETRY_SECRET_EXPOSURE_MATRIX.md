@@ -4,7 +4,7 @@ Status: **Phase 0E complete / executable**
 
 Last verified: 2026-07-25
 
-The row-level authority is `config/sentry-authority-inventory.json`. It currently classifies 131 callsites across console diagnostics, build environment reads, browser notifications, clipboard handling, error boundaries, developer tooling, source-map configuration, and CI artifact upload. Telemetry-capture callsites are zero.
+The row-level authority is `config/sentry-authority-inventory.json`. It currently classifies 133 callsites across console diagnostics, build environment reads, browser notifications, clipboard handling, error boundaries, developer tooling, source-map configuration, and CI artifact upload. Telemetry-capture callsites are zero.
 
 | Surface | Potential data | Phase 0E boundary | Retention / deletion |
 |---|---|---|---|

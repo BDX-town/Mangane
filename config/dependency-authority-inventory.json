@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "status": "current-phase-0a-evidence",
   "sourceDigests": {
-    "packageJsonSha256": "5971415398e93c6c6ced83460b40e7eecb7fae42bf9396d39bf76252a0813e17",
+    "packageJsonSha256": "29867440877dba639fb5f5085bf1c86d2071d742389e672d5716514b3668164a",
     "twemojiDownloaderSha256": "97939496d78e1037a3755847962b1b249936d960abcbb5aa35d6676134212ab7",
     "yarnLockSha256": "85a7c17bcd8fb4768989b5ad11b4f9d9c6cdb407cb44a8a1f55431ca0eec0110"
   },
@@ -19,7 +19,7 @@
     }
   },
   "summary": {
-    "actionUses": 26,
+    "actionUses": 28,
     "advisories": {
       "critical": 4,
       "high": 49,
@@ -110971,6 +110971,22 @@
       "line": 55,
       "local": false,
       "path": ".github/workflows/dependency-authority.yml",
+      "pinnedToCommit": true,
+      "ref": "49933ea5288caeca8642d1e84afbd3f7d6820020"
+    },
+    {
+      "action": "actions/checkout",
+      "line": 42,
+      "local": false,
+      "path": ".github/workflows/design-authority.yml",
+      "pinnedToCommit": true,
+      "ref": "11bd71901bbe5b1630ceea73d27597364c9af683"
+    },
+    {
+      "action": "actions/setup-node",
+      "line": 43,
+      "local": false,
+      "path": ".github/workflows/design-authority.yml",
       "pinnedToCommit": true,
       "ref": "49933ea5288caeca8642d1e84afbd3f7d6820020"
     },

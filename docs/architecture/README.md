@@ -47,6 +47,12 @@ Target architecture must always be read alongside the verified repository eviden
 - [`SENTRY_AUTHORITY_DRIFT_GATE.md`](./SENTRY_AUTHORITY_DRIFT_GATE.md) — executable complete telemetry, logging, DevTools, source-map, environment, notification, clipboard, and artifact drift gate;
 - [`TELEMETRY_CONSENT_AND_OPT_OUT_CONTRACT.md`](./TELEMETRY_CONSENT_AND_OPT_OUT_CONTRACT.md) — disabled-by-default baseline and mandatory future opt-in, opt-out, sampling, retention, and deletion controls;
 - [`SOURCE_MAP_AND_BUILD_ARTIFACT_POLICY.md`](./SOURCE_MAP_AND_BUILD_ARTIFACT_POLICY.md) — production source-map prohibition and classified CI artifact policy;
+- [`DESIGN_AND_COMPONENT_INVENTORY.md`](./DESIGN_AND_COMPONENT_INVENTORY.md) — completed Phase 0F component ownership, classification, duplicate-authority, Framework7 compatibility, and executable drift boundary;
+- [`ICON_MIGRATION_MATRIX.md`](./ICON_MIGRATION_MATRIX.md) — exhaustive generated icon-callsite dispositions and the guarded Phosphor migration contract;
+- [`STYLE_AND_TOKEN_SOURCE_MAP.md`](./STYLE_AND_TOKEN_SOURCE_MAP.md) — Sass, Tailwind, runtime-theme, inline-style, responsive and RTL ownership;
+- [`KEYBOARD_AND_GESTURE_INVENTORY.md`](./KEYBOARD_AND_GESTURE_INVENTORY.md) — keyboard, focus, gesture and non-gesture-alternative baseline;
+- [`ACCESSIBILITY_BEHAVIOR_MATRIX.md`](./ACCESSIBILITY_BEHAVIOR_MATRIX.md) — reduced motion, focus, live-region, target-size, contrast, reflow and localization baseline;
+- [`SCREENSHOT_AND_INTERACTION_BASELINE_PLAN.md`](./SCREENSHOT_AND_INTERACTION_BASELINE_PLAN.md) — privacy-safe visual and semantic regression capture plan;
 - [`TEST_AND_CI_BASELINE.md`](./TEST_AND_CI_BASELINE.md) — verified package test commands, Jest coverage boundaries, observed CI gaps, and the required workflow/job matrix;
 - [`BACKEND_CAPABILITY_MATRIX.md`](./BACKEND_CAPABILITY_MATRIX.md) — canonical evidence structure for Akkoma, Pleroma, Mastodon-compatible, and Mangane-specific backend capabilities and fallbacks;
 - [`STATE_AUTHORITY_AND_DUPLICATION_MATRIX.md`](./STATE_AUTHORITY_AND_DUPLICATION_MATRIX.md) — canonical ownership, duplication, persistence, purge, and synchronization matrix for application state;

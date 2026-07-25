@@ -61,8 +61,8 @@ Every inventory entry must record:
 | Persistence | Complete generated callsite manifest plus 12-surface behavioral authority; ordered/resumable logout purge covers HTTP/stream generation fences, cross-tab propagation, query cache, Redux, serialized credentials, snapshots, owned caches, restart-durable worker revocation, push, notifications and tracked object URLs; bounded origin reset covers all browser stores and workers | Phase 0C complete | preserve drift gates and conformance tests during later migrations | Phases 4, 5, 6 |
 | Service worker/PWA | production plugin, push and share-target handlers inspected | Partial | cache runtime, authenticated responses, push lifecycle, update rollback and scope-conflict tests | Phase 4 |
 | Sanitization/content safety | 157 generated production callsites; DOMPurify 3.4.12 policy; 44 HTML sinks; central destination policy; raw card HTML blocked; sandboxed sanitized oEmbed; adversarial XSS/protocol corpus and CI drift gate | Phase 0D complete | preserve exact sanitizer, destination and sink-discovery gates during later rendering work | Phases 1, 8, 9, 29 |
-| Telemetry/logging/redaction | 131 generated callsites; remote telemetry and Sentry removed; production diagnostics, source maps and Redux DevTools disabled; development redaction is bounded and hostile-object safe | Phase 0E complete | future telemetry remains blocked on explicit consent, opt-out, sampling, retention and deletion | Phases 1, 29, 31 |
-| Design/icons/styles | dependency-level overlap and theme/accessibility classes inspected | Partial | import/call-site inventory, generated theme contract, Sass/Tailwind ownership and active icon usage | Phase 2 |
+| Telemetry/logging/redaction | 133 generated callsites; remote telemetry and Sentry removed; production diagnostics, source maps and Redux DevTools disabled; development redaction is bounded and hostile-object safe | Phase 0E complete | future telemetry remains blocked on explicit consent, opt-out, sampling, retention and deletion | Phases 1, 29, 31 |
+| Design/icons/styles | 468 production component/supporting UI modules owned/classified; every style entry and icon callsite generated; keyboard/focus/gesture/motion/a11y callsites inventoried; duplicate authorities explicit; global reduced-motion and labeled live-region baselines executable | Phase 0F complete | preserve drift gates; execute privacy-safe browser screenshot, contrast, target-size and interaction baselines in Phase 0G/2 | Phase 2 |
 | Tests/CI | package scripts and Jest configuration inspected | Partial | workflows, jobs, setup files, browser/worker coverage, flake behavior and baseline outcomes | Every phase |
 | Dependencies/licenses | complete lockfile and direct-root inventory, licenses, install/native/network behavior, action uses, live advisory snapshot, high/critical reachability dispositions and replacement queue | Substantial; remediation open | resolve runtime/trusted-install P0 items, TaffyDB license conflict, unverified direct declarations and non-SHA action refs | Phases 0, 29, 31 |
 | Documentation/history | canonical target docs identified | Partial | old roadmaps and architecture docs classified and requirement-mapped | Every phase |
@@ -132,6 +132,8 @@ Required stores include localForage, IndexedDB, localStorage, sessionStorage, Ca
 |---|---|---|---|---|---|---|---|---|---|
 
 The final inventory must preserve reduced motion, underlined links, dyslexic font, demetrication, generated themes, dark mode, shortcuts, deep links, non-gesture alternatives and focus restoration.
+
+Phase 0F provides this as generated `config/design-component-authority-inventory.json`, the component ownership projection, six presentation evidence documents, and the dedicated design-authority CI gate. Generated counts are reviewed from the manifest rather than copied as permanent assertions in this ledger.
 
 ## 10. Test and CI evidence
 

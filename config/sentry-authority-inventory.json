@@ -670,6 +670,14 @@
       "classification": "test-only"
     },
     {
+      "id": "environment-read:scripts/__tests__/check-design-component-authority-inventory.test.js:21",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-design-component-authority-inventory.test.js",
+      "line": 21,
+      "expression": "env: { ...process.env, DESIGN_AUTHORITY_INVENTORY_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
       "id": "environment-read:scripts/__tests__/check-error-recovery-authority-inventory.test.js:33",
       "kind": "environment-read",
       "path": "scripts/__tests__/check-error-recovery-authority-inventory.test.js",
@@ -795,6 +803,14 @@
       "path": "scripts/check-dependency-authority-inventory.js",
       "line": 10,
       "expression": "const root = path.resolve(process.env.DEPENDENCY_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-design-component-authority-inventory.js:9",
+      "kind": "environment-read",
+      "path": "scripts/check-design-component-authority-inventory.js",
+      "line": 9,
+      "expression": "const root = path.resolve(process.env.DESIGN_AUTHORITY_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
       "classification": "repository-tooling"
     },
     {
@@ -1082,7 +1098,7 @@
     "artifact-upload": 1,
     "console": 73,
     "notification-payload": 13,
-    "environment-read": 36,
+    "environment-read": 38,
     "clipboard": 3,
     "error-boundary": 2,
     "devtools": 1,

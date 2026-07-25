@@ -69,7 +69,14 @@ const SnackbarContainer: React.FC = () => {
   const notifications = alerts.toArray().map(buildAlert);
 
   return (
-    <div role='assertive' data-testid='toast' className='z-1000 fixed inset-0 flex items-start px-4 pointer-events-none pt-4'>
+    <div
+      role='region'
+      aria-live='assertive'
+      aria-atomic='false'
+      aria-label={intl.formatMessage({ id: 'notifications.live_region.label', defaultMessage: 'Application notifications' })}
+      data-testid='toast'
+      className='z-1000 fixed inset-0 flex items-start px-4 pointer-events-none pt-4'
+    >
       <NotificationStack
         onDismiss={onDismiss}
         onClick={onDismiss}
