@@ -1,0 +1,44 @@
+name: Error recovery authority
+
+on:
+  pull_request:
+    paths:
+      - 'app/soapbox/components/error_boundary.tsx'
+      - 'app/soapbox/containers/soapbox.tsx'
+      - 'app/soapbox/storage/kv_store.ts'
+      - 'config/error-recovery-authority-inventory.json'
+      - 'docs/architecture/ERROR_RECOVERY_AUTHORITY_DRIFT_GATE.md'
+      - 'scripts/check-error-recovery-authority-inventory.js'
+      - 'scripts/__tests__/check-error-recovery-authority-inventory.test.js'
+      - '.github/workflows/error-recovery-authority.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'app/soapbox/components/error_boundary.tsx'
+      - 'app/soapbox/containers/soapbox.tsx'
+      - 'app/soapbox/storage/kv_store.ts'
+      - 'config/error-recovery-authority-inventory.json'
+      - 'docs/architecture/ERROR_RECOVERY_AUTHORITY_DRIFT_GATE.md'
+      - 'scripts/check-error-recovery-authority-inventory.js'
+      - 'scripts/__tests__/check-error-recovery-authority-inventory.test.js'
+      - '.github/workflows/error-recovery-authority.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: error-recovery-authority-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  authority:
+    name: Verify error recovery boundary
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify authority inventory
+        run: node scripts/check-error-recovery-authority-inventory.js
+      - name: Run focused adversarial tests
+        run: node --test scripts/__tests__/check-error-recovery-authority-inventory.test.js

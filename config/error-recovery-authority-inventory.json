@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-current-bounded",
+  "boundary": {
+    "path": "app/soapbox/components/error_boundary.tsx",
+    "component": "ErrorBoundary",
+    "captureMethod": "componentDidCatch",
+    "productionDetailsHidden": true,
+    "developmentCopyUsesExecCommand": true
+  },
+  "recovery": {
+    "handler": "clearCookies",
+    "clears": ["localStorage", "sessionStorage", "KVStore"],
+    "serviceWorkerAction": "unregister-all",
+    "navigation": "location.href = '/'",
+    "preventsDefaultOnlyWhenServiceWorkerSupported": true,
+    "awaitsKvStoreClear": false
+  },
+  "kvStore": {
+    "path": "app/soapbox/storage/kv_store.ts",
+    "technology": "localforage-indexeddb",
+    "name": "soapbox",
+    "storeName": "keyvaluepairs"
+  },
+  "invariants": [
+    "the root mounted application is wrapped by ErrorBoundary",
+    "render failures switch the boundary into an explicit error state",
+    "production hides error and browser details",
+    "emergency recovery clears localStorage sessionStorage and the configured KVStore",
+    "emergency recovery attempts to unregister every service worker registration",
+    "recovery navigates to the origin root rather than the configured frontend basename"
+  ],
+  "unknowns": [
+    "bootstrap failures before React mount are outside the root error boundary",
+    "KVStore.clear is not awaited before navigation or service-worker unregistration",
+    "Cache Storage is not explicitly cleared by emergency recovery",
+    "cookies are not explicitly cleared despite the clear-cookies label",
+    "service-worker unregister failure is swallowed by unconditional navigation",
+    "recovery does not prove account instance or deployment scoped purge completeness",
+    "configured frontend subdirectory deployments may navigate to the wrong recovery root",
+    "copy uses deprecated document.execCommand without an explicit failure result",
+    "error and component-stack data may contain sensitive content in non-production builds",
+    "dynamic browser-parser failure is silently ignored"
+  ]
+}
