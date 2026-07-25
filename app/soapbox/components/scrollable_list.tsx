@@ -87,7 +87,7 @@ const ScrollableList = React.forwardRef<HTMLElement, IScrollableList>(({
   // useEffect(() => console.log("set", scrollableParent), [scrollableParent]);
 
   return (
-    <Ruisseau ref={findScrollableParent} {...rest} onSeeking={onSeeking} start={start} name={scrollKey} className={`grow ${className}`} onEnd={onEnd} disabled={firstRender && isLoading} scrollElement={scrollableParent}>
+    <Ruisseau ref={findScrollableParent} {...rest} onSeeking={onSeeking} start={start} name={scrollKey} className={`grow ${className}`} onEnd={onEnd} scrollElement={scrollableParent}>
       {prepend}
       {children}
       {React.Children.count(children) === 0 && !isLoading && (
