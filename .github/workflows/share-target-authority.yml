@@ -1,0 +1,42 @@
+name: Share target authority
+
+on:
+  pull_request:
+    paths:
+      - 'app/soapbox/service_worker/share_target.js'
+      - 'app/soapbox/main.tsx'
+      - 'config/share-target-authority-inventory.json'
+      - 'docs/architecture/SHARE_TARGET_AUTHORITY_DRIFT_GATE.md'
+      - 'scripts/check-share-target-authority-inventory.js'
+      - 'scripts/__tests__/check-share-target-authority-inventory.test.js'
+      - '.github/workflows/share-target-authority.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/soapbox/service_worker/share_target.js'
+      - 'app/soapbox/main.tsx'
+      - 'config/share-target-authority-inventory.json'
+      - 'docs/architecture/SHARE_TARGET_AUTHORITY_DRIFT_GATE.md'
+      - 'scripts/check-share-target-authority-inventory.js'
+      - 'scripts/__tests__/check-share-target-authority-inventory.test.js'
+      - '.github/workflows/share-target-authority.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: share-target-authority-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify bounded share target authority inventory
+        run: node scripts/check-share-target-authority-inventory.js
+      - name: Run focused share target authority tests
+        run: node --test scripts/__tests__/check-share-target-authority-inventory.test.js
