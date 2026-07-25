@@ -24,7 +24,7 @@ The following remain explicit blockers:
 - prove that credential-bearing and account-private API responses cannot enter Cache Storage;
 - scope cache ownership by deployment, version, instance, and account where private data can exist;
 - define cache schema, migration, rollback, quota, corruption, and stale-worker recovery behavior;
-- ensure logout and account switching receive deterministic cache-purge tests;
+- logout and account switching must receive deterministic cache-purge tests;
 - verify worker update activation across multiple tabs and incompatible application versions;
 - verify redirect, credential mode, content-type, and cross-origin asset behavior;
 - test production edge rewrite precedence and backend-route completeness.
