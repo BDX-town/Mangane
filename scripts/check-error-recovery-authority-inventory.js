@@ -35,15 +35,38 @@ const read = relativePath => {
 const exact = (actual, expected, label) => {
   if (JSON.stringify(actual) !== JSON.stringify(expected)) fail(`${label} changed without reconciliation`);
 };
-const executable = source => {
+
+const scan = (source, preserveLiterals) => {
   let out = '', i = 0;
   while (i < source.length) {
     const c = source[i], n = source[i + 1];
-    if (c === '/' && n === '/') { i += 2; while (i < source.length && source[i] !== '\n') i++; continue; }
-    if (c === '/' && n === '*') { const end = source.indexOf('*/', i + 2); if (end < 0) fail('unterminated block comment'); i = end + 2; continue; }
+    if (c === '/' && n === '/') {
+      i += 2;
+      while (i < source.length && source[i] !== '\n') i++;
+      continue;
+    }
+    if (c === '/' && n === '*') {
+      const end = source.indexOf('*/', i + 2);
+      if (end < 0) fail('unterminated block comment');
+      i = end + 2;
+      continue;
+    }
     if (c === '"' || c === "'" || c === '`') {
-      const q = c; out += c; i++;
-      while (i < source.length) { out += source[i]; if (source[i] === '\\') { i++; if (i < source.length) out += source[i]; } else if (source[i] === q) { i++; break; } i++; }
+      const q = c;
+      if (preserveLiterals) out += c;
+      i++;
+      while (i < source.length) {
+        if (preserveLiterals) out += source[i];
+        if (source[i] === '\\') {
+          i++;
+          if (i < source.length && preserveLiterals) out += source[i];
+        } else if (source[i] === q) {
+          i++;
+          break;
+        }
+        i++;
+      }
+      if (!preserveLiterals) out += 'LITERAL';
       continue;
     }
     if (!/\s/.test(c)) out += c;
@@ -51,9 +74,14 @@ const executable = source => {
   }
   return out;
 };
+const executable = source => scan(source, true);
+const codeOnly = source => scan(source, false);
 const requireExec = (source, fragment, label) => {
   const normalized = executable(fragment);
   if (!source.includes(normalized)) fail(`${label} missing executable evidence: ${fragment}`);
+};
+const requireCode = (source, fragment, label) => {
+  if (!source.includes(fragment.replace(/\s+/g, ''))) fail(`${label} missing executable code evidence: ${fragment}`);
 };
 
 function validateManifest(manifest) {
@@ -72,7 +100,7 @@ function validateManifest(manifest) {
 }
 
 function validateSources({ boundary, kvStore, root }) {
-  const b = executable(boundary), k = executable(kvStore), r = executable(root);
+  const b = executable(boundary), bCode = codeOnly(boundary), k = executable(kvStore), r = executable(root);
   for (const fragment of [
     'class ErrorBoundary extends React.PureComponent<Props, State>',
     'componentDidCatch(error: any, info: any): void',
@@ -80,17 +108,20 @@ function validateSources({ boundary, kvStore, root }) {
     "const isProduction = BuildConfig.NODE_ENV === 'production';",
     '{!isProduction && (',
     "document.execCommand('copy');",
-    'localStorage.clear();', 'sessionStorage.clear();', 'KVStore.clear();',
     "if ('serviceWorker' in navigator) { e.preventDefault(); unregisterSw().then(goHome).catch(goHome); }",
     "const goHome = () => location.href = '/';",
     'const registrations = await navigator.serviceWorker.getRegistrations();',
     'const unregisterAll = registrations.map(r => r.unregister());',
     'await Promise.all(unregisterAll);',
   ]) requireExec(b, fragment, 'error boundary');
+
+  for (const call of ['localStorage.clear();', 'sessionStorage.clear();', 'KVStore.clear();']) {
+    requireCode(bCode, call, 'error boundary');
+  }
+  if (bCode.includes('awaitKVStore.clear();')) fail('KVStore.clear await behavior changed without manifest reconciliation');
+
   requireExec(r, '<ErrorBoundary><BrowserRouter', 'root provider');
-  for (const fragment of [
-    "localforage.createInstance({ name: 'soapbox', description: 'Soapbox offline data store', driver: localforage.INDEXEDDB, storeName: 'keyvaluepairs', })",
-  ]) requireExec(k, fragment, 'KVStore');
+  requireExec(k, "localforage.createInstance({ name: 'soapbox', description: 'Soapbox offline data store', driver: localforage.INDEXEDDB, storeName: 'keyvaluepairs', })", 'KVStore');
 }
 
 function run() {
@@ -107,4 +138,4 @@ function run() {
 if (require.main === module) {
   try { console.log(run()); } catch (error) { console.error(error.message); process.exitCode = 1; }
 }
-module.exports = { EXPECTED_INVARIANTS, EXPECTED_UNKNOWNS, executable, run, validateManifest, validateSources };
+module.exports = { EXPECTED_INVARIANTS, EXPECTED_UNKNOWNS, codeOnly, executable, run, validateManifest, validateSources };
