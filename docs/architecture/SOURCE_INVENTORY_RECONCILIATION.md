@@ -24,8 +24,8 @@ The generated scanner output is a candidate inventory, not a safety verdict. Cou
 
 | Category | Candidate matches | Immediate Phase 0 disposition |
 |---|---:|---|
-| `html.dangerouslySetInnerHTML` | 49 | Reconcile every production sink with content origin, sanitizer, URL policy, and adversarial tests |
-| `html.innerHTML` | 10 | Separate parser/transformer use from rendering sinks; never infer sanitization from transformation |
+| `html.dangerouslySetInnerHTML` | 44 production sinks in the Phase 0D generator | All are sanitizer-at-sink, local sanitized bindings, or shared sanitizing wrappers; raw additions fail CI |
+| `html.innerHTML` / parser use | 8 generated parser/write callsites | Restricted to four inert text/transformation modules and never classified as sanitization |
 | `network.axios` | 81 | Build client/call-site matrix with auth, backend family, cancellation, retry, errors, and sensitive output |
 | `network.fetch` | 3 | Review audio, push-worker, and test usage separately |
 | `reactQuery.useQuery` | 3 | Two production modules currently verified; one scanner test fixture |

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import { openModal } from 'soapbox/actions/modals';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
@@ -45,19 +45,10 @@ const StatusMedia: React.FC<IStatusMedia> = ({
   onToggleVisibility = () => {},
 }) => {
   const dispatch = useAppDispatch();
-  const [mediaWrapperWidth, setMediaWrapperWidth] = useState<number | undefined>(undefined);
-
   const size = useMemo(() => status.media_attachments.size, [status.media_attachments]);
   const firstAttachment = useMemo(() => status.media_attachments.first(), [status.media_attachments]);
 
   let media = null;
-
-  const setRef = useCallback((c: HTMLDivElement): void => {
-    if (c) {
-      setMediaWrapperWidth(c.offsetWidth);
-    }
-  }, []);
-
 
   const openMedia = useCallback((media: ImmutableList<Attachment>, index: number) => {
     dispatch(openModal('MEDIA', { media, index }));
@@ -80,23 +71,12 @@ const StatusMedia: React.FC<IStatusMedia> = ({
       const video = firstAttachment;
 
       if (video.external_video_id && status.card) {
-        const getHeight = (): number => {
-          const width = Number(video.meta.getIn(['original', 'width']));
-          const height = Number(video.meta.getIn(['original', 'height']));
-          return Number(mediaWrapperWidth) / (width / height);
-        };
-
-        const height = getHeight();
-
         media = (
-          <div className='status-card horizontal compact interactive status-card--video'>
-            <div
-              ref={setRef}
-              className='status-card__image status-card-video'
-              style={height ? { height } : undefined}
-              dangerouslySetInnerHTML={{ __html: status.card.html }}
-            />
-          </div>
+          <Card
+            onOpenMedia={openMedia}
+            card={status.card}
+            compact
+          />
         );
       } else {
         media = (

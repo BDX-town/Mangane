@@ -1,31 +1,20 @@
 # HTML Safety Authority Drift Gate
 
-Status: **Current / bounded Phase 0 enforcement**
+Status: **Phase 0D verified**
 
-## Purpose
+The generated authority manifest inventories every production React HTML sink, DOM HTML write, parser, iframe, sanitizer call, dynamic link destination and imperative navigation under `app/soapbox`.
 
-This gate makes the directly verified HTML rendering and transformation boundary executable. It prevents the current status body, content-warning, plaintext conversion, and compatibility-stripping behavior from drifting without explicit security review.
+CI fails when:
 
-It does not certify remote HTML as safe. The verified status sinks still have no source-backed sanitizer provenance, and the two shared helpers are transformers rather than sanitizers.
+- source callsites drift without regenerating the manifest;
+- a React HTML sink is not protected by `safeHtml` or a sanitizing shared wrapper;
+- a new DOM write/parser appears outside the explicitly inert text/transform modules;
+- another iframe surface appears;
+- oEmbed returns to `document.write`, loses its empty sandbox, or stops using sanitized `srcDoc`;
+- the pinned DOMPurify version or policy evidence changes;
+- the sanitizer allows CSS, SVG, MathML, embedded documents, forms or dangerous destination schemes without explicit gate reconciliation.
+- startup stops installing the native-link navigation policy, or its capture/observer fail-closed layers are weakened.
 
-## Enforced current evidence
+The checker is `scripts/check-html-safety-authority-inventory.js`. Its mutation tests are `scripts/__tests__/check-html-safety-authority-inventory.test.js`. Browser adversarial tests live in `app/soapbox/utils/__tests__/html-safety.test.ts`, `url-policy.test.ts`, and `navigation-policy.test.ts`.
 
-- `status.contentHtml` may pass through `addGreentext()` and is rendered with `dangerouslySetInnerHTML`;
-- `status.spoilerHtml` is rendered with `dangerouslySetInnerHTML`;
-- inserted status links are modified after rendering with `rel="nofollow noopener"` and `target="_blank"`, which is navigation hardening rather than sanitization;
-- `unescapeHTML()` parses through `innerHTML` and returns text;
-- `stripCompatibilityFeatures()` parses and reserializes HTML after removing two narrow compatibility selectors;
-- none of these four surfaces may be marked sanitizer-verified without replacing the bounded evidence and tests;
-- all four accepted unknowns remain pinned.
-
-## Failure behavior
-
-CI fails when a required surface disappears, a source fragment changes, a transformer is reclassified as a sanitizer, the unknown list shrinks, a manifest path escapes the repository, or the accepted surface set changes without reconciliation.
-
-## Security boundary
-
-This gate intentionally preserves known blockers. It does not prove allowed tags, attributes, URI schemes, SVG, MathML, CSS, iframe, malformed-markup, custom-element, CSP, or downstream caller safety. Those remain required before the HTML safety workstream can be completed.
-
-## Validation
-
-The dedicated workflow runs the checker and adversarial suite with Node's built-in test runner. The broader Architecture inventory workflow also invokes the checker so relevant source changes cannot bypass the bounded gate.
+`unescapeHTML`, `stripCompatibilityFeatures`, `emojify`, DOM parsing for search text, and compose mention extraction remain classified as transformation or inert parsing—not sanitization.

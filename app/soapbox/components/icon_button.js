@@ -5,6 +5,7 @@ import spring from 'react-motion/lib/spring';
 
 import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
+import { safeHtml } from 'soapbox/utils/html-safety';
 
 import Motion from '../features/ui/util/optional_motion';
 
@@ -145,7 +146,7 @@ export default class IconButton extends React.PureComponent {
         >
           <div style={src ? {} : style}>
             {emoji
-              ? <div className='icon-button__emoji' dangerouslySetInnerHTML={{ __html: emojify(emoji) }} aria-hidden='true' />
+              ? <div className='icon-button__emoji' dangerouslySetInnerHTML={safeHtml(emojify(emoji), 'inline-text')} aria-hidden='true' />
               : <Icon className={iconClassName} id={icon} src={src} fixedWidth aria-hidden='true' />}
           </div>
           {text && <span className='icon-button__text'>{text}</span>}
@@ -175,7 +176,7 @@ export default class IconButton extends React.PureComponent {
           >
             <div style={src ? {} : style}>
               {emoji
-                ? <div className='icon-button__emoji' style={{ transform: `rotate(${rotate}deg)` }} dangerouslySetInnerHTML={{ __html: emojify(emoji) }} aria-hidden='true' />
+                ? <div className='icon-button__emoji' style={{ transform: `rotate(${rotate}deg)` }} dangerouslySetInnerHTML={safeHtml(emojify(emoji), 'inline-text')} aria-hidden='true' />
                 : <Icon className={iconClassName} id={icon} src={src} style={{ transform: `rotate(${rotate}deg)` }} fixedWidth aria-hidden='true' />}
             </div>
             {text && <span className='icon-button__text'>{text}</span>}

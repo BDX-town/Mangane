@@ -7,6 +7,7 @@ import { fetchHistory } from 'soapbox/actions/history';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import { HStack, Modal, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { safeHtml } from 'soapbox/utils/html-safety';
 
 import type { StatusEdit as StatusEditEntity } from 'soapbox/types/entities';
 
@@ -47,12 +48,12 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
             <div className='flex flex-col py-2 first:pt-0 last:pb-0'>
               {version.spoiler_text?.length > 0 && (
                 <>
-                  <span dangerouslySetInnerHTML={spoilerContent} />
+                  <span dangerouslySetInnerHTML={safeHtml(spoilerContent.__html, 'inline-text')} />
                   <hr />
                 </>
               )}
 
-              <div className='status__content' dangerouslySetInnerHTML={content} />
+              <div className='status__content' dangerouslySetInnerHTML={safeHtml(content.__html)} />
 
               {poll && (
                 <div className='poll'>
@@ -67,7 +68,7 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
                           role={poll.multiple ? 'checkbox' : 'radio'}
                         />
 
-                        <span dangerouslySetInnerHTML={{ __html: option.title_emojified }} />
+                        <span dangerouslySetInnerHTML={safeHtml(option.title_emojified, 'inline-text')} />
                       </HStack>
                     ))}
                   </Stack>

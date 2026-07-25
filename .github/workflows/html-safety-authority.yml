@@ -3,21 +3,27 @@ name: HTML safety authority
 on:
   pull_request:
     paths:
-      - 'app/soapbox/components/status_content.tsx'
-      - 'app/soapbox/utils/html.ts'
+      - 'app/soapbox/**'
       - 'config/html-safety-authority-inventory.json'
+      - 'scripts/html-safety-inventory-lib.js'
+      - 'scripts/generate-html-safety-authority-inventory.js'
       - 'scripts/check-html-safety-authority-inventory.js'
       - 'scripts/__tests__/check-html-safety-authority-inventory.test.js'
+      - 'package.json'
+      - 'yarn.lock'
       - '.github/workflows/html-safety-authority.yml'
   push:
     branches:
       - main
     paths:
-      - 'app/soapbox/components/status_content.tsx'
-      - 'app/soapbox/utils/html.ts'
+      - 'app/soapbox/**'
       - 'config/html-safety-authority-inventory.json'
+      - 'scripts/html-safety-inventory-lib.js'
+      - 'scripts/generate-html-safety-authority-inventory.js'
       - 'scripts/check-html-safety-authority-inventory.js'
       - 'scripts/__tests__/check-html-safety-authority-inventory.test.js'
+      - 'package.json'
+      - 'yarn.lock'
       - '.github/workflows/html-safety-authority.yml'
   workflow_dispatch:
 
@@ -34,7 +40,13 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: Verify bounded HTML safety authority inventory
+      - name: Verify complete HTML safety authority inventory
         run: node scripts/check-html-safety-authority-inventory.js
-      - name: Run focused adversarial tests
+      - name: Run sink-discovery drift tests
         run: node --test scripts/__tests__/check-html-safety-authority-inventory.test.js
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Install pinned dependencies
+        run: yarn install --immutable --mode=skip-build
+      - name: Run adversarial browser-safety corpus
+        run: yarn jest app/soapbox/utils/__tests__/html-safety.test.ts app/soapbox/utils/__tests__/url-policy.test.ts app/soapbox/utils/__tests__/navigation-policy.test.ts app/soapbox/utils/__tests__/html.test.ts --runInBand

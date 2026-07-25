@@ -11,6 +11,7 @@ import { Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
+import { safeHtml } from 'soapbox/utils/html-safety';
 
 import type { Account } from 'soapbox/types/entities';
 
@@ -46,7 +47,7 @@ const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account
   const accounts: Array<React.ReactNode> = familiarFollowers.map(account => !!account && (
     <HoverRefWrapper accountId={account.id} inline>
       <Link className='mention' to={`/@${account.acct}`}>
-        <span dangerouslySetInnerHTML={{ __html: account.display_name_html }} />
+        <span dangerouslySetInnerHTML={safeHtml(account.display_name_html, 'inline-text')} />
 
         {account.verified && <VerificationBadge />}
       </Link>

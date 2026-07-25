@@ -1,6 +1,8 @@
 import { Location } from 'history';
 import { useEffect } from 'react';
 
+import { sanitizeRedirectPath } from './url-policy';
+
 const LOCAL_STORAGE_REDIRECT_KEY = 'soapbox:redirect-uri';
 
 const cacheCurrentUrl = (location: Location<unknown>) => {
@@ -11,12 +13,16 @@ const cacheCurrentUrl = (location: Location<unknown>) => {
 
 const getRedirectUrl = () => {
   let redirectUri = localStorage.getItem(LOCAL_STORAGE_REDIRECT_KEY);
-  if (redirectUri) {
-    redirectUri = decodeURIComponent(redirectUri);
+  try {
+    if (redirectUri) {
+      redirectUri = decodeURIComponent(redirectUri);
+    }
+  } catch {
+    redirectUri = null;
   }
 
   localStorage.removeItem(LOCAL_STORAGE_REDIRECT_KEY);
-  return redirectUri || '/';
+  return sanitizeRedirectPath(redirectUri);
 };
 
 const useCachedLocationHandler = () => {

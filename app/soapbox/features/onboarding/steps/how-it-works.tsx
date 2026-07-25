@@ -3,6 +3,7 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import { Button, Card, CardBody } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
+import { safeHtml } from 'soapbox/utils/html-safety';
 
 const messages = defineMessages({
   right: { id: 'onboarding.how-it-works.right', defaultMessage: 'If you exchange with a person from another instance, you must mention them with their <span class=\'font-bold\'>@pseudo@instance</span><br/><br/> ex: <a href=\' https://oslo.town/@matt\'>@matt@oslo.town</a>, if you want to talk to the Oslo.town admin' },
@@ -45,7 +46,7 @@ const HowItWorks = ({ onNext }: { onNext: () => void }) => {
               </p>
             </div>
             <div className='flex-grow-1'>
-              <p dangerouslySetInnerHTML={{ __html: intl.formatMessage(messages.right) }} />
+              <p dangerouslySetInnerHTML={safeHtml(intl.formatMessage(messages.right), 'inline-text')} />
             </div>
           </div>
           <div className='italic mt-8'>

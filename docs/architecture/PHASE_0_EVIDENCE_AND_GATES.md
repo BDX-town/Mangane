@@ -60,7 +60,7 @@ Every inventory entry must record:
 | API/protocol clients | central Axios client inspected | Partial | all call sites, streaming, uploads, retries, cancellation, typed errors and capability matrix | Phases 1, 6 |
 | Persistence | Complete generated callsite manifest plus 12-surface behavioral authority; ordered/resumable logout purge covers HTTP/stream generation fences, cross-tab propagation, query cache, Redux, serialized credentials, snapshots, owned caches, restart-durable worker revocation, push, notifications and tracked object URLs; bounded origin reset covers all browser stores and workers | Phase 0C complete | preserve drift gates and conformance tests during later migrations | Phases 4, 5, 6 |
 | Service worker/PWA | production plugin, push and share-target handlers inspected | Partial | cache runtime, authenticated responses, push lifecycle, update rollback and scope-conflict tests | Phase 4 |
-| Sanitization/content safety | shared HTML transformers inspected | Partial | all HTML sinks, sanitizer configuration, embeds, previews, custom pages and URL policy | Phases 1, 8, 9, 29 |
+| Sanitization/content safety | 157 generated production callsites; DOMPurify 3.4.12 policy; 44 HTML sinks; central destination policy; raw card HTML blocked; sandboxed sanitized oEmbed; adversarial XSS/protocol corpus and CI drift gate | Phase 0D complete | preserve exact sanitizer, destination and sink-discovery gates during later rendering work | Phases 1, 8, 9, 29 |
 | Telemetry/error reporting | Sentry dependencies verified | Blocked | initialization, consent, payload schema, redaction, breadcrumbs, identifiers and opt-out | Phases 4, 29 |
 | Design/icons/styles | dependency-level overlap and theme/accessibility classes inspected | Partial | import/call-site inventory, generated theme contract, Sass/Tailwind ownership and active icon usage | Phase 2 |
 | Tests/CI | package scripts and Jest configuration inspected | Partial | workflows, jobs, setup files, browser/worker coverage, flake behavior and baseline outcomes | Every phase |
@@ -94,9 +94,9 @@ Any raw token in logs, telemetry, URLs, analytics, crash reports, Redux DevTools
 
 ### 4.3 Remote content and URL safety
 
-Inventory remote HTML, profile fields, status content, custom pages, previews, embeds, SVG, redirect targets, instance/proxy URLs, attachment metadata, object URLs and clipboard/share-target data.
+The Phase 0D generated manifest inventories remote HTML, profile fields, status content, custom pages, previews, embeds, SVG/MathML policy, redirect targets and external destinations. Attachment metadata, object URLs and clipboard/share-target data remain governed by their Phase 0B/0C inventories.
 
-For each sink, record sanitizer, allowed schemes, link/referrer behavior, CSP interaction, sandboxing and tests. Shared helpers that assign through `innerHTML` are transformers, not sanitizers, unless an explicit allowlist and adversarial test suite prove otherwise.
+Each HTML sink records its sanitizer/wrapper classification and source position. DOMPurify owns the explicit tag, attribute and scheme policy; links receive opener/referrer hardening; oEmbed uses an empty sandbox; CSP is deployment defense in depth. Shared parsing and transformation helpers remain explicitly classified as non-sanitizers.
 
 ## 5. State-authority matrix template
 

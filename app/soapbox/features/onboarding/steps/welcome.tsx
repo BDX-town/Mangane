@@ -3,6 +3,7 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import { Button, Card, CardBody } from 'soapbox/components/ui';
 import { useOwnAccount, useAppSelector } from 'soapbox/hooks';
+import { safeHtml } from 'soapbox/utils/html-safety';
 
 const messages = defineMessages({
   title: { id: 'onboarding.welcome.title', defaultMessage: 'Welcome on the Fediverse' },
@@ -25,8 +26,8 @@ const Welcome = ({ onNext }: { onNext: () => void }) => {
             {intl.formatMessage(messages.title)}
           </h3>
           <p className='mt-3 mb-5'>
-            <div className='text-gray-400 mb-3' dangerouslySetInnerHTML={{ __html: intl.formatMessage(messages.body1) }} />
-            <span dangerouslySetInnerHTML={{ __html: intl.formatMessage(messages.body2) }} />
+            <div className='text-gray-400 mb-3' dangerouslySetInnerHTML={safeHtml(intl.formatMessage(messages.body1), 'inline-text')} />
+            <span dangerouslySetInnerHTML={safeHtml(intl.formatMessage(messages.body2), 'inline-text')} />
                 &nbsp;
             <span className='font-bold'>
               {instance.get('uri').replace(/https?:\/\//, '')}

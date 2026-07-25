@@ -11,6 +11,7 @@ import { setSwUpdating } from 'soapbox/actions/sw';
 import * as BuildConfig from 'soapbox/build_config';
 import { store } from 'soapbox/store';
 import { printConsoleWarning } from 'soapbox/utils/console';
+import { installNavigationPolicy } from 'soapbox/utils/navigation-policy';
 
 import { default as Soapbox } from './containers/soapbox';
 import * as perf from './performance';
@@ -32,6 +33,7 @@ function main() {
   ready(() => {
     const mountNode = document.getElementById('soapbox') as HTMLElement;
 
+    installNavigationPolicy();
     ReactDOM.render(<Soapbox />, mountNode);
 
     // this allows to debug service workers

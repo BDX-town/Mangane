@@ -7,6 +7,7 @@ import StatusMedia from 'soapbox/components/status-media';
 import { Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import { useSettings } from 'soapbox/hooks';
+import { safeHtml } from 'soapbox/utils/html-safety';
 import { defaultMediaVisibility } from 'soapbox/utils/status';
 
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
@@ -145,7 +146,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
       <Text
         className='break-words status__content status__content--quote'
         size='sm'
-        dangerouslySetInnerHTML={{ __html: status.contentHtml }}
+        dangerouslySetInnerHTML={safeHtml(status.contentHtml)}
       />
 
       <StatusMedia

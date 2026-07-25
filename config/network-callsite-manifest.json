@@ -5642,9 +5642,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "fcc98522826041d9",
+      "id": "e66f02faf0f78450",
       "file": "app/soapbox/features/ui/components/embed_modal.tsx",
-      "line": 12,
+      "line": 13,
       "kind": "axios",
       "method": "GET",
       "route": "/api/oembed",

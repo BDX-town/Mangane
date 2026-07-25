@@ -7,6 +7,7 @@ import { regexFromFilters } from 'soapbox/selectors';
 import { Filter } from 'soapbox/types/entities';
 import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
 import { stripCompatibilityFeatures, unescapeHTML } from 'soapbox/utils/html';
+import { sanitizeHtml } from 'soapbox/utils/html-safety';
 import { makeEmojiMap, normalizeId } from 'soapbox/utils/normalizers';
 
 import {
@@ -111,8 +112,8 @@ export const calculateStatus = (
 
     return status.merge({
       search_index: searchIndex,
-      contentHtml: stripCompatibilityFeatures(emojify(status.content, emojiMap)),
-      spoilerHtml: emojify(escapeTextContentForBrowser(spoilerText), emojiMap),
+      contentHtml: sanitizeHtml(stripCompatibilityFeatures(emojify(status.content, emojiMap))),
+      spoilerHtml: sanitizeHtml(emojify(escapeTextContentForBrowser(spoilerText), emojiMap), 'inline-text'),
       hidden: expandSpoilers ? false : spoilerText.length > 0,
     });
   }
@@ -162,7 +163,7 @@ const importStatuses = (state: State, statuses: APIEntities, expandSpoilers: boo
   state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status, expandSpoilers, filters)));
 
 const translateStatus = (state: State, statusId: string, language: string, text: string) =>
-  state.updateIn([statusId, 'translations', language], () => text);
+  state.updateIn([statusId, 'translations', language], () => sanitizeHtml(text));
 
 const deleteStatus = (state: State, id: string, references: Array<string>) => {
   references.forEach(ref => {

@@ -7,6 +7,7 @@ import { Modal, Spinner } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
+import { safeHtml } from 'soapbox/utils/html-safety';
 
 const getAccount = makeGetAccount();
 
@@ -28,7 +29,7 @@ const FamiliarFollowersModal = ({ accountId, onClose }: IFamiliarFollowersModal)
   if (!account || !familiarFollowerIds) {
     body = <Spinner />;
   } else {
-    const emptyMessage = <FormattedMessage id='account.familiar_followers.empty' defaultMessage='No one you know follows {name}.' values={{ name: <span dangerouslySetInnerHTML={{ __html: account.display_name_html }} /> }} />;
+    const emptyMessage = <FormattedMessage id='account.familiar_followers.empty' defaultMessage='No one you know follows {name}.' values={{ name: <span dangerouslySetInnerHTML={safeHtml(account.display_name_html, 'inline-text')} /> }} />;
 
     body = (
       <ScrollableList
@@ -45,7 +46,7 @@ const FamiliarFollowersModal = ({ accountId, onClose }: IFamiliarFollowersModal)
 
   return (
     <Modal
-      title={<FormattedMessage id='column.familiar_followers' defaultMessage='People you know following {name}' values={{ name: <span dangerouslySetInnerHTML={{ __html: account?.display_name_html || '' }} /> }} />}
+      title={<FormattedMessage id='column.familiar_followers' defaultMessage='People you know following {name}' values={{ name: <span dangerouslySetInnerHTML={safeHtml(account?.display_name_html || '', 'inline-text')} /> }} />}
       onClose={onClickClose}
     >
       {body}

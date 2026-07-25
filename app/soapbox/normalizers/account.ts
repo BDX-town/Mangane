@@ -14,6 +14,7 @@ import {
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { unescapeHTML } from 'soapbox/utils/html';
+import { sanitizeHtml } from 'soapbox/utils/html-safety';
 import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers';
 
 import type { PatronAccount } from 'soapbox/reducers/patron';
@@ -192,8 +193,8 @@ const addInternalFields = (account: ImmutableMap<string, any>) => {
   return account.withMutations((account: ImmutableMap<string, any>) => {
     // Emojify account properties
     account.merge({
-      display_name_html: emojify(escapeTextContentForBrowser(account.get('display_name')), emojiMap),
-      note_emojified: emojify(account.get('note', ''), emojiMap),
+      display_name_html: sanitizeHtml(emojify(escapeTextContentForBrowser(account.get('display_name')), emojiMap), 'inline-text'),
+      note_emojified: sanitizeHtml(emojify(account.get('note', ''), emojiMap)),
       note_plain: unescapeHTML(account.get('note', '')),
     });
 
@@ -201,8 +202,8 @@ const addInternalFields = (account: ImmutableMap<string, any>) => {
     account.update('fields', ImmutableList(), fields => {
       return fields.map((field: ImmutableMap<string, any>) => {
         return field.merge({
-          name_emojified: emojify(escapeTextContentForBrowser(field.get('name')), emojiMap),
-          value_emojified: emojify(field.get('value'), emojiMap),
+          name_emojified: sanitizeHtml(emojify(escapeTextContentForBrowser(field.get('name')), emojiMap), 'inline-text'),
+          value_emojified: sanitizeHtml(emojify(field.get('value'), emojiMap)),
           value_plain: unescapeHTML(field.get('value')),
         });
       });

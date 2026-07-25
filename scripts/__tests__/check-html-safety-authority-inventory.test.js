@@ -1,103 +1,83 @@
 'use strict';
 
 const assert = require('node:assert/strict');
+const { spawnSync } = require('node:child_process');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { execFileSync } = require('node:child_process');
 const test = require('node:test');
 
 const repositoryRoot = path.resolve(__dirname, '..', '..');
-const script = path.join(repositoryRoot, 'scripts', 'check-html-safety-authority-inventory.js');
-const run = (root = repositoryRoot) => execFileSync(process.execPath, [script], {
-  cwd: root,
-  env: { ...process.env, HTML_SAFETY_INVENTORY_ROOT: root },
-  encoding: 'utf8',
-  stdio: ['ignore', 'pipe', 'pipe'],
-});
+const checker = path.join(repositoryRoot, 'scripts', 'check-html-safety-authority-inventory.js');
 
-const fixture = () => {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'html-safety-authority-'));
-  for (const relativePath of [
-    'config/html-safety-authority-inventory.json',
-    'app/soapbox/components/status_content.tsx',
-    'app/soapbox/utils/html.ts',
-  ]) {
-    const destination = path.join(root, relativePath);
-    fs.mkdirSync(path.dirname(destination), { recursive: true });
-    fs.copyFileSync(path.join(repositoryRoot, relativePath), destination);
-  }
+const copyRepository = () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'mangane-html-safety-'));
+  fs.cpSync(path.join(repositoryRoot, 'app'), path.join(root, 'app'), { recursive: true });
+  fs.cpSync(path.join(repositoryRoot, 'config', 'html-safety-authority-inventory.json'), path.join(root, 'config', 'html-safety-authority-inventory.json'));
+  fs.cpSync(path.join(repositoryRoot, 'package.json'), path.join(root, 'package.json'));
+  fs.mkdirSync(path.join(root, 'scripts'), { recursive: true });
+  fs.cpSync(path.join(repositoryRoot, 'scripts', 'html-safety-inventory-lib.js'), path.join(root, 'scripts', 'html-safety-inventory-lib.js'));
   return root;
 };
 
-const mutate = (root, relativePath, transform) => {
-  const target = path.join(root, relativePath);
-  fs.writeFileSync(target, transform(fs.readFileSync(target, 'utf8')));
-};
-
-const mutateManifest = (root, transform) => mutate(root, 'config/html-safety-authority-inventory.json', source => {
-  const manifest = JSON.parse(source);
-  transform(manifest);
-  return `${JSON.stringify(manifest, null, 2)}\n`;
+const run = root => spawnSync(process.execPath, [checker], {
+  cwd: repositoryRoot,
+  env: { ...process.env, HTML_SAFETY_INVENTORY_ROOT: root },
+  encoding: 'utf8',
 });
 
-const assertRunFails = (root, pattern) => {
-  assert.throws(() => run(root), error => pattern.test(`${error.stderr || ''}\n${error.message || ''}`));
-};
-
-test('verifies the bounded current HTML safety inventory', () => {
-  const report = JSON.parse(run());
-  assert.equal(report.checkedSurfaces, 4);
-  assert.equal(report.explicitUnknowns, 4);
+test('verifies the complete Phase 0D HTML safety inventory', () => {
+  const result = run(repositoryRoot);
+  assert.equal(result.status, 0, result.stderr);
 });
 
-test('fails when the status body sink drifts without reconciliation', () => {
-  const root = fixture();
-  mutate(root, 'app/soapbox/components/status_content.tsx', source => source.replace('dangerouslySetInnerHTML={content}', 'children={parsedHtml}'));
-  assertRunFails(root, /status-body-html-sink/);
+test('fails when an ungoverned HTML sink is added', () => {
+  const root = copyRepository();
+  const target = path.join(root, 'app', 'soapbox', 'unsafe-phase-0d.tsx');
+  fs.writeFileSync(target, 'export const Unsafe = ({ html }) => <div dangerouslySetInnerHTML={{ __html: html }} />;\n');
+  const result = run(root);
+  assert.notEqual(result.status, 0);
 });
 
-test('fails when sanitizer verification is asserted', () => {
-  const root = fixture();
-  mutateManifest(root, manifest => {
-    manifest.surfaces.find(surface => surface.id === 'compatibility-html-transformer').sanitizerVerified = true;
-  });
-  assertRunFails(root, /must not claim verified sanitization/);
+test('fails when a dangerous DOM write is added', () => {
+  const root = copyRepository();
+  const target = path.join(root, 'app', 'soapbox', 'unsafe-dom-write.ts');
+  fs.writeFileSync(target, 'export const write = (node, html) => { node.innerHTML = html; };\n');
+  const result = run(root);
+  assert.notEqual(result.status, 0);
 });
 
-test('fails when a transformer classification becomes sanitizer-like', () => {
-  const root = fixture();
-  mutateManifest(root, manifest => {
-    manifest.surfaces.find(surface => surface.id === 'compatibility-html-transformer').classification = 'verified-html-sanitizer';
-  });
-  assertRunFails(root, /classification changed without checker reconciliation/);
+test('fails when the sanitizer policy drifts', () => {
+  const root = copyRepository();
+  const target = path.join(root, 'app', 'soapbox', 'utils', 'html-safety.ts');
+  fs.writeFileSync(target, fs.readFileSync(target, 'utf8').replace('\'style\',', ''));
+  const result = run(root);
+  assert.notEqual(result.status, 0);
 });
 
-test('fails when a required surface is removed', () => {
-  const root = fixture();
-  mutateManifest(root, manifest => {
-    manifest.surfaces = manifest.surfaces.filter(surface => surface.id !== 'status-spoiler-html-sink');
-  });
-  assertRunFails(root, /required HTML safety surface status-spoiler-html-sink/);
+test('fails when raw preview document.write returns', () => {
+  const root = copyRepository();
+  const target = path.join(root, 'app', 'soapbox', 'features', 'ui', 'components', 'embed_modal.tsx');
+  fs.appendFileSync(target, '\n// iframeDocument.write(remoteHtml)\n');
+  const result = run(root);
+  assert.notEqual(result.status, 0);
 });
 
-test('fails when a surface and the manifest required-id list shrink together', () => {
-  const root = fixture();
-  mutateManifest(root, manifest => {
-    manifest.surfaces = manifest.surfaces.filter(surface => surface.id !== 'status-spoiler-html-sink');
-    manifest.requiredSurfaceIds = manifest.requiredSurfaceIds.filter(id => id !== 'status-spoiler-html-sink');
-  });
-  assertRunFails(root, /externally pinned required surface status-spoiler-html-sink/);
+test('fails when central native-link enforcement is removed', () => {
+  const root = copyRepository();
+  const target = path.join(root, 'app', 'soapbox', 'main.tsx');
+  fs.writeFileSync(target, fs.readFileSync(target, 'utf8').replace('installNavigationPolicy();', ''));
+  const result = run(root);
+  assert.notEqual(result.status, 0);
 });
 
-test('fails when explicit unknowns silently shrink', () => {
-  const root = fixture();
-  mutateManifest(root, manifest => { manifest.explicitUnknowns.pop(); });
-  assertRunFails(root, /required explicit unknown is missing|explicitUnknowns changed/);
-});
-
-test('rejects source paths escaping the repository root', () => {
-  const root = fixture();
-  mutateManifest(root, manifest => { manifest.surfaces[0].path = '../outside.tsx'; });
-  assertRunFails(root, /unsafe source path/);
+test('fails when navigation event capture is weakened', () => {
+  const root = copyRepository();
+  const target = path.join(root, 'app', 'soapbox', 'utils', 'navigation-policy.ts');
+  fs.writeFileSync(target, fs.readFileSync(target, 'utf8').replace(
+    'document.addEventListener(\'click\', guardNavigation, true)',
+    'document.addEventListener(\'click\', guardNavigation)',
+  ));
+  const result = run(root);
+  assert.notEqual(result.status, 0);
 });

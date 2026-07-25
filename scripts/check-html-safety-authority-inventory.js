@@ -1,82 +1,84 @@
 'use strict';
 
+const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
+const { buildHtmlSafetyManifest } = require('./html-safety-inventory-lib');
+
 const root = path.resolve(process.env.HTML_SAFETY_INVENTORY_ROOT || path.resolve(__dirname, '..'));
 const manifestPath = path.join(root, 'config', 'html-safety-authority-inventory.json');
-const fail = message => { throw new Error(`html-safety-authority: ${message}`); };
-
-const expectedSurfaces = new Map([
-  ['status-body-html-sink', 'remote-html-render-sink'],
-  ['status-spoiler-html-sink', 'remote-html-render-sink'],
-  ['plaintext-html-parser', 'html-to-text-transformer-not-sanitizer'],
-  ['compatibility-html-transformer', 'html-transformer-not-sanitizer'],
-]);
-const expectedSurfaceIds = [...expectedSurfaces.keys()];
-const expectedUnknowns = [
-  'Repository-wide production dangerouslySetInnerHTML and innerHTML enumeration remains incomplete.',
-  'Sanitizer package, version, configuration and provenance for status content and spoiler HTML are not verified.',
-  'Allowed tags, attributes, URI schemes, SVG, MathML, CSS, iframe and custom-element behavior are not proven.',
-  'Caller and downstream-sink inventories for unescapeHTML and stripCompatibilityFeatures remain incomplete.',
-];
-
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-if (manifest.schemaVersion !== 1) fail(`unsupported schemaVersion ${manifest.schemaVersion}`);
-if (!Array.isArray(manifest.surfaces) || manifest.surfaces.length === 0) fail('surfaces must be a non-empty array');
-if (!Array.isArray(manifest.requiredSurfaceIds) || manifest.requiredSurfaceIds.length === 0) fail('requiredSurfaceIds must be a non-empty array');
-if (!Array.isArray(manifest.explicitUnknowns) || manifest.explicitUnknowns.length === 0) fail('explicitUnknowns must be a non-empty array');
+const expected = buildHtmlSafetyManifest(root);
 
-if (new Set(manifest.explicitUnknowns).size !== manifest.explicitUnknowns.length) fail('explicitUnknowns must not contain duplicates');
-for (const unknown of expectedUnknowns) {
-  if (!manifest.explicitUnknowns.includes(unknown)) fail(`required explicit unknown is missing: ${unknown}`);
-}
-if (manifest.explicitUnknowns.length !== expectedUnknowns.length) fail('explicitUnknowns changed without reconciliation');
+assert.deepStrictEqual(manifest, expected, 'HTML safety authority manifest drifted; regenerate and reconcile it');
+assert.equal(manifest.sanitizer.declaredVersion, '3.4.12', 'DOMPurify must remain exactly pinned for sanitizer regression review');
+assert.ok(manifest.callsites.length > 0, 'HTML safety inventory must not be empty');
 
-if (new Set(manifest.requiredSurfaceIds).size !== manifest.requiredSurfaceIds.length) fail('requiredSurfaceIds must not contain duplicates');
-for (const requiredId of expectedSurfaceIds) {
-  if (!manifest.requiredSurfaceIds.includes(requiredId)) fail(`externally pinned required surface ${requiredId} is missing from requiredSurfaceIds`);
-}
-if (manifest.requiredSurfaceIds.length !== expectedSurfaceIds.length) fail('requiredSurfaceIds changed without checker reconciliation');
+const unverified = manifest.callsites.filter(callsite =>
+  ['react-html-sink', 'dom-html-write', 'html-parser', 'iframe-sink'].includes(callsite.kind)
+  && callsite.classification === 'unverified',
+);
+assert.deepStrictEqual(unverified, [], `Unverified HTML execution surfaces: ${unverified.map(callsite => callsite.id).join(', ')}`);
 
-const seenIds = new Set();
-for (const surface of manifest.surfaces) {
-  if (!surface || typeof surface.id !== 'string' || typeof surface.path !== 'string') fail('every surface requires id and path');
-  if (seenIds.has(surface.id)) fail(`duplicate surface id ${surface.id}`);
-  seenIds.add(surface.id);
-  if (!expectedSurfaces.has(surface.id)) fail(`unexpected HTML safety surface ${surface.id}`);
-  if (surface.classification !== expectedSurfaces.get(surface.id)) fail(`${surface.id} classification changed without checker reconciliation`);
-  if (surface.sanitizerVerified !== false) fail(`${surface.id} must not claim verified sanitization`);
-  if (!Array.isArray(surface.requiredFragments) || surface.requiredFragments.length === 0) fail(`${surface.id} requires evidence fragments`);
+const htmlSinks = manifest.callsites.filter(callsite => callsite.kind === 'react-html-sink');
+assert.ok(htmlSinks.length >= 40, 'HTML sink count shrank unexpectedly; reconcile intentional removals in the checker');
+assert.ok(htmlSinks.every(callsite => callsite.classification !== 'unverified'), 'Every React HTML sink must be sanitized or use a sanitizing wrapper');
 
-  const absolute = path.resolve(root, surface.path);
-  const relative = path.relative(root, absolute);
-  if (relative.startsWith('..') || path.isAbsolute(relative)) fail(`unsafe source path ${surface.path}`);
-  const source = fs.readFileSync(absolute, 'utf8');
-  for (const fragment of surface.requiredFragments) {
-    if (typeof fragment !== 'string' || fragment.length < 3) fail(`${surface.id} contains an invalid evidence fragment`);
-    if (!source.includes(fragment)) fail(`${surface.path} no longer contains evidence for ${surface.id}: ${fragment}`);
-  }
-}
+const dynamicDestinations = manifest.callsites.filter(callsite => callsite.kind === 'dynamic-link-destination');
+assert.ok(dynamicDestinations.length > 0, 'Dynamic destination inventory must not be empty');
+assert.ok(
+  dynamicDestinations.every(callsite => callsite.classification === 'central-navigation-policy'),
+  'Every dynamic native-link destination must be governed by the central navigation policy',
+);
+assert.equal(
+  manifest.invariants.allDynamicDestinationsRuntimeGoverned,
+  true,
+  'Dynamic destination runtime-governance invariant must remain enabled',
+);
 
-for (const requiredId of expectedSurfaceIds) {
-  if (!seenIds.has(requiredId)) fail(`required HTML safety surface ${requiredId} is missing`);
-}
-if (seenIds.size !== expectedSurfaceIds.length) fail('surface set changed without checker reconciliation');
-
-for (const invariant of [
-  'transformersMustNotBeClassifiedAsSanitizers',
-  'statusHtmlSanitizerProvenanceRemainsBlocked',
-  'postInsertionLinkMutationIsNotSanitization',
-  'explicitUnknownsRemainPinned',
+const source = fs.readFileSync(path.join(root, manifest.sanitizer.policyModule), 'utf8');
+for (const requiredFragment of [
+  'import DOMPurify from \'dompurify\';',
+  'USE_PROFILES: { html: true }',
+  'FORBID_TAGS: FORBIDDEN_TAGS',
+  'FORBID_ATTR: FORBIDDEN_ATTRIBUTES',
+  '  \'style\',\n  \'svg\',',
+  '  \'srcset\',\n  \'style\',\n  \'xlink:href\',',
+  'sanitizeUrl(data.attrValue, purpose)',
+  'node.setAttribute(\'rel\', \'nofollow noopener noreferrer ugc\')',
 ]) {
-  if (manifest.invariants?.[invariant] !== true) fail(`required invariant ${invariant} must remain true`);
+  assert.ok(source.includes(requiredFragment), `Sanitizer policy evidence missing: ${requiredFragment}`);
 }
+
+const embedSource = fs.readFileSync(path.join(root, 'app/soapbox/features/ui/components/embed_modal.tsx'), 'utf8');
+assert.ok(embedSource.includes('sandbox=\'\''), 'oEmbed preview iframe must retain an empty sandbox');
+assert.ok(embedSource.includes('srcDoc={previewHtml}'), 'oEmbed preview must use sanitized srcDoc');
+assert.ok(!embedSource.includes('.write('), 'oEmbed preview must not use document.write');
+
+const navigationPolicySource = fs.readFileSync(path.join(root, 'app/soapbox/utils/navigation-policy.ts'), 'utf8');
+for (const requiredFragment of [
+  'import { sanitizeUrl } from \'./url-policy\';',
+  'document.addEventListener(\'click\', guardNavigation, true)',
+  'document.addEventListener(\'auxclick\', guardNavigation, true)',
+  'new MutationObserver(',
+  'attributeFilter: [\'href\', \'rel\', \'target\']',
+  'anchor.removeAttribute(\'href\')',
+]) {
+  assert.ok(navigationPolicySource.includes(requiredFragment), `Navigation policy evidence missing: ${requiredFragment}`);
+}
+
+const mainSource = fs.readFileSync(path.join(root, 'app/soapbox/main.tsx'), 'utf8');
+assert.ok(
+  mainSource.includes('import { installNavigationPolicy } from \'soapbox/utils/navigation-policy\';'),
+  'Application startup must import the navigation policy',
+);
+assert.ok(mainSource.includes('installNavigationPolicy();'), 'Application startup must install the navigation policy');
 
 process.stdout.write(`${JSON.stringify({
   schemaVersion: manifest.schemaVersion,
   status: manifest.status,
-  checkedSurfaces: manifest.surfaces.length,
-  surfaceIds: [...seenIds],
-  explicitUnknowns: manifest.explicitUnknowns.length,
+  checkedCallsites: manifest.callsites.length,
+  counts: manifest.counts,
+  sanitizer: manifest.sanitizer.declaredVersion,
 }, null, 2)}\n`);

@@ -13,6 +13,7 @@ import Icon from 'soapbox/components/icon';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
 import { useAppDispatch, useSettings, useLogo } from 'soapbox/hooks';
+import { safeHtml } from 'soapbox/utils/html-safety';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status';
 
 import { ProfilePopper } from './account';
@@ -307,7 +308,7 @@ const Status: React.FC<IStatus> = (props) => {
                           defaultMessage='{name} reposted'
                           values={{
                             name: <bdi className='max-w-[100px] truncate pr-1'>
-                              <strong className='text-gray-800 dark:text-gray-200' dangerouslySetInnerHTML={{ __html: String(status.getIn(['account', 'display_name_html'])) }} />
+                              <strong className='text-gray-800 dark:text-gray-200' dangerouslySetInnerHTML={safeHtml(String(status.getIn(['account', 'display_name_html'])), 'inline-text')} />
                             </bdi>,
                           }}
                         />

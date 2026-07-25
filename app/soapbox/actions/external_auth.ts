@@ -14,6 +14,7 @@ import { parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
 import { getFeatures } from 'soapbox/utils/features';
 import { getQuirks } from 'soapbox/utils/quirks';
+import { sanitizeUrl } from 'soapbox/utils/url-policy';
 
 import { baseClient } from '../api';
 
@@ -70,7 +71,10 @@ const externalAuthorize = (instance: Instance, baseURL: string) =>
       localStorage.setItem('soapbox:external:baseurl', baseURL);
       localStorage.setItem('soapbox:external:scopes', scopes);
 
-      window.location.href = `${baseURL}/oauth/authorize?${query.toString()}`;
+      const destination = sanitizeUrl(`${baseURL}/oauth/authorize?${query.toString()}`);
+      if (!destination) throw new Error('Unsafe external authorization destination');
+
+      window.location.assign(destination);
     });
   };
 

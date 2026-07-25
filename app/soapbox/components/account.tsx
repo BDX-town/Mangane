@@ -7,6 +7,7 @@ import ActionButton from 'soapbox/features/ui/components/action-button';
 import { useAppSelector, useOnScreen } from 'soapbox/hooks';
 import { getAcct } from 'soapbox/utils/accounts';
 import { EmojiReact as EmojiReactType } from 'soapbox/utils/emoji_reacts';
+import { safeHtml } from 'soapbox/utils/html-safety';
 import { displayFqn } from 'soapbox/utils/state';
 
 import RelativeTimestamp from './relative_timestamp';
@@ -197,7 +198,7 @@ const Account = ({
                     size='sm'
                     weight='semibold'
                     truncate
-                    dangerouslySetInnerHTML={{ __html: account.display_name_html }}
+                    dangerouslySetInnerHTML={safeHtml(account.display_name_html, 'inline-text')}
                   />
 
                   {account.verified && <VerificationBadge />}
@@ -239,7 +240,7 @@ const Account = ({
               {withAccountNote && (
                 <Text
                   size='sm'
-                  dangerouslySetInnerHTML={{ __html: account.note_emojified }}
+                  dangerouslySetInnerHTML={safeHtml(account.note_emojified)}
                   className='mr-2'
                 />
               )}

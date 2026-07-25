@@ -109,7 +109,7 @@ const Report: React.FC<IReport> = ({ report }) => {
         </div>
         <div className='admin-report__quote'>
           {(report.comment || '').length > 0 && (
-            <blockquote className='md' dangerouslySetInnerHTML={{ __html: report.comment }} />
+            <blockquote className='md whitespace-pre-wrap break-words'>{report.comment}</blockquote>
           )}
           <span className='byline'>
             &mdash;

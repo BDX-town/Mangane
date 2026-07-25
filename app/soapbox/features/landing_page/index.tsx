@@ -9,7 +9,9 @@ import { Button, Card, CardBody, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import RegistrationForm from 'soapbox/features/auth_login/components/registration_form';
 import { useAppDispatch, useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
+import { safeHtml } from 'soapbox/utils/html-safety';
 import { capitalize } from 'soapbox/utils/strings';
+import { sanitizeUrl } from 'soapbox/utils/url-policy';
 
 const LandingPage = () => {
   const dispatch = useAppDispatch();
@@ -66,7 +68,8 @@ const LandingPage = () => {
     const { customRegProvider } = soapboxConfig;
     const { customRegUrl } = soapboxConfig;
     const onClickUrl = () => {
-      window.open(customRegUrl);
+      const destination = sanitizeUrl(customRegUrl);
+      if (destination) window.open(destination, '_blank', 'noopener,noreferrer');
     };
 
     return (
@@ -165,7 +168,7 @@ const LandingPage = () => {
                 </h1>
                 <Text size='lg'>
                   {
-                    homeDescription ? <span dangerouslySetInnerHTML={{ __html: homeDescription }} /> : instance.description
+                    homeDescription ? <span dangerouslySetInnerHTML={safeHtml(homeDescription, 'inline-text')} /> : instance.description
                   }
                 </Text>
                 <div>

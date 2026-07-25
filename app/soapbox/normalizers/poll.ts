@@ -13,6 +13,7 @@ import {
 
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
+import { sanitizeHtml } from 'soapbox/utils/html-safety';
 import { makeEmojiMap } from 'soapbox/utils/normalizers';
 
 import type { Emoji, PollOption } from 'soapbox/types/entities';
@@ -52,7 +53,7 @@ const normalizePollOption = (option: ImmutableMap<string, any> | string, emojis:
   const emojiMap = makeEmojiMap(emojis);
 
   if (typeof option === 'string') {
-    const titleEmojified = emojify(escapeTextContentForBrowser(option), emojiMap);
+    const titleEmojified = sanitizeHtml(emojify(escapeTextContentForBrowser(option), emojiMap), 'inline-text');
 
     return PollOptionRecord({
       title: option,
@@ -60,7 +61,7 @@ const normalizePollOption = (option: ImmutableMap<string, any> | string, emojis:
     });
   }
 
-  const titleEmojified = emojify(escapeTextContentForBrowser(option.get('title')), emojiMap);
+  const titleEmojified = sanitizeHtml(emojify(escapeTextContentForBrowser(option.get('title')), emojiMap), 'inline-text');
 
   return PollOptionRecord(
     option.set('title_emojified', titleEmojified),

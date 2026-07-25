@@ -4,6 +4,7 @@ import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import { Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import { isRtl } from 'soapbox/rtl';
+import { safeHtml } from 'soapbox/utils/html-safety';
 
 import type { Status } from 'soapbox/types/entities';
 
@@ -45,7 +46,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ status, hideActions, onCanc
       <Text
         className='break-words status__content'
         size='sm'
-        dangerouslySetInnerHTML={{ __html: status.contentHtml }}
+        dangerouslySetInnerHTML={safeHtml(status.contentHtml)}
         direction={isRtl(status.search_index) ? 'rtl' : 'ltr'}
       />
 

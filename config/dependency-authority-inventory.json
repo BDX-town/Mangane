@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "status": "current-phase-0a-evidence",
   "sourceDigests": {
-    "packageJsonSha256": "40ceed1b2aa9605eaffa10744a8caa21629b925b1cc04493c942ba62ef7f8418",
+    "packageJsonSha256": "75240a56b036e0b533ddf179d1d764aea4506af19b1f9fddf55bf40aa0cd760c",
     "twemojiDownloaderSha256": "97939496d78e1037a3755847962b1b249936d960abcbb5aa35d6676134212ab7",
-    "yarnLockSha256": "35a3cc5f1f957ed96e0979b0332b5b663041cf2ef946739f623def357ed8bb6d"
+    "yarnLockSha256": "28638463005a75aa97b35851032e491bd78a7d2b2533a65a3f0da246cc78ba3d"
   },
   "repositorySupplyChain": {
     "postinstall": {
@@ -26,14 +26,14 @@
       "moderate": 107,
       "low": 8
     },
-    "directPackages": 205,
+    "directPackages": 206,
     "duplicatePackageNames": 232,
     "installScriptPackages": 4,
     "nativeBindingPackages": 5,
     "networkInstallIndicatorPackages": 0,
     "packageScriptNetworkIndicatorPackages": 45,
-    "codeGenerationIndicatorPackages": 661,
-    "resolvedPackages": 2013,
+    "codeGenerationIndicatorPackages": 662,
+    "resolvedPackages": 2015,
     "unpinnedActionUses": 24
   },
   "packages": [
@@ -14134,6 +14134,10 @@
       },
       "usageEvidence": [
         {
+          "path": "app/soapbox/features/status/components/__tests__/card.test.tsx",
+          "context": "test"
+        },
+        {
           "path": "app/soapbox/features/ui/components/__tests__/compose-button.test.tsx",
           "context": "test"
         },
@@ -15967,6 +15971,10 @@
       "usageEvidence": [
         {
           "path": "package.json#scripts.test",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.test:html-safety",
           "context": "build"
         }
       ],
@@ -18373,6 +18381,53 @@
       },
       "usageEvidence": [],
       "version": "4.0.5"
+    },
+    {
+      "classification": "runtime-transitive",
+      "declaredSection": null,
+      "descriptors": [
+        "@types/trusted-types@npm:^2.0.7"
+      ],
+      "direct": false,
+      "executionContexts": [
+        "browser",
+        "build"
+      ],
+      "license": {
+        "evidence": "Installed package.json metadata.",
+        "expression": "MIT",
+        "obligations": [
+          "retain-applicable-copyright-license-and-notice-text"
+        ],
+        "status": "declared"
+      },
+      "locator": "@types/trusted-types@npm:2.0.7",
+      "maintenanceStatus": "not-declared-deprecated-in-audit-snapshot",
+      "name": "@types/trusted-types",
+      "owner": "dependency-governance-maintainers",
+      "upstream": {
+        "author": null,
+        "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "purpose": "Transitive dependency required by: dompurify.",
+      "replacementRelevance": "none-recorded",
+      "rootDependencies": [
+        "dompurify"
+      ],
+      "installBehavior": {
+        "hasInstallScript": false,
+        "hasInstallTimeNetworkIndicator": false,
+        "hasPackageScriptNetworkIndicator": false,
+        "hasCodeGenerationIndicator": false,
+        "hasNativeBinding": false,
+        "platformConstraints": {
+          "cpu": [],
+          "os": []
+        },
+        "scripts": {}
+      },
+      "usageEvidence": [],
+      "version": "2.0.7"
     },
     {
       "classification": "build-transitive",
@@ -37525,6 +37580,63 @@
       "version": "5.0.3"
     },
     {
+      "classification": "runtime",
+      "declaredSection": "dependencies",
+      "descriptors": [
+        "dompurify@npm:3.4.12"
+      ],
+      "direct": true,
+      "executionContexts": [
+        "browser",
+        "build"
+      ],
+      "license": {
+        "evidence": "Installed package.json metadata.",
+        "expression": "(MPL-2.0 OR Apache-2.0)",
+        "obligations": [
+          "copyleft-source-and-license-compliance-review",
+          "retain-applicable-copyright-license-and-notice-text"
+        ],
+        "status": "declared"
+      },
+      "locator": "dompurify@npm:3.4.12",
+      "maintenanceStatus": "not-declared-deprecated-in-audit-snapshot",
+      "name": "dompurify",
+      "owner": "frontend-runtime-maintainers",
+      "upstream": {
+        "author": "Dr.-Ing. Mario Heiderich, Cure53 <mario@cure53.de> (https://cure53.de/)",
+        "repository": "git://github.com/cure53/DOMPurify.git"
+      },
+      "purpose": "DOMPurify is a DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML and SVG. It runs as JavaScript and works in all modern browsers, as well as in Node.js (via jsdom). DOMPurify is written by security people who have vast background in web attacks and XSS. Fear not.",
+      "replacementRelevance": "none-recorded",
+      "rootDependencies": [
+        "dompurify"
+      ],
+      "installBehavior": {
+        "hasInstallScript": false,
+        "hasInstallTimeNetworkIndicator": false,
+        "hasPackageScriptNetworkIndicator": false,
+        "hasCodeGenerationIndicator": true,
+        "hasNativeBinding": false,
+        "platformConstraints": {
+          "cpu": [],
+          "os": []
+        },
+        "scripts": {}
+      },
+      "usageEvidence": [
+        {
+          "path": "app/soapbox/utils/html-safety.ts",
+          "context": "browser"
+        },
+        {
+          "path": "scripts/check-html-safety-authority-inventory.js",
+          "context": "build"
+        }
+      ],
+      "version": "3.4.12"
+    },
+    {
       "classification": "build-transitive",
       "declaredSection": null,
       "descriptors": [
@@ -50873,6 +50985,10 @@
           "context": "test"
         },
         {
+          "path": "app/soapbox/__tests__/stream.test.ts",
+          "context": "test"
+        },
+        {
           "path": "app/soapbox/actions/__tests__/about.test.ts",
           "context": "test"
         },
@@ -58851,6 +58967,10 @@
       "usageEvidence": [
         {
           "path": "package.json#scripts.test",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.test:html-safety",
           "context": "build"
         }
       ],
@@ -83329,6 +83449,10 @@
           "context": "browser"
         },
         {
+          "path": "app/soapbox/features/status/components/__tests__/card.test.tsx",
+          "context": "test"
+        },
+        {
           "path": "app/soapbox/features/status/components/card.tsx",
           "context": "browser"
         },
@@ -99133,11 +99257,23 @@
           "context": "node"
         },
         {
+          "path": "static/packs/js/application-4d2103e53de3a982b80f.js",
+          "context": "node"
+        },
+        {
           "path": "static/packs/js/application-4ec3b2bcdd081019c394.js",
           "context": "node"
         },
         {
+          "path": "static/packs/js/application-711109f02ca17137c3f9.js",
+          "context": "node"
+        },
+        {
           "path": "static/packs/js/application-78bba58997d7f4a06d3c.js",
+          "context": "node"
+        },
+        {
+          "path": "static/packs/js/application-91cdcbf5892bcff97c21.js",
           "context": "node"
         },
         {
@@ -99162,6 +99298,18 @@
         },
         {
           "path": "static/packs/js/features/soapbox_config-aca2d6296d01f6da8156.chunk.js",
+          "context": "node"
+        },
+        {
+          "path": "static/packs/js/features/soapbox_config-bd48adb24e0fe63642e3.chunk.js",
+          "context": "node"
+        },
+        {
+          "path": "static/packs/js/features/soapbox_config-e99471c8cc5e4f6bdde9.chunk.js",
+          "context": "node"
+        },
+        {
+          "path": "static/packs/js/features/soapbox_config-eaf8ada238636574439b.chunk.js",
           "context": "node"
         }
       ],
@@ -111929,7 +112077,7 @@
     },
     {
       "action": "actions/checkout",
-      "line": 36,
+      "line": 42,
       "local": false,
       "path": ".github/workflows/html-safety-authority.yml",
       "pinnedToCommit": false,

@@ -9,14 +9,14 @@ Generated from `package.json`, `yarn.lock`, installed package metadata, reposito
 - Machine-readable authority: [`config/dependency-authority-inventory.json`](../../config/dependency-authority-inventory.json)
 - Advisory snapshot: [`config/dependency-advisory-snapshot.json`](../../config/dependency-advisory-snapshot.json)
 - Drift and license checker: [`scripts/check-dependency-authority-inventory.js`](../../scripts/check-dependency-authority-inventory.js)
-- Resolved packages classified: **2013**
-- Direct packages with an owner, purpose, context, and usage evidence: **205**
+- Resolved packages classified: **2015**
+- Direct packages with an owner, purpose, context, and usage evidence: **206**
 - Package names with multiple locked locators or versions: **232**
 - Packages with install scripts: **4**
 - Packages with native-binding indicators: **5**
 - Packages with install-time network indicators: **0**
 - Packages with network-capable package scripts: **45**
-- Packages with code-generation/build script indicators: **661**
+- Packages with code-generation/build script indicators: **662**
 - GitHub Actions use sites reviewed: **26** (24 not commit-pinned)
 
 Every lockfile locator has a classification, execution context, root reachability set, maintenance status, license disposition, install behavior, owner, and purpose in the machine-readable authority. A transitive package may inherit multiple roots and contexts.
@@ -79,11 +79,11 @@ The machine-readable `duplicatePackages` register records every package name wit
 | @tanstack/react-query | 4.44.0 | runtime | browser, test | frontend-runtime-maintainers | 6 | none-recorded |
 | @testing-library/jest-dom | 5.17.0 | development-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | @testing-library/react-hooks | 8.0.1 | test-only | test | test-infrastructure-maintainers | 2 | none-recorded |
-| @testing-library/react | 12.1.5 | test-only | test | test-infrastructure-maintainers | 2 | none-recorded |
+| @testing-library/react | 12.1.5 | test-only | test | test-infrastructure-maintainers | 3 | none-recorded |
 | @testing-library/user-event | 14.6.1 | test-only | test | test-infrastructure-maintainers | 10 | none-recorded |
 | @types/escape-html | 1.0.4 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/http-link-header | 1.0.7 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
-| @types/jest | 28.1.8 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
+| @types/jest | 28.1.8 | build-only | build | build-and-release-maintainers | 2 | none-recorded |
 | @types/lodash | 4.17.24 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/object-assign | 4.0.33 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/object-fit-images | 3.2.5 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
@@ -128,6 +128,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | cssnano | 5.1.15 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | danger | 11.3.1 | build-only | node | build-and-release-maintainers | 1 | none-recorded |
 | detect-passive-events | 2.0.3 | runtime | browser | frontend-runtime-maintainers | 5 | none-recorded |
+| dompurify | 3.4.12 | runtime | browser, build | frontend-runtime-maintainers | 2 | none-recorded |
 | dotenv | 8.6.0 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
 | eld | 2.0.3 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | emoji-datasource | 5.0.0 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
@@ -152,7 +153,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | html-webpack-plugin | 5.6.7 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
 | http-link-header | 1.1.3 | runtime | browser, test | frontend-runtime-maintainers | 2 | none-recorded |
 | husky | 9.1.7 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
-| immutable | 4.3.8 | runtime | browser, build, node, test | frontend-runtime-maintainers | 232 | review-required |
+| immutable | 4.3.8 | runtime | browser, build, node, test | frontend-runtime-maintainers | 233 | review-required |
 | imports-loader | 4.0.1 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | intersection-observer | 0.12.2 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | intl-messageformat-parser | 6.4.4 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
@@ -163,7 +164,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | iso-639-1 | 3.1.5 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | jest-environment-jsdom | 28.1.3 | development-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | jest-junit | 14.0.1 | development-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
-| jest | 28.1.3 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
+| jest | 28.1.3 | build-only | build | build-and-release-maintainers | 2 | none-recorded |
 | jsdoc | 3.6.11 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
 | libphonenumber-js | 1.12.41 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | line-awesome | 1.3.0 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
@@ -209,7 +210,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | react-textarea-autosize | 8.5.9 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | react-toggle | 4.1.3 | runtime | browser | frontend-runtime-maintainers | 5 | none-recorded |
 | react-virtuoso | 2.19.1 | runtime | browser | frontend-runtime-maintainers | 6 | none-recorded |
-| react | 17.0.2 | runtime | browser, test | frontend-runtime-maintainers | 486 | none-recorded |
+| react | 17.0.2 | runtime | browser, test | frontend-runtime-maintainers | 487 | none-recorded |
 | redux-immutable | 4.0.0 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | redux-thunk | 2.4.2 | runtime | browser, test | frontend-runtime-maintainers | 4 | none-recorded |
 | redux | 4.2.1 | runtime | browser, node, test | frontend-runtime-maintainers | 58 | none-recorded |
@@ -231,7 +232,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | tslib | 2.8.1 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | twemoji | 14.0.2 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | typescript | 4.9.5 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
-| util | 0.12.5 | build-only | node | build-and-release-maintainers | 11 | none-recorded |
+| util | 0.12.5 | build-only | node | build-and-release-maintainers | 17 | none-recorded |
 | uuid | 8.3.2 | runtime | browser | frontend-runtime-maintainers | 7 | none-recorded |
 | webpack-assets-manifest | 5.2.1 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
 | webpack-bundle-analyzer | 4.10.2 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
@@ -251,6 +252,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | (BSD-3-Clause OR GPL-2.0) | 1 | declared | copyleft-source-and-license-compliance-review, retain-applicable-copyright-license-and-notice-text |
 | (MIT OR Apache-2.0) | 2 | declared | retain-applicable-copyright-license-and-notice-text |
 | (MIT OR CC0-1.0) | 5 | declared | retain-applicable-copyright-license-and-notice-text, retain-provenance-and-confirm-jurisdictional-treatment |
+| (MPL-2.0 OR Apache-2.0) | 1 | declared | copyleft-source-and-license-compliance-review, retain-applicable-copyright-license-and-notice-text |
 | (WTFPL OR MIT) | 1 | declared | retain-applicable-copyright-license-and-notice-text |
 | 0BSD | 2 | declared | retain-provenance-and-confirm-jurisdictional-treatment |
 | Apache 2 | 1 | non-spdx-or-ambiguous-declaration | retain-applicable-copyright-license-and-notice-text |
@@ -268,7 +270,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | CC0-1.0 | 5 | declared | retain-provenance-and-confirm-jurisdictional-treatment |
 | ISC | 110 | declared | retain-applicable-copyright-license-and-notice-text |
 | LicenseRef-TaffyDB-Ambiguous | 1 | conflict-requires-removal-or-counsel | legal-review-before-distribution |
-| MIT | 1719 | declared, verified-from-distribution | retain-applicable-copyright-license-and-notice-text |
+| MIT | 1720 | declared, verified-from-distribution | retain-applicable-copyright-license-and-notice-text |
 | MIT/X11 | 1 | non-spdx-or-ambiguous-declaration | retain-applicable-copyright-license-and-notice-text |
 | MPL-2.0 | 3 | declared | copyleft-source-and-license-compliance-review |
 | Public Domain | 1 | non-spdx-or-ambiguous-declaration | retain-provenance-and-confirm-jurisdictional-treatment |
@@ -476,6 +478,7 @@ Mangane remains AGPL-3.0-or-later. This inventory records dependency declaration
 | domexception | 4.0.0 | false | false | false | false | true | jest-environment-jsdom |
 | domhandler | 4.3.1 | false | false | false | false | true | cssnano, html-webpack-plugin |
 | domhandler | 5.0.3 | false | false | false | false | true | cheerio |
+| dompurify | 3.4.12 | false | false | false | false | true | dompurify |
 | domutils | 2.8.0 | false | false | false | false | true | cssnano, html-webpack-plugin |
 | domutils | 3.2.2 | false | false | false | true | true | cheerio |
 | dot-case | 3.0.4 | false | false | false | false | true | html-webpack-plugin |

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { safeHtml } from 'soapbox/utils/html-safety';
+
 import type { Announcement as AnnouncementEntity, Mention as MentionEntity } from 'soapbox/types/entities';
 
 interface IAnnouncementContent {
@@ -78,7 +80,7 @@ const AnnouncementContent: React.FC<IAnnouncementContent> = ({ announcement }) =
     <div
       className='translate text-sm'
       ref={node}
-      dangerouslySetInnerHTML={{ __html: announcement.contentHtml }}
+      dangerouslySetInnerHTML={safeHtml(announcement.contentHtml)}
     />
   );
 };

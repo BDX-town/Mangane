@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { fetchMobilePage } from 'soapbox/actions/mobile';
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { safeHtml } from 'soapbox/utils/html-safety';
 
 import { languages } from '../preferences';
 
@@ -96,7 +97,7 @@ class MobilePage extends ImmutablePureComponent {
     return (
       <div>
         <div
-          dangerouslySetInnerHTML={{ __html: this.state.pageHtml }}
+          dangerouslySetInnerHTML={safeHtml(this.state.pageHtml)}
         />
         {alsoAvailable}
       </div>

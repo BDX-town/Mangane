@@ -1,8 +1,8 @@
+import { Map as ImmutableMap } from 'immutable';
 import React, { useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
 import { useHistory } from 'react-router-dom';
-import { Map as ImmutableMap } from 'immutable';
 
 import { mentionCompose } from 'soapbox/actions/compose';
 import { reblog, favourite, unreblog, unfavourite } from 'soapbox/actions/interactions';
@@ -16,6 +16,7 @@ import AccountContainer from 'soapbox/containers/account_container';
 import StatusContainer from 'soapbox/containers/status_container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetNotification } from 'soapbox/selectors';
+import { safeHtml } from 'soapbox/utils/html-safety';
 import { NotificationType, validType } from 'soapbox/utils/notification';
 
 import type { ScrollPosition } from 'soapbox/components/status';
@@ -38,7 +39,7 @@ const buildLink = (account: Account): JSX.Element => (
       href={`/@${account.acct}`}
       title={account.acct}
       to={`/@${account.acct}`}
-      dangerouslySetInnerHTML={{ __html: account.display_name_html }}
+      dangerouslySetInnerHTML={safeHtml(account.display_name_html, 'inline-text')}
     />
   </bdi>
 );

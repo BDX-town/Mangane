@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import AvatarOverlay from 'soapbox/components/avatar_overlay';
 import DisplayName from 'soapbox/components/display-name';
 import Icon from 'soapbox/components/icon';
+import { safeHtml } from 'soapbox/utils/html-safety';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
@@ -14,7 +15,7 @@ interface IMovedNote {
 }
 
 const MovedNote: React.FC<IMovedNote> = ({ from, to }) => {
-  const displayNameHtml = { __html: from.display_name_html };
+  const displayNameHtml = safeHtml(from.display_name_html, 'inline-text');
 
   return (
     <div className='account__moved-note'>

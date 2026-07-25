@@ -285,7 +285,7 @@ Here is an example configuration for nginx:
 ```
 # add style-src for mangane
 proxy_hide_header Content-Security-Policy;
-add_header Content-Security-Policy "upgrade-insecure-requests;script-src 'self';connect-src 'self' blob: https://example.com wss://example.com;media-src 'self' https:;img-src 'self' data: blob: https:;default-src 'none';base-uri 'self';frame-ancestors 'none';style-src 'self' 'unsafe-inline';font-src 'self';manifest-src 'self';" always;
+add_header Content-Security-Policy "upgrade-insecure-requests;default-src 'none';base-uri 'none';object-src 'none';frame-ancestors 'none';form-action 'self';script-src 'self';connect-src 'self' blob: https://example.com wss://example.com;media-src 'self' https:;img-src 'self' data: blob: https:;frame-src 'self';child-src 'self';worker-src 'self';style-src 'self' 'unsafe-inline';font-src 'self';manifest-src 'self';" always;
 ```
 *Please replace https://example.com with your own domain*
 

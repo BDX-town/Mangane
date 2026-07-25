@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import { useSoapboxConfig } from 'soapbox/hooks';
+import { safeHtml } from 'soapbox/utils/html-safety';
 
 import { getAcct } from '../utils/accounts';
 
@@ -29,7 +30,7 @@ const DisplayName: React.FC<IDisplayName> = ({ account, children, withDate = fal
 
   const displayName = (
     <span className='display-name__name'>
-      <bdi><strong className='display-name__html' dangerouslySetInnerHTML={{ __html: account.get('display_name_html') }} /></bdi>
+      <bdi><strong className='display-name__html' dangerouslySetInnerHTML={safeHtml(account.get('display_name_html'), 'inline-text')} /></bdi>
       {verified && <VerificationBadge />}
       {withDate && joinedAt}
     </span>

@@ -14,6 +14,7 @@ import { normalizeAttachment } from 'soapbox/normalizers/attachment';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizePoll } from 'soapbox/normalizers/poll';
 import { stripCompatibilityFeatures } from 'soapbox/utils/html';
+import { sanitizeHtml } from 'soapbox/utils/html-safety';
 import { makeEmojiMap } from 'soapbox/utils/normalizers';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
@@ -59,8 +60,8 @@ const normalizeStatusPoll = (statusEdit: ImmutableMap<string, any>) => {
 
 const normalizeContent = (statusEdit: ImmutableMap<string, any>) => {
   const emojiMap   = makeEmojiMap(statusEdit.get('emojis'));
-  const contentHtml = stripCompatibilityFeatures(emojify(statusEdit.get('content'), emojiMap));
-  const spoilerHtml = emojify(escapeTextContentForBrowser(statusEdit.get('spoiler_text')), emojiMap);
+  const contentHtml = sanitizeHtml(stripCompatibilityFeatures(emojify(statusEdit.get('content'), emojiMap)));
+  const spoilerHtml = sanitizeHtml(emojify(escapeTextContentForBrowser(statusEdit.get('spoiler_text')), emojiMap), 'inline-text');
 
   return statusEdit
     .set('contentHtml', contentHtml)

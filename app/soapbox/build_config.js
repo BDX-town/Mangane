@@ -18,7 +18,9 @@ const {
 
 const sanitizeURL = url => {
   try {
-    return trimEnd(new URL(url).toString(), '/');
+    const parsed = new URL(url);
+    if (!['http:', 'https:'].includes(parsed.protocol)) return '';
+    return trimEnd(parsed.toString(), '/');
   } catch {
     return '';
   }

@@ -11,6 +11,7 @@ import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
 import { useAppSelector, useOwnAccount, useLogo } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
+import { safeHtml } from 'soapbox/utils/html-safety';
 import { getActualStatus } from 'soapbox/utils/status';
 
 import StatusInteractionBar from './status-interaction-bar';
@@ -174,7 +175,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
               <div
                 className='status__content'
                 lang={locale}
-                dangerouslySetInnerHTML={{ __html: actualStatus.translations.get(locale) }}
+                dangerouslySetInnerHTML={safeHtml(actualStatus.translations.get(locale))}
               />
             </>
           )

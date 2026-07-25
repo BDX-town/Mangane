@@ -12,6 +12,7 @@ import { Text } from 'soapbox/components/ui';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
+import { safeHtml } from 'soapbox/utils/html-safety';
 
 const getAccount = makeGetAccount();
 
@@ -76,7 +77,7 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
         <Text
           size='sm'
           className={classNames('italic account__header__content', (account.note.length === 0 || account.note === '<p></p>') && 'empty')}
-          dangerouslySetInnerHTML={{ __html: account.note_emojified }}
+          dangerouslySetInnerHTML={safeHtml(account.note_emojified)}
         />
       </div>
 

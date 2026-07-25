@@ -1,90 +1,52 @@
 # HTML Safety Matrix
 
-Status: **Current / Phase 0 in progress**
+Status: **Phase 0D complete / executable**
 
-Last updated: 2026-07-23
+Last verified: 2026-07-25
 
-## Purpose
+## Authority
 
-This document begins the required Phase 0 reconciliation of production HTML transformation and rendering paths. It is evidence, not a declaration that remote content is safe. Every sink must be traced from source data through normalization, transformation, sanitization, URL handling, rendering, and adversarial tests.
+The row-level source of truth is [`config/html-safety-authority-inventory.json`](../../config/html-safety-authority-inventory.json). It is generated from production source and currently classifies 157 callsites: 44 React HTML sinks, 43 dynamic link destinations, nine imperative navigations, five parser uses, three DOM writes, two iframe boundaries, and 51 calls into the sanitizer boundary.
 
-## Evidence standard
+`scripts/check-html-safety-authority-inventory.js` regenerates the model in memory and fails on any unreviewed sink, parser/write surface, iframe, sanitizer-policy change, or line-level inventory drift.
 
-A rendering path is not classified as sanitized merely because it:
+## Rendering matrix
 
-- passes through a helper that parses or rewrites HTML;
-- originates from a federated server;
-- has been used historically without a reported incident;
-- adds `rel` or `target` attributes after insertion;
-- removes selected compatibility markup.
+| Surface family | Origin and trust | Transformation chain | Security boundary | Sink and behavior | Tests |
+|---|---|---|---|---|---|
+| Status bodies, quotes, replies, conversations, edits and translations | Federated remote-user HTML; untrusted | `emojify` and optional compatibility/greentext transforms | DOMPurify 3.4.12 at state normalization and again at principal sinks | React `dangerouslySetInnerHTML`; HTML profile only; links hardened | malformed markup, handlers, encoded schemes, SVG/MathML and sanitizer regression corpus |
+| Content warnings and poll labels | Federated remote-user text plus emoji markup; untrusted | escape text, then `emojify` | DOMPurify inline policy at normalization and sink | Inline-only tags; no data attributes or CSS | inline-policy and emoji-normalizer tests |
+| Account names, bios and fields | Remote-user account/profile HTML; untrusted | escaped display names or server bio/field HTML, then `emojify` | DOMPurify at account normalization; shared `Text`/`Permalink` components sanitize again | React HTML sinks; verified links receive `nofollow noopener noreferrer ugc` | account normalizer and adversarial corpus |
+| Announcements and notification-associated content | Instance administrator or federated entity HTML; privileged but untrusted | `emojify` | DOMPurify at announcement normalization and sink | React HTML sink | announcement tests and adversarial corpus |
+| About/mobile pages and configurable footer/home HTML | Local administrator-authored files/config; trusted role, untrusted markup | Fetch/config interpolation; optional `emojify` | DOMPurify at the render sink | Rich or inline HTML policy; scripts, forms, frames and style removed | adversarial corpus |
+| Onboarding localized rich text | Repository/localization supply chain; reviewed but not inherently safe | `react-intl` formatting | DOMPurify inline policy | Inline React HTML sink | adversarial corpus |
+| Reports and feed suggestions | Remote-user plain text; untrusted | None | HTML rendering removed | React text nodes only | full Jest suite |
+| Link preview metadata and dynamic anchors | Remote third-party/backend/config metadata; untrusted | Text trimming and attachment normalization | React text escaping plus centralized URL classification; document capture and mutation guard for native anchors | Text/image/link attributes; unsafe navigation is synchronously blocked and unsafe dynamic `href` values are removed | URL and navigation-policy tests |
+| Preview-card HTML | Remote oEmbed/provider HTML; untrusted | Former iframe parser/autoplay mutation removed | **Blocked** | Raw `card.html` is never inserted; the user gets a hardened provider link | sink-discovery gate |
+| oEmbed preview modal | Local backend response containing embed HTML; untrusted | DOMPurify rich policy | Empty-sandbox `srcDoc`; scripts, nested iframes, SVG/MathML and CSS removed | Sandboxed iframe; no `document.write`, no same-origin capability | drift gate and adversarial corpus |
+| Plaintext/compatibility helpers | Arbitrary HTML; untrusted | Browser inert parsing, text extraction or narrow node removal | **Not sanitizers**; callers must sanitize later or consume text only | `innerHTML`/`DOMParser` in four explicitly classified modules | test proving compatibility transformer preserves scripts |
 
-Safety requires an explicit allowlist sanitizer, URL-scheme policy, attribute policy, and tests against malicious markup.
+## Sanitizer policy
 
-## Verified matrix entries
+- Package: `dompurify` exactly `3.4.12`.
+- Rich content uses the HTML profile only.
+- Forbidden tags include `script`, `style`, `svg`, `math`, `iframe`, `object`, `embed`, `form`, `template`, `base`, `link`, and `meta`.
+- Forbidden attributes include `style`, `srcdoc`, `srcset`, `formaction`, `xlink:href`, `xmlns`, `ping`, and form binding.
+- HTML event attributes are removed by DOMPurify.
+- Link destinations allow HTTP, HTTPS, mail and telephone schemes.
+- Media attributes allow only HTTP and HTTPS.
+- Blob, data, file, JavaScript and VBScript schemes are blocked in sanitized HTML.
+- Sanitized anchors receive `target="_blank"` and `rel="nofollow noopener noreferrer ugc"`.
+- Native anchors are rechecked synchronously on click/auxclick and by a `MutationObserver`; unsafe destinations lose `href`, while `_blank` destinations receive `nofollow noopener noreferrer`.
+- Inline content has a smaller tag allowlist and does not permit data attributes.
 
-| Surface | Source value | Transformation | Render/DOM sink | Current URL handling | Sanitizer verified | Immediate risk / unknown | Required follow-up |
-|---|---|---|---|---|---|---|---|
-| Status body | `status.contentHtml` | Optional `addGreentext()` | `dangerouslySetInnerHTML` in `app/soapbox/components/status_content.tsx` | After insertion, anchors receive `rel="nofollow noopener"` and `target="_blank"`; mention and hashtag listeners are attached | **No** | Upstream normalization and sanitizer provenance are not yet verified. Post-insertion link mutation does not prevent unsafe elements, attributes, or schemes from entering the DOM. | Trace `contentHtml` construction through normalizers; identify sanitizer and configuration; verify allowed tags, attributes, URI schemes, CSS/SVG handling, and malformed markup behavior; add adversarial tests. |
-| Status content warning | `status.spoilerHtml` | No transformation visible at sink | `dangerouslySetInnerHTML` in `Spoiler` within `status_content.tsx` | No sink-local URL policy | **No** | Sanitizer provenance is unknown. | Trace `spoilerHtml` construction and apply the same sanitizer and URL-policy verification as status bodies. |
-| Plain-text conversion | Arbitrary `html` argument | Regex replacement, then browser HTML parse | `wrapper.innerHTML`, followed by `textContent` return in `app/soapbox/utils/html.ts` | Not applicable to returned text | **Not a sanitizer** | The helper explicitly notes it may receive unsafe HTML. Its output is text, but callers and parsing side effects still require inventory. | Inventory all callers; verify no returned value is later trusted as sanitized HTML; test malformed tags, entities, SVG/MathML, and extreme input size. |
-| Compatibility stripping | Arbitrary `html` argument | Browser parse; removes `.quote-inline` and `.recipients-inline` nodes | `node.innerHTML`, then returns serialized HTML in `app/soapbox/utils/html.ts` | None | **No** | Returns HTML after narrow element removal. It preserves unrelated active or unsafe markup and must never be treated as sanitization. | Inventory all callers and downstream sinks; require sanitization after transformation unless input is already proven sanitized; add regression tests proving dangerous unrelated markup survives so callers cannot misunderstand the contract. |
+Transformation helpers such as `emojify`, `addGreentext`, `unescapeHTML`, and `stripCompatibilityFeatures` are not security boundaries.
 
-## Verified status-body behavior
+## Completion evidence
 
-`StatusContent` currently:
-
-1. receives normalized `Status` data;
-2. selects `status.contentHtml`;
-3. optionally rewrites it through `addGreentext()`;
-4. renders it with `dangerouslySetInnerHTML`;
-5. walks inserted anchors after render;
-6. adds `rel="nofollow noopener"`, opens ordinary links in a new tab, and installs mention/hashtag click behavior.
-
-This improves some navigation behavior but is not a complete content-safety boundary. It does not itself prove filtering of scripts, event-handler attributes, dangerous URL schemes, SVG/MathML payloads, style-based attacks, malformed markup, or sanitizer bypasses.
-
-## Required sink fields
-
-Every remaining production sink must record:
-
-- source entity and field;
-- whether the value is local, administrator-authored, instance-provided, remote-user-authored, or third-party fetched;
-- normalization and transformation chain;
-- sanitizer package, version, configuration, and ownership;
-- allowed tags and attributes;
-- allowed URI schemes and URL normalization;
-- link `rel`, referrer, target, and opener behavior;
-- SVG, MathML, CSS, iframe, embed, and custom-element behavior;
-- CSP and sandbox assumptions;
-- accessibility consequences;
-- test coverage and adversarial corpus;
-- account/instance isolation and cache implications;
-- target implementation phase and rollback plan.
-
-## Next inspection queue
-
-The source-inventory reconciliation identified these high-priority files for source-level classification:
-
-- `app/soapbox/components/status.tsx`
-- `app/soapbox/components/quoted-status.tsx`
-- `app/soapbox/components/account.tsx`
-- `app/soapbox/features/status/components/detailed-status.tsx`
-- `app/soapbox/features/status/components/card.tsx`
-- `app/soapbox/features/ui/components/profile_fields_panel.tsx`
-- `app/soapbox/features/ui/components/profile_info_panel.tsx`
-- `app/soapbox/features/admin/components/report.tsx`
-- `app/soapbox/features/about/index.tsx`
-
-The matrix is incomplete until every production `dangerouslySetInnerHTML` and `innerHTML` candidate is classified, scanner false positives are separated, sanitizer call sites are inventoried, and the complete data-flow chain is verified.
-
-## Completion gate
-
-This workstream remains blocked until:
-
-- all production HTML sinks are enumerated;
-- all source fields and trust boundaries are identified;
-- sanitizer implementation and configuration are verified;
-- URL and redirect policies are documented;
-- preview, embed, custom-page, admin-authored, profile-field, status, quote, poll, and notification surfaces are covered;
-- adversarial tests cover the accepted sanitizer and URL policy;
-- no transformer is mislabeled as a sanitizer;
-- unknowns are either resolved or explicitly accepted as release blockers.
+- Every production HTML sink is represented in the generated manifest.
+- Every executable HTML sink is sanitized, routed through a sanitizing shared component, or blocked.
+- CSS, SVG, MathML, iframe and namespace behavior is explicit.
+- URL, redirect, and native-anchor runtime policy is centralized.
+- New raw sinks and DOM writes fail CI.
+- The adversarial corpus exercises malformed markup, handler attributes, dangerous/encoded schemes, namespaces, CSS, SVG, MathML, forms, templates and iframe payloads.

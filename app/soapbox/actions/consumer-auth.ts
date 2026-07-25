@@ -4,6 +4,7 @@ import * as BuildConfig from 'soapbox/build_config';
 import { isURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
 import { getFeatures } from 'soapbox/utils/features';
+import { sanitizeUrl } from 'soapbox/utils/url-policy';
 
 import { createApp } from './apps';
 
@@ -50,6 +51,9 @@ export const prepareRequest = (provider: string) => {
     const formdata = axios.toFormData(params);
     const query = new URLSearchParams(formdata as any);
 
-    location.href = `${baseURL}/oauth/prepare_request?${query.toString()}`;
+    const destination = sanitizeUrl(`${baseURL}/oauth/prepare_request?${query.toString()}`);
+    if (!destination) throw new Error('Unsafe OAuth provider destination');
+
+    window.location.assign(destination);
   };
 };

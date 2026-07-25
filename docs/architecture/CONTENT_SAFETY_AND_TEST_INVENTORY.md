@@ -1,10 +1,10 @@
 # Mangane Content Safety and Test Inventory
 
-Status: **Current / Phase 0 in progress**
+Status: **Current / Phase 0D content-safety work complete**
 
-Last updated: 2026-07-23
+Last updated: 2026-07-25
 
-This document records content-safety and test-harness behavior verified directly from the current repository. It is not a complete sanitization audit or CI inventory. Uninspected rendering sinks, workflows, and telemetry paths remain blockers.
+This document records content-safety and test-harness behavior verified directly from the current repository. Phase 0D's complete sink inventory and adversarial safety boundary are now executable; the broader Phase 0G CI/test baseline and Phase 0E telemetry work remain separate.
 
 ## 1. Shared HTML utilities
 
@@ -38,9 +38,9 @@ The function transforms markup but does not define an allowlist, remove event-ha
 
 Both helpers must be classified as HTML transformers. Any caller that subsequently renders their output as HTML requires an independently verified sanitizer and sink policy.
 
-## 2. Required HTML sink inventory
+## 2. Completed HTML sink inventory
 
-Phase 0 must still enumerate every reachable use of:
+The generated Phase 0D authority enumerates every reachable production use of:
 
 - `dangerouslySetInnerHTML`;
 - direct `.innerHTML`, `.outerHTML`, `insertAdjacentHTML`, and document-write APIs;
@@ -54,7 +54,7 @@ Phase 0 must still enumerate every reachable use of:
 - clipboard and share-target content;
 - any sanitizer library, configuration, hooks and bypasses.
 
-For each sink, record:
+The row-level manifest and linked matrices record:
 
 - content source and trust level;
 - sanitizer and exact configuration;
@@ -77,9 +77,7 @@ The package manifest includes:
 - `exif-js`;
 - remote-content and preview-related UI dependencies.
 
-Dependency presence does not prove active usage or safe configuration. A directory-wide call-site inventory remains required.
-
-No dedicated HTML-sanitizer dependency is established by the inspected package manifest. This does not prove sanitization is absent because sanitizer logic may be inherited, local, transitive or implemented elsewhere. It does mean later work must not assume a centralized sanitizer exists without source evidence.
+Dependency presence does not prove active usage or safe configuration. Phase 0D therefore pins and directly exercises `dompurify` 3.4.12 through `app/soapbox/utils/html-safety.ts`; the generated manifest records every boundary call.
 
 ## 4. Test command baseline
 
@@ -151,17 +149,19 @@ Verified:
 - shared HTML helpers perform markup transformation through `innerHTML`;
 - those helpers do not constitute a complete sanitizer;
 - one helper explicitly warns that unsafe HTML may remain;
+- all production HTML sinks, parser/writes, iframes and destination expressions are generated into the Phase 0D manifest;
+- DOMPurify 3.4.12 provides the centralized HTML/attribute/URL allowlist;
+- raw card/embed execution is blocked and oEmbed uses sanitized empty-sandbox `srcDoc`;
+- adversarial browser tests and source-mutation drift tests run in dedicated CI;
 - the current test harness is Jest/jsdom-based;
 - the service-worker entry is excluded from coverage;
 - package scripts do not themselves establish browser, accessibility, worker-security, dependency-audit or license-check coverage.
 
-Not yet verified:
+Not yet verified in this separate test/CI workstream:
 
-- every rendering sink and sanitizer call site;
-- whether a centralized sanitizer exists elsewhere;
 - exact Sentry initialization, consent and redaction behavior;
 - all GitHub Actions workflows and required checks;
 - actual baseline test, lint, build and coverage outcomes;
 - browser and accessibility test coverage.
 
-These unknowns remain Phase 0 blockers.
+These remaining items belong to Phase 0E–0G rather than Phase 0D.

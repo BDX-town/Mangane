@@ -3,6 +3,8 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Motion, presets, spring } from 'react-motion';
 
+import { safeHtml } from 'soapbox/utils/html-safety';
+
 import { HStack, Icon, Text } from '../ui';
 
 import type {
@@ -69,7 +71,7 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
             <Text
               theme='inherit'
               weight='medium'
-              dangerouslySetInnerHTML={{ __html: option.title_emojified }}
+              dangerouslySetInnerHTML={safeHtml(option.title_emojified, 'inline-text')}
             />
           </div>
         </div>
@@ -135,7 +137,7 @@ const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
               <Text
                 theme='inherit'
                 weight='medium'
-                dangerouslySetInnerHTML={{ __html: option.title_emojified }}
+                dangerouslySetInnerHTML={safeHtml(option.title_emojified, 'inline-text')}
                 className='relative'
               />
             </div>

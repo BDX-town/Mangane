@@ -12,6 +12,7 @@ import {
 
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
+import { sanitizeHtml } from 'soapbox/utils/html-safety';
 import { makeEmojiMap } from 'soapbox/utils/normalizers';
 
 import { normalizeAnnouncementReaction } from './announcement_reaction';
@@ -61,7 +62,7 @@ const normalizeEmojis = (announcement: ImmutableMap<string, any>) => {
 
 const normalizeContent = (announcement: ImmutableMap<string, any>) => {
   const emojiMap   = makeEmojiMap(announcement.get('emojis'));
-  const contentHtml = emojify(announcement.get('content'), emojiMap);
+  const contentHtml = sanitizeHtml(emojify(announcement.get('content'), emojiMap));
 
   return announcement.set('contentHtml', contentHtml);
 };

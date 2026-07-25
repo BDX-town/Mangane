@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { fetchAboutPage } from 'soapbox/actions/about';
 import { useSoapboxConfig, useSettings, useAppDispatch } from 'soapbox/hooks';
+import { safeHtml } from 'soapbox/utils/html-safety';
 
 import { languages } from '../preferences';
 
@@ -64,7 +65,7 @@ const AboutPage: React.FC = () => {
       <div className='about-page'>
         <div
           className='rich-formatting'
-          dangerouslySetInnerHTML={{ __html: pageHtml }}
+          dangerouslySetInnerHTML={safeHtml(pageHtml)}
         />
         {alsoAvailable}
       </div>

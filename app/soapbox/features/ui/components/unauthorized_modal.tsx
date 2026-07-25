@@ -6,6 +6,7 @@ import { remoteInteraction } from 'soapbox/actions/interactions';
 import snackbar from 'soapbox/actions/snackbar';
 import { Button, Modal, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
+import { sanitizeUrl } from 'soapbox/utils/url-policy';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -50,7 +51,10 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
 
     dispatch(remoteInteraction(apId!, account))
       .then(url => {
-        window.open(url, '_new', 'noopener,noreferrer');
+        const destination = sanitizeUrl(url);
+        if (!destination) throw new Error('Unsafe remote interaction destination');
+
+        window.open(destination, '_blank', 'noopener,noreferrer');
         onClose('UNAUTHORIZED');
       })
       .catch(error => {

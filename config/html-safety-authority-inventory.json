@@ -1,70 +1,1468 @@
 {
-  "schemaVersion": 1,
-  "status": "verified-current-bounded",
-  "surfaces": [
+  "schemaVersion": 2,
+  "status": "phase-0d-verified",
+  "sanitizer": {
+    "package": "dompurify",
+    "declaredVersion": "3.4.12",
+    "policyModule": "app/soapbox/utils/html-safety.ts",
+    "htmlProfileOnly": true,
+    "cssAttributesAllowed": false,
+    "svgAllowed": false,
+    "mathMlAllowed": false,
+    "iframeAllowedInSanitizedHtml": false
+  },
+  "urlPolicy": {
+    "module": "app/soapbox/utils/url-policy.ts",
+    "navigationSchemes": [
+      "http",
+      "https",
+      "mailto",
+      "tel"
+    ],
+    "mediaSchemes": [
+      "http",
+      "https"
+    ],
+    "redirectPolicy": "same-origin-relative-only",
+    "blockedSchemes": [
+      "blob",
+      "data",
+      "file",
+      "javascript",
+      "vbscript"
+    ]
+  },
+  "counts": {
+    "imperative-navigation": 9,
+    "react-html-sink": 44,
+    "sanitizer-boundary": 51,
+    "dynamic-link-destination": 43,
+    "iframe-sink": 2,
+    "html-parser": 5,
+    "dom-html-write": 3
+  },
+  "callsites": [
     {
-      "id": "status-body-html-sink",
+      "id": "imperative-navigation:app/soapbox/actions/consumer-auth.ts:57:5",
+      "kind": "imperative-navigation",
+      "path": "app/soapbox/actions/consumer-auth.ts",
+      "line": 57,
+      "column": 5,
+      "expression": "window.location.assign(destination);",
+      "classification": "central-url-policy-or-fixed-local"
+    },
+    {
+      "id": "imperative-navigation:app/soapbox/actions/external_auth.ts:77:7",
+      "kind": "imperative-navigation",
+      "path": "app/soapbox/actions/external_auth.ts",
+      "line": 77,
+      "column": 7,
+      "expression": "window.location.assign(destination);",
+      "classification": "central-url-policy-or-fixed-local"
+    },
+    {
+      "id": "imperative-navigation:app/soapbox/actions/external_auth.ts:109:19",
+      "kind": "imperative-navigation",
+      "path": "app/soapbox/actions/external_auth.ts",
+      "line": 109,
+      "column": 19,
+      "expression": ".then(() => window.location.href = '/');",
+      "classification": "central-url-policy-or-fixed-local"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/components/account.tsx:201:21",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/components/account.tsx",
+      "line": 201,
+      "column": 21,
+      "expression": "dangerouslySetInnerHTML={safeHtml(account.display_name_html, 'inline-text')}",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/components/account.tsx:201:46",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/components/account.tsx",
+      "line": 201,
+      "column": 46,
+      "expression": "dangerouslySetInnerHTML={safeHtml(account.display_name_html, 'inline-text')}",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/components/account.tsx:243:19",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/components/account.tsx",
+      "line": 243,
+      "column": 19,
+      "expression": "dangerouslySetInnerHTML={safeHtml(account.note_emojified)}",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/components/account.tsx:243:44",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/components/account.tsx",
+      "line": 243,
+      "column": 44,
+      "expression": "dangerouslySetInnerHTML={safeHtml(account.note_emojified)}",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/components/announcements/announcement-content.tsx:83:7",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/components/announcements/announcement-content.tsx",
+      "line": 83,
+      "column": 7,
+      "expression": "dangerouslySetInnerHTML={safeHtml(announcement.contentHtml)}",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/components/announcements/announcement-content.tsx:83:32",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/components/announcements/announcement-content.tsx",
+      "line": 83,
+      "column": 32,
+      "expression": "dangerouslySetInnerHTML={safeHtml(announcement.contentHtml)}",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/components/display-name.tsx:33:51",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/components/display-name.tsx",
+      "line": 33,
+      "column": 51,
+      "expression": "<bdi><strong className='display-name__html' dangerouslySetInnerHTML={safeHtml(account.get('display_name_html'), 'inline-text')} /></bdi>",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/components/display-name.tsx:33:76",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/components/display-name.tsx",
+      "line": 33,
+      "column": 76,
+      "expression": "<bdi><strong className='display-name__html' dangerouslySetInnerHTML={safeHtml(account.get('display_name_html'), 'inline-text')} /></bdi>",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/components/dropdown_menu.tsx:198:11",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/components/dropdown_menu.tsx",
+      "line": 198,
+      "column": 11,
+      "expression": "href={href || to || '#'}",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/components/error_boundary.tsx:169:20",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/components/error_boundary.tsx",
+      "line": 169,
+      "column": 20,
+      "expression": "<a href={links.get('status')} className='text-sm font-medium text-gray-500 hover:text-gray-600'>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/components/error_boundary.tsx:178:20",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/components/error_boundary.tsx",
+      "line": 178,
+      "column": 20,
+      "expression": "<a href={links.get('help')} className='text-sm font-medium text-gray-500 hover:text-gray-600'>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/components/error_boundary.tsx:187:20",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/components/error_boundary.tsx",
+      "line": 187,
+      "column": 20,
+      "expression": "<a href={links.get('support')} className='text-sm font-medium text-gray-500 hover:text-gray-600'>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/components/filter_bar.js:129:9",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/components/filter_bar.js",
+      "line": 129,
+      "column": 9,
+      "expression": "href={href || to || '#'}",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/components/gdpr-banner.tsx:51:16",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/components/gdpr-banner.tsx",
+      "line": 51,
+      "column": 16,
+      "expression": "<a href={soapbox.gdprUrl} tabIndex={-1} className='inline-flex'>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/components/hashtag.tsx:26:20",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/components/hashtag.tsx",
+      "line": 26,
+      "column": 20,
+      "expression": "<Permalink href={hashtag.url} to={`/tag/${hashtag.name}`} className='hover:underline'>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/components/icon_button.js:149:53",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/components/icon_button.js",
+      "line": 149,
+      "column": 53,
+      "expression": "? <div className='icon-button__emoji' dangerouslySetInnerHTML={safeHtml(emojify(emoji), 'inline-text')} aria-hidden='true' />",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/components/icon_button.js:149:78",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/components/icon_button.js",
+      "line": 149,
+      "column": 78,
+      "expression": "? <div className='icon-button__emoji' dangerouslySetInnerHTML={safeHtml(emojify(emoji), 'inline-text')} aria-hidden='true' />",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/components/icon_button.js:179:101",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/components/icon_button.js",
+      "line": 179,
+      "column": 101,
+      "expression": "? <div className='icon-button__emoji' style={{ transform: `rotate(${rotate}deg)` }} dangerouslySetInnerHTML={safeHtml(emojify(emoji), 'inline-text')} aria-hidden='true' />",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/components/icon_button.js:179:126",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/components/icon_button.js",
+      "line": 179,
+      "column": 126,
+      "expression": "? <div className='icon-button__emoji' style={{ transform: `rotate(${rotate}deg)` }} dangerouslySetInnerHTML={safeHtml(emojify(emoji), 'inline-text')} aria-hidden='true' />",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/components/media_gallery.js:158:56",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/components/media_gallery.js",
+      "line": 158,
+      "column": 56,
+      "expression": "<a className='media-gallery__item-thumbnail' href={attachment.get('remote_url')} target='_blank' style={{ cursor: 'pointer' }}>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/components/media_gallery.js:172:11",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/components/media_gallery.js",
+      "line": 172,
+      "column": 11,
+      "expression": "href={attachment.get('remote_url') || originalUrl}",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/components/media_gallery.js:212:11",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/components/media_gallery.js",
+      "line": 212,
+      "column": 11,
+      "expression": "href={attachment.get('url')}",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/components/media_gallery.js:227:11",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/components/media_gallery.js",
+      "line": 227,
+      "column": 11,
+      "expression": "href={attachment.get('url')}",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/components/permalink.tsx:31:7",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/components/permalink.tsx",
+      "line": 31,
+      "column": 7,
+      "expression": "href={safeHref || undefined}",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/components/permalink.tsx:36:7",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/components/permalink.tsx",
+      "line": 36,
+      "column": 7,
+      "expression": "dangerouslySetInnerHTML={dangerouslySetInnerHTML ? safeHtml(dangerouslySetInnerHTML.__html) : undefined}",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/components/permalink.tsx:36:58",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/components/permalink.tsx",
+      "line": 36,
+      "column": 58,
+      "expression": "dangerouslySetInnerHTML={dangerouslySetInnerHTML ? safeHtml(dangerouslySetInnerHTML.__html) : undefined}",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/components/polls/poll-option.tsx:74:15",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/components/polls/poll-option.tsx",
+      "line": 74,
+      "column": 15,
+      "expression": "dangerouslySetInnerHTML={safeHtml(option.title_emojified, 'inline-text')}",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/components/polls/poll-option.tsx:74:40",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/components/polls/poll-option.tsx",
+      "line": 74,
+      "column": 40,
+      "expression": "dangerouslySetInnerHTML={safeHtml(option.title_emojified, 'inline-text')}",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/components/polls/poll-option.tsx:140:17",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/components/polls/poll-option.tsx",
+      "line": 140,
+      "column": 17,
+      "expression": "dangerouslySetInnerHTML={safeHtml(option.title_emojified, 'inline-text')}",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/components/polls/poll-option.tsx:140:42",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/components/polls/poll-option.tsx",
+      "line": 140,
+      "column": 42,
+      "expression": "dangerouslySetInnerHTML={safeHtml(option.title_emojified, 'inline-text')}",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/components/profile-hover-card.tsx:124:31",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/components/profile-hover-card.tsx",
+      "line": 124,
+      "column": 31,
+      "expression": "<Text size='sm' dangerouslySetInnerHTML={accountBio} />",
+      "classification": "shared-sanitizer-wrapper"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/components/quoted-status.tsx:149:9",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/components/quoted-status.tsx",
+      "line": 149,
+      "column": 9,
+      "expression": "dangerouslySetInnerHTML={safeHtml(status.contentHtml)}",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/components/quoted-status.tsx:149:34",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/components/quoted-status.tsx",
+      "line": 149,
+      "column": 34,
+      "expression": "dangerouslySetInnerHTML={safeHtml(status.contentHtml)}",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/components/sidebar_menu.tsx:73:42",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/components/sidebar_menu.tsx",
+      "line": 73,
+      "column": 42,
+      "expression": "<a className='group py-1 rounded-md' href={href} target='_blank' onClick={onClick}>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/components/status_content.tsx:78:19",
+      "kind": "react-html-sink",
       "path": "app/soapbox/components/status_content.tsx",
-      "classification": "remote-html-render-sink",
-      "sanitizerVerified": false,
-      "requiredFragments": [
-        "const { contentHtml: html } = status;",
-        "return addGreentext(html);",
-        "dangerouslySetInnerHTML={content}",
-        "link.setAttribute('rel', 'nofollow noopener')",
-        "link.setAttribute('target', '_blank')"
-      ]
+      "line": 78,
+      "column": 19,
+      "expression": "<span dangerouslySetInnerHTML={safeHtml(status.spoilerHtml, 'inline-text')} lang={status.language || undefined} />",
+      "classification": "sanitized-at-sink"
     },
     {
-      "id": "status-spoiler-html-sink",
+      "id": "sanitizer-boundary:app/soapbox/components/status_content.tsx:78:44",
+      "kind": "sanitizer-boundary",
       "path": "app/soapbox/components/status_content.tsx",
-      "classification": "remote-html-render-sink",
-      "sanitizerVerified": false,
-      "requiredFragments": [
-        "dangerouslySetInnerHTML={{ __html: status.spoilerHtml }}"
-      ]
+      "line": 78,
+      "column": 44,
+      "expression": "<span dangerouslySetInnerHTML={safeHtml(status.spoilerHtml, 'inline-text')} lang={status.language || undefined} />",
+      "classification": "dompurify-3.4.12"
     },
     {
-      "id": "plaintext-html-parser",
-      "path": "app/soapbox/utils/html.ts",
-      "classification": "html-to-text-transformer-not-sanitizer",
-      "sanitizerVerified": false,
-      "requiredFragments": [
-        "This function can still return unsafe HTML",
-        "wrapper.innerHTML = html.replace",
-        "return wrapper.textContent || '';"
-      ]
+      "id": "sanitizer-boundary:app/soapbox/components/status_content.tsx:260:19",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/components/status_content.tsx",
+      "line": 260,
+      "column": 19,
+      "expression": "const content = safeHtml(parsedHtml);",
+      "classification": "dompurify-3.4.12"
     },
     {
-      "id": "compatibility-html-transformer",
+      "id": "react-html-sink:app/soapbox/components/status_content.tsx:294:17",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/components/status_content.tsx",
+      "line": 294,
+      "column": 17,
+      "expression": "dangerouslySetInnerHTML={content}",
+      "classification": "sanitized-local-binding"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/components/status.tsx:311:84",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/components/status.tsx",
+      "line": 311,
+      "column": 84,
+      "expression": "<strong className='text-gray-800 dark:text-gray-200' dangerouslySetInnerHTML={safeHtml(String(status.getIn(['account', 'display_name_html'])), 'inline-text')} />",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/components/status.tsx:311:109",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/components/status.tsx",
+      "line": 311,
+      "column": 109,
+      "expression": "<strong className='text-gray-800 dark:text-gray-200' dangerouslySetInnerHTML={safeHtml(String(status.getIn(['account', 'display_name_html'])), 'inline-text')} />",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/components/ui/text/text.tsx:119:9",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/components/ui/text/text.tsx",
+      "line": 119,
+      "column": 9,
+      "expression": "dangerouslySetInnerHTML={dangerouslySetInnerHTML ? safeHtml(dangerouslySetInnerHTML.__html) : undefined}",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/components/ui/text/text.tsx:119:60",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/components/ui/text/text.tsx",
+      "line": 119,
+      "column": 60,
+      "expression": "dangerouslySetInnerHTML={dangerouslySetInnerHTML ? safeHtml(dangerouslySetInnerHTML.__html) : undefined}",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/about/index.tsx:68:11",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/about/index.tsx",
+      "line": 68,
+      "column": 11,
+      "expression": "dangerouslySetInnerHTML={safeHtml(pageHtml)}",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/about/index.tsx:68:36",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/about/index.tsx",
+      "line": 68,
+      "column": 36,
+      "expression": "dangerouslySetInnerHTML={safeHtml(pageHtml)}",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/account_gallery/components/media_item.tsx:127:76",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/account_gallery/components/media_item.tsx",
+      "line": 127,
+      "column": 76,
+      "expression": "<a className='media-gallery__item-thumbnail rounded overflow-hidden' href={status.get('url')} target='_blank' onClick={handleClick} title={title}>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/account_timeline/components/moved_note.tsx:18:27",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/account_timeline/components/moved_note.tsx",
+      "line": 18,
+      "column": 27,
+      "expression": "const displayNameHtml = safeHtml(from.display_name_html, 'inline-text');",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/account_timeline/components/moved_note.tsx:24:116",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/account_timeline/components/moved_note.tsx",
+      "line": 24,
+      "column": 116,
+      "expression": "<FormattedMessage id='account.moved_to' defaultMessage='{name} has moved to:' values={{ name: <bdi><strong dangerouslySetInnerHTML={displayNameHtml} /></bdi> }} />",
+      "classification": "sanitized-local-binding"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/account/components/header.tsx:732:16",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "line": 732,
+      "column": 16,
+      "expression": "<a href={account.header} onClick={handleHeaderClick} target='_blank'>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/account/components/header.tsx:752:16",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "line": 752,
+      "column": 16,
+      "expression": "<a href={account.avatar} onClick={handleAvatarClick} target='_blank'>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/account/components/header.tsx:791:35",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "line": 791,
+      "column": 35,
+      "expression": "href={menuItem.href}",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/audio/index.js:527:17",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/audio/index.js",
+      "line": 527,
+      "column": 17,
+      "expression": "href={this.props.src}",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/backups/index.tsx:65:24",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/backups/index.tsx",
+      "line": 65,
+      "column": 24,
+      "expression": "? <a href={backup.url} target='_blank'>{insertedAt}</a>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/birthdays/account.tsx:41:82",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/birthdays/account.tsx",
+      "line": 41,
+      "column": 82,
+      "expression": "<Permalink className='account__display-name' title={account.get('acct')} href={`/@${account.get('acct')}`} to={`/@${account.get('acct')}`}>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/compose/components/reply_indicator.tsx:49:9",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/compose/components/reply_indicator.tsx",
+      "line": 49,
+      "column": 9,
+      "expression": "dangerouslySetInnerHTML={safeHtml(status.contentHtml)}",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/compose/components/reply_indicator.tsx:49:34",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/compose/components/reply_indicator.tsx",
+      "line": 49,
+      "column": 34,
+      "expression": "dangerouslySetInnerHTML={safeHtml(status.contentHtml)}",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/conversations/components/conversation.tsx:75:128",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/conversations/components/conversation.tsx",
+      "line": 75,
+      "column": 128,
+      "expression": "<div style={{ 'whiteSpace': 'nowrap' }} className='overflow-x-hidden text-ellipsis text-gray-700 dark:text-gray-300' dangerouslySetInnerHTML={safeHtml(lastStatus.contentHtml.replace(/<br ?\\/?>/g, ' '))} />",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/conversations/components/conversation.tsx:75:153",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/conversations/components/conversation.tsx",
+      "line": 75,
+      "column": 153,
+      "expression": "<div style={{ 'whiteSpace': 'nowrap' }} className='overflow-x-hidden text-ellipsis text-gray-700 dark:text-gray-300' dangerouslySetInnerHTML={safeHtml(lastStatus.contentHtml.replace(/<br ?\\/?>/g, ' '))} />",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/crypto_donate/components/crypto_address.tsx:49:47",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/crypto_donate/components/crypto_address.tsx",
+      "line": 49,
+      "column": 47,
+      "expression": "<a className='text-gray-500 ml-1' href={explorerUrl} target='_blank'>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/crypto_donate/components/detailed_crypto_address.tsx:32:30",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/crypto_donate/components/detailed_crypto_address.tsx",
+      "line": 32,
+      "column": 30,
+      "expression": "{explorerUrl && <a href={explorerUrl} target='_blank'>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/directory/components/account_card.tsx:64:22",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/directory/components/account_card.tsx",
+      "line": 64,
+      "column": 22,
+      "expression": "<Permalink href={account.url} to={`/@${account.acct}`}>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/directory/components/account_card.tsx:80:11",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/directory/components/account_card.tsx",
+      "line": 80,
+      "column": 11,
+      "expression": "dangerouslySetInnerHTML={safeHtml(account.note_emojified)}",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/directory/components/account_card.tsx:80:36",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/directory/components/account_card.tsx",
+      "line": 80,
+      "column": 36,
+      "expression": "dangerouslySetInnerHTML={safeHtml(account.note_emojified)}",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/follow_requests/components/account_authorize.tsx:46:20",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/follow_requests/components/account_authorize.tsx",
+      "line": 46,
+      "column": 20,
+      "expression": "<Permalink href={`/@${account.acct}`} to={`/@${account.acct}`}>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/follow_requests/components/account_authorize.tsx:51:52",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/follow_requests/components/account_authorize.tsx",
+      "line": 51,
+      "column": 52,
+      "expression": "<Text className='account__header__content' dangerouslySetInnerHTML={content} />",
+      "classification": "shared-sanitizer-wrapper"
+    },
+    {
+      "id": "imperative-navigation:app/soapbox/features/landing_page/index.tsx:72:24",
+      "kind": "imperative-navigation",
+      "path": "app/soapbox/features/landing_page/index.tsx",
+      "line": 72,
+      "column": 24,
+      "expression": "if (destination) window.open(destination, '_blank', 'noopener,noreferrer');",
+      "classification": "central-url-policy-or-fixed-local"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/landing_page/index.tsx:171:45",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/landing_page/index.tsx",
+      "line": 171,
+      "column": 45,
+      "expression": "homeDescription ? <span dangerouslySetInnerHTML={safeHtml(homeDescription, 'inline-text')} /> : instance.description",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/landing_page/index.tsx:171:70",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/landing_page/index.tsx",
+      "line": 171,
+      "column": 70,
+      "expression": "homeDescription ? <span dangerouslySetInnerHTML={safeHtml(homeDescription, 'inline-text')} /> : instance.description",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/landing_page/index.tsx:180:22",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/landing_page/index.tsx",
+      "line": 180,
+      "column": 22,
+      "expression": "<a href={`mailto:${instance.email}`}>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/mobile/index.js:100:11",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/mobile/index.js",
+      "line": 100,
+      "column": 11,
+      "expression": "dangerouslySetInnerHTML={safeHtml(this.state.pageHtml)}",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/mobile/index.js:100:36",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/mobile/index.js",
+      "line": 100,
+      "column": 36,
+      "expression": "dangerouslySetInnerHTML={safeHtml(this.state.pageHtml)}",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/notifications/components/follow_request.js:46:108",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/notifications/components/follow_request.js",
+      "line": 46,
+      "column": 108,
+      "expression": "<Permalink key={account.get('id')} className='account__display-name' title={account.get('acct')} href={account.get('url')} to={`/@${account.get('acct')}`}>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/notifications/components/notification.tsx:39:7",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/notifications/components/notification.tsx",
+      "line": 39,
+      "column": 7,
+      "expression": "href={`/@${account.acct}`}",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/notifications/components/notification.tsx:42:7",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/notifications/components/notification.tsx",
+      "line": 42,
+      "column": 7,
+      "expression": "dangerouslySetInnerHTML={safeHtml(account.display_name_html, 'inline-text')}",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/notifications/components/notification.tsx:42:32",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/notifications/components/notification.tsx",
+      "line": 42,
+      "column": 32,
+      "expression": "dangerouslySetInnerHTML={safeHtml(account.display_name_html, 'inline-text')}",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/onboarding/steps/feeds.tsx:28:18",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/onboarding/steps/feeds.tsx",
+      "line": 28,
+      "column": 18,
+      "expression": "<p dangerouslySetInnerHTML={safeHtml(intl.formatMessage(messages.col1), 'inline-text')} />",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/onboarding/steps/feeds.tsx:28:43",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/onboarding/steps/feeds.tsx",
+      "line": 28,
+      "column": 43,
+      "expression": "<p dangerouslySetInnerHTML={safeHtml(intl.formatMessage(messages.col1), 'inline-text')} />",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/onboarding/steps/feeds.tsx:37:18",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/onboarding/steps/feeds.tsx",
+      "line": 37,
+      "column": 18,
+      "expression": "<p dangerouslySetInnerHTML={safeHtml(intl.formatMessage(messages.col2), 'inline-text')} />",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/onboarding/steps/feeds.tsx:37:43",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/onboarding/steps/feeds.tsx",
+      "line": 37,
+      "column": 43,
+      "expression": "<p dangerouslySetInnerHTML={safeHtml(intl.formatMessage(messages.col2), 'inline-text')} />",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/onboarding/steps/feeds.tsx:46:18",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/onboarding/steps/feeds.tsx",
+      "line": 46,
+      "column": 18,
+      "expression": "<p dangerouslySetInnerHTML={safeHtml(intl.formatMessage(messages.col3), 'inline-text')} />",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/onboarding/steps/feeds.tsx:46:43",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/onboarding/steps/feeds.tsx",
+      "line": 46,
+      "column": 43,
+      "expression": "<p dangerouslySetInnerHTML={safeHtml(intl.formatMessage(messages.col3), 'inline-text')} />",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/onboarding/steps/how-it-works.tsx:39:26",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/onboarding/steps/how-it-works.tsx",
+      "line": 39,
+      "column": 26,
+      "expression": "<a href={contactUrl} target='_blank'>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/onboarding/steps/how-it-works.tsx:49:18",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/onboarding/steps/how-it-works.tsx",
+      "line": 49,
+      "column": 18,
+      "expression": "<p dangerouslySetInnerHTML={safeHtml(intl.formatMessage(messages.right), 'inline-text')} />",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/onboarding/steps/how-it-works.tsx:49:43",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/onboarding/steps/how-it-works.tsx",
+      "line": 49,
+      "column": 43,
+      "expression": "<p dangerouslySetInnerHTML={safeHtml(intl.formatMessage(messages.right), 'inline-text')} />",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/onboarding/steps/welcome.tsx:29:49",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/onboarding/steps/welcome.tsx",
+      "line": 29,
+      "column": 49,
+      "expression": "<div className='text-gray-400 mb-3' dangerouslySetInnerHTML={safeHtml(intl.formatMessage(messages.body1), 'inline-text')} />",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/onboarding/steps/welcome.tsx:29:74",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/onboarding/steps/welcome.tsx",
+      "line": 29,
+      "column": 74,
+      "expression": "<div className='text-gray-400 mb-3' dangerouslySetInnerHTML={safeHtml(intl.formatMessage(messages.body1), 'inline-text')} />",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/onboarding/steps/welcome.tsx:30:19",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/onboarding/steps/welcome.tsx",
+      "line": 30,
+      "column": 19,
+      "expression": "<span dangerouslySetInnerHTML={safeHtml(intl.formatMessage(messages.body2), 'inline-text')} />",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/onboarding/steps/welcome.tsx:30:44",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/onboarding/steps/welcome.tsx",
+      "line": 30,
+      "column": 44,
+      "expression": "<span dangerouslySetInnerHTML={safeHtml(intl.formatMessage(messages.body2), 'inline-text')} />",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/public_layout/components/header.tsx:91:21",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/public_layout/components/header.tsx",
+      "line": 91,
+      "column": 21,
+      "expression": "href={links.get('help')}",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "imperative-navigation:app/soapbox/features/status/components/card.tsx:75:7",
+      "kind": "imperative-navigation",
+      "path": "app/soapbox/features/status/components/card.tsx",
+      "line": 75,
+      "column": 7,
+      "expression": "window.open(safeCardUrl, '_blank', 'noopener,noreferrer');",
+      "classification": "central-url-policy-or-fixed-local"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/status/components/card.tsx:106:7",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/status/components/card.tsx",
+      "line": 106,
+      "column": 7,
+      "expression": "href={safeCardUrl || undefined}",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/status/components/card.tsx:181:19",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/status/components/card.tsx",
+      "line": 181,
+      "column": 19,
+      "expression": "href={safeCardUrl || undefined}",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/status/components/card.tsx:229:7",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/status/components/card.tsx",
+      "line": 229,
+      "column": 7,
+      "expression": "href={safeCardUrl || undefined}",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/status/components/detailed-status.tsx:128:18",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/status/components/detailed-status.tsx",
+      "line": 128,
+      "column": 18,
+      "expression": "<a href={actualStatus.url} target='_blank' rel='noopener' className='hover:underline'>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/status/components/detailed-status.tsx:178:17",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/status/components/detailed-status.tsx",
+      "line": 178,
+      "column": 17,
+      "expression": "dangerouslySetInnerHTML={safeHtml(actualStatus.translations.get(locale))}",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/status/components/detailed-status.tsx:178:42",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/status/components/detailed-status.tsx",
+      "line": 178,
+      "column": 42,
+      "expression": "dangerouslySetInnerHTML={safeHtml(actualStatus.translations.get(locale))}",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/ui/components/compare_history_modal.tsx:51:25",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/ui/components/compare_history_modal.tsx",
+      "line": 51,
+      "column": 25,
+      "expression": "<span dangerouslySetInnerHTML={safeHtml(spoilerContent.__html, 'inline-text')} />",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/ui/components/compare_history_modal.tsx:51:50",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/ui/components/compare_history_modal.tsx",
+      "line": 51,
+      "column": 50,
+      "expression": "<span dangerouslySetInnerHTML={safeHtml(spoilerContent.__html, 'inline-text')} />",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/ui/components/compare_history_modal.tsx:56:48",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/ui/components/compare_history_modal.tsx",
+      "line": 56,
+      "column": 48,
+      "expression": "<div className='status__content' dangerouslySetInnerHTML={safeHtml(content.__html)} />",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/ui/components/compare_history_modal.tsx:56:73",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/ui/components/compare_history_modal.tsx",
+      "line": 56,
+      "column": 73,
+      "expression": "<div className='status__content' dangerouslySetInnerHTML={safeHtml(content.__html)} />",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/ui/components/compare_history_modal.tsx:71:31",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/ui/components/compare_history_modal.tsx",
+      "line": 71,
+      "column": 31,
+      "expression": "<span dangerouslySetInnerHTML={safeHtml(option.title_emojified, 'inline-text')} />",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/ui/components/compare_history_modal.tsx:71:56",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/ui/components/compare_history_modal.tsx",
+      "line": 71,
+      "column": 56,
+      "expression": "<span dangerouslySetInnerHTML={safeHtml(option.title_emojified, 'inline-text')} />",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/ui/components/embed_modal.tsx:37:22",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/ui/components/embed_modal.tsx",
+      "line": 37,
+      "column": 22,
+      "expression": "setPreviewHtml(sanitizeHtml(data.html));",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "iframe-sink:app/soapbox/features/ui/components/embed_modal.tsx:63:9",
+      "kind": "iframe-sink",
+      "path": "app/soapbox/features/ui/components/embed_modal.tsx",
+      "line": 63,
+      "column": 9,
+      "expression": "<iframe",
+      "classification": "sandboxed-sanitized-srcdoc"
+    },
+    {
+      "id": "iframe-sink:app/soapbox/features/ui/components/embed_modal.tsx:67:11",
+      "kind": "iframe-sink",
+      "path": "app/soapbox/features/ui/components/embed_modal.tsx",
+      "line": 67,
+      "column": 11,
+      "expression": "srcDoc={previewHtml}",
+      "classification": "sandboxed-sanitized-srcdoc"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/ui/components/familiar_followers_modal.tsx:32:153",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/ui/components/familiar_followers_modal.tsx",
+      "line": 32,
+      "column": 153,
+      "expression": "const emptyMessage = <FormattedMessage id='account.familiar_followers.empty' defaultMessage='No one you know follows {name}.' values={{ name: <span dangerouslySetInnerHTML={safeHtml(account.display_name_html, 'inline-text')} /> }} />;",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/ui/components/familiar_followers_modal.tsx:32:178",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/ui/components/familiar_followers_modal.tsx",
+      "line": 32,
+      "column": 178,
+      "expression": "const emptyMessage = <FormattedMessage id='account.familiar_followers.empty' defaultMessage='No one you know follows {name}.' values={{ name: <span dangerouslySetInnerHTML={safeHtml(account.display_name_html, 'inline-text')} /> }} />;",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/ui/components/familiar_followers_modal.tsx:49:135",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/ui/components/familiar_followers_modal.tsx",
+      "line": 49,
+      "column": 135,
+      "expression": "title={<FormattedMessage id='column.familiar_followers' defaultMessage='People you know following {name}' values={{ name: <span dangerouslySetInnerHTML={safeHtml(account?.display_name_html || '', 'inline-text')} /> }} />}",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/ui/components/familiar_followers_modal.tsx:49:160",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/ui/components/familiar_followers_modal.tsx",
+      "line": 49,
+      "column": 160,
+      "expression": "title={<FormattedMessage id='column.familiar_followers' defaultMessage='People you know following {name}' values={{ name: <span dangerouslySetInnerHTML={safeHtml(account?.display_name_html || '', 'inline-text')} /> }} />}",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/ui/components/link_footer.tsx:45:13",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/ui/components/link_footer.tsx",
+      "line": 45,
+      "column": 13,
+      "expression": "dangerouslySetInnerHTML={safeHtml(emojify(soapboxConfig.linkFooterMessage), 'inline-text')}",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/ui/components/link_footer.tsx:45:38",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/ui/components/link_footer.tsx",
+      "line": 45,
+      "column": 38,
+      "expression": "dangerouslySetInnerHTML={safeHtml(emojify(soapboxConfig.linkFooterMessage), 'inline-text')}",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/ui/components/link_footer.tsx:55:84",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/ui/components/link_footer.tsx",
+      "line": 55,
+      "column": 84,
+      "expression": "code_link: <Text theme='subtle' size='xs'><a className='underline' href={sourceCode.url} rel='noopener' target='_blank'>{sourceCode.repository}</a></Text>,",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/ui/components/media_modal.js:155:45",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/ui/components/media_modal.js",
+      "line": 155,
+      "column": 45,
+      "expression": "const link = (status && account && <a href={status.get('url')} onClick={this.handleStatusClick}><FormattedMessage id='lightbox.view_context' defaultMessage='View context' /></a>);",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/ui/components/media_modal.js:262:18",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/ui/components/media_modal.js",
+      "line": 262,
+      "column": 18,
+      "expression": "<a href={status.get('url')} onClick={this.handleStatusClick}><FormattedMessage id='lightbox.view_context' defaultMessage='View context' /></a>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/ui/components/modals/landing-page-modal.tsx:43:15",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/ui/components/modals/landing-page-modal.tsx",
+      "line": 43,
+      "column": 15,
+      "expression": "href={links.get('help')}",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/ui/components/modals/report-modal/steps/confirmation-step.tsx:26:5",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/ui/components/modals/report-modal/steps/confirmation-step.tsx",
+      "line": 26,
+      "column": 5,
+      "expression": "href={href}",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/ui/components/pinned_accounts_panel.tsx:42:23",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/ui/components/pinned_accounts_panel.tsx",
+      "line": 42,
+      "column": 23,
+      "expression": "name: <span dangerouslySetInnerHTML={safeHtml(account.display_name_html, 'inline-text')} />,",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/ui/components/pinned_accounts_panel.tsx:42:48",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/ui/components/pinned_accounts_panel.tsx",
+      "line": 42,
+      "column": 48,
+      "expression": "name: <span dangerouslySetInnerHTML={safeHtml(account.display_name_html, 'inline-text')} />,",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/ui/components/profile_familiar_followers.tsx:50:15",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/ui/components/profile_familiar_followers.tsx",
+      "line": 50,
+      "column": 15,
+      "expression": "<span dangerouslySetInnerHTML={safeHtml(account.display_name_html, 'inline-text')} />",
+      "classification": "sanitized-at-sink"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/features/ui/components/profile_familiar_followers.tsx:50:40",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/features/ui/components/profile_familiar_followers.tsx",
+      "line": 50,
+      "column": 40,
+      "expression": "<span dangerouslySetInnerHTML={safeHtml(account.display_name_html, 'inline-text')} />",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/ui/components/profile_fields_panel.tsx:54:40",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/ui/components/profile_fields_panel.tsx",
+      "line": 54,
+      "column": 40,
+      "expression": "<Text weight='bold' tag='span' dangerouslySetInnerHTML={{ __html: field.name_emojified }} />",
+      "classification": "shared-sanitizer-wrapper"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/ui/components/profile_fields_panel.tsx:68:68",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/ui/components/profile_fields_panel.tsx",
+      "line": 68,
+      "column": 68,
+      "expression": "<Text className='break-words overflow-hidden' tag='span' dangerouslySetInnerHTML={{ __html: field.value_emojified }} />",
+      "classification": "shared-sanitizer-wrapper"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/ui/components/profile_info_panel.tsx:140:43",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/ui/components/profile_info_panel.tsx",
+      "line": 140,
+      "column": 43,
+      "expression": "<Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} />",
+      "classification": "shared-sanitizer-wrapper"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/ui/components/profile_info_panel.tsx:171:27",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/ui/components/profile_info_panel.tsx",
+      "line": 171,
+      "column": 27,
+      "expression": "<Text size='sm' dangerouslySetInnerHTML={content} />",
+      "classification": "shared-sanitizer-wrapper"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/ui/components/profile_info_panel.tsx:215:91",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/ui/components/profile_info_panel.tsx",
+      "line": 215,
+      "column": 91,
+      "expression": "<a className='text-primary-600 dark:text-primary-400 hover:underline' href={account.website} target='_blank'>{account.website}</a>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/ui/components/promo_panel.tsx:20:46",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/ui/components/promo_panel.tsx",
+      "line": 20,
+      "column": 46,
+      "expression": "<a className='flex items-center' href={item.url} target='_blank'>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "imperative-navigation:app/soapbox/features/ui/components/unauthorized_modal.tsx:57:9",
+      "kind": "imperative-navigation",
+      "path": "app/soapbox/features/ui/components/unauthorized_modal.tsx",
+      "line": 57,
+      "column": 9,
+      "expression": "window.open(destination, '_blank', 'noopener,noreferrer');",
+      "classification": "central-url-policy-or-fixed-local"
+    },
+    {
+      "id": "react-html-sink:app/soapbox/features/ui/components/user_panel.tsx:70:45",
+      "kind": "react-html-sink",
+      "path": "app/soapbox/features/ui/components/user_panel.tsx",
+      "line": 70,
+      "column": 45,
+      "expression": "<Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} />",
+      "classification": "shared-sanitizer-wrapper"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/ui/components/video_modal.tsx:28:8",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/ui/components/video_modal.tsx",
+      "line": 28,
+      "column": 8,
+      "expression": "<a href={status.url} onClick={handleStatusClick}>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/verification/registration.tsx:148:26",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/verification/registration.tsx",
+      "line": 148,
+      "column": 26,
+      "expression": "<a href={links.get('termsOfService')} target='_blank' className='text-primary-600 dark:text-primary-400 hover:underline'>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "dynamic-link-destination:app/soapbox/features/verification/registration.tsx:156:26",
+      "kind": "dynamic-link-destination",
+      "path": "app/soapbox/features/verification/registration.tsx",
+      "line": 156,
+      "column": 26,
+      "expression": "<a href={links.get('privacyPolicy')} target='_blank' className='text-primary-600 dark:text-primary-400 hover:underline'>",
+      "classification": "central-navigation-policy"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/normalizers/account.ts:196:26",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/normalizers/account.ts",
+      "line": 196,
+      "column": 26,
+      "expression": "display_name_html: sanitizeHtml(emojify(escapeTextContentForBrowser(account.get('display_name')), emojiMap), 'inline-text'),",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/normalizers/account.ts:197:23",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/normalizers/account.ts",
+      "line": 197,
+      "column": 23,
+      "expression": "note_emojified: sanitizeHtml(emojify(account.get('note', ''), emojiMap)),",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/normalizers/account.ts:205:27",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/normalizers/account.ts",
+      "line": 205,
+      "column": 27,
+      "expression": "name_emojified: sanitizeHtml(emojify(escapeTextContentForBrowser(field.get('name')), emojiMap), 'inline-text'),",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/normalizers/account.ts:206:28",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/normalizers/account.ts",
+      "line": 206,
+      "column": 28,
+      "expression": "value_emojified: sanitizeHtml(emojify(field.get('value'), emojiMap)),",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/normalizers/announcement.ts:65:23",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/normalizers/announcement.ts",
+      "line": 65,
+      "column": 23,
+      "expression": "const contentHtml = sanitizeHtml(emojify(announcement.get('content'), emojiMap));",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/normalizers/poll.ts:56:28",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/normalizers/poll.ts",
+      "line": 56,
+      "column": 28,
+      "expression": "const titleEmojified = sanitizeHtml(emojify(escapeTextContentForBrowser(option), emojiMap), 'inline-text');",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/normalizers/poll.ts:64:26",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/normalizers/poll.ts",
+      "line": 64,
+      "column": 26,
+      "expression": "const titleEmojified = sanitizeHtml(emojify(escapeTextContentForBrowser(option.get('title')), emojiMap), 'inline-text');",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/normalizers/status_edit.ts:63:23",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/normalizers/status_edit.ts",
+      "line": 63,
+      "column": 23,
+      "expression": "const contentHtml = sanitizeHtml(stripCompatibilityFeatures(emojify(statusEdit.get('content'), emojiMap)));",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/normalizers/status_edit.ts:64:23",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/normalizers/status_edit.ts",
+      "line": 64,
+      "column": 23,
+      "expression": "const spoilerHtml = sanitizeHtml(emojify(escapeTextContentForBrowser(statusEdit.get('spoiler_text')), emojiMap), 'inline-text');",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "imperative-navigation:app/soapbox/persistence/emergency-reset.ts:73:19",
+      "kind": "imperative-navigation",
+      "path": "app/soapbox/persistence/emergency-reset.ts",
+      "line": 73,
+      "column": 19,
+      "expression": "navigate: () => window.location.assign(BuildConfig.FE_SUBDIRECTORY || '/'),",
+      "classification": "central-url-policy-or-fixed-local"
+    },
+    {
+      "id": "imperative-navigation:app/soapbox/reducers/auth.js:315:22",
+      "kind": "imperative-navigation",
+      "path": "app/soapbox/reducers/auth.js",
+      "line": 315,
+      "column": 22,
+      "expression": "const reload = () => location.replace('/');",
+      "classification": "central-url-policy-or-fixed-local"
+    },
+    {
+      "id": "html-parser:app/soapbox/reducers/compose.ts:233:23",
+      "kind": "html-parser",
+      "path": "app/soapbox/reducers/compose.ts",
+      "line": 233,
+      "column": 23,
+      "expression": "const domParser = new DOMParser();",
+      "classification": "inert-transformer-not-sanitizer"
+    },
+    {
+      "id": "html-parser:app/soapbox/reducers/compose.ts:236:30",
+      "kind": "html-parser",
+      "path": "app/soapbox/reducers/compose.ts",
+      "line": 236,
+      "column": 30,
+      "expression": "const fragment = domParser.parseFromString(status.get('content'), 'text/html').documentElement;",
+      "classification": "inert-transformer-not-sanitizer"
+    },
+    {
+      "id": "html-parser:app/soapbox/reducers/compose.ts:247:30",
+      "kind": "html-parser",
+      "path": "app/soapbox/reducers/compose.ts",
+      "line": 247,
+      "column": 30,
+      "expression": "const fragment = domParser.parseFromString(status.get('content'), 'text/html').documentElement;",
+      "classification": "inert-transformer-not-sanitizer"
+    },
+    {
+      "id": "imperative-navigation:app/soapbox/reducers/index.ts:138:5",
+      "kind": "imperative-navigation",
+      "path": "app/soapbox/reducers/index.ts",
+      "line": 138,
+      "column": 5,
+      "expression": "location.href = '/login';",
+      "classification": "central-url-policy-or-fixed-local"
+    },
+    {
+      "id": "html-parser:app/soapbox/reducers/statuses.ts:43:23",
+      "kind": "html-parser",
+      "path": "app/soapbox/reducers/statuses.ts",
+      "line": 43,
+      "column": 23,
+      "expression": "const domParser = new DOMParser();",
+      "classification": "inert-transformer-not-sanitizer"
+    },
+    {
+      "id": "html-parser:app/soapbox/reducers/statuses.ts:110:35",
+      "kind": "html-parser",
+      "path": "app/soapbox/reducers/statuses.ts",
+      "line": 110,
+      "column": 35,
+      "expression": "const searchIndex = domParser.parseFromString(buildSearchContent(status), 'text/html').documentElement.textContent || '';",
+      "classification": "inert-transformer-not-sanitizer"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/reducers/statuses.ts:115:20",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/reducers/statuses.ts",
+      "line": 115,
+      "column": 20,
+      "expression": "contentHtml: sanitizeHtml(stripCompatibilityFeatures(emojify(status.content, emojiMap))),",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/reducers/statuses.ts:116:20",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/reducers/statuses.ts",
+      "line": 116,
+      "column": 20,
+      "expression": "spoilerHtml: sanitizeHtml(emojify(escapeTextContentForBrowser(spoilerText), emojiMap), 'inline-text'),",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/reducers/statuses.ts:166:62",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/reducers/statuses.ts",
+      "line": 166,
+      "column": 62,
+      "expression": "state.updateIn([statusId, 'translations', language], () => sanitizeHtml(text));",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "sanitizer-boundary:app/soapbox/utils/html-safety.ts:91:11",
+      "kind": "sanitizer-boundary",
+      "path": "app/soapbox/utils/html-safety.ts",
+      "line": 91,
+      "column": 11,
+      "expression": "__html: sanitizeHtml(value, policy),",
+      "classification": "dompurify-3.4.12"
+    },
+    {
+      "id": "dom-html-write:app/soapbox/utils/html.ts:5:10",
+      "kind": "dom-html-write",
       "path": "app/soapbox/utils/html.ts",
-      "classification": "html-transformer-not-sanitizer",
-      "sanitizerVerified": false,
-      "requiredFragments": [
-        "export const stripCompatibilityFeatures",
-        "node.innerHTML = html;",
-        "'.quote-inline'",
-        "'.recipients-inline'",
-        "return node.innerHTML;"
-      ]
+      "line": 5,
+      "column": 10,
+      "expression": "wrapper.innerHTML = html.replace(/<br\\s*\\/?>/g, '\\n').replace(/<\\/p><[^>]*>/g, '\\n\\n').replace(/<[^>]*>/g, '');",
+      "classification": "inert-transformer-not-sanitizer"
+    },
+    {
+      "id": "dom-html-write:app/soapbox/utils/html.ts:12:7",
+      "kind": "dom-html-write",
+      "path": "app/soapbox/utils/html.ts",
+      "line": 12,
+      "column": 7,
+      "expression": "node.innerHTML = html;",
+      "classification": "inert-transformer-not-sanitizer"
+    },
+    {
+      "id": "dom-html-write:app/soapbox/utils/status.ts:23:12",
+      "kind": "dom-html-write",
+      "path": "app/soapbox/utils/status.ts",
+      "line": 23,
+      "column": 12,
+      "expression": "element.innerHTML = status.content;",
+      "classification": "inert-transformer-not-sanitizer"
     }
   ],
-  "requiredSurfaceIds": [
-    "status-body-html-sink",
-    "status-spoiler-html-sink",
-    "plaintext-html-parser",
-    "compatibility-html-transformer"
-  ],
-  "explicitUnknowns": [
-    "Repository-wide production dangerouslySetInnerHTML and innerHTML enumeration remains incomplete.",
-    "Sanitizer package, version, configuration and provenance for status content and spoiler HTML are not verified.",
-    "Allowed tags, attributes, URI schemes, SVG, MathML, CSS, iframe and custom-element behavior are not proven.",
-    "Caller and downstream-sink inventories for unescapeHTML and stripCompatibilityFeatures remain incomplete."
-  ],
   "invariants": {
-    "transformersMustNotBeClassifiedAsSanitizers": true,
-    "statusHtmlSanitizerProvenanceRemainsBlocked": true,
-    "postInsertionLinkMutationIsNotSanitization": true,
-    "explicitUnknownsRemainPinned": true
+    "everyHtmlSinkDiscovered": true,
+    "everyHtmlSinkSanitizedOrWrapped": true,
+    "transformationHelpersAreNotSanitizers": true,
+    "rawPreviewEmbedExecutionBlocked": true,
+    "sanitizerPolicyPinned": true,
+    "urlPolicyPinned": true,
+    "allDynamicDestinationsRuntimeGoverned": true
   }
 }

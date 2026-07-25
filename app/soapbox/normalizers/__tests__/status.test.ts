@@ -184,7 +184,7 @@ describe('normalizeStatus()', () => {
 
     // Emojifies poll options
     expect(poll.options.get(1)?.title_emojified)
-      .toEqual('Custom emoji <img draggable="false" class="emojione" alt=":gleason_excited:" title=":gleason_excited:" src="https://gleasonator.com/emoji/gleason_emojis/gleason_excited.png" /> ');
+      .toEqual('Custom emoji <img draggable="false" class="emojione" alt=":gleason_excited:" title=":gleason_excited:" src="https://gleasonator.com/emoji/gleason_emojis/gleason_excited.png"> ');
 
     // Parses emojis as Immutable.Record's
     expect(ImmutableRecord.isRecord(poll.emojis.get(0))).toBe(true);

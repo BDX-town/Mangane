@@ -1,6 +1,8 @@
 import classNames from 'classnames';
 import React, { ReactNode } from 'react';
 
+import { safeHtml } from 'soapbox/utils/html-safety';
+
 type Themes = 'default' | 'danger' | 'primary' | 'muted' | 'subtle' | 'success' | 'inherit' | 'white'
 type Weights = 'normal' | 'medium' | 'semibold' | 'bold'
 type Sizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
@@ -94,6 +96,7 @@ const Text: React.FC<IText> = React.forwardRef(
     const {
       align,
       className,
+      dangerouslySetInnerHTML,
       direction,
       family = 'sans',
       size = 'md',
@@ -113,6 +116,7 @@ const Text: React.FC<IText> = React.forwardRef(
     return (
       <Comp
         {...filteredProps}
+        dangerouslySetInnerHTML={dangerouslySetInnerHTML ? safeHtml(dangerouslySetInnerHTML.__html) : undefined}
         ref={ref}
         style={{
           textDecoration: tag === 'abbr' ? 'underline dotted' : undefined,

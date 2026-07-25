@@ -7,6 +7,7 @@ import Icon from 'soapbox/components/icon';
 import { useSoapboxConfig } from 'soapbox/hooks';
 import { MentionRecord } from 'soapbox/normalizers';
 import { addGreentext } from 'soapbox/utils/greentext';
+import { safeHtml } from 'soapbox/utils/html-safety';
 import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich_content';
 
 import { isRtl } from '../rtl';
@@ -74,7 +75,7 @@ const Spoiler: React.FC<ISpoiler> = ({ hidden, onClick, status }) => {
               />
             </Text>
                 &nbsp;
-            <span dangerouslySetInnerHTML={{ __html: status.spoilerHtml }} lang={status.language || undefined} />
+            <span dangerouslySetInnerHTML={safeHtml(status.spoilerHtml, 'inline-text')} lang={status.language || undefined} />
           </span>
         ) : (
           <span>
@@ -256,7 +257,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
 
   const isHidden = onExpandedToggle ? !expanded : hidden;
 
-  const content = { __html: parsedHtml };
+  const content = safeHtml(parsedHtml);
   const directionStyle: React.CSSProperties = { direction: 'ltr' };
   const className = classNames('status__content', {
     'status__content--with-action': onClick,

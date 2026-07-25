@@ -7,6 +7,7 @@ import { Text } from 'soapbox/components/ui';
 import emojify from 'soapbox/features/emoji/emoji';
 import { useSoapboxConfig, useOwnAccount, useTheme } from 'soapbox/hooks';
 import sourceCode from 'soapbox/utils/code';
+import { safeHtml } from 'soapbox/utils/html-safety';
 
 //@ts-expect-error no typedef
 import manganeDark from '../../../../icons/mangane-dark.svg';
@@ -41,7 +42,7 @@ const LinkFooter: React.FC = (): JSX.Element => {
         {soapboxConfig.linkFooterMessage ? (
           <span
             className='inline-block align-middle'
-            dangerouslySetInnerHTML={{ __html: emojify(soapboxConfig.linkFooterMessage) }}
+            dangerouslySetInnerHTML={safeHtml(emojify(soapboxConfig.linkFooterMessage), 'inline-text')}
           />
         ) : (
           <div className='mt-4 gap-2 text-right'>
