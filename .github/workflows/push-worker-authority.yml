@@ -1,0 +1,34 @@
+name: Push worker authority
+
+on:
+  pull_request:
+    paths:
+      - 'app/soapbox/service_worker/web_push_notifications.ts'
+      - 'config/push-worker-authority-inventory.json'
+      - 'scripts/check-push-worker-authority-inventory.js'
+      - 'scripts/__tests__/check-push-worker-authority-inventory.test.js'
+      - '.github/workflows/push-worker-authority.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/soapbox/service_worker/web_push_notifications.ts'
+      - 'config/push-worker-authority-inventory.json'
+      - 'scripts/check-push-worker-authority-inventory.js'
+      - 'scripts/__tests__/check-push-worker-authority-inventory.test.js'
+      - '.github/workflows/push-worker-authority.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify bounded push worker authority inventory
+        run: node scripts/check-push-worker-authority-inventory.js
+      - name: Run focused push worker authority tests
+        run: node --test scripts/__tests__/check-push-worker-authority-inventory.test.js
