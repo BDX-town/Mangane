@@ -7,6 +7,7 @@ on:
       - 'config/**'
       - 'docs/architecture/PUSH_WORKER_AUTHORITY_DRIFT_GATE.md'
       - 'docs/architecture/REACT_QUERY_AUTHORITY_DRIFT_GATE.md'
+      - 'docs/architecture/SHARE_TARGET_AUTHORITY_DRIFT_GATE.md'
       - 'webpack/**'
       - 'scripts/**'
       - 'package.json'
@@ -20,6 +21,7 @@ on:
       - 'config/**'
       - 'docs/architecture/PUSH_WORKER_AUTHORITY_DRIFT_GATE.md'
       - 'docs/architecture/REACT_QUERY_AUTHORITY_DRIFT_GATE.md'
+      - 'docs/architecture/SHARE_TARGET_AUTHORITY_DRIFT_GATE.md'
       - 'webpack/**'
       - 'scripts/**'
       - 'package.json'
@@ -54,6 +56,7 @@ jobs:
           node scripts/check-api-transport-authority-inventory.js
           node scripts/check-push-worker-authority-inventory.js
           node scripts/check-react-query-authority-inventory.js
+          node scripts/check-share-target-authority-inventory.js
       - name: Generate JSON and Markdown inventories
         shell: bash
         run: |
