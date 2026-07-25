@@ -3,8 +3,9 @@ name: React Query authority
 on:
   pull_request:
     paths:
-      - 'app/soapbox/queries/**'
+      - 'app/**'
       - 'config/react-query-authority-inventory.json'
+      - 'docs/architecture/REACT_QUERY_AUTHORITY_DRIFT_GATE.md'
       - 'scripts/check-react-query-authority-inventory.js'
       - 'scripts/__tests__/check-react-query-authority-inventory.test.js'
       - '.github/workflows/react-query-authority.yml'
@@ -12,8 +13,9 @@ on:
     branches:
       - main
     paths:
-      - 'app/soapbox/queries/**'
+      - 'app/**'
       - 'config/react-query-authority-inventory.json'
+      - 'docs/architecture/REACT_QUERY_AUTHORITY_DRIFT_GATE.md'
       - 'scripts/check-react-query-authority-inventory.js'
       - 'scripts/__tests__/check-react-query-authority-inventory.test.js'
       - '.github/workflows/react-query-authority.yml'
@@ -21,6 +23,10 @@ on:
 
 permissions:
   contents: read
+
+concurrency:
+  group: react-query-authority-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   verify:
@@ -30,3 +36,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: Verify bounded React Query authority inventory
         run: node scripts/check-react-query-authority-inventory.js
+      - name: Run focused React Query authority tests
+        run: node --test scripts/__tests__/check-react-query-authority-inventory.test.js
