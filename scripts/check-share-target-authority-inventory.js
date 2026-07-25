@@ -34,7 +34,7 @@ const expectedDocumentationFragments = [
   'substring matching rather than an exact origin and pathname contract',
   'unbounded form parsing and redirect construction',
   'must remain inert compose text',
-  'future file sharing requires a separate bounded storage contract',
+  'Future file sharing requires a separate bounded storage contract',
 ];
 
 const readInsideRoot = (relativePath, label) => {
