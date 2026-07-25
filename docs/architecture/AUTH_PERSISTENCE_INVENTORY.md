@@ -98,7 +98,7 @@ Verified positive behavior:
 Verified limitations:
 
 - logout is account removal, not necessarily complete application sign-out when other accounts remain;
-- no inspected path clears the global React Query cache;
+- logout now cancels and clears the global React Query cache, but account switching and stale-response fencing remain unverified;
 - no inspected path clears service-worker caches;
 - no inspected path closes native notifications containing bearer tokens;
 - no inspected path removes persisted account snapshots from IndexedDB;
@@ -123,13 +123,14 @@ authAccount:<account URL>
 
 The snapshot may preserve Pleroma settings from an older stored account object when the newly fetched account omits them.
 
-Risks and unknowns:
+Verified lifecycle:
 
 - the database and store names are inherited and not visibly instance- or user-scoped;
 - account URLs are embedded directly into keys;
 - stored account objects may include private settings or instance-specific extensions;
-- logout does not visibly delete the corresponding snapshot;
-- there is no inspected schema version, migration registry, quota handling, corruption repair or retention policy;
+- logout deletes the corresponding snapshot and keeps a resumable tombstone if IndexedDB fails;
+- the schema is unversioned and disposable; migration, quota and corruption dispositions are recorded in `PERSISTENCE_MIGRATION_REGISTRY.md`;
+- stale writers are blocked by the tombstone and account generation;
 - preservation of old settings can reintroduce stale data unless fields and authority are explicitly defined.
 
 ## 7. Refresh behavior inconsistency

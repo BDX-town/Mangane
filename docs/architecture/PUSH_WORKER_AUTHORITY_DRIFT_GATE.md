@@ -12,7 +12,8 @@ It verifies that the current worker:
 - copies the token into native notification data;
 - later reuses notification-resident credentials for reblog and favourite actions;
 - passes stored notification destinations directly to `openWindow` or `WindowClient.navigate`;
-- owns the `push` and `notificationclick` event handlers.
+- owns the `push`, `notificationclick` and account-purge message handlers;
+- hashes a logout-supplied token into a restart-durable Cache Storage revocation journal, acknowledges persistence, closes matching notifications and rejects later push or action use before and after network work.
 
 A passing gate does **not** mean this behavior is safe or accepted target architecture. Credential-bearing notification data is a release-blocking legacy boundary that must be removed in the PWA hardening work. The gate exists so the behavior cannot silently change, disappear from documentation, or be mistaken for a completed security contract.
 
@@ -20,7 +21,7 @@ The following remain explicit blockers:
 
 - complete push-subscription creation, rotation and revocation inventory;
 - account and instance binding for subscriptions, payloads and grouped notifications;
-- deterministic logout and account-removal cleanup of native notifications;
+- instance-switch cleanup of retained native notifications (cross-tab logout and worker-restart revocation are covered);
 - versioned payload validation and strict size limits;
 - timeout, cancellation, bounded-response, retry and content-type rules;
 - safe same-origin notification destination policy;

@@ -1,9 +1,9 @@
 'use strict';
 
+const { execFileSync } = require('child_process');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { execFileSync } = require('child_process');
 
 const repositoryRoot = path.resolve(__dirname, '..', '..');
 const script = path.join(repositoryRoot, 'scripts', 'check-routing-inventory.js');
@@ -45,24 +45,24 @@ describe('routing inventory drift gate', () => {
   it('fails when a development reserved path drifts out of its owning source', () => {
     const root = makeFixture();
     const target = path.join(root, 'webpack', 'development.js');
-    fs.writeFileSync(target, fs.readFileSync(target, 'utf8').replace("'/pleroma'", "'/pleroma-removed'"));
+    fs.writeFileSync(target, fs.readFileSync(target, 'utf8').replace('\'/pleroma\'', '\'/pleroma-removed\''));
 
-    expect(() => runChecker(root)).toThrow(/developmentReservedPaths value "\\/pleroma"/);
+    expect(() => runChecker(root)).toThrow(/developmentReservedPaths value "\/pleroma"/);
   });
 
   it('fails when a production navigation exclusion drifts out of its owning source', () => {
     const root = makeFixture();
     const target = path.join(root, 'webpack', 'production.js');
-    fs.writeFileSync(target, fs.readFileSync(target, 'utf8').replace("'/objects'", "'/objects-removed'"));
+    fs.writeFileSync(target, fs.readFileSync(target, 'utf8').replace('\'/objects\'', '\'/objects-removed\''));
 
-    expect(() => runChecker(root)).toThrow(/productionNavigationExclusions value "\\/objects"/);
+    expect(() => runChecker(root)).toThrow(/productionNavigationExclusions value "\/objects"/);
   });
 
   it('fails when the production suffix exclusion drifts', () => {
     const root = makeFixture();
     const target = path.join(root, 'webpack', 'production.js');
-    fs.writeFileSync(target, fs.readFileSync(target, 'utf8').replace("endsWith('/embed')", "endsWith('/embed-removed')"));
+    fs.writeFileSync(target, fs.readFileSync(target, 'utf8').replace('endsWith(\'/embed\')', 'endsWith(\'/embed-removed\')'));
 
-    expect(() => runChecker(root)).toThrow(/productionNavigationSuffixExclusions value "\\/embed"/);
+    expect(() => runChecker(root)).toThrow(/productionNavigationSuffixExclusions value "\/embed"/);
   });
 });

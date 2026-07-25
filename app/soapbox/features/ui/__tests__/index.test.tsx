@@ -38,7 +38,7 @@ describe('<UI />', () => {
 
   describe('when logged out', () => {
     describe('when viewing a Profile Page', () => {
-      it('should render the Profile page', async() => {
+      it('redirects to sign in', async() => {
         render(
           <TestableComponent />,
           {},
@@ -47,13 +47,13 @@ describe('<UI />', () => {
         );
 
         await waitFor(() => {
-          expect(screen.getByTestId('cta-banner')).toHaveTextContent('Sign up now to discuss');
+          expect(screen.getByTestId('sign-in')).toHaveTextContent('Sign in');
         });
       });
     });
 
     describe('when viewing a Status Page', () => {
-      it('should render the Status page', async() => {
+      it('keeps the public status page accessible', async() => {
         render(
           <TestableComponent />,
           {},
@@ -61,9 +61,7 @@ describe('<UI />', () => {
           { initialEntries: ['/@username/posts/12'] },
         );
 
-        await waitFor(() => {
-          expect(screen.getByTestId('cta-banner')).toHaveTextContent('Sign up now to discuss');
-        });
+        await waitFor(() => expect(screen.queryByTestId('sign-in')).not.toBeInTheDocument());
       });
     });
 

@@ -85,8 +85,10 @@ export function search(value, { emojisToShowFilter, maxResults, include, exclude
       pool = {};
 
       data.categories.forEach(category => {
-        const isIncluded = include && include.length ? include.includes(category.name.toLowerCase()) : true;
-        const isExcluded = exclude && exclude.length ? exclude.includes(category.name.toLowerCase()) : false;
+        // emoji-mart data v1 used `name`; current data uses a stable `id`.
+        const categoryId = (category.id || category.name || '').toLowerCase();
+        const isIncluded = include && include.length ? include.includes(categoryId) : true;
+        const isExcluded = exclude && exclude.length ? exclude.includes(categoryId) : false;
         if (!isIncluded || isExcluded) {
           return;
         }

@@ -2,7 +2,7 @@
 
 Status: **Current / Phase 0 in progress**
 
-Last updated: 2026-07-23
+Last updated: 2026-07-25
 
 This document records React Query behavior verified from exact repository paths. It intentionally distinguishes confirmed call sites and global cache behavior from the still-incomplete source-wide query-key and mutation inventory.
 
@@ -20,7 +20,7 @@ The root application imports that singleton and exposes it through one `QueryCli
 
 ## 2. Verified query call sites
 
-Two concrete `useQuery` call sites are currently verified.
+Two concrete `useQuery` call sites and one `useInfiniteQuery` call site are currently verified.
 
 ### Carousel avatars
 
@@ -50,6 +50,17 @@ The endpoint name suggests the response may vary by backend implementation and p
 
 Because `useApi()` selects transport state outside the serialized key, the same `['trends']` cache record can be reused after an account or instance transition unless another lifecycle path explicitly removes or partitions it. The simultaneous Redux write also requires authority and purge behavior to be reconciled across both stores.
 
+### Onboarding suggestions
+
+`app/soapbox/queries/suggestions.ts`:
+
+- obtains a state-selected Axios client through `useApi()`;
+- performs paginated `GET /api/v2/suggestions`;
+- uses the exact query key `['suggestions', 'v2']`;
+- flattens infinite-query pages for onboarding;
+- dispatches returned accounts and relationship fetches into Redux;
+- includes API version, but not account identity, credential scope, backend origin or instance identity, in its key.
+
 ## 3. Security and lifecycle consequences
 
 An infinite cache lifetime means inactive query records are not garbage-collected by time. Data therefore remains in memory until it is explicitly removed, the client is cleared, or the page process terminates.
@@ -67,25 +78,22 @@ Because the same client is shared across authentication and instance transitions
 
 A key that omits an authority dimension can return stale data from another account or instance even when the subsequent network request would have used different credentials.
 
-The verified `['carouselAvatars']` and `['trends']` keys currently contain none of those dimensions. Phase 0 must determine whether each response is truly safe to share across scopes or whether the key and lifecycle contract require correction.
+The verified keys currently omit the account and backend-origin dimensions. Phase 0 must determine whether each response is truly safe to share across scopes or whether its key and lifecycle contract require correction.
 
-## 4. Verified missing lifecycle evidence
+## 4. Verified lifecycle and later architecture work
 
-No inspected logout, account-removal, account-switch, emergency-reset, or root-bootstrap path establishes a React Query purge contract.
+`app/soapbox/persistence/purge.ts` calls `cancelQueries()` and clears the singleton at the start of account logout/removal. `app/soapbox/persistence/emergency-reset.ts` does the same before origin-wide recovery. Both paths are bounded, failure-isolated and covered by unit and authority-gate tests. The stateful Axios client also captures session/account generations and rejects late responses after logout or account switching, so cancellation is no longer the correctness boundary.
 
-The current evidence does not establish that these operations occur during account changes:
+Later query architecture still needs:
 
-- cancellation of in-flight queries;
-- removal of account-scoped query records;
-- removal of instance-scoped query records;
+- scoped removal that preserves proven-public records;
 - invalidation before credential replacement;
-- blocking of late responses from an old account scope;
 - mutation reset;
 - optimistic-update rollback;
 - persisted-query removal, if persistence exists elsewhere;
 - WebSocket or streaming updates being detached from stale cache records.
 
-These items remain unverified rather than assumed absent.
+These are Phase 1 cache-design concerns, not open Phase 0C purge-survival paths.
 
 ## 5. Required query and mutation matrix
 
@@ -132,6 +140,7 @@ The matrix now begins with these verified entries:
 |---|---|---|---|---|
 | carousel avatars | `['carouselAvatars']` | `GET /api/v1/truth/carousels/avatars` via `useApi()` | none | placeholder array; global stale and retention defaults |
 | trends | `['trends']` | `GET /api/v1/trends` via `useApi()` | none | ten-minute stale time; writes raw data into Redux; returns normalized tags |
+| onboarding suggestions | `['suggestions', 'v2']` | paginated `GET /api/v2/suggestions` via `useApi()` | API version only | infinite pagination; writes accounts and relationship requests into Redux |
 
 These entries are not classified as safe. Their authentication behavior, backend variability, invalidation, cancellation, purge, privacy and tests remain unresolved.
 
@@ -152,11 +161,11 @@ Logout must use the same mechanism rather than relying on Redux reconstruction a
 
 ## 7. Current evidence limitation
 
-The repository code-search index initially returned no results for React Query APIs, and the available GitHub file interface does not provide a complete source-tree enumeration. A late review identified two exact query modules, which have now been inspected and recorded above.
+The executable full-tree scanner currently identifies the three exact query modules and the logout cancellation boundary recorded above.
 
-The verified inventory therefore includes the singleton client, root provider, `['carouselAvatars']`, and `['trends']`, but it is still not repository-complete. Additional query, mutation, cache-manipulation, hydration and persistence call sites may exist and remain blockers until enumerated.
+The scanner covers direct executable API names but cannot prove the absence of aliased imports, wrappers or dynamic property access. Those patterns, along with runtime hydration and persistence behavior, remain explicit blockers.
 
-This limitation must not be converted into a claim that there are only two query modules, that either key is safely scoped, or that React Query is unused elsewhere.
+This limitation must not be converted into a claim that there are only three query modules or that any current key is safely scoped.
 
 ## 8. Phase 0 completion criteria
 

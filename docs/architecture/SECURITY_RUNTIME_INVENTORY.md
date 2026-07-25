@@ -110,9 +110,9 @@ The target protocol adapter must bind each credential to an explicit account and
 
 ## 5. React Query interaction
 
-The application uses one global `QueryClient` with an infinite cache lifetime. The inspected authentication and API helpers do not clear, partition or recreate that client.
+The application uses one global `QueryClient` with an infinite cache lifetime. The account-purge coordinator cancels and clears that client during logout/removal. Account switching advances a tab-session generation, account purge durably revokes an account generation, and the stateful Axios response interceptor rejects late results before action callbacks can commit them. Query-key partitioning remains later architecture work.
 
-This establishes a mandatory Phase 0 question: whether every query key and mutation is scoped by account and instance, and whether logout/account switching clears all account-private data.
+This establishes a mandatory Phase 0 question: whether every query key and mutation is scoped by account and instance, and whether account switching plus late work can expose account-private data.
 
 Until that inventory is complete:
 

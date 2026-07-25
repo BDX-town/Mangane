@@ -30,19 +30,29 @@ module.exports = {
   'coverageReporters': ['html', 'text', 'text-summary', 'cobertura'],
   'reporters': ['default', 'jest-junit'],
   'moduleDirectories': [
-    '<rootDir>/node_modules',
+    'node_modules',
     '<rootDir>/app',
   ],
   'moduleNameMapper': {
+    // eld exposes ESM-only conditional exports; Jest 28 resolves CommonJS by default.
+    '^eld/small$': '<rootDir>/node_modules/eld/src/entries/static.small.js',
     // https://github.com/uuidjs/uuid/pull/616#issuecomment-1111012599
     '^uuid$': require.resolve('uuid'),
   },
-  'testMatch': ['**/*/__tests__/**/?(*.|*-)+(test).(ts|js)?(x)'],
+  // Node-native governance tests under scripts/__tests__ are run with `node --test`.
+  // Keep Jest scoped to application tests and the few script suites written for Jest.
+  'testMatch': [
+    '<rootDir>/app/**/*/__tests__/**/?(*.|*-)+(test).(ts|js)?(x)',
+    '<rootDir>/tailwind/**/*/__tests__/**/?(*.|*-)+(test).(ts|js)?(x)',
+    '<rootDir>/scripts/__tests__/architecture-inventory.test.js',
+    '<rootDir>/scripts/__tests__/check-redux-authority-inventory.test.js',
+    '<rootDir>/scripts/__tests__/check-routing-inventory.test.js',
+  ],
   'testEnvironment': 'jsdom',
   'transformIgnorePatterns': [
-    // FIXME: react-sticky-box doesn't provide a CJS build, so transform it for now
+    // FIXME: react-sticky-box and eld don't provide compatible CJS builds, so transform them for now
     // https://github.com/codecks-io/react-sticky-box/issues/79
-    `/node_modules/(?!(react-sticky-box|.+\\.(${ASSET_EXTS})$))`,
+    `/node_modules/(?!(eld|react-sticky-box|.+\\.(${ASSET_EXTS})$))`,
     // Ignore node_modules, except static assets
     // `/node_modules/(?!.+\\.(${ASSET_EXTS})$)`,
   ],

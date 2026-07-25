@@ -7,6 +7,8 @@ import { defineMessages, injectIntl } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
 import { formatTime, getPointerPosition, fileNameFromURL } from 'soapbox/features/video';
+import { assertSessionGenerationActive, captureSessionGeneration } from 'soapbox/persistence/lifecycle';
+import { createTrackedObjectURL, revokeTrackedObjectURL } from 'soapbox/persistence/object-urls';
 
 import Visualizer from './visualizer';
 
@@ -323,9 +325,11 @@ class Audio extends React.PureComponent {
   }
 
   handleDownload = () => {
+    const generation = captureSessionGeneration();
     fetch(this.props.src).then(res => res.blob()).then(blob => {
+      assertSessionGenerationActive(generation);
       const element   = document.createElement('a');
-      const objectURL = URL.createObjectURL(blob);
+      const objectURL = createTrackedObjectURL(blob);
 
       element.setAttribute('href', objectURL);
       element.setAttribute('download', fileNameFromURL(this.props.src));
@@ -334,13 +338,14 @@ class Audio extends React.PureComponent {
       element.click();
       document.body.removeChild(element);
 
-      URL.revokeObjectURL(objectURL);
+      revokeTrackedObjectURL(objectURL);
     }).catch(err => {
       console.error(err);
     });
   }
 
   _renderCanvas() {
+    // eslint-disable-next-line compat/compat
     requestAnimationFrame(() => {
       if (!this.audio) return;
 

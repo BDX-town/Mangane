@@ -1,10 +1,10 @@
 'use strict';
 
 const assert = require('node:assert/strict');
+const { execFileSync } = require('node:child_process');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { execFileSync } = require('node:child_process');
 const test = require('node:test');
 
 const repositoryRoot = path.resolve(__dirname, '..', '..');
@@ -21,7 +21,10 @@ const fixture = () => {
     'config/react-query-authority-inventory.json',
     'app/soapbox/queries/client.ts',
     'app/soapbox/queries/carousels.ts',
+    'app/soapbox/queries/suggestions.ts',
     'app/soapbox/queries/trends.ts',
+    'app/soapbox/persistence/emergency-reset.ts',
+    'app/soapbox/persistence/purge.ts',
     'app/soapbox/containers/soapbox.tsx',
   ]) {
     const destination = path.join(root, relativePath);
@@ -43,29 +46,31 @@ const assertRunFails = (root, pattern) => assert.throws(() => run(root), error =
 
 test('verifies the bounded current React Query authority inventory', () => {
   const report = JSON.parse(run());
-  assert.deepEqual(report.keys, ['carouselAvatars', 'trends']);
-  assert.equal(report.checkedQueries, 2);
+  assert.deepEqual(report.keys, ['carouselAvatars', 'trends', 'suggestions/v2']);
+  assert.equal(report.checkedQueries, 3);
   assert.equal(report.discoveredUseQueryInvocations, 2);
+  assert.equal(report.discoveredUseInfiniteQueryInvocations, 1);
+  assert.equal(report.checkedLifecycleOperations, 2);
   assert.equal(report.unsupportedApiCallSites, 0);
 });
 
 test('fails when a query key changes without reconciliation', () => {
   const root = fixture();
-  mutate(root, 'app/soapbox/queries/trends.ts', source => source.replace("['trends']", "['trends', 'instance']"));
+  mutate(root, 'app/soapbox/queries/trends.ts', source => source.replace('[\'trends\']', '[\'trends\', \'instance\']'));
   assertRunFails(root, /exact unscoped query key trends/);
 });
 
 test('fails when whitespace inside the query-key literal changes the runtime key', () => {
   const root = fixture();
-  mutate(root, 'app/soapbox/queries/trends.ts', source => source.replace("['trends']", "[' trends ']"));
+  mutate(root, 'app/soapbox/queries/trends.ts', source => source.replace('[\'trends\']', '[\' trends \']'));
   assertRunFails(root, /exact unscoped query key trends/);
 });
 
 test('does not accept an old key preserved only in a comment or string', () => {
   const root = fixture();
   mutate(root, 'app/soapbox/queries/trends.ts', source => source
-    .replace("['trends']", "['trends', 'instance']")
-    .replace("import { useQuery }", "// useQuery(['trends'], loadOld)\nconst legacy = \"useQuery(['trends'], loadOld)\";\nimport { useQuery }"));
+    .replace('[\'trends\']', '[\'trends\', \'instance\']')
+    .replace('import { useQuery }', '// useQuery([\'trends\'], loadOld)\nconst legacy = "useQuery([\'trends\'], loadOld)";\nimport { useQuery }'));
   assertRunFails(root, /exact unscoped query key trends/);
 });
 
@@ -73,6 +78,42 @@ test('fails when a second useQuery invocation is added to an already recorded mo
   const root = fixture();
   mutate(root, 'app/soapbox/queries/trends.ts', source => `${source}\nconst extra = useQuery(['extra'], loadExtra);\n`);
   assertRunFails(root, /exactly one executable useQuery invocation|invocation count changed/);
+});
+
+test('fails when the suggestions scope key changes without reconciliation', () => {
+  const root = fixture();
+  mutate(root, 'app/soapbox/queries/suggestions.ts', source => source.replace(
+    '[\'suggestions\', \'v2\']',
+    '[\'suggestions\', \'v2\', \'account\']',
+  ));
+  assertRunFails(root, /exact unscoped query key suggestions\/v2/);
+});
+
+test('fails when account purge stops cancelling queries', () => {
+  const root = fixture();
+  mutate(root, 'app/soapbox/persistence/purge.ts', source => source.replace(
+    'await queryClient.cancelQueries();',
+    'await Promise.resolve();',
+  ));
+  assertRunFails(root, /cancelQueries lifecycle call|cancelQueries invocation/);
+});
+
+test('fails when account purge stops clearing the query cache', () => {
+  const root = fixture();
+  mutate(root, 'app/soapbox/persistence/purge.ts', source => source.replace(
+    'queryClient.clear();',
+    'void queryClient;',
+  ));
+  assertRunFails(root, /clear lifecycle call/);
+});
+
+test('fails when emergency reset stops cancelling queries', () => {
+  const root = fixture();
+  mutate(root, 'app/soapbox/persistence/emergency-reset.ts', source => source.replace(
+    'await queryClient.cancelQueries();',
+    'await Promise.resolve();',
+  ));
+  assertRunFails(root, /cancelQueries lifecycle call|cancelQueries invocation/);
 });
 
 test('fails when infinite cache retention changes without reconciliation', () => {
@@ -95,7 +136,7 @@ test('fails when the verified Redux duplication boundary disappears', () => {
 
 test('fails when an unrecorded useQuery call site appears', () => {
   const root = fixture();
-  writeExtra(root, 'extra-query.ts', "const result = useQuery(['extra'], loadExtra);\n");
+  writeExtra(root, 'extra-query.ts', 'const result = useQuery([\'extra\'], loadExtra);\n');
   assertRunFails(root, /useQuery invocation/);
 });
 
@@ -107,7 +148,7 @@ test('fails when an unrecorded mutation API appears', () => {
 
 test('fails when ensureQueryData starts populating cache', () => {
   const root = fixture();
-  writeExtra(root, 'ensure-query.ts', "queryClient.ensureQueryData({ queryKey: ['extra'], queryFn: loadExtra });\n");
+  writeExtra(root, 'ensure-query.ts', 'queryClient.ensureQueryData({ queryKey: [\'extra\'], queryFn: loadExtra });\n');
   assertRunFails(root, /ensureQueryData/);
 });
 
@@ -125,6 +166,6 @@ test('does not classify a TypeScript Hydrate assertion as JSX hydration', () => 
 
 test('does not treat comments or strings as executable React Query calls', () => {
   const root = fixture();
-  writeExtra(root, 'inert-evidence.ts', "// ensureQueryData({ queryKey: ['fake'] })\nconst text = 'useQuery([\\'fake\\'], load)';\nconst markup = '<Hydrate state={fake} />';\n");
+  writeExtra(root, 'inert-evidence.ts', '// ensureQueryData({ queryKey: [\'fake\'] })\nconst text = \'useQuery([\\\'fake\\\'], load)\';\nconst markup = \'<Hydrate state={fake} />\';\n');
   assert.doesNotThrow(() => run(root));
 });

@@ -1,0 +1,2393 @@
+{
+  "schemaVersion": 1,
+  "advisories": [
+    {
+      "advisoryId": "1123528",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "@babel/core: Arbitrary File Read via sourceMappingURL Comment",
+      "package": "@babel/core",
+      "severity": "low",
+      "treeVersions": [
+        "7.29.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-4x5r-pxfx-6jf8",
+      "vulnerableVersions": "<=7.29.0"
+    },
+    {
+      "advisoryId": "@babel/plugin-proposal-class-properties (deprecation)",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-properties instead.",
+      "package": "@babel/plugin-proposal-class-properties",
+      "severity": "moderate",
+      "treeVersions": [
+        "7.18.6"
+      ],
+      "url": null,
+      "vulnerableVersions": "7.18.6"
+    },
+    {
+      "advisoryId": "@babel/plugin-proposal-object-rest-spread (deprecation)",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-object-rest-spread instead.",
+      "package": "@babel/plugin-proposal-object-rest-spread",
+      "severity": "moderate",
+      "treeVersions": [
+        "7.20.7"
+      ],
+      "url": null,
+      "vulnerableVersions": "7.20.7"
+    },
+    {
+      "advisoryId": "1120258",
+      "dependents": [
+        "@babel/preset-env@virtual:7164ea798f9571fc1b865cb7d0d9c01846e2d753187de3d62da2a5f8a296177ab8bd73b9a74ba4afcaca04d5d95f891258edc7172fd0bfc9a8a5b2b6b7863be4#npm:7.29.2"
+      ],
+      "issue": "@babel/plugin-transform-modules-systemjs generates arbitrary code when compiling malicious input",
+      "package": "@babel/plugin-transform-modules-systemjs",
+      "severity": "high",
+      "treeVersions": [
+        "7.29.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-fv7c-fp4j-7gwp",
+      "vulnerableVersions": ">=7.12.0 <=7.29.3"
+    },
+    {
+      "advisoryId": "1104000",
+      "dependents": [
+        "react-swipeable-views@virtual:7164ea798f9571fc1b865cb7d0d9c01846e2d753187de3d62da2a5f8a296177ab8bd73b9a74ba4afcaca04d5d95f891258edc7172fd0bfc9a8a5b2b6b7863be4#npm:0.14.1"
+      ],
+      "issue": "Babel has inefficient RegExp complexity in generated code with .replace when transpiling named capturing groups",
+      "package": "@babel/runtime",
+      "severity": "moderate",
+      "treeVersions": [
+        "7.0.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-968p-4wvh-cqc8",
+      "vulnerableVersions": "<7.26.10"
+    },
+    {
+      "advisoryId": "@gitbeaker/node (deprecation)",
+      "dependents": [
+        "danger@npm:11.3.1"
+      ],
+      "issue": "Please use its successor @gitbeaker/rest",
+      "package": "@gitbeaker/node",
+      "severity": "moderate",
+      "treeVersions": [
+        "35.8.1"
+      ],
+      "url": null,
+      "vulnerableVersions": "35.8.1"
+    },
+    {
+      "advisoryId": "@humanwhocodes/config-array (deprecation)",
+      "dependents": [
+        "eslint@npm:7.32.0"
+      ],
+      "issue": "Use @eslint/config-array instead",
+      "package": "@humanwhocodes/config-array",
+      "severity": "moderate",
+      "treeVersions": [
+        "0.5.0"
+      ],
+      "url": null,
+      "vulnerableVersions": "0.5.0"
+    },
+    {
+      "advisoryId": "@humanwhocodes/object-schema (deprecation)",
+      "dependents": [
+        "@humanwhocodes/config-array@npm:0.5.0"
+      ],
+      "issue": "Use @eslint/object-schema instead",
+      "package": "@humanwhocodes/object-schema",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.2.1"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.2.1"
+    },
+    {
+      "advisoryId": "1102898",
+      "dependents": [
+        "@octokit/rest@npm:18.12.0"
+      ],
+      "issue": "@octokit/plugin-paginate-rest has a Regular Expression in iterator Leads to ReDoS Vulnerability Due to Catastrophic Backtracking",
+      "package": "@octokit/plugin-paginate-rest",
+      "severity": "moderate",
+      "treeVersions": [
+        "2.21.3"
+      ],
+      "url": "https://github.com/advisories/GHSA-h5c3-5r3r-rr8q",
+      "vulnerableVersions": ">=1.0.0 <9.2.2"
+    },
+    {
+      "advisoryId": "1102256",
+      "dependents": [
+        "@octokit/core@npm:3.6.0"
+      ],
+      "issue": "@octokit/request-error has a Regular Expression in index that Leads to ReDoS Vulnerability Due to Catastrophic Backtracking",
+      "package": "@octokit/request-error",
+      "severity": "moderate",
+      "treeVersions": [
+        "2.1.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-xx4v-prfh-6cgc",
+      "vulnerableVersions": ">=1.0.0 <5.1.1"
+    },
+    {
+      "advisoryId": "1112248",
+      "dependents": [
+        "@octokit/core@npm:3.6.0"
+      ],
+      "issue": "@octokit/request has a Regular Expression in fetchWrapper that Leads to ReDoS Vulnerability Due to Catastrophic Backtracking",
+      "package": "@octokit/request",
+      "severity": "moderate",
+      "treeVersions": [
+        "5.6.3"
+      ],
+      "url": "https://github.com/advisories/GHSA-rmvr-2pp2-xj38",
+      "vulnerableVersions": ">=1.0.0 <8.4.1"
+    },
+    {
+      "advisoryId": "@stylelint/postcss-css-in-js (deprecation)",
+      "dependents": [
+        "stylelint@npm:13.13.1"
+      ],
+      "issue": "Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.",
+      "package": "@stylelint/postcss-css-in-js",
+      "severity": "moderate",
+      "treeVersions": [
+        "0.37.3"
+      ],
+      "url": null,
+      "vulnerableVersions": "0.37.3"
+    },
+    {
+      "advisoryId": "@stylelint/postcss-markdown (deprecation)",
+      "dependents": [
+        "stylelint@npm:13.13.1"
+      ],
+      "issue": "Use the original unforked package instead: postcss-markdown",
+      "package": "@stylelint/postcss-markdown",
+      "severity": "moderate",
+      "treeVersions": [
+        "0.36.2"
+      ],
+      "url": null,
+      "vulnerableVersions": "0.36.2"
+    },
+    {
+      "advisoryId": "1119438",
+      "dependents": [
+        "http-proxy-agent@npm:5.0.0"
+      ],
+      "issue": "@tootallnate/once vulnerable to Incorrect Control Flow Scoping",
+      "package": "@tootallnate/once",
+      "severity": "low",
+      "treeVersions": [
+        "2.0.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-vpq2-c234-7xj6",
+      "vulnerableVersions": "<2.0.1"
+    },
+    {
+      "advisoryId": "@types/schema-utils (deprecation)",
+      "dependents": [
+        "babel-plugin-react-intl@npm:7.9.4"
+      ],
+      "issue": "This is a stub types definition. schema-utils provides its own type definitions, so you do not need this installed.",
+      "package": "@types/schema-utils",
+      "severity": "moderate",
+      "treeVersions": [
+        "2.4.0"
+      ],
+      "url": null,
+      "vulnerableVersions": "2.4.0"
+    },
+    {
+      "advisoryId": "abab (deprecation)",
+      "dependents": [
+        "jsdom@virtual:c3ce0aea09696961eea8d417ede6449d9f3963377c7a9c70cd935d6f79fbae951b6e91f21e89228d104b2b4fdc63204c1c35b23ae569db80227dfaa5a9205c3f#npm:19.0.0"
+      ],
+      "issue": "Use your platform's native atob() and btoa() methods instead",
+      "package": "abab",
+      "severity": "moderate",
+      "treeVersions": [
+        "2.0.6"
+      ],
+      "url": null,
+      "vulnerableVersions": "2.0.6"
+    },
+    {
+      "advisoryId": "1117574",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: Authentication Bypass via Prototype Pollution Gadget in `validateStatus` Merge Strategy",
+      "package": "axios",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-w9j2-pvgh-6h63",
+      "vulnerableVersions": ">=1.0.0 <1.15.1"
+    },
+    {
+      "advisoryId": "1117576",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: Incomplete Fix for CVE-2025-62718 — NO_PROXY Protection Bypassed via RFC 1122 Loopback Subnet (127.0.0.0/8) in Axios 1.15.0",
+      "package": "axios",
+      "severity": "high",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-pmwg-cvhr-8vh7",
+      "vulnerableVersions": ">=1.0.0 <1.15.1"
+    },
+    {
+      "advisoryId": "1117577",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: Invisible JSON Response Tampering via Prototype Pollution Gadget in `parseReviver`",
+      "package": "axios",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-3w6x-2g7m-8v23",
+      "vulnerableVersions": ">=1.0.0 <1.15.2"
+    },
+    {
+      "advisoryId": "1117580",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: Null Byte Injection via Reverse-Encoding in AxiosURLSearchParams",
+      "package": "axios",
+      "severity": "low",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-xhjh-pmcv-23jw",
+      "vulnerableVersions": ">=1.0.0 <1.15.1"
+    },
+    {
+      "advisoryId": "1117581",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: CRLF Injection in multipart/form-data body via unsanitized blob.type in formDataToStream",
+      "package": "axios",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-445q-vr5w-6q77",
+      "vulnerableVersions": ">=1.0.0 <1.15.1"
+    },
+    {
+      "advisoryId": "1117583",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: no_proxy bypass via IP alias allows SSRF",
+      "package": "axios",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-m7pr-hjqh-92cm",
+      "vulnerableVersions": ">=1.0.0 <1.15.1"
+    },
+    {
+      "advisoryId": "1117587",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios' HTTP adapter-streamed uploads bypass maxBodyLength when maxRedirects: 0",
+      "package": "axios",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-5c9x-8gcm-mpgx",
+      "vulnerableVersions": ">=1.0.0 <1.15.1"
+    },
+    {
+      "advisoryId": "1117589",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: HTTP adapter streamed responses bypass maxContentLength",
+      "package": "axios",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-vf2m-468p-8v99",
+      "vulnerableVersions": ">=1.0.0 <1.15.1"
+    },
+    {
+      "advisoryId": "1117591",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: Prototype Pollution Gadgets - Response Tampering, Data Exfiltration, and Request Hijacking",
+      "package": "axios",
+      "severity": "high",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-pf86-5x62-jrwf",
+      "vulnerableVersions": ">=1.0.0 <1.15.1"
+    },
+    {
+      "advisoryId": "1117593",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: Header Injection via Prototype Pollution",
+      "package": "axios",
+      "severity": "high",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-6chq-wfr3-2hj9",
+      "vulnerableVersions": ">=1.0.0 <1.15.1"
+    },
+    {
+      "advisoryId": "1117595",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: XSRF Token Cross-Origin Leakage via Prototype Pollution Gadget in `withXSRFToken` Boolean Coercion",
+      "package": "axios",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-xx6v-rp6x-q39c",
+      "vulnerableVersions": ">=1.0.0 <1.15.1"
+    },
+    {
+      "advisoryId": "1118607",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios has prototype pollution read-side gadgets in HTTP adapter that allow credential injection and request hijacking",
+      "package": "axios",
+      "severity": "high",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-q8qp-cvcw-x6jj",
+      "vulnerableVersions": ">=1.0.0 <1.15.2"
+    },
+    {
+      "advisoryId": "1120125",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: unbounded recursion in toFormData causes DoS via deeply nested request data",
+      "package": "axios",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-62hf-57xw-28j9",
+      "vulnerableVersions": ">=1.0.0 <1.15.1"
+    },
+    {
+      "advisoryId": "1120547",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: Regular Expression Denial of Service (ReDoS) via Cookie Name Injection",
+      "package": "axios",
+      "severity": "high",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-hfxv-24rg-xrqf",
+      "vulnerableVersions": ">=1.0.0 <1.16.0"
+    },
+    {
+      "advisoryId": "1120643",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Allocation of Resources Without Limits or Throttling in Axios",
+      "package": "axios",
+      "severity": "high",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-777c-7fjr-54vf",
+      "vulnerableVersions": ">=1.7.0 <1.16.0"
+    },
+    {
+      "advisoryId": "1120645",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: Proxy-Authorization Credential Leak to Origin Server Across HTTP-to-HTTPS Redirect in Axios Node.js HTTP Adapter",
+      "package": "axios",
+      "severity": "high",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-p92q-9vqr-4j8v",
+      "vulnerableVersions": ">=1.0.0 <1.16.0"
+    },
+    {
+      "advisoryId": "1120647",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: Proxy-Authorization header leaks to redirect target when proxy is re-evaluated to direct connection",
+      "package": "axios",
+      "severity": "high",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-j5f8-grm9-p9fc",
+      "vulnerableVersions": ">=1.0.0 <1.16.0"
+    },
+    {
+      "advisoryId": "1120649",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "axios Vulnerable to Credential Theft and Response Hijacking via Prototype Pollution Gadget in Config Merge",
+      "package": "axios",
+      "severity": "high",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-3g43-6gmg-66jw",
+      "vulnerableVersions": ">=1.0.0 <1.15.2"
+    },
+    {
+      "advisoryId": "1120650",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "axios Vulnerable to Full Man-in-the-Middle via Prototype Pollution Gadget in `config.proxy`",
+      "package": "axios",
+      "severity": "high",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-35jp-ww65-95wh",
+      "vulnerableVersions": ">=1.0.0 <1.16.0"
+    },
+    {
+      "advisoryId": "1120652",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "axios has DoS & Header Injection via Prototype Pollution Read-Side Gadgets in axios merge functions",
+      "package": "axios",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-898c-q2cr-xwhg",
+      "vulnerableVersions": ">=1.0.0 <1.16.0"
+    },
+    {
+      "advisoryId": "1123824",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "axios's shouldBypassProxy does not recognize IPv4-mapped IPv6 addresses, allowing NO_PROXY bypass (incomplete fix for CVE-2025-62718)",
+      "package": "axios",
+      "severity": "high",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-pjwm-pj3p-43mv",
+      "vulnerableVersions": ">=1.15.0 <1.16.0"
+    },
+    {
+      "advisoryId": "1123882",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: Excessive recursion in formDataToJSON can cause denial of service",
+      "package": "axios",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-42h9-826w-cgv3",
+      "vulnerableVersions": ">=1.0.0 <1.18.0"
+    },
+    {
+      "advisoryId": "1123885",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: Deep formToJSON Key Recursion Can Cause Denial of Service",
+      "package": "axios",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-pmv8-rq9r-6j72",
+      "vulnerableVersions": ">=1.0.0 <1.18.0"
+    },
+    {
+      "advisoryId": "1123957",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: Fetch adapter `ReadableStream` uploads bypass `maxBodyLength`",
+      "package": "axios",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-jqh4-m9w3-8hp9",
+      "vulnerableVersions": ">=1.7.0 <1.18.0"
+    },
+    {
+      "advisoryId": "1123959",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: Prototype pollution gadgets can alter axios request construction",
+      "package": "axios",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-mmx7-hfxf-jppx",
+      "vulnerableVersions": ">=1.0.0 <1.18.0"
+    },
+    {
+      "advisoryId": "1123961",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: NO_PROXY bypass for 0.0.0.0 local addresses in axios",
+      "package": "axios",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-f4gw-2p7v-4548",
+      "vulnerableVersions": ">=1.15.0 <1.18.0"
+    },
+    {
+      "advisoryId": "1123971",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: Nested axios option objects can consume polluted prototype values",
+      "package": "axios",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-7q8q-rj6j-mhjq",
+      "vulnerableVersions": ">=1.0.0 <1.18.0"
+    },
+    {
+      "advisoryId": "1123973",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Axios: HTTP/2 streamed uploads bypass `maxBodyLength`",
+      "package": "axios",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.15.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-mwf2-3pr3-8698",
+      "vulnerableVersions": ">=1.13.0 <1.18.0"
+    },
+    {
+      "advisoryId": "babel-eslint (deprecation)",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "babel-eslint is now @babel/eslint-parser. This package will no longer receive updates.",
+      "package": "babel-eslint",
+      "severity": "moderate",
+      "treeVersions": [
+        "10.1.0"
+      ],
+      "url": null,
+      "vulnerableVersions": "10.1.0"
+    },
+    {
+      "advisoryId": "babel-plugin-constant-folding (deprecation)",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.",
+      "package": "babel-plugin-constant-folding",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.0.1"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.0.1"
+    },
+    {
+      "advisoryId": "babel-plugin-dead-code-elimination (deprecation)",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.",
+      "package": "babel-plugin-dead-code-elimination",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.0.2"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.0.2"
+    },
+    {
+      "advisoryId": "babel-plugin-eval (deprecation)",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.",
+      "package": "babel-plugin-eval",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.0.1"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.0.1"
+    },
+    {
+      "advisoryId": "babel-plugin-inline-environment-variables (deprecation)",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.",
+      "package": "babel-plugin-inline-environment-variables",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.0.1"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.0.1"
+    },
+    {
+      "advisoryId": "babel-plugin-jscript (deprecation)",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.",
+      "package": "babel-plugin-jscript",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.0.4"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.0.4"
+    },
+    {
+      "advisoryId": "babel-plugin-member-expression-literals (deprecation)",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.",
+      "package": "babel-plugin-member-expression-literals",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.0.1"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.0.1"
+    },
+    {
+      "advisoryId": "babel-plugin-property-literals (deprecation)",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.",
+      "package": "babel-plugin-property-literals",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.0.1"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.0.1"
+    },
+    {
+      "advisoryId": "babel-plugin-proto-to-assign (deprecation)",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.",
+      "package": "babel-plugin-proto-to-assign",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.0.4"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.0.4"
+    },
+    {
+      "advisoryId": "babel-plugin-react-constant-elements (deprecation)",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.",
+      "package": "babel-plugin-react-constant-elements",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.0.3"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.0.3"
+    },
+    {
+      "advisoryId": "babel-plugin-react-display-name (deprecation)",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.",
+      "package": "babel-plugin-react-display-name",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.0.3"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.0.3"
+    },
+    {
+      "advisoryId": "babel-plugin-react-intl (deprecation)",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "this package has been renamed to babel-plugin-formatjs",
+      "package": "babel-plugin-react-intl",
+      "severity": "moderate",
+      "treeVersions": [
+        "7.9.4"
+      ],
+      "url": null,
+      "vulnerableVersions": "7.9.4"
+    },
+    {
+      "advisoryId": "babel-plugin-remove-console (deprecation)",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.",
+      "package": "babel-plugin-remove-console",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.0.1"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.0.1"
+    },
+    {
+      "advisoryId": "babel-plugin-remove-debugger (deprecation)",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.",
+      "package": "babel-plugin-remove-debugger",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.0.1"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.0.1"
+    },
+    {
+      "advisoryId": "babel-plugin-runtime (deprecation)",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.",
+      "package": "babel-plugin-runtime",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.0.7"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.0.7"
+    },
+    {
+      "advisoryId": "babel-plugin-undefined-to-void (deprecation)",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.",
+      "package": "babel-plugin-undefined-to-void",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.1.6"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.1.6"
+    },
+    {
+      "advisoryId": "1123977",
+      "dependents": [
+        "express@npm:4.22.1"
+      ],
+      "issue": "body-parser vulnerable to denial of service when invalid limit value silently disables size enforcement",
+      "package": "body-parser",
+      "severity": "low",
+      "treeVersions": [
+        "1.20.4"
+      ],
+      "url": "https://github.com/advisories/GHSA-v422-hmwv-36x6",
+      "vulnerableVersions": "<1.20.6"
+    },
+    {
+      "advisoryId": "1123896",
+      "dependents": [
+        "minimatch@npm:5.1.9"
+      ],
+      "issue": "brace-expansion: DoS via exponential-time expansion of consecutive non-expanding {} groups",
+      "package": "brace-expansion",
+      "severity": "high",
+      "treeVersions": [
+        "2.1.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-3jxr-9vmj-r5cp",
+      "vulnerableVersions": ">=2.0.0 <2.1.2"
+    },
+    {
+      "advisoryId": "1123897",
+      "dependents": [
+        "minimatch@npm:3.1.5"
+      ],
+      "issue": "brace-expansion: DoS via exponential-time expansion of consecutive non-expanding {} groups",
+      "package": "brace-expansion",
+      "severity": "high",
+      "treeVersions": [
+        "1.1.14"
+      ],
+      "url": "https://github.com/advisories/GHSA-3jxr-9vmj-r5cp",
+      "vulnerableVersions": "<1.1.16"
+    },
+    {
+      "advisoryId": "1124334",
+      "dependents": [
+        "minimatch@npm:3.1.5",
+        "minimatch@npm:5.1.9"
+      ],
+      "issue": "brace-expansion: DoS via unbounded expansion length causing an out-of-memory process crash",
+      "package": "brace-expansion",
+      "severity": "high",
+      "treeVersions": [
+        "1.1.14",
+        "2.1.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-mh99-v99m-4gvg",
+      "vulnerableVersions": "<=5.0.7"
+    },
+    {
+      "advisoryId": "1098094",
+      "dependents": [
+        "micromatch@npm:2.3.11",
+        "micromatch@npm:3.1.10"
+      ],
+      "issue": "Uncontrolled resource consumption in braces",
+      "package": "braces",
+      "severity": "high",
+      "treeVersions": [
+        "1.8.5",
+        "2.3.2"
+      ],
+      "url": "https://github.com/advisories/GHSA-grv7-fg5c-xmjg",
+      "vulnerableVersions": "<3.0.3"
+    },
+    {
+      "advisoryId": "conventional-changelog-atom (deprecation)",
+      "dependents": [
+        "conventional-changelog@npm:4.0.0"
+      ],
+      "issue": "This preset is deprecated. Please use conventional-changelog-conventionalcommits or conventional-changelog-angular instead.",
+      "package": "conventional-changelog-atom",
+      "severity": "moderate",
+      "treeVersions": [
+        "3.0.0"
+      ],
+      "url": null,
+      "vulnerableVersions": "3.0.0"
+    },
+    {
+      "advisoryId": "conventional-changelog-codemirror (deprecation)",
+      "dependents": [
+        "conventional-changelog@npm:4.0.0"
+      ],
+      "issue": "This preset is deprecated. Please use conventional-changelog-conventionalcommits or conventional-changelog-angular instead.",
+      "package": "conventional-changelog-codemirror",
+      "severity": "moderate",
+      "treeVersions": [
+        "3.0.0"
+      ],
+      "url": null,
+      "vulnerableVersions": "3.0.0"
+    },
+    {
+      "advisoryId": "conventional-changelog-core (deprecation)",
+      "dependents": [
+        "conventional-changelog@npm:4.0.0"
+      ],
+      "issue": "Deprecated and no longer maintained. Please use conventional-changelog instead.",
+      "package": "conventional-changelog-core",
+      "severity": "moderate",
+      "treeVersions": [
+        "5.0.2"
+      ],
+      "url": null,
+      "vulnerableVersions": "5.0.2"
+    },
+    {
+      "advisoryId": "conventional-changelog-ember (deprecation)",
+      "dependents": [
+        "conventional-changelog@npm:4.0.0"
+      ],
+      "issue": "This preset is deprecated. Please use conventional-changelog-conventionalcommits or conventional-changelog-angular instead.",
+      "package": "conventional-changelog-ember",
+      "severity": "moderate",
+      "treeVersions": [
+        "3.0.0"
+      ],
+      "url": null,
+      "vulnerableVersions": "3.0.0"
+    },
+    {
+      "advisoryId": "conventional-changelog-eslint (deprecation)",
+      "dependents": [
+        "conventional-changelog@npm:4.0.0"
+      ],
+      "issue": "This preset is deprecated. Please use conventional-changelog-conventionalcommits or conventional-changelog-angular instead.",
+      "package": "conventional-changelog-eslint",
+      "severity": "moderate",
+      "treeVersions": [
+        "4.0.0"
+      ],
+      "url": null,
+      "vulnerableVersions": "4.0.0"
+    },
+    {
+      "advisoryId": "conventional-changelog-express (deprecation)",
+      "dependents": [
+        "conventional-changelog@npm:4.0.0"
+      ],
+      "issue": "This preset is deprecated. Please use conventional-changelog-conventionalcommits or conventional-changelog-angular instead.",
+      "package": "conventional-changelog-express",
+      "severity": "moderate",
+      "treeVersions": [
+        "3.0.0"
+      ],
+      "url": null,
+      "vulnerableVersions": "3.0.0"
+    },
+    {
+      "advisoryId": "conventional-changelog-jquery (deprecation)",
+      "dependents": [
+        "conventional-changelog@npm:4.0.0"
+      ],
+      "issue": "This preset is deprecated. Please use conventional-changelog-conventionalcommits or conventional-changelog-angular instead.",
+      "package": "conventional-changelog-jquery",
+      "severity": "moderate",
+      "treeVersions": [
+        "4.0.0"
+      ],
+      "url": null,
+      "vulnerableVersions": "4.0.0"
+    },
+    {
+      "advisoryId": "conventional-changelog-jshint (deprecation)",
+      "dependents": [
+        "conventional-changelog@npm:4.0.0"
+      ],
+      "issue": "This preset is deprecated. Please use conventional-changelog-conventionalcommits or conventional-changelog-angular instead.",
+      "package": "conventional-changelog-jshint",
+      "severity": "moderate",
+      "treeVersions": [
+        "3.0.0"
+      ],
+      "url": null,
+      "vulnerableVersions": "3.0.0"
+    },
+    {
+      "advisoryId": "core-js (deprecation)",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "core-js@<3.23.3 is no longer maintained and not recommended for usage due to the number of issues. Because of the V8 engine whims, feature detection in old core-js versions could cause a slowdown up to 100x even if nothing is polyfilled. Some versions have web compatibility issues. Please, upgrade your dependencies to the actual version of core-js.",
+      "package": "core-js",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.2.7"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.2.7"
+    },
+    {
+      "advisoryId": "domexception (deprecation)",
+      "dependents": [
+        "jsdom@virtual:c3ce0aea09696961eea8d417ede6449d9f3963377c7a9c70cd935d6f79fbae951b6e91f21e89228d104b2b4fdc63204c1c35b23ae569db80227dfaa5a9205c3f#npm:19.0.0"
+      ],
+      "issue": "Use your platform's native DOMException instead",
+      "package": "domexception",
+      "severity": "moderate",
+      "treeVersions": [
+        "4.0.0"
+      ],
+      "url": null,
+      "vulnerableVersions": "4.0.0"
+    },
+    {
+      "advisoryId": "eslint (deprecation)",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "This version is no longer supported. Please see https://eslint.org/version-support for other options.",
+      "package": "eslint",
+      "severity": "moderate",
+      "treeVersions": [
+        "7.32.0"
+      ],
+      "url": null,
+      "vulnerableVersions": "7.32.0"
+    },
+    {
+      "advisoryId": "1117870",
+      "dependents": [
+        "ajv@npm:8.18.0"
+      ],
+      "issue": "fast-uri vulnerable to path traversal via percent-encoded dot segments",
+      "package": "fast-uri",
+      "severity": "high",
+      "treeVersions": [
+        "3.1.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-q3j6-qgpj-74h6",
+      "vulnerableVersions": "<=3.1.0"
+    },
+    {
+      "advisoryId": "1117884",
+      "dependents": [
+        "ajv@npm:8.18.0"
+      ],
+      "issue": "fast-uri vulnerable to host confusion via percent-encoded authority delimiters",
+      "package": "fast-uri",
+      "severity": "high",
+      "treeVersions": [
+        "3.1.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-v39h-62p7-jpjc",
+      "vulnerableVersions": "<=3.1.1"
+    },
+    {
+      "advisoryId": "1124064",
+      "dependents": [
+        "ajv@npm:8.18.0"
+      ],
+      "issue": "fast-uri vulnerable to host confusion via literal backslash authority delimiter",
+      "package": "fast-uri",
+      "severity": "high",
+      "treeVersions": [
+        "3.1.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-v2hh-gcrm-f6hx",
+      "vulnerableVersions": ">=3.0.0 <=3.1.3"
+    },
+    {
+      "advisoryId": "1124231",
+      "dependents": [
+        "ajv@npm:8.18.0"
+      ],
+      "issue": "fast-uri vulnerable to host confusion via failed IDN canonicalization",
+      "package": "fast-uri",
+      "severity": "high",
+      "treeVersions": [
+        "3.1.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-4c8g-83qw-93j6",
+      "vulnerableVersions": ">=3.0.0 <3.1.3"
+    },
+    {
+      "advisoryId": "1118965",
+      "dependents": [
+        "fast-xml-parser@npm:5.7.1"
+      ],
+      "issue": "fast-xml-builder allows attribute values with unwanted quotes to bypass malicious or unwanted attributes",
+      "package": "fast-xml-builder",
+      "severity": "high",
+      "treeVersions": [
+        "1.1.5"
+      ],
+      "url": "https://github.com/advisories/GHSA-5wm8-gmm8-39j9",
+      "vulnerableVersions": "<=1.1.6"
+    },
+    {
+      "advisoryId": "1118966",
+      "dependents": [
+        "fast-xml-parser@npm:5.7.1"
+      ],
+      "issue": "fast-xml-builder Comment Value regex can be bypassed",
+      "package": "fast-xml-builder",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.1.5"
+      ],
+      "url": "https://github.com/advisories/GHSA-45c6-75p6-83cc",
+      "vulnerableVersions": "=1.1.5"
+    },
+    {
+      "advisoryId": "1120743",
+      "dependents": [
+        "axios@npm:1.15.0"
+      ],
+      "issue": "form-data: CRLF injection in form-data via unescaped multipart field names and filenames",
+      "package": "form-data",
+      "severity": "high",
+      "treeVersions": [
+        "4.0.5"
+      ],
+      "url": "https://github.com/advisories/GHSA-hmw2-7cc7-3qxx",
+      "vulnerableVersions": ">=4.0.0 <4.0.6"
+    },
+    {
+      "advisoryId": "git-raw-commits (deprecation)",
+      "dependents": [
+        "conventional-recommended-bump@npm:7.0.1"
+      ],
+      "issue": "Deprecated and no longer maintained. Use @conventional-changelog/git-client instead.",
+      "package": "git-raw-commits",
+      "severity": "moderate",
+      "treeVersions": [
+        "3.0.0"
+      ],
+      "url": null,
+      "vulnerableVersions": "3.0.0"
+    },
+    {
+      "advisoryId": "git-semver-tags (deprecation)",
+      "dependents": [
+        "commit-and-tag-version@npm:12.7.1"
+      ],
+      "issue": "Deprecated and no longer maintained. Use @conventional-changelog/git-client instead.",
+      "package": "git-semver-tags",
+      "severity": "moderate",
+      "treeVersions": [
+        "5.0.1"
+      ],
+      "url": null,
+      "vulnerableVersions": "5.0.1"
+    },
+    {
+      "advisoryId": "glob (deprecation)",
+      "dependents": [
+        "babel@npm:5.8.38"
+      ],
+      "issue": "Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me",
+      "package": "glob",
+      "severity": "moderate",
+      "treeVersions": [
+        "5.0.15"
+      ],
+      "url": null,
+      "vulnerableVersions": "5.0.15"
+    },
+    {
+      "advisoryId": "1121360",
+      "dependents": [
+        "webpack-dev-server@virtual:7164ea798f9571fc1b865cb7d0d9c01846e2d753187de3d62da2a5f8a296177ab8bd73b9a74ba4afcaca04d5d95f891258edc7172fd0bfc9a8a5b2b6b7863be4#npm:4.9.1"
+      ],
+      "issue": "http-proxy-middleware `router` host+path substring matching allows Host-header-driven backend routing bypass",
+      "package": "http-proxy-middleware",
+      "severity": "moderate",
+      "treeVersions": [
+        "2.0.9"
+      ],
+      "url": "https://github.com/advisories/GHSA-64mm-vxmg-q3vj",
+      "vulnerableVersions": ">=0.16.0 <2.0.10"
+    },
+    {
+      "advisoryId": "1124008",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Immutable.js `List` 32-bit trie overflow → unrecoverable DoS",
+      "package": "immutable",
+      "severity": "high",
+      "treeVersions": [
+        "4.3.8"
+      ],
+      "url": "https://github.com/advisories/GHSA-v56q-mh7h-f735",
+      "vulnerableVersions": "<4.3.9"
+    },
+    {
+      "advisoryId": "1124018",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "Immutabl: Hash-collision algorithmic complexity denial of service in Immutable.Map/Set",
+      "package": "immutable",
+      "severity": "high",
+      "treeVersions": [
+        "4.3.8"
+      ],
+      "url": "https://github.com/advisories/GHSA-xvcm-6775-5m9r",
+      "vulnerableVersions": "<4.3.9"
+    },
+    {
+      "advisoryId": "inflight (deprecation)",
+      "dependents": [
+        "glob@npm:7.2.3"
+      ],
+      "issue": "This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.",
+      "package": "inflight",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.0.6"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.0.6"
+    },
+    {
+      "advisoryId": "intersection-observer (deprecation)",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "The Intersection Observer polyfill is no longer needed and can safely be removed. Intersection Observer has been Baseline since 2019.",
+      "package": "intersection-observer",
+      "severity": "moderate",
+      "treeVersions": [
+        "0.12.2"
+      ],
+      "url": null,
+      "vulnerableVersions": "0.12.2"
+    },
+    {
+      "advisoryId": "intl-messageformat-parser (deprecation)",
+      "dependents": [
+        "@formatjs/ts-transformer@virtual:3ee60f569a478fdf71869499eb1fce33c46c79ed079814090443ac274428c88d3cbb5a8c93d9b36a987dee55028e9c50f2e0a17dfd94cc8cae07d37bf56b8252#npm:2.13.0"
+      ],
+      "issue": "We've written a new parser that's 6x faster and is backwards compatible. Please use @formatjs/icu-messageformat-parser",
+      "package": "intl-messageformat-parser",
+      "severity": "moderate",
+      "treeVersions": [
+        "6.1.2"
+      ],
+      "url": null,
+      "vulnerableVersions": "6.1.2"
+    },
+    {
+      "advisoryId": "1121859",
+      "dependents": [
+        "eslint@npm:7.32.0"
+      ],
+      "issue": "JS-YAML: Quadratic-complexity DoS in merge key handling via repeated aliases",
+      "package": "js-yaml",
+      "severity": "moderate",
+      "treeVersions": [
+        "3.14.2"
+      ],
+      "url": "https://github.com/advisories/GHSA-h67p-54hq-rp68",
+      "vulnerableVersions": "<3.15.0"
+    },
+    {
+      "advisoryId": "1121860",
+      "dependents": [
+        "cosmiconfig@virtual:8db6360698ad96cf4b25d1172a40395172958e0549466343255618b9c4b0c60af8d85565dd602407804feddb0d412d25606d8d9faedb04655cf7d13a90395456#npm:9.0.1"
+      ],
+      "issue": "JS-YAML: Quadratic-complexity DoS in merge key handling via repeated aliases",
+      "package": "js-yaml",
+      "severity": "moderate",
+      "treeVersions": [
+        "4.1.1"
+      ],
+      "url": "https://github.com/advisories/GHSA-h67p-54hq-rp68",
+      "vulnerableVersions": ">=4.0.0 <=4.1.1"
+    },
+    {
+      "advisoryId": "1123911",
+      "dependents": [
+        "cosmiconfig@virtual:8db6360698ad96cf4b25d1172a40395172958e0549466343255618b9c4b0c60af8d85565dd602407804feddb0d412d25606d8d9faedb04655cf7d13a90395456#npm:9.0.1"
+      ],
+      "issue": "js-yaml: YAML merge-key chains can force quadratic CPU consumption",
+      "package": "js-yaml",
+      "severity": "high",
+      "treeVersions": [
+        "4.1.1"
+      ],
+      "url": "https://github.com/advisories/GHSA-52cp-r559-cp3m",
+      "vulnerableVersions": ">=4.0.0 <4.3.0"
+    },
+    {
+      "advisoryId": "1123912",
+      "dependents": [
+        "eslint@npm:7.32.0"
+      ],
+      "issue": "js-yaml: YAML merge-key chains can force quadratic CPU consumption",
+      "package": "js-yaml",
+      "severity": "high",
+      "treeVersions": [
+        "3.14.2"
+      ],
+      "url": "https://github.com/advisories/GHSA-52cp-r559-cp3m",
+      "vulnerableVersions": ">=3.0.0 <3.15.0"
+    },
+    {
+      "advisoryId": "1096543",
+      "dependents": [
+        "babel-core@npm:5.8.38",
+        "loader-utils@npm:0.2.17"
+      ],
+      "issue": "Prototype Pollution in JSON5 via Parse Method",
+      "package": "json5",
+      "severity": "high",
+      "treeVersions": [
+        "0.4.0",
+        "0.5.1"
+      ],
+      "url": "https://github.com/advisories/GHSA-9c47-m6qq-7p4h",
+      "vulnerableVersions": "<1.0.2"
+    },
+    {
+      "advisoryId": "1121797",
+      "dependents": [
+        "markdown-it@npm:12.3.2"
+      ],
+      "issue": "LinkifyIt#match scan loop has quadratic algorithmic complexity",
+      "package": "linkify-it",
+      "severity": "high",
+      "treeVersions": [
+        "3.0.3"
+      ],
+      "url": "https://github.com/advisories/GHSA-22p9-wv53-3rq4",
+      "vulnerableVersions": "<=5.0.0"
+    },
+    {
+      "advisoryId": "1124012",
+      "dependents": [
+        "markdown-it@npm:12.3.2"
+      ],
+      "issue": "linkify-it: Quadratic-complexity DoS via the `mailto:` validator scan-loop on attacker text",
+      "package": "linkify-it",
+      "severity": "high",
+      "treeVersions": [
+        "3.0.3"
+      ],
+      "url": "https://github.com/advisories/GHSA-v245-v573-v5vm",
+      "vulnerableVersions": "<=5.0.1"
+    },
+    {
+      "advisoryId": "1094088",
+      "dependents": [
+        "@lcdp/offline-plugin@npm:5.1.7"
+      ],
+      "issue": "Prototype pollution in webpack loader-utils",
+      "package": "loader-utils",
+      "severity": "critical",
+      "treeVersions": [
+        "0.2.17"
+      ],
+      "url": "https://github.com/advisories/GHSA-76p3-8jx3-jpfq",
+      "vulnerableVersions": "<1.4.1"
+    },
+    {
+      "advisoryId": "1106900",
+      "dependents": [
+        "babel@npm:5.8.38"
+      ],
+      "issue": "Prototype Pollution in lodash",
+      "package": "lodash",
+      "severity": "moderate",
+      "treeVersions": [
+        "3.10.1"
+      ],
+      "url": "https://github.com/advisories/GHSA-fvqr-27wr-82fm",
+      "vulnerableVersions": "<4.17.5"
+    },
+    {
+      "advisoryId": "1106913",
+      "dependents": [
+        "babel@npm:5.8.38"
+      ],
+      "issue": "Command Injection in lodash",
+      "package": "lodash",
+      "severity": "high",
+      "treeVersions": [
+        "3.10.1"
+      ],
+      "url": "https://github.com/advisories/GHSA-35jh-r3h4-6jhm",
+      "vulnerableVersions": "<4.17.21"
+    },
+    {
+      "advisoryId": "1106914",
+      "dependents": [
+        "babel@npm:5.8.38"
+      ],
+      "issue": "Prototype Pollution in lodash",
+      "package": "lodash",
+      "severity": "high",
+      "treeVersions": [
+        "3.10.1"
+      ],
+      "url": "https://github.com/advisories/GHSA-4xc9-xhrj-v574",
+      "vulnerableVersions": "<4.17.11"
+    },
+    {
+      "advisoryId": "1106918",
+      "dependents": [
+        "babel@npm:5.8.38"
+      ],
+      "issue": "Prototype Pollution in lodash",
+      "package": "lodash",
+      "severity": "critical",
+      "treeVersions": [
+        "3.10.1"
+      ],
+      "url": "https://github.com/advisories/GHSA-jf85-cpcp-j695",
+      "vulnerableVersions": "<4.17.12"
+    },
+    {
+      "advisoryId": "1106920",
+      "dependents": [
+        "babel@npm:5.8.38"
+      ],
+      "issue": "Prototype Pollution in lodash",
+      "package": "lodash",
+      "severity": "high",
+      "treeVersions": [
+        "3.10.1"
+      ],
+      "url": "https://github.com/advisories/GHSA-p6mc-m468-83gw",
+      "vulnerableVersions": ">=3.7.0 <4.17.19"
+    },
+    {
+      "advisoryId": "1115810",
+      "dependents": [
+        "babel@npm:5.8.38"
+      ],
+      "issue": "lodash vulnerable to Prototype Pollution via array path bypass in `_.unset` and `_.omit`",
+      "package": "lodash",
+      "severity": "moderate",
+      "treeVersions": [
+        "3.10.1"
+      ],
+      "url": "https://github.com/advisories/GHSA-f23m-r3pf-42rh",
+      "vulnerableVersions": "<=4.17.23"
+    },
+    {
+      "advisoryId": "lodash.get (deprecation)",
+      "dependents": [
+        "webpack-assets-manifest@virtual:7164ea798f9571fc1b865cb7d0d9c01846e2d753187de3d62da2a5f8a296177ab8bd73b9a74ba4afcaca04d5d95f891258edc7172fd0bfc9a8a5b2b6b7863be4#npm:5.2.1"
+      ],
+      "issue": "This package is deprecated. Use the optional chaining (?.) operator instead.",
+      "package": "lodash.get",
+      "severity": "moderate",
+      "treeVersions": [
+        "4.4.2"
+      ],
+      "url": null,
+      "vulnerableVersions": "4.4.2"
+    },
+    {
+      "advisoryId": "lodash.isequal (deprecation)",
+      "dependents": [
+        "react-hotkeys@virtual:7164ea798f9571fc1b865cb7d0d9c01846e2d753187de3d62da2a5f8a296177ab8bd73b9a74ba4afcaca04d5d95f891258edc7172fd0bfc9a8a5b2b6b7863be4#npm:1.1.4"
+      ],
+      "issue": "This package is deprecated. Use require('node:util').isDeepStrictEqual instead.",
+      "package": "lodash.isequal",
+      "severity": "moderate",
+      "treeVersions": [
+        "4.5.0"
+      ],
+      "url": null,
+      "vulnerableVersions": "4.5.0"
+    },
+    {
+      "advisoryId": "1120820",
+      "dependents": [
+        "jsdoc@npm:3.6.11"
+      ],
+      "issue": "markdown-it: Quadratic complexity DoS in smartquotes rule via replaceAt string operations",
+      "package": "markdown-it",
+      "severity": "moderate",
+      "treeVersions": [
+        "12.3.2"
+      ],
+      "url": "https://github.com/advisories/GHSA-6v5v-wf23-fmfq",
+      "vulnerableVersions": "<=14.1.1"
+    },
+    {
+      "advisoryId": "memfs (deprecation)",
+      "dependents": [
+        "fork-ts-checker-webpack-plugin@virtual:7164ea798f9571fc1b865cb7d0d9c01846e2d753187de3d62da2a5f8a296177ab8bd73b9a74ba4afcaca04d5d95f891258edc7172fd0bfc9a8a5b2b6b7863be4#npm:7.3.0"
+      ],
+      "issue": "this will be v4",
+      "package": "memfs",
+      "severity": "moderate",
+      "treeVersions": [
+        "3.6.0"
+      ],
+      "url": null,
+      "vulnerableVersions": "3.6.0"
+    },
+    {
+      "advisoryId": "1098681",
+      "dependents": [
+        "anymatch@npm:1.3.2",
+        "readdirp@npm:2.2.1"
+      ],
+      "issue": "Regular Expression Denial of Service (ReDoS) in micromatch",
+      "package": "micromatch",
+      "severity": "moderate",
+      "treeVersions": [
+        "2.3.11",
+        "3.1.10"
+      ],
+      "url": "https://github.com/advisories/GHSA-952p-6rrq-rcjv",
+      "vulnerableVersions": "<4.0.8"
+    },
+    {
+      "advisoryId": "mini-create-react-context (deprecation)",
+      "dependents": [
+        "react-router@virtual:53d8ae5af95061cb34abe2ec2b7789b98dd1c9ff13d5a6df197c7982e942f6e7a939e9339707e52e10e8058f74175269b89c2ad769a1aa57e1b361db02ee10cc#npm:5.2.1"
+      ],
+      "issue": "Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.",
+      "package": "mini-create-react-context",
+      "severity": "moderate",
+      "treeVersions": [
+        "0.4.1"
+      ],
+      "url": null,
+      "vulnerableVersions": "0.4.1"
+    },
+    {
+      "advisoryId": "1093710",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "Regular Expression Denial of Service in minimatch",
+      "package": "minimatch",
+      "severity": "high",
+      "treeVersions": [
+        "2.0.10"
+      ],
+      "url": "https://github.com/advisories/GHSA-hxm2-r34f-qmc5",
+      "vulnerableVersions": "<3.0.2"
+    },
+    {
+      "advisoryId": "1096485",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "minimatch ReDoS vulnerability",
+      "package": "minimatch",
+      "severity": "high",
+      "treeVersions": [
+        "2.0.10"
+      ],
+      "url": "https://github.com/advisories/GHSA-f8q6-p94x-37v3",
+      "vulnerableVersions": "<3.0.5"
+    },
+    {
+      "advisoryId": "1113459",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "minimatch has a ReDoS via repeated wildcards with non-matching literal in pattern",
+      "package": "minimatch",
+      "severity": "high",
+      "treeVersions": [
+        "2.0.10"
+      ],
+      "url": "https://github.com/advisories/GHSA-3ppc-4f35-3m26",
+      "vulnerableVersions": "<3.1.3"
+    },
+    {
+      "advisoryId": "1113538",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "minimatch has ReDoS: matchOne() combinatorial backtracking via multiple non-adjacent GLOBSTAR segments",
+      "package": "minimatch",
+      "severity": "high",
+      "treeVersions": [
+        "2.0.10"
+      ],
+      "url": "https://github.com/advisories/GHSA-7r86-cg39-jmmj",
+      "vulnerableVersions": "<3.1.3"
+    },
+    {
+      "advisoryId": "1113546",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "minimatch ReDoS: nested *() extglobs generate catastrophically backtracking regular expressions",
+      "package": "minimatch",
+      "severity": "high",
+      "treeVersions": [
+        "2.0.10"
+      ],
+      "url": "https://github.com/advisories/GHSA-23c5-xmqv-rm74",
+      "vulnerableVersions": "<3.1.4"
+    },
+    {
+      "advisoryId": "1103364",
+      "dependents": [
+        "danger@npm:11.3.1"
+      ],
+      "issue": "Prototype Pollution Vulnerability in parse-git-config",
+      "package": "parse-git-config",
+      "severity": "high",
+      "treeVersions": [
+        "2.0.3"
+      ],
+      "url": "https://github.com/advisories/GHSA-8g77-54rh-46hx",
+      "vulnerableVersions": "<=3.0.0"
+    },
+    {
+      "advisoryId": "1093539",
+      "dependents": [
+        "postcss-object-fit-images@npm:1.1.2"
+      ],
+      "issue": "Regular Expression Denial of Service in postcss",
+      "package": "postcss",
+      "severity": "moderate",
+      "treeVersions": [
+        "5.2.18"
+      ],
+      "url": "https://github.com/advisories/GHSA-566m-qj78-rww5",
+      "vulnerableVersions": "<7.0.36"
+    },
+    {
+      "advisoryId": "1109574",
+      "dependents": [
+        "postcss-object-fit-images@npm:1.1.2",
+        "stylelint@npm:13.13.1"
+      ],
+      "issue": "PostCSS line return parsing error",
+      "package": "postcss",
+      "severity": "moderate",
+      "treeVersions": [
+        "5.2.18",
+        "7.0.39"
+      ],
+      "url": "https://github.com/advisories/GHSA-7fh5-64p2-3v2j",
+      "vulnerableVersions": "<8.4.31"
+    },
+    {
+      "advisoryId": "1117015",
+      "dependents": [
+        "postcss-object-fit-images@npm:1.1.2",
+        "stylelint@npm:13.13.1"
+      ],
+      "issue": "PostCSS has XSS via Unescaped </style> in its CSS Stringify Output",
+      "package": "postcss",
+      "severity": "moderate",
+      "treeVersions": [
+        "5.2.18",
+        "7.0.39"
+      ],
+      "url": "https://github.com/advisories/GHSA-qx2v-qp2m-jg93",
+      "vulnerableVersions": "<8.5.10"
+    },
+    {
+      "advisoryId": "1124252",
+      "dependents": [
+        "mangane-fe@workspace:.",
+        "postcss-object-fit-images@npm:1.1.2",
+        "stylelint@npm:13.13.1"
+      ],
+      "issue": "PostCSS: Arbitrary file read and information disclosure via attacker-controlled sourceMappingURL in CSS comments",
+      "package": "postcss",
+      "severity": "high",
+      "treeVersions": [
+        "5.2.18",
+        "7.0.39",
+        "8.5.10"
+      ],
+      "url": "https://github.com/advisories/GHSA-6g55-p6wh-862q",
+      "vulnerableVersions": "<=8.5.11"
+    },
+    {
+      "advisoryId": "1124288",
+      "dependents": [
+        "mangane-fe@workspace:.",
+        "postcss-object-fit-images@npm:1.1.2",
+        "stylelint@npm:13.13.1"
+      ],
+      "issue": "PostCSS: Path Traversal in Previous Source Map Auto-Loading (sourceMappingURL) leads to Arbitrary .map File Disclosure",
+      "package": "postcss",
+      "severity": "high",
+      "treeVersions": [
+        "5.2.18",
+        "7.0.39",
+        "8.5.10"
+      ],
+      "url": "https://github.com/advisories/GHSA-r28c-9q8g-f849",
+      "vulnerableVersions": "<=8.5.17"
+    },
+    {
+      "advisoryId": "q (deprecation)",
+      "dependents": [
+        "commoner@npm:0.10.8"
+      ],
+      "issue": "You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.\n\n(For a CapTP with native promises, see @endo/eventual-send and @endo/captp)",
+      "package": "q",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.5.1"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.5.1"
+    },
+    {
+      "advisoryId": "1119502",
+      "dependents": [
+        "@gitbeaker/requester-utils@npm:35.8.1",
+        "express@npm:4.22.1"
+      ],
+      "issue": "qs has a remotely triggerable DoS: qs.stringify crashes with TypeError on null/undefined entries in comma-format arrays when encodeValuesOnly is set",
+      "package": "qs",
+      "severity": "moderate",
+      "treeVersions": [
+        "6.14.2",
+        "6.15.1"
+      ],
+      "url": "https://github.com/advisories/GHSA-q8mj-m7cp-5q26",
+      "vulnerableVersions": ">=6.11.1 <=6.15.1"
+    },
+    {
+      "advisoryId": "realistic-structured-clone (deprecation)",
+      "dependents": [
+        "fake-indexeddb@npm:3.1.8"
+      ],
+      "issue": "Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.",
+      "package": "realistic-structured-clone",
+      "severity": "moderate",
+      "treeVersions": [
+        "2.0.4"
+      ],
+      "url": null,
+      "vulnerableVersions": "2.0.4"
+    },
+    {
+      "advisoryId": "resolve-url (deprecation)",
+      "dependents": [
+        "source-map-resolve@npm:0.5.3"
+      ],
+      "issue": "https://github.com/lydell/resolve-url#deprecated",
+      "package": "resolve-url",
+      "severity": "moderate",
+      "treeVersions": [
+        "0.2.1"
+      ],
+      "url": null,
+      "vulnerableVersions": "0.2.1"
+    },
+    {
+      "advisoryId": "rimraf (deprecation)",
+      "dependents": [
+        "webpack-dev-server@virtual:7164ea798f9571fc1b865cb7d0d9c01846e2d753187de3d62da2a5f8a296177ab8bd73b9a74ba4afcaca04d5d95f891258edc7172fd0bfc9a8a5b2b6b7863be4#npm:4.9.1"
+      ],
+      "issue": "Rimraf versions prior to v4 are no longer supported",
+      "package": "rimraf",
+      "severity": "moderate",
+      "treeVersions": [
+        "3.0.2"
+      ],
+      "url": null,
+      "vulnerableVersions": "3.0.2"
+    },
+    {
+      "advisoryId": "1113686",
+      "dependents": [
+        "copy-webpack-plugin@virtual:7164ea798f9571fc1b865cb7d0d9c01846e2d753187de3d62da2a5f8a296177ab8bd73b9a74ba4afcaca04d5d95f891258edc7172fd0bfc9a8a5b2b6b7863be4#npm:9.1.0"
+      ],
+      "issue": "Serialize JavaScript is Vulnerable to RCE via RegExp.flags and Date.prototype.toISOString()",
+      "package": "serialize-javascript",
+      "severity": "high",
+      "treeVersions": [
+        "6.0.2"
+      ],
+      "url": "https://github.com/advisories/GHSA-5c6j-r48x-rmvq",
+      "vulnerableVersions": "<=7.0.2"
+    },
+    {
+      "advisoryId": "1119440",
+      "dependents": [
+        "copy-webpack-plugin@virtual:7164ea798f9571fc1b865cb7d0d9c01846e2d753187de3d62da2a5f8a296177ab8bd73b9a74ba4afcaca04d5d95f891258edc7172fd0bfc9a8a5b2b6b7863be4#npm:9.1.0"
+      ],
+      "issue": "Serialize JavaScript has CPU Exhaustion Denial of Service via crafted array-like objects",
+      "package": "serialize-javascript",
+      "severity": "moderate",
+      "treeVersions": [
+        "6.0.2"
+      ],
+      "url": "https://github.com/advisories/GHSA-qj8w-gfj5-8c6v",
+      "vulnerableVersions": ">=5.0.0 <7.0.5"
+    },
+    {
+      "advisoryId": "source-map-resolve (deprecation)",
+      "dependents": [
+        "snapdragon@npm:0.8.2"
+      ],
+      "issue": "See https://github.com/lydell/source-map-resolve#deprecated",
+      "package": "source-map-resolve",
+      "severity": "moderate",
+      "treeVersions": [
+        "0.5.3"
+      ],
+      "url": null,
+      "vulnerableVersions": "0.5.3"
+    },
+    {
+      "advisoryId": "source-map-url (deprecation)",
+      "dependents": [
+        "source-map-resolve@npm:0.5.3"
+      ],
+      "issue": "See https://github.com/lydell/source-map-url#deprecated",
+      "package": "source-map-url",
+      "severity": "moderate",
+      "treeVersions": [
+        "0.4.1"
+      ],
+      "url": null,
+      "vulnerableVersions": "0.4.1"
+    },
+    {
+      "advisoryId": "stable (deprecation)",
+      "dependents": [
+        "svgo@npm:2.8.2"
+      ],
+      "issue": "Modern JS already guarantees Array#sort() is a stable sort, so this library is deprecated. See the compatibility table on MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#browser_compatibility",
+      "package": "stable",
+      "severity": "moderate",
+      "treeVersions": [
+        "0.1.8"
+      ],
+      "url": null,
+      "vulnerableVersions": "0.1.8"
+    },
+    {
+      "advisoryId": "1124021",
+      "dependents": [
+        "postcss-svgo@virtual:2b2d2763ba991849f570417d7593c6a90ecbfeb1d919d8f98ad31589bfde8ac65af126295e2c9ebe34e415654fb27dd152e555ed5f455242071e33ddc725ba4b#npm:5.1.0"
+      ],
+      "issue": "SVGO removeScripts plugin leaves some executable scripts intact",
+      "package": "svgo",
+      "severity": "high",
+      "treeVersions": [
+        "2.8.2"
+      ],
+      "url": "https://github.com/advisories/GHSA-2p49-hgcm-8545",
+      "vulnerableVersions": ">=1.0.0 <2.8.3"
+    },
+    {
+      "advisoryId": "1089386",
+      "dependents": [
+        "jsdoc@npm:3.6.11"
+      ],
+      "issue": "TaffyDB can allow access to any data items in the DB",
+      "package": "taffydb",
+      "severity": "high",
+      "treeVersions": [
+        "2.6.2"
+      ],
+      "url": "https://github.com/advisories/GHSA-mxhp-79qh-mcx6",
+      "vulnerableVersions": "<=2.7.3"
+    },
+    {
+      "advisoryId": "1120782",
+      "dependents": [
+        "node-gyp@npm:12.3.0"
+      ],
+      "issue": "node-tar applies PAX size override to intermediary GNU long-name/long-link headers, causing tar parser interpretation differential (file smuggling)",
+      "package": "tar",
+      "severity": "moderate",
+      "treeVersions": [
+        "7.5.13"
+      ],
+      "url": "https://github.com/advisories/GHSA-vmf3-w455-68vh",
+      "vulnerableVersions": "<=7.5.15"
+    },
+    {
+      "advisoryId": "1123939",
+      "dependents": [
+        "node-gyp@npm:12.3.0"
+      ],
+      "issue": "node-tar: Process crash via PAX numeric path type confusion",
+      "package": "tar",
+      "severity": "moderate",
+      "treeVersions": [
+        "7.5.13"
+      ],
+      "url": "https://github.com/advisories/GHSA-w8wr-v893-vjvp",
+      "vulnerableVersions": "<=7.5.17"
+    },
+    {
+      "advisoryId": "1123940",
+      "dependents": [
+        "node-gyp@npm:12.3.0"
+      ],
+      "issue": "node-tar: Decompression/parse DoS via unlimited input",
+      "package": "tar",
+      "severity": "critical",
+      "treeVersions": [
+        "7.5.13"
+      ],
+      "url": "https://github.com/advisories/GHSA-23hp-3jrh-7fpw",
+      "vulnerableVersions": "<=7.5.18"
+    },
+    {
+      "advisoryId": "1123941",
+      "dependents": [
+        "node-gyp@npm:12.3.0"
+      ],
+      "issue": "node-tar: Negative tar entry size causes infinite loop in archive replace",
+      "package": "tar",
+      "severity": "high",
+      "treeVersions": [
+        "7.5.13"
+      ],
+      "url": "https://github.com/advisories/GHSA-8x88-c5mf-7j5w",
+      "vulnerableVersions": "<=7.5.17"
+    },
+    {
+      "advisoryId": "1123942",
+      "dependents": [
+        "node-gyp@npm:12.3.0"
+      ],
+      "issue": "node-tar: Uncaught Exception DoS via NUL byte in PAX path/linkpath records",
+      "package": "tar",
+      "severity": "moderate",
+      "treeVersions": [
+        "7.5.13"
+      ],
+      "url": "https://github.com/advisories/GHSA-gvwx-54wh-qm9j",
+      "vulnerableVersions": "<=7.5.16"
+    },
+    {
+      "advisoryId": "1124287",
+      "dependents": [
+        "node-gyp@npm:12.3.0"
+      ],
+      "issue": "node-tar: Uncontrolled recursion in mapHas/filesFilter allows uncatchable stack-overflow DoS via crafted long-path tar with member selection",
+      "package": "tar",
+      "severity": "moderate",
+      "treeVersions": [
+        "7.5.13"
+      ],
+      "url": "https://github.com/advisories/GHSA-r292-9mhp-454m",
+      "vulnerableVersions": "<=7.5.20"
+    },
+    {
+      "advisoryId": "try-resolve (deprecation)",
+      "dependents": [
+        "babel-core@npm:5.8.38"
+      ],
+      "issue": "Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.",
+      "package": "try-resolve",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.0.1"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.0.1"
+    },
+    {
+      "advisoryId": "1121187",
+      "dependents": [
+        "cheerio@npm:1.2.0"
+      ],
+      "issue": "undici vulnerable to TLS certificate validation bypass via dropped requestTls in SOCKS5 ProxyAgent",
+      "package": "undici",
+      "severity": "high",
+      "treeVersions": [
+        "7.25.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-vmh5-mc38-953g",
+      "vulnerableVersions": ">=7.23.0 <7.28.0"
+    },
+    {
+      "advisoryId": "1121241",
+      "dependents": [
+        "cheerio@npm:1.2.0"
+      ],
+      "issue": "undici vulnerable to HTTP header injection via Set-Cookie percent-decoding",
+      "package": "undici",
+      "severity": "moderate",
+      "treeVersions": [
+        "7.25.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-p88m-4jfj-68fv",
+      "vulnerableVersions": ">=7.0.0 <7.28.0"
+    },
+    {
+      "advisoryId": "1121242",
+      "dependents": [
+        "node-gyp@npm:12.3.0"
+      ],
+      "issue": "undici vulnerable to HTTP header injection via Set-Cookie percent-decoding",
+      "package": "undici",
+      "severity": "moderate",
+      "treeVersions": [
+        "6.25.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-p88m-4jfj-68fv",
+      "vulnerableVersions": "<6.27.0"
+    },
+    {
+      "advisoryId": "1121244",
+      "dependents": [
+        "cheerio@npm:1.2.0"
+      ],
+      "issue": "undici WebSocket client vulnerable to denial of service via fragment count bypass",
+      "package": "undici",
+      "severity": "high",
+      "treeVersions": [
+        "7.25.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-vxpw-j846-p89q",
+      "vulnerableVersions": ">=7.0.0 <7.28.0"
+    },
+    {
+      "advisoryId": "1121245",
+      "dependents": [
+        "node-gyp@npm:12.3.0"
+      ],
+      "issue": "undici WebSocket client vulnerable to denial of service via fragment count bypass",
+      "package": "undici",
+      "severity": "high",
+      "treeVersions": [
+        "6.25.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-vxpw-j846-p89q",
+      "vulnerableVersions": "<6.27.0"
+    },
+    {
+      "advisoryId": "1121247",
+      "dependents": [
+        "cheerio@npm:1.2.0"
+      ],
+      "issue": "undici vulnerable to cross-origin request routing via SOCKS5 proxy pool reuse",
+      "package": "undici",
+      "severity": "high",
+      "treeVersions": [
+        "7.25.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-hm92-r4w5-c3mj",
+      "vulnerableVersions": ">=7.23.0 <7.28.0"
+    },
+    {
+      "advisoryId": "1121249",
+      "dependents": [
+        "cheerio@npm:1.2.0"
+      ],
+      "issue": "undici vulnerable to HTTP response queue poisoning via keep-alive socket reuse",
+      "package": "undici",
+      "severity": "low",
+      "treeVersions": [
+        "7.25.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-35p6-xmwp-9g52",
+      "vulnerableVersions": ">=7.0.0 <7.28.0"
+    },
+    {
+      "advisoryId": "1121250",
+      "dependents": [
+        "node-gyp@npm:12.3.0"
+      ],
+      "issue": "undici vulnerable to HTTP response queue poisoning via keep-alive socket reuse",
+      "package": "undici",
+      "severity": "low",
+      "treeVersions": [
+        "6.25.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-35p6-xmwp-9g52",
+      "vulnerableVersions": "<6.27.0"
+    },
+    {
+      "advisoryId": "1121254",
+      "dependents": [
+        "cheerio@npm:1.2.0"
+      ],
+      "issue": "undici vulnerable to Set-Cookie SameSite attribute downgrade via permissive substring matching",
+      "package": "undici",
+      "severity": "low",
+      "treeVersions": [
+        "7.25.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-g8m3-5g58-fq7m",
+      "vulnerableVersions": ">=7.0.0 <7.28.0"
+    },
+    {
+      "advisoryId": "1121255",
+      "dependents": [
+        "node-gyp@npm:12.3.0"
+      ],
+      "issue": "undici vulnerable to Set-Cookie SameSite attribute downgrade via permissive substring matching",
+      "package": "undici",
+      "severity": "low",
+      "treeVersions": [
+        "6.25.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-g8m3-5g58-fq7m",
+      "vulnerableVersions": "<6.27.0"
+    },
+    {
+      "advisoryId": "1121428",
+      "dependents": [
+        "cheerio@npm:1.2.0"
+      ],
+      "issue": "undici vulnerable to cross-user information disclosure via shared cache whitespace bypass",
+      "package": "undici",
+      "severity": "moderate",
+      "treeVersions": [
+        "7.25.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-pr7r-676h-xcf6",
+      "vulnerableVersions": ">=7.0.0 <7.28.0"
+    },
+    {
+      "advisoryId": "urix (deprecation)",
+      "dependents": [
+        "source-map-resolve@npm:0.5.3"
+      ],
+      "issue": "Please see https://github.com/lydell/urix#deprecated",
+      "package": "urix",
+      "severity": "moderate",
+      "treeVersions": [
+        "0.1.0"
+      ],
+      "url": null,
+      "vulnerableVersions": "0.1.0"
+    },
+    {
+      "advisoryId": "1119441",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided",
+      "package": "uuid",
+      "severity": "moderate",
+      "treeVersions": [
+        "8.3.2"
+      ],
+      "url": "https://github.com/advisories/GHSA-w5hq-g745-h8pq",
+      "vulnerableVersions": "<11.1.1"
+    },
+    {
+      "advisoryId": "w3c-hr-time (deprecation)",
+      "dependents": [
+        "jsdom@virtual:c3ce0aea09696961eea8d417ede6449d9f3963377c7a9c70cd935d6f79fbae951b6e91f21e89228d104b2b4fdc63204c1c35b23ae569db80227dfaa5a9205c3f#npm:19.0.0"
+      ],
+      "issue": "Use your platform's native performance.now() and performance.timeOrigin.",
+      "package": "w3c-hr-time",
+      "severity": "moderate",
+      "treeVersions": [
+        "1.0.2"
+      ],
+      "url": null,
+      "vulnerableVersions": "1.0.2"
+    },
+    {
+      "advisoryId": "webextension-polyfill-ts (deprecation)",
+      "dependents": [
+        "@metamask/providers@npm:9.1.0"
+      ],
+      "issue": "This project has moved to @types/webextension-polyfill",
+      "package": "webextension-polyfill-ts",
+      "severity": "moderate",
+      "treeVersions": [
+        "0.25.0"
+      ],
+      "url": null,
+      "vulnerableVersions": "0.25.0"
+    },
+    {
+      "advisoryId": "1108429",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "webpack-dev-server users' source code may be stolen when they access a malicious web site with non-Chromium based browser",
+      "package": "webpack-dev-server",
+      "severity": "moderate",
+      "treeVersions": [
+        "4.9.1"
+      ],
+      "url": "https://github.com/advisories/GHSA-9jgg-88mc-972h",
+      "vulnerableVersions": "<=5.2.0"
+    },
+    {
+      "advisoryId": "1108430",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "webpack-dev-server users' source code may be stolen when they access a malicious web site",
+      "package": "webpack-dev-server",
+      "severity": "moderate",
+      "treeVersions": [
+        "4.9.1"
+      ],
+      "url": "https://github.com/advisories/GHSA-4v9v-hfq4-rm2v",
+      "vulnerableVersions": "<=5.2.0"
+    },
+    {
+      "advisoryId": "1119074",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "webpack-dev-server vulnerable to cross-origin source code exposure on non-HTTPS origins",
+      "package": "webpack-dev-server",
+      "severity": "moderate",
+      "treeVersions": [
+        "4.9.1"
+      ],
+      "url": "https://github.com/advisories/GHSA-79cf-xcqc-c78w",
+      "vulnerableVersions": "<=5.2.3"
+    },
+    {
+      "advisoryId": "1121087",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "webpack-dev-server vulnerable to HMR WebSocket interception via permissive user proxies",
+      "package": "webpack-dev-server",
+      "severity": "moderate",
+      "treeVersions": [
+        "4.9.1"
+      ],
+      "url": "https://github.com/advisories/GHSA-mx8g-39q3-5c79",
+      "vulnerableVersions": "<5.2.5"
+    },
+    {
+      "advisoryId": "1123965",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "webpack-dev-server vulnerable to cross-site request forgery via internal developer endpoints",
+      "package": "webpack-dev-server",
+      "severity": "moderate",
+      "treeVersions": [
+        "4.9.1"
+      ],
+      "url": "https://github.com/advisories/GHSA-f5vj-f2hx-8m93",
+      "vulnerableVersions": "<=5.2.5"
+    },
+    {
+      "advisoryId": "1123966",
+      "dependents": [
+        "mangane-fe@workspace:."
+      ],
+      "issue": "webpack-dev-server vulnerable to denial of service via a malformed Host or Origin header",
+      "package": "webpack-dev-server",
+      "severity": "moderate",
+      "treeVersions": [
+        "4.9.1"
+      ],
+      "url": "https://github.com/advisories/GHSA-m28w-2pqf-7qgj",
+      "vulnerableVersions": "<=5.2.5"
+    },
+    {
+      "advisoryId": "1123482",
+      "dependents": [
+        "sockjs@npm:0.3.24"
+      ],
+      "issue": "websocket-driver: Resource limit bypass via message compression",
+      "package": "websocket-driver",
+      "severity": "moderate",
+      "treeVersions": [
+        "0.7.4"
+      ],
+      "url": "https://github.com/advisories/GHSA-mp7j-qc5w-4988",
+      "vulnerableVersions": "<0.7.5"
+    },
+    {
+      "advisoryId": "1123483",
+      "dependents": [
+        "sockjs@npm:0.3.24"
+      ],
+      "issue": "websocket-driver: Message corruption via abuse of protocol length headers",
+      "package": "websocket-driver",
+      "severity": "critical",
+      "treeVersions": [
+        "0.7.4"
+      ],
+      "url": "https://github.com/advisories/GHSA-xv26-6w52-cph6",
+      "vulnerableVersions": "<0.7.5"
+    },
+    {
+      "advisoryId": "whatwg-encoding (deprecation)",
+      "dependents": [
+        "jsdom@virtual:c3ce0aea09696961eea8d417ede6449d9f3963377c7a9c70cd935d6f79fbae951b6e91f21e89228d104b2b4fdc63204c1c35b23ae569db80227dfaa5a9205c3f#npm:19.0.0"
+      ],
+      "issue": "Use @exodus/bytes instead for a more spec-conformant and faster implementation",
+      "package": "whatwg-encoding",
+      "severity": "moderate",
+      "treeVersions": [
+        "2.0.0"
+      ],
+      "url": null,
+      "vulnerableVersions": "2.0.0"
+    },
+    {
+      "advisoryId": "1119108",
+      "dependents": [
+        "webpack-dev-server@virtual:7164ea798f9571fc1b865cb7d0d9c01846e2d753187de3d62da2a5f8a296177ab8bd73b9a74ba4afcaca04d5d95f891258edc7172fd0bfc9a8a5b2b6b7863be4#npm:4.9.1"
+      ],
+      "issue": "ws: Uninitialized memory disclosure",
+      "package": "ws",
+      "severity": "moderate",
+      "treeVersions": [
+        "8.20.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-58qx-3vcg-4xpx",
+      "vulnerableVersions": ">=8.0.0 <8.20.1"
+    },
+    {
+      "advisoryId": "1123259",
+      "dependents": [
+        "webpack-dev-server@virtual:7164ea798f9571fc1b865cb7d0d9c01846e2d753187de3d62da2a5f8a296177ab8bd73b9a74ba4afcaca04d5d95f891258edc7172fd0bfc9a8a5b2b6b7863be4#npm:4.9.1"
+      ],
+      "issue": "ws: Memory exhaustion DoS from tiny fragments and data chunks",
+      "package": "ws",
+      "severity": "high",
+      "treeVersions": [
+        "8.20.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-96hv-2xvq-fx4p",
+      "vulnerableVersions": ">=8.0.0 <8.21.0"
+    },
+    {
+      "advisoryId": "1123260",
+      "dependents": [
+        "webpack-bundle-analyzer@npm:4.10.2"
+      ],
+      "issue": "ws: Memory exhaustion DoS from tiny fragments and data chunks",
+      "package": "ws",
+      "severity": "high",
+      "treeVersions": [
+        "7.5.10"
+      ],
+      "url": "https://github.com/advisories/GHSA-96hv-2xvq-fx4p",
+      "vulnerableVersions": ">=7.0.0 <7.5.11"
+    }
+  ]
+}

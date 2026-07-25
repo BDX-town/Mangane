@@ -1,3 +1,4 @@
+import { isAccountPersistenceBlocked } from 'soapbox/persistence/purge';
 import KVStore from 'soapbox/storage/kv_store';
 import { getAuthUserId, getAuthUserUrl } from 'soapbox/utils/auth';
 
@@ -52,13 +53,15 @@ const fetchMe = () =>
 
 /** Update the auth account in IndexedDB for Mastodon, etc. */
 const persistAuthAccount = (account: APIEntity, params: Record<string, any>) => {
-  if (account && account.url) {
+  if (account && account.url && !isAccountPersistenceBlocked(account.url)) {
     if (!account.pleroma) account.pleroma = {};
 
     if (!account.pleroma.settings_store) {
       account.pleroma.settings_store = params.pleroma_settings_store || {};
     }
-    KVStore.setItem(`authAccount:${account.url}`, account).catch(console.error);
+    if (!isAccountPersistenceBlocked(account.url)) {
+      KVStore.setItem(`authAccount:${account.url}`, account).catch(console.error);
+    }
   }
 };
 

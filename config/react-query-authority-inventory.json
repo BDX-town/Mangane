@@ -25,6 +25,29 @@
       "duplicatesIntoRedux": true
     }
   ],
+  "infiniteQueries": [
+    {
+      "path": "app/soapbox/queries/suggestions.ts",
+      "key": ["suggestions", "v2"],
+      "endpoint": "/api/v2/suggestions",
+      "usesStatefulApi": true,
+      "duplicatesIntoRedux": true
+    }
+  ],
+  "lifecycleOperations": [
+    {
+      "path": "app/soapbox/persistence/purge.ts",
+      "operation": "cancel-and-clear-on-account-purge",
+      "requiredCalls": ["cancelQueries"],
+      "requiredMemberCalls": ["queryClient.clear"]
+    },
+    {
+      "path": "app/soapbox/persistence/emergency-reset.ts",
+      "operation": "cancel-and-clear-on-emergency-reset",
+      "requiredCalls": ["cancelQueries"],
+      "requiredMemberCalls": ["queryClient.clear"]
+    }
+  ],
   "invariants": {
     "keysAreCurrentlyUnscoped": true,
     "globalClientSpansAccountAndInstanceTransitions": true,
@@ -34,9 +57,10 @@
   },
   "explicitUnknowns": [
     "Repository-wide React Query call-site enumeration remains incomplete outside the executable API scan enforced by this bounded gate.",
-    "Account and instance cache cancellation, late-response rejection and purge behavior are not proven.",
+    "Logout cancels and clears the singleton cache and stateful HTTP responses are generation-fenced, but query keys still omit explicit account and instance dimensions.",
     "The carousel endpoint's authentication and cross-instance variability remain unverified.",
     "The trends query duplicates authority into Redux and has no verified cross-store purge contract.",
+    "The suggestions query key omits account and instance scope while its results are duplicated into Redux account and relationship state.",
     "Mutation, optimistic update, rollback, hydration, persistence and stream-to-cache paths are not proven absent.",
     "A passing gate records inherited behavior and does not classify either query as safely shareable across accounts or instances."
   ]

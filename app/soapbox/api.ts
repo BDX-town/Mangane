@@ -10,6 +10,13 @@ import LinkHeader from 'http-link-header';
 import { createSelector } from 'reselect';
 
 import * as BuildConfig from 'soapbox/build_config';
+import {
+  assertSessionGenerationActive,
+  captureAccountGeneration,
+  captureSessionGeneration,
+  isAccountGenerationActive,
+  StaleSessionGenerationError,
+} from 'soapbox/persistence/lifecycle';
 import { RootState } from 'soapbox/store';
 import { getAccessToken, getAppToken, isURL, parseBaseURL } from 'soapbox/utils/auth';
 
@@ -90,7 +97,26 @@ export default (getState: () => RootState, authType: string = 'user'): AxiosInst
   const me = state.me;
   const baseURL = me ? getAuthBaseURL(state, me) : '';
 
-  return baseClient(accessToken, baseURL);
+  const sessionGeneration = captureSessionGeneration();
+  const accountUrl = typeof state.auth.get('me') === 'string' ? state.auth.get('me') : undefined;
+  const accountGeneration = accountUrl ? captureAccountGeneration(accountUrl) : undefined;
+  const client = baseClient(accessToken, baseURL);
+
+  client.interceptors.response.use(response => {
+    assertSessionGenerationActive(sessionGeneration);
+    if (accountGeneration && !isAccountGenerationActive(accountGeneration)) {
+      throw new StaleSessionGenerationError();
+    }
+    return response;
+  }, error => {
+    assertSessionGenerationActive(sessionGeneration);
+    if (accountGeneration && !isAccountGenerationActive(accountGeneration)) {
+      throw new StaleSessionGenerationError();
+    }
+    return Promise.reject(error);
+  });
+
+  return client;
 };
 
 // The Jest mock exports these, so they're needed for TypeScript.

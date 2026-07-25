@@ -12,8 +12,16 @@
       "data: { access_token, preferred_locale, url: '/notifications' }",
       "self.clients.openWindow(url)",
       "return client.navigate(url).then(client => client?.focus());",
+      "const revokedTokens = new Set<string>();",
+      "const REVOCATION_CACHE = 'soapbox-private-revocations-v1';",
+      "crypto.subtle.digest('SHA-256', bytes)",
+      "persistTokenRevocation(event.data.accessToken)",
+      "isTokenRevoked(access_token)",
+      "isTokenRevoked(accessToken)",
+      "event.ports[0]?.postMessage({ type: 'PURGE_ACCOUNT_ACK' });",
       "self.addEventListener('push', handlePush);",
-      "self.addEventListener('notificationclick', handleNotificationClick);"
+      "self.addEventListener('notificationclick', handleNotificationClick);",
+      "self.addEventListener('message', handlePurgeMessage);"
     ],
     "requiredCallSiteBindings": [
       {
@@ -22,15 +30,27 @@
       },
       {
         "functionName": "handleNotificationClick",
-        "expression": "fetchFromApi(`/api/v1/statuses/${data.id}/reblog`, 'post', data.access_token)"
+        "expression": "fetchFromApi(`/api/v1/statuses/${data.id}/reblog`, 'post', accessToken)"
       },
       {
         "functionName": "handleNotificationClick",
-        "expression": "fetchFromApi(`/api/v1/statuses/${data.id}/favourite`, 'post', data.access_token)"
+        "expression": "fetchFromApi(`/api/v1/statuses/${data.id}/favourite`, 'post', accessToken)"
       },
       {
         "functionName": "handleNotificationClick",
         "expression": "resolve(openUrl(event.notification.data.url))"
+      },
+      {
+        "functionName": "handlePush",
+        "expression": "isTokenRevoked(access_token)"
+      },
+      {
+        "functionName": "handleNotificationClick",
+        "expression": "isTokenRevoked(accessToken)"
+      },
+      {
+        "functionName": "handlePurgeMessage",
+        "expression": "persistTokenRevocation(event.data.accessToken)"
       }
     ]
   },
@@ -48,13 +68,14 @@
     "notificationDataCurrentlyMayContainBearerToken": true,
     "pushPayloadCurrentlySuppliesBearerToken": true,
     "notificationActionsCurrentlyReusePersistedBearerToken": true,
+    "logoutRevocationIsRestartDurableAndAcknowledged": true,
     "clickDestinationCurrentlyLacksSharedDestinationPolicy": true,
     "passingGateDoesNotClaimWorkerIsHardened": true
   },
   "explicitUnknowns": [
     "Repository-wide push subscription creation, rotation and revocation enumeration remains incomplete.",
     "Account and instance binding for push payloads, subscriptions and grouped notifications is not proven.",
-    "Logout, account removal and instance switching cleanup of credential-bearing native notifications is not proven.",
+    "Cross-tab logout and worker-restart revocation are proven; instance-switch cleanup of retained credential-bearing native notifications remains separate.",
     "Push payload schema, size limits, locale validation and fallback field validation are not verified.",
     "Worker request timeout, cancellation, response-size, retry, content-type and error contracts are not verified.",
     "Notification click destinations are not proven to be constrained to safe same-origin application routes."

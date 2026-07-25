@@ -5,12 +5,14 @@ const path = require('node:path');
 
 const root = path.resolve(process.env.PUSH_WORKER_INVENTORY_ROOT || path.resolve(__dirname, '..'));
 const manifestPath = path.join(root, 'config', 'push-worker-authority-inventory.json');
-const fail = message => { throw new Error(`push-worker-authority: ${message}`); };
+const fail = message => {
+  throw new Error(`push-worker-authority: ${message}`);
+};
 
 const expectedUnknowns = [
   'Repository-wide push subscription creation, rotation and revocation enumeration remains incomplete.',
   'Account and instance binding for push payloads, subscriptions and grouped notifications is not proven.',
-  'Logout, account removal and instance switching cleanup of credential-bearing native notifications is not proven.',
+  'Cross-tab logout and worker-restart revocation are proven; instance-switch cleanup of retained credential-bearing native notifications remains separate.',
   'Push payload schema, size limits, locale validation and fallback field validation are not verified.',
   'Worker request timeout, cancellation, response-size, retry, content-type and error contracts are not verified.',
   'Notification click destinations are not proven to be constrained to safe same-origin application routes.',
@@ -19,26 +21,38 @@ const expectedInvariants = [
   'notificationDataCurrentlyMayContainBearerToken',
   'pushPayloadCurrentlySuppliesBearerToken',
   'notificationActionsCurrentlyReusePersistedBearerToken',
+  'logoutRevocationIsRestartDurableAndAcknowledged',
   'clickDestinationCurrentlyLacksSharedDestinationPolicy',
   'passingGateDoesNotClaimWorkerIsHardened',
 ];
 const expectedFragments = [
   'access_token?: string',
-  "'Authorization': `Bearer ${accessToken}`",
-  "credentials: 'include'",
+  '\'Authorization\': `Bearer ${accessToken}`',
+  'credentials: \'include\'',
   'const { access_token, notification_id, preferred_locale, title, body, icon } = event.data?.json();',
   'data:      { access_token, preferred_locale',
-  "data: { access_token, preferred_locale, url: '/notifications' }",
+  'data: { access_token, preferred_locale, url: \'/notifications\' }',
   'self.clients.openWindow(url)',
   'return client.navigate(url).then(client => client?.focus());',
-  "self.addEventListener('push', handlePush);",
-  "self.addEventListener('notificationclick', handleNotificationClick);",
+  'const revokedTokens = new Set<string>();',
+  'const REVOCATION_CACHE = \'soapbox-private-revocations-v1\';',
+  'crypto.subtle.digest(\'SHA-256\', bytes)',
+  'persistTokenRevocation(event.data.accessToken)',
+  'isTokenRevoked(access_token)',
+  'isTokenRevoked(accessToken)',
+  'event.ports[0]?.postMessage({ type: \'PURGE_ACCOUNT_ACK\' });',
+  'self.addEventListener(\'push\', handlePush);',
+  'self.addEventListener(\'notificationclick\', handleNotificationClick);',
+  'self.addEventListener(\'message\', handlePurgeMessage);',
 ];
 const expectedCallSiteBindings = [
-  { functionName: 'handlePush', expression: "fetchFromApi(`/api/v1/notifications/${notification_id}`, 'get', access_token)" },
-  { functionName: 'handleNotificationClick', expression: "fetchFromApi(`/api/v1/statuses/${data.id}/reblog`, 'post', data.access_token)" },
-  { functionName: 'handleNotificationClick', expression: "fetchFromApi(`/api/v1/statuses/${data.id}/favourite`, 'post', data.access_token)" },
+  { functionName: 'handlePush', expression: 'fetchFromApi(`/api/v1/notifications/${notification_id}`, \'get\', access_token)' },
+  { functionName: 'handleNotificationClick', expression: 'fetchFromApi(`/api/v1/statuses/${data.id}/reblog`, \'post\', accessToken)' },
+  { functionName: 'handleNotificationClick', expression: 'fetchFromApi(`/api/v1/statuses/${data.id}/favourite`, \'post\', accessToken)' },
   { functionName: 'handleNotificationClick', expression: 'resolve(openUrl(event.notification.data.url))' },
+  { functionName: 'handlePush', expression: 'isTokenRevoked(access_token)' },
+  { functionName: 'handleNotificationClick', expression: 'isTokenRevoked(accessToken)' },
+  { functionName: 'handlePurgeMessage', expression: 'persistTokenRevocation(event.data.accessToken)' },
 ];
 const expectedDocumentation = {
   path: 'docs/architecture/PUSH_WORKER_AUTHORITY_DRIFT_GATE.md',
@@ -74,7 +88,9 @@ const tokenize = source => {
   while (i < source.length) {
     const char = source[i];
     const next = source[i + 1];
-    if (/\s/.test(char)) { i += 1; continue; }
+    if (/\s/.test(char)) {
+      i += 1; continue;
+    }
     if (char === '/' && next === '/') {
       i += 2;
       while (i < source.length && source[i] !== '\n') i += 1;
@@ -88,7 +104,7 @@ const tokenize = source => {
       i += 2;
       continue;
     }
-    if (char === '"' || char === "'") {
+    if (char === '"' || char === '\'') {
       const quote = char;
       const start = i;
       let value = '';
@@ -148,8 +164,12 @@ const tokenize = source => {
     }
     const three = source.slice(i, i + 3);
     const two = source.slice(i, i + 2);
-    if (['===', '!==', '>>>', '...'].includes(three)) { push('punctuation', three); i += 3; continue; }
-    if (['=>', '?.', '==', '!=', '<=', '>=', '&&', '||', '??', '++', '--'].includes(two)) { push('punctuation', two); i += 2; continue; }
+    if (['===', '!==', '>>>', '...'].includes(three)) {
+      push('punctuation', three); i += 3; continue;
+    }
+    if (['=>', '?.', '==', '!=', '<=', '>=', '&&', '||', '??', '++', '--'].includes(two)) {
+      push('punctuation', two); i += 2; continue;
+    }
     push('punctuation', char);
     i += 1;
   }
@@ -186,7 +206,9 @@ const containsTokenSequence = (haystack, needle) => {
   for (let i = 0; i <= haystack.length - expected.length; i += 1) {
     let matches = true;
     for (let j = 0; j < expected.length; j += 1) {
-      if (tokenKey(haystack[i + j]) !== expected[j]) { matches = false; break; }
+      if (tokenKey(haystack[i + j]) !== expected[j]) {
+        matches = false; break;
+      }
     }
     if (matches) return true;
   }

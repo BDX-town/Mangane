@@ -1,10 +1,10 @@
 'use strict';
 
 const assert = require('node:assert/strict');
+const { execFileSync } = require('node:child_process');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { execFileSync } = require('node:child_process');
 const test = require('node:test');
 
 const repositoryRoot = path.resolve(__dirname, '..', '..');
@@ -34,12 +34,12 @@ const mutate = (root, relativePath, transform) => {
 };
 const assertRunFails = (root, pattern) => assert.throws(() => run(root), error => pattern.test(`${error.stderr || ''}\n${error.message || ''}`));
 
-const notificationLookup = "fetchFromApi(`/api/v1/notifications/${notification_id}`, 'get', access_token)";
+const notificationLookup = 'fetchFromApi(`/api/v1/notifications/${notification_id}`, \'get\', access_token)';
 
 test('verifies the bounded current push worker authority inventory', () => {
   const report = JSON.parse(run());
-  assert.equal(report.checkedFragments, 10);
-  assert.equal(report.checkedCallSiteBindings, 4);
+  assert.equal(report.checkedFragments, 18);
+  assert.equal(report.checkedCallSiteBindings, 7);
   assert.equal(report.checkedDocumentationFragments, 5);
   assert.equal(report.explicitUnknowns, 6);
 });
@@ -52,15 +52,15 @@ test('fails when notification data stops exposing the recorded token field witho
 
 test('fails when bearer attachment drifts', () => {
   const root = fixture();
-  mutate(root, 'app/soapbox/service_worker/web_push_notifications.ts', source => source.replace("'Authorization': `Bearer ${accessToken}`", "'X-Session': accessToken"));
+  mutate(root, 'app/soapbox/service_worker/web_push_notifications.ts', source => source.replace('\'Authorization\': `Bearer ${accessToken}`', '\'X-Session\': accessToken'));
   assertRunFails(root, /Authorization/);
 });
 
 test('fails when push-supplied credentials are disconnected from the notification lookup', () => {
   const root = fixture();
-  mutate(root, 'app/soapbox/service_worker/web_push_notifications.ts', source => source.replace(
+  mutate(root, 'app/soapbox/service_worker/web_push_notifications.ts', source => source.replaceAll(
     notificationLookup,
-    "fetchFromApi(`/api/v1/notifications/${notification_id}`, 'get', fallbackToken)",
+    'fetchFromApi(`/api/v1/notifications/${notification_id}`, \'get\', fallbackToken)',
   ));
   assertRunFails(root, /handlePush.*executable call-site binding/);
 });
@@ -86,7 +86,7 @@ test('does not accept a disconnected notification lookup preserved only in a str
 test('does not accept a disconnected notification lookup preserved in an unrelated helper', () => {
   const root = fixture();
   mutate(root, 'app/soapbox/service_worker/web_push_notifications.ts', source => source
-    .replace(notificationLookup, "fetchFromApi(`/api/v1/notifications/${notification_id}`, 'get', fallbackToken)")
+    .replace(notificationLookup, 'fetchFromApi(`/api/v1/notifications/${notification_id}`, \'get\', fallbackToken)')
     .replace('/** ServiceWorker `push` event callback. */', `const staleNotificationLookup = () => ${notificationLookup};\n\n/** ServiceWorker \`push\` event callback. */`));
   assertRunFails(root, /handlePush.*executable call-site binding/);
 });
@@ -94,17 +94,44 @@ test('does not accept a disconnected notification lookup preserved in an unrelat
 test('fails when persisted notification credentials are disconnected from an action request', () => {
   const root = fixture();
   mutate(root, 'app/soapbox/service_worker/web_push_notifications.ts', source => source.replace(
-    "fetchFromApi(`/api/v1/statuses/${data.id}/reblog`, 'post', data.access_token)",
-    "fetchFromApi(`/api/v1/statuses/${data.id}/reblog`, 'post', fallbackToken)",
+    'fetchFromApi(`/api/v1/statuses/${data.id}/reblog`, \'post\', accessToken)',
+    'fetchFromApi(`/api/v1/statuses/${data.id}/reblog`, \'post\', fallbackToken)',
   ));
   assertRunFails(root, /handleNotificationClick.*reblog/);
+});
+
+test('fails when a revoked push token is no longer rejected', () => {
+  const root = fixture();
+  mutate(root, 'app/soapbox/service_worker/web_push_notifications.ts', source => source.replaceAll(
+    'isTokenRevoked(access_token)',
+    'isTokenRevoked(fallbackToken)',
+  ));
+  assertRunFails(root, /isTokenRevoked\(access_token\)/);
+});
+
+test('fails when a revoked notification action token is no longer rejected', () => {
+  const root = fixture();
+  mutate(root, 'app/soapbox/service_worker/web_push_notifications.ts', source => source.replaceAll(
+    'isTokenRevoked(accessToken)',
+    'isTokenRevoked(fallbackToken)',
+  ));
+  assertRunFails(root, /isTokenRevoked\(accessToken\)/);
+});
+
+test('fails when purge messages no longer revoke the supplied token', () => {
+  const root = fixture();
+  mutate(root, 'app/soapbox/service_worker/web_push_notifications.ts', source => source.replace(
+    'persistTokenRevocation(event.data.accessToken)',
+    'persistTokenRevocation(fallbackToken)',
+  ));
+  assertRunFails(root, /persistTokenRevocation\(event\.data\.accessToken\)/);
 });
 
 test('fails when the stored click destination is disconnected from openUrl', () => {
   const root = fixture();
   mutate(root, 'app/soapbox/service_worker/web_push_notifications.ts', source => source.replace(
     'resolve(openUrl(event.notification.data.url))',
-    "resolve(openUrl('/notifications'))",
+    'resolve(openUrl(\'/notifications\'))',
   ));
   assertRunFails(root, /handleNotificationClick.*openUrl/);
 });

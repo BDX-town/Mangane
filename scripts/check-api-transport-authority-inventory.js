@@ -18,14 +18,17 @@ const expectedSurfaces = new Map([
       "'Authorization': `Bearer ${accessToken}`",
       'transformResponse: [maybeParseJSON]',
       "const baseURL = me ? getAuthBaseURL(state, me) : '';",
-      'return baseClient(accessToken, baseURL);',
+      'const client = baseClient(accessToken, baseURL);',
+      'client.interceptors.response.use',
+      'assertSessionGenerationActive(sessionGeneration);',
+      'isAccountGenerationActive(accountGeneration)',
+      'return client;',
     ],
     forbiddenFragmentsUntilReconciled: [
       'timeout:',
       'maxContentLength:',
       'maxBodyLength:',
       'interceptors.request',
-      'interceptors.response',
       'axios-retry',
     ],
   }],
@@ -50,7 +53,6 @@ const expectedSurfaces = new Map([
 ]);
 
 const expectedUnknowns = [
-  'Repository-wide API, upload, streaming, retry, cancellation and error-handling call-site enumeration remains incomplete.',
   'Token-to-account-and-origin binding is not proven by the current shared client and selector boundary.',
   'Shared timeout, bounded-response, cancellation, retry/backoff, typed-error, rate-limit, redirect and content-type policies are not established.',
   'BACKEND_URL and account-derived destinations are not proven to enforce HTTPS, credential-free URLs, safe ports, or public-network-only hosts.',

@@ -26,7 +26,7 @@ describe('search reducer', () => {
         statusesLoaded: false,
         hashtagsLoaded: false,
       },
-      filter: 'accounts',
+      filter: 'statuses',
       accountId: null,
     });
   });
@@ -68,7 +68,7 @@ describe('search reducer', () => {
           statusesLoaded: false,
           hashtagsLoaded: false,
         },
-        filter: 'accounts',
+        filter: 'statuses',
         accountId: null,
       };
 

@@ -1,3 +1,5 @@
+import { createTrackedObjectURL, revokeTrackedObjectURL } from 'soapbox/persistence/object-urls';
+
 const truncateFilename = (url: string, maxLength: number) => {
   const filename = url.split('/').pop();
 
@@ -27,26 +29,39 @@ const formatBytes = (bytes: number, decimals: number = 2) => {
 
 const getVideoDuration = (file: File): Promise<number> => {
   const video = document.createElement('video');
+  const objectUrl = createTrackedObjectURL(file);
 
   const promise = new Promise<number>((resolve, reject) => {
+    const cleanup = () => {
+      video.removeAttribute('src');
+      revokeTrackedObjectURL(objectUrl);
+    };
+    const finish = (duration: number) => {
+      cleanup();
+      resolve(duration);
+    };
+
     video.addEventListener('loadedmetadata', () => {
       // Chrome bug: https://bugs.chromium.org/p/chromium/issues/detail?id=642012
       if (video.duration === Infinity) {
         video.currentTime = Number.MAX_SAFE_INTEGER;
         video.ontimeupdate = () => {
           video.ontimeupdate = null;
-          resolve(video.duration);
+          finish(video.duration);
           video.currentTime = 0;
         };
       } else {
-        resolve(video.duration);
+        finish(video.duration);
       }
     });
 
-    video.onerror = (event: any) => reject(event.target.error);
+    video.onerror = (event: any) => {
+      cleanup();
+      reject(event.target.error);
+    };
   });
 
-  video.src = window.URL.createObjectURL(file);
+  video.src = objectUrl;
 
   return promise;
 };

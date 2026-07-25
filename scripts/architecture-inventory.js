@@ -6,13 +6,59 @@ const path = require('path');
 const DEFAULT_ROOTS = ['app', 'webpack', 'scripts'];
 const SOURCE_EXTENSIONS = new Set(['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs']);
 const IGNORED_DIRECTORIES = new Set(['node_modules', 'coverage', 'dist']);
-const OPTIONAL_TYPE_ARGUMENTS = String.raw`(?:<(?:(?:[^<>]+)|<[^<>]*>)*>\s*)?`;
+
+function collectTypedCallMatches(content, functionName) {
+  const matches = [];
+  const candidates = new RegExp(String.raw`\b${functionName}\b`, 'g');
+  let candidate;
+  while ((candidate = candidates.exec(content)) !== null) {
+    let cursor = candidate.index + candidate[0].length;
+    while (/\s/.test(content[cursor] || '')) cursor += 1;
+
+    if (content[cursor] === '<') {
+      let depth = 0;
+      let quote = null;
+      for (; cursor < content.length; cursor += 1) {
+        const character = content[cursor];
+        if (quote) {
+          if (character === '\\') cursor += 1;
+          else if (character === quote) quote = null;
+          continue;
+        }
+        if (character === '\'' || character === '"' || character === '`') {
+          quote = character;
+          continue;
+        }
+        if (character === '<') depth += 1;
+        else if (character === '>' && content[cursor - 1] !== '=') {
+          depth -= 1;
+          if (depth === 0) {
+            cursor += 1;
+            break;
+          }
+        }
+      }
+      if (depth !== 0) continue;
+      while (/\s/.test(content[cursor] || '')) cursor += 1;
+    }
+
+    if (content[cursor] === '(') {
+      matches.push({
+        line: lineForOffset(content, candidate.index),
+        text: content.slice(candidate.index, cursor + 1),
+      });
+    }
+  }
+  return matches;
+}
+
+const typedCallMatcher = functionName => content => collectTypedCallMatches(content, functionName);
 
 const RULES = [
-  ['reactQuery.useQuery', new RegExp(String.raw`\buseQuery\s*${OPTIONAL_TYPE_ARGUMENTS}\(`, 'g')],
-  ['reactQuery.useInfiniteQuery', new RegExp(String.raw`\buseInfiniteQuery\s*${OPTIONAL_TYPE_ARGUMENTS}\(`, 'g')],
-  ['reactQuery.useQueries', /\buseQueries\s*\(/g],
-  ['reactQuery.useMutation', new RegExp(String.raw`\buseMutation\s*${OPTIONAL_TYPE_ARGUMENTS}\(`, 'g')],
+  ['reactQuery.useQuery', typedCallMatcher('useQuery')],
+  ['reactQuery.useInfiniteQuery', typedCallMatcher('useInfiniteQuery')],
+  ['reactQuery.useQueries', typedCallMatcher('useQueries')],
+  ['reactQuery.useMutation', typedCallMatcher('useMutation')],
   ['reactQuery.fetchQuery', /\bfetchQuery\s*\(/g],
   ['reactQuery.prefetchQuery', /\bprefetchQuery\s*\(/g],
   ['reactQuery.getQueryData', /\bgetQueryData\s*\(/g],
@@ -64,6 +110,7 @@ function lineForOffset(content, offset) {
 }
 
 function collectMatches(content, regex) {
+  if (typeof regex === 'function') return regex(content);
   const matches = [];
   regex.lastIndex = 0;
   let match;

@@ -34,6 +34,7 @@ describe('normalizeInstance()', () => {
           birthday_min_age: 0,
           birthday_required: false,
           features: [],
+          staff_accounts: [],
           federation: {
             enabled: true,
             exclusions: false,

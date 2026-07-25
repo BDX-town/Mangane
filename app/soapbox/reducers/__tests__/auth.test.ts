@@ -10,10 +10,29 @@ import {
 } from 'soapbox/actions/auth';
 import { ME_FETCH_SKIP } from 'soapbox/actions/me';
 import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
+import { isAccountPersistenceBlocked } from 'soapbox/persistence/purge';
+import KVStore from 'soapbox/storage/kv_store';
 
 import reducer from '../auth';
 
+jest.mock('soapbox/persistence/purge', () => ({
+  isAccountPersistenceBlocked: jest.fn(() => false),
+}));
+jest.mock('soapbox/storage/kv_store', () => ({
+  __esModule: true,
+  default: {
+    getItem: jest.fn(() => Promise.resolve(undefined)),
+    setItem: jest.fn(() => Promise.resolve()),
+  },
+}));
+
 describe('auth reducer', () => {
+  beforeEach(() => {
+    (isAccountPersistenceBlocked as jest.Mock).mockReset().mockReturnValue(false);
+    (KVStore.getItem as jest.Mock).mockReset().mockResolvedValue(undefined);
+    (KVStore.setItem as jest.Mock).mockReset().mockResolvedValue(undefined);
+  });
+
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(ImmutableMap({
       app: ImmutableMap(),
@@ -226,6 +245,25 @@ describe('auth reducer', () => {
 
       const result = reducer(state, action);
       expect(result).toEqual(expected);
+    });
+
+    it('rejects a stale account snapshot write after the scope is revoked', async() => {
+      let resolveRead: (value: unknown) => void = () => undefined;
+      (KVStore.getItem as jest.Mock).mockImplementation(() => new Promise(resolve => {
+        resolveRead = resolve;
+      }));
+
+      reducer(undefined, {
+        type: VERIFY_CREDENTIALS_SUCCESS,
+        token: 'ABCDEFG',
+        account: { id: '1234', url: 'https://gleasonator.com/users/alex' },
+      });
+
+      (isAccountPersistenceBlocked as jest.Mock).mockReturnValue(true);
+      resolveRead(undefined);
+      await Promise.resolve();
+
+      expect(KVStore.setItem).not.toHaveBeenCalled();
     });
   });
 

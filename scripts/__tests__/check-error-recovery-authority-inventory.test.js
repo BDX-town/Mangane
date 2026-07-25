@@ -12,6 +12,8 @@ const checker = path.join(repoRoot, 'scripts/check-error-recovery-authority-inve
 const boundedFiles = [
   'config/error-recovery-authority-inventory.json',
   'app/soapbox/components/error_boundary.tsx',
+  'app/soapbox/persistence/bounded-step.ts',
+  'app/soapbox/persistence/emergency-reset.ts',
   'app/soapbox/storage/kv_store.ts',
   'app/soapbox/containers/soapbox.tsx',
 ];
@@ -45,10 +47,13 @@ test('verifies the bounded production evidence', t => {
   assert.match(result.stdout, /Error recovery authority inventory verified/);
 });
 
-test('rejects required evidence retained only in a line comment', t => {
+test('rejects required local-storage clearing retained only in a line comment', t => {
   const root = makeFixture();
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
-  mutate(root, 'app/soapbox/components/error_boundary.tsx', source => source.replace('localStorage.clear();', '// localStorage.clear();'));
+  mutate(root, 'app/soapbox/persistence/emergency-reset.ts', source => source.replace(
+    'clearLocalStorage: () => localStorage.clear(),',
+    'clearLocalStorage: () => undefined, // localStorage.clear()',
+  ));
   const result = runChecker(root);
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /localStorage/);
@@ -57,7 +62,10 @@ test('rejects required evidence retained only in a line comment', t => {
 test('rejects required storage-clear evidence retained only in a string', t => {
   const root = makeFixture();
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
-  mutate(root, 'app/soapbox/components/error_boundary.tsx', source => source.replace('sessionStorage.clear();', "const historical = 'sessionStorage.clear();';"));
+  mutate(root, 'app/soapbox/persistence/emergency-reset.ts', source => source.replace(
+    'clearSessionStorage: () => sessionStorage.clear(),',
+    'clearSessionStorage: () => { const historical = \'sessionStorage.clear()\'; },',
+  ));
   const result = runChecker(root);
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /sessionStorage/);
@@ -66,19 +74,25 @@ test('rejects required storage-clear evidence retained only in a string', t => {
 test('rejects incomplete emergency purge drift', t => {
   const root = makeFixture();
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
-  mutate(root, 'app/soapbox/components/error_boundary.tsx', source => source.replace('sessionStorage.clear();', ''));
+  mutate(root, 'app/soapbox/persistence/emergency-reset.ts', source => source.replace(
+    'await Promise.all(keys.map(key => caches.delete(key)));',
+    '',
+  ));
   const result = runChecker(root);
   assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /sessionStorage/);
+  assert.match(result.stderr, /Cache|caches/);
 });
 
-test('rejects awaited KVStore clearing while the manifest records fire-and-forget behavior', t => {
+test('rejects fire-and-forget KVStore clearing', t => {
   const root = makeFixture();
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
-  mutate(root, 'app/soapbox/components/error_boundary.tsx', source => source.replace('KVStore.clear();', 'await KVStore.clear();'));
+  mutate(root, 'app/soapbox/persistence/emergency-reset.ts', source => source.replace(
+    'await runBoundedStep(results, \'clear-indexeddb-kv-store\', deps.clearKVStore, timeout);',
+    'void deps.clearKVStore();',
+  ));
   const result = runChecker(root);
   assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /await behavior changed/);
+  assert.match(result.stderr, /clear-indexeddb-kv-store/);
 });
 
 test('rejects recovery manifest drift', t => {
@@ -86,7 +100,7 @@ test('rejects recovery manifest drift', t => {
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   mutate(root, 'config/error-recovery-authority-inventory.json', source => {
     const manifest = JSON.parse(source);
-    manifest.recovery.navigation = "location.href = '/app'";
+    manifest.recovery.navigation = 'location.href = \'/app\'';
     return `${JSON.stringify(manifest, null, 2)}\n`;
   });
   const result = runChecker(root);

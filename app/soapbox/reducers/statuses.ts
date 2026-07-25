@@ -224,11 +224,11 @@ const initialState: State = ImmutableMap();
 export default function statuses(state = initialState, action: AnyAction): State {
   switch (action.type) {
     case STATUS_APPLY_FILTERS:
-      return applyFilters(state, action.filters);
+      return applyFilters(state, action.filters || ImmutableList());
     case STATUS_IMPORT:
-      return importStatus(state, action.status, action.expandSpoilers, action.filters);
+      return importStatus(state, action.status, action.expandSpoilers, action.filters || ImmutableList());
     case STATUSES_IMPORT:
-      return importStatuses(state, action.statuses, action.expandSpoilers, action.filters);
+      return importStatuses(state, action.statuses, action.expandSpoilers, action.filters || ImmutableList());
     case STATUS_TRANSLATE_SUCCESS:
       return translateStatus(state, action.statusId, action.language, action.text);
     case STATUS_CREATE_REQUEST:

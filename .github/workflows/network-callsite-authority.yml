@@ -1,0 +1,20 @@
+name: Network callsite authority
+
+on:
+  pull_request:
+  push:
+    branches: [develop]
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/check-network-callsite-manifest.js
+      - run: node --test scripts/__tests__/check-network-callsite-manifest.test.js

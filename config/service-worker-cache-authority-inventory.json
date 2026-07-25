@@ -60,23 +60,27 @@
       "./share_target"
     ]
   },
+  "purge": {
+    "path": "app/soapbox/persistence/cache-storage.ts",
+    "ownedPrefixes": ["soapbox", "webpack-offline"],
+    "protectedCaches": ["soapbox-private-revocations-v1"]
+  },
   "canonicalDocumentation": {
     "path": "docs/architecture/SERVICE_WORKER_CACHE_AUTHORITY_DRIFT_GATE.md"
   },
   "invariants": {
     "productionNavigationUsesAppShellFallback": true,
     "backendRoutesBypassAppShellRewrite": true,
-    "cacheNameIsCurrentlyGlobalAndUnscoped": true,
-    "authenticatedResponseCachingIsNotProvenAbsent": true,
-    "passingGateDoesNotClassifyCachingAsAccountSafe": true
+    "cacheInputsAreBuildAssetsAndAppShell": true,
+    "backendNavigationRoutesBypassAppShell": true,
+    "accountPurgeDeletesOwnedCachePrefixes": true,
+    "workerRevocationCacheIsProtectedFromNormalPurge": true
   },
   "explicitUnknowns": [
-    "The inherited global cache name is not proven to be account-, instance-, deployment- or version-scoped.",
-    "Repository-wide runtime caching of authenticated API responses is not proven absent.",
-    "Logout, account removal, instance switching and worker upgrade cache-purge behavior are not proven.",
-    "Cache migration, corruption recovery, rollback and quota behavior are not established.",
+    "The inherited global cache name is deployment-origin scoped rather than build-version scoped; account purge treats its contents as disposable public shell assets.",
+    "Generated OfflinePlugin cache suffixes are library-owned, so normal purge matches reviewed prefixes instead of hard-coding generated names.",
+    "Cache rollback, corruption and quota dispositions are documented; OfflinePlugin internal upgrade mechanics remain library-owned.",
     "Backend-route prefix completeness and production edge rewrite precedence require end-to-end verification.",
-    "Cross-origin asset caching, credential mode, redirect behavior and response content-type validation are not established.",
-    "The update lifecycle does not prove deterministic activation, stale-tab handling or safe rollback across incompatible application versions."
+    "Cross-origin asset redirect, credential mode and response content-type behavior remain transport and deployment concerns."
   ]
 }

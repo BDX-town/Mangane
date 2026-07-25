@@ -13516,6 +13516,7 @@ __metadata:
     webpack-dev-server: "npm:4.9.1"
     webpack-merge: "npm:^5.8.0"
     wicg-inert: "npm:^3.1.1"
+    yaml: "npm:^2.8.2"
     yargs: "npm:^16.0.3"
   languageName: unknown
   linkType: soft

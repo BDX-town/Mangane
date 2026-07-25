@@ -8,6 +8,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import StillImage from 'soapbox/components/still_image';
 import { Avatar, Button, Card, CardBody, Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useOwnAccount } from 'soapbox/hooks';
+import { createTrackedObjectURL, revokeTrackedObjectURL } from 'soapbox/persistence/object-urls';
 import resizeImage from 'soapbox/utils/resize_image';
 
 import type { AxiosError } from 'axios';
@@ -33,6 +34,10 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
   const [isDisabled, setDisabled] = React.useState<boolean>(true);
   const isDefault = account ? isDefaultHeader(account.header) : false;
 
+  React.useEffect(() => () => {
+    if (selectedFile) revokeTrackedObjectURL(selectedFile);
+  }, [selectedFile]);
+
   const openFilePicker = () => {
     fileInput.current?.click();
   };
@@ -44,7 +49,7 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
     if (!rawFile) return;
 
     resizeImage(rawFile, maxPixels).then((file) => {
-      const url = file ? URL.createObjectURL(file) : account?.header as string;
+      const url = file ? createTrackedObjectURL(file) : account?.header as string;
 
       setSelectedFile(url);
       setSubmitting(true);

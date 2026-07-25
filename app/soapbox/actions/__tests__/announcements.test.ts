@@ -25,7 +25,7 @@ describe('fetchAnnouncements()', () => {
         { type: 'ANNOUNCEMENTS_FETCH_SUCCESS', announcements, skipLoading: true },
         { type: 'POLLS_IMPORT', polls: [] },
         { type: 'ACCOUNTS_IMPORT', accounts: [] },
-        { type: 'STATUSES_IMPORT', statuses: [], expandSpoilers: false },
+        { type: 'STATUSES_IMPORT', statuses: [], expandSpoilers: false, filters: ImmutableList() },
       ];
       await store.dispatch(fetchAnnouncements());
       const actions = store.getActions();

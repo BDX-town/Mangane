@@ -31,7 +31,7 @@ The generated scanner output is a candidate inventory, not a safety verdict. Cou
 | `reactQuery.useQuery` | 3 | Two production modules currently verified; one scanner test fixture |
 | `reactQuery.useMutation` | 1 | Scanner test fixture; no production mutation was identified by the current narrow rule |
 | `reactQuery.invalidateQueries` | 1 | Scanner test fixture; production invalidation remains unverified |
-| `reactQuery.clear` | 2 | Test-only matches; production cache-purge behavior remains unverified |
+| `reactQuery.clear` | 2 | Production account purge and emergency reset are source-bound by the React Query and persistence authority gates |
 | `storage.localStorage` | 53 | Reconcile auth, redirects, onboarding, verification, settings, language, GDPR, and error recovery |
 | `storage.sessionStorage` | 7 | Reconcile auth, scroll restoration, and error recovery |
 | `storage.localForage` | 10 | Nine matches in `storage/kv_store.ts`; document schema, account scope, migration, purge, and corruption handling |
@@ -91,14 +91,15 @@ The scanner records lexical references, not actual endpoints. The next API inven
 
 ### 4. React Query authority
 
-The first full-tree run verifies production `useQuery` calls in:
+The full-tree executable scan verifies production query calls in:
 
 - `app/soapbox/queries/carousels.ts`
 - `app/soapbox/queries/trends.ts`
+- `app/soapbox/queries/suggestions.ts`
 
-The remaining React Query matches are currently test/tooling candidates. This materially narrows the current production surface but does **not** prove the absence of aliased imports, wrappers, dynamic access, or query-client operations that the narrow scanner does not recognize.
+It also verifies account-purge cancellation and clearing in `app/soapbox/persistence/purge.ts`. This materially narrows the current production surface but does **not** prove the absence of aliased imports, wrappers or dynamic access that the scanner does not recognize.
 
-Both production queries still require account/instance scoping, key-factory ownership, cache lifetime, invalidation, cancellation, stale-response, logout, account-switch, and Redux-overlap decisions.
+All three production queries still require account/instance scoping, key-factory ownership, cache lifetime, invalidation, stale-response, account-switch and Redux-overlap decisions. Logout cancellation/clear is implemented; generation fencing and scoped preservation are not.
 
 ### 5. Streaming, service worker, and notifications
 
@@ -144,6 +145,6 @@ Therefore this document advances Phase 0 from unknown to reproducible candidate 
 1. Sanitization and URL-safety sink matrix from the production HTML candidates.
 2. Browser persistence and account-isolation matrix from production storage candidates.
 3. API/capability matrix from production network candidates.
-4. React Query key and authority matrix for the two verified production modules.
+4. React Query key and authority matrix for the three verified production query modules and logout lifecycle operation.
 5. Stream/service-worker/notification lifecycle matrix.
 6. Scanner source-kind classification so raw evidence and production-focused views remain deterministic and auditable.

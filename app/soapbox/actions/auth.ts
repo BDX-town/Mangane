@@ -16,6 +16,12 @@ import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
 import { startOnboarding } from 'soapbox/actions/onboarding';
 import snackbar from 'soapbox/actions/snackbar';
 import { custom } from 'soapbox/custom';
+import {
+  advanceSessionGeneration,
+  assertSessionGenerationActive,
+  captureSessionGeneration,
+} from 'soapbox/persistence/lifecycle';
+import { activateAccountPersistence, purgeAccountScope } from 'soapbox/persistence/purge';
 import KVStore from 'soapbox/storage/kv_store';
 import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
@@ -164,17 +170,22 @@ export const verifyCredentials = (token: string, accountUrl?: string) => {
   const baseURL = parseBaseURL(accountUrl);
 
   return (dispatch: AppDispatch, getState: () => RootState) => {
+    const generation = captureSessionGeneration();
     dispatch({ type: VERIFY_CREDENTIALS_REQUEST, token });
 
     return baseClient(token, baseURL).get('/api/v1/accounts/verify_credentials').then(({ data: account }) => {
+      assertSessionGenerationActive(generation);
+      if (!activateAccountPersistence(account.url)) throw new Error('ACCOUNT_PURGE_PENDING');
       dispatch(importFetchedAccount(account));
       dispatch({ type: VERIFY_CREDENTIALS_SUCCESS, token, account });
       if (account.id === getState().me) dispatch(fetchMeSuccess(account));
       return account;
     }).catch(error => {
       if (error?.response?.status === 403 && error?.response?.data?.id) {
+        assertSessionGenerationActive(generation);
         // The user is waitlisted
         const account = error.response.data;
+        if (!activateAccountPersistence(account.url)) throw new Error('ACCOUNT_PURGE_PENDING');
         dispatch(importFetchedAccount(account));
         dispatch({ type: VERIFY_CREDENTIALS_SUCCESS, token, account });
         if (account.id === getState().me) dispatch(fetchMeSuccess(account));
@@ -253,15 +264,24 @@ export const logOut = () =>
       token: state.auth.getIn(['users', account.url, 'access_token']),
     };
 
-    return dispatch(revokeOAuthToken(params)).finally(() => {
-      dispatch({ type: AUTH_LOGGED_OUT, account, standalone });
-      return dispatch(snackbar.success(messages.loggedOut));
+    return purgeAccountScope({
+      accountUrl: account.url,
+      accessToken: params.token,
+    }, {
+      remoteRevocation: () => dispatch(revokeOAuthToken(params)),
+      localLogout: () => {
+        dispatch({ type: AUTH_LOGGED_OUT, account, standalone });
+      },
+    }).then(report => {
+      dispatch(snackbar.success(messages.loggedOut));
+      return report;
     });
   };
 
 export const switchAccount = (accountId: string, background = false) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const account = getState().accounts.get(accountId);
+    advanceSessionGeneration();
     return dispatch({ type: SWITCH_ACCOUNT, account, background });
   };
 

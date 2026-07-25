@@ -6,6 +6,7 @@ describe('domain_lists reducer', () => {
       blocks: {
         items: [],
         next: null,
+        isLoading: false,
       },
     });
   });

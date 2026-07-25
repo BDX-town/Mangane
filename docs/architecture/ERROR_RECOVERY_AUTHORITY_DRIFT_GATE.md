@@ -2,11 +2,13 @@
 
 Status: **Current / bounded Phase 0 evidence**
 
-This gate records the inherited mounted-application error boundary and emergency browser-data recovery path. It does not claim that recovery is complete, scoped, private, or safe for every deployment.
+This gate records the mounted-application error boundary and the bounded emergency browser-data recovery path. It does not claim that recovery is account-scoped or safe against browser termination at every stage.
 
 ## Verified ownership
 
-- `app/soapbox/components/error_boundary.tsx` owns mounted React render-error capture, the fallback screen, development-only diagnostics, browser-data clearing, service-worker unregistration, and return-home navigation.
+- `app/soapbox/components/error_boundary.tsx` owns mounted React render-error capture, the fallback screen and development-only diagnostics, then delegates emergency clearing to `app/soapbox/persistence/emergency-reset.ts`.
+- `app/soapbox/persistence/emergency-reset.ts` owns bounded origin-wide query, storage, cache, notification and worker cleanup plus recovery navigation.
+- `app/soapbox/persistence/bounded-step.ts` owns the shared completed, failed and timed-out step-result contract used by account purge and emergency reset.
 - `app/soapbox/storage/kv_store.ts` owns the `soapbox` localForage IndexedDB store named `keyvaluepairs`.
 - `app/soapbox/containers/soapbox.tsx` places `ErrorBoundary` inside the root providers and outside `BrowserRouter`.
 
@@ -14,35 +16,34 @@ This gate records the inherited mounted-application error boundary and emergency
 
 `componentDidCatch` records the thrown error and component stack, then asynchronously loads Bowser. Production suppresses the error text and browser details. Development exposes error plus component-stack text in a selectable textarea and copies through `document.execCommand('copy')`.
 
-The user-facing emergency action currently:
+The user-facing emergency action now:
 
-1. synchronously clears all `localStorage` and `sessionStorage` for the origin;
-2. invokes `KVStore.clear()` without awaiting or observing its result;
-3. only prevents the link's default navigation when service workers are supported;
-4. attempts to unregister every service-worker registration;
-5. navigates to `/` whether unregistration succeeds or fails.
+1. always prevents the reset link's default navigation;
+2. cancels and clears the global React Query client;
+3. clears origin `localStorage`, `sessionStorage` and the configured localForage/IndexedDB store;
+4. deletes every visible Cache Storage entry;
+5. closes native notifications, unsubscribes push and unregisters every visible service-worker registration;
+6. repeats the authoritative storage clearing after asynchronous worker/cache cleanup to remove late writes;
+7. navigates through the configured frontend basename.
 
-The action is labeled as clearing cookies and browser data, but this source does not explicitly clear cookies or Cache Storage.
+Every stage is awaited, time-bounded and failure-isolated. The sanitized report contains only step names and completed, failed or timed-out status. The action is still labeled as clearing cookies and browser data, but it does not explicitly expire cookies.
 
 ## Security and reliability boundary
 
-A passing gate does **not** prove deterministic sensitive-state purge. Bootstrap failures before React mount are outside this boundary. IndexedDB clearing can race navigation, Cache Storage is not explicitly cleared, service-worker failures are collapsed into navigation, and origin-wide storage clearing is not account- or instance-scoped.
-
-The hard-coded `/` destination also does not honor `FE_SUBDIRECTORY`, so subdirectory deployments require explicit recovery conformance.
+A passing gate does **not** prove interruption-proof sensitive-state purge. Bootstrap failures before React mount are outside this boundary. A timed-out browser operation may continue after navigation, browser termination may interrupt the final pass, object URLs created outside the required tracked registry cannot be enumerated by browser APIs, and origin-wide clearing is deliberately broader than account/instance removal.
 
 Non-production diagnostics may contain private content in error messages or component stacks. Later observability work must establish redaction before any remote capture or sharing.
 
 ## Required later remediation
 
 - replace the misleading clear-cookies wording with an exact, tested recovery contract;
-- await and verify all asynchronous purge operations;
-- enumerate and clear the required Cache Storage, worker, notification, query-cache, Redux, object-URL, and persistent-store surfaces;
+- provide durable recovery journaling that can resume an interrupted origin reset before ordinary hydration;
+- verify worker, notification, Cache Storage and IndexedDB behavior in real browsers;
 - bind recovery to account, instance, deployment, and storage-schema generations;
-- use basename-aware navigation and define rollback behavior;
 - provide pre-mount bootstrap recovery;
 - replace deprecated copy behavior with an accessible Clipboard API path and explicit failure feedback;
 - add adversarial tests proving no stale response or worker can repopulate cleared state.
 
 ## Enforcement
 
-`node scripts/check-error-recovery-authority-inventory.js` validates every manifest field and executable source evidence after comments are removed. Focused dependency-free tests prove inert evidence, purge drift, root-boundary removal, navigation drift, and blocker removal fail closed. The dedicated workflow and Architecture inventory workflow both run with read-only permissions.
+`node scripts/check-error-recovery-authority-inventory.js` validates every manifest field and executable source evidence after comments are removed. Focused dependency-free tests prove inert evidence, purge drift, awaited IndexedDB cleanup, root-boundary removal, navigation drift, and blocker removal fail closed. Jest tests prove ordering, failure isolation, timeouts, final-pass cleanup and concurrent-reset deduplication. The dedicated workflow and Architecture inventory workflow both run with read-only permissions.

@@ -117,6 +117,8 @@ import { WrappedRoute } from './util/react_router_helpers';
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
 import 'soapbox/components/status';
+// This eager import intentionally follows the async bundle declarations above.
+// eslint-disable-next-line import/order
 import StatusPage from 'soapbox/pages/status_page';
 
 const EmptyPage = HomePage;
@@ -480,6 +482,9 @@ const UI: React.FC = ({ children }: { children: ReactNode}) => {
 
   useEffect(() => {
     connectStreaming();
+    return disconnectStreaming;
+    // The access token and URL are the stream identity; callbacks are render-local wrappers.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessToken, streamingUrl]);
 
   // The user has logged in

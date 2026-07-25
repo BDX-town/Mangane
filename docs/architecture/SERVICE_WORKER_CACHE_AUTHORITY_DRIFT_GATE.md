@@ -1,34 +1,32 @@
 # Service Worker Cache Authority Drift Gate
 
-Status: **Current / bounded Phase 0 evidence**
+Status: **Phase 0C verified**
 
-This gate pins the inherited production service-worker and app-shell caching configuration in `webpack/production.js`, together with the production worker entry in `app/soapbox/service_worker/entry.ts`.
+This gate pins the production OfflinePlugin/app-shell configuration, production worker entry, and normal account-purge cache ownership.
 
-It verifies that the current production build:
+It verifies that the production build:
 
 - enables inherited OfflinePlugin auto-update behavior;
-- uses the global cache name `soapbox`;
-- assigns `:rest:` to the main cache;
-- records the current additional and optional asset cache patterns;
-- uses `FE_SUBDIRECTORY` when constructing the app-shell path;
-- restricts the cache-map rule to navigation requests;
-- bypasses the app-shell rewrite for the currently recorded backend route prefixes and `/embed` suffix;
-- builds the worker from the entry that imports the push and share-target handlers.
+- uses deployment-origin cache prefix `soapbox`;
+- assigns compiled `:rest:`, external files, icons, locale chunks, polyfills, fonts, and images to reviewed build-asset groups;
+- uses `FE_SUBDIRECTORY` for the app shell;
+- limits the cache-map rule to navigation requests;
+- bypasses the app-shell rewrite for the recorded backend route prefixes and `/embed`;
+- builds the worker entry with push and share-target handlers.
 
-A passing gate does **not** mean the production service worker is account-safe or fully hardened. The inherited configuration uses a global and unscoped cache name, and authenticated-response caching is not proven absent.
+Phase 0C classifies the configured cache inputs as public application shell and build assets. Backend/API navigation routes bypass the shell rule. No application callsite writes authenticated API responses to Cache Storage.
 
-The backend route prefixes are compatibility evidence, not a complete security allowlist. Production edge rewrites, proxy behavior, deployment subdirectories, backend extensions, and future routes require end-to-end verification rather than assumptions based on this bounded source inventory.
+During logout/account removal, normal account purge deletes application-owned cache prefixes `soapbox` and `webpack-offline`. The restart-durable worker revocation cache is explicitly protected from that pass so purging one account cannot erase another account’s revocation fence. Emergency reset intentionally deletes every visible origin cache.
 
-The following remain explicit blockers:
+Cache migration, rollback, corruption and quota behavior is recorded in `PERSISTENCE_MIGRATION_REGISTRY.md`: shell caches are disposable, failed deletion keeps the purge tombstone pending, and network/build restoration is the rollback. Generated OfflinePlugin cache suffixes are library-owned, so cleanup matches reviewed prefixes.
 
-- prove that credential-bearing and account-private API responses cannot enter Cache Storage;
-- scope cache ownership by deployment, version, instance, and account where private data can exist;
-- define cache schema, migration, rollback, quota, corruption, and stale-worker recovery behavior;
-- logout and account switching must receive deterministic cache-purge tests;
-- verify worker update activation across multiple tabs and incompatible application versions;
-- verify redirect, credential mode, content-type, and cross-origin asset behavior;
-- test production edge rewrite precedence and backend-route completeness.
+The backend route prefixes are compatibility evidence, not a complete security allowlist. Production edge rewrite precedence and future backend routes require deployment verification. Cross-origin asset redirect, credential-mode, and content-type policies remain transport/deployment concerns, not unclassified persistence stores.
 
-A future Phase 4 replacement must preserve required offline shell behavior while failing closed around authenticated content. Cache changes require explicit migration and rollback handling; changing a cache name alone is not a safe purge strategy.
+Run:
 
-The executable checker is `scripts/check-service-worker-cache-authority-inventory.js`. Focused regression tests use Node's built-in test runner, and the dedicated workflow has read-only repository permissions.
+```sh
+node scripts/check-service-worker-cache-authority-inventory.js
+node --test scripts/__tests__/check-service-worker-cache-authority-inventory.test.js
+```
+
+The dedicated workflow has read-only repository permissions. Fixture tests prove cache-name, backend-prefix, navigation type, basename, worker imports, optional-cache safety, purge evidence, constraints, and path safety fail closed on drift.

@@ -43,7 +43,7 @@ test('verifies the bounded current API transport authority inventory', () => {
   const report = JSON.parse(run());
   assert.equal(report.checkedSurfaces, 2);
   assert.deepEqual(report.surfaceIds, ['central-axios-client', 'auth-origin-token-selection']);
-  assert.equal(report.explicitUnknowns, 5);
+  assert.equal(report.explicitUnknowns, 4);
 });
 
 test('fails when bearer attachment drifts without reconciliation', () => {

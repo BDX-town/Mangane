@@ -21,6 +21,7 @@ const fixture = () => {
     'config/service-worker-cache-authority-inventory.json',
     'webpack/production.js',
     'app/soapbox/service_worker/entry.ts',
+    'app/soapbox/persistence/cache-storage.ts',
     'docs/architecture/SERVICE_WORKER_CACHE_AUTHORITY_DRIFT_GATE.md',
   ]) {
     const destination = path.join(root, relativePath);
@@ -40,7 +41,7 @@ test('verifies the bounded production service-worker cache authority inventory',
   assert.equal(report.checkedCacheName, 'soapbox');
   assert.equal(report.checkedBackendRoutePrefixes, 23);
   assert.equal(report.checkedEntryImports, 2);
-  assert.equal(report.explicitUnknowns, 7);
+  assert.equal(report.explicitUnknowns, 5);
 });
 
 test('fails when the global cache name changes without reconciliation', () => {

@@ -10,11 +10,18 @@
   },
   "recovery": {
     "handler": "clearCookies",
-    "clears": ["localStorage", "sessionStorage", "KVStore"],
-    "serviceWorkerAction": "unregister-all",
-    "navigation": "location.href = '/'",
-    "preventsDefaultOnlyWhenServiceWorkerSupported": true,
-    "awaitsKvStoreClear": false
+    "coordinatorPath": "app/soapbox/persistence/emergency-reset.ts",
+    "clears": ["ReactQuery", "localStorage", "sessionStorage", "KVStore", "CacheStorage", "nativeNotifications", "trackedObjectURLs"],
+    "serviceWorkerAction": "close-notifications-unsubscribe-and-unregister-all",
+    "navigation": "window.location.assign(BuildConfig.FE_SUBDIRECTORY || '/')",
+    "preventsDefaultAlways": true,
+    "awaitsKvStoreClear": true,
+    "boundedAndFailureIsolated": true,
+    "repeatsAuthoritativeStoresBeforeNavigation": true
+  },
+  "boundedStep": {
+    "path": "app/soapbox/persistence/bounded-step.ts",
+    "statuses": ["completed", "failed", "timed-out"]
   },
   "kvStore": {
     "path": "app/soapbox/storage/kv_store.ts",
@@ -26,18 +33,18 @@
     "the root mounted application is wrapped by ErrorBoundary",
     "render failures switch the boundary into an explicit error state",
     "production hides error and browser details",
-    "emergency recovery clears localStorage sessionStorage and the configured KVStore",
-    "emergency recovery attempts to unregister every service worker registration",
-    "recovery navigates to the origin root rather than the configured frontend basename"
+    "emergency recovery clears query localStorage sessionStorage IndexedDB Cache Storage notification worker and tracked object URL state",
+    "every asynchronous recovery stage is bounded awaited and failure isolated",
+    "authoritative browser stores receive a final clearing pass before navigation",
+    "recovery navigation honors the configured frontend basename"
   ],
   "unknowns": [
     "bootstrap failures before React mount are outside the root error boundary",
-    "KVStore.clear is not awaited before navigation or service-worker unregistration",
-    "Cache Storage is not explicitly cleared by emergency recovery",
     "cookies are not explicitly cleared despite the clear-cookies label",
-    "service-worker unregister failure is swallowed by unconditional navigation",
     "recovery does not prove account instance or deployment scoped purge completeness",
-    "configured frontend subdirectory deployments may navigate to the wrong recovery root",
+    "timed-out browser operations may continue after recovery navigation",
+    "object URLs created outside the tracked registry cannot be enumerated by browser APIs",
+    "browser termination can interrupt recovery before the final clearing pass",
     "copy uses deprecated document.execCommand without an explicit failure result",
     "error and component-stack data may contain sensitive content in non-production builds",
     "dynamic browser-parser failure is silently ignored"

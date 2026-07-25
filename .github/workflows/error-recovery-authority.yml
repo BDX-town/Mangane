@@ -5,6 +5,11 @@ on:
     paths:
       - 'app/soapbox/components/error_boundary.tsx'
       - 'app/soapbox/containers/soapbox.tsx'
+      - 'app/soapbox/persistence/bounded-step.ts'
+      - 'app/soapbox/persistence/emergency-reset.ts'
+      - 'app/soapbox/persistence/object-urls.ts'
+      - 'app/soapbox/persistence/__tests__/emergency-reset.test.ts'
+      - 'app/soapbox/persistence/__tests__/object-urls.test.ts'
       - 'app/soapbox/storage/kv_store.ts'
       - 'config/error-recovery-authority-inventory.json'
       - 'docs/architecture/ERROR_RECOVERY_AUTHORITY_DRIFT_GATE.md'
@@ -16,6 +21,11 @@ on:
     paths:
       - 'app/soapbox/components/error_boundary.tsx'
       - 'app/soapbox/containers/soapbox.tsx'
+      - 'app/soapbox/persistence/bounded-step.ts'
+      - 'app/soapbox/persistence/emergency-reset.ts'
+      - 'app/soapbox/persistence/object-urls.ts'
+      - 'app/soapbox/persistence/__tests__/emergency-reset.test.ts'
+      - 'app/soapbox/persistence/__tests__/object-urls.test.ts'
       - 'app/soapbox/storage/kv_store.ts'
       - 'config/error-recovery-authority-inventory.json'
       - 'docs/architecture/ERROR_RECOVERY_AUTHORITY_DRIFT_GATE.md'

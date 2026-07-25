@@ -50,23 +50,25 @@ Verified behavior:
 
 The manual reset action clears:
 
+- the global React Query client after cancelling its queries;
 - all origin `localStorage`;
 - all origin `sessionStorage`;
-- the shared localForage store;
+- the shared localForage store with awaited bounded cleanup;
+- every visible Cache Storage entry;
+- visible native notifications and push subscriptions;
 - all service-worker registrations visible to the origin.
 
-It then returns to the application root.
+It repeats the authoritative browser stores after asynchronous cleanup, then returns through the configured frontend basename.
 
 ### Important distinction
 
 This emergency reset is broader than normal logout and demonstrates that the application already recognizes multiple browser-storage and worker boundaries. It is not a normal account-removal contract because it:
 
 - clears all accounts and all application keys for the origin;
-- does not explicitly clear Cache Storage before unregistering workers;
-- does not close existing notifications;
-- does not explicitly cancel requests, streams, object URLs, or in-memory caches;
-- does not await `KVStore.clear()` before navigation;
-- provides no success/failure report to the user;
+- cannot enumerate and revoke every object URL;
+- does not provide durable pre-mount recovery after browser termination;
+- can only bound, not forcibly cancel, browser operations that ignore cancellation;
+- records a sanitized internal result but does not yet render per-step failures to the user;
 - is only reachable after a rendering failure.
 
 Phase 4 should preserve a reliable emergency reset while introducing deterministic account-scoped and application-wide purge contracts.

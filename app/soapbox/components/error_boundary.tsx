@@ -6,22 +6,10 @@ import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import * as BuildConfig from 'soapbox/build_config';
 import { Text, Stack } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import KVStore from 'soapbox/storage/kv_store';
+import { emergencyReset } from 'soapbox/persistence/emergency-reset';
 import sourceCode from 'soapbox/utils/code';
 
 import type { RootState } from 'soapbox/store';
-
-const goHome = () => location.href = '/';
-
-/** Unregister the ServiceWorker */
-// https://stackoverflow.com/a/49771828/8811886
-const unregisterSw = async(): Promise<void> => {
-  if (navigator.serviceWorker) {
-    const registrations = await navigator.serviceWorker.getRegistrations();
-    const unregisterAll = registrations.map(r => r.unregister());
-    await Promise.all(unregisterAll);
-  }
-};
 
 const mapStateToProps = (state: RootState) => {
   const { links, logo } = getSoapboxConfig(state);
@@ -88,14 +76,8 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
   }
 
   clearCookies: React.MouseEventHandler = (e) => {
-    localStorage.clear();
-    sessionStorage.clear();
-    KVStore.clear();
-
-    if ('serviceWorker' in navigator) {
-      e.preventDefault();
-      unregisterSw().then(goHome).catch(goHome);
-    }
+    e.preventDefault();
+    void emergencyReset();
   }
 
   render() {

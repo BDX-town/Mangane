@@ -3,23 +3,35 @@ name: Browser persistence authority
 on:
   pull_request:
     paths:
+      - 'app/**'
       - 'app/soapbox/reducers/auth.js'
       - 'app/soapbox/storage/kv_store.ts'
       - 'app/soapbox/service_worker/web_push_notifications.ts'
       - 'config/browser-persistence-authority-inventory.json'
       - 'scripts/check-browser-persistence-authority-inventory.js'
       - 'scripts/__tests__/check-browser-persistence-authority-inventory.test.js'
+      - 'config/persistence-manifest.json'
+      - 'scripts/persistence-inventory-lib.js'
+      - 'scripts/generate-persistence-manifest.js'
+      - 'scripts/check-persistence-manifest.js'
+      - 'scripts/__tests__/check-persistence-manifest.test.js'
       - '.github/workflows/browser-persistence-authority.yml'
   push:
     branches:
       - main
     paths:
+      - 'app/**'
       - 'app/soapbox/reducers/auth.js'
       - 'app/soapbox/storage/kv_store.ts'
       - 'app/soapbox/service_worker/web_push_notifications.ts'
       - 'config/browser-persistence-authority-inventory.json'
       - 'scripts/check-browser-persistence-authority-inventory.js'
       - 'scripts/__tests__/check-browser-persistence-authority-inventory.test.js'
+      - 'config/persistence-manifest.json'
+      - 'scripts/persistence-inventory-lib.js'
+      - 'scripts/generate-persistence-manifest.js'
+      - 'scripts/check-persistence-manifest.js'
+      - 'scripts/__tests__/check-persistence-manifest.test.js'
       - '.github/workflows/browser-persistence-authority.yml'
   workflow_dispatch:
 
@@ -34,5 +46,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Verify bounded browser persistence authority inventory
         run: node scripts/check-browser-persistence-authority-inventory.js
+      - name: Verify complete persistence callsite manifest
+        run: node scripts/check-persistence-manifest.js
       - name: Run focused drift-gate tests
-        run: node --test scripts/__tests__/check-browser-persistence-authority-inventory.test.js
+        run: node --test scripts/__tests__/check-browser-persistence-authority-inventory.test.js scripts/__tests__/check-persistence-manifest.test.js

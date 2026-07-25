@@ -1,14 +1,17 @@
+/Users/damonoutlaw/.zshenv:.:1: no such file or directory: /Users/damonoutlaw/.cargo/env
 # Backend Capability Matrix
 
-Status: **Current / Phase 0 in progress**
+Status: **Current / Phase 0B callsite discovery complete; compatibility validation in progress**
 
-Last updated: 2026-07-23
+Last updated: 2026-07-25
 
 ## Purpose
 
 This document records the source-backed Phase 0 baseline for inherited Akkoma, Pleroma, Mastodon-compatible, and Mangane-specific backend behavior. It prevents presentation code and later architecture work from assuming that every server exposes the same endpoints, fields, limits, moderation behavior, streaming semantics, or authentication requirements.
 
-It is a capability inventory, not a claim that all backend families are equivalent or that every active API call site has already been enumerated.
+It is a capability inventory, not a claim that all backend families are equivalent.
+
+Repository-wide static callsite enumeration is now authoritative in [`config/network-callsite-manifest.json`](../../config/network-callsite-manifest.json): 222 production boundaries across Axios, native fetch, and the WebSocket client. The executable gate prevents unreviewed drift. Dynamic routes remain explicitly classified, and compatibility evidence must still distinguish supported, unsupported, unknown, authorization failure, rate limiting, malformed responses, transient failure, and offline state.
 
 ## Evidence model
 
@@ -100,7 +103,7 @@ The matrix remains blocked for production decisions until it records:
 
 ## Evidence limitations
 
-This revision directly inspected the central instance actions, OAuth application actions, OAuth token actions, authentication actions, and push-notification worker. Repository-wide endpoint enumeration remains incomplete because the available connector code index did not return endpoint searches and a direct checkout was unavailable in the execution environment. Those limitations are evidence constraints, not proof that additional calls do not exist.
+This revision directly inspected the central instance actions, OAuth application actions, OAuth token actions, authentication actions, and push-notification worker. Repository-wide static endpoint enumeration is complete for the syntax classes declared by the generated manifest. Runtime-computed destinations, third-party internal requests, backend configuration, and live protocol behavior still require integration evidence; these are explicit validation limits rather than undiscovered source callsites.
 
 ## Completion gate
 

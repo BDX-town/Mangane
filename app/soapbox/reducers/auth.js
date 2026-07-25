@@ -3,6 +3,8 @@ import trim from 'lodash/trim';
 
 import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
 import { FE_SUBDIRECTORY } from 'soapbox/build_config';
+import { readStoredJSON, writeStoredJSON } from 'soapbox/persistence/auth-storage';
+import { isAccountPersistenceBlocked } from 'soapbox/persistence/purge';
 import KVStore from 'soapbox/storage/kv_store';
 import { validId, isURL } from 'soapbox/utils/auth';
 
@@ -38,7 +40,7 @@ const getSessionUser = () => {
 };
 
 const sessionUser = getSessionUser();
-const localState = fromJS(JSON.parse(localStorage.getItem(STORAGE_KEY)));
+const localState = fromJS(readStoredJSON(localStorage, STORAGE_KEY));
 
 // Checks if the user has an ID and access token
 const validUser = user => {
@@ -89,8 +91,8 @@ const setSessionUser = state => state.update('me', null, me => {
 const migrateLegacy = state => {
   if (localState) return state;
   return state.withMutations(state => {
-    const app = fromJS(JSON.parse(localStorage.getItem('soapbox:auth:app')));
-    const user = fromJS(JSON.parse(localStorage.getItem('soapbox:auth:user')));
+    const app = fromJS(readStoredJSON(localStorage, 'soapbox:auth:app'));
+    const user = fromJS(readStoredJSON(localStorage, 'soapbox:auth:user'));
     if (!user) return;
     state.set('me', '_legacy'); // Placeholder account ID
     state.set('app', app);
@@ -133,12 +135,16 @@ const sanitizeState = state => {
   });
 };
 
-const persistAuth = state => localStorage.setItem(STORAGE_KEY, JSON.stringify(state.toJS()));
+const persistAuth = state => writeStoredJSON(localStorage, STORAGE_KEY, state.toJS());
 
 const persistSession = state => {
   const me = state.get('me');
   if (me && typeof me === 'string') {
-    sessionStorage.setItem(SESSION_KEY, me);
+    try {
+      sessionStorage.setItem(SESSION_KEY, me);
+    } catch {
+      // Session selection is disposable; the auth graph remains authoritative.
+    }
   }
 };
 
@@ -258,7 +264,7 @@ const importMastodonPreload = (state, data) => {
 };
 
 const persistAuthAccount = account => {
-  if (account && account.url) {
+  if (account && account.url && !isAccountPersistenceBlocked(account.url)) {
     const key = `authAccount:${account.url}`;
     if (!account.pleroma) account.pleroma = {};
     KVStore.getItem(key).then(oldAccount => {
@@ -266,7 +272,7 @@ const persistAuthAccount = account => {
       if (!account.pleroma.settings_store) {
         account.pleroma.settings_store = settings;
       }
-      KVStore.setItem(key, account);
+      if (!isAccountPersistenceBlocked(account.url)) KVStore.setItem(key, account);
     })
       .catch(console.error);
   }

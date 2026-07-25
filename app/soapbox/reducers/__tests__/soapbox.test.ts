@@ -1,4 +1,4 @@
-import { Map as ImmutableMap } from 'immutable';
+import { Map as ImmutableMap, Record as ImmutableRecord } from 'immutable';
 
 import soapboxConfig from 'soapbox/__fixtures__/admin_api_frontend_config.json';
 import soapbox from 'soapbox/__fixtures__/soapbox.json';
@@ -9,7 +9,7 @@ import reducer from '../soapbox';
 
 describe('soapbox reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap());
+    expect(ImmutableRecord.isRecord(reducer(undefined, {}))).toBe(true);
   });
 
   it('should handle SOAPBOX_CONFIG_REQUEST_SUCCESS', () => {

@@ -21,6 +21,7 @@ import {
 import Streamfield, { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
 import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
+import { createTrackedObjectURL, revokeTrackedObjectURL } from 'soapbox/persistence/object-urls';
 import resizeImage from 'soapbox/utils/resize_image';
 
 import ProfilePreview from './components/profile-preview';
@@ -183,6 +184,8 @@ const EditProfile: React.FC = () => {
   const [data, setData] = useState<AccountCredentials>({});
   const [muteStrangers, setMuteStrangers] = useState(false);
 
+  /* Account changes intentionally hydrate this local editable form state. */
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (account) {
       const credentials = accountToCredentials(account);
@@ -190,7 +193,8 @@ const EditProfile: React.FC = () => {
       setData(credentials);
       setMuteStrangers(strangerNotifications);
     }
-  }, [account?.id]);
+  }, [account]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   /** Set a single key in the request data. */
   const updateData = (key: string, value: any) => {
@@ -303,13 +307,21 @@ const EditProfile: React.FC = () => {
 
   /** Memoized avatar preview URL. */
   const avatarUrl = useMemo(() => {
-    return data.avatar ? URL.createObjectURL(data.avatar) : account?.avatar;
+    return data.avatar ? createTrackedObjectURL(data.avatar) : account?.avatar;
   }, [data.avatar, account?.avatar]);
 
   /** Memoized header preview URL. */
   const headerUrl = useMemo(() => {
-    return data.header ? URL.createObjectURL(data.header) : account?.header;
+    return data.header ? createTrackedObjectURL(data.header) : account?.header;
   }, [data.header, account?.header]);
+
+  useEffect(() => () => {
+    if (avatarUrl) revokeTrackedObjectURL(avatarUrl);
+  }, [avatarUrl]);
+
+  useEffect(() => () => {
+    if (headerUrl) revokeTrackedObjectURL(headerUrl);
+  }, [headerUrl]);
 
   /** Preview account data. */
   const previewAccount = useMemo(() => {
@@ -319,7 +331,7 @@ const EditProfile: React.FC = () => {
       avatar: avatarUrl,
       header: headerUrl,
     }) as Account;
-  }, [account?.id, data.display_name, avatarUrl, headerUrl]);
+  }, [account, data, avatarUrl, headerUrl]);
 
   return (
     <Column label={intl.formatMessage(messages.header)}>

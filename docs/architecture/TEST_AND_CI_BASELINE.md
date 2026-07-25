@@ -2,7 +2,7 @@
 
 Status: **Current / Phase 0 in progress**
 
-Last updated: 2026-07-23
+Last updated: 2026-07-25
 
 ## Purpose
 
@@ -24,13 +24,13 @@ From `package.json`:
 
 ## Verified Jest configuration
 
-The inspected Jest configuration establishes a jsdom test environment, setup files, coverage configuration, and exclusions. The service-worker entry is excluded from coverage, so package-level coverage cannot be treated as proof that push, notification, share-target, cache, update, or worker lifecycle behavior is tested.
+The Jest harness is operational. The deleted `app/soapbox/jest/test-setup.ts` and `test-helpers.tsx` files were restored, nested dependency resolution and the installed ESM-only `eld` export are mapped correctly, and Jest is explicitly scoped away from governance suites written for `node:test`. On 2026-07-25, `yarn test --runInBand --silent` passed **136 suites and 636 tests**. The service-worker entry remains excluded from Jest coverage, so this result is not proof of worker lifecycle coverage.
 
 ## CI evidence
 
 - PRs #9 and #10 had no pull-request workflow runs attached to their inspected head commits.
 - `.github/workflows/ci.yml` was not present at the inspected path.
-- Indexed repository searches for the common GitHub Actions markers `actions/checkout` and `workflow_dispatch` returned no matches.
+- The repository now contains dedicated authority workflows, including dependency and network-callsite drift gates. These workflows are new local changes until published and observed on GitHub.
 - These observations do not prove that the repository has no CI: alternate or unindexed workflow content, external CI, disabled workflows, branch-only workflows, and repository settings remain possible.
 
 ## Current gaps
@@ -44,7 +44,7 @@ The following remain unverified:
 - required-check and branch-protection configuration;
 - workflow permissions, secrets, caches, artifacts, and fork behavior;
 - timeout, cancellation, concurrency, retry, and flake handling;
-- reproducible baseline command outcomes on the current repository state;
+- reproducible browser/integration and coverage baseline outcomes beyond the verified Jest run;
 - source-map, bundle, fixture, snapshot, coverage, and artifact secret scanning.
 
 ## Required Phase 0 matrix

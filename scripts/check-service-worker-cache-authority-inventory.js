@@ -8,20 +8,18 @@ const manifestPath = path.join(root, 'config', 'service-worker-cache-authority-i
 const fail = message => { throw new Error(`service-worker-cache-authority: ${message}`); };
 
 const expectedUnknowns = [
-  'The inherited global cache name is not proven to be account-, instance-, deployment- or version-scoped.',
-  'Repository-wide runtime caching of authenticated API responses is not proven absent.',
-  'Logout, account removal, instance switching and worker upgrade cache-purge behavior are not proven.',
-  'Cache migration, corruption recovery, rollback and quota behavior are not established.',
+  'The inherited global cache name is deployment-origin scoped rather than build-version scoped; account purge treats its contents as disposable public shell assets.',
+  'Generated OfflinePlugin cache suffixes are library-owned, so normal purge matches reviewed prefixes instead of hard-coding generated names.',
+  'Cache rollback, corruption and quota dispositions are documented; OfflinePlugin internal upgrade mechanics remain library-owned.',
   'Backend-route prefix completeness and production edge rewrite precedence require end-to-end verification.',
-  'Cross-origin asset caching, credential mode, redirect behavior and response content-type validation are not established.',
-  'The update lifecycle does not prove deterministic activation, stale-tab handling or safe rollback across incompatible application versions.',
+  'Cross-origin asset redirect, credential mode and response content-type behavior remain transport and deployment concerns.',
 ];
 const expectedDocumentationFragments = [
-  'A passing gate does **not** mean the production service worker is account-safe or fully hardened.',
-  'global and unscoped cache name',
-  'authenticated-response caching is not proven absent',
+  'Phase 0C classifies the configured cache inputs as public application shell and build assets.',
+  'normal account purge deletes application-owned cache prefixes',
+  'restart-durable worker revocation cache is explicitly protected',
   'backend route prefixes are compatibility evidence, not a complete security allowlist',
-  'logout and account switching must receive deterministic cache-purge tests',
+  'Cache migration, rollback, corruption and quota behavior is recorded',
 ];
 
 const readInsideRoot = (relativePath, label) => {
@@ -125,6 +123,18 @@ validateExactList(entry.imports, ['./web_push_notifications', './share_target'],
 const entrySource = compactExecutable(readInsideRoot(entry.path, 'service-worker entry'));
 for (const imported of entry.imports) requireExecutable(entrySource, `import '${imported}';`, entry.path);
 
+const purge = manifest.purge;
+if (!purge || purge.path !== 'app/soapbox/persistence/cache-storage.ts') fail('cache purge path changed without reconciliation');
+validateExactList(purge.ownedPrefixes, ['soapbox', 'webpack-offline'], 'owned cache prefix');
+validateExactList(purge.protectedCaches, ['soapbox-private-revocations-v1'], 'protected cache');
+const purgeSource = compactExecutable(readInsideRoot(purge.path, 'cache purge'));
+for (const fragment of [
+  "const OFFLINE_CACHE_PREFIXES=['soapbox','webpack-offline'];",
+  "const PROTECTED_CACHE_NAMES=new Set(['soapbox-private-revocations-v1']);",
+  'await caches.keys()',
+  'caches.delete(key)',
+]) requireExecutable(purgeSource, fragment, purge.path);
+
 const documentation = manifest.canonicalDocumentation;
 if (!documentation || documentation.path !== 'docs/architecture/SERVICE_WORKER_CACHE_AUTHORITY_DRIFT_GATE.md') fail('canonical documentation path changed without reconciliation');
 const documentationSource = readInsideRoot(documentation.path, 'documentation');
@@ -136,9 +146,10 @@ validateExactList(manifest.explicitUnknowns, expectedUnknowns, 'explicit unknown
 for (const invariant of [
   'productionNavigationUsesAppShellFallback',
   'backendRoutesBypassAppShellRewrite',
-  'cacheNameIsCurrentlyGlobalAndUnscoped',
-  'authenticatedResponseCachingIsNotProvenAbsent',
-  'passingGateDoesNotClassifyCachingAsAccountSafe',
+  'cacheInputsAreBuildAssetsAndAppShell',
+  'backendNavigationRoutesBypassAppShell',
+  'accountPurgeDeletesOwnedCachePrefixes',
+  'workerRevocationCacheIsProtectedFromNormalPurge',
 ]) {
   if (manifest.invariants?.[invariant] !== true) fail(`required invariant ${invariant} must remain true`);
 }

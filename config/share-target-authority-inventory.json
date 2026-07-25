@@ -37,7 +37,7 @@
     "Total form size, field length, parameter count and redirect URL length limits are not established.",
     "Malformed multipart, unsupported content type and formData parsing failure behavior are not explicitly handled.",
     "Shared link scheme, preview-fetch behavior and downstream composer URL handling are not proven safe by this gate.",
-    "File share fields, temporary storage, quota handling and one-time cleanup are not implemented or proven absent repository-wide.",
+    "File share fields and temporary storage are absent from the current text-only handler; any future addition requires quota and one-time cleanup reconciliation.",
     "FE_SUBDIRECTORY and production deployment rewrite behavior for the share-target redirect require end-to-end verification."
   ]
 }

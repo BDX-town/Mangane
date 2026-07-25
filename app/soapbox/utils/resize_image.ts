@@ -1,4 +1,6 @@
 /* eslint-disable no-case-declarations */
+import { createTrackedObjectURL, revokeTrackedObjectURL } from 'soapbox/persistence/object-urls';
+
 const DEFAULT_MAX_PIXELS = 1920 * 1080;
 
 interface BrowserCanvasQuirks {
@@ -91,7 +93,7 @@ const getImageUrl = (inputFile: File) => new Promise<string>((resolve, reject) =
   // @ts-ignore: This is a browser capabilities check.
   if (window.URL?.createObjectURL) {
     try {
-      resolve(URL.createObjectURL(inputFile));
+      resolve(createTrackedObjectURL(inputFile));
     } catch (error) {
       reject(error);
     }
@@ -109,9 +111,18 @@ const getImageUrl = (inputFile: File) => new Promise<string>((resolve, reject) =
 const loadImage = (inputFile: File) => new Promise<HTMLImageElement>((resolve, reject) => {
   getImageUrl(inputFile).then(url => {
     const img = new Image();
+    const cleanup = () => {
+      revokeTrackedObjectURL(url);
+    };
 
-    img.onerror = (...args) => reject([...args]);
-    img.onload  = () => resolve(img);
+    img.onerror = (...args) => {
+      cleanup();
+      reject([...args]);
+    };
+    img.onload  = () => {
+      cleanup();
+      resolve(img);
+    };
 
     img.src = url;
   }).catch(reject);

@@ -2,11 +2,17 @@
 
 import WebSocketClient from '@gamestdio/websocket';
 
+import { captureSessionGeneration, isSessionGenerationActive } from 'soapbox/persistence/lifecycle';
 import { getAccessToken } from 'soapbox/utils/auth';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
 
 const randomIntUpTo = (max: number) => Math.floor(Math.random() * Math.floor(max));
+const activeDisconnectors = new Set<() => void>();
+
+const disconnectAllStreams = (): void => {
+  for (const disconnect of [...activeDisconnectors]) disconnect();
+};
 
 export function connectStream(
   path: string,
@@ -16,14 +22,19 @@ export function connectStream(
   return (dispatch: AppDispatch, getState: () => RootState) => {
     const streamingAPIBaseURL = getState().instance.urls.get('streaming_api');
     const accessToken = getAccessToken(getState());
+    const generation = captureSessionGeneration();
     const { onConnect, onDisconnect, onReceive } = callbacks(dispatch, getState);
+    const generationIsActive = () => isSessionGenerationActive(generation);
 
     let polling: NodeJS.Timeout | null = null;
 
     const setupPolling = () => {
       if (pollingRefresh) {
+        if (!generationIsActive()) return;
         pollingRefresh(dispatch, () => {
-          polling = setTimeout(() => setupPolling(), 20000 + randomIntUpTo(20000));
+          if (generationIsActive()) {
+            polling = setTimeout(() => setupPolling(), 20000 + randomIntUpTo(20000));
+          }
         });
       }
     };
@@ -42,6 +53,7 @@ export function connectStream(
     try {
       subscription = getStream(streamingAPIBaseURL!, accessToken, path, {
         connected() {
+          if (!generationIsActive()) return;
           if (pollingRefresh) {
             clearPolling();
           }
@@ -50,6 +62,7 @@ export function connectStream(
         },
 
         disconnected() {
+          if (!generationIsActive()) return;
           if (pollingRefresh) {
             polling = setTimeout(() => setupPolling(), randomIntUpTo(40000));
           }
@@ -58,10 +71,11 @@ export function connectStream(
         },
 
         received(data) {
-          onReceive(data);
+          if (generationIsActive()) onReceive(data);
         },
 
         reconnected() {
+          if (!generationIsActive()) return;
           if (pollingRefresh) {
             clearPolling();
             pollingRefresh(dispatch);
@@ -81,11 +95,15 @@ export function connectStream(
       }
 
       clearPolling();
+      activeDisconnectors.delete(disconnect);
     };
 
+    activeDisconnectors.add(disconnect);
     return disconnect;
   };
 }
+
+export { disconnectAllStreams };
 
 export default function getStream(
   streamingAPIBaseURL: string,

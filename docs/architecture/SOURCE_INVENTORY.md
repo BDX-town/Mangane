@@ -51,7 +51,7 @@ One global QueryClient uses:
 - one-minute stale time;
 - infinite cache lifetime.
 
-A complete query-key, mutation, invalidation and account/instance-scope inventory remains blocked by unavailable directory enumeration.
+The executable full-tree gate currently records three direct query modules plus logout cancellation/clear. Aliased imports, wrappers, dynamic access, mutations, account/instance key scope and late-response fencing remain open.
 
 ## 6. Authentication and persistence
 
@@ -137,7 +137,7 @@ Jest runs in jsdom and excludes the service-worker entry from coverage. Dedicate
 | Redux | partial inventory | authority matrix and adapters |
 | React Query | blocked | complete key and scope inventory |
 | Authentication | substantial inventory | AccountScope and credential provider |
-| Browser persistence | partial inventory | versioned scoped stores and deterministic purge |
+| Browser persistence | Phase 0C generated manifest and behavioral authority complete | preserve versioned lifecycle, scoped cleanup and deterministic purge during migrations |
 | API client | shared client verified | typed transport contracts |
 | Push/share workers | handlers verified | remove notification tokens and validate inputs |
 | HTML safety | transformer boundary verified | sink and sanitizer inventory |

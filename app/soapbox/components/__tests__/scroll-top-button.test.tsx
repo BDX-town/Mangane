@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { render, screen } from '../../jest/test-helpers';
+import { fireEvent, render, screen, waitFor } from '../../jest/test-helpers';
 import ScrollTopButton from '../scroll-top-button';
 
 const messages = defineMessages({
@@ -26,9 +26,12 @@ describe('<ScrollTopButton />', () => {
         onClick={() => {}}
         count={1}
         message={messages.queue}
+        threshold={0}
       />,
     );
-    expect(screen.getByText('Click to see 1 new post')).toBeInTheDocument();
+    Object.defineProperty(document.documentElement, 'scrollTop', { configurable: true, value: 1 });
+    fireEvent.scroll(window);
+    await waitFor(() => expect(screen.getByText('Click to see 1 new post')).toBeInTheDocument());
 
     render(
       <ScrollTopButton
@@ -36,8 +39,10 @@ describe('<ScrollTopButton />', () => {
         onClick={() => {}}
         count={9999999}
         message={messages.queue}
+        threshold={0}
       />,
     );
-    expect(screen.getByText('Click to see 9999999 new posts')).toBeInTheDocument();
+    fireEvent.scroll(window);
+    await waitFor(() => expect(screen.getByText('Click to see 9999999 new posts')).toBeInTheDocument());
   });
 });

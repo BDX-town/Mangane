@@ -2,7 +2,7 @@
 
 Status: **Current / Phase 0 in progress**
 
-Last updated: 2026-07-23
+Last updated: 2026-07-25
 
 This document is the operational control plane for Phase 0. It prevents partial inspection from being mistaken for completion and makes every finding traceable to evidence, risk, a required output, and a later implementation phase.
 
@@ -55,16 +55,16 @@ Every inventory entry must record:
 | Application bootstrap/providers | source-level entry and root-provider inspection | Substantial | error boundaries, initialization side effects, teardown, account switch, test coverage | Phases 1, 3 |
 | Routing | root and main UI routing inspected | Partial | machine-readable route manifest, reserved path list, redirects, capability gates, auth/public ownership | Phase 3 |
 | Redux | store, root reducer, logout whitelist, broad domain registry inspected | Partial | reducer/action/selector/persistence ownership matrix and duplication map | Phases 1, 7 |
-| React Query | global client defaults inspected | Blocked | all keys, mutations, invalidations, account/instance scope, logout and switch behavior | Phases 1, 5, 7 |
-| Authentication | token creation, verification, persistence, logout and account switching substantially inspected | Partial | remaining OAuth paths, refresh mismatch, callbacks, complete purge and isolation tests | Phases 1, 4, 5, 6 |
+| React Query | global client defaults, three direct query callsites and logout cancellation/clear statically enforced | Partial | aliases/wrappers, mutations, invalidations, account/instance scope, switching and late-response behavior | Phases 1, 5, 7 |
+| Authentication | token creation, verification, persistence, logout and account switching substantially inspected; Phase 0C logout/account-removal purge and stale-actor isolation tests complete | Partial outside Phase 0C | remaining OAuth paths, refresh mismatch and callbacks | Phases 1, 4, 5, 6 |
 | API/protocol clients | central Axios client inspected | Partial | all call sites, streaming, uploads, retries, cancellation, typed errors and capability matrix | Phases 1, 6 |
-| Persistence | localStorage, sessionStorage and one localForage account store verified | Partial | all stores, schemas, keys, migrations, purge, quotas and corruption handling | Phases 4, 5, 6 |
+| Persistence | Complete generated callsite manifest plus 12-surface behavioral authority; ordered/resumable logout purge covers HTTP/stream generation fences, cross-tab propagation, query cache, Redux, serialized credentials, snapshots, owned caches, restart-durable worker revocation, push, notifications and tracked object URLs; bounded origin reset covers all browser stores and workers | Phase 0C complete | preserve drift gates and conformance tests during later migrations | Phases 4, 5, 6 |
 | Service worker/PWA | production plugin, push and share-target handlers inspected | Partial | cache runtime, authenticated responses, push lifecycle, update rollback and scope-conflict tests | Phase 4 |
 | Sanitization/content safety | shared HTML transformers inspected | Partial | all HTML sinks, sanitizer configuration, embeds, previews, custom pages and URL policy | Phases 1, 8, 9, 29 |
 | Telemetry/error reporting | Sentry dependencies verified | Blocked | initialization, consent, payload schema, redaction, breadcrumbs, identifiers and opt-out | Phases 4, 29 |
 | Design/icons/styles | dependency-level overlap and theme/accessibility classes inspected | Partial | import/call-site inventory, generated theme contract, Sass/Tailwind ownership and active icon usage | Phase 2 |
 | Tests/CI | package scripts and Jest configuration inspected | Partial | workflows, jobs, setup files, browser/worker coverage, flake behavior and baseline outcomes | Every phase |
-| Dependencies/licenses | manifest and repository license inspected | Partial | direct/transitive licenses, advisories, reachability and replacement/removal owner | Phases 0, 29, 31 |
+| Dependencies/licenses | complete lockfile and direct-root inventory, licenses, install/native/network behavior, action uses, live advisory snapshot, high/critical reachability dispositions and replacement queue | Substantial; remediation open | resolve runtime/trusted-install P0 items, TaffyDB license conflict, unverified direct declarations and non-SHA action refs | Phases 0, 29, 31 |
 | Documentation/history | canonical target docs identified | Partial | old roadmaps and architecture docs classified and requirement-mapped | Every phase |
 | Backend capability matrix | feature-gating behavior verified conceptually | Blocked | endpoint and capability matrix for Akkoma, Pleroma and Mastodon-compatible servers | Phases 1, 8–11 |
 
@@ -163,13 +163,13 @@ This map must be expanded from all discoverable historical material.
 - [ ] Redux authority and duplication matrix committed.
 - [ ] React Query key/mutation/invalidation matrix committed.
 - [ ] Authentication and account-switch lifecycle committed.
-- [ ] API, retry, streaming, upload and feature-detection inventory committed.
-- [ ] Persistence, cache, service-worker, push and share-target inventory committed.
+- [x] API, retry, streaming, upload and feature-detection inventory committed; shared transport hardening remains queued for Phase 1.
+- [x] Persistence, cache, object URL, migration, purge, worker and notification inventory plus conformance gates committed; share-target safety remains separately tracked.
 - [ ] Sanitization, URL, redirect, preview, embed and upload safety inventory committed.
 - [ ] Sentry/telemetry consent and redaction inventory committed.
 - [ ] Icon, component, style, motion, keyboard and accessibility inventory committed.
 - [ ] Tests and CI workflow inventory with baseline outcomes committed.
-- [ ] Dependency health, advisory, reachability and license inventory committed.
+- [x] Dependency health, advisory, reachability and license inventory committed; remediation blockers remain tracked in the replacement queue.
 - [ ] Historical documents classified and prior requirements mapped.
 - [ ] Every major subsystem has a current owner, target owner, status and target phase.
 - [ ] Unknowns are resolved or explicitly accepted as blockers.

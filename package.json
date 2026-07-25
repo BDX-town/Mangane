@@ -27,6 +27,14 @@
     "lint": "${npm_execpath} run lint:js && ${npm_execpath} run lint:sass",
     "lint:js": "npx eslint --ext .js,.jsx,.ts,.tsx . --cache",
     "lint:sass": "npx stylelint app/styles/**/*.scss",
+    "check:dependencies": "node scripts/check-dependency-authority-inventory.js",
+    "test:dependency-inventory": "node --test scripts/__tests__/check-dependency-authority-inventory.test.js",
+    "generate:network-callsites": "node scripts/generate-network-callsite-manifest.js",
+    "check:network-callsites": "node scripts/check-network-callsite-manifest.js",
+    "test:network-callsites": "node --test scripts/__tests__/check-network-callsite-manifest.test.js scripts/__tests__/check-api-transport-authority-inventory.test.js",
+    "generate:persistence": "node scripts/generate-persistence-manifest.js",
+    "check:persistence": "node scripts/check-persistence-manifest.js",
+    "test:persistence": "node --test scripts/__tests__/check-persistence-manifest.test.js scripts/__tests__/check-browser-persistence-authority-inventory.test.js",
     "postinstall": "node scripts/download-twemoji-assets.js",
     "prepare": "npx husky"
   },
@@ -243,6 +251,7 @@
     "tailwindcss": "^3.0.15",
     "ts-jest": "^28.0.5",
     "webpack-dev-server": "4.9.1",
+    "yaml": "^2.8.2",
     "yargs": "^16.0.3"
   },
   "packageManager": "yarn@4.0.2"

@@ -1,22 +1,21 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import React from 'react';
-import { IntlProvider } from 'react-intl';
-import { Provider } from 'react-redux';
+import { Route } from 'react-router-dom';
 import '@testing-library/jest-dom';
 
-import { MODAL_OPEN } from 'soapbox/actions/modals';
-import { mockStore, rootState } from 'soapbox/jest/test-helpers';
+import { render } from 'soapbox/jest/test-helpers';
 
 import ComposeButton from '../compose-button';
 
-const store = mockStore(rootState);
 const renderComposeButton = () => {
   render(
-    <Provider store={store}>
-      <IntlProvider locale='en'>
-        <ComposeButton />
-      </IntlProvider>
-    </Provider>,
+    <>
+      <Route path='/' exact><ComposeButton /></Route>
+      <Route path='/statuses/compose'><span data-testid='compose-route'>Compose route</span></Route>
+    </>,
+    undefined,
+    undefined,
+    { initialEntries: ['/'] },
   );
 };
 
@@ -27,11 +26,10 @@ describe('<ComposeButton />', () => {
     expect(screen.getByRole('button')).toHaveTextContent('Compose');
   });
 
-  it('dispatches the MODAL_OPEN action', () => {
+  it('navigates to the compose route', () => {
     renderComposeButton();
 
-    expect(store.getActions().length).toEqual(0);
     fireEvent.click(screen.getByRole('button'));
-    expect(store.getActions()[0].type).toEqual(MODAL_OPEN);
+    expect(screen.getByTestId('compose-route')).toBeInTheDocument();
   });
 });

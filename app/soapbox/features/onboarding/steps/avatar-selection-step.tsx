@@ -7,6 +7,7 @@ import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
 import { Avatar, Button, Card, CardBody, Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useOwnAccount } from 'soapbox/hooks';
+import { createTrackedObjectURL, revokeTrackedObjectURL } from 'soapbox/persistence/object-urls';
 import resizeImage from 'soapbox/utils/resize_image';
 
 import type { AxiosError } from 'axios';
@@ -32,6 +33,10 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
   const [isDisabled, setDisabled] = React.useState<boolean>(true);
   const isDefault = account ? isDefaultAvatar(account.avatar) : false;
 
+  React.useEffect(() => () => {
+    if (selectedFile) revokeTrackedObjectURL(selectedFile);
+  }, [selectedFile]);
+
   const openFilePicker = () => {
     fileInput.current?.click();
   };
@@ -43,7 +48,7 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
     if (!rawFile) return;
 
     resizeImage(rawFile, maxPixels).then((file) => {
-      const url = file ? URL.createObjectURL(file) : account?.avatar as string;
+      const url = file ? createTrackedObjectURL(file) : account?.avatar as string;
 
       setSelectedFile(url);
       setSubmitting(true);

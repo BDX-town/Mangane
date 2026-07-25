@@ -5,29 +5,40 @@ const path = require('path');
 
 const root = path.resolve(process.env.BROWSER_PERSISTENCE_INVENTORY_ROOT || path.resolve(__dirname, '..'));
 const manifestPath = path.join(root, 'config', 'browser-persistence-authority-inventory.json');
-const fail = message => { throw new Error(`browser-persistence-authority: ${message}`); };
+const fail = message => {
+  throw new Error(`browser-persistence-authority: ${message}`);
+};
 
 const requiredSurfaceIds = [
   'auth-local-storage',
-  'auth-session-selection',
-  'legacy-auth-app',
-  'legacy-auth-user',
-  'indexeddb-kv-store',
-  'auth-account-snapshot',
-  'native-notification-data',
+  'account-credential-cleanup',
+  'indexeddb-account-snapshot',
+  'durable-lifecycle-generation',
+  'http-response-generation-fence',
+  'stream-generation-fence',
+  'cross-tab-purge',
+  'offline-cache-cleanup',
+  'durable-worker-revocation',
+  'object-url-registry',
+  'ordered-resumable-purge',
+  'origin-emergency-reset',
 ];
-
-const requiredUnknowns = [
-  'Repository-wide localStorage and sessionStorage enumeration remains incomplete.',
-  'All localForage key prefixes and schemas are not yet enumerated.',
-  'Cache Storage, object URLs, uploads, drafts, outbox and telemetry buffers remain unverified.',
-  'Deterministic logout, account-removal and emergency-reset purge behavior is not proven.',
+const requiredInvariants = [
+  'allDiscoveredCallsClassified',
+  'credentialCleanupFailsClosed',
+  'crossTabMessagesContainNoBearerTokens',
+  'lateResponsesAndWritesAreGenerationFenced',
+  'normalLogoutClearsOwnedCaches',
+  'objectUrlsAreCentrallyRevocable',
+  'purgeIsOrderedIdempotentResumableAndFailureIsolated',
+  'workerRevocationSurvivesWorkerRestart',
 ];
 
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-if (manifest.schemaVersion !== 1) fail(`unsupported schemaVersion ${manifest.schemaVersion}`);
+if (manifest.schemaVersion !== 2) fail(`unsupported schemaVersion ${manifest.schemaVersion}`);
+if (manifest.status !== 'phase-0c-verified') fail(`unexpected status ${manifest.status}`);
 if (!Array.isArray(manifest.surfaces) || manifest.surfaces.length === 0) fail('surfaces must be a non-empty array');
-if (!Array.isArray(manifest.explicitUnknowns)) fail('explicitUnknowns must be an array');
+if (!Array.isArray(manifest.documentedConstraints) || manifest.documentedConstraints.length === 0) fail('documentedConstraints must be a non-empty array');
 
 const seenIds = new Set();
 let sensitiveSurfaces = 0;
@@ -47,29 +58,16 @@ for (const surface of manifest.surfaces) {
     if (typeof fragment !== 'string' || fragment.length < 3) fail(`${surface.id} contains an invalid evidence fragment`);
     if (!source.includes(fragment)) fail(`${surface.path} no longer contains evidence for ${surface.id}: ${fragment}`);
   }
-
   if (surface.sensitive === true) sensitiveSurfaces += 1;
 }
 
-const requiredInvariants = [
-  'credentialBearingSurfacesRemainExplicit',
-  'legacyCredentialCopiesRemainExplicit',
-  'notificationCredentialsRemainBlocked',
-  'accountAndInstanceScopeRequiredBeforeMigration',
-];
+for (const requiredId of requiredSurfaceIds) {
+  if (!seenIds.has(requiredId)) fail(`required Phase 0C surface ${requiredId} is missing`);
+}
 for (const invariant of requiredInvariants) {
   if (manifest.invariants?.[invariant] !== true) fail(`required invariant ${invariant} must remain true`);
 }
-
-for (const requiredId of requiredSurfaceIds) {
-  if (!seenIds.has(requiredId)) fail(`required baseline surface ${requiredId} is missing`);
-}
-
-const unknowns = new Set(manifest.explicitUnknowns);
-if (unknowns.size !== manifest.explicitUnknowns.length) fail('explicitUnknowns must not contain duplicates');
-for (const requiredUnknown of requiredUnknowns) {
-  if (!unknowns.has(requiredUnknown)) fail(`required explicit unknown is missing: ${requiredUnknown}`);
-}
+if (manifest.surfaces.length !== requiredSurfaceIds.length) fail('unreviewed authority surface count drift');
 
 process.stdout.write(`${JSON.stringify({
   schemaVersion: manifest.schemaVersion,
@@ -77,5 +75,5 @@ process.stdout.write(`${JSON.stringify({
   checkedSurfaces: manifest.surfaces.length,
   sensitiveSurfaces,
   engines: [...new Set(manifest.surfaces.map(surface => surface.engine))].sort(),
-  explicitUnknowns: manifest.explicitUnknowns.length,
+  documentedConstraints: manifest.documentedConstraints.length,
 }, null, 2)}\n`);

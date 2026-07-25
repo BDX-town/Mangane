@@ -14,6 +14,8 @@ import type {
 const MAX_NOTIFICATIONS = 5;
 /** Tag for the grouped notification. */
 const GROUP_TAG = 'tag';
+const REVOCATION_CACHE = 'soapbox-private-revocations-v1';
+const revokedTokens = new Set<string>();
 
 // https://www.devextent.com/create-service-worker-typescript/
 declare const self: ServiceWorkerGlobalScope;
@@ -57,6 +59,28 @@ interface APINotification extends Omit<NotificationEntity, 'account' | 'status'>
   account: AccountEntity,
   status?: APIStatus,
 }
+
+const tokenRevocationRequest = async(accessToken: string): Promise<Request> => {
+  const bytes = new TextEncoder().encode(accessToken);
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+  const fingerprint = Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('');
+  return new Request(new URL(`/__soapbox/revoked-token/${fingerprint}`, self.location.origin).href);
+};
+
+const persistTokenRevocation = async(accessToken: string): Promise<void> => {
+  revokedTokens.add(accessToken);
+  const cache = await caches.open(REVOCATION_CACHE);
+  await cache.put(await tokenRevocationRequest(accessToken), new Response(null, {
+    headers: { 'Cache-Control': 'no-store' },
+    status: 204,
+  }));
+};
+
+const isTokenRevoked = async(accessToken: string): Promise<boolean> => {
+  if (revokedTokens.has(accessToken)) return true;
+  const cache = await caches.open(REVOCATION_CACHE);
+  return Boolean(await cache.match(await tokenRevocationRequest(accessToken)));
+};
 
 /** Show the actual push notification on the device. */
 const notify = (options: ExtendedNotificationOptions): Promise<void> =>
@@ -136,9 +160,18 @@ const htmlToPlainText = (html: string): string =>
 const handlePush = (event: PushEvent) => {
   const { access_token, notification_id, preferred_locale, title, body, icon } = event.data?.json();
 
+  if (typeof access_token !== 'string') {
+    event.waitUntil(Promise.resolve());
+    return;
+  }
+
   // Placeholder until more information can be loaded
   event.waitUntil(
-    fetchFromApi(`/api/v1/notifications/${notification_id}`, 'get', access_token).then(notification => {
+    isTokenRevoked(access_token).then(revoked => {
+      if (revoked) return;
+      return fetchFromApi(`/api/v1/notifications/${notification_id}`, 'get', access_token);
+    }).then(async notification => {
+      if (!notification || await isTokenRevoked(access_token)) return;
       const options: ExtendedNotificationOptions = {
         title: formatMessage(`notification.${notification.type}`, preferred_locale, { name: notification.account.display_name.length > 0 ? notification.account.display_name : notification.account.username }),
         body:      notification.status && htmlToPlainText(notification.status.content),
@@ -165,14 +198,14 @@ const handlePush = (event: PushEvent) => {
 
       return notify(options);
     }).catch(() => {
-      return notify({
+      return isTokenRevoked(access_token).then(revoked => revoked ? undefined : notify({
         title,
         body,
         icon,
         tag: notification_id,
         timestamp: Number(new Date()),
         data: { access_token, preferred_locale, url: '/notifications' },
-      });
+      }));
     }),
   );
 };
@@ -245,10 +278,30 @@ const handleNotificationClick = (event: NotificationEvent) => {
         resolve(expandNotification(event.notification));
       } else if (event.action === 'reblog') {
         const { data } = event.notification;
-        resolve(fetchFromApi(`/api/v1/statuses/${data.id}/reblog`, 'post', data.access_token).then(() => removeActionFromNotification(event.notification, 'reblog')));
+        const accessToken = data.access_token;
+        resolve(accessToken
+          ? isTokenRevoked(accessToken).then(revoked => {
+            if (revoked) {
+              event.notification.close();
+              return;
+            }
+            return fetchFromApi(`/api/v1/statuses/${data.id}/reblog`, 'post', accessToken)
+              .then(() => removeActionFromNotification(event.notification, 'reblog'));
+          })
+          : undefined);
       } else if (event.action === 'favourite') {
         const { data } = event.notification;
-        resolve(fetchFromApi(`/api/v1/statuses/${data.id}/favourite`, 'post', data.access_token).then(() => removeActionFromNotification(event.notification, 'favourite')));
+        const accessToken = data.access_token;
+        resolve(accessToken
+          ? isTokenRevoked(accessToken).then(revoked => {
+            if (revoked) {
+              event.notification.close();
+              return;
+            }
+            return fetchFromApi(`/api/v1/statuses/${data.id}/favourite`, 'post', accessToken)
+              .then(() => removeActionFromNotification(event.notification, 'favourite'));
+          })
+          : undefined);
       } else {
         reject(`Unknown action: ${event.action}`);
       }
@@ -261,6 +314,23 @@ const handleNotificationClick = (event: NotificationEvent) => {
   event.waitUntil(reactToNotificationClick);
 };
 
+const handlePurgeMessage = (event: ExtendableMessageEvent) => {
+  if (event.data?.type !== 'PURGE_ACCOUNT' || typeof event.data.accessToken !== 'string') return;
+
+  const revocation = Promise.all([
+    persistTokenRevocation(event.data.accessToken),
+    self.registration.getNotifications().then(notifications => {
+      notifications
+        .filter(notification => notification.data?.access_token === event.data.accessToken)
+        .forEach(notification => notification.close());
+    }),
+  ]).then(() => {
+    event.ports[0]?.postMessage({ type: 'PURGE_ACCOUNT_ACK' });
+  });
+  event.waitUntil(revocation);
+};
+
 // ServiceWorker event listeners
 self.addEventListener('push', handlePush);
 self.addEventListener('notificationclick', handleNotificationClick);
+self.addEventListener('message', handlePurgeMessage);

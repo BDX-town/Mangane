@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 1,
-  "status": "verified-current-bounded",
+  "schemaVersion": 2,
+  "status": "phase-0c-verified",
   "surfaces": [
     {
       "id": "auth-local-storage",
@@ -11,98 +11,182 @@
       "sensitive": true,
       "requiredFragments": [
         "const STORAGE_KEY = buildKey([NAMESPACE, 'auth']);",
-        "localStorage.getItem(STORAGE_KEY)",
-        "localStorage.setItem(STORAGE_KEY, JSON.stringify(state.toJS()))"
+        "readStoredJSON(localStorage, STORAGE_KEY)",
+        "writeStoredJSON(localStorage, STORAGE_KEY, state.toJS())"
       ]
     },
     {
-      "id": "auth-session-selection",
-      "path": "app/soapbox/reducers/auth.js",
-      "engine": "sessionStorage",
-      "scope": "tab-selected-account",
-      "classification": "selection-marker",
+      "id": "account-credential-cleanup",
+      "path": "app/soapbox/persistence/auth-storage.ts",
+      "engine": "localStorage/sessionStorage",
+      "scope": "deployment-account",
+      "classification": "fail-closed-credential-cleanup",
       "sensitive": true,
       "requiredFragments": [
-        "const SESSION_KEY = buildKey([NAMESPACE, 'auth', 'me']);",
-        "sessionStorage.getItem(SESSION_KEY)",
-        "sessionStorage.setItem(SESSION_KEY, me)"
+        "removePersistedAccountCredentials",
+        "delete auth.users[accountUrl]",
+        "localStorage.removeItem(key)",
+        "sessionStorage.removeItem(key)"
       ]
     },
     {
-      "id": "legacy-auth-app",
-      "path": "app/soapbox/reducers/auth.js",
-      "engine": "localStorage",
-      "scope": "deployment-legacy",
-      "classification": "deprecated-credential-duplicate",
-      "sensitive": true,
-      "requiredFragments": [
-        "localStorage.getItem('soapbox:auth:app')",
-        "TODO: Delete `soapbox:auth:app` and `soapbox:auth:user` localStorage?"
-      ]
-    },
-    {
-      "id": "legacy-auth-user",
-      "path": "app/soapbox/reducers/auth.js",
-      "engine": "localStorage",
-      "scope": "deployment-legacy",
-      "classification": "deprecated-credential-duplicate",
-      "sensitive": true,
-      "requiredFragments": [
-        "localStorage.getItem('soapbox:auth:user')",
-        "TODO: Delete `soapbox:auth:app` and `soapbox:auth:user` localStorage?"
-      ]
-    },
-    {
-      "id": "indexeddb-kv-store",
-      "path": "app/soapbox/storage/kv_store.ts",
-      "engine": "localForage/IndexedDB",
-      "scope": "origin-key-encoded",
-      "classification": "generic-snapshot-store",
-      "sensitive": true,
-      "requiredFragments": [
-        "name: 'soapbox'",
-        "driver: localforage.INDEXEDDB",
-        "storeName: 'keyvaluepairs'"
-      ]
-    },
-    {
-      "id": "auth-account-snapshot",
-      "path": "app/soapbox/reducers/auth.js",
+      "id": "indexeddb-account-snapshot",
+      "path": "app/soapbox/persistence/purge.ts",
       "engine": "localForage/IndexedDB",
       "scope": "account-url",
-      "classification": "account-snapshot",
+      "classification": "account-cache-cleanup",
       "sensitive": true,
       "requiredFragments": [
-        "const key = `authAccount:${account.url}`;",
-        "KVStore.getItem(key)",
-        "KVStore.setItem(key, account)"
+        "KVStore.removeItem(`authAccount:${scope.accountUrl}`)",
+        "remove-account-snapshot"
       ]
     },
     {
-      "id": "native-notification-data",
-      "path": "app/soapbox/service_worker/web_push_notifications.ts",
-      "engine": "NotificationOptions.data",
-      "scope": "notification-unbound-account-instance",
-      "classification": "unsafe-credential-duplicate",
+      "id": "durable-lifecycle-generation",
+      "path": "app/soapbox/persistence/lifecycle.ts",
+      "engine": "localStorage-and-memory",
+      "scope": "account-and-tab-generation",
+      "classification": "stale-write-authority",
+      "sensitive": false,
+      "requiredFragments": [
+        "soapbox:persistence:lifecycle:v1",
+        "revokeAccountGeneration",
+        "isAccountGenerationActive",
+        "StaleSessionGenerationError"
+      ]
+    },
+    {
+      "id": "http-response-generation-fence",
+      "path": "app/soapbox/api.ts",
+      "engine": "Axios-interceptor",
+      "scope": "account-and-tab-generation",
+      "classification": "stale-response-rejection",
       "sensitive": true,
       "requiredFragments": [
-        "access_token?: string",
-        "data:      { access_token, preferred_locale, id:",
-        "fetchFromApi(`/api/v1/statuses/${data.id}/reblog`, 'post', data.access_token)",
-        "fetchFromApi(`/api/v1/statuses/${data.id}/favourite`, 'post', data.access_token)"
+        "client.interceptors.response.use",
+        "assertSessionGenerationActive(sessionGeneration)",
+        "isAccountGenerationActive(accountGeneration)"
+      ]
+    },
+    {
+      "id": "stream-generation-fence",
+      "path": "app/soapbox/stream.ts",
+      "engine": "WebSocket-and-polling-registry",
+      "scope": "tab-session-generation",
+      "classification": "stale-stream-rejection-and-disconnect",
+      "sensitive": true,
+      "requiredFragments": [
+        "activeDisconnectors",
+        "disconnectAllStreams",
+        "captureSessionGeneration",
+        "isSessionGenerationActive",
+        "if (generationIsActive()) onReceive(data)"
+      ]
+    },
+    {
+      "id": "cross-tab-purge",
+      "path": "app/soapbox/persistence/cross-tab.ts",
+      "engine": "BroadcastChannel-and-storage-event",
+      "scope": "deployment-account-generation",
+      "classification": "token-free-purge-protocol",
+      "sensitive": false,
+      "requiredFragments": [
+        "type: 'PURGE_ACCOUNT'",
+        "localStorage.setItem(STORAGE_EVENT_KEY",
+        "new BroadcastChannel(CHANNEL_NAME)",
+        "isValidMessage"
+      ]
+    },
+    {
+      "id": "offline-cache-cleanup",
+      "path": "app/soapbox/persistence/cache-storage.ts",
+      "engine": "CacheStorage",
+      "scope": "application-owned-cache-prefixes",
+      "classification": "normal-transition-cleanup",
+      "sensitive": false,
+      "requiredFragments": [
+        "OFFLINE_CACHE_PREFIXES",
+        "PROTECTED_CACHE_NAMES",
+        "await caches.keys()",
+        "caches.delete(key)"
+      ]
+    },
+    {
+      "id": "durable-worker-revocation",
+      "path": "app/soapbox/service_worker/web_push_notifications.ts",
+      "engine": "service-worker-CacheStorage",
+      "scope": "token-fingerprint",
+      "classification": "restart-durable-action-fence",
+      "sensitive": true,
+      "requiredFragments": [
+        "soapbox-private-revocations-v1",
+        "crypto.subtle.digest('SHA-256', bytes)",
+        "persistTokenRevocation",
+        "isTokenRevoked",
+        "PURGE_ACCOUNT_ACK"
+      ]
+    },
+    {
+      "id": "object-url-registry",
+      "path": "app/soapbox/persistence/object-urls.ts",
+      "engine": "object-url",
+      "scope": "page-lifetime",
+      "classification": "temporary-resource-registry",
+      "sensitive": false,
+      "requiredFragments": [
+        "activeObjectUrls",
+        "createTrackedObjectURL",
+        "revokeTrackedObjectURL",
+        "revokeAllTrackedObjectURLs"
+      ]
+    },
+    {
+      "id": "ordered-resumable-purge",
+      "path": "app/soapbox/persistence/purge.ts",
+      "engine": "multi-surface-coordinator",
+      "scope": "account",
+      "classification": "purge-authority",
+      "sensitive": true,
+      "requiredFragments": [
+        "persist-purge-tombstone",
+        "disconnect-streams-and-polling",
+        "bounded-remote-revocation",
+        "remove-persisted-account-credentials",
+        "clear-application-cache-storage",
+        "revoke-object-urls-and-temporary-resources",
+        "complete-purge-tombstone"
+      ]
+    },
+    {
+      "id": "origin-emergency-reset",
+      "path": "app/soapbox/persistence/emergency-reset.ts",
+      "engine": "multi-surface-coordinator",
+      "scope": "origin",
+      "classification": "destructive-recovery",
+      "sensitive": true,
+      "requiredFragments": [
+        "clear-local-storage",
+        "clear-indexeddb-kv-store",
+        "clear-cache-storage",
+        "close-notifications-and-unregister-workers",
+        "final-clear-local-storage"
       ]
     }
   ],
   "invariants": {
-    "credentialBearingSurfacesRemainExplicit": true,
-    "legacyCredentialCopiesRemainExplicit": true,
-    "notificationCredentialsRemainBlocked": true,
-    "accountAndInstanceScopeRequiredBeforeMigration": true
+    "allDiscoveredCallsClassified": true,
+    "credentialCleanupFailsClosed": true,
+    "crossTabMessagesContainNoBearerTokens": true,
+    "lateResponsesAndWritesAreGenerationFenced": true,
+    "normalLogoutClearsOwnedCaches": true,
+    "objectUrlsAreCentrallyRevocable": true,
+    "purgeIsOrderedIdempotentResumableAndFailureIsolated": true,
+    "workerRevocationSurvivesWorkerRestart": true
   },
-  "explicitUnknowns": [
-    "Repository-wide localStorage and sessionStorage enumeration remains incomplete.",
-    "All localForage key prefixes and schemas are not yet enumerated.",
-    "Cache Storage, object URLs, uploads, drafts, outbox and telemetry buffers remain unverified.",
-    "Deterministic logout, account-removal and emergency-reset purge behavior is not proven."
+  "documentedConstraints": [
+    "HttpOnly cookies are server authority and cannot be enumerated or deleted by application JavaScript; logout and OAuth revocation remain their remote cleanup boundary.",
+    "Browser or operating-system termination can interrupt any in-flight cleanup; the durable account tombstone causes cleanup to resume at the next application bootstrap.",
+    "Cache Storage cleanup is deliberately limited to application-owned prefixes during account purge; emergency reset removes every origin-visible cache.",
+    "Object URLs created outside the tracked application helper cannot be enumerated by browser APIs and are prohibited by the persistence discovery gate."
   ]
 }

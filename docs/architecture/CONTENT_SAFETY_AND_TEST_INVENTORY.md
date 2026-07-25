@@ -123,7 +123,7 @@ These may exist through direct workflow commands, but they are not guaranteed by
 
 The service-worker entry is excluded from coverage while the worker currently owns security-sensitive push and share-target behavior. Phase 4 must add direct worker tests rather than relying on application coverage.
 
-The inspected Jest configuration declares a setup file at `app/soapbox/jest/test-setup.ts`, but that exact path was not retrievable through the available repository-file API. Its contents therefore remain unverified.
+The Jest configuration declares `app/soapbox/jest/test-setup.ts`. Phase 0 verification traced that file to commit `bd9d5f64`, where it was deleted as unused without removing the active `setupFilesAfterEnv` reference. The setup contract has been restored from its last tracked implementation and now initializes Testing Library DOM matchers, API mock cleanup, fake IndexedDB, deterministic UUIDs, IntersectionObserver, and `matchMedia`.
 
 ## 6. CI evidence status
 
