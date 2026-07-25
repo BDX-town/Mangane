@@ -6,6 +6,7 @@ on:
       - 'app/**'
       - 'config/**'
       - 'docs/architecture/PUSH_WORKER_AUTHORITY_DRIFT_GATE.md'
+      - 'docs/architecture/REACT_QUERY_AUTHORITY_DRIFT_GATE.md'
       - 'webpack/**'
       - 'scripts/**'
       - 'package.json'
@@ -18,6 +19,7 @@ on:
       - 'app/**'
       - 'config/**'
       - 'docs/architecture/PUSH_WORKER_AUTHORITY_DRIFT_GATE.md'
+      - 'docs/architecture/REACT_QUERY_AUTHORITY_DRIFT_GATE.md'
       - 'webpack/**'
       - 'scripts/**'
       - 'package.json'
@@ -37,11 +39,9 @@ jobs:
     name: Generate deterministic evidence
     runs-on: ubuntu-latest
     timeout-minutes: 5
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-
       - name: Enforce architecture drift gates
         shell: bash
         run: |
@@ -53,7 +53,7 @@ jobs:
           node scripts/check-sentry-authority-inventory.js
           node scripts/check-api-transport-authority-inventory.js
           node scripts/check-push-worker-authority-inventory.js
-
+          node scripts/check-react-query-authority-inventory.js
       - name: Generate JSON and Markdown inventories
         shell: bash
         run: |
@@ -61,7 +61,6 @@ jobs:
           mkdir -p architecture-inventory
           node scripts/architecture-inventory.js > architecture-inventory/inventory.json
           node scripts/architecture-inventory.js --markdown > architecture-inventory/inventory.md
-
       - name: Verify deterministic output
         shell: bash
         run: |
@@ -71,7 +70,6 @@ jobs:
           diff -u architecture-inventory/inventory.json architecture-inventory/inventory.second.json
           diff -u architecture-inventory/inventory.md architecture-inventory/inventory.second.md
           rm architecture-inventory/inventory.second.json architecture-inventory/inventory.second.md
-
       - name: Validate report schema and paths
         shell: bash
         run: |
@@ -79,32 +77,20 @@ jobs:
           node <<'NODE'
           const fs = require('fs');
           const path = require('path');
-
           const report = JSON.parse(fs.readFileSync('architecture-inventory/inventory.json', 'utf8'));
           if (report.schemaVersion !== 1) throw new Error('Unsupported inventory schema version');
           if (report.generatedAt !== null) throw new Error('Inventory must not contain a timestamp');
-          if (!Number.isInteger(report.scannedFiles) || report.scannedFiles < 1) {
-            throw new Error('Inventory did not scan any source files');
-          }
+          if (!Number.isInteger(report.scannedFiles) || report.scannedFiles < 1) throw new Error('Inventory did not scan any source files');
           if (!Array.isArray(report.findings)) throw new Error('Inventory findings must be an array');
-
           for (const finding of report.findings) {
-            if (path.isAbsolute(finding.file) || finding.file.includes('..')) {
-              throw new Error(`Unsafe inventory path: ${finding.file}`);
-            }
-            if (!Number.isInteger(finding.count) || finding.count < 1) {
-              throw new Error(`Invalid match count for ${finding.file}`);
-            }
-            if (!Array.isArray(finding.lines) || finding.lines.some((line) => !Number.isInteger(line) || line < 1)) {
-              throw new Error(`Invalid line data for ${finding.file}`);
-            }
+            if (path.isAbsolute(finding.file) || finding.file.includes('..')) throw new Error(`Unsafe inventory path: ${finding.file}`);
+            if (!Number.isInteger(finding.count) || finding.count < 1) throw new Error(`Invalid match count for ${finding.file}`);
+            if (!Array.isArray(finding.lines) || finding.lines.some(line => !Number.isInteger(line) || line < 1)) throw new Error(`Invalid line data for ${finding.file}`);
           }
           NODE
-
       - name: Add reviewable report to job summary
         shell: bash
         run: cat architecture-inventory/inventory.md >> "$GITHUB_STEP_SUMMARY"
-
       - name: Upload evidence artifact
         uses: actions/upload-artifact@v4
         with:
