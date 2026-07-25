@@ -54,6 +54,15 @@ test('rejects required evidence retained only in a line comment', t => {
   assert.match(result.stderr, /localStorage/);
 });
 
+test('rejects required storage-clear evidence retained only in a string', t => {
+  const root = makeFixture();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  mutate(root, 'app/soapbox/components/error_boundary.tsx', source => source.replace('sessionStorage.clear();', "const historical = 'sessionStorage.clear();';"));
+  const result = runChecker(root);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /sessionStorage/);
+});
+
 test('rejects incomplete emergency purge drift', t => {
   const root = makeFixture();
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
@@ -61,6 +70,15 @@ test('rejects incomplete emergency purge drift', t => {
   const result = runChecker(root);
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /sessionStorage/);
+});
+
+test('rejects awaited KVStore clearing while the manifest records fire-and-forget behavior', t => {
+  const root = makeFixture();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  mutate(root, 'app/soapbox/components/error_boundary.tsx', source => source.replace('KVStore.clear();', 'await KVStore.clear();'));
+  const result = runChecker(root);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /await behavior changed/);
 });
 
 test('rejects recovery manifest drift', t => {
