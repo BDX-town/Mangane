@@ -29,11 +29,9 @@ test('accepts the exact manifest and production sources', () => {
   assert.doesNotThrow(() => validateSources(sources));
 });
 
-test('rejects evidence retained only in comments', () => {
-  assert.throws(
-    () => validateSources({ ...sources, boundary: `/*${sources.boundary}*/` }),
-    /missing executable/,
-  );
+test('rejects required evidence retained only in a line comment', () => {
+  const boundary = sources.boundary.replace('localStorage.clear();', '// localStorage.clear();');
+  assert.throws(() => validateSources({ ...sources, boundary }), /localStorage/);
 });
 
 test('rejects incomplete emergency purge drift', () => {
