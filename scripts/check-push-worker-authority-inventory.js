@@ -35,10 +35,10 @@ const expectedFragments = [
   "self.addEventListener('notificationclick', handleNotificationClick);",
 ];
 const expectedCallSiteBindings = [
-  "fetchFromApi(`/api/v1/notifications/${notification_id}`, 'get', access_token)",
-  "fetchFromApi(`/api/v1/statuses/${data.id}/reblog`, 'post', data.access_token)",
-  "fetchFromApi(`/api/v1/statuses/${data.id}/favourite`, 'post', data.access_token)",
-  'resolve(openUrl(event.notification.data.url))',
+  { functionName: 'handlePush', expression: "fetchFromApi(`/api/v1/notifications/${notification_id}`, 'get', access_token)" },
+  { functionName: 'handleNotificationClick', expression: "fetchFromApi(`/api/v1/statuses/${data.id}/reblog`, 'post', data.access_token)" },
+  { functionName: 'handleNotificationClick', expression: "fetchFromApi(`/api/v1/statuses/${data.id}/favourite`, 'post', data.access_token)" },
+  { functionName: 'handleNotificationClick', expression: 'resolve(openUrl(event.notification.data.url))' },
 ];
 const expectedDocumentation = {
   path: 'docs/architecture/PUSH_WORKER_AUTHORITY_DRIFT_GATE.md',
@@ -57,12 +57,146 @@ const readInsideRoot = (relativePath, label) => {
   if (relative.startsWith('..') || path.isAbsolute(relative)) fail(`unsafe ${label} path ${relativePath}`);
   return fs.readFileSync(absolute, 'utf8');
 };
-const validateExactList = (actual, expected, label) => {
-  if (!Array.isArray(actual) || actual.length !== expected.length || new Set(actual).size !== expected.length) {
-    fail(`${label} changed without checker reconciliation`);
+const validateExactList = (actual, expected, label, key = value => value) => {
+  if (!Array.isArray(actual) || actual.length !== expected.length) fail(`${label} changed without checker reconciliation`);
+  const actualKeys = actual.map(key);
+  const expectedKeys = expected.map(key);
+  if (new Set(actualKeys).size !== expectedKeys.length) fail(`${label} must remain unique`);
+  for (const item of expectedKeys) {
+    if (!actualKeys.includes(item)) fail(`required ${label} item is missing: ${item}`);
   }
-  for (const item of expected) {
-    if (!actual.includes(item)) fail(`required ${label} item is missing: ${item}`);
+};
+
+const tokenize = source => {
+  const tokens = [];
+  let i = 0;
+  const push = (kind, value, start = i) => tokens.push({ kind, value, start });
+  while (i < source.length) {
+    const char = source[i];
+    const next = source[i + 1];
+    if (/\s/.test(char)) { i += 1; continue; }
+    if (char === '/' && next === '/') {
+      i += 2;
+      while (i < source.length && source[i] !== '\n') i += 1;
+      continue;
+    }
+    if (char === '/' && next === '*') {
+      const start = i;
+      i += 2;
+      while (i < source.length && !(source[i] === '*' && source[i + 1] === '/')) i += 1;
+      if (i >= source.length) fail(`unterminated block comment at offset ${start}`);
+      i += 2;
+      continue;
+    }
+    if (char === '"' || char === "'") {
+      const quote = char;
+      const start = i;
+      let value = '';
+      i += 1;
+      while (i < source.length && source[i] !== quote) {
+        if (source[i] === '\\') {
+          if (i + 1 >= source.length) fail(`unterminated escape at offset ${i}`);
+          value += source[i + 1];
+          i += 2;
+        } else {
+          value += source[i];
+          i += 1;
+        }
+      }
+      if (i >= source.length) fail(`unterminated string at offset ${start}`);
+      i += 1;
+      push('string', value, start);
+      continue;
+    }
+    if (char === '`') {
+      const start = i;
+      let raw = '`';
+      i += 1;
+      let expressionDepth = 0;
+      while (i < source.length) {
+        const current = source[i];
+        raw += current;
+        if (current === '\\') {
+          if (i + 1 >= source.length) fail(`unterminated template escape at offset ${i}`);
+          raw += source[i + 1];
+          i += 2;
+          continue;
+        }
+        if (current === '$' && source[i + 1] === '{') {
+          raw += '{';
+          expressionDepth += 1;
+          i += 2;
+          continue;
+        }
+        if (current === '}' && expressionDepth > 0) expressionDepth -= 1;
+        if (current === '`' && expressionDepth === 0) {
+          i += 1;
+          push('template', raw, start);
+          break;
+        }
+        i += 1;
+      }
+      if (tokens[tokens.length - 1]?.start !== start) fail(`unterminated template at offset ${start}`);
+      continue;
+    }
+    if (/[A-Za-z_$]/.test(char)) {
+      const start = i;
+      i += 1;
+      while (i < source.length && /[A-Za-z0-9_$]/.test(source[i])) i += 1;
+      push('identifier', source.slice(start, i), start);
+      continue;
+    }
+    const three = source.slice(i, i + 3);
+    const two = source.slice(i, i + 2);
+    if (['===', '!==', '>>>', '...'].includes(three)) { push('punctuation', three); i += 3; continue; }
+    if (['=>', '?.', '==', '!=', '<=', '>=', '&&', '||', '??', '++', '--'].includes(two)) { push('punctuation', two); i += 2; continue; }
+    push('punctuation', char);
+    i += 1;
+  }
+  return tokens;
+};
+
+const findMatchingToken = (tokens, openingIndex, opening, closing) => {
+  let depth = 0;
+  for (let i = openingIndex; i < tokens.length; i += 1) {
+    if (tokens[i].value === opening) depth += 1;
+    else if (tokens[i].value === closing) {
+      depth -= 1;
+      if (depth === 0) return i;
+    }
+  }
+  fail(`unterminated ${opening}${closing} token sequence`);
+};
+const functionTokens = (tokens, functionName) => {
+  const starts = [];
+  for (let i = 0; i < tokens.length - 4; i += 1) {
+    if (tokens[i].value === 'const' && tokens[i + 1].value === functionName && tokens[i + 2].value === '=') starts.push(i);
+  }
+  if (starts.length !== 1) fail(`expected exactly one executable ${functionName} declaration, found ${starts.length}`);
+  let cursor = starts[0] + 3;
+  if (tokens[cursor]?.value !== '(') fail(`${functionName} no longer has the expected arrow-function parameters`);
+  cursor = findMatchingToken(tokens, cursor, '(', ')') + 1;
+  if (tokens[cursor]?.value !== '=>' || tokens[cursor + 1]?.value !== '{') fail(`${functionName} no longer has the expected block arrow-function body`);
+  const close = findMatchingToken(tokens, cursor + 1, '{', '}');
+  return tokens.slice(cursor + 2, close);
+};
+const tokenKey = token => `${token.kind}:${token.value}`;
+const containsTokenSequence = (haystack, needle) => {
+  const expected = needle.map(tokenKey);
+  for (let i = 0; i <= haystack.length - expected.length; i += 1) {
+    let matches = true;
+    for (let j = 0; j < expected.length; j += 1) {
+      if (tokenKey(haystack[i + j]) !== expected[j]) { matches = false; break; }
+    }
+    if (matches) return true;
+  }
+  return false;
+};
+const validateExecutableBinding = (tokens, binding) => {
+  const body = functionTokens(tokens, binding.functionName);
+  const expressionTokens = tokenize(binding.expression);
+  if (!containsTokenSequence(body, expressionTokens)) {
+    fail(`${binding.functionName} no longer contains executable call-site binding: ${binding.expression}`);
   }
 };
 
@@ -73,11 +207,13 @@ if (manifest.status !== 'verified-current-bounded') fail('status changed without
 const surface = manifest.surface;
 if (!surface || surface.path !== 'app/soapbox/service_worker/web_push_notifications.ts') fail('push worker surface changed without reconciliation');
 validateExactList(surface.requiredFragments, expectedFragments, 'manifest fragment');
-validateExactList(surface.requiredCallSiteBindings, expectedCallSiteBindings, 'call-site binding');
+validateExactList(surface.requiredCallSiteBindings, expectedCallSiteBindings, 'call-site binding', binding => `${binding.functionName}:${binding.expression}`);
 const source = readInsideRoot(surface.path, 'worker');
-for (const fragment of [...expectedFragments, ...expectedCallSiteBindings]) {
+for (const fragment of expectedFragments) {
   if (!source.includes(fragment)) fail(`${surface.path} no longer contains push-worker evidence: ${fragment}`);
 }
+const tokens = tokenize(source);
+for (const binding of expectedCallSiteBindings) validateExecutableBinding(tokens, binding);
 
 const documentation = manifest.canonicalDocumentation;
 if (!documentation || documentation.path !== expectedDocumentation.path) fail('canonical documentation path changed without reconciliation');

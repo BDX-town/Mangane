@@ -34,6 +34,8 @@ const mutate = (root, relativePath, transform) => {
 };
 const assertRunFails = (root, pattern) => assert.throws(() => run(root), error => pattern.test(`${error.stderr || ''}\n${error.message || ''}`));
 
+const notificationLookup = "fetchFromApi(`/api/v1/notifications/${notification_id}`, 'get', access_token)";
+
 test('verifies the bounded current push worker authority inventory', () => {
   const report = JSON.parse(run());
   assert.equal(report.checkedFragments, 10);
@@ -57,10 +59,36 @@ test('fails when bearer attachment drifts', () => {
 test('fails when push-supplied credentials are disconnected from the notification lookup', () => {
   const root = fixture();
   mutate(root, 'app/soapbox/service_worker/web_push_notifications.ts', source => source.replace(
-    "fetchFromApi(`/api/v1/notifications/${notification_id}`, 'get', access_token)",
+    notificationLookup,
     "fetchFromApi(`/api/v1/notifications/${notification_id}`, 'get', fallbackToken)",
   ));
-  assertRunFails(root, /notifications.*access_token/);
+  assertRunFails(root, /handlePush.*executable call-site binding/);
+});
+
+test('does not accept a disconnected notification lookup preserved only in a comment', () => {
+  const root = fixture();
+  mutate(root, 'app/soapbox/service_worker/web_push_notifications.ts', source => source.replace(
+    notificationLookup,
+    `fetchFromApi(\`/api/v1/notifications/\${notification_id}\`, 'get', fallbackToken) /* ${notificationLookup} */`,
+  ));
+  assertRunFails(root, /handlePush.*executable call-site binding/);
+});
+
+test('does not accept a disconnected notification lookup preserved only in a string literal', () => {
+  const root = fixture();
+  mutate(root, 'app/soapbox/service_worker/web_push_notifications.ts', source => source.replace(
+    notificationLookup,
+    `(() => { const staleEvidence = ${JSON.stringify(notificationLookup)}; return fetchFromApi(\`/api/v1/notifications/\${notification_id}\`, 'get', fallbackToken); })()`,
+  ));
+  assertRunFails(root, /handlePush.*executable call-site binding/);
+});
+
+test('does not accept a disconnected notification lookup preserved in an unrelated helper', () => {
+  const root = fixture();
+  mutate(root, 'app/soapbox/service_worker/web_push_notifications.ts', source => source
+    .replace(notificationLookup, "fetchFromApi(`/api/v1/notifications/${notification_id}`, 'get', fallbackToken)")
+    .replace('/** ServiceWorker `push` event callback. */', `const staleNotificationLookup = () => ${notificationLookup};\n\n/** ServiceWorker \`push\` event callback. */`));
+  assertRunFails(root, /handlePush.*executable call-site binding/);
 });
 
 test('fails when persisted notification credentials are disconnected from an action request', () => {
@@ -69,7 +97,7 @@ test('fails when persisted notification credentials are disconnected from an act
     "fetchFromApi(`/api/v1/statuses/${data.id}/reblog`, 'post', data.access_token)",
     "fetchFromApi(`/api/v1/statuses/${data.id}/reblog`, 'post', fallbackToken)",
   ));
-  assertRunFails(root, /reblog.*data\.access_token/);
+  assertRunFails(root, /handleNotificationClick.*reblog/);
 });
 
 test('fails when the stored click destination is disconnected from openUrl', () => {
@@ -78,7 +106,7 @@ test('fails when the stored click destination is disconnected from openUrl', () 
     'resolve(openUrl(event.notification.data.url))',
     "resolve(openUrl('/notifications'))",
   ));
-  assertRunFails(root, /openUrl\(event\.notification\.data\.url\)/);
+  assertRunFails(root, /handleNotificationClick.*openUrl/);
 });
 
 test('fails when credential-bearing notification persistence is silently removed from the manifest', () => {
@@ -89,6 +117,16 @@ test('fails when credential-bearing notification persistence is silently removed
     return `${JSON.stringify(manifest, null, 2)}\n`;
   });
   assertRunFails(root, /manifest fragment changed|required manifest fragment/);
+});
+
+test('fails when a call-site binding is reassigned to the wrong function in the manifest', () => {
+  const root = fixture();
+  mutate(root, 'config/push-worker-authority-inventory.json', source => {
+    const manifest = JSON.parse(source);
+    manifest.surface.requiredCallSiteBindings[0].functionName = 'handleNotificationClick';
+    return `${JSON.stringify(manifest, null, 2)}\n`;
+  });
+  assertRunFails(root, /call-site binding/);
 });
 
 test('fails when canonical documentation weakens the release-blocking warning', () => {
