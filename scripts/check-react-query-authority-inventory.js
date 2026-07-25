@@ -141,7 +141,30 @@ const firstArgument = (source, openParen) => {
   }
   fail('unterminated React Query call');
 };
-const normalizeExpression = value => value.replace(/\s+/g, '');
+const parseSingleStringArray = expression => {
+  let i = skipTrivia(expression, 0);
+  if (expression[i] !== '[') return null;
+  i = skipTrivia(expression, i + 1);
+  const quote = expression[i];
+  if (quote !== "'" && quote !== '"') return null;
+  i += 1;
+  let value = '';
+  while (i < expression.length) {
+    if (expression[i] === '\\') {
+      if (i + 1 >= expression.length) return null;
+      value += expression[i + 1];
+      i += 2;
+      continue;
+    }
+    if (expression[i] === quote) { i += 1; break; }
+    value += expression[i];
+    i += 1;
+  }
+  i = skipTrivia(expression, i);
+  if (expression[i] !== ']') return null;
+  i = skipTrivia(expression, i + 1);
+  return i === expression.length ? value : null;
+};
 
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 if (manifest.schemaVersion !== 1) fail(`unsupported schemaVersion ${manifest.schemaVersion}`);
@@ -165,8 +188,7 @@ for (const query of expectedQueries) {
   const source = readInsideRoot(query.path, 'query source');
   const calls = findExecutableCalls(source, 'useQuery');
   if (calls.length !== 1) fail(`${query.path} must contain exactly one executable useQuery invocation; found ${calls.length}`);
-  const expectedKey = normalizeExpression(`['${query.key}']`);
-  if (normalizeExpression(firstArgument(source, calls[0])) !== expectedKey) fail(`${query.path} no longer declares exact unscoped query key ${query.key}`);
+  if (parseSingleStringArray(firstArgument(source, calls[0])) !== query.key) fail(`${query.path} no longer declares exact unscoped query key ${query.key}`);
   if (!source.includes(query.endpoint)) fail(`${query.path} no longer contains endpoint ${query.endpoint}`);
   if (query.usesStatefulApi && !/const\s+api\s*=\s*useApi\(\)/.test(source)) fail(`${query.path} no longer uses the stateful useApi client`);
   if (query.duplicatesIntoRedux && !/dispatch\s*\(\s*fetchTrendsSuccess\s*\(/.test(source)) fail(`${query.path} no longer records the React Query-to-Redux duplication boundary`);
@@ -184,9 +206,11 @@ for (const absolute of sourceFiles) {
     const calls = findExecutableCalls(source, api);
     for (const openParen of calls) discoveredUnsupported.push(`${relative}:${api}:${openParen}`);
   }
-  for (const api of unsupportedJsxApis) {
-    const count = findExecutableJsxElements(source, api);
-    for (let index = 0; index < count; index += 1) discoveredUnsupported.push(`${relative}:${api}:jsx-${index + 1}`);
+  if (/\.(?:jsx|tsx)$/.test(relative)) {
+    for (const api of unsupportedJsxApis) {
+      const count = findExecutableJsxElements(source, api);
+      for (let index = 0; index < count; index += 1) discoveredUnsupported.push(`${relative}:${api}:jsx-${index + 1}`);
+    }
   }
 }
 const expectedUseQueryCount = expectedQueries.length;
