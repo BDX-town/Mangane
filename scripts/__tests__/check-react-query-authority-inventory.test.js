@@ -34,12 +34,18 @@ const mutate = (root, relativePath, transform) => {
   const target = path.join(root, relativePath);
   fs.writeFileSync(target, transform(fs.readFileSync(target, 'utf8')));
 };
+const writeExtra = (root, name, content) => {
+  const target = path.join(root, 'app', name);
+  fs.mkdirSync(path.dirname(target), { recursive: true });
+  fs.writeFileSync(target, content);
+};
 const assertRunFails = (root, pattern) => assert.throws(() => run(root), error => pattern.test(`${error.stderr || ''}\n${error.message || ''}`));
 
 test('verifies the bounded current React Query authority inventory', () => {
   const report = JSON.parse(run());
   assert.deepEqual(report.keys, ['carouselAvatars', 'trends']);
   assert.equal(report.checkedQueries, 2);
+  assert.equal(report.discoveredUseQueryInvocations, 2);
   assert.equal(report.unsupportedApiCallSites, 0);
 });
 
@@ -47,6 +53,20 @@ test('fails when a query key changes without reconciliation', () => {
   const root = fixture();
   mutate(root, 'app/soapbox/queries/trends.ts', source => source.replace("['trends']", "['trends', 'instance']"));
   assertRunFails(root, /exact unscoped query key trends/);
+});
+
+test('does not accept an old key preserved only in a comment or string', () => {
+  const root = fixture();
+  mutate(root, 'app/soapbox/queries/trends.ts', source => source
+    .replace("['trends']", "['trends', 'instance']")
+    .replace("import { useQuery }", "// useQuery(['trends'], loadOld)\nconst legacy = \"useQuery(['trends'], loadOld)\";\nimport { useQuery }"));
+  assertRunFails(root, /exact unscoped query key trends/);
+});
+
+test('fails when a second useQuery invocation is added to an already recorded module', () => {
+  const root = fixture();
+  mutate(root, 'app/soapbox/queries/trends.ts', source => `${source}\nconst extra = useQuery(['extra'], loadExtra);\n`);
+  assertRunFails(root, /exactly one executable useQuery invocation|invocation count changed/);
 });
 
 test('fails when infinite cache retention changes without reconciliation', () => {
@@ -69,24 +89,30 @@ test('fails when the verified Redux duplication boundary disappears', () => {
 
 test('fails when an unrecorded useQuery call site appears', () => {
   const root = fixture();
-  const extra = path.join(root, 'app/extra-query.ts');
-  fs.mkdirSync(path.dirname(extra), { recursive: true });
-  fs.writeFileSync(extra, "const result = useQuery(['extra'], loadExtra);\n");
-  assertRunFails(root, /repository useQuery call site/);
+  writeExtra(root, 'extra-query.ts', "const result = useQuery(['extra'], loadExtra);\n");
+  assertRunFails(root, /useQuery invocation/);
 });
 
 test('fails when an unrecorded mutation API appears', () => {
   const root = fixture();
-  const extra = path.join(root, 'app/extra-mutation.ts');
-  fs.mkdirSync(path.dirname(extra), { recursive: true });
-  fs.writeFileSync(extra, 'const mutation = useMutation(saveValue);\n');
+  writeExtra(root, 'extra-mutation.ts', 'const mutation = useMutation(saveValue);\n');
   assertRunFails(root, /unreconciled React Query API call sites/);
+});
+
+test('fails when ensureQueryData starts populating cache', () => {
+  const root = fixture();
+  writeExtra(root, 'ensure-query.ts', "queryClient.ensureQueryData({ queryKey: ['extra'], queryFn: loadExtra });\n");
+  assertRunFails(root, /ensureQueryData/);
+});
+
+test('fails when Hydrate starts restoring cache state', () => {
+  const root = fixture();
+  writeExtra(root, 'hydrate.tsx', 'const view = <Hydrate state={dehydratedState}><App /></Hydrate>;\n');
+  assertRunFails(root, /Hydrate/);
 });
 
 test('does not treat comments or strings as executable React Query calls', () => {
   const root = fixture();
-  const extra = path.join(root, 'app/inert-evidence.ts');
-  fs.mkdirSync(path.dirname(extra), { recursive: true });
-  fs.writeFileSync(extra, "// useMutation(saveValue)\nconst text = 'useQuery([\\'fake\\'], load)';\n");
+  writeExtra(root, 'inert-evidence.ts', "// ensureQueryData({ queryKey: ['fake'] })\nconst text = 'useQuery([\\'fake\\'], load)';\nconst markup = '<Hydrate state={fake} />';\n");
   assert.doesNotThrow(() => run(root));
 });
