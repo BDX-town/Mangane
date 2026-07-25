@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-current-bounded",
+  "surface": {
+    "path": "app/soapbox/service_worker/web_push_notifications.ts",
+    "requiredFragments": [
+      "access_token?: string",
+      "'Authorization': `Bearer ${accessToken}`",
+      "credentials: 'include'",
+      "const { access_token, notification_id, preferred_locale, title, body, icon } = event.data?.json();",
+      "data:      { access_token, preferred_locale",
+      "data: { access_token, preferred_locale, url: '/notifications' }",
+      "self.clients.openWindow(url)",
+      "return client.navigate(url).then(client => client?.focus());",
+      "self.addEventListener('push', handlePush);",
+      "self.addEventListener('notificationclick', handleNotificationClick);"
+    ]
+  },
+  "invariants": {
+    "notificationDataCurrentlyMayContainBearerToken": true,
+    "pushPayloadCurrentlySuppliesBearerToken": true,
+    "notificationActionsCurrentlyReusePersistedBearerToken": true,
+    "clickDestinationCurrentlyLacksSharedDestinationPolicy": true,
+    "passingGateDoesNotClaimWorkerIsHardened": true
+  },
+  "explicitUnknowns": [
+    "Repository-wide push subscription creation, rotation and revocation enumeration remains incomplete.",
+    "Account and instance binding for push payloads, subscriptions and grouped notifications is not proven.",
+    "Logout, account removal and instance switching cleanup of credential-bearing native notifications is not proven.",
+    "Push payload schema, size limits, locale validation and fallback field validation are not verified.",
+    "Worker request timeout, cancellation, response-size, retry, content-type and error contracts are not verified.",
+    "Notification click destinations are not proven to be constrained to safe same-origin application routes."
+  ]
+}
