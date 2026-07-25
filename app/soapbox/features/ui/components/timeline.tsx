@@ -1,11 +1,11 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import debounce from 'lodash/debounce';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { defineMessages } from 'react-intl';
 
 import { dequeueTimeline, scrollTopTimeline } from 'soapbox/actions/timelines';
-import ScrollTopButton from 'soapbox/components/scroll-top-button';
+import ScrollToButton from 'soapbox/components/scroll-to-button';
 import StatusList, { IStatusList } from 'soapbox/components/status_list';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetStatusIds } from 'soapbox/selectors';
@@ -53,16 +53,20 @@ const Timeline: React.FC<ITimeline> = ({
 
   const handleScroll = useCallback(() => handleScrollDebounced(), [handleScrollDebounced]);
 
+  const top = useRef<HTMLDivElement>(null);
+
   return (
     <>
       {
-        createPortal(<ScrollTopButton
+        createPortal(<ScrollToButton
           key='timeline-queue-button-header'
           onClick={handleDequeueTimeline}
           count={totalQueuedItemsCount}
           message={messages.queue}
+          to={top}
         />, document.body)
       }
+      <div ref={top} />
       <StatusList
         timelineId={timelineId}
         onScroll={handleScroll}

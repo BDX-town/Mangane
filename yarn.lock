@@ -1556,12 +1556,12 @@ __metadata:
 
 "@bdxtown/ruisseau@file:../ruisseau::locator=mangane-fe%40workspace%3A.":
   version: 0.0.0
-  resolution: "@bdxtown/ruisseau@file:../ruisseau#../ruisseau::hash=ae396c&locator=mangane-fe%40workspace%3A."
+  resolution: "@bdxtown/ruisseau@file:../ruisseau#../ruisseau::hash=24dbbe&locator=mangane-fe%40workspace%3A."
   peerDependencies:
     lodash: ^4.18.1
     react: ^19.2.7
     react-dom: ^19.2.7
-  checksum: 8d619fe37135a6e37cdf673978a0c6df944a0182db29ffdfb44b483e8f4cc4d9e32269e58bfa5efe6c46815a2ef0c5f2e3cd634ebf6f9e41058ea054f43d19e4
+  checksum: 46a0f379e52d5266d485ce211187f06da4ff1a8a8fb733392a3d6a3b30afa911c370c353666aa89be830dcc9ffedd42553503f61c101f72bb361b087a5063b66
   languageName: node
   linkType: hard
 
