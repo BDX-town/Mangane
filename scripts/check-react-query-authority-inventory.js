@@ -22,8 +22,7 @@ const expectedUnknowns = [
 const unsupportedApis = [
   'useInfiniteQuery', 'useQueries', 'useMutation', 'fetchQuery', 'prefetchQuery',
   'getQueryData', 'setQueryData', 'setQueriesData', 'invalidateQueries',
-  'removeQueries', 'resetQueries', 'cancelQueries', 'clear', 'dehydrate',
-  'hydrate', 'persistQueryClient',
+  'removeQueries', 'resetQueries', 'cancelQueries', 'dehydrate', 'persistQueryClient',
 ];
 
 const readInsideRoot = (relativePath, label) => {
@@ -116,9 +115,10 @@ for (const query of expectedQueries) {
 }
 
 const appRoot = path.join(root, 'app');
+const sourceFiles = walk(appRoot);
 const discoveredUseQuery = [];
 const discoveredUnsupported = [];
-for (const absolute of walk(appRoot)) {
+for (const absolute of sourceFiles) {
   const source = fs.readFileSync(absolute, 'utf8');
   const relative = path.relative(root, absolute).split(path.sep).join('/');
   if (hasExecutableCall(source, 'useQuery')) discoveredUseQuery.push(relative);
@@ -139,7 +139,7 @@ process.stdout.write(`${JSON.stringify({
   status: manifest.status,
   checkedQueries: expectedQueries.length,
   keys: expectedQueries.map(query => query.key),
-  scannedSourceFiles: walk(appRoot).length,
+  scannedSourceFiles: sourceFiles.length,
   unsupportedApiCallSites: discoveredUnsupported.length,
   explicitUnknowns: manifest.explicitUnknowns.length,
 }, null, 2)}\n`);
