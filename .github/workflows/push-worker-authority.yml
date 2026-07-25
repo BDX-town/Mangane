@@ -5,6 +5,7 @@ on:
     paths:
       - 'app/soapbox/service_worker/web_push_notifications.ts'
       - 'config/push-worker-authority-inventory.json'
+      - 'docs/architecture/PUSH_WORKER_AUTHORITY_DRIFT_GATE.md'
       - 'scripts/check-push-worker-authority-inventory.js'
       - 'scripts/__tests__/check-push-worker-authority-inventory.test.js'
       - '.github/workflows/push-worker-authority.yml'
@@ -14,6 +15,7 @@ on:
     paths:
       - 'app/soapbox/service_worker/web_push_notifications.ts'
       - 'config/push-worker-authority-inventory.json'
+      - 'docs/architecture/PUSH_WORKER_AUTHORITY_DRIFT_GATE.md'
       - 'scripts/check-push-worker-authority-inventory.js'
       - 'scripts/__tests__/check-push-worker-authority-inventory.test.js'
       - '.github/workflows/push-worker-authority.yml'
