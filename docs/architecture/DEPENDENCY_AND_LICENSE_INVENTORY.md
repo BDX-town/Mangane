@@ -17,7 +17,7 @@ Generated from `package.json`, `yarn.lock`, installed package metadata, reposito
 - Packages with install-time network indicators: **0**
 - Packages with network-capable package scripts: **45**
 - Packages with code-generation/build script indicators: **658**
-- GitHub Actions use sites reviewed: **26** (24 not commit-pinned)
+- GitHub Actions use sites reviewed: **28** (24 not commit-pinned)
 
 Every lockfile locator has a classification, execution context, root reachability set, maintenance status, license disposition, install behavior, owner, and purpose in the machine-readable authority. A transitive package may inherit multiple roots and contexts.
 
