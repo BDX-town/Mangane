@@ -50,6 +50,7 @@ jobs:
           node scripts/check-html-safety-authority-inventory.js
           node scripts/check-sentry-authority-inventory.js
           node scripts/check-api-transport-authority-inventory.js
+          node scripts/check-push-worker-authority-inventory.js
 
       - name: Generate JSON and Markdown inventories
         shell: bash
