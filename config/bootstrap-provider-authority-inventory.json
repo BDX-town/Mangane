@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "entry": {
+    "path": "app/application.ts",
+    "polyfillLoader": "./soapbox/load_polyfills",
+    "mainModule": "./soapbox/main",
+    "manifest": "manifest.json",
+    "styles": [
+      "react-datepicker/dist/react-datepicker.css",
+      "./styles/application.scss"
+    ]
+  },
+  "mount": {
+    "path": "app/soapbox/main.tsx",
+    "readyCallback": true,
+    "mountElementId": "soapbox",
+    "renderer": "ReactDOM.render",
+    "rootComponent": "Soapbox"
+  },
+  "rootProviders": {
+    "path": "app/soapbox/containers/soapbox.tsx",
+    "order": [
+      "Provider",
+      "QueryClientProvider",
+      "SoapboxHead",
+      "SoapboxLoad",
+      "SoapboxMount"
+    ],
+    "reduxStore": "store",
+    "queryClient": "queryClient"
+  },
+  "moduleInitialization": [
+    "createGlobals(store)",
+    "store.dispatch(preload() as any)",
+    "store.dispatch(checkOnboardingStatus() as any)"
+  ],
+  "initialLoadOrder": [
+    "fetchMe",
+    "loadInstance",
+    "loadSoapboxConfig"
+  ],
+  "conditionalInitialLoad": {
+    "action": "fetchVerificationConfig",
+    "condition": "pepeEnabled && !state.me"
+  },
+  "failureSemantics": {
+    "initialLoadFailureStillMarksLoaded": true,
+    "localeLoadFailureLeavesLoading": true,
+    "polyfillFailureLogsToConsole": true
+  },
+  "invariants": [
+    "polyfills complete before the application main module is required",
+    "the mount waits for ready and targets the soapbox element",
+    "Redux remains outside React Query in the root provider hierarchy",
+    "module initialization side effects remain explicit and ordered",
+    "authenticated identity loads before instance capabilities and configuration",
+    "initial backend load rejection still releases the loading gate"
+  ],
+  "unknowns": [
+    "mount element absence behavior is not fail-closed or user-visible",
+    "module initialization side effects do not expose teardown contracts",
+    "initial requests do not expose cancellation or stale-response protection",
+    "account switching does not prove provider or initialization re-entry safety",
+    "locale import failure can leave the application permanently loading",
+    "polyfill failure has no recovery UI or structured error contract",
+    "React 18 concurrent rendering compatibility is unverified",
+    "root error-boundary coverage does not include bootstrap failures before mount"
+  ]
+}
