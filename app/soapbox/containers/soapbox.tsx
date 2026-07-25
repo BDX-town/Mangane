@@ -258,7 +258,7 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
   const darkMode = useTheme() === 'dark';
   const themeCss = generateThemeCss(soapboxConfig);
 
-  const bodyClass = classNames('bg-white dark:bg-slate-900 text-base h-full overflow-y-auto', {
+  const bodyClass = classNames('bg-white dark:bg-slate-900 text-base h-full', {
     'no-reduce-motion': !settings.get('reduceMotion'),
     'underline-links': settings.get('underlineLinks'),
     'dyslexic': settings.get('dyslexicFont'),
