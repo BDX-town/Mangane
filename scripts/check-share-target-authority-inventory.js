@@ -103,7 +103,7 @@ for (const binding of expectedBindings) {
 
 const registration = manifest.developmentRegistration;
 if (!registration || registration.path !== 'app/soapbox/main.tsx') fail('development registration path changed without reconciliation');
-const expectedRegistration = "navigator.serviceWorker.register('/share_target.js',{scope:'/'});";
+const expectedRegistration = "navigator.serviceWorker.register('/share_target.js',{scope:'/',});";
 if (registration.requiredExecutableBinding !== expectedRegistration) fail('development registration binding changed without reconciliation');
 const registrationSource = compactExecutable(readInsideRoot(registration.path, 'registration'));
 if (!registrationSource.includes(expectedRegistration)) fail(`${registration.path} no longer registers the expected share-target worker`);
