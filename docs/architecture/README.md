@@ -27,6 +27,7 @@ Target architecture must always be read alongside the verified repository eviden
 - [`CURRENT_STATE.md`](./CURRENT_STATE.md) — verified dependency, runtime, risk and documentation baseline;
 - [`SOURCE_INVENTORY.md`](./SOURCE_INVENTORY.md) — verified bootstrap, routing, state, service-worker, accessibility and interaction ownership;
 - [`BOOTSTRAP_PROVIDER_AUTHORITY_DRIFT_GATE.md`](./BOOTSTRAP_PROVIDER_AUTHORITY_DRIFT_GATE.md) — executable bounded gate for application entry, DOM mount, module initialization, initial backend loading, failure semantics, and root-provider ordering;
+- [`ERROR_RECOVERY_AUTHORITY_DRIFT_GATE.md`](./ERROR_RECOVERY_AUTHORITY_DRIFT_GATE.md) — executable bounded gate for mounted render-error capture, development diagnostics, emergency browser-data clearing, service-worker unregistration, and recovery navigation;
 - [`SECURITY_RUNTIME_INVENTORY.md`](./SECURITY_RUNTIME_INVENTORY.md) — verified authentication selectors, URL handling, HTTP-client behavior, push/share worker behavior, cache implications and required security contracts;
 - [`API_TRANSPORT_AUTHORITY_DRIFT_GATE.md`](./API_TRANSPORT_AUTHORITY_DRIFT_GATE.md) — executable bounded gate for the central credential-bearing Axios client and authentication URL/token-selection boundary;
 - [`PUSH_WORKER_AUTHORITY_DRIFT_GATE.md`](./PUSH_WORKER_AUTHORITY_DRIFT_GATE.md) — executable bounded gate for credential-bearing native notification data, push-supplied tokens, worker API actions, and notification click destinations;
