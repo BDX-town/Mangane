@@ -19,11 +19,12 @@ const expectedUnknowns = [
   'Mutation, optimistic update, rollback, hydration, persistence and stream-to-cache paths are not proven absent.',
   'A passing gate records inherited behavior and does not classify either query as safely shareable across accounts or instances.',
 ];
-const unsupportedApis = [
-  'useInfiniteQuery', 'useQueries', 'useMutation', 'fetchQuery', 'prefetchQuery',
-  'getQueryData', 'setQueryData', 'setQueriesData', 'invalidateQueries',
-  'removeQueries', 'resetQueries', 'cancelQueries', 'dehydrate', 'persistQueryClient',
+const unsupportedCallApis = [
+  'useInfiniteQuery', 'useQueries', 'useMutation', 'fetchQuery', 'prefetchQuery', 'ensureQueryData',
+  'getQueryData', 'setQueryData', 'setQueriesData', 'invalidateQueries', 'removeQueries',
+  'resetQueries', 'cancelQueries', 'dehydrate', 'persistQueryClient',
 ];
+const unsupportedJsxApis = ['Hydrate'];
 
 const readInsideRoot = (relativePath, label) => {
   const absolute = path.resolve(root, relativePath);
@@ -48,43 +49,99 @@ const walk = directory => {
   }
   return results;
 };
-const executableText = source => {
-  let output = '';
-  let i = 0;
+const skipQuoted = (source, start) => {
+  const quote = source[start];
+  let i = start + 1;
   while (i < source.length) {
-    const char = source[i];
-    const next = source[i + 1];
-    if (char === '/' && next === '/') {
-      while (i < source.length && source[i] !== '\n') { output += ' '; i += 1; }
-      continue;
-    }
-    if (char === '/' && next === '*') {
-      output += '  '; i += 2;
-      while (i < source.length && !(source[i] === '*' && source[i + 1] === '/')) { output += source[i] === '\n' ? '\n' : ' '; i += 1; }
-      if (i >= source.length) fail('unterminated block comment while scanning React Query APIs');
-      output += '  '; i += 2;
-      continue;
-    }
-    if (char === '"' || char === "'" || char === '`') {
-      const quote = char;
-      output += ' '; i += 1;
-      while (i < source.length) {
-        if (source[i] === '\\') { output += '  '; i += 2; continue; }
-        if (source[i] === quote) { output += ' '; i += 1; break; }
-        output += source[i] === '\n' ? '\n' : ' '; i += 1;
-      }
-      continue;
-    }
-    output += char;
+    if (source[i] === '\\') { i += 2; continue; }
+    if (source[i] === quote) return i + 1;
     i += 1;
   }
-  return output;
+  fail('unterminated string while scanning React Query APIs');
 };
-const hasExecutableCall = (source, api) => {
-  const clean = executableText(source);
-  const pattern = new RegExp(`\\b${api}\\s*(?:<[^;{}]*?>\\s*)?\\(`, 'g');
-  return pattern.test(clean);
+const skipTrivia = (source, start) => {
+  let i = start;
+  while (i < source.length) {
+    if (/\s/.test(source[i])) { i += 1; continue; }
+    if (source[i] === '/' && source[i + 1] === '/') {
+      i += 2;
+      while (i < source.length && source[i] !== '\n') i += 1;
+      continue;
+    }
+    if (source[i] === '/' && source[i + 1] === '*') {
+      const end = source.indexOf('*/', i + 2);
+      if (end < 0) fail('unterminated block comment while scanning React Query APIs');
+      i = end + 2;
+      continue;
+    }
+    break;
+  }
+  return i;
 };
+const findExecutableCalls = (source, api) => {
+  const calls = [];
+  let i = 0;
+  while (i < source.length) {
+    i = skipTrivia(source, i);
+    if (i >= source.length) break;
+    if (source[i] === '"' || source[i] === "'" || source[i] === '`') { i = skipQuoted(source, i); continue; }
+    if (/[A-Za-z_$]/.test(source[i])) {
+      const start = i;
+      i += 1;
+      while (i < source.length && /[A-Za-z0-9_$]/.test(source[i])) i += 1;
+      if (source.slice(start, i) !== api) continue;
+      let cursor = skipTrivia(source, i);
+      if (source[cursor] === '<') {
+        let depth = 1;
+        cursor += 1;
+        while (cursor < source.length && depth > 0) {
+          if (source[cursor] === '"' || source[cursor] === "'" || source[cursor] === '`') { cursor = skipQuoted(source, cursor); continue; }
+          if (source[cursor] === '<') depth += 1;
+          else if (source[cursor] === '>') depth -= 1;
+          cursor += 1;
+        }
+        cursor = skipTrivia(source, cursor);
+      }
+      if (source[cursor] === '(') calls.push(cursor);
+      continue;
+    }
+    i += 1;
+  }
+  return calls;
+};
+const findExecutableJsxElements = (source, name) => {
+  let count = 0;
+  let i = 0;
+  while (i < source.length) {
+    i = skipTrivia(source, i);
+    if (i >= source.length) break;
+    if (source[i] === '"' || source[i] === "'" || source[i] === '`') { i = skipQuoted(source, i); continue; }
+    if (source[i] === '<' && source.slice(i + 1, i + 1 + name.length) === name && !/[A-Za-z0-9_$]/.test(source[i + 1 + name.length] || '')) count += 1;
+    i += 1;
+  }
+  return count;
+};
+const firstArgument = (source, openParen) => {
+  let i = skipTrivia(source, openParen + 1);
+  const start = i;
+  let square = 0;
+  let round = 0;
+  let curly = 0;
+  while (i < source.length) {
+    if (source[i] === '"' || source[i] === "'" || source[i] === '`') { i = skipQuoted(source, i); continue; }
+    if (source[i] === '/' && (source[i + 1] === '/' || source[i + 1] === '*')) { i = skipTrivia(source, i); continue; }
+    if (source[i] === '[') square += 1;
+    else if (source[i] === ']') square -= 1;
+    else if (source[i] === '(') round += 1;
+    else if (source[i] === ')') { if (square === 0 && round === 0 && curly === 0) return source.slice(start, i); round -= 1; }
+    else if (source[i] === '{') curly += 1;
+    else if (source[i] === '}') curly -= 1;
+    else if (source[i] === ',' && square === 0 && round === 0 && curly === 0) return source.slice(start, i);
+    i += 1;
+  }
+  fail('unterminated React Query call');
+};
+const normalizeExpression = value => value.replace(/\s+/g, '');
 
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 if (manifest.schemaVersion !== 1) fail(`unsupported schemaVersion ${manifest.schemaVersion}`);
@@ -106,9 +163,10 @@ for (const fragment of provider.requiredFragments) if (!providerSource.includes(
 
 for (const query of expectedQueries) {
   const source = readInsideRoot(query.path, 'query source');
-  if (!hasExecutableCall(source, 'useQuery')) fail(`${query.path} no longer contains an executable useQuery call`);
-  const escapedKey = query.key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  if (!new RegExp(`useQuery(?:<[^;{}]*?>)?\\s*\\(\\s*\\[\\s*['\"]${escapedKey}['\"]\\s*\\]\\s*,`).test(source)) fail(`${query.path} no longer declares exact unscoped query key ${query.key}`);
+  const calls = findExecutableCalls(source, 'useQuery');
+  if (calls.length !== 1) fail(`${query.path} must contain exactly one executable useQuery invocation; found ${calls.length}`);
+  const expectedKey = normalizeExpression(`['${query.key}']`);
+  if (normalizeExpression(firstArgument(source, calls[0])) !== expectedKey) fail(`${query.path} no longer declares exact unscoped query key ${query.key}`);
   if (!source.includes(query.endpoint)) fail(`${query.path} no longer contains endpoint ${query.endpoint}`);
   if (query.usesStatefulApi && !/const\s+api\s*=\s*useApi\(\)/.test(source)) fail(`${query.path} no longer uses the stateful useApi client`);
   if (query.duplicatesIntoRedux && !/dispatch\s*\(\s*fetchTrendsSuccess\s*\(/.test(source)) fail(`${query.path} no longer records the React Query-to-Redux duplication boundary`);
@@ -121,10 +179,20 @@ const discoveredUnsupported = [];
 for (const absolute of sourceFiles) {
   const source = fs.readFileSync(absolute, 'utf8');
   const relative = path.relative(root, absolute).split(path.sep).join('/');
-  if (hasExecutableCall(source, 'useQuery')) discoveredUseQuery.push(relative);
-  for (const api of unsupportedApis) if (hasExecutableCall(source, api)) discoveredUnsupported.push(`${relative}:${api}`);
+  for (const openParen of findExecutableCalls(source, 'useQuery')) discoveredUseQuery.push(`${relative}:${openParen}`);
+  for (const api of unsupportedCallApis) {
+    const calls = findExecutableCalls(source, api);
+    for (const openParen of calls) discoveredUnsupported.push(`${relative}:${api}:${openParen}`);
+  }
+  for (const api of unsupportedJsxApis) {
+    const count = findExecutableJsxElements(source, api);
+    for (let index = 0; index < count; index += 1) discoveredUnsupported.push(`${relative}:${api}:jsx-${index + 1}`);
+  }
 }
-validateExactList(discoveredUseQuery.sort(), expectedQueries.map(query => query.path).sort(), 'repository useQuery call site');
+const expectedUseQueryCount = expectedQueries.length;
+if (discoveredUseQuery.length !== expectedUseQueryCount) fail(`repository useQuery invocation count changed: expected ${expectedUseQueryCount}, found ${discoveredUseQuery.length}`);
+const discoveredUseQueryPaths = discoveredUseQuery.map(item => item.slice(0, item.lastIndexOf(':'))).sort();
+validateExactList(discoveredUseQueryPaths, expectedQueries.map(query => query.path).sort(), 'repository useQuery invocation');
 if (discoveredUnsupported.length > 0) fail(`unreconciled React Query API call sites: ${discoveredUnsupported.sort().join(', ')}`);
 
 const invariants = manifest.invariants || {};
@@ -140,6 +208,7 @@ process.stdout.write(`${JSON.stringify({
   checkedQueries: expectedQueries.length,
   keys: expectedQueries.map(query => query.key),
   scannedSourceFiles: sourceFiles.length,
+  discoveredUseQueryInvocations: discoveredUseQuery.length,
   unsupportedApiCallSites: discoveredUnsupported.length,
   explicitUnknowns: manifest.explicitUnknowns.length,
 }, null, 2)}\n`);
