@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-current-bounded",
+  "surface": {
+    "path": "app/soapbox/service_worker/share_target.js",
+    "requiredExecutableBindings": [
+      "self.addEventListener('fetch',(event)=>{",
+      "if(event.request.method==='POST'&&event.request.url.includes('/share')){",
+      "event.respondWith((async()=>{",
+      "const formData=await event.request.formData();",
+      "const name=formData.get('name')||'';",
+      "const description=formData.get('description')||'';",
+      "const link=formData.get('link')||'';",
+      "const text=`${name}\\n${description}\\n\\n${link}`;",
+      "const params=new URLSearchParams();",
+      "params.append('text',text);",
+      "return Response.redirect(`/statuses/compose?${params.toString()}`,303);"
+    ]
+  },
+  "developmentRegistration": {
+    "path": "app/soapbox/main.tsx",
+    "requiredExecutableBinding": "navigator.serviceWorker.register('/share_target.js',{scope:'/'});"
+  },
+  "canonicalDocumentation": {
+    "path": "docs/architecture/SHARE_TARGET_AUTHORITY_DRIFT_GATE.md"
+  },
+  "invariants": {
+    "routingCurrentlyUsesUrlSubstringMatching": true,
+    "formParsingCurrentlyHasNoExplicitBounds": true,
+    "acceptedFieldsAreCurrentlyNameDescriptionAndLink": true,
+    "redirectCurrentlyCarriesComposeTextInQueryString": true,
+    "passingGateDoesNotClassifyShareTargetAsHardened": true
+  },
+  "explicitUnknowns": [
+    "Production service-worker bundling and manifest ownership for share_target.js remain incompletely enumerated.",
+    "Exact origin and pathname validation are not established before classifying a POST as a share target request.",
+    "Total form size, field length, parameter count and redirect URL length limits are not established.",
+    "Malformed multipart, unsupported content type and formData parsing failure behavior are not explicitly handled.",
+    "Shared link scheme, preview-fetch behavior and downstream composer URL handling are not proven safe by this gate.",
+    "File share fields, temporary storage, quota handling and one-time cleanup are not implemented or proven absent repository-wide.",
+    "FE_SUBDIRECTORY and production deployment rewrite behavior for the share-target redirect require end-to-end verification."
+  ]
+}
