@@ -567,7 +567,7 @@ const Thread: React.FC<IThread> = (props) => {
         </div>
       </Sticky>
       <PullToRefresh onRefresh={handleRefresh}>
-        <div ref={node} className={`thread ${(seeking || (!ready && actualStatus)) ? 'opacity-0' : 'opacity-100'}`}>
+        <div ref={node} className={`thread ${(seeking || (!ready && actualStatus && actualStatusNode)) ? 'opacity-0' : 'opacity-100'}`}>
           <ScrollableList
             ref={setScroller}
             onSeeking={setSeeking}
