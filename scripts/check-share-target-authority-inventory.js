@@ -98,7 +98,8 @@ if (!surface || surface.path !== 'app/soapbox/service_worker/share_target.js') f
 validateExactList(surface.requiredExecutableBindings, expectedBindings, 'executable binding');
 const workerSource = compactExecutable(readInsideRoot(surface.path, 'worker'));
 for (const binding of expectedBindings) {
-  if (!workerSource.includes(binding)) fail(`${surface.path} no longer contains executable share-target evidence: ${binding}`);
+  const normalizedBinding = compactExecutable(binding);
+  if (!workerSource.includes(normalizedBinding)) fail(`${surface.path} no longer contains executable share-target evidence: ${binding}`);
 }
 
 const registration = manifest.developmentRegistration;
