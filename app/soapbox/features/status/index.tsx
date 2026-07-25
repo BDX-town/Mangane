@@ -171,7 +171,11 @@ const Thread: React.FC<IThread> = (props) => {
 
   const node = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
+  // ruisseau scroller
   const [scroller, setScroller] = useState<HTMLElement>(null);
+  // box size for the 'fake' status shown during loading to avoid jumps
+  const [actualStatusNode, setActualStatusNode] = useState<{ top: number, left: number, width: number, height: number} | undefined>(undefined);
+
 
   const handleToggleMediaVisibility = useCallback(() => {
     setShowMedia(!showMedia);
@@ -490,8 +494,9 @@ const Thread: React.FC<IThread> = (props) => {
     return new Array(actualStatus.replies_count).fill(undefined).map(() => <PlaceholderStatus />);
   }, [ready, actualStatus, renderChildren, descendantsIds]);
 
-  const [actualStatusNode, setActualStatusNode] = useState<{ top: number, left: number, width: number, height: number} | undefined>(undefined);
 
+  // when actual status is loaded and show we capture it's position and size to show a 'fake' status over the actual thread
+  // to hide scroll 'jumps'
   useEffect(() => {
     if (!actualStatus || !actualStatus.in_reply_to_id) return;
     const rect = {
@@ -539,13 +544,13 @@ const Thread: React.FC<IThread> = (props) => {
           me && <>
             <hr className='my-5 border-gray-200 dark:border-gray-700' />
             <div className='py-4'>
-              <ComposeFormContainer autoFocus={false} onSubmit={handleComposeSubmit} />
+              <ComposeFormContainer autoFocus={false} disabled={!ready} onSubmit={handleComposeSubmit} />
             </div>
           </>
         }
       </>
     )];
-  }, [actualStatus, handleComposeSubmit, handleOpenCompareHistoryModal, handleOpenMedia, handleOpenVideo, handleToggleHidden, handleToggleMediaVisibility, handleTranslate, handlers, intl, me, onDeleteStatus, showMedia]);
+  }, [actualStatus, handleComposeSubmit, handleOpenCompareHistoryModal, handleOpenMedia, handleOpenVideo, handleToggleHidden, handleToggleMediaVisibility, handleTranslate, handlers, intl, me, onDeleteStatus, ready, showMedia]);
 
   if (!actualStatus && ready) {
     // this need to be kept separate from children as it carries its own column
@@ -562,7 +567,7 @@ const Thread: React.FC<IThread> = (props) => {
         </div>
       </Sticky>
       <PullToRefresh onRefresh={handleRefresh}>
-        <div ref={node} className={`thread ${(seeking) ? 'opacity-0' : 'opacity-100'}`}>
+        <div ref={node} className={`thread ${(seeking || (!ready && actualStatus)) ? 'opacity-0' : 'opacity-100'}`}>
           <ScrollableList
             ref={setScroller}
             onSeeking={setSeeking}
@@ -577,8 +582,9 @@ const Thread: React.FC<IThread> = (props) => {
           </ScrollableList>
         </div>
         {
+          // this is the fake status show to hide jumps while still allowing the reader to read
           actualStatusNode && (seeking || !ready) && (
-            <div className={'fixed thread'} style={{ top: `${actualStatusNode.top}px`, left: `${actualStatusNode.left}px`, width: `${actualStatusNode.width}px`, height: `${actualStatusNode.height}px` }}>
+            <div className={'fixed thread'} style={{ top: `${actualStatusNode.top}px`, left: `${actualStatusNode.left}px`, width: `${actualStatusNode.width}px`, minHeight: `${actualStatusNode.height}px` }}>
               {renderActualStatus()}
               <PlaceholderStatus />
             </div>

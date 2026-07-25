@@ -25,7 +25,8 @@ const Sidebar: React.FC = ({ children }: { children: ReactNode }) => (
 
 /** Center column container in the UI. */
 const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className }) => (
-  <main className={classNames('md:w-full md:min-w-0 md:overflow-y-auto animate-fadein grow flex flex-col sm:pt-4', className)}>
+  // pb is here to let space for the bottom bar
+  <main className={classNames('md:w-full md:min-w-0 md:overflow-y-auto animate-fadein grow flex flex-col sm:pt-4 pb-[110px] lg:pb-0 ', className)}>
     {children}
   </main>
 );
