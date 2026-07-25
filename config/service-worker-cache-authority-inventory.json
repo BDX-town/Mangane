@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-current-bounded",
+  "productionConfig": {
+    "path": "webpack/production.js",
+    "cacheName": "soapbox",
+    "serviceWorkerEntry": "app/soapbox/service_worker/entry.ts",
+    "appShellUsesFrontendSubdirectory": true,
+    "autoUpdate": true,
+    "events": true,
+    "minify": true,
+    "safeToUseOptionalCaches": true,
+    "navigationRequestTypes": ["navigate"],
+    "mainCaches": [":rest:"],
+    "additionalCaches": [
+      ":externals:",
+      "packs/images/32-*.png",
+      "packs/icons/*.svg"
+    ],
+    "optionalCaches": [
+      "**/locale_*.js",
+      "**/*_polyfills-*.js",
+      "**/*.chunk.js",
+      "**/*.chunk.css",
+      "**/*.woff2",
+      "**/*.png",
+      "**/*.svg"
+    ],
+    "backendRoutePrefixes": [
+      "/.well-known",
+      "/activities",
+      "/admin",
+      "/api",
+      "/auth",
+      "/inbox",
+      "/instance",
+      "/internal",
+      "/main/ostatus",
+      "/manifest.json",
+      "/media",
+      "/nodeinfo",
+      "/oauth",
+      "/objects",
+      "/ostatus_subscribe",
+      "/pghero",
+      "/pleroma",
+      "/proxy",
+      "/relay",
+      "/sidekiq",
+      "/socket",
+      "/static",
+      "/unsubscribe"
+    ],
+    "backendEmbedSuffix": "/embed"
+  },
+  "entry": {
+    "path": "app/soapbox/service_worker/entry.ts",
+    "imports": [
+      "./web_push_notifications",
+      "./share_target"
+    ]
+  },
+  "canonicalDocumentation": {
+    "path": "docs/architecture/SERVICE_WORKER_CACHE_AUTHORITY_DRIFT_GATE.md"
+  },
+  "invariants": {
+    "productionNavigationUsesAppShellFallback": true,
+    "backendRoutesBypassAppShellRewrite": true,
+    "cacheNameIsCurrentlyGlobalAndUnscoped": true,
+    "authenticatedResponseCachingIsNotProvenAbsent": true,
+    "passingGateDoesNotClassifyCachingAsAccountSafe": true
+  },
+  "explicitUnknowns": [
+    "The inherited global cache name is not proven to be account-, instance-, deployment- or version-scoped.",
+    "Repository-wide runtime caching of authenticated API responses is not proven absent.",
+    "Logout, account removal, instance switching and worker upgrade cache-purge behavior are not proven.",
+    "Cache migration, corruption recovery, rollback and quota behavior are not established.",
+    "Backend-route prefix completeness and production edge rewrite precedence require end-to-end verification.",
+    "Cross-origin asset caching, credential mode, redirect behavior and response content-type validation are not established.",
+    "The update lifecycle does not prove deterministic activation, stale-tab handling or safe rollback across incompatible application versions."
+  ]
+}
