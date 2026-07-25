@@ -1,6 +1,14 @@
 {
   "schemaVersion": 1,
   "status": "verified-current-bounded",
+  "globalClient": {
+    "path": "app/soapbox/queries/client.ts",
+    "requiredFragments": ["new QueryClient({", "refetchOnWindowFocus: false", "staleTime: 60000", "cacheTime: Infinity"]
+  },
+  "provider": {
+    "path": "app/soapbox/containers/soapbox.tsx",
+    "requiredFragments": ["<QueryClientProvider client={queryClient}>", "</QueryClientProvider>"]
+  },
   "queries": [
     {
       "path": "app/soapbox/queries/carousels.ts",
@@ -19,11 +27,17 @@
   ],
   "invariants": {
     "keysAreCurrentlyUnscoped": true,
-    "accountAndInstanceDimensionsRequiredBeforeMigration": true
+    "globalClientSpansAccountAndInstanceTransitions": true,
+    "cacheTimeIsCurrentlyInfinite": true,
+    "accountAndInstanceDimensionsRequiredBeforeMigration": true,
+    "passingGateDoesNotClassifyQueriesAsSafeToShare": true
   },
   "explicitUnknowns": [
-    "Repository-wide React Query call-site enumeration remains incomplete.",
-    "Account and instance cache purge behavior is not proven.",
-    "Mutation and invalidation coverage remains unverified."
+    "Repository-wide React Query call-site enumeration remains incomplete outside the executable API scan enforced by this bounded gate.",
+    "Account and instance cache cancellation, late-response rejection and purge behavior are not proven.",
+    "The carousel endpoint's authentication and cross-instance variability remain unverified.",
+    "The trends query duplicates authority into Redux and has no verified cross-store purge contract.",
+    "Mutation, optimistic update, rollback, hydration, persistence and stream-to-cache paths are not proven absent.",
+    "A passing gate records inherited behavior and does not classify either query as safely shareable across accounts or instances."
   ]
 }
