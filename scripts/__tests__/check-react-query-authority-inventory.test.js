@@ -55,6 +55,12 @@ test('fails when a query key changes without reconciliation', () => {
   assertRunFails(root, /exact unscoped query key trends/);
 });
 
+test('fails when whitespace inside the query-key literal changes the runtime key', () => {
+  const root = fixture();
+  mutate(root, 'app/soapbox/queries/trends.ts', source => source.replace("['trends']", "[' trends ']"));
+  assertRunFails(root, /exact unscoped query key trends/);
+});
+
 test('does not accept an old key preserved only in a comment or string', () => {
   const root = fixture();
   mutate(root, 'app/soapbox/queries/trends.ts', source => source
@@ -109,6 +115,12 @@ test('fails when Hydrate starts restoring cache state', () => {
   const root = fixture();
   writeExtra(root, 'hydrate.tsx', 'const view = <Hydrate state={dehydratedState}><App /></Hydrate>;\n');
   assertRunFails(root, /Hydrate/);
+});
+
+test('does not classify a TypeScript Hydrate assertion as JSX hydration', () => {
+  const root = fixture();
+  writeExtra(root, 'type-assertion.ts', 'type Hydrate = { value: string };\nconst value = <Hydrate>input;\n');
+  assert.doesNotThrow(() => run(root));
 });
 
 test('does not treat comments or strings as executable React Query calls', () => {
