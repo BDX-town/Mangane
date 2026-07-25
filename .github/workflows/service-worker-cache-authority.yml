@@ -1,0 +1,42 @@
+name: Service worker cache authority
+
+on:
+  pull_request:
+    paths:
+      - 'webpack/production.js'
+      - 'app/soapbox/service_worker/entry.ts'
+      - 'config/service-worker-cache-authority-inventory.json'
+      - 'scripts/check-service-worker-cache-authority-inventory.js'
+      - 'scripts/__tests__/check-service-worker-cache-authority-inventory.test.js'
+      - 'docs/architecture/SERVICE_WORKER_CACHE_AUTHORITY_DRIFT_GATE.md'
+      - '.github/workflows/service-worker-cache-authority.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'webpack/production.js'
+      - 'app/soapbox/service_worker/entry.ts'
+      - 'config/service-worker-cache-authority-inventory.json'
+      - 'scripts/check-service-worker-cache-authority-inventory.js'
+      - 'scripts/__tests__/check-service-worker-cache-authority-inventory.test.js'
+      - 'docs/architecture/SERVICE_WORKER_CACHE_AUTHORITY_DRIFT_GATE.md'
+      - '.github/workflows/service-worker-cache-authority.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: service-worker-cache-authority-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify bounded service-worker cache authority inventory
+        run: node scripts/check-service-worker-cache-authority-inventory.js
+      - name: Run focused service-worker cache authority tests
+        run: node --test scripts/__tests__/check-service-worker-cache-authority-inventory.test.js
