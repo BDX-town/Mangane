@@ -67,132 +67,135 @@ const validateExactList = (actual, expected, label, key = value => value) => {
   }
 };
 
-// Replace comments and literal contents with whitespace while preserving offsets and
-// template-expression code. This prevents comments and inert string text from
-// satisfying executable call-site checks without introducing a parser dependency.
-const executableMask = source => {
-  const chars = [...source];
+const tokenize = source => {
+  const tokens = [];
   let i = 0;
-  let state = 'code';
-  let quote = null;
-  let templateExpressionDepth = 0;
-  while (i < chars.length) {
-    const current = chars[i];
-    const next = chars[i + 1];
-    if (state === 'lineComment') {
-      if (current === '\n') state = 'code'; else chars[i] = ' ';
+  const push = (kind, value, start = i) => tokens.push({ kind, value, start });
+  while (i < source.length) {
+    const char = source[i];
+    const next = source[i + 1];
+    if (/\s/.test(char)) { i += 1; continue; }
+    if (char === '/' && next === '/') {
+      i += 2;
+      while (i < source.length && source[i] !== '\n') i += 1;
+      continue;
+    }
+    if (char === '/' && next === '*') {
+      const start = i;
+      i += 2;
+      while (i < source.length && !(source[i] === '*' && source[i + 1] === '/')) i += 1;
+      if (i >= source.length) fail(`unterminated block comment at offset ${start}`);
+      i += 2;
+      continue;
+    }
+    if (char === '"' || char === "'") {
+      const quote = char;
+      const start = i;
+      let value = '';
       i += 1;
-      continue;
-    }
-    if (state === 'blockComment') {
-      if (current === '*' && next === '/') {
-        chars[i] = chars[i + 1] = ' ';
-        i += 2;
-        state = 'code';
-      } else {
-        if (current !== '\n') chars[i] = ' ';
-        i += 1;
-      }
-      continue;
-    }
-    if (state === 'string') {
-      if (current === '\\') {
-        chars[i] = ' ';
-        if (i + 1 < chars.length && chars[i + 1] !== '\n') chars[i + 1] = ' ';
-        i += 2;
-      } else if (current === quote) {
-        chars[i] = ' ';
-        state = 'code';
-        quote = null;
-        i += 1;
-      } else {
-        if (current !== '\n') chars[i] = ' ';
-        i += 1;
-      }
-      continue;
-    }
-    if (state === 'template') {
-      if (current === '\\') {
-        chars[i] = ' ';
-        if (i + 1 < chars.length && chars[i + 1] !== '\n') chars[i + 1] = ' ';
-        i += 2;
-      } else if (current === '`') {
-        chars[i] = ' ';
-        state = 'code';
-        i += 1;
-      } else if (current === '$' && next === '{') {
-        chars[i] = chars[i + 1] = ' ';
-        templateExpressionDepth = 1;
-        state = 'templateExpression';
-        i += 2;
-      } else {
-        if (current !== '\n') chars[i] = ' ';
-        i += 1;
-      }
-      continue;
-    }
-    if (state === 'templateExpression') {
-      if (current === '{') templateExpressionDepth += 1;
-      if (current === '}') {
-        templateExpressionDepth -= 1;
-        if (templateExpressionDepth === 0) {
-          chars[i] = ' ';
-          state = 'template';
+      while (i < source.length && source[i] !== quote) {
+        if (source[i] === '\\') {
+          if (i + 1 >= source.length) fail(`unterminated escape at offset ${i}`);
+          value += source[i + 1];
+          i += 2;
+        } else {
+          value += source[i];
           i += 1;
-          continue;
         }
       }
+      if (i >= source.length) fail(`unterminated string at offset ${start}`);
+      i += 1;
+      push('string', value, start);
+      continue;
     }
-    if (current === '/' && next === '/') {
-      chars[i] = chars[i + 1] = ' ';
-      state = 'lineComment';
-      i += 2;
-    } else if (current === '/' && next === '*') {
-      chars[i] = chars[i + 1] = ' ';
-      state = 'blockComment';
-      i += 2;
-    } else if (current === '"' || current === "'") {
-      chars[i] = ' ';
-      quote = current;
-      state = 'string';
+    if (char === '`') {
+      const start = i;
+      let raw = '`';
       i += 1;
-    } else if (current === '`') {
-      chars[i] = ' ';
-      state = 'template';
-      i += 1;
-    } else {
-      i += 1;
+      let expressionDepth = 0;
+      while (i < source.length) {
+        const current = source[i];
+        raw += current;
+        if (current === '\\') {
+          if (i + 1 >= source.length) fail(`unterminated template escape at offset ${i}`);
+          raw += source[i + 1];
+          i += 2;
+          continue;
+        }
+        if (current === '$' && source[i + 1] === '{') {
+          raw += '{';
+          expressionDepth += 1;
+          i += 2;
+          continue;
+        }
+        if (current === '}' && expressionDepth > 0) expressionDepth -= 1;
+        if (current === '`' && expressionDepth === 0) {
+          i += 1;
+          push('template', raw, start);
+          break;
+        }
+        i += 1;
+      }
+      if (tokens[tokens.length - 1]?.start !== start) fail(`unterminated template at offset ${start}`);
+      continue;
     }
+    if (/[A-Za-z_$]/.test(char)) {
+      const start = i;
+      i += 1;
+      while (i < source.length && /[A-Za-z0-9_$]/.test(source[i])) i += 1;
+      push('identifier', source.slice(start, i), start);
+      continue;
+    }
+    const three = source.slice(i, i + 3);
+    const two = source.slice(i, i + 2);
+    if (['===', '!==', '>>>', '...'].includes(three)) { push('punctuation', three); i += 3; continue; }
+    if (['=>', '?.', '==', '!=', '<=', '>=', '&&', '||', '??', '++', '--'].includes(two)) { push('punctuation', two); i += 2; continue; }
+    push('punctuation', char);
+    i += 1;
   }
-  if (state === 'blockComment' || state === 'string' || state === 'template') fail(`unterminated ${state} in worker source`);
-  return chars.join('');
+  return tokens;
 };
 
-const findMatchingBrace = (masked, openingIndex) => {
+const findMatchingToken = (tokens, openingIndex, opening, closing) => {
   let depth = 0;
-  for (let i = openingIndex; i < masked.length; i += 1) {
-    if (masked[i] === '{') depth += 1;
-    else if (masked[i] === '}') {
+  for (let i = openingIndex; i < tokens.length; i += 1) {
+    if (tokens[i].value === opening) depth += 1;
+    else if (tokens[i].value === closing) {
       depth -= 1;
       if (depth === 0) return i;
     }
   }
-  fail(`unterminated function body at offset ${openingIndex}`);
+  fail(`unterminated ${opening}${closing} token sequence`);
 };
-const functionBody = (source, masked, functionName) => {
-  const declaration = new RegExp(`\\bconst\\s+${functionName}\\s*=\\s*\\([^)]*\\)\\s*=>\\s*\\{`, 'g');
-  const matches = [...masked.matchAll(declaration)];
-  if (matches.length !== 1) fail(`expected exactly one executable ${functionName} declaration, found ${matches.length}`);
-  const openingIndex = matches[0].index + matches[0][0].lastIndexOf('{');
-  const closingIndex = findMatchingBrace(masked, openingIndex);
-  return { source: source.slice(openingIndex + 1, closingIndex), masked: masked.slice(openingIndex + 1, closingIndex) };
+const functionTokens = (tokens, functionName) => {
+  const starts = [];
+  for (let i = 0; i < tokens.length - 4; i += 1) {
+    if (tokens[i].value === 'const' && tokens[i + 1].value === functionName && tokens[i + 2].value === '=') starts.push(i);
+  }
+  if (starts.length !== 1) fail(`expected exactly one executable ${functionName} declaration, found ${starts.length}`);
+  let cursor = starts[0] + 3;
+  if (tokens[cursor]?.value !== '(') fail(`${functionName} no longer has the expected arrow-function parameters`);
+  cursor = findMatchingToken(tokens, cursor, '(', ')') + 1;
+  if (tokens[cursor]?.value !== '=>' || tokens[cursor + 1]?.value !== '{') fail(`${functionName} no longer has the expected block arrow-function body`);
+  const close = findMatchingToken(tokens, cursor + 1, '{', '}');
+  return tokens.slice(cursor + 2, close);
 };
-const normalizeExecutable = value => value.replace(/\s+/g, ' ').trim();
-const validateExecutableBinding = (source, masked, binding) => {
-  const body = functionBody(source, masked, binding.functionName);
-  const normalizedBody = normalizeExecutable(body.masked);
-  const normalizedExpression = normalizeExecutable(executableMask(binding.expression));
-  if (!normalizedBody.includes(normalizedExpression)) {
+const tokenKey = token => `${token.kind}:${token.value}`;
+const containsTokenSequence = (haystack, needle) => {
+  const expected = needle.map(tokenKey);
+  for (let i = 0; i <= haystack.length - expected.length; i += 1) {
+    let matches = true;
+    for (let j = 0; j < expected.length; j += 1) {
+      if (tokenKey(haystack[i + j]) !== expected[j]) { matches = false; break; }
+    }
+    if (matches) return true;
+  }
+  return false;
+};
+const validateExecutableBinding = (tokens, binding) => {
+  const body = functionTokens(tokens, binding.functionName);
+  const expressionTokens = tokenize(binding.expression);
+  if (!containsTokenSequence(body, expressionTokens)) {
     fail(`${binding.functionName} no longer contains executable call-site binding: ${binding.expression}`);
   }
 };
@@ -209,8 +212,8 @@ const source = readInsideRoot(surface.path, 'worker');
 for (const fragment of expectedFragments) {
   if (!source.includes(fragment)) fail(`${surface.path} no longer contains push-worker evidence: ${fragment}`);
 }
-const maskedSource = executableMask(source);
-for (const binding of expectedCallSiteBindings) validateExecutableBinding(source, maskedSource, binding);
+const tokens = tokenize(source);
+for (const binding of expectedCallSiteBindings) validateExecutableBinding(tokens, binding);
 
 const documentation = manifest.canonicalDocumentation;
 if (!documentation || documentation.path !== expectedDocumentation.path) fail('canonical documentation path changed without reconciliation');
