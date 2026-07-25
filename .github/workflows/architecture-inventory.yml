@@ -5,6 +5,7 @@ on:
     paths:
       - 'app/**'
       - 'config/**'
+      - 'docs/architecture/PUSH_WORKER_AUTHORITY_DRIFT_GATE.md'
       - 'webpack/**'
       - 'scripts/**'
       - 'package.json'
@@ -16,6 +17,7 @@ on:
     paths:
       - 'app/**'
       - 'config/**'
+      - 'docs/architecture/PUSH_WORKER_AUTHORITY_DRIFT_GATE.md'
       - 'webpack/**'
       - 'scripts/**'
       - 'package.json'
