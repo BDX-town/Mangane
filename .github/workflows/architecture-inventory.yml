@@ -8,6 +8,7 @@ on:
       - 'docs/architecture/PUSH_WORKER_AUTHORITY_DRIFT_GATE.md'
       - 'docs/architecture/REACT_QUERY_AUTHORITY_DRIFT_GATE.md'
       - 'docs/architecture/SHARE_TARGET_AUTHORITY_DRIFT_GATE.md'
+      - 'docs/architecture/SERVICE_WORKER_CACHE_AUTHORITY_DRIFT_GATE.md'
       - 'webpack/**'
       - 'scripts/**'
       - 'package.json'
@@ -22,6 +23,7 @@ on:
       - 'docs/architecture/PUSH_WORKER_AUTHORITY_DRIFT_GATE.md'
       - 'docs/architecture/REACT_QUERY_AUTHORITY_DRIFT_GATE.md'
       - 'docs/architecture/SHARE_TARGET_AUTHORITY_DRIFT_GATE.md'
+      - 'docs/architecture/SERVICE_WORKER_CACHE_AUTHORITY_DRIFT_GATE.md'
       - 'webpack/**'
       - 'scripts/**'
       - 'package.json'
@@ -57,6 +59,7 @@ jobs:
           node scripts/check-push-worker-authority-inventory.js
           node scripts/check-react-query-authority-inventory.js
           node scripts/check-share-target-authority-inventory.js
+          node scripts/check-service-worker-cache-authority-inventory.js
       - name: Generate JSON and Markdown inventories
         shell: bash
         run: |
