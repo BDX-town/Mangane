@@ -34,28 +34,60 @@ const expectedFragments = [
   "self.addEventListener('push', handlePush);",
   "self.addEventListener('notificationclick', handleNotificationClick);",
 ];
+const expectedCallSiteBindings = [
+  "fetchFromApi(`/api/v1/notifications/${notification_id}`, 'get', access_token)",
+  "fetchFromApi(`/api/v1/statuses/${data.id}/reblog`, 'post', data.access_token)",
+  "fetchFromApi(`/api/v1/statuses/${data.id}/favourite`, 'post', data.access_token)",
+  'resolve(openUrl(event.notification.data.url))',
+];
+const expectedDocumentation = {
+  path: 'docs/architecture/PUSH_WORKER_AUTHORITY_DRIFT_GATE.md',
+  requiredFragments: [
+    'A passing gate does **not** mean this behavior is safe or accepted target architecture.',
+    'Credential-bearing notification data is a release-blocking legacy boundary',
+    'The gate exists so the behavior cannot silently change, disappear from documentation, or be mistaken for a completed security contract.',
+    'safe same-origin notification destination policy',
+    'replacement of notification-resident bearer tokens with scoped session or action-capability handling',
+  ],
+};
+
+const readInsideRoot = (relativePath, label) => {
+  const absolute = path.resolve(root, relativePath);
+  const relative = path.relative(root, absolute);
+  if (relative.startsWith('..') || path.isAbsolute(relative)) fail(`unsafe ${label} path ${relativePath}`);
+  return fs.readFileSync(absolute, 'utf8');
+};
+const validateExactList = (actual, expected, label) => {
+  if (!Array.isArray(actual) || actual.length !== expected.length || new Set(actual).size !== expected.length) {
+    fail(`${label} changed without checker reconciliation`);
+  }
+  for (const item of expected) {
+    if (!actual.includes(item)) fail(`required ${label} item is missing: ${item}`);
+  }
+};
 
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 if (manifest.schemaVersion !== 1) fail(`unsupported schemaVersion ${manifest.schemaVersion}`);
 if (manifest.status !== 'verified-current-bounded') fail('status changed without reconciliation');
+
 const surface = manifest.surface;
 if (!surface || surface.path !== 'app/soapbox/service_worker/web_push_notifications.ts') fail('push worker surface changed without reconciliation');
-if (!Array.isArray(surface.requiredFragments) || surface.requiredFragments.length !== expectedFragments.length) fail('requiredFragments changed without checker reconciliation');
-for (const fragment of expectedFragments) {
-  if (!surface.requiredFragments.includes(fragment)) fail(`required manifest fragment is missing: ${fragment}`);
-}
-const absolute = path.resolve(root, surface.path);
-const relative = path.relative(root, absolute);
-if (relative.startsWith('..') || path.isAbsolute(relative)) fail(`unsafe worker path ${surface.path}`);
-const source = fs.readFileSync(absolute, 'utf8');
-for (const fragment of expectedFragments) {
+validateExactList(surface.requiredFragments, expectedFragments, 'manifest fragment');
+validateExactList(surface.requiredCallSiteBindings, expectedCallSiteBindings, 'call-site binding');
+const source = readInsideRoot(surface.path, 'worker');
+for (const fragment of [...expectedFragments, ...expectedCallSiteBindings]) {
   if (!source.includes(fragment)) fail(`${surface.path} no longer contains push-worker evidence: ${fragment}`);
 }
-if (!Array.isArray(manifest.explicitUnknowns) || manifest.explicitUnknowns.length !== expectedUnknowns.length) fail('explicitUnknowns changed without reconciliation');
-if (new Set(manifest.explicitUnknowns).size !== expectedUnknowns.length) fail('explicitUnknowns must remain unique');
-for (const unknown of expectedUnknowns) {
-  if (!manifest.explicitUnknowns.includes(unknown)) fail(`required explicit unknown is missing: ${unknown}`);
+
+const documentation = manifest.canonicalDocumentation;
+if (!documentation || documentation.path !== expectedDocumentation.path) fail('canonical documentation path changed without reconciliation');
+validateExactList(documentation.requiredFragments, expectedDocumentation.requiredFragments, 'documentation fragment');
+const documentationSource = readInsideRoot(documentation.path, 'documentation');
+for (const fragment of expectedDocumentation.requiredFragments) {
+  if (!documentationSource.includes(fragment)) fail(`${documentation.path} no longer contains required security evidence: ${fragment}`);
 }
+
+validateExactList(manifest.explicitUnknowns, expectedUnknowns, 'explicit unknown');
 for (const invariant of expectedInvariants) {
   if (manifest.invariants?.[invariant] !== true) fail(`required invariant ${invariant} must remain true`);
 }
@@ -65,5 +97,7 @@ process.stdout.write(`${JSON.stringify({
   status: manifest.status,
   checkedSurface: surface.path,
   checkedFragments: expectedFragments.length,
+  checkedCallSiteBindings: expectedCallSiteBindings.length,
+  checkedDocumentationFragments: expectedDocumentation.requiredFragments.length,
   explicitUnknowns: manifest.explicitUnknowns.length,
 }, null, 2)}\n`);
