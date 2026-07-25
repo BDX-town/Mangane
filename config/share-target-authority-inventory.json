@@ -19,7 +19,7 @@
   },
   "developmentRegistration": {
     "path": "app/soapbox/main.tsx",
-    "requiredExecutableBinding": "navigator.serviceWorker.register('/share_target.js',{scope:'/'});"
+    "requiredExecutableBinding": "navigator.serviceWorker.register('/share_target.js',{scope:'/',});"
   },
   "canonicalDocumentation": {
     "path": "docs/architecture/SHARE_TARGET_AUTHORITY_DRIFT_GATE.md"
