@@ -2788,6 +2788,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@phosphor-icons/react@npm:2.1.10":
+  version: 2.1.10
+  resolution: "@phosphor-icons/react@npm:2.1.10"
+  peerDependencies:
+    react: ">= 16.8"
+    react-dom: ">= 16.8"
+  checksum: 9a469e1bdcabcd3db02eda13142d57be250847ebbeb82b33c8900580a6a23ed4f411dbb9b9deacef726ff3fa8ffc960c8868b518e448bd2cee654cedf3fa4bda
+  languageName: node
+  linkType: hard
+
 "@pkgr/core@npm:^0.1.0":
   version: 0.1.2
   resolution: "@pkgr/core@npm:0.1.2"
@@ -13190,6 +13200,7 @@ __metadata:
     "@jest/globals": "npm:^28.1.2"
     "@lcdp/offline-plugin": "npm:^5.1.0"
     "@metamask/providers": "npm:^9.0.0"
+    "@phosphor-icons/react": "npm:2.1.10"
     "@popperjs/core": "npm:^2.11.5"
     "@reach/menu-button": "npm:^0.16.2"
     "@reach/popover": "npm:^0.16.2"

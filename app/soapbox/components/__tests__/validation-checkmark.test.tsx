@@ -15,15 +15,17 @@ describe('<ValidationCheckmark />', () => {
     const text = 'some validation';
     render(<ValidationCheckmark text={text} isValid />);
 
-    expect(screen.getByTestId('svg-icon-loader')).toHaveClass('text-success-500');
-    expect(screen.getByTestId('svg-icon-loader')).not.toHaveClass('text-gray-400');
+    expect(screen.getByTestId('validation-state-icon')).toHaveClass('text-success-500');
+    expect(screen.getByTestId('validation-state-icon')).not.toHaveClass('text-gray-400');
+    expect(screen.getByTestId('validation-state-icon')).toHaveAttribute('aria-hidden', 'true');
   });
 
-  it('uses a gray check when valid', () => {
+  it('uses a gray pending state when invalid', () => {
     const text = 'some validation';
     render(<ValidationCheckmark text={text} isValid={false} />);
 
-    expect(screen.getByTestId('svg-icon-loader')).toHaveClass('text-gray-400');
-    expect(screen.getByTestId('svg-icon-loader')).not.toHaveClass('text-success-500');
+    expect(screen.getByTestId('validation-state-icon')).toHaveClass('text-gray-400');
+    expect(screen.getByTestId('validation-state-icon')).not.toHaveClass('text-success-500');
+    expect(screen.getByTestId('validation-state-icon')).toHaveAttribute('aria-hidden', 'true');
   });
 });

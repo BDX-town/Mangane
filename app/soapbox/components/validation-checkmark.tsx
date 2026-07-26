@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import { HStack, Icon, Text } from 'soapbox/components/ui';
+import { HStack, SemanticIcon, Text } from 'soapbox/components/ui';
 
 interface IValidationCheckmark {
   isValid: boolean
@@ -11,11 +11,14 @@ interface IValidationCheckmark {
 const ValidationCheckmark = ({ isValid, text }: IValidationCheckmark) => {
   return (
     <HStack alignItems='center' space={2} data-testid='validation-checkmark'>
-      <Icon
-        src={isValid ? require('@tabler/icons/check.svg') : require('@tabler/icons/point.svg')}
+      <SemanticIcon
+        name={isValid ? 'success' : 'pending'}
+        size={16}
+        weight={isValid ? 'bold' : 'fill'}
+        data-testid='validation-state-icon'
         className={classNames({
           'w-4 h-4': true,
-          'text-gray-400 fill-gray-400': !isValid,
+          'text-gray-400': !isValid,
           'text-success-500': isValid,
         })}
       />

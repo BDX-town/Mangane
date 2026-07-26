@@ -838,6 +838,14 @@
       "classification": "test-only"
     },
     {
+      "id": "environment-read:scripts/__tests__/icon-migration-foundation.test.js:44",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/icon-migration-foundation.test.js",
+      "line": 44,
+      "expression": "env: { ...process.env, ICON_MIGRATION_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
       "id": "environment-read:scripts/check-api-transport-authority-inventory.js:6",
       "kind": "environment-read",
       "path": "scripts/check-api-transport-authority-inventory.js",
@@ -998,6 +1006,14 @@
       "classification": "repository-tooling"
     },
     {
+      "id": "environment-read:scripts/check-icon-migration.js:13",
+      "kind": "environment-read",
+      "path": "scripts/check-icon-migration.js",
+      "line": 13,
+      "expression": "const root = path.resolve(process.env.ICON_MIGRATION_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
       "id": "environment-read:scripts/check-live-dependency-advisories.js:12",
       "kind": "environment-read",
       "path": "scripts/check-live-dependency-advisories.js",
@@ -1115,6 +1131,14 @@
       "path": "scripts/generate-html-safety-authority-inventory.js",
       "line": 8,
       "expression": "const root = path.resolve(process.env.HTML_SAFETY_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/generate-icon-migration-baseline.js:12",
+      "kind": "environment-read",
+      "path": "scripts/generate-icon-migration-baseline.js",
+      "line": 12,
+      "expression": "const root = path.resolve(process.env.ICON_MIGRATION_ROOT || path.resolve(__dirname, '..'));",
       "classification": "repository-tooling"
     },
     {
@@ -1250,7 +1274,7 @@
     "artifact-upload": 1,
     "console": 71,
     "notification-payload": 13,
-    "environment-read": 59,
+    "environment-read": 62,
     "clipboard": 3,
     "error-boundary": 2,
     "devtools": 1,

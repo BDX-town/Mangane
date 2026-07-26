@@ -2,7 +2,7 @@
 
 Status: **Phase 0F complete / executable**
 
-Last updated: 2026-07-25
+Last updated: 2026-07-26
 
 `config/design-component-authority-inventory.json` is the canonical generated inventory. It enumerates every production component and supporting UI module under shared components, features, and pages; every Sass/CSS entry; every discovered icon callsite; and keyboard, focus, gesture, motion, labeling, live-region, RTL, localization, and inline-style surfaces. `config/component-ownership-manifest.json` is the review-friendly ownership projection.
 
@@ -17,6 +17,10 @@ Known compatibility authorities are explicit in the manifest:
 - `config/design-tokens.json` is the canonical Phase 2 token source;
 - generated custom properties provide the runtime contract while inherited Sass
   themes and Tailwind colors remain explicit compatibility bridges.
+- `app/soapbox/components/ui/icon/semantic-icon-registry.ts` is the only
+  Phosphor import boundary;
+- `config/icon-migration-baseline.json` is the exact shrinking raw-provider
+  import authority. New raw icon imports fail CI.
 
 Framework7 is an accepted target and has no current source imports. Phase 2
 defines bounded Framework7 custom-property aliases backed only by canonical
@@ -26,4 +30,8 @@ gesture alternatives, and pointer targets are preserved and tested.
 
 ## Executable evidence
 
-Run `yarn generate:design-authority`, review both generated manifests, then run `yarn check:design-authority` and `yarn test:design-authority`. CI performs the check plus adversarial mutation tests. Unreconciled component, style, icon, keyboard/focus, or Framework7 drift fails.
+Run `yarn generate:design-authority`, review both generated manifests, then run
+`yarn check:design-authority`, `yarn test:design-authority`,
+`yarn check:icons`, and `yarn test:icons`. CI performs the checks plus
+adversarial mutation tests. Unreconciled component, style, icon,
+keyboard/focus, or Framework7 drift fails.

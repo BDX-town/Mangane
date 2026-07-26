@@ -1,0 +1,2040 @@
+{
+  "schemaVersion": 1,
+  "status": "phase-2b-in-progress",
+  "policy": "legacy-imports-may-only-shrink-through-reviewed-baseline-updates",
+  "canonicalRegistry": "app/soapbox/components/ui/icon/semantic-icon-registry.ts",
+  "providers": {
+    "phosphor": 1,
+    "tabler": 371,
+    "bootstrap-icons": 0,
+    "cryptocurrency-icons": 2,
+    "feather-icons": 0,
+    "fork-awesome": 0,
+    "iconoir": 0,
+    "line-awesome": 1
+  },
+  "imports": [
+    {
+      "provider": "cryptocurrency-icons",
+      "path": "app/soapbox/features/crypto_donate/components/crypto_icon.tsx",
+      "request": "cryptocurrency-icons/svg/color/generic.svg",
+      "count": 1
+    },
+    {
+      "provider": "cryptocurrency-icons",
+      "path": "app/soapbox/features/crypto_donate/utils/manifest_map.ts",
+      "request": "cryptocurrency-icons/manifest.json",
+      "count": 1
+    },
+    {
+      "provider": "line-awesome",
+      "path": "app/styles/application.scss",
+      "request": "line-awesome/dist/font-awesome-line-awesome/css/all.css",
+      "count": 1
+    },
+    {
+      "provider": "phosphor",
+      "path": "app/soapbox/components/ui/icon/semantic-icon-registry.ts",
+      "request": "@phosphor-icons/react",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/actions/moderation.tsx",
+      "request": "@tabler/icons/alert-triangle.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/actions/moderation.tsx",
+      "request": "@tabler/icons/trash.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/actions/moderation.tsx",
+      "request": "@tabler/icons/user-minus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/actions/moderation.tsx",
+      "request": "@tabler/icons/user-off.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/account_search.tsx",
+      "request": "@tabler/icons/backspace.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/account_search.tsx",
+      "request": "@tabler/icons/search.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/account.tsx",
+      "request": "@tabler/icons/pencil.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/announcements/reactions-bar.tsx",
+      "request": "@tabler/icons/plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/birthday_input.tsx",
+      "request": "@tabler/icons/chevron-left.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/birthday_input.tsx",
+      "request": "@tabler/icons/chevron-right.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/display-name.tsx",
+      "request": "@tabler/icons/clock.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/domain.tsx",
+      "request": "@tabler/icons/lock-open.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/domain.tsx",
+      "request": "@tabler/icons/world.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/dropdown_menu.tsx",
+      "request": "@tabler/icons/dots.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/emoji_picker.tsx",
+      "request": "@tabler/icons/mood-happy.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/emoji_picker.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/error_boundary.tsx",
+      "request": "@tabler/icons/home.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/list.tsx",
+      "request": "@tabler/icons/chevron-right.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/load_gap.tsx",
+      "request": "@tabler/icons/dots.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/media_gallery.js",
+      "request": "@tabler/icons/eye-off.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/media_gallery.js",
+      "request": "@tabler/icons/eye.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/media_gallery.js",
+      "request": "@tabler/icons/paperclip.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/media_gallery.js",
+      "request": "@tabler/icons/volume.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/modal_root.js",
+      "request": "@tabler/icons/trash.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/polls/poll-option.tsx",
+      "request": "@tabler/icons/check.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/polls/poll-option.tsx",
+      "request": "@tabler/icons/circle-check.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/quoted-status.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/scroll-top-button.tsx",
+      "request": "@tabler/icons/arrow-bar-to-up.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar_menu.tsx",
+      "request": "@tabler/icons/bell.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar_menu.tsx",
+      "request": "@tabler/icons/bookmark.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar_menu.tsx",
+      "request": "@tabler/icons/chevron-down.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar_menu.tsx",
+      "request": "@tabler/icons/dashboard.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar_menu.tsx",
+      "request": "@tabler/icons/folder.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar_menu.tsx",
+      "request": "@tabler/icons/hash.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar_menu.tsx",
+      "request": "@tabler/icons/hexagon.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar_menu.tsx",
+      "request": "@tabler/icons/home.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar_menu.tsx",
+      "request": "@tabler/icons/list.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar_menu.tsx",
+      "request": "@tabler/icons/logout.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar_menu.tsx",
+      "request": "@tabler/icons/messages.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar_menu.tsx",
+      "request": "@tabler/icons/plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar_menu.tsx",
+      "request": "@tabler/icons/settings.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar_menu.tsx",
+      "request": "@tabler/icons/user-plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar_menu.tsx",
+      "request": "@tabler/icons/world.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar_menu.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar-navigation.tsx",
+      "request": "@tabler/icons",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar-navigation.tsx",
+      "request": "@tabler/icons/bell.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar-navigation.tsx",
+      "request": "@tabler/icons/bookmark.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar-navigation.tsx",
+      "request": "@tabler/icons/dashboard.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar-navigation.tsx",
+      "request": "@tabler/icons/folder.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar-navigation.tsx",
+      "request": "@tabler/icons/hash.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar-navigation.tsx",
+      "request": "@tabler/icons/hexagon.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar-navigation.tsx",
+      "request": "@tabler/icons/home.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar-navigation.tsx",
+      "request": "@tabler/icons/list.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar-navigation.tsx",
+      "request": "@tabler/icons/messages.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar-navigation.tsx",
+      "request": "@tabler/icons/settings.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar-navigation.tsx",
+      "request": "@tabler/icons/user-plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/sidebar-navigation.tsx",
+      "request": "@tabler/icons/world.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status_content.tsx",
+      "request": "@tabler/icons/chevron-right.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status_content.tsx",
+      "request": "@tabler/icons/paperclip.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/alert-triangle.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/at.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/ban.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/bell-off.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/bell.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/bookmark.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/circle-x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/dots.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/edit.svg",
+      "count": 3
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/flag.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/gavel.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/heart.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/link.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/lock.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/mail.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/message-circle-2.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/pencil.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/pin.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/pinned-off.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/quote.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/repeat.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/share.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/trash.svg",
+      "count": 3
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/upload.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/user-minus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status-action-bar.tsx",
+      "request": "@tabler/icons/user-off.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status.tsx",
+      "request": "@tabler/icons/eye-off.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status.tsx",
+      "request": "@tabler/icons/lock.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status.tsx",
+      "request": "@tabler/icons/mail.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status.tsx",
+      "request": "@tabler/icons/pinned.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status.tsx",
+      "request": "@tabler/icons/repeat.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/status.tsx",
+      "request": "@tabler/icons/world.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/thumb_navigation.tsx",
+      "request": "@tabler/icons/bell.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/thumb_navigation.tsx",
+      "request": "@tabler/icons/building-community.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/thumb_navigation.tsx",
+      "request": "@tabler/icons/hexagon.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/thumb_navigation.tsx",
+      "request": "@tabler/icons/home.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/thumb_navigation.tsx",
+      "request": "@tabler/icons/search.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/thumb_navigation.tsx",
+      "request": "@tabler/icons/world.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/ui/card/card.tsx",
+      "request": "@tabler/icons/arrow-left.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/ui/icon/__tests__/svg-icon.test.tsx",
+      "request": "@tabler/icons/code.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/ui/input/input.tsx",
+      "request": "@tabler/icons/eye-off.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/ui/input/input.tsx",
+      "request": "@tabler/icons/eye.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/ui/modal/modal.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/ui/streamfield/streamfield.tsx",
+      "request": "@tabler/icons/plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/ui/streamfield/streamfield.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/ui/widget/widget.tsx",
+      "request": "@tabler/icons/arrow-right.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/components/upload-progress.tsx",
+      "request": "@tabler/icons/cloud-upload.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/containers/account_container.js",
+      "request": "@tabler/icons/minus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account_gallery/components/media_item.tsx",
+      "request": "@tabler/icons/eye-off.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account_gallery/components/media_item.tsx",
+      "request": "@tabler/icons/volume.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account_timeline/components/moved_note.tsx",
+      "request": "@tabler/icons/briefcase.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/arrow-down-circle.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/arrow-up-circle.svg",
+      "count": 4
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/at.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/ban.svg",
+      "count": 7
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/check.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/circle-x.svg",
+      "count": 3
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/coin.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/dots.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/external-link.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/flag.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/gavel.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/list.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/mail.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/repeat.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/search.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/settings.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/upload.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/user-check.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/user-minus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/user-off.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/user-x.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/account/components/header.tsx",
+      "request": "@tabler/icons/user.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/admin/components/report_status.tsx",
+      "request": "@tabler/icons/dots-vertical.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/admin/components/report_status.tsx",
+      "request": "@tabler/icons/pencil.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/admin/components/report_status.tsx",
+      "request": "@tabler/icons/trash.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/admin/components/report.tsx",
+      "request": "@tabler/icons/dots-vertical.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/admin/components/report.tsx",
+      "request": "@tabler/icons/user-minus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/admin/components/report.tsx",
+      "request": "@tabler/icons/user-off.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/admin/components/unapproved_account.tsx",
+      "request": "@tabler/icons/check.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/admin/components/unapproved_account.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/aliases/components/account.tsx",
+      "request": "@tabler/icons/plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/aliases/components/search.tsx",
+      "request": "@tabler/icons/backspace.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/aliases/index.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/audio/index.js",
+      "request": "@tabler/icons/download.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/audio/index.js",
+      "request": "@tabler/icons/player-pause.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/audio/index.js",
+      "request": "@tabler/icons/player-play.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/audio/index.js",
+      "request": "@tabler/icons/volume-3.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/audio/index.js",
+      "request": "@tabler/icons/volume.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/auth_layout/index.tsx",
+      "request": "@tabler/icons/user.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/auth_login/components/consumer-button.tsx",
+      "request": "@tabler/icons/brand-facebook.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/auth_login/components/consumer-button.tsx",
+      "request": "@tabler/icons/brand-github.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/auth_login/components/consumer-button.tsx",
+      "request": "@tabler/icons/brand-google.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/auth_login/components/consumer-button.tsx",
+      "request": "@tabler/icons/brand-slack.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/auth_login/components/consumer-button.tsx",
+      "request": "@tabler/icons/brand-twitter.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/auth_login/components/consumer-button.tsx",
+      "request": "@tabler/icons/brand-windows.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/auth_login/components/consumer-button.tsx",
+      "request": "@tabler/icons/key.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/auth_login/components/registration_form.tsx",
+      "request": "@tabler/icons/check.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/birthdays/account.tsx",
+      "request": "@tabler/icons/ballon.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/bubble_timeline/index.tsx",
+      "request": "@tabler/icons/chevron-down.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/bubble_timeline/index.tsx",
+      "request": "@tabler/icons/chevron-up.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/community_timeline/index.tsx",
+      "request": "@tabler/icons/chevron-down.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/community_timeline/index.tsx",
+      "request": "@tabler/icons/chevron-up.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/compose_form.js",
+      "request": "@tabler/icons/alert-triangle.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/compose_form.js",
+      "request": "@tabler/icons/lock.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/compose_form.js",
+      "request": "@tabler/icons/mail.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/markdown_button.tsx",
+      "request": "@tabler/icons/markdown.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/poll_button.tsx",
+      "request": "@tabler/icons/chart-bar.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/privacy_dropdown.tsx",
+      "request": "@tabler/icons/eye-off.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/privacy_dropdown.tsx",
+      "request": "@tabler/icons/lock.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/privacy_dropdown.tsx",
+      "request": "@tabler/icons/mail.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/privacy_dropdown.tsx",
+      "request": "@tabler/icons/world.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/reply_indicator.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/schedule_button.tsx",
+      "request": "@tabler/icons/calendar-stats.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/schedule_form.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/search_results.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/search.tsx",
+      "request": "@tabler/icons/search.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/search.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/spoiler_button.tsx",
+      "request": "@tabler/icons/alert-triangle.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/upload_button.tsx",
+      "request": "@tabler/icons/paperclip.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/upload_button.tsx",
+      "request": "@tabler/icons/photo.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/upload.tsx",
+      "request": "@tabler/icons/book.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/upload.tsx",
+      "request": "@tabler/icons/file-code.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/upload.tsx",
+      "request": "@tabler/icons/file-spreadsheet.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/upload.tsx",
+      "request": "@tabler/icons/file-text.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/upload.tsx",
+      "request": "@tabler/icons/file-zip.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/upload.tsx",
+      "request": "@tabler/icons/paperclip.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/upload.tsx",
+      "request": "@tabler/icons/presentation.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/upload.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/compose/components/upload.tsx",
+      "request": "@tabler/icons/zoom-in.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/conversations/components/conversation.tsx",
+      "request": "@tabler/icons/messages.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/crypto_donate/components/crypto_address.tsx",
+      "request": "@tabler/icons/external-link.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/crypto_donate/components/crypto_address.tsx",
+      "request": "@tabler/icons/qrcode.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/crypto_donate/components/detailed_crypto_address.tsx",
+      "request": "@tabler/icons/external-link.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/developers/developers-menu.tsx",
+      "request": "@tabler/icons/apps.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/developers/developers-menu.tsx",
+      "request": "@tabler/icons/code-plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/developers/developers-menu.tsx",
+      "request": "@tabler/icons/home.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/developers/developers-menu.tsx",
+      "request": "@tabler/icons/logout.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/developers/developers-menu.tsx",
+      "request": "@tabler/icons/mood-sad.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/developers/developers-menu.tsx",
+      "request": "@tabler/icons/refresh.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/federation_restrictions/components/instance_restrictions.js",
+      "request": "@tabler/icons/check.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/federation_restrictions/components/instance_restrictions.js",
+      "request": "@tabler/icons/eye-off.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/federation_restrictions/components/instance_restrictions.js",
+      "request": "@tabler/icons/lock-open.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/federation_restrictions/components/instance_restrictions.js",
+      "request": "@tabler/icons/lock.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/federation_restrictions/components/instance_restrictions.js",
+      "request": "@tabler/icons/photo-off.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/federation_restrictions/components/instance_restrictions.js",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/federation_restrictions/components/restricted_instance.tsx",
+      "request": "@tabler/icons/caret-down.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/federation_restrictions/components/restricted_instance.tsx",
+      "request": "@tabler/icons/caret-right.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/feed-filtering/feed-carousel.tsx",
+      "request": "@tabler/icons/chevron-left.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/feed-filtering/feed-carousel.tsx",
+      "request": "@tabler/icons/chevron-right.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/feed-filtering/feed-carousel.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/filters/index.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/follow_requests/components/account_authorize.tsx",
+      "request": "@tabler/icons/check.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/follow_requests/components/account_authorize.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/followed_tags/index.tsx",
+      "request": "@tabler/icons/arrow-right.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/followed_tags/index.tsx",
+      "request": "@tabler/icons/minus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/followed_tags/index.tsx",
+      "request": "@tabler/icons/plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/groups/removed_accounts/index.js",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/hashtag_timeline/index.tsx",
+      "request": "@tabler/icons/minus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/hashtag_timeline/index.tsx",
+      "request": "@tabler/icons/plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/home_timeline/components/column_settings.js",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/list_adder/components/list.tsx",
+      "request": "@tabler/icons/list.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/list_adder/components/list.tsx",
+      "request": "@tabler/icons/plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/list_adder/components/list.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/list_editor/components/account.tsx",
+      "request": "@tabler/icons/plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/list_editor/components/account.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/list_editor/components/search.tsx",
+      "request": "@tabler/icons/backspace.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/lists/index.tsx",
+      "request": "@tabler/icons/list.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/lists/index.tsx",
+      "request": "@tabler/icons/pencil.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/lists/index.tsx",
+      "request": "@tabler/icons/trash.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/column_settings.js",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
+      "request": "@tabler/icons/at.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
+      "request": "@tabler/icons/bell-ringing.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
+      "request": "@tabler/icons/bell.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
+      "request": "@tabler/icons/chart-bar.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
+      "request": "@tabler/icons/eraser.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
+      "request": "@tabler/icons/heart.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
+      "request": "@tabler/icons/mood-smile.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
+      "request": "@tabler/icons/repeat.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
+      "request": "@tabler/icons/user-plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/follow_request.js",
+      "request": "@tabler/icons/check.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/follow_request.js",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/notification.tsx",
+      "request": "@tabler/icons/at.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/notification.tsx",
+      "request": "@tabler/icons/bell-ringing.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/notification.tsx",
+      "request": "@tabler/icons/briefcase.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/notification.tsx",
+      "request": "@tabler/icons/chart-bar.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/notification.tsx",
+      "request": "@tabler/icons/heart.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/notification.tsx",
+      "request": "@tabler/icons/messages.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/notification.tsx",
+      "request": "@tabler/icons/mood-happy.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/notification.tsx",
+      "request": "@tabler/icons/pencil.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/notification.tsx",
+      "request": "@tabler/icons/repeat.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/components/notification.tsx",
+      "request": "@tabler/icons/user-plus.svg",
+      "count": 3
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/notifications/containers/column_settings_container.js",
+      "request": "@tabler/icons/eraser.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/onboarding/steps/avatar-selection-step.tsx",
+      "request": "@tabler/icons/plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/onboarding/steps/completed-step.tsx",
+      "request": "@tabler/icons/confetti.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/onboarding/steps/cover-photo-selection-step.tsx",
+      "request": "@tabler/icons/plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/onboarding/steps/privacy.tsx",
+      "request": "@tabler/icons/eye-off.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/onboarding/steps/privacy.tsx",
+      "request": "@tabler/icons/lock.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/onboarding/steps/privacy.tsx",
+      "request": "@tabler/icons/mail.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/onboarding/steps/privacy.tsx",
+      "request": "@tabler/icons/world.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/public_layout/components/header.tsx",
+      "request": "@tabler/icons/help.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/public_timeline/components/column_settings.js",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/public_timeline/index.tsx",
+      "request": "@tabler/icons/chevron-down.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/public_timeline/index.tsx",
+      "request": "@tabler/icons/chevron-up.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/remote_timeline/components/button-pin.tsx",
+      "request": "@tabler/icons",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/remote_timeline/index.tsx",
+      "request": "@tabler/icons/chevron-down.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/remote_timeline/index.tsx",
+      "request": "@tabler/icons/chevron-up.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/reply_mentions/account.tsx",
+      "request": "@tabler/icons/plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/reply_mentions/account.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/scheduled_statuses/components/scheduled_status_action_bar.tsx",
+      "request": "@tabler/icons/calendar-stats.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/scheduled_statuses/components/scheduled_status_action_bar.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/status/components/card.tsx",
+      "request": "@tabler/icons/external-link.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/status/components/card.tsx",
+      "request": "@tabler/icons/file-text.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/status/components/card.tsx",
+      "request": "@tabler/icons/link.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/status/components/card.tsx",
+      "request": "@tabler/icons/player-play.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/status/components/card.tsx",
+      "request": "@tabler/icons/zoom-in.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/status/components/detailed-status.tsx",
+      "request": "@tabler/icons/check.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/status/components/detailed-status.tsx",
+      "request": "@tabler/icons/eye-off.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/status/components/detailed-status.tsx",
+      "request": "@tabler/icons/language.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/status/components/detailed-status.tsx",
+      "request": "@tabler/icons/lock.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/status/components/detailed-status.tsx",
+      "request": "@tabler/icons/mail.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/status/components/detailed-status.tsx",
+      "request": "@tabler/icons/world.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/status/components/status-interaction-bar.tsx",
+      "request": "@tabler/icons/heart.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/status/components/status-interaction-bar.tsx",
+      "request": "@tabler/icons/repeat.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/accordion.tsx",
+      "request": "@tabler/icons/dots-vertical.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/action-button.tsx",
+      "request": "@tabler/icons/ban.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/action-button.tsx",
+      "request": "@tabler/icons/plus.svg",
+      "count": 2
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/boost_modal.tsx",
+      "request": "@tabler/icons/repeat.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/bundle_column_error.tsx",
+      "request": "@tabler/icons/refresh.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/compose_modal.tsx",
+      "request": "@tabler/icons/trash.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/compose-button.tsx",
+      "request": "@tabler/icons/pencil-plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/instance_info_panel.tsx",
+      "request": "@tabler/icons/pin.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/instance_info_panel.tsx",
+      "request": "@tabler/icons/pinned-off.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/instance_moderation_panel.tsx",
+      "request": "@tabler/icons/dots-vertical.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/instance_moderation_panel.tsx",
+      "request": "@tabler/icons/edit.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/media_modal.js",
+      "request": "@tabler/icons/arrow-left.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/media_modal.js",
+      "request": "@tabler/icons/arrow-right.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/media_modal.js",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/modals/landing-page-modal.tsx",
+      "request": "@tabler/icons/lifebuoy.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/modals/report-modal/steps/other-actions-step.tsx",
+      "request": "@tabler/icons/arrows-minimize.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/modals/report-modal/steps/other-actions-step.tsx",
+      "request": "@tabler/icons/plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/navbar.tsx",
+      "request": "@tabler/icons/help.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/navbar.tsx",
+      "request": "@tabler/icons/search.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/profile_fields_panel.tsx",
+      "request": "@tabler/icons/check.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/profile_info_panel.tsx",
+      "request": "@tabler/icons/ballon.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/profile_info_panel.tsx",
+      "request": "@tabler/icons/calendar.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/profile_info_panel.tsx",
+      "request": "@tabler/icons/link.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/profile_info_panel.tsx",
+      "request": "@tabler/icons/lock.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/profile_info_panel.tsx",
+      "request": "@tabler/icons/map-pin.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/profile-dropdown.tsx",
+      "request": "@tabler/icons/logout.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/profile-dropdown.tsx",
+      "request": "@tabler/icons/plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/reply_mentions_modal.tsx",
+      "request": "@tabler/icons/arrow-left.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/subscription-button.tsx",
+      "request": "@tabler/icons/bell-ringing.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/subscription-button.tsx",
+      "request": "@tabler/icons/bell.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/theme-selector.tsx",
+      "request": "@tabler/icons/chevron-down.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/theme-selector.tsx",
+      "request": "@tabler/icons/device-desktop.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/theme-selector.tsx",
+      "request": "@tabler/icons/moon.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/theme-selector.tsx",
+      "request": "@tabler/icons/sun.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/upload_area.tsx",
+      "request": "@tabler/icons/cloud-upload.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/components/who-to-follow-panel.tsx",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/ui/index.tsx",
+      "request": "@tabler/icons/pencil-plus.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/verification/email_passthru.tsx",
+      "request": "@tabler/icons/circle-check.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/verification/email_passthru.tsx",
+      "request": "@tabler/icons/circle-x.svg",
+      "count": 3
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/verification/registration.tsx",
+      "request": "@tabler/icons/at.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/verification/steps/email-verification.tsx",
+      "request": "@tabler/icons/send.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/video/index.js",
+      "request": "@tabler/icons/arrows-maximize.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/video/index.js",
+      "request": "@tabler/icons/arrows-minimize.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/video/index.js",
+      "request": "@tabler/icons/eye-off.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/video/index.js",
+      "request": "@tabler/icons/maximize.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/video/index.js",
+      "request": "@tabler/icons/player-pause.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/video/index.js",
+      "request": "@tabler/icons/player-play.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/video/index.js",
+      "request": "@tabler/icons/volume-3.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/video/index.js",
+      "request": "@tabler/icons/volume.svg",
+      "count": 1
+    },
+    {
+      "provider": "tabler",
+      "path": "app/soapbox/features/video/index.js",
+      "request": "@tabler/icons/x.svg",
+      "count": 1
+    }
+  ]
+}

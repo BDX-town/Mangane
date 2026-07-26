@@ -15,6 +15,7 @@ export { default as FormActions } from './form-actions/form-actions';
 export { default as FormGroup } from './form-group/form-group';
 export { default as HStack } from './hstack/hstack';
 export { default as Icon } from './icon/icon';
+export { default as SemanticIcon } from './icon/semantic-icon';
 export { default as IconButton } from './icon-button/icon-button';
 export { default as Input } from './input/input';
 export { default as Layout } from './layout/layout';

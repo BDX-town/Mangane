@@ -40,6 +40,22 @@ assert.deepStrictEqual(
   ['config/design-tokens.json', 'app/styles/design-tokens.generated.scss'],
   'Canonical Phase 2 token authority drifted',
 );
+assert.equal(
+  manifest.authorities.iconRegistry,
+  'app/soapbox/components/ui/icon/semantic-icon-registry.ts',
+  'Canonical semantic icon registry drifted',
+);
+assert.equal(
+  manifest.authorities.iconMigrationBaseline,
+  'config/icon-migration-baseline.json',
+  'Icon migration baseline authority drifted',
+);
+assert.ok(
+  manifest.icons
+    .filter(item => item.provider === 'phosphor')
+    .every(item => item.path === manifest.authorities.iconRegistry && item.disposition === 'canonical-semantic-registry'),
+  'Raw Phosphor imports are forbidden outside the canonical semantic registry',
+);
 
 const reducedMotion = read('app/styles/accessibility.scss');
 for (const evidence of ['prefers-reduced-motion: reduce', 'animation-duration: 0.01ms', 'transition-duration: 0.01ms', 'scroll-behavior: auto']) {
@@ -66,6 +82,7 @@ for (const document of [
   'docs/architecture/SCREENSHOT_AND_INTERACTION_BASELINE_PLAN.md',
   'docs/architecture/PHASE_2_DESIGN_FOUNDATION.md',
   'config/design-tokens.json',
+  'config/icon-migration-baseline.json',
 ]) assert.ok(fs.existsSync(path.join(root, document)), `Required Phase 0F artifact missing: ${document}`);
 
 process.stdout.write(`${JSON.stringify(manifest.counts, null, 2)}\n`);

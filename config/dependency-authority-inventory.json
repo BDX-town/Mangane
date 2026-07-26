@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "status": "current-phase-0a-evidence",
   "sourceDigests": {
-    "packageJsonSha256": "e15ecaa1ef3143ba6765f94b97c10802f19fecfcce36acc805abc6ec9cd2edf4",
+    "packageJsonSha256": "c383b023e03e50674c8ce5f05a5d5576f2ffd568d3757529a1e74c33f5bf01c6",
     "twemojiDownloaderSha256": "89f1d9fec29b1d53c8862466efbfc270fc5324bfc476095ced7ae3ee5b26c303",
-    "yarnLockSha256": "fd3c42b09e5f7f2288053cfca0bec8f78fc23506ed6c574d3fe28be0dbb3e47d"
+    "yarnLockSha256": "1b73722b7bd8068c6be269fb3edbe5b2955920416492b05b559864e1895c7239"
   },
   "repositorySupplyChain": {
     "postinstall": {
@@ -28,14 +28,14 @@
       "moderate": 107,
       "low": 8
     },
-    "directPackages": 205,
+    "directPackages": 206,
     "duplicatePackageNames": 229,
     "installScriptPackages": 4,
     "nativeBindingPackages": 5,
     "networkInstallIndicatorPackages": 0,
     "packageScriptNetworkIndicatorPackages": 45,
-    "codeGenerationIndicatorPackages": 658,
-    "resolvedPackages": 1992,
+    "codeGenerationIndicatorPackages": 659,
+    "resolvedPackages": 1993,
     "unpinnedActionUses": 24
   },
   "packages": [
@@ -11454,6 +11454,57 @@
       "version": "6.41.0"
     },
     {
+      "classification": "runtime",
+      "declaredSection": "dependencies",
+      "descriptors": [
+        "@phosphor-icons/react@npm:2.1.10"
+      ],
+      "direct": true,
+      "executionContexts": [
+        "browser"
+      ],
+      "license": {
+        "evidence": "Installed package.json metadata.",
+        "expression": "MIT",
+        "obligations": [
+          "retain-applicable-copyright-license-and-notice-text"
+        ],
+        "status": "declared"
+      },
+      "locator": "@phosphor-icons/react@npm:2.1.10",
+      "maintenanceStatus": "not-declared-deprecated-in-audit-snapshot",
+      "name": "@phosphor-icons/react",
+      "owner": "frontend-runtime-maintainers",
+      "upstream": {
+        "author": "Tobias Fried",
+        "repository": "phosphor-icons/react"
+      },
+      "purpose": "A clean and friendly icon family for React",
+      "replacementRelevance": "none-recorded",
+      "rootDependencies": [
+        "@phosphor-icons/react"
+      ],
+      "installBehavior": {
+        "hasInstallScript": false,
+        "hasInstallTimeNetworkIndicator": false,
+        "hasPackageScriptNetworkIndicator": false,
+        "hasCodeGenerationIndicator": true,
+        "hasNativeBinding": false,
+        "platformConstraints": {
+          "cpu": [],
+          "os": []
+        },
+        "scripts": {}
+      },
+      "usageEvidence": [
+        {
+          "path": "app/soapbox/components/ui/icon/semantic-icon-registry.ts",
+          "context": "browser"
+        }
+      ],
+      "version": "2.1.10"
+    },
+    {
       "classification": "unverified-transitive",
       "declaredSection": null,
       "descriptors": [
@@ -12804,10 +12855,6 @@
         },
         {
           "path": "app/soapbox/components/upload-progress.tsx",
-          "context": "browser"
-        },
-        {
-          "path": "app/soapbox/components/validation-checkmark.tsx",
           "context": "browser"
         },
         {
@@ -16119,6 +16166,10 @@
           "context": "build"
         },
         {
+          "path": "package.json#scripts.check:icons",
+          "context": "build"
+        },
+        {
           "path": "package.json#scripts.check:network-callsites",
           "context": "build"
         },
@@ -16148,6 +16199,10 @@
         },
         {
           "path": "package.json#scripts.generate:html-safety",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.generate:icons",
           "context": "build"
         },
         {
@@ -16212,6 +16267,10 @@
         },
         {
           "path": "package.json#scripts.test:html-safety",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.test:icons",
           "context": "build"
         },
         {
@@ -81737,11 +81796,19 @@
           "context": "browser"
         },
         {
+          "path": "app/soapbox/components/ui/icon/__tests__/semantic-icon.test.tsx",
+          "context": "test"
+        },
+        {
           "path": "app/soapbox/components/ui/icon/__tests__/svg-icon.test.tsx",
           "context": "test"
         },
         {
           "path": "app/soapbox/components/ui/icon/icon.tsx",
+          "context": "browser"
+        },
+        {
+          "path": "app/soapbox/components/ui/icon/semantic-icon.tsx",
           "context": "browser"
         },
         {
@@ -83199,6 +83266,10 @@
         {
           "path": "app/soapbox/utils/redirect.ts",
           "context": "browser"
+        },
+        {
+          "path": "jest/phosphor-icon-mock.js",
+          "context": "test"
         }
       ],
       "version": "17.0.2"
@@ -110925,7 +110996,7 @@
     },
     {
       "action": "actions/checkout",
-      "line": 46,
+      "line": 50,
       "local": false,
       "path": ".github/workflows/design-authority.yml",
       "pinnedToCommit": true,
@@ -110933,7 +111004,7 @@
     },
     {
       "action": "actions/setup-node",
-      "line": 47,
+      "line": 51,
       "local": false,
       "path": ".github/workflows/design-authority.yml",
       "pinnedToCommit": true,

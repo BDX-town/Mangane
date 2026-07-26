@@ -104,6 +104,8 @@
     "app/soapbox/components/ui/hstack/hstack.tsx": "design-system",
     "app/soapbox/components/ui/icon-button/icon-button.tsx": "design-system",
     "app/soapbox/components/ui/icon/icon.tsx": "design-system",
+    "app/soapbox/components/ui/icon/semantic-icon-registry.ts": "design-system",
+    "app/soapbox/components/ui/icon/semantic-icon.tsx": "design-system",
     "app/soapbox/components/ui/icon/svg-icon.tsx": "design-system",
     "app/soapbox/components/ui/index.ts": "design-system",
     "app/soapbox/components/ui/input/input.tsx": "design-system",
@@ -473,7 +475,7 @@
   },
   "owners": {
     "shared-components": 85,
-    "design-system": 39,
+    "design-system": 41,
     "shared-containers": 5,
     "feature:about": 1,
     "feature:account": 1,
