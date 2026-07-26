@@ -8,7 +8,7 @@ Last updated: 2026-07-25
 
 The canonical pull-request workflow is [`.github/workflows/phase-0g-quality.yml`](../../.github/workflows/phase-0g-quality.yml). [`scripts/check-ci-baseline.js`](../../scripts/check-ci-baseline.js) rejects missing jobs, mutable action tags, broadened permissions, unbounded jobs, non-immutable installs, missing owner commands, and `continue-on-error`.
 
-Every job uses Node 18.20.8, repository-pinned Yarn 4.0.2, `yarn install --immutable --mode=skip-build`, read-only repository permission, non-persisted checkout credentials, a timeout, and stale-run cancellation. No job receives a secret. No required job is allowed to continue after failure.
+Every job uses Node 18.20.8, repository-pinned Yarn 4.0.2, `yarn install --immutable --mode=skip-build`, read-only repository permission, non-persisted checkout credentials, a timeout, and stale-run cancellation. Build jobs then run the explicitly reviewed, checksum-pinned `yarn prepare:twemoji` acquisition step; dependency and repository install scripts remain disabled. No job receives a secret. No required job is allowed to continue after failure.
 
 ## Canonical workflow and job matrix
 
@@ -40,7 +40,7 @@ ESLint has zero errors. The inherited 183 warnings are a hard ceiling enforced b
 - Production webpack owns actual service-worker integration and bundle evidence.
 - The dependency workflow owns lockfile, license, action-pin and current-advisory evidence.
 
-The current full Jest run passes 151 suites and 718 tests, and the Node-native governance runner passes 143 adversarial and authority tests. Coverage is 36.86% statements, 27.71% branches, 26.39% functions, and 38.17% lines. The committed Jest thresholds round each metric down to a hard non-regression floor; increasing coverage does not require baseline churn.
+The current full Jest run passes 151 suites and 718 tests, and the Node-native governance runner passes 150 adversarial and authority tests. Coverage is 36.86% statements, 27.71% branches, 26.39% functions, and 38.17% lines. The committed Jest thresholds round each metric down to a hard non-regression floor; increasing coverage does not require baseline churn.
 
 The browser smoke is intentionally named as jsdom evidence rather than a claim of cross-engine coverage. Real Chromium/WebKit/Firefox automation remains the first browser-harness expansion described in [`BROWSER_WORKER_HARNESS_PLAN.md`](./BROWSER_WORKER_HARNESS_PLAN.md).
 

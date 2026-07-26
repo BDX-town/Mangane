@@ -78,6 +78,12 @@ test('rejects removal of an owner-specific required command', () => {
   assert.throws(() => run(root), /missing required command/);
 });
 
+test('rejects a build that skips checksum-pinned Twemoji preparation', () => {
+  const root = fixture();
+  mutate(root, source => source.replaceAll('yarn prepare:twemoji', 'yarn build'));
+  assert.throws(() => run(root), /missing required command/);
+});
+
 test('rejects unreconciled conflict copies', () => {
   const root = fixture();
   fs.writeFileSync(path.join(root, 'docs/architecture/Baseline 2.md'), 'stale');

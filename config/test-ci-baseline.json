@@ -23,7 +23,7 @@
     "typeScriptUnbaselinedDiagnostics": 0,
     "jestSuites": 151,
     "jestTests": 718,
-    "nodeGovernanceTests": 143,
+    "nodeGovernanceTests": 150,
     "coveragePercent": {
       "statements": 36.86,
       "branches": 27.71,
@@ -34,7 +34,7 @@
       "applicationJavaScript": 3990281,
       "runtimeJavaScript": 277545,
       "applicationCss": 390934,
-      "serviceWorker": 224196
+      "serviceWorker": 223653
     },
     "quarantinedTests": 0,
     "automaticTestRetries": 0

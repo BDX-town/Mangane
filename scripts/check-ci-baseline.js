@@ -95,12 +95,16 @@ const requiredCommands = {
   'browser-accessibility': ['yarn test:browser-accessibility'],
   'worker-security': ['yarn test:security-regression'],
   'production-build': ['yarn build', 'yarn check:build'],
-  'development-build': ['yarn build'],
+  'development-build': ['yarn prepare:twemoji', 'yarn build'],
 };
+requiredCommands['production-build'].unshift('yarn prepare:twemoji');
 for (const [jobId, commands] of Object.entries(requiredCommands)) {
   const actual = workflow.jobs[jobId].steps.filter(step => step.run).map(step => step.run);
   for (const command of commands) {
     if (!actual.includes(command)) fail(`${jobId} is missing required command: ${command}`);
+  }
+  if (commands.includes('yarn prepare:twemoji') && actual.indexOf('yarn prepare:twemoji') > actual.indexOf('yarn build')) {
+    fail(`${jobId} must prepare verified Twemoji assets before building`);
   }
 }
 

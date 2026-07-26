@@ -2,20 +2,22 @@
   "schemaVersion": 1,
   "status": "current-phase-0a-evidence",
   "sourceDigests": {
-    "packageJsonSha256": "02505f1f246916531b99cbc6bece400960c63a883370f16e6369793cd359f17f",
-    "twemojiDownloaderSha256": "51f87defb0f4557c559f245370ce4b0bc8e9a3eaacd3acd02e91c9d4bc47ebfd",
+    "packageJsonSha256": "77ed5e8c8c67dbe783182b16a4c9ab8fef87e4ff64aa5b3458963f69b8f8ff86",
+    "twemojiDownloaderSha256": "89f1d9fec29b1d53c8862466efbfc270fc5324bfc476095ced7ae3ee5b26c303",
     "yarnLockSha256": "fd3c42b09e5f7f2288053cfca0bec8f78fc23506ed6c574d3fe28be0dbb3e47d"
   },
   "repositorySupplyChain": {
     "postinstall": {
-      "command": "node scripts/download-twemoji-assets.js",
+      "command": "yarn prepare:twemoji",
       "downloadsDuringInstall": true,
-      "integrityVerification": false,
-      "networkTimeout": false,
+      "integrityVerification": true,
+      "maxResponseBytes": true,
+      "networkTimeout": true,
       "path": "scripts/download-twemoji-assets.js",
-      "retryPolicy": false,
-      "shellPipelineToArchiveExtractor": true,
-      "status": "remediation-required"
+      "redirectAllowlist": true,
+      "retryPolicy": true,
+      "shellPipelineToArchiveExtractor": false,
+      "status": "hardened"
     }
   },
   "summary": {
@@ -16145,7 +16147,7 @@
           "context": "build"
         },
         {
-          "path": "package.json#scripts.postinstall",
+          "path": "package.json#scripts.prepare:twemoji",
           "context": "build"
         },
         {
@@ -111015,7 +111017,7 @@
     },
     {
       "action": "actions/checkout",
-      "line": 110,
+      "line": 111,
       "local": false,
       "path": ".github/workflows/phase-0g-quality.yml",
       "pinnedToCommit": true,
@@ -111023,7 +111025,7 @@
     },
     {
       "action": "actions/setup-node",
-      "line": 113,
+      "line": 114,
       "local": false,
       "path": ".github/workflows/phase-0g-quality.yml",
       "pinnedToCommit": true,

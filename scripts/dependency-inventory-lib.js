@@ -557,12 +557,18 @@ const buildInventory = ({ root, auditRows }) => {
       postinstall: {
         command: packageJson.scripts?.postinstall || null,
         downloadsDuringInstall: /https:\/\/github\.com\/twitter\/twemoji/.test(twemojiDownloaderText),
-        integrityVerification: false,
-        networkTimeout: false,
+        integrityVerification: /TWEMOJI_SHA256 = '[0-9a-f]{64}'/.test(twemojiDownloaderText)
+          && /checksum mismatch/.test(twemojiDownloaderText),
+        maxResponseBytes: /MAX_ARCHIVE_BYTES/.test(twemojiDownloaderText),
+        networkTimeout: /REQUEST_TIMEOUT_MS/.test(twemojiDownloaderText)
+          && /request\.on\('timeout'/.test(twemojiDownloaderText),
         path: 'scripts/download-twemoji-assets.js',
-        retryPolicy: false,
+        redirectAllowlist: /ALLOWED_DOWNLOAD_HOSTS/.test(twemojiDownloaderText)
+          && /isAllowedDownloadUrl/.test(twemojiDownloaderText),
+        retryPolicy: /MAX_ATTEMPTS/.test(twemojiDownloaderText)
+          && /retryDelayMs/.test(twemojiDownloaderText),
         shellPipelineToArchiveExtractor: /curl[\s\S]*\|[\s\S]*tar/.test(twemojiDownloaderText),
-        status: 'remediation-required',
+        status: 'hardened',
       },
     },
     summary: {
@@ -610,12 +616,14 @@ const validateInventory = ({ root, inventory, auditSnapshot }) => {
   if (inventory.sourceDigests?.yarnLockSha256 !== sha256(lockfileText)) fail('yarn.lock drifted without inventory reconciliation');
   if (inventory.sourceDigests?.twemojiDownloaderSha256 !== sha256(twemojiDownloaderText)) fail('postinstall downloader drifted without supply-chain reconciliation');
   const postinstall = inventory.repositorySupplyChain?.postinstall;
-  if (postinstall?.status !== 'remediation-required'
-    || postinstall?.integrityVerification !== false
-    || postinstall?.networkTimeout !== false
-    || postinstall?.retryPolicy !== false
-    || postinstall?.shellPipelineToArchiveExtractor !== true) {
-    fail('repository postinstall download risk must remain explicit until remediated');
+  if (postinstall?.status !== 'hardened'
+    || postinstall?.integrityVerification !== true
+    || postinstall?.maxResponseBytes !== true
+    || postinstall?.networkTimeout !== true
+    || postinstall?.redirectAllowlist !== true
+    || postinstall?.retryPolicy !== true
+    || postinstall?.shellPipelineToArchiveExtractor !== false) {
+    fail('repository postinstall download hardening drifted');
   }
 
   const lock = parseLockfile(path.join(root, 'yarn.lock'));

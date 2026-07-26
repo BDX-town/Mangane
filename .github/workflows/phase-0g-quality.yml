@@ -97,6 +97,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
       - run: corepack enable
       - run: yarn install --immutable --mode=skip-build
+      - run: yarn prepare:twemoji
       - run: yarn build
       - run: yarn check:build
 
@@ -115,4 +116,5 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
       - run: corepack enable
       - run: yarn install --immutable --mode=skip-build
+      - run: yarn prepare:twemoji
       - run: yarn build

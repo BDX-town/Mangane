@@ -978,7 +978,7 @@ Mangane remains AGPL-3.0-or-later. This inventory records dependency declaration
 | zod | 4.3.6 | false | false | false | false | true | eslint-plugin-react-hooks |
 | zwitch | 1.0.5 | false | false | false | false | true | stylelint |
 
-The repository itself also runs `scripts/download-twemoji-assets.js` during `postinstall`, performing an unverified GitHub download piped into `tar`. That is a supply-chain and reproducibility blocker queued for remediation; the Phase 0A CI gate uses `--mode=skip-build` so inventory validation cannot execute dependency or repository install scripts.
+The repository's Twemoji preparation is explicit and checksum-pinned. It enforces an HTTPS host allowlist, redirect limit, response-size ceiling, request timeout, exponential backoff with jitter, archive-shape validation, and atomic installation. CI keeps dependency and repository install scripts disabled with `--mode=skip-build`; only build jobs invoke the reviewed `yarn prepare:twemoji` step.
 
 ## GitHub Actions supply-chain review
 

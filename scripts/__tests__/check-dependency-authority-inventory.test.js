@@ -110,6 +110,14 @@ test('fails when the networked postinstall downloader changes without review', (
   assertRunFails(root, /postinstall downloader drifted/);
 });
 
+test('fails when a Twemoji download hardening control is removed', () => {
+  const root = fixture();
+  mutateJson(root, 'config/dependency-authority-inventory.json', inventory => {
+    inventory.repositorySupplyChain.postinstall.integrityVerification = false;
+  });
+  assertRunFails(root, /download hardening drifted/);
+});
+
 test('fails when a high advisory loses its reachability disposition', () => {
   const root = fixture();
   mutateJson(root, 'config/dependency-authority-inventory.json', inventory => {

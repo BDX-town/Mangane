@@ -37,6 +37,7 @@
     "test:governance": "node scripts/run-node-governance-tests.js",
     "test:worker": "node --test scripts/__tests__/share-target-worker.test.js scripts/__tests__/check-share-target-authority-inventory.test.js scripts/__tests__/check-push-worker-authority-inventory.test.js scripts/__tests__/check-service-worker-cache-authority-inventory.test.js",
     "test:browser-accessibility": "yarn jest app/soapbox/features/auth_login/components/__tests__/login_form.test.tsx app/soapbox/features/auth_login/components/__tests__/login_page.test.tsx app/soapbox/features/ui/__tests__/index.test.tsx app/soapbox/features/ui/components/__tests__/compose-button.test.tsx --runInBand --silent && node --test scripts/__tests__/check-design-component-authority-inventory.test.js",
+    "prepare:twemoji": "node scripts/download-twemoji-assets.js",
     "check:dependencies": "node scripts/check-dependency-authority-inventory.js",
     "test:dependency-inventory": "node --test scripts/__tests__/check-dependency-authority-inventory.test.js",
     "generate:network-callsites": "node scripts/generate-network-callsite-manifest.js",
@@ -55,7 +56,7 @@
     "generate:design-authority": "node scripts/generate-design-component-authority-inventory.js",
     "check:design-authority": "node scripts/check-design-component-authority-inventory.js",
     "test:design-authority": "node --test scripts/__tests__/check-design-component-authority-inventory.test.js",
-    "postinstall": "node scripts/download-twemoji-assets.js",
+    "postinstall": "yarn prepare:twemoji",
     "prepare": "npx husky"
   },
   "license": "AGPL-3.0-or-later",
