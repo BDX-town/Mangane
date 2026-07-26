@@ -133,8 +133,9 @@ const purgeSource = compactExecutable(readInsideRoot(purge.path, 'cache purge'))
 for (const fragment of [
   'const OFFLINE_CACHE_PREFIXES=[\'soapbox\',\'webpack-offline\'];',
   'const PROTECTED_CACHE_NAMES=new Set([\'soapbox-private-revocations-v1\']);',
-  'await caches.keys()',
-  'caches.delete(key)',
+  'const cacheStorage=window.caches;',
+  'await cacheStorage.keys()',
+  'cacheStorage.delete(key)',
 ]) requireExecutable(purgeSource, fragment, purge.path);
 
 const documentation = manifest.canonicalDocumentation;

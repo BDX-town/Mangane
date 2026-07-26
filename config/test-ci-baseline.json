@@ -25,7 +25,7 @@
     "jestTests": 718,
     "nodeGovernanceTests": 150,
     "coveragePercent": {
-      "statements": 36.86,
+      "statements": 36.87,
       "branches": 27.71,
       "functions": 26.39,
       "lines": 38.17
