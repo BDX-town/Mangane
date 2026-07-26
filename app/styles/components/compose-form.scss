@@ -196,7 +196,6 @@
   }
 } // end .compose-form
 
-
 @keyframes dropdown__dropdown-spawn {
   0% {
     opacity: 0;
@@ -207,7 +206,8 @@
   }
 }
 
-.privacy-dropdown__dropdown, .language-dropdown__dropdown {
+.privacy-dropdown__dropdown,
+.language-dropdown__dropdown {
   animation: 0.2s ease dropdown__dropdown-spawn;
 }
 

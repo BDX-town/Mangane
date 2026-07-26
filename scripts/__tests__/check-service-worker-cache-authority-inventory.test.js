@@ -1,10 +1,10 @@
 'use strict';
 
 const assert = require('node:assert/strict');
+const { execFileSync } = require('node:child_process');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { execFileSync } = require('node:child_process');
 const test = require('node:test');
 
 const repositoryRoot = path.resolve(__dirname, '..', '..');
@@ -46,31 +46,31 @@ test('verifies the bounded production service-worker cache authority inventory',
 
 test('fails when the global cache name changes without reconciliation', () => {
   const root = fixture();
-  mutate(root, 'webpack/production.js', source => source.replace("cacheName: 'soapbox'", "cacheName: 'mangane-v2'"));
+  mutate(root, 'webpack/production.js', source => source.replace('cacheName: \'soapbox\'', 'cacheName: \'mangane-v2\''));
   assertRunFails(root, /cacheName|'soapbox'/);
 });
 
 test('fails when an API navigation prefix is removed', () => {
   const root = fixture();
-  mutate(root, 'webpack/production.js', source => source.replace("            '/api',\n", ''));
+  mutate(root, 'webpack/production.js', source => source.replace('            \'/api\',\n', ''));
   assertRunFails(root, /'\/api'/);
 });
 
 test('fails when navigation matching is broadened beyond navigate requests', () => {
   const root = fixture();
-  mutate(root, 'webpack/production.js', source => source.replace("requestTypes: ['navigate']", "requestTypes: ['navigate', 'fetch']"));
+  mutate(root, 'webpack/production.js', source => source.replace('requestTypes: [\'navigate\']', 'requestTypes: [\'navigate\', \'fetch\']'));
   assertRunFails(root, /requestTypes/);
 });
 
 test('fails when the app shell stops respecting FE_SUBDIRECTORY', () => {
   const root = fixture();
-  mutate(root, 'webpack/production.js', source => source.replace("appShell: join(FE_SUBDIRECTORY, '/')", "appShell: '/'"));
+  mutate(root, 'webpack/production.js', source => source.replace('appShell: join(FE_SUBDIRECTORY, \'/\')', 'appShell: \'/\''));
   assertRunFails(root, /appShell/);
 });
 
 test('fails when the production worker drops the push handler import', () => {
   const root = fixture();
-  mutate(root, 'app/soapbox/service_worker/entry.ts', source => source.replace("import './web_push_notifications';\n", ''));
+  mutate(root, 'app/soapbox/service_worker/entry.ts', source => source.replace('import \'./web_push_notifications\';\n', ''));
   assertRunFails(root, /web_push_notifications/);
 });
 
@@ -92,7 +92,7 @@ test('fails when a cache-safety unknown is silently removed', () => {
 
 test('does not allow comments to satisfy executable production evidence', () => {
   const root = fixture();
-  mutate(root, 'webpack/production.js', source => source.replace("cacheName: 'soapbox',", "cacheName: 'changed', // cacheName: 'soapbox',"));
+  mutate(root, 'webpack/production.js', source => source.replace('cacheName: \'soapbox\',', 'cacheName: \'changed\', // cacheName: \'soapbox\','));
   assertRunFails(root, /cacheName|'soapbox'/);
 });
 

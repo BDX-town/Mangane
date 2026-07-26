@@ -54,7 +54,7 @@ function compactExecutable(source) {
       i = end + 2;
       continue;
     }
-    if (char === '"' || char === "'" || char === '`') {
+    if (char === '"' || char === '\'' || char === '`') {
       const quote = char;
       output += char;
       i += 1;
@@ -141,15 +141,15 @@ function validateSources(raw, manifest) {
   const main = compactExecutable(raw.main);
   const soapbox = compactExecutable(raw.soapbox);
 
-  assertIncludes(application, "import loadPolyfills from './soapbox/load_polyfills';", 'polyfill import');
-  assertIncludes(application, "require('manifest.json');", 'manifest load');
-  assertIncludes(application, "require('react-datepicker/dist/react-datepicker.css');", 'datepicker stylesheet');
-  assertIncludes(application, "require('./styles/application.scss');", 'application stylesheet');
-  assertIncludes(application, "loadPolyfills().then(()=>{require('./soapbox/main').default();", 'polyfill-before-main chain');
+  assertIncludes(application, 'import loadPolyfills from \'./soapbox/load_polyfills\';', 'polyfill import');
+  assertIncludes(application, 'require(\'manifest.json\');', 'manifest load');
+  assertIncludes(application, 'require(\'react-datepicker/dist/react-datepicker.css\');', 'datepicker stylesheet');
+  assertIncludes(application, 'require(\'./styles/application.scss\');', 'application stylesheet');
+  assertIncludes(application, 'loadPolyfills().then(()=>{require(\'./soapbox/main\').default();', 'polyfill-before-main chain');
   assertIncludes(application, '.catch(e=>{console.error(e);', 'polyfill failure behavior');
 
   assertIncludes(main, 'ready(()=>{', 'ready callback');
-  assertIncludes(main, "document.getElementById('soapbox')as HTMLElement", 'mount element');
+  assertIncludes(main, 'document.getElementById(\'soapbox\')as HTMLElement', 'mount element');
   assertIncludes(main, 'ReactDOM.render(<Soapbox/>,mountNode);', 'React mount');
 
   assertOrdered(soapbox, ['createGlobals(store);', 'store.dispatch(preload()as any);', 'store.dispatch(checkOnboardingStatus()as any);'], 'module initialization');
@@ -171,7 +171,11 @@ function run() {
 }
 
 if (require.main === module) {
-  try { console.log(run()); } catch (error) { console.error(error.message); process.exitCode = 1; }
+  try {
+    console.log(run());
+  } catch (error) {
+    console.error(error.message); process.exitCode = 1;
+  }
 }
 
 module.exports = { REQUIRED_INVARIANTS, REQUIRED_UNKNOWNS, compactExecutable, validateManifest, validateSources, run };

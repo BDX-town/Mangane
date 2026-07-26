@@ -1,77 +1,66 @@
 # Test and CI Baseline
 
-Status: **Current / Phase 0 in progress**
+Status: **Phase 0G complete when the canonical workflow is green**
 
 Last updated: 2026-07-25
 
-## Purpose
+## Authority
 
-This document records the verified test-command baseline and the currently unresolved continuous-integration surface. It prevents package scripts from being mistaken for enforced CI coverage.
+The canonical pull-request workflow is [`.github/workflows/phase-0g-quality.yml`](../../.github/workflows/phase-0g-quality.yml). [`scripts/check-ci-baseline.js`](../../scripts/check-ci-baseline.js) rejects missing jobs, mutable action tags, broadened permissions, unbounded jobs, non-immutable installs, missing owner commands, and `continue-on-error`.
 
-## Verified package scripts
+Every job uses Node 18.20.8, repository-pinned Yarn 4.0.2, `yarn install --immutable --mode=skip-build`, read-only repository permission, non-persisted checkout credentials, a timeout, and stale-run cancellation. No job receives a secret. No required job is allowed to continue after failure.
 
-From `package.json`:
+## Canonical workflow and job matrix
 
-| Script | Command | Verified purpose |
+| Job / owner | Required commands | Primary evidence |
 |---|---|---|
-| `test` | `npx cross-env NODE_ENV=test npx jest` | runs Jest in the test environment |
-| `test:coverage` | `${npm_execpath} run test --coverage` | runs Jest coverage through the package manager |
-| `test:all` | `${npm_execpath} run test:coverage && ${npm_execpath} run lint` | runs coverage followed by lint |
-| `lint` | `${npm_execpath} run lint:js && ${npm_execpath} run lint:sass` | runs JavaScript/TypeScript and Sass linting |
-| `lint:js` | `npx eslint --ext .js,.jsx,.ts,.tsx . --cache` | lints JavaScript and TypeScript source files |
-| `lint:sass` | `npx stylelint app/styles/**/*.scss` | lints application Sass files |
-| `build` | `npx webpack` | produces the webpack build |
+| `quality` / frontend-maintainers | ESLint drift budget, Sass lint, TypeScript drift gate, CI contract tests | 0 ESLint errors; no warning increase; exact inherited type diagnostics; workflow mutation tests |
+| `unit-integration` / frontend-maintainers | full Jest coverage; all Node-native governance tests | application behavior, reducers, actions, utilities, persistence, routing, and inventory mutation suites |
+| `browser-accessibility` / design-system | focused jsdom browser smoke; design/accessibility mutation suite | login labels and keyboard control, public/protected deep links, compose navigation, reduced motion, keyboard/focus authority |
+| `worker-security` / security-maintainers | HTML, telemetry, persistence, share-target, push-worker, and cache-authority suites | sanitization and navigation policy; diagnostics redaction; logout/purge; worker restart revocation; exact share routing and bounded input |
+| `production-build` / release-maintainers | production webpack build; bundle/worker/secret budget gate | production application, CSS, runtime and service-worker byte limits; no source maps; generated-output secret scan |
+| `development-build` / release-maintainers | development webpack build | development configuration, source maps, copied share worker, and deep-link fallback compile together |
 
-## Verified Jest configuration
+Required branch checks must use the six stable job names above. Repository branch-protection settings are external to the source tree and require direct GitHub verification after the workflow is published.
 
-The Jest harness is operational. The deleted `app/soapbox/jest/test-setup.ts` and `test-helpers.tsx` files were restored, nested dependency resolution and the installed ESM-only `eld` export are mapped correctly, and Jest is explicitly scoped away from governance suites written for `node:test`. On 2026-07-25, `yarn test --runInBand --silent` passed **136 suites and 636 tests**. The service-worker entry remains excluded from Jest coverage, so this result is not proof of worker lifecycle coverage.
+## TypeScript migration debt
 
-## CI evidence
+`yarn typecheck` runs the complete production TypeScript graph with JavaScript disabled and pins every inherited diagnostic in [`config/typecheck-baseline.json`](../../config/typecheck-baseline.json). The baseline currently contains 101 inherited diagnostics and zero unbaselined diagnostics. Any added, removed, moved, or changed diagnostic fails CI until explicitly reconciled.
 
-- PRs #9 and #10 had no pull-request workflow runs attached to their inspected head commits.
-- `.github/workflows/ci.yml` was not present at the inspected path.
-- The repository now contains dedicated authority workflows, including dependency and network-callsite drift gates. These workflows are new local changes until published and observed on GitHub.
-- These observations do not prove that the repository has no CI: alternate or unindexed workflow content, external CI, disabled workflows, branch-only workflows, and repository settings remain possible.
+This is intentionally not described as a clean typecheck. The debt is owned by `frontend-maintainers`, tracked as the Phase 1 TypeScript authority migration, and expires on 2026-10-31. Broad file exclusions and `skipLibCheck` cannot turn application diagnostics into an unreported pass.
 
-## Current gaps
+## ESLint and formatting
 
-The following remain unverified:
+ESLint has zero errors. The inherited 183 warnings are a hard ceiling enforced by `yarn lint:js:baseline`; reductions pass and increases fail. Sass has no accepted error baseline. There is no repository-wide Prettier contract, so formatting is enforced by ESLint and Stylelint rather than an invented formatter configuration.
 
-- complete workflow-file inventory and triggers;
-- runtime and package-manager versions used by CI;
-- dependency installation mode and lockfile enforcement;
-- lint, type-check, unit, integration, browser, accessibility, worker, build, and security jobs;
-- required-check and branch-protection configuration;
-- workflow permissions, secrets, caches, artifacts, and fork behavior;
-- timeout, cancellation, concurrency, retry, and flake handling;
-- reproducible browser/integration and coverage baseline outcomes beyond the verified Jest run;
-- source-map, bundle, fixture, snapshot, coverage, and artifact secret scanning.
+## Test ownership and evidence
 
-## Required Phase 0 matrix
+- Jest owns application unit, integration, DOM/browser, routing, auth and accessibility behavior.
+- Node's native test runner owns repository governance, adversarial drift, build-budget and worker sandbox tests.
+- Production webpack owns actual service-worker integration and bundle evidence.
+- The dependency workflow owns lockfile, license, action-pin and current-advisory evidence.
 
-| Workflow/job | Trigger | Runtime | Install mode | Commands | Required | Permissions | Secrets | Cache/artifacts | Timeout/concurrency | Baseline result |
-|---|---|---|---|---|---|---|---|---|---|---|
-| No verified repository workflow discovered through the inspected paths and indexed searches | Unknown | Unknown | Unknown | Package scripts exist but enforcement is unverified | No verified required check | Unknown | Unknown | Unknown | Unknown | No PR workflow runs observed for PRs #9 and #10 |
+The current full Jest run passes 151 suites and 718 tests, and the Node-native governance runner passes 143 adversarial and authority tests. Coverage is 36.86% statements, 27.71% branches, 26.39% functions, and 38.17% lines. The committed Jest thresholds round each metric down to a hard non-regression floor; increasing coverage does not require baseline churn.
 
-Missing coverage must remain explicit rather than being inferred from package scripts.
+The browser smoke is intentionally named as jsdom evidence rather than a claim of cross-engine coverage. Real Chromium/WebKit/Firefox automation remains the first browser-harness expansion described in [`BROWSER_WORKER_HARNESS_PLAN.md`](./BROWSER_WORKER_HARNESS_PLAN.md).
 
-## Minimum target gate
+## Determinism and artifacts
 
-Before Phase 1 implementation is treated as protected, CI must at minimum enforce:
+Production builds disable source maps and use content hashes. Budget validation resolves assets from `assets-manifest.json`, verifies the generated offline worker, and scans text artifacts for high-confidence private-key and provider-token formats. CI does not upload coverage, bundles, logs, snapshots, or source maps, avoiding unnecessary retention of potentially sensitive output. A future artifact addition must declare purpose, redaction, access, and retention.
 
-1. deterministic dependency installation from the committed lockfile;
-2. JavaScript/TypeScript linting;
-3. Sass/style linting;
-4. TypeScript checking where not already guaranteed by the build;
-5. unit tests and coverage reporting;
-6. production build generation;
-7. direct service-worker and browser integration tests for security-sensitive PWA behavior;
-8. accessibility checks for critical navigation and interaction paths;
-9. secret scanning across source, fixtures, snapshots, logs, bundles, source maps, and artifacts;
-10. least-privilege workflow permissions, bounded execution, cancellation of stale runs, and explicit artifact retention.
+## Flakes and retries
 
-## Disposition
+Tests and builds do not retry automatically. Retrying deterministic failures would hide state leakage and nondeterminism. Any quarantine must follow [`FLAKY_TEST_AND_QUARANTINE_POLICY.md`](./FLAKY_TEST_AND_QUARANTINE_POLICY.md); the current quarantine register is empty.
 
-This document completes the bounded Phase 0 baseline artifact. It does not claim that CI exists, passes, or protects the branch. Until direct workflow and repository-setting evidence is available, later work must treat CI enforcement as unverified and must not cite package scripts as proof of automated protection.
+Network calls in product code require bounded retry, cancellation, jitter, and idempotency analysis where applicable. Dependency advisory lookup is intentionally a separate scheduled/PR authority job because it is the only baseline step that depends on current registry state.
 
-The broader Phase 0 CI gate remains open until every workflow, trigger, job, runtime, permission, secret, cache, artifact, required check, and reproducible baseline outcome is directly enumerated or a new canonical CI implementation is added and verified.
+## Completion evidence
+
+Phase 0G closes only after:
+
+1. immutable installation succeeds;
+2. all six canonical jobs pass locally where reproducible;
+3. production and development builds succeed;
+4. every affected authority inventory is regenerated and its mutation tests pass;
+5. the branch is published and all GitHub checks on the Phase 0G PR are green;
+6. required-check and branch-protection status is verified directly or explicitly recorded as an external repository-setting limitation.

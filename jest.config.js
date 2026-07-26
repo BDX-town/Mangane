@@ -28,6 +28,14 @@ module.exports = {
   ],
   'coverageDirectory': '<rootDir>/.coverage/',
   'coverageReporters': ['html', 'text', 'text-summary', 'cobertura'],
+  'coverageThreshold': {
+    global: {
+      branches: 27,
+      functions: 26,
+      lines: 38,
+      statements: 36,
+    },
+  },
   'reporters': ['default', 'jest-junit'],
   'moduleDirectories': [
     'node_modules',

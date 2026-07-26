@@ -149,8 +149,8 @@ test('fails when initial-load rejection no longer releases the loading gate', ()
 
 test('fails when polyfills no longer gate application startup', () => {
   const drifted = application.replace(
-    "loadPolyfills().then(() => {\n  require('./soapbox/main').default();",
-    "require('./soapbox/main').default();\nloadPolyfills().then(() => {",
+    'loadPolyfills().then(() => {\n  require(\'./soapbox/main\').default();',
+    'require(\'./soapbox/main\').default();\nloadPolyfills().then(() => {',
   );
   assert.throws(() => validateSources({ application: drifted, main, soapbox }, manifest), /polyfill-before-main chain/);
 });

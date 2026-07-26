@@ -1,15 +1,18 @@
 // @preval
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
 
 const pkg = require('../../../package.json');
 
 const shortRepoName = url => new URL(url).pathname.substring(1);
 const trimHash = hash => hash.substring(0, 7);
 
-const tryGit = cmd => {
+const tryGit = args => {
   try {
-    return String(execSync(cmd));
-  } catch (e) {
+    return execFileSync('git', args, {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+  } catch {
     return null;
   }
 };
@@ -27,8 +30,8 @@ const version = pkg => {
   }
 
   // Fall back to git directly
-  const head = tryGit('git rev-parse HEAD');
-  const tag = tryGit(`git rev-parse v${pkg.version}`);
+  const head = tryGit(['rev-parse', 'HEAD']);
+  const tag = tryGit(['rev-parse', `v${pkg.version}`]);
 
   if (head && head !== tag) return `${pkg.version}-${trimHash(head)}`;
 

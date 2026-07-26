@@ -7497,81 +7497,81 @@
       "disposition": "phosphor-migration-candidate"
     },
     {
-      "id": "svg-module:app/soapbox/features/notifications/components/filter_bar.tsx:41:eraser.svg",
+      "id": "svg-module:app/soapbox/features/notifications/components/filter_bar.tsx:42:eraser.svg",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 41,
+      "line": 42,
       "kind": "svg-module",
       "provider": "tabler",
       "symbol": "eraser.svg",
       "disposition": "phosphor-migration-candidate"
     },
     {
-      "id": "svg-module:app/soapbox/features/notifications/components/filter_bar.tsx:66:at.svg",
+      "id": "svg-module:app/soapbox/features/notifications/components/filter_bar.tsx:67:at.svg",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 66,
+      "line": 67,
       "kind": "svg-module",
       "provider": "tabler",
       "symbol": "at.svg",
       "disposition": "phosphor-migration-candidate"
     },
     {
-      "id": "svg-module:app/soapbox/features/notifications/components/filter_bar.tsx:72:heart.svg",
+      "id": "svg-module:app/soapbox/features/notifications/components/filter_bar.tsx:73:heart.svg",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 72,
+      "line": 73,
       "kind": "svg-module",
       "provider": "tabler",
       "symbol": "heart.svg",
       "disposition": "phosphor-migration-candidate"
     },
     {
-      "id": "svg-module:app/soapbox/features/notifications/components/filter_bar.tsx:78:mood-smile.svg",
+      "id": "svg-module:app/soapbox/features/notifications/components/filter_bar.tsx:79:mood-smile.svg",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 78,
+      "line": 79,
       "kind": "svg-module",
       "provider": "tabler",
       "symbol": "mood-smile.svg",
       "disposition": "phosphor-migration-candidate"
     },
     {
-      "id": "svg-module:app/soapbox/features/notifications/components/filter_bar.tsx:84:repeat.svg",
+      "id": "svg-module:app/soapbox/features/notifications/components/filter_bar.tsx:85:repeat.svg",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 84,
+      "line": 85,
       "kind": "svg-module",
       "provider": "tabler",
       "symbol": "repeat.svg",
       "disposition": "phosphor-migration-candidate"
     },
     {
-      "id": "svg-module:app/soapbox/features/notifications/components/filter_bar.tsx:90:chart-bar.svg",
+      "id": "svg-module:app/soapbox/features/notifications/components/filter_bar.tsx:91:chart-bar.svg",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 90,
+      "line": 91,
       "kind": "svg-module",
       "provider": "tabler",
       "symbol": "chart-bar.svg",
       "disposition": "phosphor-migration-candidate"
     },
     {
-      "id": "svg-module:app/soapbox/features/notifications/components/filter_bar.tsx:96:bell-ringing.svg",
+      "id": "svg-module:app/soapbox/features/notifications/components/filter_bar.tsx:97:bell-ringing.svg",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 96,
+      "line": 97,
       "kind": "svg-module",
       "provider": "tabler",
       "symbol": "bell-ringing.svg",
       "disposition": "phosphor-migration-candidate"
     },
     {
-      "id": "svg-module:app/soapbox/features/notifications/components/filter_bar.tsx:102:user-plus.svg",
+      "id": "svg-module:app/soapbox/features/notifications/components/filter_bar.tsx:103:user-plus.svg",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 102,
+      "line": 103,
       "kind": "svg-module",
       "provider": "tabler",
       "symbol": "user-plus.svg",
       "disposition": "phosphor-migration-candidate"
     },
     {
-      "id": "svg-module:app/soapbox/features/notifications/components/filter_bar.tsx:112:bell.svg",
+      "id": "svg-module:app/soapbox/features/notifications/components/filter_bar.tsx:113:bell.svg",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 112,
+      "line": 113,
       "kind": "svg-module",
       "provider": "tabler",
       "symbol": "bell.svg",
@@ -7776,9 +7776,9 @@
       "disposition": "phosphor-migration-candidate"
     },
     {
-      "id": "svg-module:app/soapbox/features/public_layout/components/header.tsx:143:help.svg",
+      "id": "svg-module:app/soapbox/features/public_layout/components/header.tsx:138:help.svg",
       "path": "app/soapbox/features/public_layout/components/header.tsx",
-      "line": 143,
+      "line": 138,
       "kind": "svg-module",
       "provider": "tabler",
       "symbol": "help.svg",
@@ -12100,6 +12100,13 @@
       "classification": "compatibility-critical"
     },
     {
+      "id": "label:app/soapbox/components/ui/input/input.tsx:14",
+      "kind": "label",
+      "path": "app/soapbox/components/ui/input/input.tsx",
+      "line": 14,
+      "classification": "accessibility-critical"
+    },
+    {
       "id": "focus:app/soapbox/components/ui/input/input.tsx:16",
       "kind": "focus",
       "path": "app/soapbox/components/ui/input/input.tsx",
@@ -12128,11 +12135,18 @@
       "classification": "compatibility-critical"
     },
     {
-      "id": "focus:app/soapbox/components/ui/input/input.tsx:96",
-      "kind": "focus",
+      "id": "label:app/soapbox/components/ui/input/input.tsx:96",
+      "kind": "label",
       "path": "app/soapbox/components/ui/input/input.tsx",
       "line": 96,
       "classification": "accessibility-critical"
+    },
+    {
+      "id": "localization:app/soapbox/components/ui/input/input.tsx:96",
+      "kind": "localization",
+      "path": "app/soapbox/components/ui/input/input.tsx",
+      "line": 96,
+      "classification": "compatibility-critical"
     },
     {
       "id": "keyboard:app/soapbox/components/ui/menu/menu.tsx:32",
@@ -19527,24 +19541,17 @@
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:13",
+      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:14",
       "kind": "localization",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 13,
+      "line": 14,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:29",
+      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:30",
       "kind": "localization",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 29,
-      "classification": "compatibility-critical"
-    },
-    {
-      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:42",
-      "kind": "localization",
-      "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 42,
+      "line": 30,
       "classification": "compatibility-critical"
     },
     {
@@ -19562,66 +19569,73 @@
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:52",
+      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:45",
       "kind": "localization",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 52,
+      "line": 45,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:60",
+      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:53",
       "kind": "localization",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 60,
+      "line": 53,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:67",
+      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:61",
       "kind": "localization",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 67,
+      "line": 61,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:73",
+      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:68",
       "kind": "localization",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 73,
+      "line": 68,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:79",
+      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:74",
       "kind": "localization",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 79,
+      "line": 74,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:85",
+      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:80",
       "kind": "localization",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 85,
+      "line": 80,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:91",
+      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:86",
       "kind": "localization",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 91,
+      "line": 86,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:97",
+      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:92",
       "kind": "localization",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 97,
+      "line": 92,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:103",
+      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:98",
       "kind": "localization",
       "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
-      "line": 103,
+      "line": 98,
+      "classification": "compatibility-critical"
+    },
+    {
+      "id": "localization:app/soapbox/features/notifications/components/filter_bar.tsx:104",
+      "kind": "localization",
+      "path": "app/soapbox/features/notifications/components/filter_bar.tsx",
+      "line": 104,
       "classification": "compatibility-critical"
     },
     {
@@ -20703,80 +20717,80 @@
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:17",
+      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:14",
       "kind": "localization",
       "path": "app/soapbox/features/public_layout/components/header.tsx",
-      "line": 17,
+      "line": 14,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:28",
+      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:25",
       "kind": "localization",
       "path": "app/soapbox/features/public_layout/components/header.tsx",
-      "line": 28,
+      "line": 25,
       "classification": "compatibility-critical"
     },
     {
-      "id": "label:app/soapbox/features/public_layout/components/header.tsx:76",
+      "id": "label:app/soapbox/features/public_layout/components/header.tsx:71",
       "kind": "label",
       "path": "app/soapbox/features/public_layout/components/header.tsx",
-      "line": 76,
+      "line": 71,
       "classification": "accessibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:81",
+      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:76",
       "kind": "localization",
       "path": "app/soapbox/features/public_layout/components/header.tsx",
-      "line": 81,
+      "line": 76,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:95",
+      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:90",
       "kind": "localization",
       "path": "app/soapbox/features/public_layout/components/header.tsx",
-      "line": 95,
+      "line": 90,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:102",
+      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:97",
       "kind": "localization",
       "path": "app/soapbox/features/public_layout/components/header.tsx",
-      "line": 102,
+      "line": 97,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:110",
+      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:105",
       "kind": "localization",
       "path": "app/soapbox/features/public_layout/components/header.tsx",
-      "line": 110,
+      "line": 105,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:122",
+      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:117",
       "kind": "localization",
       "path": "app/soapbox/features/public_layout/components/header.tsx",
-      "line": 122,
+      "line": 117,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:133",
+      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:128",
       "kind": "localization",
       "path": "app/soapbox/features/public_layout/components/header.tsx",
-      "line": 133,
+      "line": 128,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:141",
+      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:136",
       "kind": "localization",
       "path": "app/soapbox/features/public_layout/components/header.tsx",
-      "line": 141,
+      "line": 136,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:155",
+      "id": "localization:app/soapbox/features/public_layout/components/header.tsx:150",
       "kind": "localization",
       "path": "app/soapbox/features/public_layout/components/header.tsx",
-      "line": 155,
+      "line": 150,
       "classification": "compatibility-critical"
     },
     {
@@ -25839,11 +25853,11 @@
     "styles": 72,
     "icons": 393,
     "behaviors": {
-      "localization": 1979,
-      "focus": 135,
+      "localization": 1980,
+      "focus": 134,
       "inline-style": 75,
       "keyboard": 89,
-      "label": 77,
+      "label": 79,
       "motion": 61,
       "gesture": 37,
       "rtl": 13,

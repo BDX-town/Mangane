@@ -5,7 +5,9 @@ const path = require('node:path');
 
 const root = path.resolve(process.env.SERVICE_WORKER_CACHE_INVENTORY_ROOT || path.resolve(__dirname, '..'));
 const manifestPath = path.join(root, 'config', 'service-worker-cache-authority-inventory.json');
-const fail = message => { throw new Error(`service-worker-cache-authority: ${message}`); };
+const fail = message => {
+  throw new Error(`service-worker-cache-authority: ${message}`);
+};
 
 const expectedUnknowns = [
   'The inherited global cache name is deployment-origin scoped rather than build-version scoped; account purge treats its contents as disposable public shell assets.',
@@ -53,7 +55,7 @@ const compactExecutable = source => {
       i = end + 2;
       continue;
     }
-    if (char === '"' || char === "'" || char === '`') {
+    if (char === '"' || char === '\'' || char === '`') {
       const quote = char;
       output += char;
       i += 1;
@@ -100,20 +102,20 @@ if (production.backendEmbedSuffix !== '/embed') fail('backend embed suffix chang
 
 const productionSource = compactExecutable(readInsideRoot(production.path, 'production configuration'));
 for (const fragment of [
-  "const OfflinePlugin=require('@lcdp/offline-plugin');",
+  'const OfflinePlugin=require(\'@lcdp/offline-plugin\');',
   'new OfflinePlugin({',
   'autoUpdate:true,',
-  "main:[':rest:'],",
-  "additional:[':externals:','packs/images/32-*.png','packs/icons/*.svg',],",
-  "optional:['**/locale_*.js','**/*_polyfills-*.js','**/*.chunk.js','**/*.chunk.css','**/*.woff2','**/*.png','**/*.svg',],",
-  "cacheName:'soapbox',",
-  "entry:join(__dirname,'../app/soapbox/service_worker/entry.ts'),",
+  'main:[\':rest:\'],',
+  'additional:[\':externals:\',\'packs/images/32-*.png\',\'packs/icons/*.svg\',],',
+  'optional:[\'**/locale_*.js\',\'**/*_polyfills-*.js\',\'**/*.chunk.js\',\'**/*.chunk.css\',\'**/*.woff2\',\'**/*.png\',\'**/*.svg\',],',
+  'cacheName:\'soapbox\',',
+  'entry:join(__dirname,\'../app/soapbox/service_worker/entry.ts\'),',
   'events:true,',
   'minify:true,',
-  "requestTypes:['navigate'],",
+  'requestTypes:[\'navigate\'],',
   'safeToUseOptionalCaches:true,',
-  "appShell:join(FE_SUBDIRECTORY,'/'),",
-  "backendRoutes.some(path=>pathname.startsWith(path))||pathname.endsWith('/embed')",
+  'appShell:join(FE_SUBDIRECTORY,\'/\'),',
+  'backendRoutes.some(path=>pathname.startsWith(path))||pathname.endsWith(\'/embed\')',
 ]) requireExecutable(productionSource, fragment, production.path);
 for (const route of production.backendRoutePrefixes) requireExecutable(productionSource, `'${route}'`, production.path);
 
@@ -129,8 +131,8 @@ validateExactList(purge.ownedPrefixes, ['soapbox', 'webpack-offline'], 'owned ca
 validateExactList(purge.protectedCaches, ['soapbox-private-revocations-v1'], 'protected cache');
 const purgeSource = compactExecutable(readInsideRoot(purge.path, 'cache purge'));
 for (const fragment of [
-  "const OFFLINE_CACHE_PREFIXES=['soapbox','webpack-offline'];",
-  "const PROTECTED_CACHE_NAMES=new Set(['soapbox-private-revocations-v1']);",
+  'const OFFLINE_CACHE_PREFIXES=[\'soapbox\',\'webpack-offline\'];',
+  'const PROTECTED_CACHE_NAMES=new Set([\'soapbox-private-revocations-v1\']);',
   'await caches.keys()',
   'caches.delete(key)',
 ]) requireExecutable(purgeSource, fragment, purge.path);

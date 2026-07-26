@@ -853,10 +853,10 @@
       "classification": "dompurify-3.4.12"
     },
     {
-      "id": "dynamic-link-destination:app/soapbox/features/public_layout/components/header.tsx:91:21",
+      "id": "dynamic-link-destination:app/soapbox/features/public_layout/components/header.tsx:86:21",
       "kind": "dynamic-link-destination",
       "path": "app/soapbox/features/public_layout/components/header.tsx",
-      "line": 91,
+      "line": 86,
       "column": 21,
       "expression": "href={links.get('help')}",
       "classification": "central-navigation-policy"

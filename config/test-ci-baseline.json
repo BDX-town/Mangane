@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "status": "phase-0g-canonical",
+  "runtime": {
+    "node": "18.20.8",
+    "packageManager": "yarn@4.0.2",
+    "install": "yarn install --immutable --mode=skip-build"
+  },
+  "workflow": ".github/workflows/phase-0g-quality.yml",
+  "requiredJobs": [
+    "quality",
+    "unit-integration",
+    "browser-accessibility",
+    "worker-security",
+    "production-build",
+    "development-build"
+  ],
+  "baselines": {
+    "eslintErrors": 0,
+    "eslintWarningCeiling": 183,
+    "stylelintErrors": 0,
+    "typeScriptInheritedDiagnostics": 101,
+    "typeScriptUnbaselinedDiagnostics": 0,
+    "jestSuites": 151,
+    "jestTests": 718,
+    "nodeGovernanceTests": 143,
+    "coveragePercent": {
+      "statements": 36.86,
+      "branches": 27.71,
+      "functions": 26.39,
+      "lines": 38.17
+    },
+    "productionBuildBytes": {
+      "applicationJavaScript": 3990281,
+      "runtimeJavaScript": 277545,
+      "applicationCss": 390934,
+      "serviceWorker": 224196
+    },
+    "quarantinedTests": 0,
+    "automaticTestRetries": 0
+  },
+  "artifactPolicy": {
+    "uploadsEnabled": false,
+    "productionSourceMapsAllowed": false,
+    "generatedOutputSecretScan": true
+  },
+  "owners": {
+    "quality": "frontend-maintainers",
+    "unit-integration": "frontend-maintainers",
+    "browser-accessibility": "design-system",
+    "worker-security": "security-maintainers",
+    "production-build": "release-maintainers",
+    "development-build": "release-maintainers"
+  }
+}

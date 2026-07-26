@@ -11,7 +11,7 @@ const messages = defineMessages({
   hidePassword: { id: 'input.password.hide_password', defaultMessage: 'Hide password' },
 });
 
-interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxLength' | 'onChange' | 'onBlur' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required' | 'disabled' | 'onClick' | 'readOnly' | 'min' | 'pattern'> {
+interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'aria-label' | 'maxLength' | 'onChange' | 'onBlur' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required' | 'disabled' | 'onClick' | 'readOnly' | 'min' | 'pattern'> {
   /** Put the cursor into the input on mount. */
   autoFocus?: boolean,
   /** The initial text in the input. */
@@ -93,7 +93,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
               <button
                 type='button'
                 onClick={togglePassword}
-                tabIndex={-1}
+                aria-label={revealed ? intl.formatMessage(messages.hidePassword) : intl.formatMessage(messages.showPassword)}
                 className='text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 h-full px-2 focus:ring-primary-500 focus:ring-2'
               >
                 <SvgIcon

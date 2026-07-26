@@ -1,10 +1,10 @@
 'use strict';
 
 const assert = require('node:assert/strict');
+const { execFileSync } = require('node:child_process');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { execFileSync } = require('node:child_process');
 const test = require('node:test');
 
 const repositoryRoot = path.resolve(__dirname, '..', '..');
@@ -48,7 +48,7 @@ test('verifies the bounded current API transport authority inventory', () => {
 
 test('fails when bearer attachment drifts without reconciliation', () => {
   const root = fixture();
-  mutate(root, 'app/soapbox/api.ts', source => source.replace("'Authorization': `Bearer ${accessToken}`", "'X-Token': accessToken"));
+  mutate(root, 'app/soapbox/api.ts', source => source.replace('\'Authorization\': `Bearer ${accessToken}`', '\'X-Token\': accessToken'));
   assertRunFails(root, /central-axios-client/);
 });
 

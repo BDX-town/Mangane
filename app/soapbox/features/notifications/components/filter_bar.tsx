@@ -7,8 +7,9 @@ import Icon from 'soapbox/components/icon';
 import { Tabs } from 'soapbox/components/ui';
 import { useAppDispatch, useFeatures, useSettings } from 'soapbox/hooks';
 
-import type { Item } from 'soapbox/components/ui/tabs/tabs';
 import ClearColumnButton from './clear_column_button';
+
+import type { Item } from 'soapbox/components/ui/tabs/tabs';
 
 const messages = defineMessages({
   all: { id: 'notifications.filter.all', defaultMessage: 'All' },
@@ -45,7 +46,7 @@ const NotificationFilterBar = () => {
       onConfirm: () => dispatch(clearNotifications()),
     }));
   }, [dispatch, openModal, clearNotifications]);
-  
+
 
   const items: Item[] = [
     {

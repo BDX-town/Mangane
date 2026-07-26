@@ -8,7 +8,7 @@ interface IClearColumnButton {
 }
 
 const ClearColumnButton: React.FC<IClearColumnButton> = ({ onClick }) => (
-  <Button theme={"ghost"} onClick={onClick}>
+  <Button theme={'ghost'} onClick={onClick}>
     <FormattedMessage id='notifications.clear' defaultMessage='Clear notifications' />
   </Button>
 );

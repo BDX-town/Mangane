@@ -10,7 +10,7 @@ const SOURCE_EXTENSIONS = new Set([
   '.cjs', '.css', '.html', '.js', '.jsx', '.json', '.mjs', '.scss', '.ts', '.tsx', '.yml', '.yaml',
 ]);
 const SKIPPED_DIRECTORIES = new Set([
-  '.git', '.yarn', 'build', 'coverage', 'dist', 'node_modules',
+  '.coverage', '.git', '.yarn', 'build', 'coverage', 'dist', 'node_modules', 'static', 'tmp',
 ]);
 const TEST_PATH = /(^|\/)(__fixtures__|__mocks__|__tests__|jest|test|tests)(\/|$)|\.(spec|test)\.[^.]+$/;
 const WORKER_PATH = /(^|\/)(service_worker|workers?)(\/|\.|$)/;

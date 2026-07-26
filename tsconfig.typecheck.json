@@ -1,0 +1,24 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowJs": false,
+    "downlevelIteration": true,
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "exclude": [
+    "app/**/__fixtures__/**",
+    "app/**/__tests__/**",
+    "app/soapbox/jest/**",
+    "build",
+    "coverage",
+    "node_modules",
+    "static",
+    "tmp"
+  ],
+  "include": [
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "types/**/*.d.ts"
+  ]
+}

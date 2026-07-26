@@ -57,9 +57,9 @@ module.exports = {
       },
       keyframes: {
         'fadein': {
-          "0%": { opacity: 0 },
-          "25%": { opacity: 0 },
-          "100%": { opacity: 1 },
+          '0%': { opacity: 0 },
+          '25%': { opacity: 0 },
+          '100%': { opacity: 1 },
         },
         'sonar-scale-4': {
           from: { opacity: '0.4' },

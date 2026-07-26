@@ -5,34 +5,41 @@ const path = require('node:path');
 
 const root = path.resolve(process.env.SHARE_TARGET_INVENTORY_ROOT || path.resolve(__dirname, '..'));
 const manifestPath = path.join(root, 'config', 'share-target-authority-inventory.json');
-const fail = message => { throw new Error(`share-target-authority: ${message}`); };
+const fail = message => {
+  throw new Error(`share-target-authority: ${message}`);
+};
 
 const expectedBindings = [
-  "self.addEventListener('fetch',(event)=>{",
-  "if(event.request.method==='POST'&&event.request.url.includes('/share')){",
-  'event.respondWith((async()=>{',
-  'const formData=await event.request.formData();',
-  "const name=formData.get('name')||'';",
-  "const description=formData.get('description')||'';",
-  "const link=formData.get('link')||'';",
+  'const MAX_DECLARED_FORM_BYTES=16*1024;',
+  'const boundedText=(value,maxLength)=>typeof value===\'string\'?value.replace(/\\0/g,\'\').slice(0,maxLength):\'\';',
+  'const handleShareRequest=async(request)=>{',
+  'if(!ACCEPTED_CONTENT_TYPES.some(type=>contentType.toLowerCase().startsWith(type))){',
+  'if(Number.isFinite(declaredLength)&&declaredLength>MAX_DECLARED_FORM_BYTES){',
+  'const name=boundedText(formData.get(\'name\'),MAX_NAME_LENGTH);',
+  'const description=boundedText(formData.get(\'description\'),MAX_DESCRIPTION_LENGTH);',
+  'const link=boundedText(formData.get(\'link\'),MAX_LINK_LENGTH);',
   'const text=`${name}\\n${description}\\n\\n${link}`;',
   'const params=new URLSearchParams();',
-  "params.append('text',text);",
+  'params.append(\'text\',text);',
   'return Response.redirect(`/statuses/compose?${params.toString()}`,303);',
+  'return new Response(\'\',{status:400});',
+  'self.addEventListener(\'fetch\',(event)=>{',
+  'requestUrl.origin===self.location.origin',
+  'requestUrl.pathname===\'/share\'',
+  'event.respondWith(handleShareRequest(event.request));',
 ];
 const expectedUnknowns = [
   'Production service-worker bundling and manifest ownership for share_target.js remain incompletely enumerated.',
-  'Exact origin and pathname validation are not established before classifying a POST as a share target request.',
-  'Total form size, field length, parameter count and redirect URL length limits are not established.',
-  'Malformed multipart, unsupported content type and formData parsing failure behavior are not explicitly handled.',
+  'Browsers do not guarantee that Content-Length is exposed to service workers, so undeclared total multipart size remains platform-controlled even though accepted text fields and declared sizes are bounded.',
+  'Redirect URL length is bounded indirectly by accepted field limits rather than by a separately measured deployment-proxy limit.',
   'Shared link scheme, preview-fetch behavior and downstream composer URL handling are not proven safe by this gate.',
   'File share fields and temporary storage are absent from the current text-only handler; any future addition requires quota and one-time cleanup reconciliation.',
   'FE_SUBDIRECTORY and production deployment rewrite behavior for the share-target redirect require end-to-end verification.',
 ];
 const expectedDocumentationFragments = [
-  'A passing gate does **not** mean this worker is safe or accepted target architecture.',
-  'substring matching rather than an exact origin and pathname contract',
-  'unbounded form parsing and redirect construction',
+  'accepts only same-origin `POST /share` requests',
+  'rejects declared payloads over 16 KiB',
+  'Browsers do not guarantee that `Content-Length` is exposed',
   'must remain inert compose text',
   'Future file sharing requires a separate bounded storage contract',
 ];
@@ -66,7 +73,7 @@ const compactExecutable = source => {
       i = end + 2;
       continue;
     }
-    if (char === '"' || char === "'" || char === '`') {
+    if (char === '"' || char === '\'' || char === '`') {
       const quote = char;
       output += char;
       i += 1;
@@ -91,7 +98,7 @@ const compactExecutable = source => {
 
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 if (manifest.schemaVersion !== 1) fail(`unsupported schemaVersion ${manifest.schemaVersion}`);
-if (manifest.status !== 'verified-current-bounded') fail('status changed without reconciliation');
+if (manifest.status !== 'phase-0g-hardened') fail('status changed without reconciliation');
 
 const surface = manifest.surface;
 if (!surface || surface.path !== 'app/soapbox/service_worker/share_target.js') fail('share-target surface changed without reconciliation');
@@ -104,7 +111,7 @@ for (const binding of expectedBindings) {
 
 const registration = manifest.developmentRegistration;
 if (!registration || registration.path !== 'app/soapbox/main.tsx') fail('development registration path changed without reconciliation');
-const expectedRegistration = "navigator.serviceWorker.register('/share_target.js',{scope:'/',});";
+const expectedRegistration = 'navigator.serviceWorker.register(\'/share_target.js\',{scope:\'/\',});';
 if (registration.requiredExecutableBinding !== expectedRegistration) fail('development registration binding changed without reconciliation');
 const registrationSource = compactExecutable(readInsideRoot(registration.path, 'registration'));
 if (!registrationSource.includes(expectedRegistration)) fail(`${registration.path} no longer registers the expected share-target worker`);
@@ -118,11 +125,12 @@ for (const fragment of expectedDocumentationFragments) {
 
 validateExactList(manifest.explicitUnknowns, expectedUnknowns, 'explicit unknown');
 for (const invariant of [
-  'routingCurrentlyUsesUrlSubstringMatching',
-  'formParsingCurrentlyHasNoExplicitBounds',
+  'routingRequiresExactSameOriginPath',
+  'acceptedTextFieldsAreExplicitlyBounded',
+  'declaredOversizeAndMalformedFormsFailClosed',
   'acceptedFieldsAreCurrentlyNameDescriptionAndLink',
   'redirectCurrentlyCarriesComposeTextInQueryString',
-  'passingGateDoesNotClassifyShareTargetAsHardened',
+  'fileSharesRemainUnsupported',
 ]) {
   if (manifest.invariants?.[invariant] !== true) fail(`required invariant ${invariant} must remain true`);
 }

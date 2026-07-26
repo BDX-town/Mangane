@@ -5,12 +5,9 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
-import { openModal } from 'soapbox/actions/modals';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
 import { useAppSelector, useFeatures, useSoapboxConfig, useOwnAccount } from 'soapbox/hooks';
-
-import Sonar from './sonar';
 
 import type { AxiosError } from 'axios';
 
@@ -42,8 +39,6 @@ const Header = () => {
   const [password, setPassword] = React.useState('');
   const [shouldRedirect, setShouldRedirect] = React.useState(false);
   const [mfaToken, setMfaToken] = React.useState(false);
-
-  const open = () => dispatch(openModal('LANDING_PAGE'));
 
   const handleSubmit: React.FormEventHandler = (event) => {
     event.preventDefault();
