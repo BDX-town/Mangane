@@ -311,8 +311,8 @@
       "classification": "current-supporting-evidence",
       "replacement": null,
       "inheritedBrandingReferences": 0,
-      "statusHeader": "Canonical verified current state / Phase 0 closed / Phase 1 implemented",
-      "contentSha256": "219d64c560fd2af8d56be008eaabc2e4b30b01061412f07df7d925a4db9a3fe0"
+      "statusHeader": "Canonical verified current state / Phases 0 and 1 complete",
+      "contentSha256": "6e37b4d261cb9091aad8562209799d44c97fc8a31112f7b1df77834ca3196f19"
     },
     {
       "path": "docs/architecture/DATA_PRIVACY_AND_RESILIENCE.md",
@@ -462,7 +462,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical implementation sequence",
-      "contentSha256": "60c7542c896f51456bdb3aadcb5f44d35daa7d93cf710e1dfc9d84d92d69344b"
+      "contentSha256": "b61dc1a2c08301eacd494692a1d778a565dc086bd9c9236b94a190ffa123e106"
     },
     {
       "path": "docs/architecture/KEYBOARD_AND_GESTURE_INVENTORY.md",
@@ -541,8 +541,8 @@
       "classification": "current-supporting-evidence",
       "replacement": null,
       "inheritedBrandingReferences": 0,
-      "statusHeader": "Implemented; merge and CI evidence required for closure",
-      "contentSha256": "eb72d08327b14f963fa678ad376d7fb7081e5de61c12ed5348d13fc583ad126d"
+      "statusHeader": "Complete",
+      "contentSha256": "b7d17ba1c94a11b681db38f961d9cadafcc90549266e5d092688129fcec2badd"
     },
     {
       "path": "docs/architecture/PREVIEW_AND_EMBED_INVENTORY.md",
