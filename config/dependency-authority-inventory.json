@@ -2,38 +2,40 @@
   "schemaVersion": 1,
   "status": "current-phase-0a-evidence",
   "sourceDigests": {
-    "packageJsonSha256": "29867440877dba639fb5f5085bf1c86d2071d742389e672d5716514b3668164a",
-    "twemojiDownloaderSha256": "97939496d78e1037a3755847962b1b249936d960abcbb5aa35d6676134212ab7",
-    "yarnLockSha256": "85a7c17bcd8fb4768989b5ad11b4f9d9c6cdb407cb44a8a1f55431ca0eec0110"
+    "packageJsonSha256": "77ed5e8c8c67dbe783182b16a4c9ab8fef87e4ff64aa5b3458963f69b8f8ff86",
+    "twemojiDownloaderSha256": "89f1d9fec29b1d53c8862466efbfc270fc5324bfc476095ced7ae3ee5b26c303",
+    "yarnLockSha256": "fd3c42b09e5f7f2288053cfca0bec8f78fc23506ed6c574d3fe28be0dbb3e47d"
   },
   "repositorySupplyChain": {
     "postinstall": {
-      "command": "node scripts/download-twemoji-assets.js",
+      "command": "yarn prepare:twemoji",
       "downloadsDuringInstall": true,
-      "integrityVerification": false,
-      "networkTimeout": false,
+      "integrityVerification": true,
+      "maxResponseBytes": true,
+      "networkTimeout": true,
       "path": "scripts/download-twemoji-assets.js",
-      "retryPolicy": false,
-      "shellPipelineToArchiveExtractor": true,
-      "status": "remediation-required"
+      "redirectAllowlist": true,
+      "retryPolicy": true,
+      "shellPipelineToArchiveExtractor": false,
+      "status": "hardened"
     }
   },
   "summary": {
-    "actionUses": 28,
+    "actionUses": 40,
     "advisories": {
       "critical": 4,
       "high": 49,
       "moderate": 107,
       "low": 8
     },
-    "directPackages": 202,
-    "duplicatePackageNames": 230,
+    "directPackages": 205,
+    "duplicatePackageNames": 229,
     "installScriptPackages": 4,
     "nativeBindingPackages": 5,
     "networkInstallIndicatorPackages": 0,
     "packageScriptNetworkIndicatorPackages": 45,
     "codeGenerationIndicatorPackages": 658,
-    "resolvedPackages": 1993,
+    "resolvedPackages": 1992,
     "unpinnedActionUses": 24
   },
   "packages": [
@@ -9915,10 +9917,6 @@
           "context": "browser"
         },
         {
-          "path": "scripts/check-service-worker-cache-authority-inventory.js",
-          "context": "build"
-        },
-        {
           "path": "webpack/production.js",
           "context": "build"
         }
@@ -15422,6 +15420,10 @@
       },
       "usageEvidence": [
         {
+          "path": "package.json#scripts.test:browser-accessibility",
+          "context": "build"
+        },
+        {
           "path": "package.json#scripts.test",
           "context": "build"
         },
@@ -16041,16 +16043,14 @@
       "version": "1.3.14"
     },
     {
-      "classification": "build-transitive",
-      "declaredSection": null,
+      "classification": "build-only",
+      "declaredSection": "devDependencies",
       "descriptors": [
-        "@types/node@npm:*"
+        "@types/node@npm:16.18.11"
       ],
-      "direct": false,
+      "direct": true,
       "executionContexts": [
-        "build",
-        "node",
-        "test"
+        "build"
       ],
       "license": {
         "evidence": "Installed package.json metadata.",
@@ -16060,32 +16060,18 @@
         ],
         "status": "declared"
       },
-      "locator": "@types/node@npm:25.6.0",
+      "locator": "@types/node@npm:16.18.11",
       "maintenanceStatus": "not-declared-deprecated-in-audit-snapshot",
       "name": "@types/node",
-      "owner": "dependency-governance-maintainers",
+      "owner": "build-and-release-maintainers",
       "upstream": {
         "author": null,
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
       },
-      "purpose": "Transitive dependency required by: @commitlint/cli, @commitlint/config-conventional, @jest/globals, @testing-library/jest-dom, @types/http-link-header, @types/jest, babel-jest, babel-plugin-react-intl, danger, jest, jest-environment-jsdom, terser-webpack-plugin, ts-jest, webpack, webpack-dev-server.",
+      "purpose": "TypeScript definitions for Node.js",
       "replacementRelevance": "none-recorded",
       "rootDependencies": [
-        "@commitlint/cli",
-        "@commitlint/config-conventional",
-        "@jest/globals",
-        "@testing-library/jest-dom",
-        "@types/http-link-header",
-        "@types/jest",
-        "babel-jest",
-        "babel-plugin-react-intl",
-        "danger",
-        "jest",
-        "jest-environment-jsdom",
-        "terser-webpack-plugin",
-        "ts-jest",
-        "webpack",
-        "webpack-dev-server"
+        "@types/node"
       ],
       "installBehavior": {
         "hasInstallScript": false,
@@ -16099,8 +16085,121 @@
         },
         "scripts": {}
       },
-      "usageEvidence": [],
-      "version": "25.6.0"
+      "usageEvidence": [
+        {
+          "path": "package.json#scripts.check:build",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.check:ci-baseline",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.check:dependencies",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.check:design-authority",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.check:html-safety",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.check:network-callsites",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.check:persistence",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.check:telemetry",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.generate:design-authority",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.generate:html-safety",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.generate:network-callsites",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.generate:persistence",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.generate:telemetry",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.lint:js:baseline",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.manage:translations",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.prepare:twemoji",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.test:browser-accessibility",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.test:build-baseline",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.test:ci-baseline",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.test:dependency-inventory",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.test:design-authority",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.test:governance",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.test:html-safety",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.test:network-callsites",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.test:persistence",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.test:telemetry",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.test:worker",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.typecheck",
+          "context": "build"
+        }
+      ],
+      "version": "16.18.11"
     },
     {
       "classification": "build-transitive",
@@ -16379,16 +16478,13 @@
       "version": "2.7.3"
     },
     {
-      "classification": "runtime-transitive",
+      "classification": "build-transitive",
       "declaredSection": null,
       "descriptors": [
         "@types/prop-types@npm:*"
       ],
       "direct": false,
-      "executionContexts": [
-        "browser",
-        "test"
-      ],
+      "executionContexts": [],
       "license": {
         "evidence": "Installed package.json metadata.",
         "expression": "MIT",
@@ -16405,10 +16501,10 @@
         "author": null,
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
       },
-      "purpose": "Transitive dependency required by: react-intl.",
+      "purpose": "Transitive dependency required by: @types/react.",
       "replacementRelevance": "none-recorded",
       "rootDependencies": [
-        "react-intl"
+        "@types/react"
       ],
       "installBehavior": {
         "hasInstallScript": false,
@@ -16650,15 +16746,13 @@
       "version": "4.19.6"
     },
     {
-      "classification": "test-transitive",
-      "declaredSection": null,
+      "classification": "build-only",
+      "declaredSection": "devDependencies",
       "descriptors": [
-        "@types/react-dom@npm:<18.0.0"
+        "@types/react-dom@npm:17.0.18"
       ],
-      "direct": false,
-      "executionContexts": [
-        "test"
-      ],
+      "direct": true,
+      "executionContexts": [],
       "license": {
         "evidence": "Installed package.json metadata.",
         "expression": "MIT",
@@ -16667,18 +16761,18 @@
         ],
         "status": "declared"
       },
-      "locator": "@types/react-dom@npm:17.0.26",
+      "locator": "@types/react-dom@npm:17.0.18",
       "maintenanceStatus": "not-declared-deprecated-in-audit-snapshot",
       "name": "@types/react-dom",
-      "owner": "dependency-governance-maintainers",
+      "owner": "build-and-release-maintainers",
       "upstream": {
         "author": null,
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
       },
-      "purpose": "Transitive dependency required by: @testing-library/react.",
+      "purpose": "TypeScript definitions for React (react-dom)",
       "replacementRelevance": "none-recorded",
       "rootDependencies": [
-        "@testing-library/react"
+        "@types/react-dom"
       ],
       "installBehavior": {
         "hasInstallScript": false,
@@ -16693,7 +16787,7 @@
         "scripts": {}
       },
       "usageEvidence": [],
-      "version": "17.0.26"
+      "version": "17.0.18"
     },
     {
       "classification": "build-only",
@@ -17051,16 +17145,13 @@
       "version": "4.0.5"
     },
     {
-      "classification": "runtime-transitive",
-      "declaredSection": null,
+      "classification": "build-only",
+      "declaredSection": "devDependencies",
       "descriptors": [
-        "@types/react@npm:16 || 17 || 18"
+        "@types/react@npm:17.0.52"
       ],
-      "direct": false,
-      "executionContexts": [
-        "browser",
-        "test"
-      ],
+      "direct": true,
+      "executionContexts": [],
       "license": {
         "evidence": "Installed package.json metadata.",
         "expression": "MIT",
@@ -17069,18 +17160,18 @@
         ],
         "status": "declared"
       },
-      "locator": "@types/react@npm:18.3.28",
+      "locator": "@types/react@npm:17.0.52",
       "maintenanceStatus": "not-declared-deprecated-in-audit-snapshot",
       "name": "@types/react",
-      "owner": "dependency-governance-maintainers",
+      "owner": "build-and-release-maintainers",
       "upstream": {
         "author": null,
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
       },
-      "purpose": "Transitive dependency required by: react-intl.",
+      "purpose": "TypeScript definitions for React",
       "replacementRelevance": "none-recorded",
       "rootDependencies": [
-        "react-intl"
+        "@types/react"
       ],
       "installBehavior": {
         "hasInstallScript": false,
@@ -17095,62 +17186,7 @@
         "scripts": {}
       },
       "usageEvidence": [],
-      "version": "18.3.28"
-    },
-    {
-      "classification": "runtime-transitive",
-      "declaredSection": null,
-      "descriptors": [
-        "@types/react@npm:*"
-      ],
-      "direct": false,
-      "executionContexts": [
-        "browser",
-        "test"
-      ],
-      "license": {
-        "evidence": "Installed package.json metadata.",
-        "expression": "MIT",
-        "obligations": [
-          "retain-applicable-copyright-license-and-notice-text"
-        ],
-        "status": "declared"
-      },
-      "locator": "@types/react@npm:19.2.14",
-      "maintenanceStatus": "not-declared-deprecated-in-audit-snapshot",
-      "name": "@types/react",
-      "owner": "dependency-governance-maintainers",
-      "upstream": {
-        "author": null,
-        "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
-      },
-      "purpose": "Transitive dependency required by: @types/qrcode.react, @types/react-datepicker, @types/react-helmet, @types/react-motion, @types/react-router-dom, @types/react-sparklines, @types/react-swipeable-views, @types/react-toggle, react-redux.",
-      "replacementRelevance": "none-recorded",
-      "rootDependencies": [
-        "@types/qrcode.react",
-        "@types/react-datepicker",
-        "@types/react-helmet",
-        "@types/react-motion",
-        "@types/react-router-dom",
-        "@types/react-sparklines",
-        "@types/react-swipeable-views",
-        "@types/react-toggle",
-        "react-redux"
-      ],
-      "installBehavior": {
-        "hasInstallScript": false,
-        "hasInstallTimeNetworkIndicator": false,
-        "hasPackageScriptNetworkIndicator": false,
-        "hasCodeGenerationIndicator": false,
-        "hasNativeBinding": false,
-        "platformConstraints": {
-          "cpu": [],
-          "os": []
-        },
-        "scripts": {}
-      },
-      "usageEvidence": [],
-      "version": "19.2.14"
+      "version": "17.0.52"
     },
     {
       "classification": "build-transitive",
@@ -17331,6 +17367,50 @@
       },
       "usageEvidence": [],
       "version": "0.12.0"
+    },
+    {
+      "classification": "build-transitive",
+      "declaredSection": null,
+      "descriptors": [
+        "@types/scheduler@npm:*"
+      ],
+      "direct": false,
+      "executionContexts": [],
+      "license": {
+        "evidence": "Installed package.json metadata.",
+        "expression": "MIT",
+        "obligations": [
+          "retain-applicable-copyright-license-and-notice-text"
+        ],
+        "status": "declared"
+      },
+      "locator": "@types/scheduler@npm:0.26.0",
+      "maintenanceStatus": "not-declared-deprecated-in-audit-snapshot",
+      "name": "@types/scheduler",
+      "owner": "dependency-governance-maintainers",
+      "upstream": {
+        "author": null,
+        "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "purpose": "Transitive dependency required by: @types/react.",
+      "replacementRelevance": "none-recorded",
+      "rootDependencies": [
+        "@types/react"
+      ],
+      "installBehavior": {
+        "hasInstallScript": false,
+        "hasInstallTimeNetworkIndicator": false,
+        "hasPackageScriptNetworkIndicator": false,
+        "hasCodeGenerationIndicator": false,
+        "hasNativeBinding": false,
+        "platformConstraints": {
+          "cpu": [],
+          "os": []
+        },
+        "scripts": {}
+      },
+      "usageEvidence": [],
+      "version": "0.26.0"
     },
     {
       "classification": "unverified-transitive",
@@ -23130,7 +23210,6 @@
       "direct": false,
       "executionContexts": [
         "browser",
-        "node",
         "test"
       ],
       "license": {
@@ -27140,7 +27219,6 @@
       "executionContexts": [
         "browser",
         "build",
-        "node",
         "test"
       ],
       "license": {
@@ -33636,16 +33714,13 @@
       "version": "2.3.0"
     },
     {
-      "classification": "runtime-transitive",
+      "classification": "build-transitive",
       "declaredSection": null,
       "descriptors": [
-        "csstype@npm:^3.2.2"
+        "csstype@npm:^3.0.2"
       ],
       "direct": false,
-      "executionContexts": [
-        "browser",
-        "test"
-      ],
+      "executionContexts": [],
       "license": {
         "evidence": "Installed package.json metadata.",
         "expression": "MIT",
@@ -33662,19 +33737,10 @@
         "author": "Fredrik Nicol <fredrik.nicol@gmail.com>",
         "repository": "https://github.com/frenic/csstype"
       },
-      "purpose": "Transitive dependency required by: @types/qrcode.react, @types/react-datepicker, @types/react-helmet, @types/react-motion, @types/react-router-dom, @types/react-sparklines, @types/react-swipeable-views, @types/react-toggle, react-intl, react-redux.",
+      "purpose": "Transitive dependency required by: @types/react.",
       "replacementRelevance": "none-recorded",
       "rootDependencies": [
-        "@types/qrcode.react",
-        "@types/react-datepicker",
-        "@types/react-helmet",
-        "@types/react-motion",
-        "@types/react-router-dom",
-        "@types/react-sparklines",
-        "@types/react-swipeable-views",
-        "@types/react-toggle",
-        "react-intl",
-        "react-redux"
+        "@types/react"
       ],
       "installBehavior": {
         "hasInstallScript": false,
@@ -34121,7 +34187,6 @@
       "direct": false,
       "executionContexts": [
         "browser",
-        "build",
         "test"
       ],
       "license": {
@@ -34952,7 +35017,6 @@
       "executionContexts": [
         "browser",
         "build",
-        "node",
         "test"
       ],
       "license": {
@@ -44133,7 +44197,6 @@
       "direct": false,
       "executionContexts": [
         "browser",
-        "node",
         "test"
       ],
       "license": {
@@ -45316,8 +45379,7 @@
       ],
       "direct": false,
       "executionContexts": [
-        "browser",
-        "node"
+        "browser"
       ],
       "license": {
         "evidence": "Installed package.json metadata.",
@@ -47770,7 +47832,6 @@
       "executionContexts": [
         "browser",
         "build",
-        "node",
         "test"
       ],
       "license": {
@@ -51573,7 +51634,6 @@
       "executionContexts": [
         "browser",
         "build",
-        "node",
         "test"
       ],
       "license": {
@@ -52467,7 +52527,7 @@
       "version": "1.0.4"
     },
     {
-      "classification": "build-transitive",
+      "classification": "test-transitive",
       "declaredSection": null,
       "descriptors": [
         "is-arguments@npm:^1.0.4",
@@ -52475,7 +52535,6 @@
       ],
       "direct": false,
       "executionContexts": [
-        "node",
         "test"
       ],
       "license": {
@@ -52973,7 +53032,6 @@
       "direct": false,
       "executionContexts": [
         "browser",
-        "node",
         "test"
       ],
       "license": {
@@ -53954,8 +54012,7 @@
       ],
       "direct": false,
       "executionContexts": [
-        "browser",
-        "node"
+        "browser"
       ],
       "license": {
         "evidence": "Installed package.json metadata.",
@@ -55033,7 +55090,6 @@
       "direct": false,
       "executionContexts": [
         "browser",
-        "node",
         "test"
       ],
       "license": {
@@ -55478,8 +55534,7 @@
       ],
       "direct": false,
       "executionContexts": [
-        "browser",
-        "node"
+        "browser"
       ],
       "license": {
         "evidence": "Installed package.json metadata.",
@@ -58219,6 +58274,10 @@
         "scripts": {}
       },
       "usageEvidence": [
+        {
+          "path": "package.json#scripts.test:browser-accessibility",
+          "context": "build"
+        },
         {
           "path": "package.json#scripts.test",
           "context": "build"
@@ -63580,7 +63639,6 @@
       "direct": false,
       "executionContexts": [
         "browser",
-        "build",
         "test"
       ],
       "license": {
@@ -72699,7 +72757,6 @@
       "direct": false,
       "executionContexts": [
         "browser",
-        "node",
         "test"
       ],
       "license": {
@@ -76985,7 +77042,6 @@
       "direct": true,
       "executionContexts": [
         "browser",
-        "build",
         "test"
       ],
       "license": {
@@ -77033,10 +77089,6 @@
         {
           "path": "scripts/__tests__/check-bootstrap-provider-authority-inventory.test.js",
           "context": "test"
-        },
-        {
-          "path": "scripts/check-bootstrap-provider-authority-inventory.js",
-          "context": "build"
         }
       ],
       "version": "4.25.0"
@@ -77214,7 +77266,6 @@
       "direct": false,
       "executionContexts": [
         "browser",
-        "build",
         "test"
       ],
       "license": {
@@ -79020,7 +79071,6 @@
       "direct": false,
       "executionContexts": [
         "browser",
-        "build",
         "test"
       ],
       "license": {
@@ -79323,7 +79373,6 @@
       "direct": false,
       "executionContexts": [
         "browser",
-        "build",
         "test"
       ],
       "license": {
@@ -87156,7 +87205,6 @@
       "direct": false,
       "executionContexts": [
         "browser",
-        "node",
         "test"
       ],
       "license": {
@@ -88202,7 +88250,6 @@
       "executionContexts": [
         "browser",
         "build",
-        "node",
         "test"
       ],
       "license": {
@@ -96752,68 +96799,6 @@
       "version": "1.13.8"
     },
     {
-      "classification": "build-transitive",
-      "declaredSection": null,
-      "descriptors": [
-        "undici-types@npm:~7.19.0"
-      ],
-      "direct": false,
-      "executionContexts": [
-        "build",
-        "node",
-        "test"
-      ],
-      "license": {
-        "evidence": "Installed package.json metadata.",
-        "expression": "MIT",
-        "obligations": [
-          "retain-applicable-copyright-license-and-notice-text"
-        ],
-        "status": "declared"
-      },
-      "locator": "undici-types@npm:7.19.2",
-      "maintenanceStatus": "not-declared-deprecated-in-audit-snapshot",
-      "name": "undici-types",
-      "owner": "dependency-governance-maintainers",
-      "upstream": {
-        "author": null,
-        "repository": "git+https://github.com/nodejs/undici.git"
-      },
-      "purpose": "Transitive dependency required by: @commitlint/cli, @commitlint/config-conventional, @jest/globals, @testing-library/jest-dom, @types/http-link-header, @types/jest, babel-jest, babel-plugin-react-intl, danger, jest, jest-environment-jsdom, terser-webpack-plugin, ts-jest, webpack, webpack-dev-server.",
-      "replacementRelevance": "none-recorded",
-      "rootDependencies": [
-        "@commitlint/cli",
-        "@commitlint/config-conventional",
-        "@jest/globals",
-        "@testing-library/jest-dom",
-        "@types/http-link-header",
-        "@types/jest",
-        "babel-jest",
-        "babel-plugin-react-intl",
-        "danger",
-        "jest",
-        "jest-environment-jsdom",
-        "terser-webpack-plugin",
-        "ts-jest",
-        "webpack",
-        "webpack-dev-server"
-      ],
-      "installBehavior": {
-        "hasInstallScript": false,
-        "hasInstallTimeNetworkIndicator": false,
-        "hasPackageScriptNetworkIndicator": false,
-        "hasCodeGenerationIndicator": false,
-        "hasNativeBinding": false,
-        "platformConstraints": {
-          "cpu": [],
-          "os": []
-        },
-        "scripts": {}
-      },
-      "usageEvidence": [],
-      "version": "7.19.2"
-    },
-    {
       "classification": "runtime-transitive",
       "declaredSection": null,
       "descriptors": [
@@ -98268,15 +98253,13 @@
       "version": "1.0.2"
     },
     {
-      "classification": "build-only",
+      "classification": "unused-or-dynamically-referenced-unverified",
       "declaredSection": "dependencies",
       "descriptors": [
         "util@npm:^0.12.4"
       ],
       "direct": true,
-      "executionContexts": [
-        "node"
-      ],
+      "executionContexts": [],
       "license": {
         "evidence": "Installed package.json metadata.",
         "expression": "MIT",
@@ -98288,13 +98271,13 @@
       "locator": "util@npm:0.12.5",
       "maintenanceStatus": "not-declared-deprecated-in-audit-snapshot",
       "name": "util",
-      "owner": "build-and-release-maintainers",
+      "owner": "dependency-governance-maintainers",
       "upstream": {
         "author": "Joyent",
         "repository": "git://github.com/browserify/node-util"
       },
       "purpose": "Node.js's util module for all engines",
-      "replacementRelevance": "none-recorded",
+      "replacementRelevance": "review-required",
       "rootDependencies": [
         "util"
       ],
@@ -98310,80 +98293,7 @@
         },
         "scripts": {}
       },
-      "usageEvidence": [
-        {
-          "path": "static/packs/js/application-06d1b088891fbf13a2bf.js",
-          "context": "node"
-        },
-        {
-          "path": "static/packs/js/application-0bc867548dbc28286e17.js",
-          "context": "node"
-        },
-        {
-          "path": "static/packs/js/application-45e535b7c925ac87abc7.js",
-          "context": "node"
-        },
-        {
-          "path": "static/packs/js/application-4d2103e53de3a982b80f.js",
-          "context": "node"
-        },
-        {
-          "path": "static/packs/js/application-4ec3b2bcdd081019c394.js",
-          "context": "node"
-        },
-        {
-          "path": "static/packs/js/application-711109f02ca17137c3f9.js",
-          "context": "node"
-        },
-        {
-          "path": "static/packs/js/application-78bba58997d7f4a06d3c.js",
-          "context": "node"
-        },
-        {
-          "path": "static/packs/js/application-91cdcbf5892bcff97c21.js",
-          "context": "node"
-        },
-        {
-          "path": "static/packs/js/application-ba58ea4fde58c26c24c8.js",
-          "context": "node"
-        },
-        {
-          "path": "static/packs/js/application-bbd0cf055e30db4a30cc.js",
-          "context": "node"
-        },
-        {
-          "path": "static/packs/js/application-d1999a8eb0e0579f7b68.js",
-          "context": "node"
-        },
-        {
-          "path": "static/packs/js/features/soapbox_config-11c483be3eed9286390f.chunk.js",
-          "context": "node"
-        },
-        {
-          "path": "static/packs/js/features/soapbox_config-3840954b324bfdfdd267.chunk.js",
-          "context": "node"
-        },
-        {
-          "path": "static/packs/js/features/soapbox_config-95361592f1f921d279c3.chunk.js",
-          "context": "node"
-        },
-        {
-          "path": "static/packs/js/features/soapbox_config-aca2d6296d01f6da8156.chunk.js",
-          "context": "node"
-        },
-        {
-          "path": "static/packs/js/features/soapbox_config-bd48adb24e0fe63642e3.chunk.js",
-          "context": "node"
-        },
-        {
-          "path": "static/packs/js/features/soapbox_config-e99471c8cc5e4f6bdde9.chunk.js",
-          "context": "node"
-        },
-        {
-          "path": "static/packs/js/features/soapbox_config-eaf8ada238636574439b.chunk.js",
-          "context": "node"
-        }
-      ],
+      "usageEvidence": [],
       "version": "0.12.5"
     },
     {
@@ -99077,7 +98987,6 @@
       "direct": false,
       "executionContexts": [
         "browser",
-        "build",
         "test"
       ],
       "license": {
@@ -100551,7 +100460,6 @@
       "direct": false,
       "executionContexts": [
         "browser",
-        "node",
         "test"
       ],
       "license": {
@@ -101940,6 +101848,10 @@
       },
       "usageEvidence": [
         {
+          "path": "scripts/check-ci-baseline.js",
+          "context": "build"
+        },
+        {
           "path": "scripts/dependency-inventory-lib.js",
           "context": "build"
         }
@@ -102799,29 +102711,6 @@
       "versions": [
         "28.1.8",
         "30.0.0"
-      ]
-    },
-    {
-      "locators": [
-        "@types/react@npm:18.3.28",
-        "@types/react@npm:19.2.14"
-      ],
-      "name": "@types/react",
-      "rootDependencies": [
-        "@types/qrcode.react",
-        "@types/react-datepicker",
-        "@types/react-helmet",
-        "@types/react-motion",
-        "@types/react-router-dom",
-        "@types/react-sparklines",
-        "@types/react-swipeable-views",
-        "@types/react-toggle",
-        "react-intl",
-        "react-redux"
-      ],
-      "versions": [
-        "18.3.28",
-        "19.2.14"
       ]
     },
     {
@@ -111048,6 +110937,102 @@
     },
     {
       "action": "actions/checkout",
+      "line": 25,
+      "local": false,
+      "path": ".github/workflows/phase-0g-quality.yml",
+      "pinnedToCommit": true,
+      "ref": "11bd71901bbe5b1630ceea73d27597364c9af683"
+    },
+    {
+      "action": "actions/setup-node",
+      "line": 28,
+      "local": false,
+      "path": ".github/workflows/phase-0g-quality.yml",
+      "pinnedToCommit": true,
+      "ref": "49933ea5288caeca8642d1e84afbd3f7d6820020"
+    },
+    {
+      "action": "actions/checkout",
+      "line": 44,
+      "local": false,
+      "path": ".github/workflows/phase-0g-quality.yml",
+      "pinnedToCommit": true,
+      "ref": "11bd71901bbe5b1630ceea73d27597364c9af683"
+    },
+    {
+      "action": "actions/setup-node",
+      "line": 47,
+      "local": false,
+      "path": ".github/workflows/phase-0g-quality.yml",
+      "pinnedToCommit": true,
+      "ref": "49933ea5288caeca8642d1e84afbd3f7d6820020"
+    },
+    {
+      "action": "actions/checkout",
+      "line": 61,
+      "local": false,
+      "path": ".github/workflows/phase-0g-quality.yml",
+      "pinnedToCommit": true,
+      "ref": "11bd71901bbe5b1630ceea73d27597364c9af683"
+    },
+    {
+      "action": "actions/setup-node",
+      "line": 64,
+      "local": false,
+      "path": ".github/workflows/phase-0g-quality.yml",
+      "pinnedToCommit": true,
+      "ref": "49933ea5288caeca8642d1e84afbd3f7d6820020"
+    },
+    {
+      "action": "actions/checkout",
+      "line": 76,
+      "local": false,
+      "path": ".github/workflows/phase-0g-quality.yml",
+      "pinnedToCommit": true,
+      "ref": "11bd71901bbe5b1630ceea73d27597364c9af683"
+    },
+    {
+      "action": "actions/setup-node",
+      "line": 79,
+      "local": false,
+      "path": ".github/workflows/phase-0g-quality.yml",
+      "pinnedToCommit": true,
+      "ref": "49933ea5288caeca8642d1e84afbd3f7d6820020"
+    },
+    {
+      "action": "actions/checkout",
+      "line": 93,
+      "local": false,
+      "path": ".github/workflows/phase-0g-quality.yml",
+      "pinnedToCommit": true,
+      "ref": "11bd71901bbe5b1630ceea73d27597364c9af683"
+    },
+    {
+      "action": "actions/setup-node",
+      "line": 96,
+      "local": false,
+      "path": ".github/workflows/phase-0g-quality.yml",
+      "pinnedToCommit": true,
+      "ref": "49933ea5288caeca8642d1e84afbd3f7d6820020"
+    },
+    {
+      "action": "actions/checkout",
+      "line": 112,
+      "local": false,
+      "path": ".github/workflows/phase-0g-quality.yml",
+      "pinnedToCommit": true,
+      "ref": "11bd71901bbe5b1630ceea73d27597364c9af683"
+    },
+    {
+      "action": "actions/setup-node",
+      "line": 115,
+      "local": false,
+      "path": ".github/workflows/phase-0g-quality.yml",
+      "pinnedToCommit": true,
+      "ref": "49933ea5288caeca8642d1e84afbd3f7d6820020"
+    },
+    {
+      "action": "actions/checkout",
       "line": 32,
       "local": false,
       "path": ".github/workflows/push-worker-authority.yml",
@@ -111808,6 +111793,14 @@
     },
     {
       "currentLocator": "typescript@npm:4.9.5",
+      "owner": "dependency-governance-maintainers",
+      "reason": [
+        "usage-or-security-review"
+      ],
+      "status": "queued"
+    },
+    {
+      "currentLocator": "util@npm:0.12.5",
       "owner": "dependency-governance-maintainers",
       "reason": [
         "usage-or-security-review"

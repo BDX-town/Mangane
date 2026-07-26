@@ -100,8 +100,8 @@ test('fails when a Phase 0C invariant is silently disabled', () => {
 test('fails when durable worker revocation drifts without review', () => {
   const root = fixture();
   mutate(root, 'app/soapbox/service_worker/web_push_notifications.ts', source => source.replace(
-    `const REVOCATION_CACHE = 'soapbox-private-revocations-v1';`,
-    `const REVOCATION_CACHE = 'removed';`,
+    'const REVOCATION_CACHE = \'soapbox-private-revocations-v1\';',
+    'const REVOCATION_CACHE = \'removed\';',
   ));
   assertRunFails(root, /durable-worker-revocation/);
 });

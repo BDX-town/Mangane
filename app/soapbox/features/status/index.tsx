@@ -444,7 +444,7 @@ const Thread: React.FC<IThread> = (props) => {
 
   /** Fetch the status (and context) from the API. */
   const fetchDataRef = useRef(null);
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async() => {
     try {
       const time = new Date().getTime();
       fetchDataRef.current = time;
@@ -467,7 +467,7 @@ const Thread: React.FC<IThread> = (props) => {
     return fetchData();
   }, [fetchData]);
 
-  const handleLoadMore = useCallback(async () => {
+  const handleLoadMore = useCallback(async() => {
     if (!next || !actualStatus) return;
     try {
       const { next: _next } = await dispatch(fetchNext(actualStatus.id, next));

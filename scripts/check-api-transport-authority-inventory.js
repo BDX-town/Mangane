@@ -5,7 +5,9 @@ const path = require('node:path');
 
 const root = path.resolve(process.env.API_TRANSPORT_INVENTORY_ROOT || path.resolve(__dirname, '..'));
 const manifestPath = path.join(root, 'config', 'api-transport-authority-inventory.json');
-const fail = message => { throw new Error(`api-transport-authority: ${message}`); };
+const fail = message => {
+  throw new Error(`api-transport-authority: ${message}`);
+};
 
 const expectedSurfaces = new Map([
   ['central-axios-client', {
@@ -15,9 +17,9 @@ const expectedSurfaces = new Map([
       'const getAuthBaseURL = createSelector([',
       'const baseURL = parseBaseURL(accountUrl) || parseBaseURL(authUserUrl);',
       'baseURL: isURL(BuildConfig.BACKEND_URL) ? BuildConfig.BACKEND_URL : baseURL,',
-      "'Authorization': `Bearer ${accessToken}`",
+      '\'Authorization\': `Bearer ${accessToken}`',
       'transformResponse: [maybeParseJSON]',
-      "const baseURL = me ? getAuthBaseURL(state, me) : '';",
+      'const baseURL = me ? getAuthBaseURL(state, me) : \'\';',
       'const client = baseClient(accessToken, baseURL);',
       'client.interceptors.response.use',
       'assertSessionGenerationActive(sessionGeneration);',
@@ -38,14 +40,14 @@ const expectedSurfaces = new Map([
     requiredFragments: [
       'new URL(url);',
       'return new URL(url).origin;',
-      "const accountUrl = state.accounts.getIn([accountId, 'url']);",
-      "return state.auth.getIn(['users', accountUrl, 'access_token']) as string;",
+      'const accountUrl = state.accounts.getIn([accountId, \'url\']);',
+      'return state.auth.getIn([\'users\', accountUrl, \'access_token\']) as string;',
       'return ImmutableList([',
       ']).find(isURL);',
     ],
     forbiddenFragmentsUntilReconciled: [
-      "protocol === 'https:'",
-      "hostname === 'localhost'",
+      'protocol === \'https:\'',
+      'hostname === \'localhost\'',
       'isPrivate',
       'allowedPorts',
     ],

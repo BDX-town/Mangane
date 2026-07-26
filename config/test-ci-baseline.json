@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "status": "phase-0g-canonical",
+  "runtime": {
+    "node": "18.20.8",
+    "packageManager": "yarn@4.0.2",
+    "install": "yarn install --immutable --mode=skip-build"
+  },
+  "workflow": ".github/workflows/phase-0g-quality.yml",
+  "requiredJobs": [
+    "quality",
+    "unit-integration",
+    "browser-accessibility",
+    "worker-security",
+    "production-build",
+    "development-build"
+  ],
+  "baselines": {
+    "eslintErrors": 0,
+    "eslintWarningCeiling": 183,
+    "stylelintErrors": 0,
+    "typeScriptInheritedDiagnostics": 101,
+    "typeScriptUnbaselinedDiagnostics": 0,
+    "jestSuites": 151,
+    "jestTests": 718,
+    "nodeGovernanceTests": 153,
+    "coveragePercent": {
+      "statements": 36.87,
+      "branches": 27.71,
+      "functions": 26.39,
+      "lines": 38.17
+    },
+    "productionBuildBytes": {
+      "applicationJavaScript": 3990281,
+      "runtimeJavaScript": 277545,
+      "applicationCss": 390934,
+      "serviceWorker": 223653
+    },
+    "quarantinedTests": 0,
+    "automaticTestRetries": 0
+  },
+  "artifactPolicy": {
+    "uploadsEnabled": false,
+    "productionSourceMapsAllowed": false,
+    "generatedOutputSecretScan": true
+  },
+  "repositoryEnforcement": {
+    "verifiedAt": "2026-07-25T20:53:34-04:00",
+    "verifiedBranch": "phase-0/telemetry-redaction-authority",
+    "branchProtected": false,
+    "requiredChecksEnforced": false,
+    "limitation": "GitHub reported Branch not protected for the stacked PR base; repository settings are external to this source branch."
+  },
+  "owners": {
+    "quality": "frontend-maintainers",
+    "unit-integration": "frontend-maintainers",
+    "browser-accessibility": "design-system",
+    "worker-security": "security-maintainers",
+    "production-build": "release-maintainers",
+    "development-build": "release-maintainers"
+  }
+}

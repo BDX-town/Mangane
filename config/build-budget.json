@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "owner": "frontend-maintainers",
+  "production": {
+    "applicationJavaScriptBytes": 4250000,
+    "runtimeJavaScriptBytes": 350000,
+    "applicationCssBytes": 450000,
+    "serviceWorkerBytes": 500000,
+    "forbidSourceMaps": true
+  },
+  "secretPatterns": [
+    {
+      "id": "private-key",
+      "pattern": "-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"
+    },
+    {
+      "id": "aws-access-key",
+      "pattern": "\\bAKIA[0-9A-Z]{16}\\b"
+    },
+    {
+      "id": "github-token",
+      "pattern": "\\bgh[pousr]_[A-Za-z0-9]{36,255}\\b"
+    },
+    {
+      "id": "openai-key",
+      "pattern": "\\bsk-(?:proj-)?[A-Za-z0-9_-]{20,}\\b"
+    }
+  ]
+}

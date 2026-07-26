@@ -9,15 +9,15 @@ Generated from `package.json`, `yarn.lock`, installed package metadata, reposito
 - Machine-readable authority: [`config/dependency-authority-inventory.json`](../../config/dependency-authority-inventory.json)
 - Advisory snapshot: [`config/dependency-advisory-snapshot.json`](../../config/dependency-advisory-snapshot.json)
 - Drift and license checker: [`scripts/check-dependency-authority-inventory.js`](../../scripts/check-dependency-authority-inventory.js)
-- Resolved packages classified: **1993**
-- Direct packages with an owner, purpose, context, and usage evidence: **202**
-- Package names with multiple locked locators or versions: **230**
+- Resolved packages classified: **1992**
+- Direct packages with an owner, purpose, context, and usage evidence: **205**
+- Package names with multiple locked locators or versions: **229**
 - Packages with install scripts: **4**
 - Packages with native-binding indicators: **5**
 - Packages with install-time network indicators: **0**
 - Packages with network-capable package scripts: **45**
 - Packages with code-generation/build script indicators: **658**
-- GitHub Actions use sites reviewed: **28** (24 not commit-pinned)
+- GitHub Actions use sites reviewed: **40** (24 not commit-pinned)
 
 Every lockfile locator has a classification, execution context, root reachability set, maintenance status, license disposition, install behavior, owner, and purpose in the machine-readable authority. A transitive package may inherit multiple roots and contexts.
 
@@ -60,7 +60,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | @gamestdio/websocket | 0.3.2 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | @jedmao/redux-mock-store | 3.0.5 | test-only | test | test-infrastructure-maintainers | 1 | none-recorded |
 | @jest/globals | 28.1.3 | test-only | test | test-infrastructure-maintainers | 1 | none-recorded |
-| @lcdp/offline-plugin | 5.1.7 | runtime | browser, build | frontend-runtime-maintainers | 3 | none-recorded |
+| @lcdp/offline-plugin | 5.1.7 | runtime | browser, build | frontend-runtime-maintainers | 2 | none-recorded |
 | @metamask/providers | 9.1.0 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | @popperjs/core | 2.11.8 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | @reach/menu-button | 0.16.2 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
@@ -80,19 +80,22 @@ The machine-readable `duplicatePackages` register records every package name wit
 | @testing-library/user-event | 14.6.1 | test-only | test | test-infrastructure-maintainers | 10 | none-recorded |
 | @types/escape-html | 1.0.4 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/http-link-header | 1.0.7 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
-| @types/jest | 28.1.8 | build-only | build | build-and-release-maintainers | 3 | none-recorded |
+| @types/jest | 28.1.8 | build-only | build | build-and-release-maintainers | 4 | none-recorded |
 | @types/lodash | 4.17.24 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
+| @types/node | 16.18.11 | build-only | build | build-and-release-maintainers | 28 | none-recorded |
 | @types/object-assign | 4.0.33 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/object-fit-images | 3.2.5 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/qrcode.react | 1.0.5 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/react-color | 3.0.13 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/react-datepicker | 4.19.6 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
+| @types/react-dom | 17.0.18 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/react-helmet | 6.1.11 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/react-motion | 0.0.32 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/react-router-dom | 5.3.3 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/react-sparklines | 1.7.5 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/react-swipeable-views | 0.13.6 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/react-toggle | 4.0.5 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
+| @types/react | 17.0.52 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/redux-mock-store | 1.5.0 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/semver | 7.7.1 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/uuid | 8.3.4 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
@@ -161,7 +164,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | iso-639-1 | 3.1.5 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | jest-environment-jsdom | 28.1.3 | development-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | jest-junit | 14.0.1 | development-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
-| jest | 28.1.3 | build-only | build | build-and-release-maintainers | 3 | none-recorded |
+| jest | 28.1.3 | build-only | build | build-and-release-maintainers | 4 | none-recorded |
 | jsdoc | 3.6.11 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
 | libphonenumber-js | 1.12.41 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | line-awesome | 1.3.0 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
@@ -184,7 +187,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | qrcode.react | 3.2.0 | runtime | browser | frontend-runtime-maintainers | 2 | none-recorded |
 | raf | 3.4.1 | development-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | react-color | 2.19.3 | runtime | browser | frontend-runtime-maintainers | 3 | none-recorded |
-| react-datepicker | 4.25.0 | runtime | browser, build, test | frontend-runtime-maintainers | 4 | none-recorded |
+| react-datepicker | 4.25.0 | runtime | browser, test | frontend-runtime-maintainers | 3 | none-recorded |
 | react-dom | 17.0.2 | runtime | browser | frontend-runtime-maintainers | 6 | none-recorded |
 | react-helmet | 6.1.0 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | react-hotkeys | 1.1.4 | runtime | browser | frontend-runtime-maintainers | 6 | none-recorded |
@@ -229,7 +232,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | tslib | 2.8.1 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | twemoji | 14.0.2 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | typescript | 4.9.5 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
-| util | 0.12.5 | build-only | node | build-and-release-maintainers | 18 | none-recorded |
+| util | 0.12.5 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | uuid | 8.3.2 | runtime | browser | frontend-runtime-maintainers | 7 | none-recorded |
 | webpack-assets-manifest | 5.2.1 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
 | webpack-cli | 4.10.0 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
@@ -238,7 +241,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | webpack-merge | 5.10.0 | build-only | build | build-and-release-maintainers | 3 | none-recorded |
 | webpack | 5.106.2 | build-only | build | build-and-release-maintainers | 3 | none-recorded |
 | wicg-inert | 3.1.3 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
-| yaml | 2.8.3 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
+| yaml | 2.8.3 | build-only | build | build-and-release-maintainers | 2 | none-recorded |
 | yargs | 16.2.0 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
 
 ## License families
@@ -265,7 +268,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | CC0-1.0 | 5 | declared | retain-provenance-and-confirm-jurisdictional-treatment |
 | ISC | 110 | declared | retain-applicable-copyright-license-and-notice-text |
 | LicenseRef-TaffyDB-Ambiguous | 1 | conflict-requires-removal-or-counsel | legal-review-before-distribution |
-| MIT | 1699 | declared, verified-from-distribution | retain-applicable-copyright-license-and-notice-text |
+| MIT | 1698 | declared, verified-from-distribution | retain-applicable-copyright-license-and-notice-text |
 | MIT/X11 | 1 | non-spdx-or-ambiguous-declaration | retain-applicable-copyright-license-and-notice-text |
 | MPL-2.0 | 3 | declared | copyleft-source-and-license-compliance-review |
 | Public Domain | 1 | non-spdx-or-ambiguous-declaration | retain-provenance-and-confirm-jurisdictional-treatment |
@@ -446,7 +449,7 @@ Mangane remains AGPL-3.0-or-later. This inventory records dependency declaration
 | cssesc | 3.0.0 | false | false | false | false | true | @tailwindcss/typography, css-loader, cssnano, stylelint, stylelint-scss, tailwindcss |
 | csso | 4.2.0 | false | false | false | false | true | cssnano |
 | cssstyle | 2.3.0 | false | false | false | false | true | jest-environment-jsdom |
-| csstype | 3.2.3 | false | false | false | false | true | @types/qrcode.react, @types/react-datepicker, @types/react-helmet, @types/react-motion, @types/react-router-dom, @types/react-sparklines, @types/react-swipeable-views, @types/react-toggle, react-intl, react-redux |
+| csstype | 3.2.3 | false | false | false | false | true | @types/react |
 | danger | 11.3.1 | false | false | false | false | true | danger |
 | data-view-buffer | 1.0.2 | false | false | false | false | true | array-includes, eslint-plugin-import, eslint-plugin-jsx-a11y, eslint-plugin-react |
 | data-view-byte-length | 1.0.2 | false | false | false | false | true | array-includes, eslint-plugin-import, eslint-plugin-jsx-a11y, eslint-plugin-react |
@@ -975,7 +978,7 @@ Mangane remains AGPL-3.0-or-later. This inventory records dependency declaration
 | zod | 4.3.6 | false | false | false | false | true | eslint-plugin-react-hooks |
 | zwitch | 1.0.5 | false | false | false | false | true | stylelint |
 
-The repository itself also runs `scripts/download-twemoji-assets.js` during `postinstall`, performing an unverified GitHub download piped into `tar`. That is a supply-chain and reproducibility blocker queued for remediation; the Phase 0A CI gate uses `--mode=skip-build` so inventory validation cannot execute dependency or repository install scripts.
+The repository's Twemoji preparation is explicit and checksum-pinned. It enforces an HTTPS host allowlist, redirect limit, response-size ceiling, request timeout, exponential backoff with jitter, archive-shape validation, and atomic installation. CI keeps dependency and repository install scripts disabled with `--mode=skip-build`; only build jobs invoke the reviewed `yarn prepare:twemoji` step.
 
 ## GitHub Actions supply-chain review
 

@@ -1,0 +1,730 @@
+{
+  "schemaVersion": 1,
+  "status": "inherited-debt-drift-gated",
+  "owner": "frontend-maintainers",
+  "trackingIssue": "Phase 1 TypeScript authority migration",
+  "expiresOn": "2026-10-31",
+  "rationale": "The inherited mixed JavaScript and TypeScript reducer graph is not yet soundly typed. Every existing diagnostic is pinned so new or changed errors fail CI.",
+  "compilerExitCode": 2,
+  "diagnosticCount": 101,
+  "countsByCode": {
+    "TS2307": 13,
+    "TS2322": 2,
+    "TS2339": 57,
+    "TS2345": 7,
+    "TS2551": 2,
+    "TS2554": 1,
+    "TS2741": 16,
+    "TS2769": 2,
+    "TS2839": 1
+  },
+  "diagnostics": [
+    {
+      "code": "TS2339",
+      "column": 33,
+      "file": "app/soapbox/actions/auth.ts",
+      "line": 102,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 33,
+      "file": "app/soapbox/actions/auth.ts",
+      "line": 119,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 42,
+      "file": "app/soapbox/actions/auth.ts",
+      "line": 137,
+      "message": "Property 'getIn' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 33,
+      "file": "app/soapbox/actions/auth.ts",
+      "line": 138,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 33,
+      "file": "app/soapbox/actions/auth.ts",
+      "line": 157,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 29,
+      "file": "app/soapbox/actions/auth.ts",
+      "line": 262,
+      "message": "Property 'getIn' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 33,
+      "file": "app/soapbox/actions/auth.ts",
+      "line": 263,
+      "message": "Property 'getIn' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 25,
+      "file": "app/soapbox/actions/auth.ts",
+      "line": 264,
+      "message": "Property 'getIn' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 23,
+      "file": "app/soapbox/actions/auth.ts",
+      "line": 291,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 45,
+      "file": "app/soapbox/actions/group_editor.ts",
+      "line": 24,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 43,
+      "file": "app/soapbox/actions/group_editor.ts",
+      "line": 25,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 49,
+      "file": "app/soapbox/actions/group_editor.ts",
+      "line": 26,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 48,
+      "file": "app/soapbox/actions/group_editor.ts",
+      "line": 27,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 25,
+      "file": "app/soapbox/actions/groups.ts",
+      "line": 66,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 67,
+      "file": "app/soapbox/actions/groups.ts",
+      "line": 98,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 52,
+      "file": "app/soapbox/actions/me.ts",
+      "line": 34,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 21,
+      "file": "app/soapbox/actions/me.ts",
+      "line": 35,
+      "message": "Property 'getIn' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2322",
+      "column": 11,
+      "file": "app/soapbox/actions/me.ts",
+      "line": 72,
+      "message": "Type '{ 'Content-Type': string; } | {}' is not assignable to type 'AxiosRequestHeaders'."
+    },
+    {
+      "code": "TS2339",
+      "column": 58,
+      "file": "app/soapbox/actions/notifications.ts",
+      "line": 154,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 68,
+      "file": "app/soapbox/actions/notifications.ts",
+      "line": 155,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 23,
+      "file": "app/soapbox/actions/notifications.ts",
+      "line": 191,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 33,
+      "file": "app/soapbox/actions/notifications.ts",
+      "line": 211,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 39,
+      "file": "app/soapbox/actions/notifications.ts",
+      "line": 212,
+      "message": "Property 'getIn' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 71,
+      "file": "app/soapbox/actions/notifications.ts",
+      "line": 310,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 57,
+      "file": "app/soapbox/actions/notifications.ts",
+      "line": 311,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2307",
+      "column": 25,
+      "file": "app/soapbox/actions/push_notifications/registerer.ts",
+      "line": 9,
+      "message": "Cannot find module 'soapbox/types/soapbox' or its corresponding type declarations."
+    },
+    {
+      "code": "TS2339",
+      "column": 39,
+      "file": "app/soapbox/actions/settings.ts",
+      "line": 180,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 17,
+      "file": "app/soapbox/actions/soapbox.ts",
+      "line": 30,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 64,
+      "file": "app/soapbox/api.ts",
+      "line": 53,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 40,
+      "file": "app/soapbox/api.ts",
+      "line": 101,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 76,
+      "file": "app/soapbox/api.ts",
+      "line": 101,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2741",
+      "column": 20,
+      "file": "app/soapbox/components/account.tsx",
+      "line": 197,
+      "message": "Property 'children' is missing in type '{ size: \"sm\"; weight: \"semibold\"; truncate: true; dangerouslySetInnerHTML: { __html: string; }; }' but required in type 'IText'."
+    },
+    {
+      "code": "TS2741",
+      "column": 18,
+      "file": "app/soapbox/components/account.tsx",
+      "line": 241,
+      "message": "Property 'children' is missing in type '{ size: \"sm\"; dangerouslySetInnerHTML: { __html: string; }; className: string; }' but required in type 'IText'."
+    },
+    {
+      "code": "TS2339",
+      "column": 45,
+      "file": "app/soapbox/components/helmet.tsx",
+      "line": 11,
+      "message": "Property 'unread' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2769",
+      "column": 11,
+      "file": "app/soapbox/components/list.tsx",
+      "line": 30,
+      "message": "No overload matches this call."
+    },
+    {
+      "code": "TS2741",
+      "column": 14,
+      "file": "app/soapbox/components/polls/poll-option.tsx",
+      "line": 71,
+      "message": "Property 'children' is missing in type '{ theme: \"inherit\"; weight: \"medium\"; dangerouslySetInnerHTML: { __html: string; }; }' but required in type 'IText'."
+    },
+    {
+      "code": "TS2741",
+      "column": 16,
+      "file": "app/soapbox/components/polls/poll-option.tsx",
+      "line": 137,
+      "message": "Property 'children' is missing in type '{ theme: \"inherit\"; weight: \"medium\"; dangerouslySetInnerHTML: { __html: string; }; className: string; }' but required in type 'IText'."
+    },
+    {
+      "code": "TS2741",
+      "column": 16,
+      "file": "app/soapbox/components/profile-hover-card.tsx",
+      "line": 124,
+      "message": "Property 'children' is missing in type '{ size: \"sm\"; dangerouslySetInnerHTML: { __html: string; }; }' but required in type 'IText'."
+    },
+    {
+      "code": "TS2339",
+      "column": 12,
+      "file": "app/soapbox/components/quoted-status.tsx",
+      "line": 67,
+      "message": "Property 'size' does not exist on type 'any[] | List<Record<{ id: string; acct: string; username: string; url: string; }> & Readonly<{ id: string; acct: string; username: string; url: string; }>>'."
+    },
+    {
+      "code": "TS2339",
+      "column": 78,
+      "file": "app/soapbox/components/quoted-status.tsx",
+      "line": 89,
+      "message": "Property 'toArray' does not exist on type 'Element[] | List<Element>'."
+    },
+    {
+      "code": "TS2339",
+      "column": 12,
+      "file": "app/soapbox/components/quoted-status.tsx",
+      "line": 91,
+      "message": "Property 'size' does not exist on type 'any[] | List<Record<{ id: string; acct: string; username: string; url: string; }> & Readonly<{ id: string; acct: string; username: string; url: string; }>>'."
+    },
+    {
+      "code": "TS2339",
+      "column": 102,
+      "file": "app/soapbox/components/quoted-status.tsx",
+      "line": 93,
+      "message": "Property 'size' does not exist on type 'any[] | List<Record<{ id: string; acct: string; username: string; url: string; }> & Readonly<{ id: string; acct: string; username: string; url: string; }>>'."
+    },
+    {
+      "code": "TS2741",
+      "column": 8,
+      "file": "app/soapbox/components/quoted-status.tsx",
+      "line": 146,
+      "message": "Property 'children' is missing in type '{ className: string; size: \"sm\"; dangerouslySetInnerHTML: { __html: string; }; }' but required in type 'IText'."
+    },
+    {
+      "code": "TS2322",
+      "column": 66,
+      "file": "app/soapbox/components/scroll-top-button.tsx",
+      "line": 97,
+      "message": "Type 'number' is not assignable to type 'boolean'."
+    },
+    {
+      "code": "TS2339",
+      "column": 75,
+      "file": "app/soapbox/components/sidebar-navigation.tsx",
+      "line": 24,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 75,
+      "file": "app/soapbox/components/sidebar_menu.tsx",
+      "line": 95,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 75,
+      "file": "app/soapbox/components/thumb_navigation.tsx",
+      "line": 164,
+      "message": "Property 'unread' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2769",
+      "column": 9,
+      "file": "app/soapbox/components/ui/form-group/form-group.tsx",
+      "line": 30,
+      "message": "No overload matches this call."
+    },
+    {
+      "code": "TS2741",
+      "column": 8,
+      "file": "app/soapbox/features/compose/components/reply_indicator.tsx",
+      "line": 46,
+      "message": "Property 'children' is missing in type '{ className: string; size: \"sm\"; dangerouslySetInnerHTML: { __html: string; }; direction: \"ltr\" | \"rtl\"; }' but required in type 'IText'."
+    },
+    {
+      "code": "TS2741",
+      "column": 10,
+      "file": "app/soapbox/features/directory/components/account_card.tsx",
+      "line": 77,
+      "message": "Property 'children' is missing in type '{ size: \"sm\"; className: string; dangerouslySetInnerHTML: { __html: string; }; }' but required in type 'IText'."
+    },
+    {
+      "code": "TS2741",
+      "column": 10,
+      "file": "app/soapbox/features/follow_requests/components/account_authorize.tsx",
+      "line": 51,
+      "message": "Property 'children' is missing in type '{ className: string; dangerouslySetInnerHTML: { __html: string; }; }' but required in type 'IText'."
+    },
+    {
+      "code": "TS2339",
+      "column": 45,
+      "file": "app/soapbox/features/notifications/index.tsx",
+      "line": 37,
+      "message": "Property 'items' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 65,
+      "file": "app/soapbox/features/notifications/index.tsx",
+      "line": 56,
+      "message": "Property 'isLoading' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 63,
+      "file": "app/soapbox/features/notifications/index.tsx",
+      "line": 58,
+      "message": "Property 'hasMore' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 85,
+      "file": "app/soapbox/features/notifications/index.tsx",
+      "line": 59,
+      "message": "Property 'totalQueuedNotificationsCount' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2307",
+      "column": 33,
+      "file": "app/soapbox/features/public_layout/components/footer.tsx",
+      "line": 10,
+      "message": "Cannot find module 'soapbox/types/soapbox' or its corresponding type declarations."
+    },
+    {
+      "code": "TS2307",
+      "column": 33,
+      "file": "app/soapbox/features/soapbox_config/components/footer-link-input.tsx",
+      "line": 7,
+      "message": "Cannot find module 'soapbox/types/soapbox' or its corresponding type declarations."
+    },
+    {
+      "code": "TS2307",
+      "column": 37,
+      "file": "app/soapbox/features/soapbox_config/components/promo-panel-input.tsx",
+      "line": 9,
+      "message": "Cannot find module 'soapbox/types/soapbox' or its corresponding type declarations."
+    },
+    {
+      "code": "TS2339",
+      "column": 26,
+      "file": "app/soapbox/features/soapbox_config/index.tsx",
+      "line": 88,
+      "message": "Property 'setIn' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 37,
+      "file": "app/soapbox/features/soapbox_config/index.tsx",
+      "line": 103,
+      "message": "Property 'toJS' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 26,
+      "file": "app/soapbox/features/soapbox_config/index.tsx",
+      "line": 160,
+      "message": "Property 'getIn' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 28,
+      "file": "app/soapbox/features/soapbox_config/index.tsx",
+      "line": 167,
+      "message": "Property 'deleteIn' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2554",
+      "column": 16,
+      "file": "app/soapbox/features/ui/components/instance_info_panel.tsx",
+      "line": 34,
+      "message": "Expected 2 arguments, but got 1."
+    },
+    {
+      "code": "TS2741",
+      "column": 6,
+      "file": "app/soapbox/features/ui/components/instance_info_panel.tsx",
+      "line": 43,
+      "message": "Property 'children' is missing in type '{ title: any; onActionClick: () => void; actionIcon: any; actionTitle: string; }' but required in type 'IWidget'."
+    },
+    {
+      "code": "TS2339",
+      "column": 58,
+      "file": "app/soapbox/features/ui/components/profile-dropdown.tsx",
+      "line": 42,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2741",
+      "column": 10,
+      "file": "app/soapbox/features/ui/components/profile_fields_panel.tsx",
+      "line": 54,
+      "message": "Property 'children' is missing in type '{ weight: \"bold\"; tag: \"span\"; dangerouslySetInnerHTML: { __html: string; }; }' but required in type 'IText'."
+    },
+    {
+      "code": "TS2741",
+      "column": 12,
+      "file": "app/soapbox/features/ui/components/profile_fields_panel.tsx",
+      "line": 68,
+      "message": "Property 'children' is missing in type '{ className: string; tag: \"span\"; dangerouslySetInnerHTML: { __html: string; }; }' but required in type 'IText'."
+    },
+    {
+      "code": "TS2741",
+      "column": 14,
+      "file": "app/soapbox/features/ui/components/profile_info_panel.tsx",
+      "line": 140,
+      "message": "Property 'children' is missing in type '{ size: \"lg\"; weight: \"bold\"; dangerouslySetInnerHTML: { __html: string; }; }' but required in type 'IText'."
+    },
+    {
+      "code": "TS2741",
+      "column": 12,
+      "file": "app/soapbox/features/ui/components/profile_info_panel.tsx",
+      "line": 171,
+      "message": "Property 'children' is missing in type '{ size: \"sm\"; dangerouslySetInnerHTML: { __html: string; }; }' but required in type 'IText'."
+    },
+    {
+      "code": "TS2741",
+      "column": 16,
+      "file": "app/soapbox/features/ui/components/user_panel.tsx",
+      "line": 70,
+      "message": "Property 'children' is missing in type '{ size: \"lg\"; weight: \"bold\"; dangerouslySetInnerHTML: { __html: string; }; }' but required in type 'IText'."
+    },
+    {
+      "code": "TS2741",
+      "column": 8,
+      "file": "app/soapbox/features/ui/util/react_router_helpers.tsx",
+      "line": 86,
+      "message": "Property 'children' is missing in type '{}' but required in type '{ className?: string; children: ReactNode; }'."
+    },
+    {
+      "code": "TS2307",
+      "column": 36,
+      "file": "app/soapbox/hooks/useSoapboxConfig.ts",
+      "line": 4,
+      "message": "Cannot find module 'soapbox/types/soapbox' or its corresponding type declarations."
+    },
+    {
+      "code": "TS2307",
+      "column": 8,
+      "file": "app/soapbox/normalizers/soapbox/soapbox_config.ts",
+      "line": 16,
+      "message": "Cannot find module 'soapbox/types/soapbox' or its corresponding type declarations."
+    },
+    {
+      "code": "TS2345",
+      "column": 49,
+      "file": "app/soapbox/reducers/accounts.ts",
+      "line": 105,
+      "message": "Argument of type 'string[]' is not assignable to parameter of type 'Iterable<[never, never]>'."
+    },
+    {
+      "code": "TS2345",
+      "column": 28,
+      "file": "app/soapbox/reducers/admin.ts",
+      "line": 80,
+      "message": "Argument of type '(ids: ImmutableOrderedSet<string>) => ImmutableOrderedSet<any>' is not assignable to parameter of type '(value: never) => never'."
+    },
+    {
+      "code": "TS2345",
+      "column": 25,
+      "file": "app/soapbox/reducers/admin.ts",
+      "line": 85,
+      "message": "Argument of type 'OrderedSet<any>' is not assignable to parameter of type 'never'."
+    },
+    {
+      "code": "TS2345",
+      "column": 28,
+      "file": "app/soapbox/reducers/admin.ts",
+      "line": 90,
+      "message": "Argument of type 'string' is not assignable to parameter of type 'never'."
+    },
+    {
+      "code": "TS2345",
+      "column": 30,
+      "file": "app/soapbox/reducers/admin.ts",
+      "line": 98,
+      "message": "Argument of type 'string' is not assignable to parameter of type 'never'."
+    },
+    {
+      "code": "TS2307",
+      "column": 25,
+      "file": "app/soapbox/reducers/me.ts",
+      "line": 15,
+      "message": "Cannot find module 'soapbox/types/soapbox' or its corresponding type declarations."
+    },
+    {
+      "code": "TS2839",
+      "column": 26,
+      "file": "app/soapbox/reducers/relationships.ts",
+      "line": 60,
+      "message": "This condition will always return 'true' since JavaScript compares objects by reference, not value."
+    },
+    {
+      "code": "TS2307",
+      "column": 34,
+      "file": "app/soapbox/selectors/index.ts",
+      "line": 16,
+      "message": "Cannot find module 'soapbox/reducers/chats' or its corresponding type declarations."
+    },
+    {
+      "code": "TS2551",
+      "column": 52,
+      "file": "app/soapbox/selectors/index.ts",
+      "line": 223,
+      "message": "Property 'chats' does not exist on type 'Record<{ dropdown_menu: Record<{ openId: number; placement: DropdownPlacement; keyboard: boolean; }> & Readonly<{ openId: number; placement: DropdownPlacement; keyboard: boolean; }>; ... 55 more ...; tags: Record<...> & Readonly<...>; }> & Readonly<...>'. Did you mean 'has'?"
+    },
+    {
+      "code": "TS2551",
+      "column": 71,
+      "file": "app/soapbox/selectors/index.ts",
+      "line": 224,
+      "message": "Property 'chats' does not exist on type 'Record<{ dropdown_menu: Record<{ openId: number; placement: DropdownPlacement; keyboard: boolean; }> & Readonly<{ openId: number; placement: DropdownPlacement; keyboard: boolean; }>; ... 55 more ...; tags: Record<...> & Readonly<...>; }> & Readonly<...>'. Did you mean 'has'?"
+    },
+    {
+      "code": "TS2339",
+      "column": 62,
+      "file": "app/soapbox/selectors/index.ts",
+      "line": 225,
+      "message": "Property 'chat_messages' does not exist on type 'Record<{ dropdown_menu: Record<{ openId: number; placement: DropdownPlacement; keyboard: boolean; }> & Readonly<{ openId: number; placement: DropdownPlacement; keyboard: boolean; }>; ... 55 more ...; tags: Record<...> & Readonly<...>; }> & Readonly<...>'."
+    },
+    {
+      "code": "TS2339",
+      "column": 36,
+      "file": "app/soapbox/selectors/index.ts",
+      "line": 272,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 44,
+      "file": "app/soapbox/store.ts",
+      "line": 31,
+      "message": "Property 'getIn' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 41,
+      "file": "app/soapbox/store.ts",
+      "line": 35,
+      "message": "Property 'getIn' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 61,
+      "file": "app/soapbox/utils/auth.ts",
+      "line": 33,
+      "message": "Property 'getIn' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 21,
+      "file": "app/soapbox/utils/auth.ts",
+      "line": 37,
+      "message": "Property 'getIn' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 25,
+      "file": "app/soapbox/utils/auth.ts",
+      "line": 46,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 16,
+      "file": "app/soapbox/utils/auth.ts",
+      "line": 49,
+      "message": "Property 'getIn' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 25,
+      "file": "app/soapbox/utils/auth.ts",
+      "line": 55,
+      "message": "Property 'get' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 16,
+      "file": "app/soapbox/utils/auth.ts",
+      "line": 58,
+      "message": "Property 'getIn' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2339",
+      "column": 21,
+      "file": "app/soapbox/utils/auth.ts",
+      "line": 65,
+      "message": "Property 'getIn' does not exist on type 'unknown'."
+    },
+    {
+      "code": "TS2307",
+      "column": 47,
+      "file": "app/soapbox/utils/colors.ts",
+      "line": 28,
+      "message": "Cannot find module 'soapbox/types/colors' or its corresponding type declarations."
+    },
+    {
+      "code": "TS2345",
+      "column": 16,
+      "file": "app/soapbox/utils/diagnostics.ts",
+      "line": 67,
+      "message": "Argument of type 'unknown' is not assignable to parameter of type 'object'."
+    },
+    {
+      "code": "TS2345",
+      "column": 12,
+      "file": "app/soapbox/utils/diagnostics.ts",
+      "line": 68,
+      "message": "Argument of type 'unknown' is not assignable to parameter of type 'object'."
+    },
+    {
+      "code": "TS2307",
+      "column": 25,
+      "file": "app/soapbox/utils/emoji_reacts.ts",
+      "line": 8,
+      "message": "Cannot find module 'soapbox/types/soapbox' or its corresponding type declarations."
+    },
+    {
+      "code": "TS2307",
+      "column": 43,
+      "file": "app/soapbox/utils/tailwind.ts",
+      "line": 6,
+      "message": "Cannot find module 'soapbox/types/colors' or its corresponding type declarations."
+    },
+    {
+      "code": "TS2307",
+      "column": 74,
+      "file": "app/soapbox/utils/theme.ts",
+      "line": 3,
+      "message": "Cannot find module 'soapbox/types/colors' or its corresponding type declarations."
+    },
+    {
+      "code": "TS2307",
+      "column": 36,
+      "file": "app/soapbox/utils/theme.ts",
+      "line": 4,
+      "message": "Cannot find module 'soapbox/types/soapbox' or its corresponding type declarations."
+    }
+  ]
+}

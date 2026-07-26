@@ -1,9 +1,9 @@
 'use strict';
 
+const { execFileSync } = require('child_process');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { execFileSync } = require('child_process');
 
 const repositoryRoot = path.resolve(__dirname, '..', '..');
 const script = path.join(repositoryRoot, 'scripts', 'check-redux-authority-inventory.js');
@@ -43,19 +43,19 @@ describe('Redux authority inventory drift gate', () => {
 
   it('fails when logout retention changes in the initializer', () => {
     const root = fixture();
-    mutateSource(root, source => source.replace("'instance', 'soapbox', 'custom_emojis', 'auth'", "'instance', 'soapbox', 'custom_emojis', 'auth', 'me'"));
+    mutateSource(root, source => source.replace('\'instance\', \'soapbox\', \'custom_emojis\', \'auth\'', '\'instance\', \'soapbox\', \'custom_emojis\', \'auth\', \'me\''));
     expect(() => run(root)).toThrow(/logoutWhitelist drifted/);
   });
 
   it('fails when the logout whitelist is mutated after initialization', () => {
     const root = fixture();
-    mutateSource(root, source => source.replace("const whitelist: string[] = ['instance', 'soapbox', 'custom_emojis', 'auth'];", "const whitelist: string[] = ['instance', 'soapbox', 'custom_emojis', 'auth'];\n  whitelist.push('me');"));
+    mutateSource(root, source => source.replace('const whitelist: string[] = [\'instance\', \'soapbox\', \'custom_emojis\', \'auth\'];', 'const whitelist: string[] = [\'instance\', \'soapbox\', \'custom_emojis\', \'auth\'];\n  whitelist.push(\'me\');'));
     expect(() => run(root)).toThrow(/must remain immutable/);
   });
 
   it('fails when the logout switch no longer handles the exact action constant', () => {
     const root = fixture();
-    mutateSource(root, source => source.replace('case AUTH_LOGGED_OUT:', "case 'AUTH_LOGGED_OUT_STANDALONE':"));
+    mutateSource(root, source => source.replace('case AUTH_LOGGED_OUT:', 'case \'AUTH_LOGGED_OUT_STANDALONE\':'));
     expect(() => run(root)).toThrow(/handles logout action structurally/);
   });
 });

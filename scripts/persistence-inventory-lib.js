@@ -61,7 +61,7 @@ const discover = root => {
     ['localStorage', /\blocalStorage\.(getItem|setItem|removeItem|clear)\s*\(\s*([^,\n)]*)/g],
     ['sessionStorage', /\bsessionStorage\.(getItem|setItem|removeItem|clear)\s*\(\s*([^,\n)]*)/g],
     ['localForage/IndexedDB', /\bKVStore\.(getItemOrError|getItem|setItem|removeItem|clear)\s*\(\s*([^,\n)]*)/g],
-    ['cache-storage', /\bcaches\.(open|keys|delete|match)\s*\(\s*([^,\n)]*)/g],
+    ['cache-storage', /\b(?:caches|cacheStorage)\.(open|keys|delete|match)\s*\(\s*([^,\n)]*)/g],
     ['object-url', /\b(?:window\.)?URL\.(createObjectURL|revokeObjectURL)\s*\(\s*([^,\n)]*)/g],
     ['notification-store', /\b(?:self\.registration|serviceWorkerRegistration)\.(showNotification|getNotifications)\s*\(\s*([^,\n)]*)/g],
     ['react-query', /\bnew\s+QueryClient\s*\(\s*([^;\n]*)/g],

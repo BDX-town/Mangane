@@ -39,4 +39,23 @@ describe('<LoginForm />', () => {
 
     expect(mockFn).toHaveBeenCalledTimes(1);
   });
+
+  it('exposes labeled required fields and a keyboard-reachable password visibility control', () => {
+    const mockFn = jest.fn();
+    render(<LoginForm handleSubmit={mockFn} isLoading={false} />);
+
+    const username = screen.getByRole('textbox', { name: 'Email or username' });
+    const password = screen.getByPlaceholderText('Password');
+    const visibility = screen.getByRole('button', { name: 'Show password' });
+
+    expect(username).toBeRequired();
+    expect(password).toBeRequired();
+    expect(password).toHaveAttribute('type', 'password');
+    expect(visibility).not.toHaveAttribute('tabindex', '-1');
+
+    fireEvent.click(visibility);
+
+    expect(password).toHaveAttribute('type', 'text');
+    expect(screen.getByRole('button', { name: 'Hide password' })).toBeInTheDocument();
+  });
 });

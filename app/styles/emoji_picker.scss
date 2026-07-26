@@ -1,5 +1,4 @@
 .emoji-picker {
-
   &.bg-gray-800 {
     --tw-bg-opacity: 0.8;
   }
@@ -17,7 +16,7 @@
   }
 
   em-emoji-picker {
-    --border-radius: 0px;
+    --border-radius: 0;
     @media screen and (max-width: 630px) {
       flex-grow: 1;
       width: 100vw;

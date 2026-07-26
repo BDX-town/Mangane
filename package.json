@@ -26,7 +26,18 @@
     "test:all": "${npm_execpath} run test:coverage && ${npm_execpath} run lint",
     "lint": "${npm_execpath} run lint:js && ${npm_execpath} run lint:sass",
     "lint:js": "npx eslint --ext .js,.jsx,.ts,.tsx . --cache",
+    "lint:js:baseline": "node scripts/check-eslint-warning-baseline.js",
     "lint:sass": "npx stylelint app/styles/**/*.scss",
+    "typecheck": "node scripts/check-typecheck-baseline.js",
+    "typecheck:raw": "tsc -p tsconfig.typecheck.json --pretty false",
+    "check:build": "node scripts/check-build-baseline.js",
+    "test:build-baseline": "node --test scripts/__tests__/check-build-baseline.test.js",
+    "check:ci-baseline": "node scripts/check-ci-baseline.js",
+    "test:ci-baseline": "node --test scripts/__tests__/check-ci-baseline.test.js",
+    "test:governance": "node scripts/run-node-governance-tests.js",
+    "test:worker": "node --test scripts/__tests__/share-target-worker.test.js scripts/__tests__/check-share-target-authority-inventory.test.js scripts/__tests__/check-push-worker-authority-inventory.test.js scripts/__tests__/check-service-worker-cache-authority-inventory.test.js",
+    "test:browser-accessibility": "yarn jest app/soapbox/features/auth_login/components/__tests__/login_form.test.tsx app/soapbox/features/auth_login/components/__tests__/login_page.test.tsx app/soapbox/features/ui/__tests__/index.test.tsx app/soapbox/features/ui/components/__tests__/compose-button.test.tsx --runInBand --silent && node --test scripts/__tests__/check-design-component-authority-inventory.test.js",
+    "prepare:twemoji": "node scripts/download-twemoji-assets.js",
     "check:dependencies": "node scripts/check-dependency-authority-inventory.js",
     "test:dependency-inventory": "node --test scripts/__tests__/check-dependency-authority-inventory.test.js",
     "generate:network-callsites": "node scripts/generate-network-callsite-manifest.js",
@@ -41,10 +52,11 @@
     "generate:telemetry": "node scripts/generate-telemetry-authority-inventory.js",
     "check:telemetry": "node scripts/check-sentry-authority-inventory.js",
     "test:telemetry": "node --test scripts/__tests__/check-sentry-authority-inventory.test.js && yarn jest app/soapbox/utils/__tests__/diagnostics.test.ts --runInBand",
+    "test:security-regression": "yarn test:html-safety && yarn test:telemetry && yarn test:persistence && yarn test:worker",
     "generate:design-authority": "node scripts/generate-design-component-authority-inventory.js",
     "check:design-authority": "node scripts/check-design-component-authority-inventory.js",
     "test:design-authority": "node --test scripts/__tests__/check-design-component-authority-inventory.test.js",
-    "postinstall": "node scripts/download-twemoji-assets.js",
+    "postinstall": "yarn prepare:twemoji",
     "prepare": "npx husky"
   },
   "license": "AGPL-3.0-or-later",
@@ -229,6 +241,9 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/user-event": "^14.0.3",
+    "@types/node": "16.18.11",
+    "@types/react": "17.0.52",
+    "@types/react-dom": "17.0.18",
     "@typescript-eslint/eslint-plugin": "^5.15.0",
     "@typescript-eslint/parser": "^5.15.0",
     "babel-eslint": "^10.1.0",
@@ -260,5 +275,10 @@
     "yaml": "^2.8.2",
     "yargs": "^16.0.3"
   },
-  "packageManager": "yarn@4.0.2"
+  "packageManager": "yarn@4.0.2",
+  "resolutions": {
+    "@types/node": "16.18.11",
+    "@types/react": "17.0.52",
+    "@types/react-dom": "17.0.18"
+  }
 }

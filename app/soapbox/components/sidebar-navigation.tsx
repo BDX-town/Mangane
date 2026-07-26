@@ -201,7 +201,7 @@ const SidebarNavigation = () => {
 
       </div>
       {account && (
-          <ComposeButton />
+        <ComposeButton />
       )}
     </div>
 

@@ -5,7 +5,6 @@ module.exports = {
     'eslint:recommended',
     'plugin:import/typescript',
     'plugin:compat/recommended',
-    'plugin:react-hooks/recommended',
   ],
 
   env: {
@@ -272,6 +271,7 @@ module.exports = {
     'promise/catch-or-return': 'error',
 
     'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
   },
   overrides: [
     {

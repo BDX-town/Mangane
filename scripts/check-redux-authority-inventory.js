@@ -10,7 +10,9 @@ const relative = path.relative(root, sourcePath);
 if (relative.startsWith('..') || path.isAbsolute(relative)) throw new Error(`Unsafe source path: ${manifest.source}`);
 const source = fs.readFileSync(sourcePath, 'utf8');
 
-const fail = (message) => { throw new Error(`redux-authority: ${message}`); };
+const fail = (message) => {
+  throw new Error(`redux-authority: ${message}`);
+};
 const unique = (values) => new Set(values).size === values.length;
 
 if (manifest.schemaVersion !== 1) fail(`unsupported schemaVersion ${manifest.schemaVersion}`);

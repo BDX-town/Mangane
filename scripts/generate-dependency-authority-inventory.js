@@ -107,7 +107,7 @@ Mangane remains AGPL-3.0-or-later. This inventory records dependency declaration
 |---|---:|---:|---:|---:|---:|---:|---|
 ${installRiskPackages.map(pkg => `| ${pkg.name} | ${pkg.version} | ${pkg.installBehavior.hasInstallScript} | ${pkg.installBehavior.hasNativeBinding} | ${pkg.installBehavior.hasInstallTimeNetworkIndicator} | ${pkg.installBehavior.hasPackageScriptNetworkIndicator} | ${pkg.installBehavior.hasCodeGenerationIndicator} | ${pkg.rootDependencies.join(', ')} |`).join('\n')}
 
-The repository itself also runs \`scripts/download-twemoji-assets.js\` during \`postinstall\`, performing an unverified GitHub download piped into \`tar\`. That is a supply-chain and reproducibility blocker queued for remediation; the Phase 0A CI gate uses \`--mode=skip-build\` so inventory validation cannot execute dependency or repository install scripts.
+The repository's Twemoji preparation is explicit and checksum-pinned. It enforces an HTTPS host allowlist, redirect limit, response-size ceiling, request timeout, exponential backoff with jitter, archive-shape validation, and atomic installation. CI keeps dependency and repository install scripts disabled with \`--mode=skip-build\`; only build jobs invoke the reviewed \`yarn prepare:twemoji\` step.
 
 ## GitHub Actions supply-chain review
 
@@ -140,8 +140,7 @@ The queue is risk-ordered during remediation. The machine-readable queue is auth
 
 1. Upgrade or replace runtime-reachable high/critical packages, beginning with Axios and Immutable.
 2. Remove or upgrade install/build chains that contain critical \`loader-utils\`, \`tar\`, \`lodash@3\`, or \`websocket-driver\`.
-3. Replace the repository \`postinstall\` network pipe with a checksum-verified, bounded, retry-aware asset acquisition or vendored build input.
-4. Resolve \`taffydb@2.6.2\` license ambiguity by upgrading JSDoc/removing TaffyDB or obtaining an authoritative legal disposition.
+3. Resolve \`taffydb@2.6.2\` license ambiguity by upgrading JSDoc/removing TaffyDB or obtaining an authoritative legal disposition.
 
 ## P1 — deprecated and obsolete direct dependencies
 

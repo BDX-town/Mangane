@@ -107,8 +107,9 @@
       "requiredFragments": [
         "OFFLINE_CACHE_PREFIXES",
         "PROTECTED_CACHE_NAMES",
-        "await caches.keys()",
-        "caches.delete(key)"
+        "const cacheStorage = window.caches",
+        "await cacheStorage.keys()",
+        "cacheStorage.delete(key)"
       ]
     },
     {

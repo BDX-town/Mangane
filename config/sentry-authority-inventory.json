@@ -550,10 +550,10 @@
       "classification": "startup-guarded-local-diagnostic"
     },
     {
-      "id": "environment-read:app/soapbox/utils/code.js:19",
+      "id": "environment-read:app/soapbox/utils/code.js:22",
       "kind": "environment-read",
       "path": "app/soapbox/utils/code.js",
-      "line": 19,
+      "line": 22,
       "expression": "const { CI_COMMIT_TAG, CI_COMMIT_REF_NAME, CI_COMMIT_SHA } = process.env;",
       "classification": "application-surface"
     },
@@ -646,6 +646,22 @@
       "classification": "test-only"
     },
     {
+      "id": "environment-read:scripts/__tests__/check-build-baseline.test.js:39",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-build-baseline.test.js",
+      "line": 39,
+      "expression": "env: { ...process.env, BUILD_BASELINE_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/check-ci-baseline.test.js:37",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-ci-baseline.test.js",
+      "line": 37,
+      "expression": "env: { ...process.env, CI_BASELINE_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
       "id": "environment-read:scripts/__tests__/check-dependency-authority-inventory.test.js:43",
       "kind": "environment-read",
       "path": "scripts/__tests__/check-dependency-authority-inventory.test.js",
@@ -654,18 +670,18 @@
       "classification": "test-only"
     },
     {
-      "id": "environment-read:scripts/__tests__/check-dependency-authority-inventory.test.js:158",
+      "id": "environment-read:scripts/__tests__/check-dependency-authority-inventory.test.js:166",
       "kind": "environment-read",
       "path": "scripts/__tests__/check-dependency-authority-inventory.test.js",
-      "line": 158,
+      "line": 166,
       "expression": "env: { ...process.env, DEPENDENCY_INVENTORY_ROOT: root },",
       "classification": "test-only"
     },
     {
-      "id": "environment-read:scripts/__tests__/check-dependency-authority-inventory.test.js:176",
+      "id": "environment-read:scripts/__tests__/check-dependency-authority-inventory.test.js:184",
       "kind": "environment-read",
       "path": "scripts/__tests__/check-dependency-authority-inventory.test.js",
-      "line": 176,
+      "line": 184,
       "expression": "env: { ...process.env, DEPENDENCY_INVENTORY_ROOT: root },",
       "classification": "test-only"
     },
@@ -750,6 +766,14 @@
       "classification": "test-only"
     },
     {
+      "id": "environment-read:scripts/__tests__/check-test-ci-baselines.test.js:16",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-test-ci-baselines.test.js",
+      "line": 16,
+      "expression": "env: { ...process.env, TYPECHECK_BASELINE_PATH: baselinePath },",
+      "classification": "test-only"
+    },
+    {
       "id": "environment-read:scripts/check-api-transport-authority-inventory.js:6",
       "kind": "environment-read",
       "path": "scripts/check-api-transport-authority-inventory.js",
@@ -774,19 +798,19 @@
       "classification": "repository-tooling"
     },
     {
-      "id": "console:scripts/check-bootstrap-provider-authority-inventory.js:174",
+      "id": "console:scripts/check-bootstrap-provider-authority-inventory.js:175",
       "kind": "console",
       "path": "scripts/check-bootstrap-provider-authority-inventory.js",
-      "line": 174,
-      "expression": "try { console.log(run()); } catch (error) { console.error(error.message); process.exitCode = 1; }",
+      "line": 175,
+      "expression": "console.log(run());",
       "classification": "repository-tooling"
     },
     {
-      "id": "console:scripts/check-bootstrap-provider-authority-inventory.js:174",
+      "id": "console:scripts/check-bootstrap-provider-authority-inventory.js:177",
       "kind": "console",
       "path": "scripts/check-bootstrap-provider-authority-inventory.js",
-      "line": 174,
-      "expression": "try { console.log(run()); } catch (error) { console.error(error.message); process.exitCode = 1; }",
+      "line": 177,
+      "expression": "console.error(error.message); process.exitCode = 1;",
       "classification": "repository-tooling"
     },
     {
@@ -795,6 +819,30 @@
       "path": "scripts/check-browser-persistence-authority-inventory.js",
       "line": 6,
       "expression": "const root = path.resolve(process.env.BROWSER_PERSISTENCE_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-build-baseline.js:6",
+      "kind": "environment-read",
+      "path": "scripts/check-build-baseline.js",
+      "line": 6,
+      "expression": "const root = path.resolve(process.env.BUILD_BASELINE_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-build-baseline.js:7",
+      "kind": "environment-read",
+      "path": "scripts/check-build-baseline.js",
+      "line": 7,
+      "expression": "const outputRoot = path.resolve(process.env.BUILD_OUTPUT_ROOT || path.join(root, 'static'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-ci-baseline.js:8",
+      "kind": "environment-read",
+      "path": "scripts/check-ci-baseline.js",
+      "line": 8,
+      "expression": "const root = path.resolve(process.env.CI_BASELINE_ROOT || path.resolve(__dirname, '..'));",
       "classification": "repository-tooling"
     },
     {
@@ -843,6 +891,14 @@
       "path": "scripts/check-error-recovery-authority-inventory.js",
       "line": 184,
       "expression": "console.error(error.message); process.exitCode = 1;",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-eslint-warning-baseline.js:18",
+      "kind": "environment-read",
+      "path": "scripts/check-eslint-warning-baseline.js",
+      "line": 18,
+      "expression": "env: { ...process.env, FORCE_COLOR: '0', NO_COLOR: '1' },",
       "classification": "repository-tooling"
     },
     {
@@ -934,19 +990,19 @@
       "classification": "repository-tooling"
     },
     {
-      "id": "console:scripts/download-twemoji-assets.js:13",
-      "kind": "console",
-      "path": "scripts/download-twemoji-assets.js",
-      "line": 13,
-      "expression": "console.log(`Downloading twemoji ${TWEMOJI_TAG} SVG assets...`);",
+      "id": "environment-read:scripts/check-typecheck-baseline.js:8",
+      "kind": "environment-read",
+      "path": "scripts/check-typecheck-baseline.js",
+      "line": 8,
+      "expression": "const baselinePath = path.resolve(process.env.TYPECHECK_BASELINE_PATH || path.join(root, 'config', 'typecheck-baseline.json'));",
       "classification": "repository-tooling"
     },
     {
-      "id": "console:scripts/download-twemoji-assets.js:24",
-      "kind": "console",
-      "path": "scripts/download-twemoji-assets.js",
-      "line": 24,
-      "expression": "console.log('twemoji assets ready.');",
+      "id": "environment-read:scripts/check-typecheck-baseline.js:15",
+      "kind": "environment-read",
+      "path": "scripts/check-typecheck-baseline.js",
+      "line": 15,
+      "expression": "env: { ...process.env, FORCE_COLOR: '0', NO_COLOR: '1' },",
       "classification": "repository-tooling"
     },
     {
@@ -1096,9 +1152,9 @@
   ],
   "counts": {
     "artifact-upload": 1,
-    "console": 73,
+    "console": 71,
     "notification-payload": 13,
-    "environment-read": 38,
+    "environment-read": 47,
     "clipboard": 3,
     "error-boundary": 2,
     "devtools": 1,

@@ -888,9 +888,9 @@
       "staleResurrectionRisk": "high"
     },
     {
-      "id": "7d3015c7611d4334",
+      "id": "8939969d59e50702",
       "file": "app/soapbox/persistence/cache-storage.ts",
-      "line": 6,
+      "line": 7,
       "engine": "cache-storage",
       "operation": "keys",
       "key": "<dynamic>",
@@ -911,9 +911,9 @@
       "staleResurrectionRisk": "bounded-or-unproven"
     },
     {
-      "id": "f85c1e4f70942b44",
+      "id": "22f9b55add4986e9",
       "file": "app/soapbox/persistence/cache-storage.ts",
-      "line": 10,
+      "line": 11,
       "engine": "cache-storage",
       "operation": "delete",
       "key": "<dynamic>",

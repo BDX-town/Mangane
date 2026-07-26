@@ -24,8 +24,8 @@ describe('architecture inventory', () => {
   });
 
   test('finds security-sensitive and server-state call sites with stable paths and line numbers', () => {
-    write(root, 'app/z.ts', "const value = localStorage.getItem('token');\nuseQuery(['z'], load);\n");
-    write(root, 'app/a.tsx', "queryClient.invalidateQueries(['a']);\nnode.innerHTML = html;\n");
+    write(root, 'app/z.ts', 'const value = localStorage.getItem(\'token\');\nuseQuery([\'z\'], load);\n');
+    write(root, 'app/a.tsx', 'queryClient.invalidateQueries([\'a\']);\nnode.innerHTML = html;\n');
 
     const result = inventoryRepository(root);
 
@@ -73,7 +73,7 @@ describe('architecture inventory', () => {
   });
 
   test('produces deterministic markdown without timestamps', () => {
-    write(root, 'app/query.ts', "useMutation(save);\n");
+    write(root, 'app/query.ts', 'useMutation(save);\n');
 
     const first = toMarkdown(inventoryRepository(root));
     const second = toMarkdown(inventoryRepository(root));

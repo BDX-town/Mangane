@@ -1,10 +1,10 @@
 'use strict';
 
 const assert = require('node:assert/strict');
+const { execFileSync } = require('node:child_process');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { execFileSync } = require('node:child_process');
 const test = require('node:test');
 
 const repositoryRoot = path.resolve(__dirname, '..', '..');
@@ -35,22 +35,22 @@ const mutate = (root, relativePath, transform) => {
 };
 const assertRunFails = (root, pattern) => assert.throws(() => run(root), error => pattern.test(`${error.stderr || ''}\n${error.message || ''}`));
 
-test('verifies the bounded current share target authority inventory', () => {
+test('verifies the hardened share target authority inventory', () => {
   const report = JSON.parse(run());
-  assert.equal(report.checkedExecutableBindings, 11);
+  assert.equal(report.checkedExecutableBindings, 17);
   assert.equal(report.checkedDocumentationFragments, 5);
-  assert.equal(report.explicitUnknowns, 7);
+  assert.equal(report.explicitUnknowns, 6);
 });
 
-test('fails when routing stops using the recorded POST and substring contract', () => {
+test('fails when exact same-origin routing is weakened', () => {
   const root = fixture();
-  mutate(root, 'app/soapbox/service_worker/share_target.js', source => source.replace("event.request.method === 'POST' && event.request.url.includes('/share')", "event.request.method === 'POST' && new URL(event.request.url).pathname === '/share'"));
-  assertRunFails(root, /url\.includes\('\/share'\)/);
+  mutate(root, 'app/soapbox/service_worker/share_target.js', source => source.replace('requestUrl.origin === self.location.origin', 'requestUrl.origin !== self.location.origin'));
+  assertRunFails(root, /requestUrl\.origin/);
 });
 
 test('fails when a recorded field is disconnected from form data', () => {
   const root = fixture();
-  mutate(root, 'app/soapbox/service_worker/share_target.js', source => source.replace("formData.get('link')", "formData.get('url')"));
+  mutate(root, 'app/soapbox/service_worker/share_target.js', source => source.replace('boundedText(formData.get(\'link\'), MAX_LINK_LENGTH)', 'boundedText(formData.get(\'url\'), MAX_LINK_LENGTH)'));
   assertRunFails(root, /formData\.get\('link'\)/);
 });
 
@@ -68,19 +68,19 @@ test('fails when the redirect destination or status changes', () => {
 
 test('does not accept required worker behavior preserved only in a comment', () => {
   const root = fixture();
-  mutate(root, 'app/soapbox/service_worker/share_target.js', source => source.replace("const link = formData.get('link') || '';", "// const link = formData.get('link') || '';\n        const link = '';"));
+  mutate(root, 'app/soapbox/service_worker/share_target.js', source => source.replace('const link = boundedText(formData.get(\'link\'), MAX_LINK_LENGTH);', '// const link = boundedText(formData.get(\'link\'), MAX_LINK_LENGTH);\n    const link = \'\';'));
   assertRunFails(root, /formData\.get\('link'\)/);
 });
 
 test('fails when development registration points at another worker', () => {
   const root = fixture();
-  mutate(root, 'app/soapbox/main.tsx', source => source.replace("navigator.serviceWorker.register('/share_target.js'", "navigator.serviceWorker.register('/worker.js'"));
+  mutate(root, 'app/soapbox/main.tsx', source => source.replace('navigator.serviceWorker.register(\'/share_target.js\'', 'navigator.serviceWorker.register(\'/worker.js\''));
   assertRunFails(root, /registers the expected share-target worker/);
 });
 
-test('fails when canonical documentation weakens the unbounded parsing warning', () => {
+test('fails when canonical documentation weakens the browser body-size limitation', () => {
   const root = fixture();
-  mutate(root, 'docs/architecture/SHARE_TARGET_AUTHORITY_DRIFT_GATE.md', source => source.replace('unbounded form parsing and redirect construction', 'form parsing and redirect construction'));
+  mutate(root, 'docs/architecture/SHARE_TARGET_AUTHORITY_DRIFT_GATE.md', source => source.replace('Browsers do not guarantee that `Content-Length` is exposed', 'Content length may be absent'));
   assertRunFails(root, /required security evidence/);
 });
 

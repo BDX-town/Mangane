@@ -58,8 +58,8 @@ const assertRunFails = (root, pattern) => {
 
 test('verifies every resolved package and high/critical disposition', () => {
   const report = JSON.parse(run());
-  assert.equal(report.resolvedPackages, 1993);
-  assert.equal(report.directPackages, 202);
+  assert.equal(report.resolvedPackages, 1992);
+  assert.equal(report.directPackages, 205);
   assert.equal(report.highOrCriticalAdvisories, 53);
   assert.ok(report.actionUses > 0);
 });
@@ -108,6 +108,14 @@ test('fails when the networked postinstall downloader changes without review', (
   const root = fixture();
   fs.appendFileSync(path.join(root, 'scripts', 'download-twemoji-assets.js'), '\n// unreconciled fixture drift\n');
   assertRunFails(root, /postinstall downloader drifted/);
+});
+
+test('fails when a Twemoji download hardening control is removed', () => {
+  const root = fixture();
+  mutateJson(root, 'config/dependency-authority-inventory.json', inventory => {
+    inventory.repositorySupplyChain.postinstall.integrityVerification = false;
+  });
+  assertRunFails(root, /download hardening drifted/);
 });
 
 test('fails when a high advisory loses its reachability disposition', () => {
