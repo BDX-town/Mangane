@@ -28,5 +28,9 @@ assert.ok(
   tailwind.includes('require(\'./config/design-tokens.json\')'),
   'Tailwind must consume the canonical design token source',
 );
+assert.ok(
+  tailwind.includes('require(\'./tailwind/design-token-extension\')'),
+  'Tailwind must consume the dependency-free design token extension',
+);
 
 process.stdout.write('Design token authority verified.\n');

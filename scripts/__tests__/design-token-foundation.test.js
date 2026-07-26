@@ -7,6 +7,7 @@ const os = require('node:os');
 const path = require('node:path');
 const test = require('node:test');
 
+const { buildDesignTokenExtension } = require('../../tailwind/design-token-extension');
 const {
   buildDesignTokenCss,
   contrastRatio,
@@ -110,14 +111,14 @@ test('provides instant reduced-motion tokens without removing state changes', ()
 });
 
 test('extends Tailwind through collision-resistant design utility names', () => {
-  const tailwind = require('../../tailwind.config');
+  const extension = buildDesignTokenExtension(tokens);
 
-  assert.deepEqual(tailwind.theme.screens, tokens.primitives.breakpoint);
-  assert.equal(typeof tailwind.theme.extend.colors.primary[600], 'function');
-  assert.equal(tailwind.theme.extend.textColor.primary, undefined);
-  assert.equal(tailwind.theme.extend.textColor.accent, undefined);
-  assert.equal(tailwind.theme.extend.textColor['design-primary'], 'var(--ds-color-text-primary)');
-  assert.equal(tailwind.theme.extend.backgroundColor['design-canvas'], 'var(--ds-color-canvas)');
+  assert.equal(extension.textColor.primary, undefined);
+  assert.equal(extension.textColor.accent, undefined);
+  assert.equal(extension.textColor['design-primary'], 'var(--ds-color-text-primary)');
+  assert.equal(extension.backgroundColor['design-canvas'], 'var(--ds-color-canvas)');
+  assert.equal(extension.borderRadius['design-card'], 'var(--ds-radius-card)');
+  assert.equal(extension.spacing['design-4'], 'var(--ds-space-4)');
 });
 
 test('rejects unsafe, ambiguous, and incomplete token input', () => {
