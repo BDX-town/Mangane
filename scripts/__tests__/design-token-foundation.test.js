@@ -61,7 +61,8 @@ test('generates deterministic checked-in CSS for every supported mode', () => {
   assert.equal(fs.readFileSync(generatedPath, 'utf8'), css);
   for (const selector of [
     ':root',
-    'body.theme-mode-light',
+    'html.dark',
+    '.site-preview.theme-mode-light',
     'body.theme-mode-dark',
     '@media (prefers-contrast: more)',
     '@media (forced-colors: active)',
@@ -108,6 +109,22 @@ test('provides instant reduced-motion tokens without removing state changes', ()
   const css = buildDesignTokenCss(tokens);
   assert.ok(css.includes('--ds-motion-duration-standard: 0.01ms;'));
   assert.ok(css.includes('--ds-motion-distance-medium: 0px;'));
+  assert.ok(
+    css.includes('body:not(.no-reduce-motion)'),
+    'Mangane in-app reduced-motion preference must override semantic motion tokens',
+  );
+});
+
+test('matches semantic color modes to runtime and preview theme state', () => {
+  const css = buildDesignTokenCss(tokens);
+  const preview = fs.readFileSync(
+    path.join(repositoryRoot, 'app', 'soapbox', 'features', 'soapbox_config', 'components', 'site-preview.tsx'),
+    'utf8',
+  );
+
+  assert.ok(css.includes('html.dark'), 'Runtime dark mode is represented by html.dark');
+  assert.match(preview, /'theme-mode-light': !dark/);
+  assert.match(preview, /'theme-mode-dark': dark/);
 });
 
 test('extends Tailwind through collision-resistant design utility names', () => {

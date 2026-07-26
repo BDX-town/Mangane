@@ -21818,10 +21818,10 @@
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/soapbox_config/components/site-preview.tsx:44",
+      "id": "localization:app/soapbox/features/soapbox_config/components/site-preview.tsx:46",
       "kind": "localization",
       "path": "app/soapbox/features/soapbox_config/components/site-preview.tsx",
-      "line": 44,
+      "line": 46,
       "classification": "compatibility-critical"
     },
     {

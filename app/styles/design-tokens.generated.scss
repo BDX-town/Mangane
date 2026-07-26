@@ -111,6 +111,7 @@ body.theme-mode-light,
   color-scheme: light;
 }
 
+html.dark,
 body.theme-mode-dark,
 .site-preview.theme-mode-dark {
   --ds-color-accent: #a5b4fc;
@@ -148,6 +149,7 @@ body.theme-mode-dark,
     --ds-color-separator: #6b7280;
   }
 
+  html.dark,
   body.theme-mode-dark,
   .site-preview.theme-mode-dark {
     --ds-color-focus-ring: #ffffff;
@@ -179,6 +181,14 @@ body.theme-mode-dark,
     --ds-color-text-secondary: CanvasText;
     --ds-color-text-tertiary: GrayText;
   }
+}
+
+body:not(.no-reduce-motion) {
+  --ds-motion-distance-medium: 0px;
+  --ds-motion-distance-small: 0px;
+  --ds-motion-duration-fast: 0.01ms;
+  --ds-motion-duration-slow: 0.01ms;
+  --ds-motion-duration-standard: 0.01ms;
 }
 
 @media (prefers-reduced-motion: reduce) {
