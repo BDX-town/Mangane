@@ -11,7 +11,7 @@ const repositoryRoot = path.resolve(__dirname, '..', '..');
 const checker = path.join(repositoryRoot, 'scripts', 'check-design-component-authority-inventory.js');
 const fixture = () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'design-authority-'));
-  for (const relative of ['app/soapbox', 'app/styles', 'config/design-component-authority-inventory.json', 'config/component-ownership-manifest.json', 'docs/architecture', 'tailwind.config.js', 'tailwind']) {
+  for (const relative of ['app/soapbox', 'app/styles', 'config/design-component-authority-inventory.json', 'config/component-ownership-manifest.json', 'config/design-tokens.json', 'docs/architecture', 'tailwind.config.js', 'tailwind']) {
     fs.cpSync(path.join(repositoryRoot, relative), path.join(root, relative), { recursive: true });
   }
   return root;

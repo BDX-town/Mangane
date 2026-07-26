@@ -142,7 +142,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Phase 0F complete / executable",
-      "contentSha256": "e7419cceeae5d40f0b1dd17cbf23906fef971ef4c4de98183713ffca92d4973c"
+      "contentSha256": "0f3dfe2ace2f3b28d5c22cc864a868e6446070fcab53e9e68c6cb9a7e2414d0d"
     },
     {
       "path": "docs/architecture/ACCESSIBILITY_TEST_BASELINE.md",
@@ -311,8 +311,8 @@
       "classification": "current-supporting-evidence",
       "replacement": null,
       "inheritedBrandingReferences": 0,
-      "statusHeader": "Canonical verified current state / Phases 0 and 1 complete",
-      "contentSha256": "6e37b4d261cb9091aad8562209799d44c97fc8a31112f7b1df77834ca3196f19"
+      "statusHeader": "Canonical verified current state / Phases 0 and 1 complete / Phase 2 in progress",
+      "contentSha256": "6b37d331a0618668bd236437f2727795b9386a8525fcb3c9f68753f9b8761f98"
     },
     {
       "path": "docs/architecture/DATA_PRIVACY_AND_RESILIENCE.md",
@@ -332,7 +332,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Current Phase 0A evidence",
-      "contentSha256": "cc7902ab463fbd3cd45a84ab121133e20b1b8ae452251af080dffc52c81deef8"
+      "contentSha256": "fce18c19bee2723b271a116c46bcee2cfcc6dd2801f7dbdd5dd7fb6b67242b7a"
     },
     {
       "path": "docs/architecture/DEPENDENCY_REPLACEMENT_QUEUE.md",
@@ -362,7 +362,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Phase 0F complete / executable",
-      "contentSha256": "83e16527c2a0b76217c1ccfaabfd6003c096014cb0c4d08cc00cd6506c36075c"
+      "contentSha256": "e5dd2ffd48d11a73f5396578b017c7ecb8630f2c8234a16ad004ebf4afb5eb85"
     },
     {
       "path": "docs/architecture/DESIGN_SYSTEM.md",
@@ -462,7 +462,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical implementation sequence",
-      "contentSha256": "b61dc1a2c08301eacd494692a1d778a565dc086bd9c9236b94a190ffa123e106"
+      "contentSha256": "9d1a1708af0fb88170551fd3ae6bc0692ce4ad41666fd925af16798996cb7a39"
     },
     {
       "path": "docs/architecture/KEYBOARD_AND_GESTURE_INVENTORY.md",
@@ -543,6 +543,16 @@
       "inheritedBrandingReferences": 0,
       "statusHeader": "Complete",
       "contentSha256": "e3e98948492b9743d654ebd66147936001febb33187a9c2ebe0a86d0b667c98d"
+    },
+    {
+      "path": "docs/architecture/PHASE_2_DESIGN_FOUNDATION.md",
+      "title": "Phase 2 Design Foundation",
+      "authorityId": "phase-2-design-foundation",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "In progress",
+      "contentSha256": "82ebb6d14a7cf05ff8127fc51bfd7b4ded2e59838abb83a3a4f6a6f36938475b"
     },
     {
       "path": "docs/architecture/PREVIEW_AND_EMBED_INVENTORY.md",
@@ -782,7 +792,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Phase 0F complete / executable",
-      "contentSha256": "1ae3b3f6da75d15a7643c757f5faaf395ac5bb001b01b264ae1b1af5f2cd3adc"
+      "contentSha256": "9d83ec240d479a4bfbe406a06e8ee1cbdf5038c555388270f2f3d8a59c7b0e11"
     },
     {
       "path": "docs/architecture/TECHNICAL_ARCHITECTURE.md",

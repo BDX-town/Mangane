@@ -1,8 +1,8 @@
 # Mangane Verified Current State
 
-Status: **Canonical verified current state / Phases 0 and 1 complete**
+Status: **Canonical verified current state / Phases 0 and 1 complete / Phase 2 in progress**
 
-Last updated: 2026-07-25
+Last updated: 2026-07-26
 
 This document records verified repository behavior and known unknowns before modernization begins. It is intentionally distinct from accepted-target architecture. A claim belongs here only when supported by the current repository or a reproducible inspection.
 
@@ -77,3 +77,14 @@ The closure does not claim that inherited implementation debt is resolved. The e
 Account lookup is the first representative feature routed through domain, application, protocol-adapter, runtime-environment, typed-error, feature-flag, and account-scope contracts. Its prior Redux/API behavior remains available behind the owned rollback flag.
 
 The repository TypeScript authority baseline is now zero diagnostics. A presentation-boundary inventory makes inherited direct backend coupling explicit and rejects new coupling. Detailed behavior, migration, rollback, risks, and verification requirements are recorded in [`PHASE_1_ARCHITECTURE_CONTRACTS.md`](./PHASE_1_ARCHITECTURE_CONTRACTS.md).
+
+## 7. Phase 2 implementation state
+
+Phase 2 is active. Its first slice establishes a canonical semantic token source,
+deterministic generated CSS, Tailwind consumption, display-mode behavior, core
+contrast checks, and bounded Framework7 compatibility aliases. The inherited
+theme and component paths remain available while migration proceeds.
+
+The staged plan, current behavior, target behavior, migration, rollback, risks,
+security properties, and completion checklist are recorded in
+[`PHASE_2_DESIGN_FOUNDATION.md`](./PHASE_2_DESIGN_FOUNDATION.md).

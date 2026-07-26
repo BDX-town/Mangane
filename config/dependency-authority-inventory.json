@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "status": "current-phase-0a-evidence",
   "sourceDigests": {
-    "packageJsonSha256": "3c97ab2a8c4b86404fb3361b2b9353bfab3e4a781ff34be80383eb9928fc052e",
+    "packageJsonSha256": "e15ecaa1ef3143ba6765f94b97c10802f19fecfcce36acc805abc6ec9cd2edf4",
     "twemojiDownloaderSha256": "89f1d9fec29b1d53c8862466efbfc270fc5324bfc476095ced7ae3ee5b26c303",
     "yarnLockSha256": "fd3c42b09e5f7f2288053cfca0bec8f78fc23506ed6c574d3fe28be0dbb3e47d"
   },
@@ -16107,6 +16107,10 @@
           "context": "build"
         },
         {
+          "path": "package.json#scripts.check:design-tokens",
+          "context": "build"
+        },
+        {
           "path": "package.json#scripts.check:documentation-authority",
           "context": "build"
         },
@@ -16132,6 +16136,10 @@
         },
         {
           "path": "package.json#scripts.generate:design-authority",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.generate:design-tokens",
           "context": "build"
         },
         {
@@ -16188,6 +16196,10 @@
         },
         {
           "path": "package.json#scripts.test:design-authority",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.test:design-tokens",
           "context": "build"
         },
         {
@@ -110913,7 +110925,7 @@
     },
     {
       "action": "actions/checkout",
-      "line": 42,
+      "line": 46,
       "local": false,
       "path": ".github/workflows/design-authority.yml",
       "pinnedToCommit": true,
@@ -110921,7 +110933,7 @@
     },
     {
       "action": "actions/setup-node",
-      "line": 43,
+      "line": 47,
       "local": false,
       "path": ".github/workflows/design-authority.yml",
       "pinnedToCommit": true,

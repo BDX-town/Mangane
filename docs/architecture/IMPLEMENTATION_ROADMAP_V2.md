@@ -2,9 +2,21 @@
 
 Status: **Canonical implementation sequence**
 
-Last updated: 2026-07-25
+Last updated: 2026-07-26
 
 This roadmap supersedes earlier informal phases when they conflict. It preserves the original direction—Framework7, adaptive PWA, local-first intelligence, hybrid search, semantic filtering, entity understanding, and editorial redesign—while adding the architectural, migration, privacy, testing, and drift-control work required to implement it safely.
+
+## Phase status
+
+This table is the canonical progress summary. The detailed phase sections remain
+authoritative for scope and exit criteria.
+
+| Phase | Status | Evidence / active plan |
+|---|---|---|
+| Phase 0 — Repository and documentation reconciliation | Complete | [`PHASE_0_CLOSURE_REPORT.md`](./PHASE_0_CLOSURE_REPORT.md) |
+| Phase 1 — Architecture seams and compatibility contracts | Complete | [`PHASE_1_ARCHITECTURE_CONTRACTS.md`](./PHASE_1_ARCHITECTURE_CONTRACTS.md) |
+| Phase 2 — Design tokens, semantic icons, and accessibility foundation | In progress | [`PHASE_2_DESIGN_FOUNDATION.md`](./PHASE_2_DESIGN_FOUNDATION.md) |
+| Phases 3–31 | Queued | Begin only after the preceding phase satisfies its exit criteria |
 
 ## Global implementation rules
 
@@ -87,6 +99,8 @@ Exit criteria:
 - rollback to current presentation is possible.
 
 ## Phase 2 — Design tokens, semantic icons, and accessibility foundation
+
+Status: **In progress; see [`PHASE_2_DESIGN_FOUNDATION.md`](./PHASE_2_DESIGN_FOUNDATION.md).**
 
 Goal: establish the product language before broad UI migration.
 

@@ -10,13 +10,19 @@ Last updated: 2026-07-25
 
 Every component has an owner, shared/feature scope, and at least one disposition. Shared design-system primitives are reusable; inherited shared components are compatibility-critical; interaction-bearing modules are accessibility-critical; overlays and navigation require migration adapters; and icon consumers are Phosphor migration candidates. “Obsolete” is never inferred from import shape or dead-code tooling: removal requires reachability evidence, compatibility review, and a separate change.
 
-Known duplicate authorities are explicit in the manifest:
+Known compatibility authorities are explicit in the manifest:
 
 - four icon rendering/button paths require a migration adapter;
 - legacy and design-system button paths must converge behind the design system;
-- Sass variables/themes and Tailwind color generation remain a documented multi-source token authority until Phase 2.
+- `config/design-tokens.json` is the canonical Phase 2 token source;
+- generated custom properties provide the runtime contract while inherited Sass
+  themes and Tailwind colors remain explicit compatibility bridges.
 
-Framework7 is an accepted target and has no current source imports. It may not replace an inventoried surface unless routes, labels, keyboard access, focus restoration, reduced motion, gesture alternatives, and pointer targets are preserved and tested.
+Framework7 is an accepted target and has no current source imports. Phase 2
+defines bounded Framework7 custom-property aliases backed only by canonical
+Mangane semantic tokens. Framework7 may not replace an inventoried surface
+unless routes, labels, keyboard access, focus restoration, reduced motion,
+gesture alternatives, and pointer targets are preserved and tested.
 
 ## Executable evidence
 

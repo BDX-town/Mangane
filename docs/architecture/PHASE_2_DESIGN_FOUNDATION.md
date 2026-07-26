@@ -1,0 +1,102 @@
+# Phase 2 Design Foundation
+
+Status: **In progress**
+
+Last updated: 2026-07-26
+
+## Outcome
+
+Phase 2 establishes one product-language authority before broad presentation
+migration. It is intentionally split into independently reviewable slices:
+
+| Slice | Scope | Status |
+|---|---|---|
+| 2A | Semantic tokens, display modes, compatibility aliases, and drift gates | In progress |
+| 2B | Phosphor dependency, typed semantic icon registry, migration map, and raw-import gate | Planned |
+| 2C | Foundational controls and documented state contracts | Planned |
+| 2D | Automated accessibility harness, cross-engine visual baselines, and manual review evidence | Planned |
+
+Phase 2 is not complete until every roadmap deliverable and exit criterion is
+merged, verified in CI, and free of unresolved review findings.
+
+## Visual and interaction direction
+
+Visual thesis: a calm, content-led editorial social system with restrained
+surfaces, rigorous spacing, one clear accent, and typography doing more work
+than borders or decoration.
+
+Component examples progress from foundation to states, compatibility, and
+migration. Motion explains focus, selection, insertion, removal, and spatial
+continuity; reduced-motion variants preserve state changes without travel or
+delay.
+
+## Slice 2A contract
+
+### Current behavior
+
+Inherited Sass variables, runtime theme custom properties, and Tailwind values
+form a documented multi-source authority. Light and dark classes exist, and a
+global reduced-motion rule clamps non-essential animation. Increased contrast,
+forced colors, semantic product tokens, and Framework7 compatibility variables
+do not yet share one contract.
+
+### Target behavior
+
+- `config/design-tokens.json` is the canonical source for typography, spacing,
+  radius, elevation, motion, breakpoint, and semantic color values.
+- `app/styles/design-tokens.generated.scss` is deterministic generated output
+  and may not be edited by hand.
+- Tailwind consumes the canonical breakpoint source and exposes additive
+  design-system utilities backed by generated custom properties.
+- Light, dark, increased-contrast, forced-colors, and reduced-motion modes have
+  explicit generated behavior.
+- Core foreground/background pairs are checked against WCAG AA contrast
+  thresholds.
+- Framework7 custom properties alias semantic Mangane tokens. This proves the
+  style boundary without importing Framework7 or implementing the Phase 3
+  application shell.
+
+### Security and privacy
+
+Token names and values are validated before generation. Values containing CSS
+declaration boundaries, at-rules, URLs, expressions, or multiline payloads fail
+closed. Framework7 aliases can reference only known semantic Mangane color
+tokens. The token source contains no user, account, instance, telemetry, or
+credential data.
+
+Instance branding remains on the inherited runtime path during this additive
+slice. New semantic colors do not ingest untrusted instance values until a
+separate contrast-preserving brand policy is reviewed and tested.
+
+### Migration and rollback
+
+Existing selectors and runtime theme generation remain available. New code may
+adopt the `--ds-*` contract and matching Tailwind utilities incrementally.
+Rollback is a revert of the generated-token import, Tailwind extensions, and
+their source/checker; no persisted data or migration is involved.
+
+### Risks and controls
+
+- Generated/source drift fails `check:design-tokens`.
+- Unsafe token input fails schema validation.
+- Core contrast regression fails both focused tests and the authority checker.
+- Breakpoint drift is shared with Tailwind instead of copied.
+- Framework7 scope creep is prevented by aliases without runtime imports.
+- Visual equivalence is not inferred from source shape; rendered cross-engine
+  baselines remain required in slice 2D.
+
+## Phase 2 completion checklist
+
+- [ ] Color, typography, spacing, radius, elevation, motion, and breakpoint tokens.
+- [ ] Light, dark, increased-contrast, and forced-colors handling.
+- [ ] Phosphor dependency and typed semantic icon registry.
+- [ ] Migration map for every inherited icon provider.
+- [ ] Foundational button, icon button, list row, card shell, chip, segmented
+      control, field, avatar, and menu trigger.
+- [ ] Focus-management and reduced-motion utilities.
+- [ ] Accessibility test harness and cross-engine visual regression baseline.
+- [ ] Component state documentation and examples.
+- [ ] Foundational components meet WCAG 2.2 AA targets.
+- [ ] New raw icon-library imports are rejected outside the registry.
+- [ ] Design tokens are verified in legacy and bounded Framework7-compatible
+      surfaces.

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "phase-0f-verified",
+  "status": "phase-2-foundation-in-progress",
   "generatedFrom": [
     "app/soapbox/components",
     "app/soapbox/containers",
@@ -13,6 +13,10 @@
     "componentOwnership": "components[].owner",
     "globalStyleEntry": "app/styles/application.scss",
     "tokens": [
+      "config/design-tokens.json",
+      "app/styles/design-tokens.generated.scss"
+    ],
+    "legacyTokenBridges": [
       "app/styles/variables.scss",
       "app/styles/themes.scss",
       "tailwind.config.js",
@@ -4887,6 +4891,11 @@
     {
       "path": "app/styles/demetricator.scss",
       "authority": "shared-global-style",
+      "disposition": "retain-and-tokenize"
+    },
+    {
+      "path": "app/styles/design-tokens.generated.scss",
+      "authority": "token-authority",
       "disposition": "retain-and-tokenize"
     },
     {
@@ -25823,23 +25832,28 @@
     {
       "concern": "tokens",
       "sources": [
+        "config/design-tokens.json",
+        "app/styles/design-tokens.generated.scss"
+      ],
+      "compatibilitySources": [
         "app/styles/variables.scss",
         "app/styles/themes.scss",
         "tailwind.config.js",
         "tailwind/colors.js"
       ],
-      "disposition": "documented-multi-source-authority"
+      "disposition": "canonical-source-with-generated-runtime-and-legacy-bridges"
     }
   ],
   "framework7": {
     "currentImports": [],
+    "compatibilityContract": "config/design-tokens.json#framework7Aliases",
     "replacementRule": "A replacement must preserve routes, labels, keyboard behavior, focus restoration, reduced motion, gestures, and target sizes."
   },
   "baselines": {
     "minimumPointerTargetCssPixels": 44,
     "reducedMotionImplemented": true,
     "focusRestorationRequiredForOverlays": true,
-    "automatedContrastTarget": "WCAG 2.1 AA",
+    "automatedContrastTarget": "WCAG 2.2 AA",
     "breakpoints": {
       "sm": "581px",
       "md": "768px",
@@ -25850,7 +25864,7 @@
   },
   "counts": {
     "components": 468,
-    "styles": 72,
+    "styles": 73,
     "icons": 393,
     "behaviors": {
       "localization": 1980,
