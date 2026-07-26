@@ -50,6 +50,15 @@ if (JSON.stringify(ledger.requiredJobs) !== JSON.stringify(requiredJobs)) fail('
 if (ledger.baselines?.quarantinedTests !== 0 || ledger.baselines?.automaticTestRetries !== 0) {
   fail('baseline ledger must not accept quarantines or automatic retries');
 }
+if (
+  typeof ledger.repositoryEnforcement?.branchProtected !== 'boolean'
+  || typeof ledger.repositoryEnforcement?.requiredChecksEnforced !== 'boolean'
+  || !ledger.repositoryEnforcement?.verifiedAt
+  || !ledger.repositoryEnforcement?.verifiedBranch
+  || !ledger.repositoryEnforcement?.limitation
+) {
+  fail('repository enforcement status must be explicitly verified and recorded');
+}
 if (ledger.baselines.typeScriptInheritedDiagnostics !== typecheckBaseline.diagnosticCount) {
   fail('baseline ledger TypeScript diagnostic count drifted');
 }

@@ -60,6 +60,15 @@ test('rejects broadened workflow permissions', () => {
   assert.throws(() => run(root), /permissions must remain/);
 });
 
+test('rejects an unrecorded repository enforcement status', () => {
+  const root = fixture();
+  const target = path.join(root, 'config/test-ci-baseline.json');
+  const ledger = JSON.parse(fs.readFileSync(target, 'utf8'));
+  delete ledger.repositoryEnforcement;
+  fs.writeFileSync(target, `${JSON.stringify(ledger, null, 2)}\n`);
+  assert.throws(() => run(root), /repository enforcement status/);
+});
+
 test('rejects mutable third-party action tags', () => {
   const root = fixture();
   mutate(root, source => source.replace('actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683', 'actions/checkout@v4'));

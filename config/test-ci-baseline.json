@@ -23,7 +23,7 @@
     "typeScriptUnbaselinedDiagnostics": 0,
     "jestSuites": 151,
     "jestTests": 718,
-    "nodeGovernanceTests": 152,
+    "nodeGovernanceTests": 153,
     "coveragePercent": {
       "statements": 36.87,
       "branches": 27.71,
@@ -43,6 +43,13 @@
     "uploadsEnabled": false,
     "productionSourceMapsAllowed": false,
     "generatedOutputSecretScan": true
+  },
+  "repositoryEnforcement": {
+    "verifiedAt": "2026-07-25T20:53:34-04:00",
+    "verifiedBranch": "phase-0/telemetry-redaction-authority",
+    "branchProtected": false,
+    "requiredChecksEnforced": false,
+    "limitation": "GitHub reported Branch not protected for the stacked PR base; repository settings are external to this source branch."
   },
   "owners": {
     "quality": "frontend-maintainers",
