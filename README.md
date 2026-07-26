@@ -1,3 +1,7 @@
+# Mangane
+
+Status: **Canonical repository introduction**
+
 ![Mangane](./app/icons/mangane-full-horizontal.svg)
 
 Mangane is an alternative frontend for Pleroma, Akkoma and Mastodon with a focus on ease of use, readability and custom branding.
@@ -53,7 +57,7 @@ location / {
 }
 ```
 
-(See [`mastodon.conf`](https://github.com/BDX-town/Mangane/blob/master/installation/mastodon.conf) file for a full example.)
+(See [`mastodon.conf`](https://github.com/outlaw-dame/Mangane/blob/main/installation/mastodon.conf) file for a full example.)
 
 Mangane incorporates much of the [Mastodon API](https://docs.joinmastodon.org/methods/), [Pleroma API](https://api.pleroma.social/), and more.
 It detects features supported by the backend to provide the right experience for the backend.
@@ -70,14 +74,14 @@ First you need to download Mangane on your server.
 #### For OTP install
 
 ```sh
-/opt/pleroma/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip
+/opt/pleroma/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/outlaw-dame/Mangane/releases/latest/download/static.zip
 ```
 *Note: The pleroma_ctl path may vary on your system, if you are using Akkoma it's probably in /opt/akkoma/bin/*
 
 #### For Mix/Source install
 
 ```sh
-mix pleroma.frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip
+mix pleroma.frontend install mangane --ref dist --build-url https://github.com/outlaw-dame/Mangane/releases/latest/download/static.zip
 ```
 
 #### With Admin FE 
@@ -133,7 +137,7 @@ Mangane is developed and tested only for Pleroma and Akkoma, this mean that ther
 To upgrade Mangane, run the install commands again, on top of actual version.
 
 ```
-/opt/pleroma/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip
+/opt/pleroma/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/outlaw-dame/Mangane/releases/latest/download/static.zip
 ```
 
 If you want, you can also upgrade from the admin interface (Admin FE), doing a _new_ installation.
@@ -143,7 +147,7 @@ If you want, you can also upgrade from the admin interface (Admin FE), doing a _
 To get it running, just clone the repo:
 
 ```sh
-git clone https://github.com/BDX-town/Mangane.git
+git clone https://github.com/outlaw-dame/Mangane.git
 cd Mangane
 ```
 

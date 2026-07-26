@@ -4,7 +4,7 @@ Status: **Current / Phase 0D content-safety work complete**
 
 Last updated: 2026-07-25
 
-This document records content-safety and test-harness behavior verified directly from the current repository. Phase 0D's sink boundary and Phase 0E's telemetry/redaction boundary are executable; the broader Phase 0G CI/test baseline remains separate.
+This document records content-safety and test-harness behavior verified directly from the current repository. Phase 0D's sink boundary, Phase 0E's telemetry/redaction boundary, and the separate Phase 0G CI/test baseline are executable.
 
 ## 1. Shared HTML utilities
 
@@ -157,10 +157,4 @@ Verified:
 - the service-worker entry is excluded from coverage;
 - package scripts do not themselves establish browser, accessibility, worker-security, dependency-audit or license-check coverage.
 
-Not yet verified in this separate test/CI workstream:
-
-- all GitHub Actions workflows and required checks;
-- actual baseline test, lint, build and coverage outcomes;
-- browser and accessibility test coverage.
-
-These remaining items belong to Phase 0G rather than Phase 0D.
+The separate Phase 0G authority now verifies GitHub Actions structure, baseline lint/type/test/build outcomes, browser/accessibility smoke, worker/security behavior, and coverage. This Phase 0D document does not duplicate that evidence; see [`TEST_AND_CI_BASELINE.md`](./TEST_AND_CI_BASELINE.md).

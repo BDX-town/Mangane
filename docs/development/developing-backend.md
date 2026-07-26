@@ -1,5 +1,7 @@
 # Developing a backend
 
+> **Superseded documentation.** This inherited Soapbox overview is incomplete for Mangane's current protocol boundaries. Use the [backend capability matrix](../architecture/BACKEND_CAPABILITY_MATRIX.md).
+
 Soapbox expects backends to implement the [Mastodon API](https://docs.joinmastodon.org/methods/).
 
 At the very least:

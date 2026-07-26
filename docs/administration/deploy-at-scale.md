@@ -1,5 +1,7 @@
 # Deploying Soapbox at scale
 
+> **Superseded documentation.** These inherited Soapbox deployment instructions are not verified for current Mangane artifacts or infrastructure. Use the current [Mangane README](../../README.md) and revalidate deployment-specific behavior before execution.
+
 Fortunately Soapbox is just static files!
 HTML, CSS, and JS is as scalable as it gets, but there are some additional considerations when deploying at scale.
 
@@ -20,7 +22,7 @@ https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/develop/download?job=
 
 If you'd like to customize Soapbox, we recommend forking it on GitLab and having GitLab CI produce the build for you at your own URL.
 
-You may be interested in [build configuration options](../development/build-config) for customization and compile-time options.
+You may be interested in the historical [build configuration options](../development/build-config.md) for provenance only.
 
 ## Load-balanced Nginx
 

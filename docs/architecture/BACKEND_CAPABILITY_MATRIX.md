@@ -105,6 +105,6 @@ The matrix remains blocked for production decisions until it records:
 
 This revision directly inspected the central instance actions, OAuth application actions, OAuth token actions, authentication actions, and push-notification worker. Repository-wide static endpoint enumeration is complete for the syntax classes declared by the generated manifest. Runtime-computed destinations, third-party internal requests, backend configuration, and live protocol behavior still require integration evidence; these are explicit validation limits rather than undiscovered source callsites.
 
-## Completion gate
+## Phase 1 handoff
 
-This artifact now contains initial source-backed capability rows and the canonical evidence standard. The broader Phase 0 backend capability gate remains open until every active backend-dependent code path is mapped to its endpoint or transport, capability status, authentication requirements, failure behavior, cache ownership, tests, and documented fallback.
+The generated network authority maps every statically discoverable active backend-dependent callsite to its endpoint or transport classification, while this matrix records supported, unsupported, unknown, and failure behavior. That closes the Phase 0 discovery gate. Live multi-backend conformance, runtime schemas, and the typed capability adapter remain explicit Phase 1 implementation work.

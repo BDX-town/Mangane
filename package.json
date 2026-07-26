@@ -6,14 +6,14 @@
   "homepage": "https://bdx.town",
   "repository": {
     "type": "git",
-    "url": "https://github.com/BDX-town/Mangane"
+    "url": "https://github.com/outlaw-dame/Mangane"
   },
   "keywords": [
     "fediverse",
     "pleroma"
   ],
   "bugs": {
-    "url": "https://github.com/BDX-town/Mangane/issues"
+    "url": "https://github.com/outlaw-dame/Mangane/issues"
   },
   "scripts": {
     "start": "npx webpack-dev-server",
@@ -56,6 +56,9 @@
     "generate:design-authority": "node scripts/generate-design-component-authority-inventory.js",
     "check:design-authority": "node scripts/check-design-component-authority-inventory.js",
     "test:design-authority": "node --test scripts/__tests__/check-design-component-authority-inventory.test.js",
+    "generate:documentation-authority": "node scripts/generate-documentation-authority-registry.js",
+    "check:documentation-authority": "node scripts/check-documentation-authority.js",
+    "test:documentation-authority": "node --test scripts/__tests__/check-documentation-authority.test.js",
     "postinstall": "yarn prepare:twemoji",
     "prepare": "npx husky"
   },

@@ -1,5 +1,7 @@
 # Mangane Architecture
 
+Status: **Canonical architecture pointer**
+
 Mangane's canonical product, technical, design, data, intelligence, privacy, decision, and implementation documentation is maintained in [`docs/architecture/`](./docs/architecture/README.md).
 
 Start with the architecture index and follow its required reading order.

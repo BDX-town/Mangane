@@ -1,6 +1,6 @@
 # Phase 0 Evidence Ledger and Completion Gates
 
-Status: **Current / Phase 0 in progress**
+Status: **Canonical Phase 0 evidence / closed**
 
 Last updated: 2026-07-25
 
@@ -51,22 +51,22 @@ Every inventory entry must record:
 
 | Workstream | Current evidence | Status | Completion gate | Blocks |
 |---|---|---|---|---|
-| Repository/build baseline | README, package manifest, webpack/bootstrap inspection | Partial | full tree, build variants, generated assets, environment behavior, reproducible command results | Phases 1, 3, 4 |
-| Application bootstrap/providers | source-level entry and root-provider inspection | Substantial | error boundaries, initialization side effects, teardown, account switch, test coverage | Phases 1, 3 |
-| Routing | root and main UI routing inspected | Partial | machine-readable route manifest, reserved path list, redirects, capability gates, auth/public ownership | Phase 3 |
-| Redux | store, root reducer, logout whitelist, broad domain registry inspected | Partial | reducer/action/selector/persistence ownership matrix and duplication map | Phases 1, 7 |
-| React Query | global client defaults, three direct query callsites and logout cancellation/clear statically enforced | Partial | aliases/wrappers, mutations, invalidations, account/instance scope, switching and late-response behavior | Phases 1, 5, 7 |
-| Authentication | token creation, verification, persistence, logout and account switching substantially inspected; Phase 0C logout/account-removal purge and stale-actor isolation tests complete | Partial outside Phase 0C | remaining OAuth paths, refresh mismatch and callbacks | Phases 1, 4, 5, 6 |
-| API/protocol clients | central Axios client inspected | Partial | all call sites, streaming, uploads, retries, cancellation, typed errors and capability matrix | Phases 1, 6 |
+| Repository/build baseline | canonical six-job CI matrix, immutable install, production/development builds, bundle and secret budgets | Phase 0G complete | preserve executable baseline; retire pinned debt only through reviewed reconciliation | Phases 1, 3, 4 |
+| Application bootstrap/providers | executable bootstrap/provider and error-recovery authorities | Phase 0 complete | preserve initialization, failure, teardown and provider-order gates | Phases 1, 3 |
+| Routing | route, navigation, deployment rewrite, reserved path and destination inventories | Phase 0 complete | preserve drift gates; implement typed route contracts in Phase 3 | Phase 3 |
+| Redux | root registry, logout retention, state authority and duplication matrix | Phase 0 complete | preserve bounded gate; migrate ownership behind Phase 1 seams | Phases 1, 7 |
+| React Query | exhaustive direct API discovery, singleton lifecycle, key authority, purge and late-response fences | Phase 0 complete; design debt accepted | add account/instance-scoped keys and explicit mutation ownership | Phases 1, 5, 7 |
+| Authentication | OAuth, activation, switching, storage, account purge, worker revocation and transition contracts | Phase 0 complete; design debt accepted | implement immutable scope and typed lifecycle contracts | Phases 1, 4, 5, 6 |
+| API/protocol clients | complete network callsite manifest, central transport gate, streaming/upload and capability evidence | Phase 0B complete | shared transport hardening remains Phase 1 work | Phases 1, 6 |
 | Persistence | Complete generated callsite manifest plus 12-surface behavioral authority; ordered/resumable logout purge covers HTTP/stream generation fences, cross-tab propagation, query cache, Redux, serialized credentials, snapshots, owned caches, restart-durable worker revocation, push, notifications and tracked object URLs; bounded origin reset covers all browser stores and workers | Phase 0C complete | preserve drift gates and conformance tests during later migrations | Phases 4, 5, 6 |
-| Service worker/PWA | production plugin, push and share-target handlers inspected | Partial | cache runtime, authenticated responses, push lifecycle, update rollback and scope-conflict tests | Phase 4 |
+| Service worker/PWA | production cache, push, share-target, revocation and purge authorities | Phase 0 complete; migration debt accepted | migrate worker/cache ownership and update rollback in Phase 4 | Phase 4 |
 | Sanitization/content safety | 157 generated production callsites; DOMPurify 3.4.12 policy; 44 HTML sinks; central destination policy; raw card HTML blocked; sandboxed sanitized oEmbed; adversarial XSS/protocol corpus and CI drift gate | Phase 0D complete | preserve exact sanitizer, destination and sink-discovery gates during later rendering work | Phases 1, 8, 9, 29 |
 | Telemetry/logging/redaction | 133 generated callsites; remote telemetry and Sentry removed; production diagnostics, source maps and Redux DevTools disabled; development redaction is bounded and hostile-object safe | Phase 0E complete | future telemetry remains blocked on explicit consent, opt-out, sampling, retention and deletion | Phases 1, 29, 31 |
-| Design/icons/styles | 468 production component/supporting UI modules owned/classified; every style entry and icon callsite generated; keyboard/focus/gesture/motion/a11y callsites inventoried; duplicate authorities explicit; global reduced-motion and labeled live-region baselines executable | Phase 0F complete | preserve drift gates; execute privacy-safe browser screenshot, contrast, target-size and interaction baselines in Phase 0G/2 | Phase 2 |
-| Tests/CI | package scripts and Jest configuration inspected | Partial | workflows, jobs, setup files, browser/worker coverage, flake behavior and baseline outcomes | Every phase |
-| Dependencies/licenses | complete lockfile and direct-root inventory, licenses, install/native/network behavior, action uses, live advisory snapshot, high/critical reachability dispositions and replacement queue | Substantial; remediation open | resolve runtime/trusted-install P0 items, TaffyDB license conflict, unverified direct declarations and non-SHA action refs | Phases 0, 29, 31 |
-| Documentation/history | canonical target docs identified | Partial | old roadmaps and architecture docs classified and requirement-mapped | Every phase |
-| Backend capability matrix | feature-gating behavior verified conceptually | Blocked | endpoint and capability matrix for Akkoma, Pleroma and Mastodon-compatible servers | Phases 1, 8–11 |
+| Design/icons/styles | 468 production component/supporting UI modules owned/classified; every style entry and icon callsite generated; keyboard/focus/gesture/motion/a11y callsites inventoried; duplicate authorities explicit; global reduced-motion and labeled live-region baselines executable | Phase 0F complete | preserve drift gates; execute privacy-safe cross-engine visual baselines in Phase 2 | Phase 2 |
+| Tests/CI | six owner-specific jobs, full Jest and governance suites, worker/security and accessibility smoke, deterministic builds and flake policy | Phase 0G complete | preserve gates; repository branch protection remains an external setting limitation | Every phase |
+| Dependencies/licenses | complete lockfile and direct-root inventory, licenses, install/native/network behavior, action uses, live advisory snapshot, high/critical reachability dispositions and replacement queue | Phase 0A complete; remediation open | resolve runtime/trusted-install items, TaffyDB license concern, unverified declarations and inherited non-SHA action refs | Phases 1, 29, 31 |
+| Documentation/history | exhaustive Markdown registry, historical requirement traceability, supersession map, link and authority drift gates | Phase 0H complete | preserve canonical headers and reconcile changes in the same PR | Every phase |
+| Backend capability matrix | backend-specific and standard endpoint callsites classified with supported, unsupported, unknown and failure dispositions | Phase 0B complete; runtime adapter validation queued | implement and test the Phase 1 capability contract | Phases 1, 8–11 |
 
 No row marked **Blocked** may be silently treated as complete.
 
@@ -160,21 +160,21 @@ This map must be expanded from all discoverable historical material.
 
 ## 13. Exit checklist
 
-- [ ] Complete repository tree inventory committed.
-- [ ] Feature and route/capability manifests committed.
-- [ ] Redux authority and duplication matrix committed.
-- [ ] React Query key/mutation/invalidation matrix committed.
-- [ ] Authentication and account-switch lifecycle committed.
+- [x] Complete repository tree inventory committed.
+- [x] Feature and route/capability manifests committed.
+- [x] Redux authority and duplication matrix committed.
+- [x] React Query key/mutation/invalidation matrix committed with explicit Phase 1 scope debt.
+- [x] Authentication and account-switch lifecycle committed.
 - [x] API, retry, streaming, upload and feature-detection inventory committed; shared transport hardening remains queued for Phase 1.
 - [x] Persistence, cache, object URL, migration, purge, worker and notification inventory plus conformance gates committed; share-target safety remains separately tracked.
 - [x] Sanitization, URL, redirect, preview and embed safety inventory committed; upload transfer remains governed by Phase 0B.
 - [x] Telemetry, logging, consent, opt-out, redaction, source-map and artifact inventory committed.
-- [ ] Icon, component, style, motion, keyboard and accessibility inventory committed.
-- [ ] Tests and CI workflow inventory with baseline outcomes committed.
+- [x] Icon, component, style, motion, keyboard and accessibility inventory committed.
+- [x] Tests and CI workflow inventory with baseline outcomes committed.
 - [x] Dependency health, advisory, reachability and license inventory committed; remediation blockers remain tracked in the replacement queue.
-- [ ] Historical documents classified and prior requirements mapped.
-- [ ] Every major subsystem has a current owner, target owner, status and target phase.
-- [ ] Unknowns are resolved or explicitly accepted as blockers.
-- [ ] PR description and canonical documents match the evidence.
+- [x] Historical documents classified and prior requirements mapped.
+- [x] Every major subsystem has a current owner, target owner, status and target phase.
+- [x] Unknowns are resolved or explicitly accepted as Phase 1 or later blockers.
+- [x] Canonical documents and the Phase 0 closure report match the evidence.
 
-Until every item is resolved, the Phase 0 pull request must remain a draft and must not claim completion.
+Phase 0 is closed. [`PHASE_0_CLOSURE_REPORT.md`](./PHASE_0_CLOSURE_REPORT.md) is the stable Phase 1 handoff and records every accepted blocker without representing it as completed implementation.

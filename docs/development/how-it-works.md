@@ -1,5 +1,7 @@
 # How it works
 
+> **Superseded documentation.** This inherited Soapbox overview is preserved for context but does not represent verified current Mangane architecture. Use the [verified current state](../architecture/CURRENT_STATE.md).
+
 Soapbox FE is a [single-page application (SPA)](https://en.wikipedia.org/wiki/Single-page_application) that runs entirely in the browser with JavaScript.
 
 It has a single HTML file, `index.html`, responsible only for loading the required JavaScript and CSS.

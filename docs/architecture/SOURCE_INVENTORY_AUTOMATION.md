@@ -81,6 +81,6 @@ The rules are deliberately narrow enough to remain reviewable. A missing match i
 - Errors are fail-fast rather than converted into an incomplete-success result.
 - CI artifacts contain inventory metadata only, not matched source lines or source contents.
 
-## Phase 0 limitation
+## Evidence limitation
 
-This automation removes dependence on external search indexing and creates reproducible commit-scoped evidence, but Phase 0 remains incomplete until the generated candidate set has been manually reconciled and reflected in the canonical matrices and risk register. The existence or successful execution of the workflow must not be used as evidence that the inventory itself is complete.
+This automation removes dependence on external search indexing and creates reproducible commit-scoped candidates. Phase 0 closure reflects the manually reconciled canonical matrices and risk registers; a future successful workflow run still proves only scanner execution and must not be used alone as evidence that a changed inventory has been reconciled.

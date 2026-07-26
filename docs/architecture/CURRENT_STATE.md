@@ -1,6 +1,6 @@
 # Mangane Verified Current State
 
-Status: **Current / Phase 0 in progress**
+Status: **Canonical verified current state / Phase 0 closed**
 
 Last updated: 2026-07-23
 
@@ -68,19 +68,6 @@ Existing functionality must not be removed merely because it is absent from targ
 
 ## 5. Phase 0 status
 
-Substantial evidence now exists for bootstrap, routing, Redux, global query configuration, shared API behavior, authentication persistence, workers, shared HTML utilities and the Jest baseline.
+Phase 0 is closed. Bootstrap, routing, Redux, React Query, API/protocol, authentication, persistence, workers, HTML safety, telemetry, design, accessibility, tests, builds, dependencies, licensing, and documentation authority now have source-backed inventories and executable drift gates.
 
-Phase 0 remains incomplete. Blocking inventories include:
-
-- complete repository tree and feature inventory;
-- React Query keys, mutations and invalidations;
-- state authority and duplication;
-- API call sites, streaming, uploads and feature detection;
-- all persistence, cache and object-URL call sites;
-- all rendering sinks, sanitizers, redirects, previews and embeds;
-- Sentry initialization, consent and redaction;
-- icon, style and shared-component call sites;
-- exact CI workflow and baseline command outcomes;
-- dependency advisories, reachability and transitive licenses;
-- historical documentation and prior-requirement mapping;
-- backend capability and route manifests.
+The closure does not claim that inherited implementation debt is resolved. The exact Phase 1 and later constraints—including TypeScript diagnostics, transport scope, React Query scope, dependency remediation, cross-engine visual coverage, and external branch protection—are recorded in [`PHASE_0_CLOSURE_REPORT.md`](./PHASE_0_CLOSURE_REPORT.md).

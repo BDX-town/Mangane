@@ -1,5 +1,7 @@
 # History
 
+> **Historical record.** This upstream history is preserved for provenance. It does not define current Mangane architecture, ownership, or implementation policy; see the [canonical architecture index](./architecture/README.md).
+
 In order to better understand soapbox-fe, this document tells the story of how it came to be.
 
 ## March 2016, Mastodon

@@ -1,10 +1,10 @@
 # Mangane Observability and CI Inventory
 
-Status: **Phase 0E observability complete; Phase 0G CI baseline remains separate**
+Status: **Current supporting evidence / Phase 0E and Phase 0G complete**
 
 Last updated: 2026-07-23
 
-This document records observability, crash-handling, build-time configuration, and CI evidence verified from exact repository paths. Phase 0E now provides a complete generated telemetry authority; the broader CI baseline belongs to Phase 0G.
+This document records observability, crash-handling, build-time configuration, and CI evidence verified from exact repository paths. Phase 0E provides the complete generated telemetry authority, and Phase 0G provides the separate executable CI baseline.
 
 ## 1. Telemetry baseline
 

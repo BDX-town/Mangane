@@ -1,6 +1,6 @@
 # Route and Compatibility Manifest
 
-Status: **Current / Phase 0 in progress**
+Status: **Current supporting evidence / Phase 0 closed**
 
 Last updated: 2026-07-23
 

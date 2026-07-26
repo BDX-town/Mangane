@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 1,
+  "status": "phase-0h-canonical",
+  "requirements": [
+    {
+      "id": "adaptive-framework7-shell",
+      "source": "inherited modernization plans",
+      "requirement": "Introduce a phone, tablet, and desktop adaptive Framework7 shell without breaking deep links.",
+      "disposition": "preserved",
+      "canonicalDestination": "docs/architecture/IMPLEMENTATION_ROADMAP_V2.md",
+      "rationale": "The target remains valuable but depends on the Phase 1 compatibility seams and Phase 2 design foundation.",
+      "targetPhase": "Phase 3",
+      "evidence": "docs/architecture/ROUTE_AND_COMPATIBILITY_MANIFEST.md"
+    },
+    {
+      "id": "semantic-phosphor-icons",
+      "source": "inherited design migration plans",
+      "requirement": "Replace direct icon-library usage with a semantic Phosphor registry.",
+      "disposition": "preserved",
+      "canonicalDestination": "docs/architecture/DESIGN_SYSTEM.md",
+      "rationale": "Phase 0F inventories every icon callsite and retains the migration as a controlled target.",
+      "targetPhase": "Phase 2",
+      "evidence": "docs/architecture/ICON_MIGRATION_MATRIX.md"
+    },
+    {
+      "id": "local-first-data",
+      "source": "accepted product and architecture direction",
+      "requirement": "Keep private application data local-first and account scoped.",
+      "disposition": "modified",
+      "canonicalDestination": "docs/architecture/DATA_PRIVACY_AND_RESILIENCE.md",
+      "rationale": "Local-first remains the target, with explicit purge, migration, quota, and corruption contracts added.",
+      "targetPhase": "Phases 5-7",
+      "evidence": "docs/architecture/BROWSER_PERSISTENCE_AND_PURGE_INVENTORY.md"
+    },
+    {
+      "id": "hybrid-search",
+      "source": "inherited search and intelligence plans",
+      "requirement": "Combine lexical and semantic retrieval rather than using semantic-only search.",
+      "disposition": "preserved",
+      "canonicalDestination": "docs/architecture/SEARCH_AND_INTELLIGENCE.md",
+      "rationale": "The staged retrieval roadmap preserves deterministic lexical fallback and later semantic fusion.",
+      "targetPhase": "Phases 12-17",
+      "evidence": "docs/architecture/IMPLEMENTATION_ROADMAP_V2.md"
+    },
+    {
+      "id": "gist-synthesis",
+      "source": "inherited product exploration plans",
+      "requirement": "Provide evidence-linked Gist synthesis for Explore and Search.",
+      "disposition": "modified",
+      "canonicalDestination": "docs/architecture/SEARCH_AND_INTELLIGENCE.md",
+      "rationale": "Synthesis must be grounded, explainable, locally private by default, and safe when models are unavailable.",
+      "targetPhase": "Phases 18 and 21",
+      "evidence": "docs/architecture/PRODUCT_VISION.md"
+    },
+    {
+      "id": "composer-context",
+      "source": "inherited composer intelligence plans",
+      "requirement": "Offer contextual composer assistance.",
+      "disposition": "deferred",
+      "canonicalDestination": "docs/architecture/IMPLEMENTATION_ROADMAP_V2.md",
+      "rationale": "It depends on safe entity, conversation, retrieval, and privacy foundations.",
+      "targetPhase": "Phase 24",
+      "evidence": "docs/architecture/SEARCH_AND_INTELLIGENCE.md"
+    },
+    {
+      "id": "ai-interpolator",
+      "source": "inherited local intelligence plans",
+      "requirement": "Prototype an AI-assisted interpolator.",
+      "disposition": "deferred",
+      "canonicalDestination": "docs/architecture/IMPLEMENTATION_ROADMAP_V2.md",
+      "rationale": "No runtime AI authority is introduced during Phase 0; the feature remains behind later evaluation and privacy gates.",
+      "targetPhase": "Phase 25",
+      "evidence": "docs/architecture/SEARCH_AND_INTELLIGENCE.md"
+    },
+    {
+      "id": "backend-compatibility",
+      "source": "Mangane and inherited Soapbox operational behavior",
+      "requirement": "Preserve Akkoma, Pleroma, and Mastodon-compatible behavior.",
+      "disposition": "modified",
+      "canonicalDestination": "docs/architecture/BACKEND_CAPABILITY_MATRIX.md",
+      "rationale": "Compatibility becomes an explicit capability contract instead of presentation-layer assumptions.",
+      "targetPhase": "Phase 1",
+      "evidence": "docs/architecture/API_AND_PROTOCOL_CALLSITE_MATRIX.md"
+    },
+    {
+      "id": "multi-account-support",
+      "source": "inherited application behavior",
+      "requirement": "Retain multi-account login and switching.",
+      "disposition": "modified",
+      "canonicalDestination": "docs/architecture/ACCOUNT_TRANSITION_AND_PURGE_CONTRACT.md",
+      "rationale": "The behavior is preserved with account-generation fencing, deterministic purge, and future immutable scope contracts.",
+      "targetPhase": "Phases 1 and 5",
+      "evidence": "docs/architecture/ACCOUNT_ISOLATION_MATRIX.md"
+    },
+    {
+      "id": "offline-pwa",
+      "source": "inherited PWA implementation",
+      "requirement": "Remain installable and useful during degraded connectivity.",
+      "disposition": "modified",
+      "canonicalDestination": "docs/architecture/TECHNICAL_ARCHITECTURE.md",
+      "rationale": "Offline behavior is retained while authenticated-response caching and worker ownership become explicit.",
+      "targetPhase": "Phase 4",
+      "evidence": "docs/architecture/SERVICE_WORKER_CACHE_AUTHORITY_DRIFT_GATE.md"
+    },
+    {
+      "id": "push-notifications",
+      "source": "inherited worker behavior",
+      "requirement": "Preserve native push notifications and notification actions.",
+      "disposition": "modified",
+      "canonicalDestination": "docs/architecture/PUSH_WORKER_AUTHORITY_DRIFT_GATE.md",
+      "rationale": "Actions remain supported with restart-durable revocation and a queued destination-policy migration.",
+      "targetPhase": "Phases 4 and 6",
+      "evidence": "docs/architecture/ACCOUNT_TRANSITION_AND_PURGE_CONTRACT.md"
+    },
+    {
+      "id": "share-target",
+      "source": "Mangane release history",
+      "requirement": "Accept operating-system share-target text into the composer.",
+      "disposition": "modified",
+      "canonicalDestination": "docs/architecture/SHARE_TARGET_AUTHORITY_DRIFT_GATE.md",
+      "rationale": "The feature is preserved with exact same-origin routing, bounded input, content-type validation, and inert redirect construction.",
+      "targetPhase": "Current baseline",
+      "evidence": "scripts/__tests__/share-target-worker.test.js"
+    },
+    {
+      "id": "custom-branding",
+      "source": "Mangane customization documentation",
+      "requirement": "Allow instance-specific name, theme, and branding.",
+      "disposition": "preserved",
+      "canonicalDestination": "docs/architecture/DESIGN_SYSTEM.md",
+      "rationale": "Custom branding remains supported but must flow through governed tokens and safe configuration boundaries.",
+      "targetPhase": "Phase 2",
+      "evidence": "docs/architecture/STYLE_AND_TOKEN_SOURCE_MAP.md"
+    },
+    {
+      "id": "custom-admin-html",
+      "source": "inherited instance configuration",
+      "requirement": "Render administrator-provided pages and descriptions.",
+      "disposition": "modified",
+      "canonicalDestination": "docs/architecture/CSP_AND_TRUSTED_ADMIN_BOUNDARY.md",
+      "rationale": "Administrator authority does not make remote markup trusted; central sanitization and URL policy are mandatory.",
+      "targetPhase": "Current baseline and Phase 8",
+      "evidence": "docs/architecture/HTML_SAFETY_MATRIX.md"
+    },
+    {
+      "id": "remote-telemetry",
+      "source": "inherited dormant Sentry integration",
+      "requirement": "Report production errors to a remote telemetry provider.",
+      "disposition": "rejected",
+      "canonicalDestination": "docs/architecture/TELEMETRY_CONSENT_AND_OPT_OUT_CONTRACT.md",
+      "rationale": "Remote telemetry is removed and remains prohibited without explicit consent, redaction, retention, deletion, and opt-out controls.",
+      "targetPhase": "Future ADR only",
+      "evidence": "docs/architecture/SENTRY_RUNTIME_AND_REDACTION_INVENTORY.md"
+    },
+    {
+      "id": "source-maps-production",
+      "source": "inherited build behavior",
+      "requirement": "Publish production source maps for diagnostics.",
+      "disposition": "rejected",
+      "canonicalDestination": "docs/architecture/SOURCE_MAP_AND_BUILD_ARTIFACT_POLICY.md",
+      "rationale": "Production source maps are prohibited because no protected artifact channel or redaction boundary exists.",
+      "targetPhase": "Future ADR only",
+      "evidence": "docs/architecture/BUILD_AND_BUNDLE_BUDGETS.md"
+    },
+    {
+      "id": "soapbox-install-guides",
+      "source": "inherited Soapbox administration documentation",
+      "requirement": "Install artifacts from Soapbox GitLab and Soapbox-specific filesystem paths.",
+      "disposition": "replaced",
+      "canonicalDestination": "README.md",
+      "rationale": "The commands target a different upstream, branch, artifact, and deployment layout and are unsafe as current Mangane instructions.",
+      "targetPhase": "Phase 0H",
+      "evidence": "docs/architecture/DOCUMENTATION_SUPERSESSION_AND_ARCHIVE_MAP.md"
+    },
+    {
+      "id": "soapbox-local-development",
+      "source": "inherited Soapbox development documentation",
+      "requirement": "Clone and develop from the Soapbox GitLab repository.",
+      "disposition": "replaced",
+      "canonicalDestination": "README.md",
+      "rationale": "Repository identity and toolchain commands must point to the current Mangane repository and verified package scripts.",
+      "targetPhase": "Phase 0H",
+      "evidence": "docs/architecture/DOCUMENTATION_SUPERSESSION_AND_ARCHIVE_MAP.md"
+    },
+    {
+      "id": "accessibility-compatibility",
+      "source": "inherited UI behavior and modernization requirements",
+      "requirement": "Preserve keyboard, focus, reduced-motion, live-region, localization, and non-gesture alternatives.",
+      "disposition": "preserved",
+      "canonicalDestination": "docs/architecture/ACCESSIBILITY_BEHAVIOR_MATRIX.md",
+      "rationale": "Phase 0F and Phase 0G establish executable baselines that later UI migration cannot silently remove.",
+      "targetPhase": "Phase 2 onward",
+      "evidence": "docs/architecture/ACCESSIBILITY_TEST_BASELINE.md"
+    },
+    {
+      "id": "privacy-safe-artifacts",
+      "source": "inherited CI and diagnostic practices",
+      "requirement": "Retain build and test artifacts for debugging.",
+      "disposition": "modified",
+      "canonicalDestination": "docs/architecture/TEST_AND_CI_BASELINE.md",
+      "rationale": "Artifacts are disabled by default and require declared purpose, redaction, access control, and retention before enablement.",
+      "targetPhase": "Current baseline",
+      "evidence": "docs/architecture/BUILD_AND_BUNDLE_BUDGETS.md"
+    },
+    {
+      "id": "taffydb-runtime",
+      "source": "inherited dependency graph",
+      "requirement": "Retain TaffyDB-backed behavior.",
+      "disposition": "deferred",
+      "canonicalDestination": "docs/architecture/DEPENDENCY_REPLACEMENT_QUEUE.md",
+      "rationale": "License and maintenance concerns require replacement analysis before removal; transitive presence is not treated as safe.",
+      "targetPhase": "Phase 1 dependency remediation",
+      "evidence": "docs/architecture/DEPENDENCY_AND_LICENSE_INVENTORY.md"
+    },
+    {
+      "id": "typescript-clean-baseline",
+      "source": "modernization quality requirements",
+      "requirement": "Establish a clean production TypeScript graph.",
+      "disposition": "deferred",
+      "canonicalDestination": "docs/architecture/TEST_AND_CI_BASELINE.md",
+      "rationale": "Phase 0G pins 101 inherited diagnostics exactly and prohibits new debt; elimination belongs to the Phase 1 authority migration.",
+      "targetPhase": "Phase 1",
+      "evidence": "config/typecheck-baseline.json"
+    }
+  ]
+}

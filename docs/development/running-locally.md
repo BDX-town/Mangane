@@ -1,5 +1,7 @@
 # Running locally
 
+> **Superseded documentation.** The commands below clone the former Soapbox GitLab repository and must not be used for current Mangane development. Use the current [Mangane README](../../README.md).
+
 To get it running, just clone the repo:
 
 ```
