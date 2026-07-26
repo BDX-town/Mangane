@@ -212,7 +212,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical ADR index",
-      "contentSha256": "8891e5c2d6837de577ce5e3b9d4ace2d174ee1705d39709502bb9efe2451dd5b"
+      "contentSha256": "43c34380e2eeaad6aedc9e1dac6fdf2be8f1bf78d746436ee335f4fcd60b5378"
     },
     {
       "path": "docs/architecture/AUTH_PERSISTENCE_INVENTORY.md",
@@ -311,8 +311,8 @@
       "classification": "current-supporting-evidence",
       "replacement": null,
       "inheritedBrandingReferences": 0,
-      "statusHeader": "Canonical verified current state / Phase 0 closed",
-      "contentSha256": "78c6751f87b4ee7c7dac0ada9da76906f7b32ea846bff3a27722fbc62958bab9"
+      "statusHeader": "Canonical verified current state / Phase 0 closed / Phase 1 implemented",
+      "contentSha256": "219d64c560fd2af8d56be008eaabc2e4b30b01061412f07df7d925a4db9a3fe0"
     },
     {
       "path": "docs/architecture/DATA_PRIVACY_AND_RESILIENCE.md",
@@ -332,7 +332,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Current Phase 0A evidence",
-      "contentSha256": "5019b09e468f789ccdf89cfd813f8f467b43c05d2bb57bd151360c6fefb7db93"
+      "contentSha256": "cc7902ab463fbd3cd45a84ab121133e20b1b8ae452251af080dffc52c81deef8"
     },
     {
       "path": "docs/architecture/DEPENDENCY_REPLACEMENT_QUEUE.md",
@@ -462,7 +462,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical implementation sequence",
-      "contentSha256": "db9920d486092448d9281424325d9cee597a18fff5eafc372d711c4d179dd483"
+      "contentSha256": "60c7542c896f51456bdb3aadcb5f44d35daa7d93cf710e1dfc9d84d92d69344b"
     },
     {
       "path": "docs/architecture/KEYBOARD_AND_GESTURE_INVENTORY.md",
@@ -533,6 +533,16 @@
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical Phase 0 evidence / closed",
       "contentSha256": "8991aa61a1aace542bd869f39c681fbecc4ff59c6de1c4fca9855598023d7fc9"
+    },
+    {
+      "path": "docs/architecture/PHASE_1_ARCHITECTURE_CONTRACTS.md",
+      "title": "Phase 1 Architecture Seams and Compatibility Contracts",
+      "authorityId": "phase-1-architecture-seams-and-compatibility-contracts",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Implemented; merge and CI evidence required for closure",
+      "contentSha256": "eb72d08327b14f963fa678ad376d7fb7081e5de61c12ed5348d13fc583ad126d"
     },
     {
       "path": "docs/architecture/PREVIEW_AND_EMBED_INVENTORY.md",
@@ -812,7 +822,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Phase 0G complete / executable",
-      "contentSha256": "03c09106ace6a2516c15452b3b0fec5404457431d31140f4c064c5695900a99a"
+      "contentSha256": "0bcccbc0b9ed5fda545d4dacbd289536c60035733011876a15f2414ec3692fb2"
     },
     {
       "path": "docs/architecture/URL_AND_DESTINATION_POLICY_MATRIX.md",

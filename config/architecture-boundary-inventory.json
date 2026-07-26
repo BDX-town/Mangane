@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "status": "legacy-presentation-debt-drift-gated",
+  "owner": "architecture-maintainers",
+  "scope": "Presentation source may not add direct transport, backend-feature, or endpoint dependencies.",
+  "removalTarget": "Phase 7",
+  "findings": [
+    {
+      "file": "app/soapbox/components/sidebar-navigation.tsx",
+      "rule": "backend-feature-import",
+      "snippet": "import { getFeatures } from 'soapbox/utils/features';"
+    },
+    {
+      "file": "app/soapbox/components/thumb_navigation.tsx",
+      "rule": "backend-feature-import",
+      "snippet": "import { getFeatures } from 'soapbox/utils/features';"
+    },
+    {
+      "file": "app/soapbox/features/account_gallery/index.tsx",
+      "rule": "backend-feature-import",
+      "snippet": "import { getFeatures } from 'soapbox/utils/features';"
+    },
+    {
+      "file": "app/soapbox/features/admin/tabs/dashboard.tsx",
+      "rule": "backend-feature-import",
+      "snippet": "import { parseVersion } from 'soapbox/utils/features';"
+    },
+    {
+      "file": "app/soapbox/features/aliases/components/account.tsx",
+      "rule": "backend-feature-import",
+      "snippet": "import { getFeatures } from 'soapbox/utils/features';"
+    },
+    {
+      "file": "app/soapbox/features/aliases/index.tsx",
+      "rule": "backend-feature-import",
+      "snippet": "import { getFeatures } from 'soapbox/utils/features';"
+    },
+    {
+      "file": "app/soapbox/features/compose/components/reply_mentions.tsx",
+      "rule": "backend-feature-import",
+      "snippet": "import { getFeatures } from 'soapbox/utils/features';"
+    },
+    {
+      "file": "app/soapbox/features/compose/containers/compose_form_container.ts",
+      "rule": "backend-feature-import",
+      "snippet": "import { getFeatures } from 'soapbox/utils/features';"
+    },
+    {
+      "file": "app/soapbox/features/directory/index.tsx",
+      "rule": "backend-feature-import",
+      "snippet": "import { getFeatures } from 'soapbox/utils/features';"
+    },
+    {
+      "file": "app/soapbox/features/favourited_statuses/index.js",
+      "rule": "backend-feature-import",
+      "snippet": "import { getFeatures } from 'soapbox/utils/features';"
+    },
+    {
+      "file": "app/soapbox/features/followers/index.js",
+      "rule": "backend-feature-import",
+      "snippet": "import { getFeatures } from 'soapbox/utils/features';"
+    },
+    {
+      "file": "app/soapbox/features/following/index.js",
+      "rule": "backend-feature-import",
+      "snippet": "import { getFeatures } from 'soapbox/utils/features';"
+    },
+    {
+      "file": "app/soapbox/features/notifications/containers/column_settings_container.js",
+      "rule": "backend-feature-import",
+      "snippet": "import { getFeatures } from 'soapbox/utils/features';"
+    },
+    {
+      "file": "app/soapbox/features/settings/index.tsx",
+      "rule": "backend-feature-import",
+      "snippet": "import { getFeatures } from 'soapbox/utils/features';"
+    },
+    {
+      "file": "app/soapbox/features/status/components/detailed-status.tsx",
+      "rule": "backend-feature-import",
+      "snippet": "import { getFeatures } from 'soapbox/utils/features';"
+    },
+    {
+      "file": "app/soapbox/features/ui/components/embed_modal.tsx",
+      "rule": "backend-endpoint-literal",
+      "snippet": "return api(getState).get('/api/oembed', { params: { url } });"
+    },
+    {
+      "file": "app/soapbox/features/ui/components/embed_modal.tsx",
+      "rule": "direct-api-import",
+      "snippet": "import api from 'soapbox/api';"
+    },
+    {
+      "file": "app/soapbox/features/ui/components/hotkeys_modal.tsx",
+      "rule": "backend-feature-import",
+      "snippet": "import { getFeatures } from 'soapbox/utils/features';"
+    }
+  ]
+}

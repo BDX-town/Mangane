@@ -17,7 +17,7 @@ Generated from `package.json`, `yarn.lock`, installed package metadata, reposito
 - Packages with install-time network indicators: **0**
 - Packages with network-capable package scripts: **45**
 - Packages with code-generation/build script indicators: **658**
-- GitHub Actions use sites reviewed: **42** (24 not commit-pinned)
+- GitHub Actions use sites reviewed: **44** (24 not commit-pinned)
 
 Every lockfile locator has a classification, execution context, root reachability set, maintenance status, license disposition, install behavior, owner, and purpose in the machine-readable authority. A transitive package may inherit multiple roots and contexts.
 
@@ -82,7 +82,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | @types/http-link-header | 1.0.7 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/jest | 28.1.8 | build-only | build | build-and-release-maintainers | 4 | none-recorded |
 | @types/lodash | 4.17.24 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
-| @types/node | 16.18.11 | build-only | build | build-and-release-maintainers | 31 | none-recorded |
+| @types/node | 16.18.11 | build-only | build | build-and-release-maintainers | 34 | none-recorded |
 | @types/object-assign | 4.0.33 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/object-fit-images | 3.2.5 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/qrcode.react | 1.0.5 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
@@ -153,7 +153,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | html-webpack-plugin | 5.6.7 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
 | http-link-header | 1.1.3 | runtime | browser, test | frontend-runtime-maintainers | 2 | none-recorded |
 | husky | 9.1.7 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
-| immutable | 4.3.8 | runtime | browser, build, node, test | frontend-runtime-maintainers | 233 | review-required |
+| immutable | 4.3.8 | runtime | browser, build, node, test | frontend-runtime-maintainers | 234 | review-required |
 | imports-loader | 4.0.1 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | intersection-observer | 0.12.2 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | intl-messageformat-parser | 6.4.4 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
@@ -213,7 +213,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | react | 17.0.2 | runtime | browser, test | frontend-runtime-maintainers | 487 | none-recorded |
 | redux-immutable | 4.0.0 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | redux-thunk | 2.4.2 | runtime | browser, test | frontend-runtime-maintainers | 4 | none-recorded |
-| redux | 4.2.1 | runtime | browser, node, test | frontend-runtime-maintainers | 58 | none-recorded |
+| redux | 4.2.1 | runtime | browser, node, test | frontend-runtime-maintainers | 59 | none-recorded |
 | requestidlecallback | 0.3.0 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | reselect | 4.1.8 | runtime | browser | frontend-runtime-maintainers | 12 | none-recorded |
 | sass-loader | 13.0.0 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |

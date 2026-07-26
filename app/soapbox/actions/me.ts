@@ -7,7 +7,7 @@ import api from '../api';
 import { loadCredentials } from './auth';
 import { importFetchedAccount } from './importer';
 
-import type { AxiosError, AxiosRequestHeaders } from 'axios';
+import type { AxiosError, AxiosRequestConfig } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -69,7 +69,7 @@ const patchMe = (params: Record<string, any>, isFormData = false) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(patchMeRequest());
 
-    const headers: AxiosRequestHeaders = isFormData ? {
+    const headers: AxiosRequestConfig['headers'] = isFormData ? {
       'Content-Type': 'multipart/form-data',
     } : {};
 

@@ -19,11 +19,11 @@
     "eslintErrors": 0,
     "eslintWarningCeiling": 183,
     "stylelintErrors": 0,
-    "typeScriptInheritedDiagnostics": 101,
+    "typeScriptInheritedDiagnostics": 0,
     "typeScriptUnbaselinedDiagnostics": 0,
-    "jestSuites": 151,
-    "jestTests": 718,
-    "nodeGovernanceTests": 163,
+    "jestSuites": 156,
+    "jestTests": 740,
+    "nodeGovernanceTests": 170,
     "coveragePercent": {
       "statements": 36.87,
       "branches": 27.71,
@@ -31,10 +31,10 @@
       "lines": 38.17
     },
     "productionBuildBytes": {
-      "applicationJavaScript": 3990295,
-      "runtimeJavaScript": 277545,
+      "applicationJavaScript": 3998340,
+      "runtimeJavaScript": 277546,
       "applicationCss": 390934,
-      "serviceWorker": 223653
+      "serviceWorker": 223654
     },
     "quarantinedTests": 0,
     "automaticTestRetries": 0

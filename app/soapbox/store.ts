@@ -10,6 +10,7 @@ import { needsAccountPurge } from './persistence/lifecycle';
 import { purgeAccountScope, resumePendingPurges } from './persistence/purge';
 import appReducer from './reducers';
 
+import type { RootState as ReducerRootState } from './reducers';
 import type { AnyAction } from 'redux';
 
 export const store = configureStore({
@@ -47,5 +48,5 @@ export type Store = typeof store;
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 // https://redux.js.org/usage/usage-with-typescript
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReducerRootState;
 export type AppDispatch = ThunkDispatch<RootState, {}, AnyAction>;

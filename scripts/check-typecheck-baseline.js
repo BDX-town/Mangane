@@ -53,9 +53,13 @@ if (process.argv.includes('--update')) {
     schemaVersion: 1,
     status: diagnostics.length === 0 ? 'clean' : 'inherited-debt-drift-gated',
     owner: 'frontend-maintainers',
-    trackingIssue: 'Phase 1 TypeScript authority migration',
+    trackingIssue: diagnostics.length === 0
+      ? 'Phase 1 TypeScript authority migration completed'
+      : 'Phase 1 TypeScript authority migration',
     expiresOn: '2026-10-31',
-    rationale: 'The inherited mixed JavaScript and TypeScript reducer graph is not yet soundly typed. Every existing diagnostic is pinned so new or changed errors fail CI.',
+    rationale: diagnostics.length === 0
+      ? 'Phase 1 eliminated the inherited diagnostics. The production TypeScript graph must remain at zero diagnostics.'
+      : 'The inherited mixed JavaScript and TypeScript reducer graph is not yet soundly typed. Every existing diagnostic is pinned so new or changed errors fail CI.',
     ...observed,
   };
   fs.writeFileSync(baselinePath, `${JSON.stringify(baseline, null, 2)}\n`);

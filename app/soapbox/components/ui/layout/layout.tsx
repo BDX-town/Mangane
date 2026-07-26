@@ -4,7 +4,7 @@ import React, { ReactNode } from 'react';
 interface LayoutComponent extends React.FC {
   Sidebar: React.FC,
   Main: React.FC<React.HTMLAttributes<HTMLDivElement>>,
-  Aside: React.FC<{ className?: string, children: ReactNode }>,
+  Aside: React.FC<{ className?: string, children?: ReactNode }>,
 }
 
 /** Layout container, to hold Sidebar, Main, and Aside. */
@@ -31,7 +31,7 @@ const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, classN
 );
 
 /** Right sidebar container in the UI. */
-const Aside: React.FC<{ className?: string, children: ReactNode }> = ({ children, className }) => (
+const Aside: React.FC<{ className?: string, children?: ReactNode }> = ({ children, className }) => (
   <aside className={`hidden lg:block lg:col-span-3 md:min-w-[200px] md:max-w-[200px] ${className || ''}`}>
     {children}
   </aside>

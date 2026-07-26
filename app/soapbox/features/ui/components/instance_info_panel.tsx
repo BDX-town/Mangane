@@ -31,7 +31,7 @@ const InstanceInfoPanel: React.FC<IInstanceInfoPanel> = ({ host }) => {
 
   const handlePinHost = () => {
     if (!pinned) {
-      dispatch(pinHost(host));
+      dispatch(pinHost(host, remoteInstance.get('favicon')));
     } else {
       dispatch(unpinHost(host));
     }

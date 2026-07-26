@@ -2,7 +2,7 @@
 
 Status: **Canonical ADR index**
 
-Last updated: 2026-07-23
+Last updated: 2026-07-25
 
 This register is append-oriented. A decision may be superseded, but its rationale must remain available. Material implementation changes require an ADR update in the same pull request.
 
@@ -135,6 +135,26 @@ Decision: Introduce stable boundaries, feature flags, resumable migrations, comp
 Status: Accepted
 
 Decision: Architecture, contracts, migration status, and roadmap completion are updated with code. Conflicting documentation must be removed, superseded, or marked historical. A phase cannot be marked complete based only on code existing somewhere in the repository.
+
+## ADR-019 — Modernization crosses account-scoped application and protocol seams
+
+Status: Accepted
+
+Date: 2026-07-25
+
+Decision: New or migrated behavior crosses domain repository, application command/query, protocol capability, typed error, account-scope, and runtime environment contracts. Legacy transports and state remain behind adapters until equivalence is proven.
+
+Context: Presentation actions previously selected backend endpoints and fallback strategies directly. That coupling makes incremental modernization, account isolation, error consistency, and safe rollback difficult.
+
+Alternatives considered: a full rewrite; component-local service wrappers; direct replacement of Redux actions; untyped feature detection.
+
+Rationale: Explicit seams allow one behavior at a time to move without changing visible effects, while scope binding and runtime validation establish fail-closed authority boundaries.
+
+Consequences and tradeoffs: Transitional adapters add a small amount of indirection. Each migrated feature must test protocol selection and legacy equivalence. Existing presentation debt remains inventoried and drift-gated until removed.
+
+Security/privacy impact: Repositories bind to exact account and instance scope; response data is validated; application errors avoid retaining transport payloads; runtime flag input is allowlisted.
+
+Migration/rollback: `architecture.accountLookupAdapter` defaults to the new account-lookup path. Its registered rollback value restores the prior path. The flag is removed only after Phase 7 equivalence evidence.
 
 ## ADR template
 
