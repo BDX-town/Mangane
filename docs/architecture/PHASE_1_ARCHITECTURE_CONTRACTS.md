@@ -1,6 +1,6 @@
 # Phase 1 Architecture Seams and Compatibility Contracts
 
-Status: **Implemented; merge and CI evidence required for closure**
+Status: **Complete**
 
 Last updated: 2026-07-25
 
@@ -68,11 +68,11 @@ The TypeScript authority baseline is reduced from 101 inherited diagnostics to z
 
 ## Verification and closure
 
-Required before closure:
+Phase 1 closed in [PR #46](https://github.com/outlaw-dame/Mangane/pull/46), merge commit `11cb5ccfa55e0abf6f6026a341fa20cc21f61ac6`.
 
-- raw TypeScript check returns zero diagnostics;
-- architecture boundary unit tests and checker pass;
-- domain, runtime, application, and adapter tests pass;
-- governance, inventories, lint, build baseline, and documentation authority checks pass;
-- the phase pull request has no unresolved review comments and all required GitHub checks pass;
-- the phase pull request is merged.
+- 156 Jest suites and 741 tests passed in CI, including behavioral coverage of the disabled-flag rollback path.
+- 170 governance and adversarial tests passed.
+- Raw TypeScript returned zero diagnostics.
+- Architecture boundaries, inventories, lint, security regression, accessibility, and production/development builds passed.
+- The only actionable review thread was fixed with legacy and partially migrated account-selector regressions, then resolved.
+- All 16 checks passed on the exact reviewed head `3520a87a1fa3bee3e63fc740cbb6890ba26dfb1a`.

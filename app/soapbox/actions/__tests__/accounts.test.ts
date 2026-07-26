@@ -2,8 +2,10 @@ import { Map as ImmutableMap } from 'immutable';
 
 import { __stub } from 'soapbox/api';
 import { ApplicationError } from 'soapbox/domain/application-error';
+import { LegacyAccountRepository } from 'soapbox/infrastructure/protocol/legacy-account-repository';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { ListRecord, ReducerRecord } from 'soapbox/reducers/user_lists';
+import * as featureFlags from 'soapbox/runtime/feature-flags';
 
 import { normalizeAccount, normalizeInstance, normalizeRelationship } from '../../normalizers';
 import {
@@ -220,6 +222,23 @@ describe('fetchAccountByUsername()', () => {
         });
         expect(actions[1].type).toEqual('ACCOUNTS_IMPORT');
         expect(actions[2].type).toEqual('ACCOUNT_FETCH_SUCCESS');
+      });
+
+      it('uses the legacy implementation when the rollback flag is disabled', async() => {
+        const flag = jest.spyOn(featureFlags, 'readFeatureFlag').mockReturnValue(false);
+        const adapter = jest.spyOn(LegacyAccountRepository.prototype, 'findByUsername');
+
+        try {
+          await store.dispatch(fetchAccountByUsername(username));
+
+          const actions = store.getActions();
+          expect(adapter).not.toHaveBeenCalled();
+          expect(actions.some(action => action.type === 'ACCOUNT_FETCH_SUCCESS')).toBe(true);
+          expect(actions.some(action => action.type === 'ACCOUNT_FETCH_FAIL')).toBe(false);
+        } finally {
+          adapter.mockRestore();
+          flag.mockRestore();
+        }
       });
 
       it.each([

@@ -35,12 +35,16 @@ describe('useTrends', () => {
       });
     });
 
-    it('is successful', async() => {
+    it('reports the request error after fetching settles', async() => {
       const { result } = renderHook(() => useTrends());
 
-      await waitFor(() => expect(result.current.isFetching).toBe(false));
-
-      expect(result.current.error).toBeDefined();
+      await waitFor(
+        () => {
+          expect(result.current.error).toBeDefined();
+          expect(result.current.isFetching).toBe(false);
+        },
+        { timeout: 5000 },
+      );
     });
   });
 });

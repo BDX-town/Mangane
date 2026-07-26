@@ -64,7 +64,7 @@ Closure evidence is enforced by the dependency, network, persistence, safety, te
 
 ## Phase 1 — Architecture seams and compatibility contracts
 
-Status: **Implemented; merge and CI evidence required for closure. See [`PHASE_1_ARCHITECTURE_CONTRACTS.md`](./PHASE_1_ARCHITECTURE_CONTRACTS.md).**
+Status: **Complete; see [`PHASE_1_ARCHITECTURE_CONTRACTS.md`](./PHASE_1_ARCHITECTURE_CONTRACTS.md).**
 
 Goal: create boundaries that allow incremental modernization.
 

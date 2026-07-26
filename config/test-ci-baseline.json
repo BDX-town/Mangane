@@ -22,7 +22,7 @@
     "typeScriptInheritedDiagnostics": 0,
     "typeScriptUnbaselinedDiagnostics": 0,
     "jestSuites": 156,
-    "jestTests": 740,
+    "jestTests": 741,
     "nodeGovernanceTests": 170,
     "coveragePercent": {
       "statements": 36.87,

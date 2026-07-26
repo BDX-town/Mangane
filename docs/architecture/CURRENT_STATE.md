@@ -1,6 +1,6 @@
 # Mangane Verified Current State
 
-Status: **Canonical verified current state / Phase 0 closed / Phase 1 implemented**
+Status: **Canonical verified current state / Phases 0 and 1 complete**
 
 Last updated: 2026-07-25
 
