@@ -9,14 +9,14 @@ Generated from `package.json`, `yarn.lock`, installed package metadata, reposito
 - Machine-readable authority: [`config/dependency-authority-inventory.json`](../../config/dependency-authority-inventory.json)
 - Advisory snapshot: [`config/dependency-advisory-snapshot.json`](../../config/dependency-advisory-snapshot.json)
 - Drift and license checker: [`scripts/check-dependency-authority-inventory.js`](../../scripts/check-dependency-authority-inventory.js)
-- Resolved packages classified: **1992**
-- Direct packages with an owner, purpose, context, and usage evidence: **205**
+- Resolved packages classified: **1993**
+- Direct packages with an owner, purpose, context, and usage evidence: **206**
 - Package names with multiple locked locators or versions: **229**
 - Packages with install scripts: **4**
 - Packages with native-binding indicators: **5**
 - Packages with install-time network indicators: **0**
 - Packages with network-capable package scripts: **45**
-- Packages with code-generation/build script indicators: **658**
+- Packages with code-generation/build script indicators: **659**
 - GitHub Actions use sites reviewed: **44** (24 not commit-pinned)
 
 Every lockfile locator has a classification, execution context, root reachability set, maintenance status, license disposition, install behavior, owner, and purpose in the machine-readable authority. A transitive package may inherit multiple roots and contexts.
@@ -62,6 +62,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | @jest/globals | 28.1.3 | test-only | test | test-infrastructure-maintainers | 1 | none-recorded |
 | @lcdp/offline-plugin | 5.1.7 | runtime | browser, build | frontend-runtime-maintainers | 2 | none-recorded |
 | @metamask/providers | 9.1.0 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
+| @phosphor-icons/react | 2.1.10 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | @popperjs/core | 2.11.8 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | @reach/menu-button | 0.16.2 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | @reach/popover | 0.16.2 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
@@ -70,7 +71,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | @reach/tabs | 0.16.4 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | @reach/tooltip | 0.16.2 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | @reduxjs/toolkit | 1.9.7 | runtime | browser | frontend-runtime-maintainers | 4 | none-recorded |
-| @tabler/icons | 1.119.0 | runtime | browser, test | frontend-runtime-maintainers | 121 | none-recorded |
+| @tabler/icons | 1.119.0 | runtime | browser, test | frontend-runtime-maintainers | 120 | none-recorded |
 | @tailwindcss/forms | 0.4.1 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
 | @tailwindcss/typography | 0.5.19 | build-only | build | build-and-release-maintainers | 1 | none-recorded |
 | @tanstack/react-query | 4.44.0 | runtime | browser, test | frontend-runtime-maintainers | 6 | none-recorded |
@@ -82,7 +83,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | @types/http-link-header | 1.0.7 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/jest | 28.1.8 | build-only | build | build-and-release-maintainers | 4 | none-recorded |
 | @types/lodash | 4.17.24 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
-| @types/node | 16.18.11 | build-only | build | build-and-release-maintainers | 37 | none-recorded |
+| @types/node | 16.18.11 | build-only | build | build-and-release-maintainers | 40 | none-recorded |
 | @types/object-assign | 4.0.33 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/object-fit-images | 3.2.5 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/qrcode.react | 1.0.5 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
@@ -210,7 +211,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | react-textarea-autosize | 8.5.9 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | react-toggle | 4.1.3 | runtime | browser | frontend-runtime-maintainers | 5 | none-recorded |
 | react-virtuoso | 2.19.1 | runtime | browser | frontend-runtime-maintainers | 6 | none-recorded |
-| react | 17.0.2 | runtime | browser, test | frontend-runtime-maintainers | 487 | none-recorded |
+| react | 17.0.2 | runtime | browser, test | frontend-runtime-maintainers | 490 | none-recorded |
 | redux-immutable | 4.0.0 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | redux-thunk | 2.4.2 | runtime | browser, test | frontend-runtime-maintainers | 4 | none-recorded |
 | redux | 4.2.1 | runtime | browser, node, test | frontend-runtime-maintainers | 59 | none-recorded |
@@ -268,7 +269,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | CC0-1.0 | 5 | declared | retain-provenance-and-confirm-jurisdictional-treatment |
 | ISC | 110 | declared | retain-applicable-copyright-license-and-notice-text |
 | LicenseRef-TaffyDB-Ambiguous | 1 | conflict-requires-removal-or-counsel | legal-review-before-distribution |
-| MIT | 1698 | declared, verified-from-distribution | retain-applicable-copyright-license-and-notice-text |
+| MIT | 1699 | declared, verified-from-distribution | retain-applicable-copyright-license-and-notice-text |
 | MIT/X11 | 1 | non-spdx-or-ambiguous-declaration | retain-applicable-copyright-license-and-notice-text |
 | MPL-2.0 | 3 | declared | copyleft-source-and-license-compliance-review |
 | Public Domain | 1 | non-spdx-or-ambiguous-declaration | retain-provenance-and-confirm-jurisdictional-treatment |
@@ -317,6 +318,7 @@ Mangane remains AGPL-3.0-or-later. This inventory records dependency declaration
 | @nodelib/fs.scandir | 2.1.5 | false | false | false | false | true | @typescript-eslint/eslint-plugin, @typescript-eslint/parser, copy-webpack-plugin, stylelint, tailwindcss, webpack-deadcode-plugin |
 | @nodelib/fs.stat | 2.0.5 | false | false | false | false | true | @typescript-eslint/eslint-plugin, @typescript-eslint/parser, copy-webpack-plugin, stylelint, tailwindcss, webpack-deadcode-plugin |
 | @nodelib/fs.walk | 1.2.8 | false | false | false | false | true | @typescript-eslint/eslint-plugin, @typescript-eslint/parser, copy-webpack-plugin, stylelint, tailwindcss, webpack-deadcode-plugin |
+| @phosphor-icons/react | 2.1.10 | false | false | false | false | true | @phosphor-icons/react |
 | @popperjs/core | 2.11.8 | false | false | false | false | true | @popperjs/core, @types/react-datepicker, react-datepicker |
 | @reach/observe-rect | 1.2.0 | false | false | false | false | true | @reach/menu-button, @reach/popover, @reach/rect, @reach/tooltip |
 | @reduxjs/toolkit | 1.9.7 | false | false | false | false | true | @reduxjs/toolkit |

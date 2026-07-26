@@ -42,6 +42,10 @@ module.exports = {
     '<rootDir>/app',
   ],
   'moduleNameMapper': {
+    // Phosphor's browser ESM entry is verified by webpack builds; its current
+    // CommonJS export target is empty under Node 24, so Jest uses a behaviorally
+    // equivalent SVG adapter for component contract tests.
+    '^@phosphor-icons/react(?:/.*)?$': '<rootDir>/jest/phosphor-icon-mock.js',
     // eld exposes ESM-only conditional exports; Jest 28 resolves CommonJS by default.
     '^eld/small$': '<rootDir>/node_modules/eld/src/entries/static.small.js',
     // https://github.com/uuidjs/uuid/pull/616#issuecomment-1111012599

@@ -62,7 +62,12 @@ The current Jest harness runs in jsdom and excludes the service-worker entry fro
 
 ## 4. Current versus target
 
-The current inherited application is the compatibility base. Framework7, Phosphor, local-first canonical storage, hybrid search, local intelligence, composer context and interpolation are accepted targets and must not be described as current implementation.
+The current inherited application is the compatibility base. The Phosphor
+dependency and semantic registry are now a bounded Phase 2 foundation, but
+broad Phosphor presentation migration remains a target. Framework7,
+local-first canonical storage, hybrid search, local intelligence, composer
+context, and interpolation are accepted targets and must not be described as
+current implementation.
 
 Existing functionality must not be removed merely because it is absent from target documents. Removal requires inventory, compatibility analysis, migration, rollback and an architectural decision.
 
@@ -80,10 +85,13 @@ The repository TypeScript authority baseline is now zero diagnostics. A presenta
 
 ## 7. Phase 2 implementation state
 
-Phase 2 is active. Its first slice establishes a canonical semantic token source,
+Phase 2 is active. Slice 2A established a canonical semantic token source,
 deterministic generated CSS, Tailwind consumption, display-mode behavior, core
-contrast checks, and bounded Framework7 compatibility aliases. The inherited
-theme and component paths remain available while migration proceeds.
+contrast checks, and bounded Framework7 compatibility aliases. Slice 2B adds
+the pinned Phosphor dependency, typed semantic registry, safe icon adapter,
+exhaustive provider migration baseline, and a CI gate that rejects new raw icon
+imports. Broad icon migration has not occurred; inherited renderers and
+providers remain available while the reviewed baseline shrinks.
 
 The staged plan, current behavior, target behavior, migration, rollback, risks,
 security properties, and completion checklist are recorded in

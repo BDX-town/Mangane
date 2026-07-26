@@ -22,7 +22,9 @@
       "tailwind.config.js",
       "tailwind/colors.js"
     ],
-    "iconMigrationTarget": "Phosphor-compatible adapter before provider replacement",
+    "iconRegistry": "app/soapbox/components/ui/icon/semantic-icon-registry.ts",
+    "iconMigrationBaseline": "config/icon-migration-baseline.json",
+    "iconMigrationTarget": "Typed Phosphor semantic registry with a shrinking reviewed legacy-import baseline",
     "motionPolicy": "app/styles/accessibility.scss"
   },
   "components": [
@@ -1032,6 +1034,27 @@
       ]
     },
     {
+      "path": "app/soapbox/components/ui/icon/semantic-icon-registry.ts",
+      "kind": "component",
+      "owner": "design-system",
+      "scope": "shared",
+      "classifications": [
+        "reusable",
+        "phosphor-migration-candidate"
+      ]
+    },
+    {
+      "path": "app/soapbox/components/ui/icon/semantic-icon.tsx",
+      "kind": "component",
+      "owner": "design-system",
+      "scope": "shared",
+      "classifications": [
+        "reusable",
+        "accessibility-critical",
+        "phosphor-migration-candidate"
+      ]
+    },
+    {
       "path": "app/soapbox/components/ui/icon/svg-icon.tsx",
       "kind": "component",
       "owner": "design-system",
@@ -1239,8 +1262,7 @@
       "owner": "shared-components",
       "scope": "shared",
       "classifications": [
-        "compatibility-critical",
-        "phosphor-migration-candidate"
+        "compatibility-critical"
       ]
     },
     {
@@ -6012,6 +6034,15 @@
       "disposition": "phosphor-migration-candidate"
     },
     {
+      "id": "semantic-module:app/soapbox/components/ui/icon/semantic-icon-registry.ts:27:semantic-registry",
+      "path": "app/soapbox/components/ui/icon/semantic-icon-registry.ts",
+      "line": 27,
+      "kind": "semantic-module",
+      "provider": "phosphor",
+      "symbol": "semantic-registry",
+      "disposition": "canonical-semantic-registry"
+    },
+    {
       "id": "svg-module:app/soapbox/components/ui/input/input.tsx:100:eye-off.svg",
       "path": "app/soapbox/components/ui/input/input.tsx",
       "line": 100,
@@ -6072,24 +6103,6 @@
       "kind": "svg-module",
       "provider": "tabler",
       "symbol": "cloud-upload.svg",
-      "disposition": "phosphor-migration-candidate"
-    },
-    {
-      "id": "svg-module:app/soapbox/components/validation-checkmark.tsx:15:check.svg",
-      "path": "app/soapbox/components/validation-checkmark.tsx",
-      "line": 15,
-      "kind": "svg-module",
-      "provider": "tabler",
-      "symbol": "check.svg",
-      "disposition": "phosphor-migration-candidate"
-    },
-    {
-      "id": "svg-module:app/soapbox/components/validation-checkmark.tsx:15:point.svg",
-      "path": "app/soapbox/components/validation-checkmark.tsx",
-      "line": 15,
-      "kind": "svg-module",
-      "provider": "tabler",
-      "symbol": "point.svg",
       "disposition": "phosphor-migration-candidate"
     },
     {
@@ -12092,6 +12105,20 @@
       "kind": "label",
       "path": "app/soapbox/components/ui/form-group/form-group.tsx",
       "line": 77,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "label:app/soapbox/components/ui/icon/semantic-icon.tsx:15",
+      "kind": "label",
+      "path": "app/soapbox/components/ui/icon/semantic-icon.tsx",
+      "line": 15,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "label:app/soapbox/components/ui/icon/semantic-icon.tsx:51",
+      "kind": "label",
+      "path": "app/soapbox/components/ui/icon/semantic-icon.tsx",
+      "line": 51,
       "classification": "accessibility-critical"
     },
     {
@@ -25863,28 +25890,29 @@
     "screenshotPlan": "docs/architecture/SCREENSHOT_AND_INTERACTION_BASELINE_PLAN.md"
   },
   "counts": {
-    "components": 468,
+    "components": 470,
     "styles": 73,
-    "icons": 393,
+    "icons": 392,
     "behaviors": {
       "localization": 1980,
       "focus": 134,
       "inline-style": 75,
       "keyboard": 89,
-      "label": 79,
+      "label": 81,
       "motion": 61,
       "gesture": 37,
       "rtl": 13,
       "live-region": 1
     },
     "iconProviders": {
-      "tabler": 372,
+      "tabler": 370,
       "line-awesome": 13,
-      "repository-asset": 8
+      "repository-asset": 8,
+      "phosphor": 1
     },
     "owners": {
       "shared-components": 85,
-      "design-system": 39,
+      "design-system": 41,
       "shared-containers": 5,
       "feature:about": 1,
       "feature:account": 1,

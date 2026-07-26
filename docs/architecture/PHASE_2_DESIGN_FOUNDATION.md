@@ -11,8 +11,8 @@ migration. It is intentionally split into independently reviewable slices:
 
 | Slice | Scope | Status |
 |---|---|---|
-| 2A | Semantic tokens, display modes, compatibility aliases, and drift gates | In progress |
-| 2B | Phosphor dependency, typed semantic icon registry, migration map, and raw-import gate | Planned |
+| 2A | Semantic tokens, display modes, compatibility aliases, and drift gates | Complete — [PR 48](https://github.com/outlaw-dame/Mangane/pull/48) |
+| 2B | Phosphor dependency, typed semantic icon registry, migration map, and raw-import gate | In progress |
 | 2C | Foundational controls and documented state contracts | Planned |
 | 2D | Automated accessibility harness, cross-engine visual baselines, and manual review evidence | Planned |
 
@@ -85,10 +85,74 @@ their source/checker; no persisted data or migration is involved.
 - Visual equivalence is not inferred from source shape; rendered cross-engine
   baselines remain required in slice 2D.
 
+## Slice 2B contract
+
+### Current behavior
+
+The inherited application has four overlapping icon renderers and 393
+production callsites across Tabler, Line Awesome, and repository assets.
+Bootstrap Icons and Feather remain installed without verified production
+callsites. Product meaning is encoded in provider filenames or font strings,
+and direct provider imports are not prevented.
+
+### Target behavior
+
+- `@phosphor-icons/react` is an exact, lockfile-governed runtime dependency.
+- `app/soapbox/components/ui/icon/semantic-icon-registry.ts` is the only
+  production module allowed to import Phosphor.
+- Components request a typed product meaning through `SemanticIcon`, not a
+  provider component, filename, remote URL, or arbitrary markup value.
+- Unlabelled icons are decorative and hidden from assistive technology.
+  Meaningful standalone icons require an explicit accessible label.
+- Unknown dynamic configuration fails closed to an allowlisted local fallback;
+  it cannot resolve a module, script, URL, or SVG payload.
+- `config/icon-migration-baseline.json` records every raw provider import.
+  The baseline may shrink through reviewed migrations, but a new raw import or
+  unreviewed count change fails CI.
+- `ValidationCheckmark` is the bounded runtime proof. Broader component and
+  navigation migrations remain separate reviewable work.
+
+### Security and privacy
+
+The registry is a frozen, static mapping of typed names to bundled React
+components. Lookup uses an own-property check so values such as `__proto__`
+cannot traverse the object prototype. There is no dynamic `require`, remote
+fetch, inline SVG string, raw HTML sink, user/account data, telemetry, or
+authorization behavior in this slice.
+
+Icons do not replace server authorization or encode confidential state.
+Provider updates remain pinned and pass dependency, build, secret-scan, and
+review gates before merge.
+
+### Migration and rollback
+
+Legacy renderers and imports remain operational while their reviewed baseline
+shrinks. Each migration must map by product meaning, preserve visible state,
+accessible names, RTL behavior, size, focus, and hit targets, then reconcile
+the generated design inventory and the hand-reviewed import baseline.
+
+Rollback is a revert of the representative consumer, semantic adapter,
+dependency, baseline, and CI steps. No persisted data, network contract,
+account scope, database, or service-worker state is changed.
+
+### Risks and controls
+
+- Provider mixing is limited by a single Phosphor import boundary and a
+  fail-closed raw-import checker.
+- Bundle growth is measured by the existing production budget; the package's
+  side-effect-free browser ESM entry preserves named-export tree shaking.
+- Accessibility semantics are component-tested for decorative and labelled
+  icons.
+- The Jest adapter exists only because the package's current CommonJS export
+  target is empty under the local Node runtime. Production and development
+  webpack builds exercise the real browser ESM modules.
+- Provider removal is forbidden until its production and raw-import counts are
+  zero and visual/accessibility evidence exists.
+
 ## Phase 2 completion checklist
 
-- [ ] Color, typography, spacing, radius, elevation, motion, and breakpoint tokens.
-- [ ] Light, dark, increased-contrast, and forced-colors handling.
+- [x] Color, typography, spacing, radius, elevation, motion, and breakpoint tokens.
+- [x] Light, dark, increased-contrast, and forced-colors handling.
 - [ ] Phosphor dependency and typed semantic icon registry.
 - [ ] Migration map for every inherited icon provider.
 - [ ] Foundational button, icon button, list row, card shell, chip, segmented
@@ -98,5 +162,5 @@ their source/checker; no persisted data or migration is involved.
 - [ ] Component state documentation and examples.
 - [ ] Foundational components meet WCAG 2.2 AA targets.
 - [ ] New raw icon-library imports are rejected outside the registry.
-- [ ] Design tokens are verified in legacy and bounded Framework7-compatible
+- [x] Design tokens are verified in legacy and bounded Framework7-compatible
       surfaces.

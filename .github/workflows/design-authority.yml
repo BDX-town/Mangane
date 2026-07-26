@@ -11,8 +11,10 @@ on:
       - 'config/component-ownership-manifest.json'
       - 'config/design-component-authority-inventory.json'
       - 'config/design-tokens.json'
+      - 'config/icon-migration-baseline.json'
       - 'docs/architecture/**'
       - 'scripts/**design**'
+      - 'scripts/**icon**'
       - 'scripts/**token**'
       - 'scripts/__tests__/check-design-component-authority-inventory.test.js'
       - 'tailwind/**'
@@ -30,7 +32,9 @@ on:
       - 'config/component-ownership-manifest.json'
       - 'config/design-component-authority-inventory.json'
       - 'config/design-tokens.json'
+      - 'config/icon-migration-baseline.json'
       - 'scripts/**design**'
+      - 'scripts/**icon**'
       - 'scripts/**token**'
       - 'tailwind/**'
       - 'tailwind.config.js'
@@ -55,3 +59,7 @@ jobs:
         run: node scripts/check-design-tokens.js
       - name: Run design token contract tests
         run: node --test scripts/__tests__/design-token-foundation.test.js
+      - name: Verify semantic icon registry and shrinking legacy baseline
+        run: node scripts/check-icon-migration.js
+      - name: Run semantic icon migration mutation tests
+        run: node --test scripts/__tests__/icon-migration-foundation.test.js

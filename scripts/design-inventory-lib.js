@@ -115,6 +115,18 @@ const buildIcons = (root, sourceFiles) => {
   for (const absolute of sourceFiles) {
     const relative = slash(path.relative(root, absolute));
     const source = fs.readFileSync(absolute, 'utf8');
+    const phosphorImport = /from\s*['"]@phosphor-icons\/react(?:\/[^'"]*)?['"]/.exec(source);
+    if (phosphorImport) {
+      icons.push({
+        id: `semantic-module:${relative}:${lineNumber(source, phosphorImport.index)}:semantic-registry`,
+        path: relative,
+        line: lineNumber(source, phosphorImport.index),
+        kind: 'semantic-module',
+        provider: 'phosphor',
+        symbol: 'semantic-registry',
+        disposition: 'canonical-semantic-registry',
+      });
+    }
     addMatches(icons, source, relative, 'svg-module', 'tabler', /@tabler\/icons\/([^'")\s]+\.svg)/g, 'phosphor-migration-candidate');
     addMatches(icons, source, relative, 'named-module', 'tabler', /import\s*\{([^}]+)\}\s*from\s*['"]@tabler\/icons['"]/g, 'phosphor-migration-candidate');
     addMatches(icons, source, relative, 'custom-svg', 'repository-asset', /(?:require\(|from\s*)['"]((?!@tabler\/icons\/)[^'"]+\.svg)['"]/g, 'retain-custom-asset-review');
@@ -183,7 +195,9 @@ const buildDesignInventory = root => {
       globalStyleEntry: 'app/styles/application.scss',
       tokens: ['config/design-tokens.json', 'app/styles/design-tokens.generated.scss'],
       legacyTokenBridges: ['app/styles/variables.scss', 'app/styles/themes.scss', 'tailwind.config.js', 'tailwind/colors.js'],
-      iconMigrationTarget: 'Phosphor-compatible adapter before provider replacement',
+      iconRegistry: 'app/soapbox/components/ui/icon/semantic-icon-registry.ts',
+      iconMigrationBaseline: 'config/icon-migration-baseline.json',
+      iconMigrationTarget: 'Typed Phosphor semantic registry with a shrinking reviewed legacy-import baseline',
       motionPolicy: 'app/styles/accessibility.scss',
     },
     components,
