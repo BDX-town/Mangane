@@ -57,7 +57,7 @@ const setDomainBlocking = (state: State, accounts: ImmutableList<string>, blocki
 
 const importPleromaAccount = (state: State, account: APIEntity) => {
   const relationship = get(account, ['pleroma', 'relationship'], {});
-  if (relationship.id && relationship !== {})
+  if (relationship.id)
     return normalizeRelationships(state, [relationship]);
   return state;
 };

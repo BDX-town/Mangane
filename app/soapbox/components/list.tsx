@@ -25,7 +25,7 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick, classNa
 
   const renderChildren = React.useCallback(() =>
     React.Children.map(children, (child) => {
-      if (React.isValidElement(child)) {
+      if (React.isValidElement<{ id?: string }>(child)) {
         return React.cloneElement(child, {
           id: domId,
         });

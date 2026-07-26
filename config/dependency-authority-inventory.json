@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "status": "current-phase-0a-evidence",
   "sourceDigests": {
-    "packageJsonSha256": "c8adeb161e64415263062478a6ae89a940024389035642322883ef9d94a27fa8",
+    "packageJsonSha256": "3c97ab2a8c4b86404fb3361b2b9353bfab3e4a781ff34be80383eb9928fc052e",
     "twemojiDownloaderSha256": "89f1d9fec29b1d53c8862466efbfc270fc5324bfc476095ced7ae3ee5b26c303",
     "yarnLockSha256": "fd3c42b09e5f7f2288053cfca0bec8f78fc23506ed6c574d3fe28be0dbb3e47d"
   },
@@ -21,7 +21,7 @@
     }
   },
   "summary": {
-    "actionUses": 42,
+    "actionUses": 44,
     "advisories": {
       "critical": 4,
       "high": 49,
@@ -16087,6 +16087,10 @@
       },
       "usageEvidence": [
         {
+          "path": "package.json#scripts.check:architecture-boundaries",
+          "context": "build"
+        },
+        {
           "path": "package.json#scripts.check:build",
           "context": "build"
         },
@@ -16123,6 +16127,10 @@
           "context": "build"
         },
         {
+          "path": "package.json#scripts.generate:architecture-boundaries",
+          "context": "build"
+        },
+        {
           "path": "package.json#scripts.generate:design-authority",
           "context": "build"
         },
@@ -16156,6 +16164,10 @@
         },
         {
           "path": "package.json#scripts.prepare:twemoji",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.test:architecture-boundaries",
           "context": "build"
         },
         {
@@ -51192,6 +51204,10 @@
           "context": "browser"
         },
         {
+          "path": "app/soapbox/types/soapbox.ts",
+          "context": "browser"
+        },
+        {
           "path": "app/soapbox/utils/__tests__/config_db.test.ts",
           "context": "test"
         },
@@ -84246,6 +84262,10 @@
           "context": "browser"
         },
         {
+          "path": "app/soapbox/reducers/index.ts",
+          "context": "browser"
+        },
+        {
           "path": "app/soapbox/reducers/instance.ts",
           "context": "browser"
         },
@@ -110826,6 +110846,22 @@
       "path": ".github/workflows/api-transport-authority.yml",
       "pinnedToCommit": false,
       "ref": "v4"
+    },
+    {
+      "action": "actions/checkout",
+      "line": 66,
+      "local": false,
+      "path": ".github/workflows/architecture-boundaries.yml",
+      "pinnedToCommit": true,
+      "ref": "11bd71901bbe5b1630ceea73d27597364c9af683"
+    },
+    {
+      "action": "actions/setup-node",
+      "line": 69,
+      "local": false,
+      "path": ".github/workflows/architecture-boundaries.yml",
+      "pinnedToCommit": true,
+      "ref": "49933ea5288caeca8642d1e84afbd3f7d6820020"
     },
     {
       "action": "actions/checkout",

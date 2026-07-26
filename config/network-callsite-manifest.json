@@ -52,9 +52,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "257b84de11b2261d",
+      "id": "24081af3bbb23cd1",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 138,
+      "line": 146,
       "kind": "axios",
       "method": "POST",
       "route": "/api/v1/accounts",
@@ -78,9 +78,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "9ea762d4aa30e9a8",
+      "id": "b193684978798f9f",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 158,
+      "line": 166,
       "kind": "axios",
       "method": "GET",
       "route": "/api/v1/accounts/${id}",
@@ -104,9 +104,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "d2e64e659c5673e0",
+      "id": "941d2b03127416fc",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 175,
+      "line": 184,
       "kind": "axios",
       "method": "GET",
       "route": "/api/v1/accounts/${username}",
@@ -130,9 +130,35 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "336fe71ee6e91fb2",
+      "id": "6e1eacee18cac992",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 244,
+      "line": 235,
+      "kind": "axios",
+      "method": "GET",
+      "route": "<dynamic>",
+      "expression": "`/api/v1/accounts/${encodeURIComponent(value",
+      "owner": "redux-action",
+      "authentication": "shared-client-or-callsite-dependent",
+      "accountScope": "current-account-or-explicit-client",
+      "instanceScope": "client-base-url-or-explicit-destination",
+      "requestBody": "none",
+      "responseType": "json-or-callsite-defined",
+      "pagination": "possible-link-or-id-pagination",
+      "timeout": "no-shared-timeout",
+      "cancellation": "none-observed",
+      "retrySafety": "safe-with-bounds",
+      "rateLimitHandling": "shared-typed-policy-absent",
+      "contentType": "json-or-callsite-defined",
+      "maximumPayload": "unbounded-at-shared-client",
+      "errorClassification": "axios-or-native-error",
+      "capability": "runtime-selected",
+      "fallback": "callsite-defined-or-none",
+      "degradedBehavior": "error-path-or-cached-ui"
+    },
+    {
+      "id": "26d915fee1250ae9",
+      "file": "app/soapbox/actions/accounts.ts",
+      "line": 292,
       "kind": "axios",
       "method": "POST",
       "route": "/api/v1/accounts/${id}/follow",
@@ -156,9 +182,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "badaef1c54957bb2",
+      "id": "54082c46641c10f3",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 259,
+      "line": 307,
       "kind": "axios",
       "method": "POST",
       "route": "/api/v1/accounts/${id}/unfollow",
@@ -182,9 +208,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "476326e28f54c841",
+      "id": "78d8893aae407760",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 311,
+      "line": 359,
       "kind": "axios",
       "method": "POST",
       "route": "/api/v1/accounts/${id}/block",
@@ -208,9 +234,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "7a35c852334778af",
+      "id": "4a4ae30e7f5d0b58",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 325,
+      "line": 373,
       "kind": "axios",
       "method": "POST",
       "route": "/api/v1/accounts/${id}/unblock",
@@ -234,9 +260,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "189911e8478b0410",
+      "id": "bdbc42be495a88df",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 368,
+      "line": 416,
       "kind": "axios",
       "method": "POST",
       "route": "/api/v1/accounts/${id}/mute",
@@ -260,9 +286,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "edf8133a23a80ace",
+      "id": "68f0a176ae244ba5",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 383,
+      "line": 431,
       "kind": "axios",
       "method": "POST",
       "route": "/api/v1/accounts/${id}/unmute",
@@ -286,9 +312,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "5f9054a80adbb791",
+      "id": "6ea08e56b37e8a3e",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 426,
+      "line": 474,
       "kind": "axios",
       "method": "POST",
       "route": "/api/v1/pleroma/accounts/${id}/subscribe",
@@ -312,9 +338,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "f545bf07a4fadb96",
+      "id": "768ef60795d390a4",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 438,
+      "line": 486,
       "kind": "axios",
       "method": "POST",
       "route": "/api/v1/pleroma/accounts/${id}/unsubscribe",
@@ -338,9 +364,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "9b331b6c86695525",
+      "id": "f9920a6c10ecadae",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 480,
+      "line": 528,
       "kind": "axios",
       "method": "POST",
       "route": "/api/v1/accounts/${id}/remove_from_followers",
@@ -364,9 +390,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "4c428e5e5f50a0f9",
+      "id": "3974fc27d02cc343",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 506,
+      "line": 554,
       "kind": "axios",
       "method": "GET",
       "route": "/api/v1/accounts/${id}/followers",
@@ -390,9 +416,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "363a416c9d9c2b4e",
+      "id": "1f408730388edc74",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 550,
+      "line": 598,
       "kind": "axios",
       "method": "GET",
       "route": "<dynamic>",
@@ -416,9 +442,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "8bdf62b8d76b42ac",
+      "id": "03ed5525e11d74c9",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 586,
+      "line": 634,
       "kind": "axios",
       "method": "GET",
       "route": "/api/v1/accounts/${id}/following",
@@ -442,9 +468,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "59ffbbda8c7136fe",
+      "id": "c0b2bfe438563975",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 630,
+      "line": 678,
       "kind": "axios",
       "method": "GET",
       "route": "<dynamic>",
@@ -468,9 +494,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "76ad58933ed2ad09",
+      "id": "5fa30129264d1d7e",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 675,
+      "line": 723,
       "kind": "axios",
       "method": "GET",
       "route": "/api/v1/accounts/relationships?${newAccountIds.map(id => `id[]=${id}",
@@ -494,9 +520,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "cd73f6f3763da2bb",
+      "id": "00f7709994fe7eff",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 705,
+      "line": 753,
       "kind": "axios",
       "method": "GET",
       "route": "/api/v1/follow_requests",
@@ -520,9 +546,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "8ea494db4de33cc4",
+      "id": "12bf089fe935fab9",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 742,
+      "line": 790,
       "kind": "axios",
       "method": "GET",
       "route": "<dynamic>",
@@ -546,9 +572,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "c5f80627eb7b9c68",
+      "id": "25adc52e8bc0d6d5",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 773,
+      "line": 821,
       "kind": "axios",
       "method": "POST",
       "route": "/api/v1/follow_requests/${id}/authorize",
@@ -572,9 +598,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "06b0928641d8b589",
+      "id": "992ba22fac2f234c",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 801,
+      "line": 849,
       "kind": "axios",
       "method": "POST",
       "route": "/api/v1/follow_requests/${id}/reject",
@@ -598,9 +624,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "b9ff40225a299e35",
+      "id": "001bfe1c8dd00690",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 829,
+      "line": 877,
       "kind": "axios",
       "method": "POST",
       "route": "/api/v1/accounts/${id}/pin",
@@ -624,9 +650,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "be9fab9879e18faf",
+      "id": "79d92b695ec549f5",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 842,
+      "line": 890,
       "kind": "axios",
       "method": "POST",
       "route": "/api/v1/accounts/${id}/unpin",
@@ -650,9 +676,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "fdafd75fd2bf56a6",
+      "id": "74a9d4c9537a0b2d",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 853,
+      "line": 901,
       "kind": "axios",
       "method": "PUT",
       "route": "<dynamic>",
@@ -676,9 +702,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "b147379aebc3bde3",
+      "id": "4c26a260d89edc6e",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 895,
+      "line": 943,
       "kind": "axios",
       "method": "GET",
       "route": "/api/v1/endorsements",
@@ -702,9 +728,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "557ce893b9301c77",
+      "id": "5fe5f5d32906943a",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 924,
+      "line": 972,
       "kind": "axios",
       "method": "GET",
       "route": "/api/v1/accounts/search",
@@ -728,9 +754,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "d0db60bae1435b03",
+      "id": "495a15843ec76a07",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 937,
+      "line": 985,
       "kind": "axios",
       "method": "GET",
       "route": "/api/v1/accounts/lookup",
@@ -754,9 +780,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "5501b45168eb2534",
+      "id": "93e5ac9c2a7261be",
       "file": "app/soapbox/actions/accounts.ts",
-      "line": 955,
+      "line": 1003,
       "kind": "axios",
       "method": "GET",
       "route": "/api/v1/pleroma/birthdays",

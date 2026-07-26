@@ -1,8 +1,8 @@
 # Mangane Verified Current State
 
-Status: **Canonical verified current state / Phase 0 closed**
+Status: **Canonical verified current state / Phase 0 closed / Phase 1 implemented**
 
-Last updated: 2026-07-23
+Last updated: 2026-07-25
 
 This document records verified repository behavior and known unknowns before modernization begins. It is intentionally distinct from accepted-target architecture. A claim belongs here only when supported by the current repository or a reproducible inspection.
 
@@ -71,3 +71,9 @@ Existing functionality must not be removed merely because it is absent from targ
 Phase 0 is closed. Bootstrap, routing, Redux, React Query, API/protocol, authentication, persistence, workers, HTML safety, telemetry, design, accessibility, tests, builds, dependencies, licensing, and documentation authority now have source-backed inventories and executable drift gates.
 
 The closure does not claim that inherited implementation debt is resolved. The exact Phase 1 and later constraints—including TypeScript diagnostics, transport scope, React Query scope, dependency remediation, cross-engine visual coverage, and external branch protection—are recorded in [`PHASE_0_CLOSURE_REPORT.md`](./PHASE_0_CLOSURE_REPORT.md).
+
+## 6. Phase 1 implementation state
+
+Account lookup is the first representative feature routed through domain, application, protocol-adapter, runtime-environment, typed-error, feature-flag, and account-scope contracts. Its prior Redux/API behavior remains available behind the owned rollback flag.
+
+The repository TypeScript authority baseline is now zero diagnostics. A presentation-boundary inventory makes inherited direct backend coupling explicit and rejects new coupling. Detailed behavior, migration, rollback, risks, and verification requirements are recorded in [`PHASE_1_ARCHITECTURE_CONTRACTS.md`](./PHASE_1_ARCHITECTURE_CONTRACTS.md).

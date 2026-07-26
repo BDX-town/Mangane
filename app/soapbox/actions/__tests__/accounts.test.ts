@@ -1,6 +1,7 @@
 import { Map as ImmutableMap } from 'immutable';
 
 import { __stub } from 'soapbox/api';
+import { ApplicationError } from 'soapbox/domain/application-error';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { ListRecord, ReducerRecord } from 'soapbox/reducers/user_lists';
 
@@ -29,6 +30,13 @@ import {
 } from '../accounts';
 
 let store: ReturnType<typeof mockStore>;
+
+const expectedNetworkApplicationError = expect.objectContaining({
+  kind: 'transient',
+  message: 'The network request failed.',
+  name: 'ApplicationError',
+  retryable: true,
+});
 
 describe('createAccount()', () => {
   const params = {
@@ -227,7 +235,7 @@ describe('fetchAccountByUsername()', () => {
           {
             type: 'ACCOUNT_FETCH_FAIL',
             id: null,
-            error: new Error('Network Error'),
+            error: expectedNetworkApplicationError,
             skipAlert: true,
           },
           { type: 'ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP', username: 'tiger' },
@@ -237,6 +245,7 @@ describe('fetchAccountByUsername()', () => {
         const actions = store.getActions();
 
         expect(actions).toEqual(expectedActions);
+        expect(actions[0].error).toBeInstanceOf(ApplicationError);
       });
     });
   });
@@ -292,7 +301,7 @@ describe('fetchAccountByUsername()', () => {
           {
             type: 'ACCOUNT_FETCH_FAIL',
             id: null,
-            error: new Error('Network Error'),
+            error: expectedNetworkApplicationError,
             skipAlert: true,
           },
           { type: 'ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP', username },
@@ -302,6 +311,7 @@ describe('fetchAccountByUsername()', () => {
         const actions = store.getActions();
 
         expect(actions).toEqual(expectedActions);
+        expect(actions[2].error).toBeInstanceOf(ApplicationError);
       });
     });
   });
@@ -355,7 +365,7 @@ describe('fetchAccountByUsername()', () => {
           {
             type: 'ACCOUNT_FETCH_FAIL',
             id: null,
-            error: new Error('Network Error'),
+            error: expectedNetworkApplicationError,
             skipAlert: true,
           },
           { type: 'ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP', username },
@@ -365,6 +375,7 @@ describe('fetchAccountByUsername()', () => {
         const actions = store.getActions();
 
         expect(actions).toEqual(expectedActions);
+        expect(actions[2].error).toBeInstanceOf(ApplicationError);
       });
     });
   });

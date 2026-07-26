@@ -29,7 +29,7 @@ interface IWidget {
   /** Text for the action. */
   actionTitle?: string,
   action?: JSX.Element,
-  children: ReactNode,
+  children?: ReactNode,
 }
 
 /** Sidebar widget. */

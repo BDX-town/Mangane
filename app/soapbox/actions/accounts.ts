@@ -1,3 +1,10 @@
+import { FindAccountByUsername } from 'soapbox/application/accounts/find-account-by-username';
+import { createAccountScope } from 'soapbox/domain/account-scope';
+import { ApplicationError } from 'soapbox/domain/application-error';
+import { LegacyAccountRepository } from 'soapbox/infrastructure/protocol/legacy-account-repository';
+import { LegacyCapabilityAdapter } from 'soapbox/infrastructure/protocol/legacy-capability-adapter';
+import { runtimeEnvironment } from 'soapbox/runtime/environment';
+import { readFeatureFlag } from 'soapbox/runtime/feature-flags';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
 
@@ -123,9 +130,10 @@ const BIRTHDAY_REMINDERS_FETCH_REQUEST = 'BIRTHDAY_REMINDERS_FETCH_REQUEST';
 const BIRTHDAY_REMINDERS_FETCH_SUCCESS = 'BIRTHDAY_REMINDERS_FETCH_SUCCESS';
 const BIRTHDAY_REMINDERS_FETCH_FAIL    = 'BIRTHDAY_REMINDERS_FETCH_FAIL';
 
-const maybeRedirectLogin = (error: AxiosError, history?: History) => {
+const maybeRedirectLogin = (error: AxiosError | ApplicationError, history?: History) => {
   // The client is unauthorized - redirect to login.
-  if (history && error?.response?.status === 401) {
+  const status = error instanceof ApplicationError ? error.status : error.response?.status;
+  if (history && status === 401) {
     history.push('/login');
   }
 };
@@ -171,43 +179,83 @@ const fetchAccountByUsername = (username: string, history?: History) =>
     const { instance, me } = getState();
     const features = getFeatures(instance);
 
-    if (features.accountByUsername && (me || !features.accountLookup)) {
-      return api(getState).get(`/api/v1/accounts/${username}`).then(response => {
-        dispatch(fetchRelationships([response.data.id]));
-        dispatch(importFetchedAccount(response.data));
-        dispatch(fetchAccountSuccess(response.data));
-      }).catch(error => {
-        dispatch(fetchAccountFail(null, error));
-        dispatch(importErrorWhileFetchingAccountByUsername(username));
-      });
-    } else if (features.accountLookup) {
-      return dispatch(accountLookup(username)).then(account => {
-        dispatch(fetchRelationships([account.id]));
-        dispatch(fetchAccountSuccess(account));
-      }).catch(error => {
-        dispatch(fetchAccountFail(null, error));
-        dispatch(importErrorWhileFetchingAccountByUsername(username));
-        maybeRedirectLogin(error, history);
-      });
-    } else {
-      return dispatch(accountSearch({
-        q: username,
+    const legacyLookup = () => {
+      if (features.accountByUsername && (me || !features.accountLookup)) {
+        return api(getState).get(`/api/v1/accounts/${username}`).then(response => {
+          dispatch(fetchRelationships([response.data.id]));
+          dispatch(importFetchedAccount(response.data));
+          dispatch(fetchAccountSuccess(response.data));
+        }).catch(error => {
+          dispatch(fetchAccountFail(null, error));
+          dispatch(importErrorWhileFetchingAccountByUsername(username));
+        });
+      } else if (features.accountLookup) {
+        return dispatch(accountLookup(username)).then(account => {
+          dispatch(fetchRelationships([account.id]));
+          dispatch(fetchAccountSuccess(account));
+        }).catch(error => {
+          dispatch(fetchAccountFail(null, error));
+          dispatch(importErrorWhileFetchingAccountByUsername(username));
+          maybeRedirectLogin(error, history);
+        });
+      } else {
+        return dispatch(accountSearch({
+          q: username,
+          limit: 5,
+          resolve: true,
+        })).then(accounts => {
+          const found = accounts.find((a: APIEntity) => a.acct === username);
+
+          if (found) {
+            dispatch(fetchRelationships([found.id]));
+            dispatch(fetchAccountSuccess(found));
+          } else {
+            throw accounts;
+          }
+        }).catch(error => {
+          dispatch(fetchAccountFail(null, error));
+          dispatch(importErrorWhileFetchingAccountByUsername(username));
+        });
+      }
+    };
+
+    if (!readFeatureFlag('architecture.accountLookupAdapter', runtimeEnvironment.featureFlags())) {
+      return legacyLookup();
+    }
+
+    const selectedAccountUrl = getState().auth.get('me');
+    const accountUrl = typeof selectedAccountUrl === 'string' ? selectedAccountUrl : null;
+    const scope = createAccountScope({
+      accountId: me || null,
+      accountUrl,
+      instanceOrigin: accountUrl || runtimeEnvironment.currentOrigin(),
+    });
+    const repository = new LegacyAccountRepository({
+      scope,
+      fetchByUsername: (value, signal) => api(getState).get(
+        `/api/v1/accounts/${encodeURIComponent(value)}`,
+        { signal },
+      ).then(response => response.data),
+      lookup: value => dispatch(accountLookup(value)),
+      search: (value, signal) => dispatch(accountSearch({
+        q: value,
         limit: 5,
         resolve: true,
-      })).then(accounts => {
-        const found = accounts.find((a: APIEntity) => a.acct === username);
+      }, signal)),
+    }, new LegacyCapabilityAdapter(features), runtimeEnvironment.isOnline);
+    const query = new FindAccountByUsername(repository);
+    const usesLookup = !(features.accountByUsername && (me || !features.accountLookup))
+      && features.accountLookup;
 
-        if (found) {
-          dispatch(fetchRelationships([found.id]));
-          dispatch(fetchAccountSuccess(found));
-        } else {
-          throw accounts;
-        }
-      }).catch(error => {
-        dispatch(fetchAccountFail(null, error));
-        dispatch(importErrorWhileFetchingAccountByUsername(username));
-      });
-    }
+    return query.execute({ authenticated: Boolean(me), username }, { scope }).then(account => {
+      dispatch(fetchRelationships([account.id]));
+      if (!usesLookup && features.accountByUsername) dispatch(importFetchedAccount(account));
+      dispatch(fetchAccountSuccess(account));
+    }).catch(error => {
+      dispatch(fetchAccountFail(null, error));
+      dispatch(importErrorWhileFetchingAccountByUsername(username));
+      if (usesLookup) maybeRedirectLogin(error, history);
+    });
   };
 
 const fetchAccountRequest = (id: string) => ({

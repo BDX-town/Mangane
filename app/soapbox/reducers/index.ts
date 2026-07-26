@@ -62,6 +62,8 @@ import trends from './trends';
 import user_lists from './user_lists';
 import verification from './verification';
 
+import type { AnyAction } from 'redux';
+
 const reducers = {
   dropdown_menu,
   timelines,
@@ -122,18 +124,29 @@ const reducers = {
   tags,
 };
 
+type ReducerState = {
+  [Key in keyof typeof reducers]: ReturnType<(typeof reducers)[Key]>;
+};
+
 // Build a default state from all reducers: it has the key and `undefined`
-export const StateRecord = ImmutableRecord(
-  Object.keys(reducers).reduce((params: Record<string, any>, reducer) => {
-    params[reducer] = undefined;
-    return params;
-  }, {}),
+const reducerDefaults = Object.keys(reducers).reduce((params, reducer) => {
+  params[reducer as keyof ReducerState] = undefined as never;
+  return params;
+}, {} as ReducerState);
+
+export const StateRecord = ImmutableRecord<ReducerState>(
+  reducerDefaults,
 );
 
-const appReducer = combineReducers(reducers, StateRecord);
+export type RootState = ReturnType<typeof StateRecord>;
+
+const appReducer = combineReducers(reducers, StateRecord) as unknown as (
+  state: RootState | undefined,
+  action: AnyAction,
+) => RootState;
 
 // Clear the state (mostly) when the user logs out
-const logOut = (state: any = StateRecord()): ReturnType<typeof appReducer> => {
+const logOut = (state: RootState = StateRecord()): ReturnType<typeof appReducer> => {
   if (BuildConfig.NODE_ENV === 'production') {
     location.href = '/login';
   }
@@ -142,10 +155,10 @@ const logOut = (state: any = StateRecord()): ReturnType<typeof appReducer> => {
 
   return StateRecord(
     whitelist.reduce((acc: Record<string, any>, curr) => {
-      acc[curr] = state.get(curr);
+      acc[curr] = state.get(curr as keyof ReducerState);
       return acc;
     }, {}),
-  ) as unknown as ReturnType<typeof appReducer>;
+  ) as RootState;
 };
 
 const rootReducer: typeof appReducer = (state, action) => {

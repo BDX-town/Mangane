@@ -27,9 +27,9 @@ Direct GitHub API verification at 2026-07-25T20:53:34-04:00 reported `Branch not
 
 ## TypeScript migration debt
 
-`yarn typecheck` runs the complete production TypeScript graph with JavaScript disabled and pins every inherited diagnostic in [`config/typecheck-baseline.json`](../../config/typecheck-baseline.json). The baseline currently contains 101 inherited diagnostics and zero unbaselined diagnostics. Any added, removed, moved, or changed diagnostic fails CI until explicitly reconciled.
+`yarn typecheck` runs the complete production TypeScript graph with JavaScript disabled. Phase 1 eliminated the 101 inherited diagnostics; [`config/typecheck-baseline.json`](../../config/typecheck-baseline.json) now requires zero diagnostics. Any new diagnostic fails CI.
 
-This is intentionally not described as a clean typecheck. The debt is owned by `frontend-maintainers`, tracked as the Phase 1 TypeScript authority migration, and expires on 2026-10-31. Broad file exclusions and `skipLibCheck` cannot turn application diagnostics into an unreported pass.
+This is a clean application typecheck for the configured production TypeScript graph. Broad file exclusions and `skipLibCheck` cannot turn application diagnostics into an unreported pass.
 
 ## ESLint and formatting
 
@@ -42,7 +42,7 @@ ESLint has zero errors. The inherited 183 warnings are a hard ceiling enforced b
 - Production webpack owns actual service-worker integration and bundle evidence.
 - The dependency workflow owns lockfile, license, action-pin and current-advisory evidence.
 
-The current full Jest run passes 151 suites and 718 tests, and the Node-native governance runner passes 163 adversarial and authority tests. Coverage is 36.87% statements, 27.71% branches, 26.39% functions, and 38.17% lines. The committed Jest thresholds round each metric down to a hard non-regression floor; increasing coverage does not require baseline churn.
+The Phase 1 baseline expects 156 Jest suites and 738 tests, and the Node-native governance runner passes 170 adversarial and authority tests. The verified Phase 1 coverage result is 37.10% statements, 28.50% branches, 26.61% functions, and 38.43% lines. The committed Jest thresholds round each metric down to a hard non-regression floor; increasing coverage does not require baseline churn.
 
 The browser smoke is intentionally named as jsdom evidence rather than a claim of cross-engine coverage. Real Chromium/WebKit/Firefox automation remains the first browser-harness expansion described in [`BROWSER_WORKER_HARNESS_PLAN.md`](./BROWSER_WORKER_HARNESS_PLAN.md).
 

@@ -13,7 +13,6 @@ import { validId } from 'soapbox/utils/auth';
 import ConfigDB from 'soapbox/utils/config_db';
 import { shoulDedupReblog, shouldFilter } from 'soapbox/utils/timelines';
 
-import type { ReducerChat } from 'soapbox/reducers/chats';
 import type { RootState } from 'soapbox/store';
 import type { Filter as FilterEntity, Notification } from 'soapbox/types/entities';
 
@@ -214,29 +213,6 @@ export const getAccountGallery = createSelector([
       status.media_attachments.map(media => media.merge({ status, account })));
   }, ImmutableList());
 });
-
-type APIChat = { id: string, last_message: string };
-
-export const makeGetChat = () => {
-  return createSelector(
-    [
-      (state: RootState, { id }: APIChat) => state.chats.items.get(id) as ReducerChat,
-      (state: RootState, { id }: APIChat) => state.accounts.get(state.chats.items.getIn([id, 'account'])),
-      (state: RootState, { last_message }: APIChat) => state.chat_messages.get(last_message),
-    ],
-
-    (chat, account, lastMessage) => {
-      if (!chat || !account) return null;
-
-      return chat.withMutations((map) => {
-        // @ts-ignore
-        map.set('account', account);
-        // @ts-ignore
-        map.set('last_message', lastMessage);
-      });
-    },
-  );
-};
 
 export const makeGetReport = () => {
   const getStatus = makeGetStatus();

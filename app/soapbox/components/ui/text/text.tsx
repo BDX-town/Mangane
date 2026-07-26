@@ -87,7 +87,7 @@ interface IText extends Pick<React.HTMLAttributes<HTMLParagraphElement>, 'danger
   truncate?: boolean,
   /** Font weight of the text. */
   weight?: Weights,
-  children: ReactNode
+  children?: ReactNode
 }
 
 /** UI-friendly text container with dark mode support. */

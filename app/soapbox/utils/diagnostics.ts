@@ -63,6 +63,7 @@ const redactValue = (value: unknown, depth: number, seen: WeakSet<object>, budge
   if (typeof value === 'undefined') return undefined;
   if (typeof value === 'bigint') return String(value);
   if (typeof value === 'symbol' || typeof value === 'function') return `[${typeof value}]`;
+  if (typeof value !== 'object') return TRUNCATED;
   if (depth >= MAX_DEPTH) return TRUNCATED;
   if (seen.has(value)) return '[CIRCULAR]';
   seen.add(value);

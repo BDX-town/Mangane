@@ -182,10 +182,10 @@
       "classification": "startup-guarded-local-diagnostic"
     },
     {
-      "id": "environment-read:app/soapbox/build_config.js:16",
+      "id": "environment-read:app/soapbox/build_config.js:17",
       "kind": "environment-read",
       "path": "app/soapbox/build_config.js",
-      "line": 16,
+      "line": 17,
       "expression": "} = process.env;",
       "classification": "application-surface"
     },
@@ -518,10 +518,10 @@
       "classification": "phase-0c-governed-sensitive-browser-surface"
     },
     {
-      "id": "devtools:app/soapbox/store.ts:22",
+      "id": "devtools:app/soapbox/store.ts:23",
       "kind": "devtools",
       "path": "app/soapbox/store.ts",
-      "line": 22,
+      "line": 23,
       "expression": "devTools: BuildConfig.NODE_ENV !== 'production',",
       "classification": "non-production-only"
     },
@@ -558,19 +558,11 @@
       "classification": "application-surface"
     },
     {
-      "id": "console:app/soapbox/utils/diagnostics.ts:100",
-      "kind": "console",
-      "path": "app/soapbox/utils/diagnostics.ts",
-      "line": 100,
-      "expression": "debug: console.debug.bind(console),",
-      "classification": "central-redaction-boundary"
-    },
-    {
       "id": "console:app/soapbox/utils/diagnostics.ts:101",
       "kind": "console",
       "path": "app/soapbox/utils/diagnostics.ts",
       "line": 101,
-      "expression": "error: console.error.bind(console),",
+      "expression": "debug: console.debug.bind(console),",
       "classification": "central-redaction-boundary"
     },
     {
@@ -578,7 +570,7 @@
       "kind": "console",
       "path": "app/soapbox/utils/diagnostics.ts",
       "line": 102,
-      "expression": "info: console.info.bind(console),",
+      "expression": "error: console.error.bind(console),",
       "classification": "central-redaction-boundary"
     },
     {
@@ -586,7 +578,7 @@
       "kind": "console",
       "path": "app/soapbox/utils/diagnostics.ts",
       "line": 103,
-      "expression": "log: console.log.bind(console),",
+      "expression": "info: console.info.bind(console),",
       "classification": "central-redaction-boundary"
     },
     {
@@ -594,14 +586,22 @@
       "kind": "console",
       "path": "app/soapbox/utils/diagnostics.ts",
       "line": 104,
+      "expression": "log: console.log.bind(console),",
+      "classification": "central-redaction-boundary"
+    },
+    {
+      "id": "console:app/soapbox/utils/diagnostics.ts:105",
+      "kind": "console",
+      "path": "app/soapbox/utils/diagnostics.ts",
+      "line": 105,
       "expression": "warn: console.warn.bind(console),",
       "classification": "central-redaction-boundary"
     },
     {
-      "id": "environment-read:app/soapbox/utils/diagnostics.ts:113",
+      "id": "environment-read:app/soapbox/utils/diagnostics.ts:114",
       "kind": "environment-read",
       "path": "app/soapbox/utils/diagnostics.ts",
-      "line": 113,
+      "line": 114,
       "expression": "const enabled = process.env.NODE_ENV === 'development';",
       "classification": "central-redaction-boundary"
     },
@@ -622,11 +622,59 @@
       "classification": "startup-guarded-local-diagnostic"
     },
     {
+      "id": "environment-read:scripts/__tests__/build-config-feature-flags.test.js:8",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/build-config-feature-flags.test.js",
+      "line": 8,
+      "expression": "const originalFeatureFlags = process.env.FEATURE_FLAGS;",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/build-config-feature-flags.test.js:13",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/build-config-feature-flags.test.js",
+      "line": 13,
+      "expression": "delete process.env.FEATURE_FLAGS;",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/build-config-feature-flags.test.js:15",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/build-config-feature-flags.test.js",
+      "line": 15,
+      "expression": "process.env.FEATURE_FLAGS = value;",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/build-config-feature-flags.test.js:22",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/build-config-feature-flags.test.js",
+      "line": 22,
+      "expression": "delete process.env.FEATURE_FLAGS;",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/build-config-feature-flags.test.js:24",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/build-config-feature-flags.test.js",
+      "line": 24,
+      "expression": "process.env.FEATURE_FLAGS = originalFeatureFlags;",
+      "classification": "test-only"
+    },
+    {
       "id": "environment-read:scripts/__tests__/check-api-transport-authority-inventory.test.js:14",
       "kind": "environment-read",
       "path": "scripts/__tests__/check-api-transport-authority-inventory.test.js",
       "line": 14,
       "expression": "env: { ...process.env, API_TRANSPORT_INVENTORY_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
+      "id": "environment-read:scripts/__tests__/check-architecture-boundaries.test.js:15",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-architecture-boundaries.test.js",
+      "line": 15,
+      "expression": "env: { ...process.env, ARCHITECTURE_BOUNDARY_ROOT: root },",
       "classification": "test-only"
     },
     {
@@ -787,6 +835,14 @@
       "path": "scripts/check-api-transport-authority-inventory.js",
       "line": 6,
       "expression": "const root = path.resolve(process.env.API_TRANSPORT_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-architecture-boundaries.js:8",
+      "kind": "environment-read",
+      "path": "scripts/check-architecture-boundaries.js",
+      "line": 8,
+      "expression": "const root = path.resolve(process.env.ARCHITECTURE_BOUNDARY_ROOT || path.resolve(__dirname, '..'));",
       "classification": "repository-tooling"
     },
     {
@@ -1178,7 +1234,7 @@
     "artifact-upload": 1,
     "console": 71,
     "notification-payload": 13,
-    "environment-read": 50,
+    "environment-read": 57,
     "clipboard": 3,
     "error-boundary": 2,
     "devtools": 1,

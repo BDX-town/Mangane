@@ -101,8 +101,8 @@ const removeTags = (
 ): State => {
   return state.withMutations(state => {
     accountIds.forEach(id => {
-      state.updateIn([id, 'pleroma', 'tags'], ImmutableList(), v =>
-        ImmutableOrderedSet(fromJS(v)).subtract(tags).toList(),
+      state.updateIn([id, 'pleroma', 'tags'], ImmutableList<string>(), v =>
+        ImmutableOrderedSet<string>(v as Iterable<string>).subtract(tags).toList(),
       );
 
       tags.forEach(tag => {

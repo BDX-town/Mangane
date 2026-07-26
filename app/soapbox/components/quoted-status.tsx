@@ -62,9 +62,9 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
     }
 
     const account = status.account as AccountEntity;
-    const to = status.mentions || [];
+    const to = Array.from(status.mentions || []);
 
-    if (to.size === 0) {
+    if (to.length === 0) {
       if (status.in_reply_to_account_id === account.id) {
         return (
           <div className='reply-mentions'>
@@ -86,11 +86,11 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
       }
     }
 
-    const accounts = to.slice(0, 2).map(account => <>@{account.username}</>).toArray();
+    const accounts = to.slice(0, 2).map(account => <>@{account.username}</>);
 
-    if (to.size > 2) {
+    if (to.length > 2) {
       accounts.push(
-        <FormattedMessage id='reply_mentions.more' defaultMessage='{count} more' values={{ count: to.size - 2 }} />,
+        <FormattedMessage id='reply_mentions.more' defaultMessage='{count} more' values={{ count: to.length - 2 }} />,
       );
     }
 

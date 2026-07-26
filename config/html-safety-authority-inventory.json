@@ -1366,10 +1366,10 @@
       "classification": "inert-transformer-not-sanitizer"
     },
     {
-      "id": "imperative-navigation:app/soapbox/reducers/index.ts:138:5",
+      "id": "imperative-navigation:app/soapbox/reducers/index.ts:151:5",
       "kind": "imperative-navigation",
       "path": "app/soapbox/reducers/index.ts",
-      "line": 138,
+      "line": 151,
       "column": 5,
       "expression": "location.href = '/login';",
       "classification": "central-url-policy-or-fixed-local"

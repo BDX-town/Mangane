@@ -24,7 +24,7 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
   const hasError = errors?.length > 0;
 
   let firstChild;
-  if (React.isValidElement(inputChildren[0])) {
+  if (React.isValidElement<{ id?: string, hasError?: boolean }>(inputChildren[0])) {
     firstChild = React.cloneElement(
       inputChildren[0],
       { id: formFieldId, hasError },

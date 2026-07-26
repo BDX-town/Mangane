@@ -13,6 +13,7 @@ const {
   FE_SUBDIRECTORY,
   FE_BUILD_DIR,
   FE_INSTANCE_SOURCE_DIR,
+  FEATURE_FLAGS,
 } = process.env;
 
 const sanitizeURL = url => {
@@ -37,10 +38,24 @@ const sanitizePath = path => {
 // inconsistent behavior in dev mode
 const sanitize = obj => JSON.parse(JSON.stringify(obj));
 
+const sanitizeFeatureFlags = value => {
+  try {
+    const parsed = JSON.parse(value || '{}');
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return {};
+    return Object.fromEntries(
+      Object.entries(parsed)
+        .filter(([key, enabled]) => key === 'architecture.accountLookupAdapter' && typeof enabled === 'boolean'),
+    );
+  } catch {
+    return {};
+  }
+};
+
 module.exports = sanitize({
   NODE_ENV: NODE_ENV || 'development',
   BACKEND_URL: sanitizeURL(BACKEND_URL),
   FE_SUBDIRECTORY: sanitizeBasename(FE_SUBDIRECTORY),
   FE_BUILD_DIR: sanitizePath(FE_BUILD_DIR) || 'static',
   FE_INSTANCE_SOURCE_DIR: FE_INSTANCE_SOURCE_DIR || 'instance',
+  FEATURE_FLAGS: sanitizeFeatureFlags(FEATURE_FLAGS),
 });
