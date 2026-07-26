@@ -29,6 +29,23 @@ test('classifies a newly introduced credential store as sensitive', () => {
   assert.equal(call.logoutBehavior, 'must-delete-or-invalidate');
 });
 
+test('discovers a locally captured Cache Storage authority', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'persistence-manifest-'));
+  const target = path.join(root, 'app', 'cache.ts');
+  fs.mkdirSync(path.dirname(target), { recursive: true });
+  fs.writeFileSync(target, [
+    'const cacheStorage = window.caches;',
+    'await cacheStorage.keys();',
+    'await cacheStorage.delete(cacheName);',
+    '',
+  ].join('\n'));
+  const calls = discover(root).calls;
+  assert.deepEqual(calls.map(call => [call.engine, call.operation]), [
+    ['cache-storage', 'keys'],
+    ['cache-storage', 'delete'],
+  ]);
+});
+
 test('pins local cleanup after bounded remote revocation', () => {
   const root = path.resolve(__dirname, '..', '..');
   const { purgeOrder } = discover(root);

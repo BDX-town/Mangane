@@ -91,7 +91,7 @@ for (const jobId of requiredJobs) {
 
 const requiredCommands = {
   quality: ['yarn lint:js:baseline', 'yarn lint:sass', 'yarn typecheck'],
-  'unit-integration': ['yarn test --runInBand --coverage --silent', 'yarn test:governance'],
+  'unit-integration': ['yarn test --runInBand --coverage --silent', 'yarn test:governance', 'yarn check:persistence'],
   'browser-accessibility': ['yarn test:browser-accessibility'],
   'worker-security': ['yarn test:security-regression'],
   'production-build': ['yarn build', 'yarn check:build'],

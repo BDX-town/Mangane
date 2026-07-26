@@ -51,6 +51,7 @@ jobs:
       - run: yarn install --immutable --mode=skip-build
       - run: yarn test --runInBand --coverage --silent
       - run: yarn test:governance
+      - run: yarn check:persistence
 
   browser-accessibility:
     name: Browser and accessibility / design-system
