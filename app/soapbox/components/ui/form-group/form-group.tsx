@@ -32,10 +32,15 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
     'aria-describedby'?: string,
     'aria-invalid'?: boolean,
   }>(inputChildren[0])) {
-    const describedBy = [
-      hintText ? hintId : null,
-      hasError ? errorId : null,
-    ].filter(Boolean).join(' ') || undefined;
+    const describedByParts = [
+      inputChildren[0].props['aria-describedby'],
+      hintText ? hintId : undefined,
+      hasError ? errorId : undefined,
+    ].flatMap(value => typeof value === 'string' ? value.trim().split(/\s+/) : [])
+      .filter(Boolean);
+    const describedBy = describedByParts.length > 0
+      ? [...new Set(describedByParts)].join(' ')
+      : undefined;
     const sharedProps = {
       id: formFieldId,
       'aria-describedby': describedBy,

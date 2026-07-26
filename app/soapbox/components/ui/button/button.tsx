@@ -7,7 +7,7 @@ import { useButtonStyles } from './useButtonStyles';
 
 import type { ButtonSizes, ButtonThemes } from './useButtonStyles';
 
-interface IButton {
+interface IButtonBase {
   /** Accessible name when visible content is insufficient. */
   'aria-label'?: string,
   /** Whether this button expands the width of its container. */
@@ -19,8 +19,6 @@ interface IButton {
   disabled?: boolean,
   /** URL to an SVG icon to render inside the button. */
   icon?: string,
-  /** Action when the button is clicked. */
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void,
   /** Exposes an in-progress operation and prevents duplicate activation. */
   loading?: boolean,
   /** Exposes toggle-button state. */
@@ -30,16 +28,38 @@ interface IButton {
   style?: React.CSSProperties,
   /** Text inside the button. Takes precedence over `children`. */
   text?: React.ReactNode,
-  /** Makes the button into a navlink, if provided. */
-  to?: string,
   /** Styles the button visually with a predefined theme. */
   theme?: ButtonThemes,
   /** Whether this button should submit a form by default. */
   type?: 'button' | 'submit',
 }
 
+interface IButtonAction extends IButtonBase {
+  /** Action when the button is clicked. */
+  onClick?: React.MouseEventHandler<HTMLButtonElement>,
+  to?: undefined,
+}
+
+interface IButtonLink extends IButtonBase {
+  /** Optional navigation callback receiving the rendered anchor event. */
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>,
+  /** Makes the button a navigation link. */
+  to: string,
+  type?: never,
+}
+
+type IButton = IButtonAction | IButtonLink;
+
+interface ButtonComponent {
+  (props: IButtonAction & React.RefAttributes<HTMLButtonElement>): JSX.Element,
+  (props: IButtonLink & React.RefAttributes<HTMLAnchorElement>): JSX.Element,
+}
+
+const isButtonLink = (props: IButton): props is IButtonLink =>
+  typeof props.to === 'string';
+
 /** Customizable button element with various themes. */
-const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.Element => {
+const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, IButton>((props, ref): JSX.Element => {
   const {
     classNames,
     block = false,
@@ -47,13 +67,10 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
     disabled = false,
     icon,
     loading = false,
-    onClick,
     pressed,
     size = 'md',
     text,
     theme = 'accent',
-    to,
-    type = 'button',
     style,
   } = props;
   const unavailable = disabled || loading;
@@ -73,12 +90,6 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
     return <Icon src={icon} className='mr-2 w-4 h-4' />;
   };
 
-  const handleClick = React.useCallback((event) => {
-    if (onClick && !unavailable) {
-      onClick(event);
-    }
-  }, [onClick, unavailable]);
-
   const content = (
     <>
       {renderIcon()}
@@ -86,18 +97,19 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
     </>
   );
 
-  if (to) {
+  if (isButtonLink(props)) {
     const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
       if (unavailable) {
         event.preventDefault();
         return;
       }
-      if (onClick) onClick(event as unknown as React.MouseEvent<HTMLButtonElement>);
+      props.onClick?.(event);
     };
 
     return (
       <Link
-        to={to}
+        ref={ref as React.Ref<HTMLAnchorElement>}
+        to={props.to}
         className={`${themeClass} ${classNames || ''}`}
         aria-disabled={unavailable || undefined}
         aria-busy={loading || undefined}
@@ -116,9 +128,9 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
     <button
       className={`${themeClass} ${classNames || ''}`}
       disabled={unavailable}
-      onClick={handleClick}
-      ref={ref}
-      type={type}
+      onClick={props.onClick}
+      ref={ref as React.Ref<HTMLButtonElement>}
+      type={props.type || 'button'}
       aria-busy={loading || undefined}
       aria-label={props['aria-label']}
       aria-pressed={pressed}
@@ -128,6 +140,6 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
       {content}
     </button>
   );
-});
+}) as ButtonComponent;
 
 export default Button;

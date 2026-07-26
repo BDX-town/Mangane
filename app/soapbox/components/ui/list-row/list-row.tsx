@@ -2,28 +2,55 @@ import classNames from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-interface IListRow {
+interface IListRowBase {
   children: React.ReactNode,
   className?: string,
   disabled?: boolean,
   leading?: React.ReactNode,
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void,
   selected?: boolean,
-  to?: string,
   trailing?: React.ReactNode,
 }
 
+interface IListRowAction extends IListRowBase {
+  onClick: React.MouseEventHandler<HTMLButtonElement>,
+  to?: undefined,
+}
+
+interface IListRowLink extends IListRowBase {
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>,
+  to: string,
+}
+
+interface IListRowStatic extends IListRowBase {
+  onClick?: undefined,
+  to?: undefined,
+}
+
+type IListRow = IListRowAction | IListRowLink | IListRowStatic;
+
+interface ListRowComponent {
+  (props: IListRowAction & React.RefAttributes<HTMLButtonElement>): JSX.Element,
+  (props: IListRowLink & React.RefAttributes<HTMLAnchorElement>): JSX.Element,
+  (props: IListRowStatic): JSX.Element,
+  displayName?: string,
+}
+
+const isListRowLink = (props: IListRow): props is IListRowLink =>
+  typeof props.to === 'string';
+
+const isListRowAction = (props: IListRow): props is IListRowAction =>
+  typeof props.onClick === 'function';
+
 /** A content-led row with native static, button, or link semantics. */
-const ListRow = React.forwardRef<HTMLButtonElement, IListRow>(({
-  children,
-  className,
-  disabled = false,
-  leading,
-  onClick,
-  selected = false,
-  to,
-  trailing,
-}, ref): JSX.Element => {
+const ListRow = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, IListRow>((props, ref): JSX.Element => {
+  const {
+    children,
+    className,
+    disabled = false,
+    leading,
+    selected = false,
+    trailing,
+  } = props;
   const content = (
     <>
       {leading ? <span className='ds-list-row__leading'>{leading}</span> : null}
@@ -33,30 +60,39 @@ const ListRow = React.forwardRef<HTMLButtonElement, IListRow>(({
   );
   const classes = classNames('ds-list-row', { 'ds-list-row--selected': selected }, className);
 
-  if (to) {
+  if (isListRowLink(props)) {
+    const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+      if (disabled) {
+        event.preventDefault();
+        return;
+      }
+      props.onClick?.(event);
+    };
+
     return (
       <Link
-        to={to}
+        ref={ref as React.Ref<HTMLAnchorElement>}
+        to={props.to}
         className={classes}
         aria-current={selected || undefined}
         aria-disabled={disabled || undefined}
         tabIndex={disabled ? -1 : undefined}
-        onClick={disabled ? event => event.preventDefault() : undefined}
+        onClick={handleLinkClick}
       >
         {content}
       </Link>
     );
   }
 
-  if (onClick) {
+  if (isListRowAction(props)) {
     return (
       <button
-        ref={ref}
+        ref={ref as React.Ref<HTMLButtonElement>}
         type='button'
         className={classes}
         disabled={disabled}
         aria-pressed={selected}
-        onClick={onClick}
+        onClick={props.onClick}
       >
         {content}
       </button>
@@ -64,7 +100,7 @@ const ListRow = React.forwardRef<HTMLButtonElement, IListRow>(({
   }
 
   return <div className={classes}>{content}</div>;
-});
+}) as ListRowComponent;
 
 ListRow.displayName = 'ListRow';
 

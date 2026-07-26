@@ -12009,24 +12009,24 @@
       "classification": "accessibility-critical"
     },
     {
-      "id": "label:app/soapbox/components/ui/button/button.tsx:104",
+      "id": "label:app/soapbox/components/ui/button/button.tsx:116",
       "kind": "label",
       "path": "app/soapbox/components/ui/button/button.tsx",
-      "line": 104,
+      "line": 116,
       "classification": "accessibility-critical"
     },
     {
-      "id": "focus:app/soapbox/components/ui/button/button.tsx:106",
+      "id": "focus:app/soapbox/components/ui/button/button.tsx:118",
       "kind": "focus",
       "path": "app/soapbox/components/ui/button/button.tsx",
-      "line": 106,
+      "line": 118,
       "classification": "accessibility-critical"
     },
     {
-      "id": "label:app/soapbox/components/ui/button/button.tsx:123",
+      "id": "label:app/soapbox/components/ui/button/button.tsx:135",
       "kind": "label",
       "path": "app/soapbox/components/ui/button/button.tsx",
-      "line": 123,
+      "line": 135,
       "classification": "accessibility-critical"
     },
     {
@@ -12184,17 +12184,17 @@
       "classification": "accessibility-critical"
     },
     {
-      "id": "label:app/soapbox/components/ui/form-group/form-group.tsx:63",
+      "id": "label:app/soapbox/components/ui/form-group/form-group.tsx:68",
       "kind": "label",
       "path": "app/soapbox/components/ui/form-group/form-group.tsx",
-      "line": 63,
+      "line": 68,
       "classification": "accessibility-critical"
     },
     {
-      "id": "label:app/soapbox/components/ui/form-group/form-group.tsx:99",
+      "id": "label:app/soapbox/components/ui/form-group/form-group.tsx:104",
       "kind": "label",
       "path": "app/soapbox/components/ui/form-group/form-group.tsx",
-      "line": 99,
+      "line": 104,
       "classification": "accessibility-critical"
     },
     {
@@ -12289,10 +12289,10 @@
       "classification": "compatibility-critical"
     },
     {
-      "id": "focus:app/soapbox/components/ui/list-row/list-row.tsx:43",
+      "id": "focus:app/soapbox/components/ui/list-row/list-row.tsx:79",
       "kind": "focus",
       "path": "app/soapbox/components/ui/list-row/list-row.tsx",
-      "line": 43,
+      "line": 79,
       "classification": "accessibility-critical"
     },
     {

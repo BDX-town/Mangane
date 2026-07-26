@@ -21,6 +21,8 @@ import {
 describe('foundational control contracts', () => {
   it('keeps button, link, busy, and pressed semantics native', () => {
     const onClick = jest.fn();
+    const linkClick = jest.fn((event: React.MouseEvent<HTMLAnchorElement>) => event.currentTarget.tagName);
+    const linkRef = React.createRef<HTMLAnchorElement>();
     const { unmount } = render(
       <Button loading onClick={onClick}>Save</Button>,
     );
@@ -36,9 +38,12 @@ describe('foundational control contracts', () => {
     expect(screen.getByRole('button', { name: 'Pin' })).toHaveAttribute('aria-pressed', 'true');
 
     pressedView.unmount();
-    render(<Button to='/settings'>Settings</Button>);
+    render(<Button ref={linkRef} to='/settings' onClick={linkClick}>Settings</Button>);
     expect(screen.getByRole('link', { name: 'Settings' })).toHaveAttribute('href', '/settings');
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('link', { name: 'Settings' }));
+    expect(linkClick).toHaveReturnedWith('A');
+    expect(linkRef.current).toBe(screen.getByRole('link', { name: 'Settings' }));
   });
 
   it('requires an accessible icon-button name and preserves toggle state', () => {
@@ -68,6 +73,23 @@ describe('foundational control contracts', () => {
     expect(chip).toHaveAttribute('aria-pressed', 'true');
     fireEvent.click(chip);
     expect(onChipClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('preserves link-row callbacks and blocks them only when disabled', () => {
+    const onClick = jest.fn((event: React.MouseEvent<HTMLAnchorElement>) => event.currentTarget.tagName);
+    const linkRef = React.createRef<HTMLAnchorElement>();
+    const view = render(
+      <ListRow ref={linkRef} to='/local' onClick={onClick}>Local</ListRow>,
+    );
+
+    fireEvent.click(screen.getByRole('link', { name: 'Local' }));
+    expect(onClick).toHaveReturnedWith('A');
+    expect(linkRef.current).toBe(screen.getByRole('link', { name: 'Local' }));
+
+    view.unmount();
+    render(<ListRow disabled to='/local' onClick={onClick}>Unavailable</ListRow>);
+    fireEvent.click(screen.getByRole('link', { name: 'Unavailable' }));
+    expect(onClick).toHaveBeenCalledTimes(1);
   });
 
   it('provides roving keyboard selection for segmented controls', () => {
@@ -138,14 +160,17 @@ describe('foundational control contracts', () => {
 
   it('associates field hints and errors without exposing unsafe markup', () => {
     render(
-      <FormGroup labelText='Handle' hintText='Letters and numbers only' errors={['Already taken']}>
-        <Input value='alice' onChange={jest.fn()} />
-      </FormGroup>,
+      <>
+        <FormGroup labelText='Handle' hintText='Letters and numbers only' errors={['Already taken']}>
+          <Input aria-describedby='external-rule' value='alice' onChange={jest.fn()} />
+        </FormGroup>
+        <p id='external-rule'>Public profiles only</p>
+      </>,
     );
 
     const field = screen.getByRole('textbox', { name: 'Handle' });
     expect(field).toHaveAttribute('aria-invalid', 'true');
-    expect(field).toHaveAccessibleDescription('Letters and numbers only Already taken');
+    expect(field).toHaveAccessibleDescription('Public profiles only Letters and numbers only Already taken');
     expect(screen.getByRole('alert')).toHaveTextContent('Already taken');
   });
 
