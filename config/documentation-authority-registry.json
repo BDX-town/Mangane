@@ -542,7 +542,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Complete",
-      "contentSha256": "b7d17ba1c94a11b681db38f961d9cadafcc90549266e5d092688129fcec2badd"
+      "contentSha256": "e3e98948492b9743d654ebd66147936001febb33187a9c2ebe0a86d0b667c98d"
     },
     {
       "path": "docs/architecture/PREVIEW_AND_EMBED_INVENTORY.md",
@@ -822,7 +822,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Phase 0G complete / executable",
-      "contentSha256": "0bcccbc0b9ed5fda545d4dacbd289536c60035733011876a15f2414ec3692fb2"
+      "contentSha256": "763d13240d6e68bc1a88017afcb3cbbecf3b3e99cc1cda6f6708c46b1118934c"
     },
     {
       "path": "docs/architecture/URL_AND_DESTINATION_POLICY_MATRIX.md",

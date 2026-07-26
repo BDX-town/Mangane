@@ -70,7 +70,7 @@ The TypeScript authority baseline is reduced from 101 inherited diagnostics to z
 
 Phase 1 closed in [PR #46](https://github.com/outlaw-dame/Mangane/pull/46), merge commit `11cb5ccfa55e0abf6f6026a341fa20cc21f61ac6`.
 
-- 156 Jest suites and 740 tests passed in CI.
+- 156 Jest suites and 741 tests passed in CI, including behavioral coverage of the disabled-flag rollback path.
 - 170 governance and adversarial tests passed.
 - Raw TypeScript returned zero diagnostics.
 - Architecture boundaries, inventories, lint, security regression, accessibility, and production/development builds passed.
