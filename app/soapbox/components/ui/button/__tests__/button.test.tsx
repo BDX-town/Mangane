@@ -48,6 +48,13 @@ describe('<Button />', () => {
     expect(screen.getByRole('button')).toBeDisabled();
   });
 
+  it('exposes loading as a disabled busy state', () => {
+    render(<Button loading>Save</Button>);
+
+    expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Save' })).toHaveAttribute('aria-busy', 'true');
+  });
+
   it('render full-width button if block prop given', () => {
     render(<Button block />);
 
@@ -65,6 +72,7 @@ describe('<Button />', () => {
       render(<Button to='/'>link</Button>);
 
       expect(screen.getByRole('link')).toBeInTheDocument();
+      expect(screen.queryByRole('button')).not.toBeInTheDocument();
     });
 
     it('does not render a link', () => {

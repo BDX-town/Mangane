@@ -16,7 +16,9 @@ const messages = defineMessages({
   back: { id: 'card.back.label', defaultMessage: 'Back' },
 });
 
-interface ICard {
+interface ICard extends React.HTMLAttributes<HTMLElement> {
+  /** Semantic container element. */
+  as?: 'div' | 'article' | 'section',
   /** The type of card. */
   variant?: 'rounded',
   /** Card size preset. */
@@ -28,19 +30,23 @@ interface ICard {
 }
 
 /** An opaque backdrop to hold a collection of related elements. */
-const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant, size = 'md', className, ...filteredProps }, ref): JSX.Element => (
-  <div
-    ref={ref}
-    {...filteredProps}
-    className={classNames({
-      'space-y-4': true,
-      'bg-white dark:bg-slate-800 text-black dark:text-white shadow-lg dark:shadow-inset overflow-hidden': variant === 'rounded',
-      [sizes[size]]: variant === 'rounded',
-    }, className)}
-  >
-    {children}
-  </div>
-));
+const Card = React.forwardRef<HTMLElement, ICard>(({ as = 'div', children, variant, size = 'md', className, ...filteredProps }, ref): JSX.Element => {
+  const mergedClassName = classNames({
+    'space-y-4': true,
+    'bg-white dark:bg-slate-800 text-black dark:text-white shadow-lg dark:shadow-inset overflow-hidden': variant === 'rounded',
+    [sizes[size]]: variant === 'rounded',
+  }, className);
+
+  return React.createElement(
+    as,
+    {
+      ...filteredProps,
+      ref,
+      className: mergedClassName,
+    },
+    children,
+  );
+});
 
 interface ICardHeader {
   backHref?: string,

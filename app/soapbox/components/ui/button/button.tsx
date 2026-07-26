@@ -8,6 +8,8 @@ import { useButtonStyles } from './useButtonStyles';
 import type { ButtonSizes, ButtonThemes } from './useButtonStyles';
 
 interface IButton {
+  /** Accessible name when visible content is insufficient. */
+  'aria-label'?: string,
   /** Whether this button expands the width of its container. */
   block?: boolean,
   /** Elements inside the <button> */
@@ -19,6 +21,10 @@ interface IButton {
   icon?: string,
   /** Action when the button is clicked. */
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void,
+  /** Exposes an in-progress operation and prevents duplicate activation. */
+  loading?: boolean,
+  /** Exposes toggle-button state. */
+  pressed?: boolean,
   /** A predefined button size. */
   size?: ButtonSizes,
   style?: React.CSSProperties,
@@ -40,7 +46,9 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
     children,
     disabled = false,
     icon,
+    loading = false,
     onClick,
+    pressed,
     size = 'md',
     text,
     theme = 'accent',
@@ -48,11 +56,12 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
     type = 'button',
     style,
   } = props;
+  const unavailable = disabled || loading;
 
   const themeClass = useButtonStyles({
     theme,
     block,
-    disabled,
+    disabled: unavailable,
     size,
   });
 
@@ -65,35 +74,60 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
   };
 
   const handleClick = React.useCallback((event) => {
-    if (onClick && !disabled) {
+    if (onClick && !unavailable) {
       onClick(event);
     }
-  }, [onClick, disabled]);
+  }, [onClick, unavailable]);
 
-  const renderButton = () => (
-    <button
-      className={`${themeClass} ${classNames}`}
-      disabled={disabled}
-      onClick={handleClick}
-      ref={ref}
-      type={type}
-      data-testid='button'
-      style={style}
-    >
+  const content = (
+    <>
       {renderIcon()}
       {text || children}
-    </button>
+    </>
   );
 
   if (to) {
+    const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+      if (unavailable) {
+        event.preventDefault();
+        return;
+      }
+      if (onClick) onClick(event as unknown as React.MouseEvent<HTMLButtonElement>);
+    };
+
     return (
-      <Link to={to} tabIndex={-1} className='inline-flex'>
-        {renderButton()}
+      <Link
+        to={to}
+        className={`${themeClass} ${classNames || ''}`}
+        aria-disabled={unavailable || undefined}
+        aria-busy={loading || undefined}
+        aria-label={props['aria-label']}
+        onClick={handleLinkClick}
+        tabIndex={unavailable ? -1 : undefined}
+        data-testid='button'
+        style={style}
+      >
+        {content}
       </Link>
     );
   }
 
-  return renderButton();
+  return (
+    <button
+      className={`${themeClass} ${classNames || ''}`}
+      disabled={unavailable}
+      onClick={handleClick}
+      ref={ref}
+      type={type}
+      aria-busy={loading || undefined}
+      aria-label={props['aria-label']}
+      aria-pressed={pressed}
+      data-testid='button'
+      style={style}
+    >
+      {content}
+    </button>
+  );
 });
 
 export default Button;

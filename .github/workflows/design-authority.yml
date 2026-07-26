@@ -12,10 +12,12 @@ on:
       - 'config/design-component-authority-inventory.json'
       - 'config/design-tokens.json'
       - 'config/icon-migration-baseline.json'
+      - 'config/foundational-control-contracts.json'
       - 'docs/architecture/**'
       - 'scripts/**design**'
       - 'scripts/**icon**'
       - 'scripts/**token**'
+      - 'scripts/**foundational**'
       - 'scripts/__tests__/check-design-component-authority-inventory.test.js'
       - 'tailwind/**'
       - 'tailwind.config.js'
@@ -33,9 +35,11 @@ on:
       - 'config/design-component-authority-inventory.json'
       - 'config/design-tokens.json'
       - 'config/icon-migration-baseline.json'
+      - 'config/foundational-control-contracts.json'
       - 'scripts/**design**'
       - 'scripts/**icon**'
       - 'scripts/**token**'
+      - 'scripts/**foundational**'
       - 'tailwind/**'
       - 'tailwind.config.js'
 
@@ -63,3 +67,7 @@ jobs:
         run: node scripts/check-icon-migration.js
       - name: Run semantic icon migration mutation tests
         run: node --test scripts/__tests__/icon-migration-foundation.test.js
+      - name: Verify foundational controls, focus, motion, and state contracts
+        run: node scripts/check-foundational-control-contracts.js
+      - name: Run foundational control mutation tests
+        run: node --test scripts/__tests__/foundational-control-contracts.test.js

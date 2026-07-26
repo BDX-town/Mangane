@@ -20,14 +20,34 @@ interface IFormGroup {
 const FormGroup: React.FC<IFormGroup> = (props) => {
   const { children, errors = [], labelText, labelTitle, hintText } = props;
   const formFieldId: string = useMemo(() => `field-${uuidv4()}`, []);
+  const hintId = `${formFieldId}-hint`;
+  const errorId = `${formFieldId}-error`;
   const inputChildren = React.Children.toArray(children);
   const hasError = errors?.length > 0;
 
   let firstChild;
-  if (React.isValidElement<{ id?: string, hasError?: boolean }>(inputChildren[0])) {
+  if (React.isValidElement<{
+    id?: string,
+    hasError?: boolean,
+    'aria-describedby'?: string,
+    'aria-invalid'?: boolean,
+  }>(inputChildren[0])) {
+    const describedBy = [
+      hintText ? hintId : null,
+      hasError ? errorId : null,
+    ].filter(Boolean).join(' ') || undefined;
+    const sharedProps = {
+      id: formFieldId,
+      'aria-describedby': describedBy,
+      'aria-invalid': hasError || undefined,
+    };
+    const supportsHasError = (
+      typeof inputChildren[0].type !== 'string'
+      && inputChildren[0].type !== Checkbox
+    );
     firstChild = React.cloneElement(
       inputChildren[0],
-      { id: formFieldId, hasError },
+      supportsHasError ? { ...sharedProps, hasError } : sharedProps,
     );
   }
   const isCheckboxFormGroup = firstChild?.type === Checkbox;
@@ -52,6 +72,8 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
           {hasError && (
             <div>
               <p
+                id={errorId}
+                role='alert'
                 data-testid='form-group-error'
                 className='mt-0.5 text-xs text-danger-900 bg-danger-200 rounded-md inline-block px-2 py-1 relative form-error'
               >
@@ -61,7 +83,7 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
           )}
 
           {hintText && (
-            <p data-testid='form-group-hint' className='mt-0.5 text-xs text-gray-400'>
+            <p id={hintId} data-testid='form-group-hint' className='mt-0.5 text-xs text-gray-400'>
               {hintText}
             </p>
           )}
@@ -89,6 +111,8 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
 
         {hasError && (
           <p
+            id={errorId}
+            role='alert'
             data-testid='form-group-error'
             className='mt-0.5 text-xs text-danger-900 bg-danger-200 rounded-md inline-block px-2 py-1 relative form-error'
           >
@@ -97,7 +121,7 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
         )}
 
         {hintText && (
-          <p data-testid='form-group-hint' className='mt-0.5 text-xs text-gray-400'>
+          <p id={hintId} data-testid='form-group-hint' className='mt-0.5 text-xs text-gray-400'>
             {hintText}
           </p>
         )}

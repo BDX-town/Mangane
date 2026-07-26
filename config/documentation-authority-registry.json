@@ -285,6 +285,16 @@
       "contentSha256": "9110a24096b338d965d881c866fbcd990b347f05e8fea3f2e74cf4bf9a28eaa4"
     },
     {
+      "path": "docs/architecture/COMPONENT_STATE_CONTRACTS.md",
+      "title": "Foundational Component State Contracts",
+      "authorityId": "foundational-component-state-contracts",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 2C implementation contract",
+      "contentSha256": "18a69286bdca66efac1326142c9723244648517811140cd2fd60f3f6b81b4576"
+    },
+    {
       "path": "docs/architecture/CONTENT_SAFETY_AND_TEST_INVENTORY.md",
       "title": "Mangane Content Safety and Test Inventory",
       "authorityId": "mangane-content-safety-and-test-inventory",
@@ -312,7 +322,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical verified current state / Phases 0 and 1 complete / Phase 2 in progress",
-      "contentSha256": "2787da8ef296f5b9245e5ebb1808d18b3c90df08b156980cf872cea84a510663"
+      "contentSha256": "f47025eeeab8966872c0218cdd1c7df9aa104ad8aad1bf9e0e667683af91b2bc"
     },
     {
       "path": "docs/architecture/DATA_PRIVACY_AND_RESILIENCE.md",
@@ -332,7 +342,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Current Phase 0A evidence",
-      "contentSha256": "d828f12bc029b84fba7533695fd778e1614d124311a9d2ec671b55bf794fae9b"
+      "contentSha256": "18a4006273448e0362bb25a6275143012593fc9b6201652cd18216495b2f669b"
     },
     {
       "path": "docs/architecture/DEPENDENCY_REPLACEMENT_QUEUE.md",
@@ -362,7 +372,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 1,
       "statusHeader": "Phase 0F complete / executable",
-      "contentSha256": "3e2eb2e5cb9dc788e184c593dc1b308d5bc5399584b19356b504c9a95966e872"
+      "contentSha256": "f27a86df190a3117452c54ec7f56132a28efff9369fb6992a0674fb830caf914"
     },
     {
       "path": "docs/architecture/DESIGN_SYSTEM.md",
@@ -552,7 +562,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 1,
       "statusHeader": "In progress",
-      "contentSha256": "98fbacd9016f81df83f2c432f2a48c6698c7d482069eaab357ffc853c425c97d"
+      "contentSha256": "53c293dd730e5e8c8f1da1ca9ef639afa5c9fd4a510f4191ff29a9a096a0718b"
     },
     {
       "path": "docs/architecture/PREVIEW_AND_EMBED_INVENTORY.md",
@@ -732,7 +742,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 4,
       "statusHeader": "Current supporting evidence / Phase 0 closed",
-      "contentSha256": "370b18c6b3c34ce75009f8c4b46feb0fe18b5f5923d89a0ef375720487056854"
+      "contentSha256": "cd1670436f8512d24ad7a9e94874c4d56a2d2facaeb26ee3dc95029269625e89"
     },
     {
       "path": "docs/architecture/SOURCE_INVENTORY_AUTOMATION.md",

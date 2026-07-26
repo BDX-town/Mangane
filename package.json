@@ -65,6 +65,8 @@
     "generate:icons": "node scripts/generate-icon-migration-baseline.js",
     "check:icons": "node scripts/check-icon-migration.js",
     "test:icons": "node --test scripts/__tests__/icon-migration-foundation.test.js",
+    "check:foundational-controls": "node scripts/check-foundational-control-contracts.js",
+    "test:foundational-controls": "node --test scripts/__tests__/foundational-control-contracts.test.js",
     "generate:documentation-authority": "node scripts/generate-documentation-authority-registry.js",
     "check:documentation-authority": "node scripts/check-documentation-authority.js",
     "test:documentation-authority": "node --test scripts/__tests__/check-documentation-authority.test.js",

@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "status": "phase-2c-in-progress",
+  "styleContract": "app/styles/components/foundational-controls.scss",
+  "focusUtility": "app/soapbox/components/ui/focus/focus-utils.ts",
+  "documentation": "docs/architecture/COMPONENT_STATE_CONTRACTS.md",
+  "controls": {
+    "avatar": {
+      "implementation": "app/soapbox/components/ui/avatar/avatar.tsx",
+      "states": ["default", "fallback"],
+      "nativeSemantics": "img with caller-provided alternative text",
+      "testEvidence": ["app/soapbox/components/ui/__tests__/foundational-controls.test.tsx"]
+    },
+    "button": {
+      "implementation": "app/soapbox/components/ui/button/button.tsx",
+      "states": ["default", "hover", "focus-visible", "disabled", "loading", "pressed"],
+      "nativeSemantics": "button or link selected by navigation intent",
+      "testEvidence": ["app/soapbox/components/ui/button/__tests__/button.test.tsx", "app/soapbox/components/ui/__tests__/foundational-controls.test.tsx"]
+    },
+    "card-shell": {
+      "implementation": "app/soapbox/components/ui/card/card.tsx",
+      "states": ["default"],
+      "nativeSemantics": "caller-selected div, article, or labelled section",
+      "testEvidence": ["app/soapbox/components/ui/__tests__/foundational-controls.test.tsx"]
+    },
+    "chip": {
+      "implementation": "app/soapbox/components/ui/chip/chip.tsx",
+      "states": ["default", "hover", "focus-visible", "disabled", "selected"],
+      "nativeSemantics": "span for labels or button with aria-pressed for toggles",
+      "testEvidence": ["app/soapbox/components/ui/__tests__/foundational-controls.test.tsx"]
+    },
+    "field": {
+      "implementation": "app/soapbox/components/ui/form-group/form-group.tsx",
+      "states": ["default", "focus-visible", "disabled", "error"],
+      "nativeSemantics": "label association plus aria-describedby and aria-invalid",
+      "testEvidence": ["app/soapbox/components/ui/form-group/__tests__/form-group.test.tsx", "app/soapbox/components/ui/__tests__/foundational-controls.test.tsx"]
+    },
+    "icon-button": {
+      "implementation": "app/soapbox/components/ui/icon-button/icon-button.tsx",
+      "states": ["default", "hover", "focus-visible", "disabled", "loading", "pressed"],
+      "nativeSemantics": "labelled button with decorative semantic icon",
+      "testEvidence": ["app/soapbox/components/ui/__tests__/foundational-controls.test.tsx"]
+    },
+    "list-row": {
+      "implementation": "app/soapbox/components/ui/list-row/list-row.tsx",
+      "states": ["default", "hover", "focus-visible", "disabled", "selected"],
+      "nativeSemantics": "div, button, or link selected by interaction intent",
+      "testEvidence": ["app/soapbox/components/ui/__tests__/foundational-controls.test.tsx"]
+    },
+    "menu-trigger": {
+      "implementation": "app/soapbox/components/ui/menu/menu.tsx",
+      "states": ["default", "hover", "focus-visible", "disabled", "expanded"],
+      "nativeSemantics": "Reach MenuButton disclosure semantics with required label",
+      "testEvidence": ["app/soapbox/components/ui/__tests__/foundational-controls.test.tsx"]
+    },
+    "segmented-control": {
+      "implementation": "app/soapbox/components/ui/segmented-control/segmented-control.tsx",
+      "states": ["default", "focus-visible", "disabled", "selected"],
+      "nativeSemantics": "radiogroup with roving radio focus and selection",
+      "testEvidence": ["app/soapbox/components/ui/__tests__/foundational-controls.test.tsx"]
+    }
+  }
+}

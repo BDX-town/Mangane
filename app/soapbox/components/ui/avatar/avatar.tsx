@@ -6,6 +6,8 @@ import StillImage from 'soapbox/components/still_image';
 const AVATAR_SIZE = 42;
 
 interface IAvatar {
+  /** Accessible name; use an empty string when adjacent text names the account. */
+  alt?: string,
   /** URL to the avatar image. */
   src: string,
   /** Width and height of the avatar in pixels. */
@@ -16,19 +18,20 @@ interface IAvatar {
 
 /** Round profile avatar for accounts. */
 const Avatar = (props: IAvatar) => {
-  const { src, size = AVATAR_SIZE, className } = props;
+  const { alt = 'Avatar', src, size = AVATAR_SIZE, className } = props;
+  const normalizedSize = Number.isFinite(size) && size >= 16 && size <= 512 ? size : AVATAR_SIZE;
 
   const style: React.CSSProperties = React.useMemo(() => ({
-    width: size,
-    height: size,
-  }), [size]);
+    width: normalizedSize,
+    height: normalizedSize,
+  }), [normalizedSize]);
 
   return (
     <StillImage
       className={classNames('rounded-full overflow-hidden', className)}
       style={style}
       src={src}
-      alt='Avatar'
+      alt={alt}
     />
   );
 };

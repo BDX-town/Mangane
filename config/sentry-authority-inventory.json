@@ -838,6 +838,14 @@
       "classification": "test-only"
     },
     {
+      "id": "environment-read:scripts/__tests__/foundational-control-contracts.test.js:15",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/foundational-control-contracts.test.js",
+      "line": 15,
+      "expression": "env: { ...process.env, FOUNDATIONAL_CONTROL_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
       "id": "environment-read:scripts/__tests__/icon-migration-foundation.test.js:44",
       "kind": "environment-read",
       "path": "scripts/__tests__/icon-migration-foundation.test.js",
@@ -995,6 +1003,14 @@
       "path": "scripts/check-eslint-warning-baseline.js",
       "line": 18,
       "expression": "env: { ...process.env, FORCE_COLOR: '0', NO_COLOR: '1' },",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-foundational-control-contracts.js:7",
+      "kind": "environment-read",
+      "path": "scripts/check-foundational-control-contracts.js",
+      "line": 7,
+      "expression": "process.env.FOUNDATIONAL_CONTROL_ROOT || path.resolve(__dirname, '..'),",
       "classification": "repository-tooling"
     },
     {
@@ -1274,7 +1290,7 @@
     "artifact-upload": 1,
     "console": 71,
     "notification-payload": 13,
-    "environment-read": 62,
+    "environment-read": 64,
     "clipboard": 3,
     "error-boundary": 2,
     "devtools": 1,
