@@ -1,5 +1,7 @@
 # Installing Soapbox FE on a subdomain
 
+> **Superseded documentation.** These inherited Soapbox installation instructions are not verified for current Mangane artifacts or paths. Use the current [Mangane README](../../README.md).
+
 If you would like to retain Pleroma FE on your Pleroma server, but install Soapbox FE alongside it on a subdomain, you can do so by following these steps.
 
 ## 1. Download the build

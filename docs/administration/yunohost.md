@@ -63,18 +63,18 @@ Then run this command to synchronize the configuration in the database:
 ```
 sudo su pleroma -s $SHELL -lc "/var/www/akkoma/live/bin/pleroma_ctl config migrate_to_db"
 ```
-You can also use the Admin interface to do this (see [README](https://github.com/BDX-town/Mangane#admin-fe-with-database-configuration-enabled)) if you are not confortable with the command line.
+You can also use the Admin interface to do this (see [README](https://github.com/outlaw-dame/Mangane#admin-fe-with-database-configuration-enabled)) if you are not confortable with the command line.
 
 #### For Pleroma
 
 Login with SSH to your server as Yunohost `admin` user and exec this command:
 
 ```
-sudo su pleroma -s $SHELL -lc "/var/www/pleroma/live/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip"
+sudo su pleroma -s $SHELL -lc "/var/www/pleroma/live/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/outlaw-dame/Mangane/releases/latest/download/static.zip"
 ```
 It’s done!
 
-You can also use the Admin interface to do this (see the `README` file for [installation](https://github.com/BDX-town/Mangane#with-admin-fe) and [acttivation](https://github.com/BDX-town/Mangane#admin-fe-with-database-configuration-enabled)) if you are not confortable with the command line.
+You can also use the Admin interface to do this (see the `README` file for [installation](https://github.com/outlaw-dame/Mangane#with-admin-fe) and [activation](https://github.com/outlaw-dame/Mangane#admin-fe-with-database-configuration-enabled)) if you are not comfortable with the command line.
 
 
 #### Upgrade
@@ -84,7 +84,6 @@ To upgrade Mangane, you only have to run the _install command_ again on top of a
 For Akkoma, login with SSH to your server as Yunohost `admin` user and exec this command:
 
 ```
-sudo su akkoma -s $SHELL -lc "/var/www/akkoma/live/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/BDX-town/Mangane/releases/latest/download/static.zip"
+sudo su akkoma -s $SHELL -lc "/var/www/akkoma/live/bin/pleroma_ctl frontend install mangane --ref dist --build-url https://github.com/outlaw-dame/Mangane/releases/latest/download/static.zip"
 ```
-For Akkoma or Pleroma, you can also use the Admin interface to do this (see [README](https://github.com/BDX-town/Mangane#with-admin-fe)) if you are not confortable with the command line.
-
+For Akkoma or Pleroma, you can also use the Admin interface to do this (see [README](https://github.com/outlaw-dame/Mangane#with-admin-fe)) if you are not comfortable with the command line.

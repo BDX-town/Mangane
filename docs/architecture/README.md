@@ -1,6 +1,6 @@
 # Mangane Canonical Architecture
 
-Status: **Accepted foundation**
+Status: **Canonical architecture index / Phase 0 closed**
 
 Last updated: 2026-07-25
 
@@ -40,8 +40,8 @@ Target architecture must always be read alongside the verified repository eviden
 - [`SERVICE_WORKER_CACHE_AUTHORITY_DRIFT_GATE.md`](./SERVICE_WORKER_CACHE_AUTHORITY_DRIFT_GATE.md) — executable bounded gate for production OfflinePlugin cache ownership, app-shell navigation fallback, backend-route bypasses, and production worker entry imports;
 - [`AUTH_PERSISTENCE_INVENTORY.md`](./AUTH_PERSISTENCE_INVENTORY.md) — verified OAuth flows, plaintext browser credential persistence, multi-account indexing, logout limitations, IndexedDB account snapshots and legacy migration behavior;
 - [`REACT_QUERY_AND_CACHE_INVENTORY.md`](./REACT_QUERY_AND_CACHE_INVENTORY.md) — verified singleton cache defaults, account-transition risks, required query/mutation matrix and current enumeration blockers;
-- [`CONTENT_SAFETY_AND_TEST_INVENTORY.md`](./CONTENT_SAFETY_AND_TEST_INVENTORY.md) — verified shared HTML transformation behavior, test-command baseline, Jest coverage boundaries and remaining sanitization/CI blockers;
-- [`OBSERVABILITY_AND_CI_INVENTORY.md`](./OBSERVABILITY_AND_CI_INVENTORY.md) — verified Sentry configuration signals, root error-boundary behavior, emergency browser reset, build-time customization boundaries and current CI uncertainty;
+- [`CONTENT_SAFETY_AND_TEST_INVENTORY.md`](./CONTENT_SAFETY_AND_TEST_INVENTORY.md) — verified shared HTML transformation behavior, test-command history, Jest boundaries, and the handoff to complete Phase 0D and Phase 0G authorities;
+- [`OBSERVABILITY_AND_CI_INVENTORY.md`](./OBSERVABILITY_AND_CI_INVENTORY.md) — verified telemetry, root error-boundary behavior, emergency browser reset, build-time customization boundaries, and the handoff to the Phase 0G CI baseline;
 - [`TELEMETRY_SECRET_EXPOSURE_MATRIX.md`](./TELEMETRY_SECRET_EXPOSURE_MATRIX.md) — canonical Phase 0 matrix for credentials, private account data, telemetry, developer tooling, notifications, URLs, workers, tests, builds, and required fail-closed redaction evidence;
 - [`SENTRY_RUNTIME_AND_REDACTION_INVENTORY.md`](./SENTRY_RUNTIME_AND_REDACTION_INVENTORY.md) — completed Phase 0E proof that dormant Sentry dependencies and DSN input are removed and runtime diagnostics fail closed;
 - [`SENTRY_AUTHORITY_DRIFT_GATE.md`](./SENTRY_AUTHORITY_DRIFT_GATE.md) — executable complete telemetry, logging, DevTools, source-map, environment, notification, clipboard, and artifact drift gate;
@@ -53,7 +53,7 @@ Target architecture must always be read alongside the verified repository eviden
 - [`KEYBOARD_AND_GESTURE_INVENTORY.md`](./KEYBOARD_AND_GESTURE_INVENTORY.md) — keyboard, focus, gesture and non-gesture-alternative baseline;
 - [`ACCESSIBILITY_BEHAVIOR_MATRIX.md`](./ACCESSIBILITY_BEHAVIOR_MATRIX.md) — reduced motion, focus, live-region, target-size, contrast, reflow and localization baseline;
 - [`SCREENSHOT_AND_INTERACTION_BASELINE_PLAN.md`](./SCREENSHOT_AND_INTERACTION_BASELINE_PLAN.md) — privacy-safe visual and semantic regression capture plan;
-- [`TEST_AND_CI_BASELINE.md`](./TEST_AND_CI_BASELINE.md) — verified package test commands, Jest coverage boundaries, observed CI gaps, and the required workflow/job matrix;
+- [`TEST_AND_CI_BASELINE.md`](./TEST_AND_CI_BASELINE.md) — executable package commands, Jest coverage boundaries, owner-specific workflow/job matrix, build budgets, and repository-enforcement status;
 - [`BACKEND_CAPABILITY_MATRIX.md`](./BACKEND_CAPABILITY_MATRIX.md) — canonical evidence structure for Akkoma, Pleroma, Mastodon-compatible, and Mangane-specific backend capabilities and fallbacks;
 - [`STATE_AUTHORITY_AND_DUPLICATION_MATRIX.md`](./STATE_AUTHORITY_AND_DUPLICATION_MATRIX.md) — canonical ownership, duplication, persistence, purge, and synchronization matrix for application state;
 - [`BROWSER_PERSISTENCE_AND_PURGE_INVENTORY.md`](./BROWSER_PERSISTENCE_AND_PURGE_INVENTORY.md) — completed Phase 0C browser persistence, cache, migration, stale-actor and deterministic purge authority;
@@ -70,6 +70,10 @@ Target architecture must always be read alongside the verified repository eviden
 - [`NAVIGATION_CALLSITE_AND_DESTINATION_INVENTORY.md`](./NAVIGATION_CALLSITE_AND_DESTINATION_INVENTORY.md) — source-backed navigation-producer classes, verified worker/session/shortcut and continuation call sites, destination-policy requirements and executable repository-wide enumeration gate;
 - [`DEPLOYMENT_REWRITE_AND_RESERVED_PATH_INVENTORY.md`](./DEPLOYMENT_REWRITE_AND_RESERVED_PATH_INVENTORY.md) — source-backed build basename, asset public path, development SPA fallback, production OfflinePlugin navigation exclusions, backend reservations, rewrite precedence and external production-edge gates;
 - [`PHASE_0_EVIDENCE_AND_GATES.md`](./PHASE_0_EVIDENCE_AND_GATES.md) — evidence standard, workstream dashboard, required matrices and non-negotiable Phase 0 exit gates.
+- [`DOCUMENTATION_AUTHORITY_REGISTRY.md`](./DOCUMENTATION_AUTHORITY_REGISTRY.md) — exhaustive repository-document classification, canonical hierarchy, inherited-branding policy, and executable drift authority.
+- [`HISTORICAL_REQUIREMENT_TRACEABILITY.md`](./HISTORICAL_REQUIREMENT_TRACEABILITY.md) — preserved, modified, replaced, deferred, and rejected historical requirements with stable destinations and evidence.
+- [`DOCUMENTATION_SUPERSESSION_AND_ARCHIVE_MAP.md`](./DOCUMENTATION_SUPERSESSION_AND_ARCHIVE_MAP.md) — visible replacement and archive policy for inherited Soapbox operational documents and historical records.
+- [`PHASE_0_CLOSURE_REPORT.md`](./PHASE_0_CLOSURE_REPORT.md) — canonical Phase 0 closure decision, accepted debt, and stable Phase 1 handoff package.
 
 These files describe the current inherited implementation. They do not override accepted target architecture, but later phases may not ignore their compatibility and security findings.
 

@@ -1,5 +1,7 @@
 # Installing Soapbox over Mastodon
 
+> **Superseded documentation.** The commands below download former Soapbox GitLab artifacts into Soapbox-specific paths and must not be used as current Mangane instructions. Use the current [Mangane README](../../README.md).
+
 It is possible to run Soapbox as your main frontend on top of Mastodon.
 This will replace the homepage and all static pages with Soapbox, using Mastodon only as the API.
 

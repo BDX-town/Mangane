@@ -1,6 +1,6 @@
 # Screenshot and Interaction Baseline Plan
 
-Status: **Phase 0F baseline accepted; capture execution belongs to Phase 0G and Phase 2**
+Status: **Phase 0 baseline accepted; cross-engine visual execution belongs to Phase 2**
 
 Before a Framework7, token, or component replacement, capture deterministic baselines for:
 

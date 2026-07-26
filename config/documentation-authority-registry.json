@@ -1,0 +1,918 @@
+{
+  "schemaVersion": 1,
+  "status": "phase-0h-canonical",
+  "scope": {
+    "extensions": [
+      ".md"
+    ],
+    "excludedDirectories": [
+      ".git",
+      ".yarn",
+      "coverage",
+      "dist",
+      "node_modules",
+      "static",
+      "tmp",
+      "vendor"
+    ]
+  },
+  "classifications": [
+    "accepted-target",
+    "canonical",
+    "current-supporting-evidence",
+    "historical",
+    "superseded"
+  ],
+  "documents": [
+    {
+      "path": "ARCHITECTURE.md",
+      "title": "Mangane Architecture",
+      "authorityId": "mangane-architecture",
+      "classification": "canonical",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Canonical architecture pointer",
+      "contentSha256": "1d84a4d9d6e8d327d0fa29e1213585cd994b417e094ad942c528169aa1007ad1"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "title": "Changelog",
+      "authorityId": "changelog",
+      "classification": "historical",
+      "replacement": null,
+      "inheritedBrandingReferences": 11,
+      "statusHeader": null,
+      "contentSha256": "123b88655224162372b77b2a5c0993f8645d61bc2463e77b85db73cd7b2c89fb"
+    },
+    {
+      "path": "README.md",
+      "title": "Mangane",
+      "authorityId": "mangane",
+      "classification": "canonical",
+      "replacement": null,
+      "inheritedBrandingReferences": 2,
+      "statusHeader": "Canonical repository introduction",
+      "contentSha256": "561cd18fb6f19ed6e1b6aef8c7d171cebc6d96dc184f28726023fe0c77c88ed8"
+    },
+    {
+      "path": "app/icons/COPYING.md",
+      "title": "Custom icons",
+      "authorityId": "custom-icons",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": null,
+      "contentSha256": "3ede635c6a2d0c03f469f16975861b38b666288d09ed284e868e48735ce12115"
+    },
+    {
+      "path": "docs/administration/akkoma.md",
+      "title": "Akkoma features",
+      "authorityId": "akkoma-features",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": null,
+      "contentSha256": "affa23a597f28bcad3348f6d488bc15d2d0c9162d59bbe02d2b396f4342181aa"
+    },
+    {
+      "path": "docs/administration/custom_registration.md",
+      "title": "Custom registration URL",
+      "authorityId": "custom-registration-url",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": null,
+      "contentSha256": "d18e8f3b87e416315a178ea49469f4c0db84a18620b4a577426e9ab2e0863d10"
+    },
+    {
+      "path": "docs/administration/deploy-at-scale.md",
+      "title": "Deploying Soapbox at scale",
+      "authorityId": "deploying-soapbox-at-scale",
+      "classification": "superseded",
+      "replacement": "README.md",
+      "inheritedBrandingReferences": 22,
+      "statusHeader": null,
+      "contentSha256": "6931a53bf9bc412babb4a3d0a385cd1052913311a004f3ab1beb53c4f12b30c0"
+    },
+    {
+      "path": "docs/administration/install-subdomain.md",
+      "title": "Installing Soapbox FE on a subdomain",
+      "authorityId": "installing-soapbox-fe-on-a-subdomain",
+      "classification": "superseded",
+      "replacement": "README.md",
+      "inheritedBrandingReferences": 24,
+      "statusHeader": null,
+      "contentSha256": "93556301805bcda7270e753e62041b6b664e895d98ab3f0020d3343c666e6f07"
+    },
+    {
+      "path": "docs/administration/mastodon.md",
+      "title": "Installing Soapbox over Mastodon",
+      "authorityId": "installing-soapbox-over-mastodon",
+      "classification": "superseded",
+      "replacement": "README.md",
+      "inheritedBrandingReferences": 15,
+      "statusHeader": null,
+      "contentSha256": "a20b4fba8fcf1cbcdebdcbdfebafe08f7157396fcee6d8fb400158d4e5b4dfda"
+    },
+    {
+      "path": "docs/administration/removing.md",
+      "title": "Removing Soapbox",
+      "authorityId": "removing-soapbox",
+      "classification": "superseded",
+      "replacement": "README.md",
+      "inheritedBrandingReferences": 3,
+      "statusHeader": null,
+      "contentSha256": "3b6aaaf75d923a76ead7257f3a9455af2a3e7cbf7fe215b3c5c5f03b9daacab8"
+    },
+    {
+      "path": "docs/administration/yunohost.md",
+      "title": "Install Mangane on Yunohost",
+      "authorityId": "install-mangane-on-yunohost",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": null,
+      "contentSha256": "0020a64afdd764ae991009bea392be168ccc8bbea3ac91ff0e4f4bcdf56cc05d"
+    },
+    {
+      "path": "docs/architecture/ACCESSIBILITY_BEHAVIOR_MATRIX.md",
+      "title": "Accessibility Behavior Matrix",
+      "authorityId": "accessibility-behavior-matrix",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0F complete / executable",
+      "contentSha256": "e7419cceeae5d40f0b1dd17cbf23906fef971ef4c4de98183713ffca92d4973c"
+    },
+    {
+      "path": "docs/architecture/ACCESSIBILITY_TEST_BASELINE.md",
+      "title": "Accessibility Test Baseline",
+      "authorityId": "accessibility-test-baseline",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0G enforced",
+      "contentSha256": "38292461450fb69c6f1159eb794582f085452d1ad97838c208e93b3278819cde"
+    },
+    {
+      "path": "docs/architecture/ACCOUNT_ISOLATION_MATRIX.md",
+      "title": "Account and Instance Isolation Matrix",
+      "authorityId": "account-and-instance-isolation-matrix",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 6,
+      "statusHeader": "Current supporting evidence / Phase 0 closed",
+      "contentSha256": "778a649e573cab755dec5c99b6325fa305382cc01e92d0464e0f4a21266c6280"
+    },
+    {
+      "path": "docs/architecture/ACCOUNT_TRANSITION_AND_PURGE_CONTRACT.md",
+      "title": "Account Transition and Purge Contract",
+      "authorityId": "account-transition-and-purge-contract",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 25,
+      "statusHeader": "Accepted target / Phase 0 evidence contract",
+      "contentSha256": "3da9cdd4011ab7ad08c57a674ddae2857d65bcc2a0a98b4ecf527df8208aed29"
+    },
+    {
+      "path": "docs/architecture/ADVISORY_DISPOSITION_REGISTER.md",
+      "title": "Advisory Disposition Register",
+      "authorityId": "advisory-disposition-register",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Current Phase 0A evidence",
+      "contentSha256": "783a5603e9c608f65d8dfcf181ccb4ea07c6e0633b922abe9d1e79561346a443"
+    },
+    {
+      "path": "docs/architecture/API_AND_PROTOCOL_CALLSITE_MATRIX.md",
+      "title": "API and Protocol Callsite Matrix",
+      "authorityId": "api-and-protocol-callsite-matrix",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 1,
+      "statusHeader": "generated inventory enforced; policy hardening remains queued",
+      "contentSha256": "991db859562252726225fe327a1b2681efaee01d51ed4ca93363b328ff49a98a"
+    },
+    {
+      "path": "docs/architecture/API_TRANSPORT_AUTHORITY_DRIFT_GATE.md",
+      "title": "API Transport Authority Drift Gate",
+      "authorityId": "api-transport-authority-drift-gate",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 2,
+      "statusHeader": "Current / Phase 0 bounded gate",
+      "contentSha256": "719efd2d37a2b7e0da0fcf4fba967f2caccbac2c437db86061bc42516156a7ec"
+    },
+    {
+      "path": "docs/architecture/ARCHITECTURAL_DECISIONS.md",
+      "title": "Mangane Architectural Decision Register",
+      "authorityId": "mangane-architectural-decision-register",
+      "classification": "canonical",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Canonical ADR index",
+      "contentSha256": "8891e5c2d6837de577ce5e3b9d4ace2d174ee1705d39709502bb9efe2451dd5b"
+    },
+    {
+      "path": "docs/architecture/AUTH_PERSISTENCE_INVENTORY.md",
+      "title": "Mangane Authentication and Persistence Inventory",
+      "authorityId": "mangane-authentication-and-persistence-inventory",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 9,
+      "statusHeader": "Current supporting evidence / Phase 0 closed",
+      "contentSha256": "fec53428d5bcf8c6e79bcfbf41b8ea379516f3355598620881701c02dd88529c"
+    },
+    {
+      "path": "docs/architecture/BACKEND_CAPABILITY_MATRIX.md",
+      "title": "Backend Capability Matrix",
+      "authorityId": "backend-capability-matrix",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 14,
+      "statusHeader": "Current / Phase 0B callsite discovery complete; compatibility validation in progress",
+      "contentSha256": "f25ecf77126f9ff5e63a8d2ee6731ec8cbae1410cff1ca712fd924dc7cd68a93"
+    },
+    {
+      "path": "docs/architecture/BOOTSTRAP_PROVIDER_AUTHORITY_DRIFT_GATE.md",
+      "title": "Bootstrap and Root Provider Authority Drift Gate",
+      "authorityId": "bootstrap-and-root-provider-authority-drift-gate",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 8,
+      "statusHeader": "Current / bounded Phase 0 evidence",
+      "contentSha256": "f8ea17199e845291477d3a298f02797e8ad7dc843deaaf25025ab6f07be407b7"
+    },
+    {
+      "path": "docs/architecture/BROWSER_PERSISTENCE_AND_PURGE_INVENTORY.md",
+      "title": "Browser Persistence and Purge Inventory",
+      "authorityId": "browser-persistence-and-purge-inventory",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 4,
+      "statusHeader": "Phase 0C complete",
+      "contentSha256": "fc3d1810bbbfef41478de739458a621d0b9db6413568f8003a2b52daf0df5824"
+    },
+    {
+      "path": "docs/architecture/BROWSER_PERSISTENCE_AUTHORITY_DRIFT_GATE.md",
+      "title": "Browser Persistence Authority Drift Gate",
+      "authorityId": "browser-persistence-authority-drift-gate",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0C verified",
+      "contentSha256": "d96716ab75422eeda2200ce04b0fd15df9863b6caba8fd0debddc6ede15472b6"
+    },
+    {
+      "path": "docs/architecture/BROWSER_WORKER_HARNESS_PLAN.md",
+      "title": "Browser and Worker Harness Plan",
+      "authorityId": "browser-and-worker-harness-plan",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0G baseline established; cross-engine expansion staged",
+      "contentSha256": "06662d4e666ee57b712f00356c178a3c9ce7e4e4b57304aa1c8782be9c862f13"
+    },
+    {
+      "path": "docs/architecture/BUILD_AND_BUNDLE_BUDGETS.md",
+      "title": "Build and Bundle Budgets",
+      "authorityId": "build-and-bundle-budgets",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0G enforced",
+      "contentSha256": "9110a24096b338d965d881c866fbcd990b347f05e8fea3f2e74cf4bf9a28eaa4"
+    },
+    {
+      "path": "docs/architecture/CONTENT_SAFETY_AND_TEST_INVENTORY.md",
+      "title": "Mangane Content Safety and Test Inventory",
+      "authorityId": "mangane-content-safety-and-test-inventory",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 4,
+      "statusHeader": "Current / Phase 0D content-safety work complete",
+      "contentSha256": "4053f1618ebc263a80efa89723b3a0c7ebd8d60ae27ddbbdf20ebb73fb07b919"
+    },
+    {
+      "path": "docs/architecture/CSP_AND_TRUSTED_ADMIN_BOUNDARY.md",
+      "title": "CSP and Trusted Administrator Boundary",
+      "authorityId": "csp-and-trusted-administrator-boundary",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0D complete",
+      "contentSha256": "6a79e701157201c1c9f0f554cb8ed3a9cb9b979d95e57116e774c4d8486205fd"
+    },
+    {
+      "path": "docs/architecture/CURRENT_STATE.md",
+      "title": "Mangane Verified Current State",
+      "authorityId": "mangane-verified-current-state",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Canonical verified current state / Phase 0 closed",
+      "contentSha256": "78c6751f87b4ee7c7dac0ada9da76906f7b32ea846bff3a27722fbc62958bab9"
+    },
+    {
+      "path": "docs/architecture/DATA_PRIVACY_AND_RESILIENCE.md",
+      "title": "Mangane Data, Privacy, and Resilience Architecture",
+      "authorityId": "mangane-data-privacy-and-resilience-architecture",
+      "classification": "accepted-target",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Accepted target",
+      "contentSha256": "c9f0fa185c1fcc8ced1c06d414b4f5b0f137582fe851ec4b30f0f5f7aa26b694"
+    },
+    {
+      "path": "docs/architecture/DEPENDENCY_AND_LICENSE_INVENTORY.md",
+      "title": "Dependency and License Inventory",
+      "authorityId": "dependency-and-license-inventory",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Current Phase 0A evidence",
+      "contentSha256": "5019b09e468f789ccdf89cfd813f8f467b43c05d2bb57bd151360c6fefb7db93"
+    },
+    {
+      "path": "docs/architecture/DEPENDENCY_REPLACEMENT_QUEUE.md",
+      "title": "Dependency Replacement Queue",
+      "authorityId": "dependency-replacement-queue",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Current Phase 0A evidence",
+      "contentSha256": "cc7e7da62cb61c07a9caf85200077393e2e937b3a1ab17826fec553802d8d95d"
+    },
+    {
+      "path": "docs/architecture/DEPLOYMENT_REWRITE_AND_RESERVED_PATH_INVENTORY.md",
+      "title": "Deployment Rewrite and Reserved Path Inventory",
+      "authorityId": "deployment-rewrite-and-reserved-path-inventory",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 5,
+      "statusHeader": "Current / bounded Phase 0 artifact complete",
+      "contentSha256": "24ad6c92af6507510de729b1a78c133c9ef1e22746700fa270b8e693fed7312f"
+    },
+    {
+      "path": "docs/architecture/DESIGN_AND_COMPONENT_INVENTORY.md",
+      "title": "Design and Component Inventory",
+      "authorityId": "design-and-component-inventory",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0F complete / executable",
+      "contentSha256": "83e16527c2a0b76217c1ccfaabfd6003c096014cb0c4d08cc00cd6506c36075c"
+    },
+    {
+      "path": "docs/architecture/DESIGN_SYSTEM.md",
+      "title": "Mangane Adaptive Editorial Design System",
+      "authorityId": "mangane-adaptive-editorial-design-system",
+      "classification": "accepted-target",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Accepted target",
+      "contentSha256": "446813d2fe4a516494f36cc0d2c87a81a8d87e8a8eddacdaf79d7656915386a9"
+    },
+    {
+      "path": "docs/architecture/DOCUMENTATION_AUTHORITY_REGISTRY.md",
+      "title": "Documentation Authority Registry",
+      "authorityId": "documentation-authority-registry",
+      "classification": "canonical",
+      "replacement": null,
+      "inheritedBrandingReferences": 2,
+      "statusHeader": "Canonical Phase 0H authority",
+      "contentSha256": "707e4bb3eff512862b166da26ee1da1d9a3e60dc5539c1b8ccf9ae14f7bde07f"
+    },
+    {
+      "path": "docs/architecture/DOCUMENTATION_SUPERSESSION_AND_ARCHIVE_MAP.md",
+      "title": "Documentation Supersession and Archive Map",
+      "authorityId": "documentation-supersession-and-archive-map",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 9,
+      "statusHeader": "Current Phase 0H supporting evidence",
+      "contentSha256": "e33e9fe6d0c0d6cd05c068849960c1caedd038b7b2498cd01c63eef37084160b"
+    },
+    {
+      "path": "docs/architecture/ERROR_RECOVERY_AUTHORITY_DRIFT_GATE.md",
+      "title": "Error Boundary and Emergency Recovery Authority Drift Gate",
+      "authorityId": "error-boundary-and-emergency-recovery-authority-drift-gate",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 8,
+      "statusHeader": "Current / bounded Phase 0 evidence",
+      "contentSha256": "53164b37891502328d69a00cb194fbdac5a48e6295b3de3133011a41a856e689"
+    },
+    {
+      "path": "docs/architecture/FLAKY_TEST_AND_QUARANTINE_POLICY.md",
+      "title": "Flaky Test and Quarantine Policy",
+      "authorityId": "flaky-test-and-quarantine-policy",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0G enforced baseline",
+      "contentSha256": "63fbf4bf03dd1938b062b59e520ccd49389d11d9ceab9db8d5e0b74f157f9ac1"
+    },
+    {
+      "path": "docs/architecture/HISTORICAL_REQUIREMENT_TRACEABILITY.md",
+      "title": "Historical Requirement Traceability",
+      "authorityId": "historical-requirement-traceability",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 1,
+      "statusHeader": "Canonical Phase 0H supporting authority",
+      "contentSha256": "9bf9f612b2263be2e633a5f3cddbe6aa28c3c41f1231bc36110708056cb2c245"
+    },
+    {
+      "path": "docs/architecture/HTML_SAFETY_AUTHORITY_DRIFT_GATE.md",
+      "title": "HTML Safety Authority Drift Gate",
+      "authorityId": "html-safety-authority-drift-gate",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 2,
+      "statusHeader": "Phase 0D verified",
+      "contentSha256": "1d7fad642dd89f1572cfbd66cc109ee5380e02daba16f0f765088f1ccd235e01"
+    },
+    {
+      "path": "docs/architecture/HTML_SAFETY_MATRIX.md",
+      "title": "HTML Safety Matrix",
+      "authorityId": "html-safety-matrix",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0D complete / executable",
+      "contentSha256": "fcb3a677b450865e3b8c6254efdc106067dd17069e8e12d309424ed1759385d0"
+    },
+    {
+      "path": "docs/architecture/ICON_MIGRATION_MATRIX.md",
+      "title": "Icon Migration Matrix",
+      "authorityId": "icon-migration-matrix",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0F complete / executable",
+      "contentSha256": "e71200dc564817f9ddcf15a6eafbcae39f2094a0c1cd64fd39002e1cb987c71f"
+    },
+    {
+      "path": "docs/architecture/IMPLEMENTATION_ROADMAP_V2.md",
+      "title": "Mangane Implementation Roadmap v2",
+      "authorityId": "mangane-implementation-roadmap-v2",
+      "classification": "canonical",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Canonical implementation sequence",
+      "contentSha256": "db9920d486092448d9281424325d9cee597a18fff5eafc372d711c4d179dd483"
+    },
+    {
+      "path": "docs/architecture/KEYBOARD_AND_GESTURE_INVENTORY.md",
+      "title": "Keyboard and Gesture Inventory",
+      "authorityId": "keyboard-and-gesture-inventory",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0F complete / executable",
+      "contentSha256": "6cef556f06924f28d1470f031720bc1d1555c98a13f634fe884f2ec96a3de462"
+    },
+    {
+      "path": "docs/architecture/NAVIGATION_CALLSITE_AND_DESTINATION_INVENTORY.md",
+      "title": "Navigation Call-Site and Destination Inventory",
+      "authorityId": "navigation-call-site-and-destination-inventory",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 14,
+      "statusHeader": "Current / bounded Phase 0 artifact complete",
+      "contentSha256": "e77d8224fdd6498693bd7deecca9bc98f3b683af57e8627c6bb8e1271b7d8713"
+    },
+    {
+      "path": "docs/architecture/OBJECT_URL_AND_TEMPORARY_RESOURCE_INVENTORY.md",
+      "title": "Object URL and Temporary Resource Inventory",
+      "authorityId": "object-url-and-temporary-resource-inventory",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 1,
+      "statusHeader": "Phase 0C complete",
+      "contentSha256": "281a13bf92cdc462bf62d672bbb2f30f4c8323c65d6b867226a454c4992ca78b"
+    },
+    {
+      "path": "docs/architecture/OBSERVABILITY_AND_CI_INVENTORY.md",
+      "title": "Mangane Observability and CI Inventory",
+      "authorityId": "mangane-observability-and-ci-inventory",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 2,
+      "statusHeader": "Current supporting evidence / Phase 0E and Phase 0G complete",
+      "contentSha256": "6f448b350d85133f708ceffa5e335dd89f4730b8b23bbe948deb6e02e5b8ce14"
+    },
+    {
+      "path": "docs/architecture/PERSISTENCE_MIGRATION_REGISTRY.md",
+      "title": "Persistence Migration Registry",
+      "authorityId": "persistence-migration-registry",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 4,
+      "statusHeader": "Phase 0C complete",
+      "contentSha256": "9a4c2c6631378aacc2b67dfbb943f36000f249af4a573429fdac104a010e246a"
+    },
+    {
+      "path": "docs/architecture/PHASE_0_CLOSURE_REPORT.md",
+      "title": "Phase 0 Closure Report",
+      "authorityId": "phase-0-closure-report",
+      "classification": "canonical",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Canonical Phase 0 closure and Phase 1 handoff",
+      "contentSha256": "74adc34ed4a27d3274e2bd101fa00757cfc0fa798c3d93512ce36a713f5be5b7"
+    },
+    {
+      "path": "docs/architecture/PHASE_0_EVIDENCE_AND_GATES.md",
+      "title": "Phase 0 Evidence Ledger and Completion Gates",
+      "authorityId": "phase-0-evidence-ledger-and-completion-gates",
+      "classification": "canonical",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Canonical Phase 0 evidence / closed",
+      "contentSha256": "8991aa61a1aace542bd869f39c681fbecc4ff59c6de1c4fca9855598023d7fc9"
+    },
+    {
+      "path": "docs/architecture/PREVIEW_AND_EMBED_INVENTORY.md",
+      "title": "Preview and Embed Inventory",
+      "authorityId": "preview-and-embed-inventory",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0D complete",
+      "contentSha256": "94658ec1e475a86f369a2bb093a7e5cc9b2e75e32ee60e3b15ebe7c17d858d0e"
+    },
+    {
+      "path": "docs/architecture/PRODUCT_VISION.md",
+      "title": "Mangane Product Vision and Experience Principles",
+      "authorityId": "mangane-product-vision-and-experience-principles",
+      "classification": "accepted-target",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Accepted target",
+      "contentSha256": "0074290a0fbdd9957d059ecd0997d783b08f3889a325c9778e2af2ad40ead5eb"
+    },
+    {
+      "path": "docs/architecture/PUSH_WORKER_AUTHORITY_DRIFT_GATE.md",
+      "title": "Push Worker Authority Drift Gate",
+      "authorityId": "push-worker-authority-drift-gate",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 1,
+      "statusHeader": "Current / bounded Phase 0 evidence",
+      "contentSha256": "cd3724daf21c563faaefcb043934ff8c4d1f90110dd4e688c5b65d13901cbfb4"
+    },
+    {
+      "path": "docs/architecture/REACT_QUERY_AND_CACHE_INVENTORY.md",
+      "title": "Mangane React Query and Cache Inventory",
+      "authorityId": "mangane-react-query-and-cache-inventory",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 6,
+      "statusHeader": "Current supporting evidence / Phase 0 closed",
+      "contentSha256": "69369d0f15a72b38cc51c6f44e89d367f6bf1d3dcfec00325394c3821a4fec94"
+    },
+    {
+      "path": "docs/architecture/REACT_QUERY_AUTHORITY_DRIFT_GATE.md",
+      "title": "React Query Authority Drift Gate",
+      "authorityId": "react-query-authority-drift-gate",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 3,
+      "statusHeader": "Current / bounded Phase 0 evidence",
+      "contentSha256": "40152992ae2bfba923b20955edb05e13850b713a5cad6e2823f75769ed45d0a6"
+    },
+    {
+      "path": "docs/architecture/README.md",
+      "title": "Mangane Canonical Architecture",
+      "authorityId": "mangane-canonical-architecture",
+      "classification": "canonical",
+      "replacement": null,
+      "inheritedBrandingReferences": 1,
+      "statusHeader": "Canonical architecture index / Phase 0 closed",
+      "contentSha256": "ef6677f598dc0b45292cc5e7afc4a70504e850c2e87205366e9ee68c082def9c"
+    },
+    {
+      "path": "docs/architecture/REDUX_AUTHORITY_DRIFT_GATE.md",
+      "title": "Redux Authority Drift Gate",
+      "authorityId": "redux-authority-drift-gate",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 2,
+      "statusHeader": "Verified-current bounded gate",
+      "contentSha256": "c84695c8de0db34a8f63da356ef2a9e9857b439640223aa9fec035ccaf0d9ded"
+    },
+    {
+      "path": "docs/architecture/ROUTE_AND_COMPATIBILITY_MANIFEST.md",
+      "title": "Route and Compatibility Manifest",
+      "authorityId": "route-and-compatibility-manifest",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 14,
+      "statusHeader": "Current supporting evidence / Phase 0 closed",
+      "contentSha256": "0e15147d835861ac6c9aed61c2e9ece5445b984363d57632ddee848740d55761"
+    },
+    {
+      "path": "docs/architecture/ROUTING_INVENTORY_DRIFT_GATE.md",
+      "title": "Routing Inventory Drift Gate",
+      "authorityId": "routing-inventory-drift-gate",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Current / bounded Phase 0 gate complete",
+      "contentSha256": "e6f55a748ce1265397c6689a21890003c7cc07830bb33f7e92eb2be4539e49c5"
+    },
+    {
+      "path": "docs/architecture/SCREENSHOT_AND_INTERACTION_BASELINE_PLAN.md",
+      "title": "Screenshot and Interaction Baseline Plan",
+      "authorityId": "screenshot-and-interaction-baseline-plan",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0 baseline accepted; cross-engine visual execution belongs to Phase 2",
+      "contentSha256": "45f94f722374ab31bf3493a82ecc158e83c1a44e1eecbcc46b3d2b0e0f52d4a5"
+    },
+    {
+      "path": "docs/architecture/SEARCH_AND_INTELLIGENCE.md",
+      "title": "Mangane Search and Local Intelligence Architecture",
+      "authorityId": "mangane-search-and-local-intelligence-architecture",
+      "classification": "accepted-target",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Accepted target",
+      "contentSha256": "cf7f97cfaf57e9f96c909aeb3884994e5412ef3b3750eb00404038fd74f0936b"
+    },
+    {
+      "path": "docs/architecture/SECURITY_REGRESSION_SUITE.md",
+      "title": "Security Regression Suite",
+      "authorityId": "security-regression-suite",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0G enforced",
+      "contentSha256": "b5f0be21b354926786a87c7ae9b766ccebaaf4f43752ca871bc6f33b0249d571"
+    },
+    {
+      "path": "docs/architecture/SECURITY_RUNTIME_INVENTORY.md",
+      "title": "Mangane Security and Runtime Inventory",
+      "authorityId": "mangane-security-and-runtime-inventory",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 3,
+      "statusHeader": "Current supporting evidence / Phase 0 closed",
+      "contentSha256": "596dabbf19a6bdf668e990af25584fcb8e614f12ccc8ea4d9522619588f549d9"
+    },
+    {
+      "path": "docs/architecture/SENTRY_AUTHORITY_DRIFT_GATE.md",
+      "title": "Telemetry and Redaction Authority Drift Gate",
+      "authorityId": "telemetry-and-redaction-authority-drift-gate",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 1,
+      "statusHeader": "Phase 0E verified",
+      "contentSha256": "d8616b2a5d7d9839c6758e3112c57c2043282b83197279d4b3b00d11c633c19b"
+    },
+    {
+      "path": "docs/architecture/SENTRY_RUNTIME_AND_REDACTION_INVENTORY.md",
+      "title": "Sentry Runtime and Redaction Inventory",
+      "authorityId": "sentry-runtime-and-redaction-inventory",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 1,
+      "statusHeader": "Phase 0E complete — Sentry removed",
+      "contentSha256": "b6a2e0a8ffe8aac35a713b0f4972b0010c0b478942740aef390cd1974c476188"
+    },
+    {
+      "path": "docs/architecture/SERVICE_WORKER_CACHE_AUTHORITY_DRIFT_GATE.md",
+      "title": "Service Worker Cache Authority Drift Gate",
+      "authorityId": "service-worker-cache-authority-drift-gate",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 2,
+      "statusHeader": "Phase 0C verified",
+      "contentSha256": "c468731357b5558416d7ca366e8ee2b55c7804a0b7e3fc751809b8f3d0f757aa"
+    },
+    {
+      "path": "docs/architecture/SHARE_TARGET_AUTHORITY_DRIFT_GATE.md",
+      "title": "Share Target Authority Drift Gate",
+      "authorityId": "share-target-authority-drift-gate",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 2,
+      "statusHeader": "Current / Phase 0G hardened and behavior-tested",
+      "contentSha256": "12d0185842f998146e5b53009ba2536d1e22671ed91020846b54df953a65b4c7"
+    },
+    {
+      "path": "docs/architecture/SOURCE_INVENTORY.md",
+      "title": "Mangane Verified Source Architecture Inventory",
+      "authorityId": "mangane-verified-source-architecture-inventory",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 4,
+      "statusHeader": "Current supporting evidence / Phase 0 closed",
+      "contentSha256": "6f08cf291dae6c71c3537f6cfce8254519585b5e3806b1317c132f175de5fcd4"
+    },
+    {
+      "path": "docs/architecture/SOURCE_INVENTORY_AUTOMATION.md",
+      "title": "Source Inventory Automation",
+      "authorityId": "source-inventory-automation",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Current Phase 0 evidence tooling",
+      "contentSha256": "1411f62a900bbb656363e9d7d5891b1458ceded4c0cd69f1f43bcfa324aa6efb"
+    },
+    {
+      "path": "docs/architecture/SOURCE_INVENTORY_RECONCILIATION.md",
+      "title": "Source Inventory Reconciliation",
+      "authorityId": "source-inventory-reconciliation",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 17,
+      "statusHeader": "Current supporting evidence / Phase 0 closed",
+      "contentSha256": "1511b69e21992372f64c6934f50a3b6f079721457ae411aefa1998ed69684a38"
+    },
+    {
+      "path": "docs/architecture/SOURCE_MAP_AND_BUILD_ARTIFACT_POLICY.md",
+      "title": "Source-map and Build-artifact Policy",
+      "authorityId": "source-map-and-build-artifact-policy",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0E complete",
+      "contentSha256": "fdd9d13fe0fb9b3131c23ecf1c5d982c0c664cc77d7dab67c5f8c9557b1f3648"
+    },
+    {
+      "path": "docs/architecture/STATE_AUTHORITY_AND_DUPLICATION_MATRIX.md",
+      "title": "State Authority and Duplication Matrix",
+      "authorityId": "state-authority-and-duplication-matrix",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 1,
+      "statusHeader": "Current supporting evidence / Phase 0 closed",
+      "contentSha256": "cad2d2f148efff21f02a6abd7ff325e3c018cca7871adac2a2de64bd359e7e45"
+    },
+    {
+      "path": "docs/architecture/STREAMING_AND_UPLOAD_INVENTORY.md",
+      "title": "Streaming and Upload Inventory",
+      "authorityId": "streaming-and-upload-inventory",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 2,
+      "statusHeader": null,
+      "contentSha256": "a112a4ba06a4f9ba35543101eda814ac9a16ba5a4b63562bae7371a36039b891"
+    },
+    {
+      "path": "docs/architecture/STYLE_AND_TOKEN_SOURCE_MAP.md",
+      "title": "Style and Token Source Map",
+      "authorityId": "style-and-token-source-map",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0F complete / executable",
+      "contentSha256": "1ae3b3f6da75d15a7643c757f5faaf395ac5bb001b01b264ae1b1af5f2cd3adc"
+    },
+    {
+      "path": "docs/architecture/TECHNICAL_ARCHITECTURE.md",
+      "title": "Mangane Technical Architecture",
+      "authorityId": "mangane-technical-architecture",
+      "classification": "accepted-target",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Accepted target",
+      "contentSha256": "5edecc80046f8239ca2ed2a988e722bb90b4c7ac14bd4495a9a63cba335abeda"
+    },
+    {
+      "path": "docs/architecture/TELEMETRY_CONSENT_AND_OPT_OUT_CONTRACT.md",
+      "title": "Telemetry Consent and Opt-out Contract",
+      "authorityId": "telemetry-consent-and-opt-out-contract",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0E complete",
+      "contentSha256": "ea1629b7b9b2202c662dac469e2e25ca64047ff5d5d12a001b4cf9ddebbd6189"
+    },
+    {
+      "path": "docs/architecture/TELEMETRY_SECRET_EXPOSURE_MATRIX.md",
+      "title": "Telemetry and Secret Exposure Matrix",
+      "authorityId": "telemetry-and-secret-exposure-matrix",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0E complete / executable",
+      "contentSha256": "34d855c99df2125d17dd6b8aa7be9011c18878afb622936bebe671ae9806d4dc"
+    },
+    {
+      "path": "docs/architecture/TEST_AND_CI_BASELINE.md",
+      "title": "Test and CI Baseline",
+      "authorityId": "test-and-ci-baseline",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0G complete / executable",
+      "contentSha256": "4ead33609e60a62a838142955bdb8358684e77253e98d0e78557c079b6fa7b34"
+    },
+    {
+      "path": "docs/architecture/URL_AND_DESTINATION_POLICY_MATRIX.md",
+      "title": "URL and Destination Policy Matrix",
+      "authorityId": "url-and-destination-policy-matrix",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Phase 0D complete",
+      "contentSha256": "d8986021ae609612ff23f377e1221758df580e297992e462fc1900450bfc354b"
+    },
+    {
+      "path": "docs/contributing.md",
+      "title": "Contributing to Mangane",
+      "authorityId": "contributing-to-mangane",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": null,
+      "contentSha256": "a86318ab38c8c47a597f30419215c3510f335f0654cca99be483e2cf1540487c"
+    },
+    {
+      "path": "docs/customization.md",
+      "title": "Customizing Mangane",
+      "authorityId": "customizing-mangane",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 8,
+      "statusHeader": null,
+      "contentSha256": "18e886590408702b27d35894d3643d238b56c323abc59f86197caf884571f050"
+    },
+    {
+      "path": "docs/development/build-config.md",
+      "title": "Build Configuration",
+      "authorityId": "build-configuration",
+      "classification": "superseded",
+      "replacement": "docs/architecture/CURRENT_STATE.md",
+      "inheritedBrandingReferences": 21,
+      "statusHeader": null,
+      "contentSha256": "51d44888a697d1a795413f4ad8d20dcac61c76a30ea5d9de3e35365cc8506a40"
+    },
+    {
+      "path": "docs/development/developing-backend.md",
+      "title": "Developing a backend",
+      "authorityId": "developing-a-backend",
+      "classification": "superseded",
+      "replacement": "docs/architecture/BACKEND_CAPABILITY_MATRIX.md",
+      "inheritedBrandingReferences": 16,
+      "statusHeader": null,
+      "contentSha256": "c60aa65304965a4c064ee5d3e50939ebf23435a7f89bcd10c2280e902a70a486"
+    },
+    {
+      "path": "docs/development/how-it-works.md",
+      "title": "How it works",
+      "authorityId": "how-it-works",
+      "classification": "superseded",
+      "replacement": "docs/architecture/CURRENT_STATE.md",
+      "inheritedBrandingReferences": 6,
+      "statusHeader": null,
+      "contentSha256": "84faeab7fa76fcbb03c8b18aa8bb14ca83e15a4339305a651ce180dbc8206f01"
+    },
+    {
+      "path": "docs/development/local-config.md",
+      "title": "Local Dev Configuration",
+      "authorityId": "local-dev-configuration",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 2,
+      "statusHeader": null,
+      "contentSha256": "265b8ecf1f982340a381460dd83e3d7cdc4a26967fb3b36fa15e2f7454185ed8"
+    },
+    {
+      "path": "docs/development/running-locally.md",
+      "title": "Running locally",
+      "authorityId": "running-locally",
+      "classification": "superseded",
+      "replacement": "README.md",
+      "inheritedBrandingReferences": 6,
+      "statusHeader": null,
+      "contentSha256": "4c62ff19d96e4ef271122ab8ad19a7d2607274d63d1625c15535e4ffee3338c1"
+    },
+    {
+      "path": "docs/development/yarn-commands.md",
+      "title": "Yarn Commands",
+      "authorityId": "yarn-commands",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": null,
+      "contentSha256": "994553fb0a7f5103e18b18db60b7398235e2dcc6dec4f79e320e0c51a8502cf3"
+    },
+    {
+      "path": "docs/history.md",
+      "title": "History",
+      "authorityId": "history",
+      "classification": "historical",
+      "replacement": null,
+      "inheritedBrandingReferences": 9,
+      "statusHeader": null,
+      "contentSha256": "7420f924217700e4225f7646d918290993d52e7343e9c5647a7762d429bac1f4"
+    }
+  ]
+}

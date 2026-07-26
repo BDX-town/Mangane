@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "status": "current-phase-0a-evidence",
   "sourceDigests": {
-    "packageJsonSha256": "77ed5e8c8c67dbe783182b16a4c9ab8fef87e4ff64aa5b3458963f69b8f8ff86",
+    "packageJsonSha256": "c8adeb161e64415263062478a6ae89a940024389035642322883ef9d94a27fa8",
     "twemojiDownloaderSha256": "89f1d9fec29b1d53c8862466efbfc270fc5324bfc476095ced7ae3ee5b26c303",
     "yarnLockSha256": "fd3c42b09e5f7f2288053cfca0bec8f78fc23506ed6c574d3fe28be0dbb3e47d"
   },
@@ -21,7 +21,7 @@
     }
   },
   "summary": {
-    "actionUses": 40,
+    "actionUses": 42,
     "advisories": {
       "critical": 4,
       "high": 49,
@@ -16103,6 +16103,10 @@
           "context": "build"
         },
         {
+          "path": "package.json#scripts.check:documentation-authority",
+          "context": "build"
+        },
+        {
           "path": "package.json#scripts.check:html-safety",
           "context": "build"
         },
@@ -16120,6 +16124,10 @@
         },
         {
           "path": "package.json#scripts.generate:design-authority",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.generate:documentation-authority",
           "context": "build"
         },
         {
@@ -16168,6 +16176,10 @@
         },
         {
           "path": "package.json#scripts.test:design-authority",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.test:documentation-authority",
           "context": "build"
         },
         {
@@ -110876,6 +110888,22 @@
       "line": 43,
       "local": false,
       "path": ".github/workflows/design-authority.yml",
+      "pinnedToCommit": true,
+      "ref": "49933ea5288caeca8642d1e84afbd3f7d6820020"
+    },
+    {
+      "action": "actions/checkout",
+      "line": 40,
+      "local": false,
+      "path": ".github/workflows/documentation-authority.yml",
+      "pinnedToCommit": true,
+      "ref": "11bd71901bbe5b1630ceea73d27597364c9af683"
+    },
+    {
+      "action": "actions/setup-node",
+      "line": 43,
+      "local": false,
+      "path": ".github/workflows/documentation-authority.yml",
       "pinnedToCommit": true,
       "ref": "49933ea5288caeca8642d1e84afbd3f7d6820020"
     },

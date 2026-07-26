@@ -694,6 +694,14 @@
       "classification": "test-only"
     },
     {
+      "id": "environment-read:scripts/__tests__/check-documentation-authority.test.js:31",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/check-documentation-authority.test.js",
+      "line": 31,
+      "expression": "env: { ...process.env, DOCUMENTATION_AUTHORITY_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
       "id": "environment-read:scripts/__tests__/check-error-recovery-authority-inventory.test.js:33",
       "kind": "environment-read",
       "path": "scripts/__tests__/check-error-recovery-authority-inventory.test.js",
@@ -862,6 +870,14 @@
       "classification": "repository-tooling"
     },
     {
+      "id": "environment-read:scripts/check-documentation-authority.js:9",
+      "kind": "environment-read",
+      "path": "scripts/check-documentation-authority.js",
+      "line": 9,
+      "expression": "const root = path.resolve(process.env.DOCUMENTATION_AUTHORITY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
       "id": "environment-read:scripts/check-error-recovery-authority-inventory.js:6",
       "kind": "environment-read",
       "path": "scripts/check-error-recovery-authority-inventory.js",
@@ -1014,6 +1030,14 @@
       "classification": "repository-tooling"
     },
     {
+      "id": "environment-read:scripts/generate-documentation-authority-registry.js:9",
+      "kind": "environment-read",
+      "path": "scripts/generate-documentation-authority-registry.js",
+      "line": 9,
+      "expression": "const root = path.resolve(process.env.DOCUMENTATION_AUTHORITY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
       "id": "environment-read:scripts/generate-html-safety-authority-inventory.js:8",
       "kind": "environment-read",
       "path": "scripts/generate-html-safety-authority-inventory.js",
@@ -1154,7 +1178,7 @@
     "artifact-upload": 1,
     "console": 71,
     "notification-payload": 13,
-    "environment-read": 47,
+    "environment-read": 50,
     "clipboard": 3,
     "error-boundary": 2,
     "devtools": 1,

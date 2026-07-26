@@ -1,5 +1,7 @@
 # Build Configuration
 
+> **Superseded documentation.** This inherited guide mixes current environment keys with stale Soapbox branding and OAuth examples. Use the verified [current-state authority](../architecture/CURRENT_STATE.md) and repository configuration as the source of truth.
+
 Soapbox supports compile-time customizations in the form of environment variables and a gitignored `custom/` directory.
 
 ## `custom/` directory

@@ -17,7 +17,7 @@ Generated from `package.json`, `yarn.lock`, installed package metadata, reposito
 - Packages with install-time network indicators: **0**
 - Packages with network-capable package scripts: **45**
 - Packages with code-generation/build script indicators: **658**
-- GitHub Actions use sites reviewed: **40** (24 not commit-pinned)
+- GitHub Actions use sites reviewed: **42** (24 not commit-pinned)
 
 Every lockfile locator has a classification, execution context, root reachability set, maintenance status, license disposition, install behavior, owner, and purpose in the machine-readable authority. A transitive package may inherit multiple roots and contexts.
 
@@ -82,7 +82,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | @types/http-link-header | 1.0.7 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/jest | 28.1.8 | build-only | build | build-and-release-maintainers | 4 | none-recorded |
 | @types/lodash | 4.17.24 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
-| @types/node | 16.18.11 | build-only | build | build-and-release-maintainers | 28 | none-recorded |
+| @types/node | 16.18.11 | build-only | build | build-and-release-maintainers | 31 | none-recorded |
 | @types/object-assign | 4.0.33 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/object-fit-images | 3.2.5 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/qrcode.react | 1.0.5 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |

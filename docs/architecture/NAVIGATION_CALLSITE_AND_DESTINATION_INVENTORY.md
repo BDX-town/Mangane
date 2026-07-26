@@ -8,7 +8,7 @@ Last updated: 2026-07-24
 
 This document records the verified navigation producers, destination classes and trust boundaries that are already known to cross the inherited router, service-worker, notification and account-transition boundaries. It is the companion to `ROUTE_AND_COMPATIBILITY_MANIFEST.md` and is required before Mangane replaces inherited React Router behavior with a Framework7 shell.
 
-The bounded artifact is complete for the source boundary listed below. It does **not** claim that every navigation primitive in the repository has been mechanically enumerated. The broader Phase 0 routing gate remains open until an executable repository-wide inventory and the deployment/backend rewrite inventory are complete.
+The bounded artifact is complete for the source boundary listed below. Repository-wide navigation discovery and the deployment/backend rewrite inventory are now separately complete and executable; this document remains the human-reviewed trust-boundary companion rather than duplicating their generated rows.
 
 ### Directly inspected source boundary
 
@@ -127,15 +127,11 @@ The broader routing gate requires a checked-in, reproducible inventory command r
 
 The command must produce stable file/symbol output, exclude generated/vendor files explicitly, fail when unclassified call sites are introduced, and be exercised in CI. Until that executable report exists, this document must not be represented as a repository-wide exhaustive list.
 
-## Remaining Phase 0 routing dependencies
+## Phase 1 and Phase 3 routing handoff
 
-- executable repository-wide navigation inventory and CI drift check;
-- complete nested/feature-local router inventory;
-- deployment, reverse-proxy, backend-owned path and rewrite inventory;
-- source-backed route test baseline;
 - correction/migration of the continuation-key mismatch and deterministic transition purge;
 - accessibility focus ownership for route transitions.
 
 ## Phase status
 
-The source-backed call-site classification and inspected-boundary matrix in this document are complete. The document deliberately keeps the broader repository-wide and deployment routing gates open. Framework7 route implementation may not begin until those remaining dependencies are closed or explicitly deferred by ADR.
+The source-backed classification, repository-wide discovery, deployment rewrite inventory, and route tests close the Phase 0 routing gate. Framework7 implementation must preserve those authorities and explicitly resolve the remaining continuation-key and transition-focus design debt.

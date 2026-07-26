@@ -1,6 +1,6 @@
 # Mangane Verified Source Architecture Inventory
 
-Status: **Current / Phase 0 in progress**
+Status: **Current supporting evidence / Phase 0 closed**
 
 Last updated: 2026-07-23
 
@@ -132,35 +132,22 @@ Jest runs in jsdom and excludes the service-worker entry from coverage. Dedicate
 
 | Subsystem | Status | Target handling |
 |---|---|---|
-| Bootstrap/providers | substantial inventory | split behind stable boundaries |
-| Routing | partial inventory | manifest and Framework7 bridge |
-| Redux | partial inventory | authority matrix and adapters |
-| React Query | blocked | complete key and scope inventory |
-| Authentication | substantial inventory | AccountScope and credential provider |
+| Bootstrap/providers | complete bounded authority | split behind stable boundaries |
+| Routing | complete Phase 0 inventory | manifest and Framework7 bridge |
+| Redux | complete Phase 0 authority matrix | adapters and target ownership |
+| React Query | complete Phase 0 inventory; scope debt accepted | account/instance key and mutation authority |
+| Authentication | complete Phase 0 lifecycle inventory | AccountScope and credential provider |
 | Browser persistence | Phase 0C generated manifest and behavioral authority complete | preserve versioned lifecycle, scoped cleanup and deterministic purge during migrations |
-| API client | shared client verified | typed transport contracts |
-| Push/share workers | handlers verified | remove notification tokens and validate inputs |
-| HTML safety | transformer boundary verified | sink and sanitizer inventory |
-| Theme/accessibility | substantial inventory | preserve through tokens and shell migration |
-| Tests/CI | partial inventory | workflow and baseline verification |
+| API client | complete Phase 0 callsite and central-client authority | typed transport contracts |
+| Push/share workers | complete Phase 0 authority and direct behavior tests | scoped worker contracts |
+| HTML safety | complete sink, sanitizer, embed and destination authority | preserve during rendering migration |
+| Theme/accessibility | complete Phase 0F ownership and behavior inventory | preserve through tokens and shell migration |
+| Tests/CI | complete Phase 0G executable baseline | preserve owner-specific required jobs |
 | Framework7 | absent/currently unverified | accepted Phase 3 target |
 | Phosphor | absent/currently unverified | accepted Phase 2 target |
 | Local canonical store | absent/unverified | accepted Phase 5 target |
 | Hybrid search | absent/unverified | accepted later target |
 
-## 13. Remaining mandatory inventories
+## 13. Phase 1 handoff
 
-1. complete repository tree and feature list;
-2. React Query modules, keys, mutations and invalidations;
-3. complete state-authority/duplication matrix;
-4. API call sites, streaming, uploads and feature detection;
-5. every browser store, cache, object URL and purge path;
-6. every HTML sink, sanitizer, redirect, preview and embed;
-7. Sentry initialization, consent and redaction;
-8. icon, style and component imports;
-9. exact CI workflows and baseline outcomes;
-10. dependency advisories, reachability and licenses;
-11. historical document and prior-requirement mapping;
-12. backend capability and route manifests.
-
-No later phase may treat an uncompleted inventory as settled.
+All mandatory Phase 0 inventories are committed and governed. Later phases must use the stable handoff in [`PHASE_0_CLOSURE_REPORT.md`](./PHASE_0_CLOSURE_REPORT.md), preserve the executable gates, and keep accepted unknowns explicit until implementation evidence resolves them.

@@ -9,7 +9,7 @@ Status: **Phase 0F complete / executable**
 | Live updates | snackbar region is labeled, atomicity is explicit, and updates are assertive | new dynamic surfaces need an intentional live-region policy |
 | Labels | `aria-label`, `aria-labelledby`, and `htmlFor` callsites are enumerated | icon-only actions require localized accessible names |
 | Pointer targets | target baseline is 44 by 44 CSS pixels | current exceptions are migration debt; measure in screenshot/browser baselines |
-| Contrast | target is WCAG 2.1 AA across generated light/dark themes | automated axe plus rendered-theme contrast checks are required in Phase 0G/2 |
+| Contrast | target is WCAG 2.1 AA across generated light/dark themes | rendered-theme contrast and cross-engine checks are required in Phase 2 |
 | Responsive | active breakpoints are recorded from Tailwind | zoom, reflow, 320 CSS-pixel width, and text-spacing tests required |
 | RTL/localization | RTL and localization callsites are enumerated | mirroring must not reverse semantic media controls; strings cannot be clipped |
 | Dyslexic/demetrication | inherited optional modes remain compatibility behavior | Framework7/style migration may not silently remove them |

@@ -1,5 +1,7 @@
 # Changelog
 
+> **Historical record.** Links, repository names, and product names below are preserved as release evidence from their original publication and are not current operational instructions.
+
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
 ## 1.22.2 (2026-07-17)
