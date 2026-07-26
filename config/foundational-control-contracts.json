@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "phase-2c-in-progress",
+  "status": "phase-2c-complete",
   "styleContract": "app/styles/components/foundational-controls.scss",
   "focusUtility": "app/soapbox/components/ui/focus/focus-utils.ts",
   "documentation": "docs/architecture/COMPONENT_STATE_CONTRACTS.md",

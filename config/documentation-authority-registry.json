@@ -291,8 +291,8 @@
       "classification": "current-supporting-evidence",
       "replacement": null,
       "inheritedBrandingReferences": 0,
-      "statusHeader": "Phase 2C implementation contract",
-      "contentSha256": "18a69286bdca66efac1326142c9723244648517811140cd2fd60f3f6b81b4576"
+      "statusHeader": "Phase 2C complete",
+      "contentSha256": "2fedbb0992296da0b1dee4ddcfc9947bb3a7d23d0a80318dfdbe2b24f3807bbe"
     },
     {
       "path": "docs/architecture/CONTENT_SAFETY_AND_TEST_INVENTORY.md",
@@ -562,7 +562,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 1,
       "statusHeader": "In progress",
-      "contentSha256": "53c293dd730e5e8c8f1da1ca9ef639afa5c9fd4a510f4191ff29a9a096a0718b"
+      "contentSha256": "225e26875bb0989a48c2bfe1f60e3c511f27b904d2293b64e9395c14872132fb"
     },
     {
       "path": "docs/architecture/PREVIEW_AND_EMBED_INVENTORY.md",

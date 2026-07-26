@@ -57,6 +57,7 @@ try {
 }
 
 if (contract.schemaVersion !== 1) fail('schemaVersion must be 1');
+if (contract.status !== 'phase-2c-complete') fail('status must be phase-2c-complete');
 if (!contract.controls || typeof contract.controls !== 'object' || Array.isArray(contract.controls)) {
   fail('controls must be an object');
 }

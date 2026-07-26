@@ -13,7 +13,7 @@ migration. It is intentionally split into independently reviewable slices:
 |---|---|---|
 | 2A | Semantic tokens, display modes, compatibility aliases, and drift gates | Complete — [PR 48](https://github.com/outlaw-dame/Mangane/pull/48) |
 | 2B | Phosphor dependency, typed semantic icon registry, migration map, and raw-import gate | Complete — [PR 49](https://github.com/outlaw-dame/Mangane/pull/49) |
-| 2C | Foundational controls and documented state contracts | In progress |
+| 2C | Foundational controls and documented state contracts | Complete — [PR 50](https://github.com/outlaw-dame/Mangane/pull/50) |
 | 2D | Automated accessibility harness, cross-engine visual baselines, and manual review evidence | Planned |
 
 Phase 2 is not complete until every roadmap deliverable and exit criterion is
