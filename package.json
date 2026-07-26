@@ -71,7 +71,11 @@
     "check:documentation-authority": "node scripts/check-documentation-authority.js",
     "test:documentation-authority": "node --test scripts/__tests__/check-documentation-authority.test.js",
     "postinstall": "yarn prepare:twemoji",
-    "prepare": "npx husky"
+    "prepare": "npx husky",
+    "test:e2e": "playwright test",
+    "test:e2e:update": "playwright test --update-snapshots",
+    "test:accessibility": "playwright test e2e/tests/accessibility.spec.ts",
+    "test:visual-baselines": "playwright test e2e/tests/visual-baseline.spec.ts"
   },
   "license": "AGPL-3.0-or-later",
   "browserslist": [
@@ -250,9 +254,11 @@
     "wicg-inert": "^3.1.1"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.10.2",
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
     "@jedmao/redux-mock-store": "^3.0.5",
+    "@playwright/test": "1.52.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/user-event": "^14.0.3",
@@ -281,6 +287,7 @@
     "lint-staged": ">=10",
     "raf": "^3.4.1",
     "react-intl-translations-manager": "^5.0.3",
+    "serve": "14.2.4",
     "stylelint": "^13.7.2",
     "stylelint-config-standard": "^22.0.0",
     "stylelint-scss": "^3.18.0",

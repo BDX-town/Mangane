@@ -1,6 +1,6 @@
 # Phase 2 Design Foundation
 
-Status: **In progress**
+Status: **Complete**
 
 Last updated: 2026-07-26
 
@@ -14,7 +14,7 @@ migration. It is intentionally split into independently reviewable slices:
 | 2A | Semantic tokens, display modes, compatibility aliases, and drift gates | Complete — [PR 48](https://github.com/outlaw-dame/Mangane/pull/48) |
 | 2B | Phosphor dependency, typed semantic icon registry, migration map, and raw-import gate | Complete — [PR 49](https://github.com/outlaw-dame/Mangane/pull/49) |
 | 2C | Foundational controls and documented state contracts | Complete — [PR 50](https://github.com/outlaw-dame/Mangane/pull/50) |
-| 2D | Automated accessibility harness, cross-engine visual baselines, and manual review evidence | Planned |
+| 2D | Automated accessibility harness, cross-engine visual baselines, and manual review evidence | Complete — [PR 51](https://github.com/outlaw-dame/Mangane/pull/51) |
 
 Phase 2 is not complete until every roadmap deliverable and exit criterion is
 merged, verified in CI, and free of unresolved review findings.
@@ -207,6 +207,55 @@ and tests. No stored data or remote contract requires rollback or cleanup.
 - Cross-engine visual equivalence and the broader automated accessibility
   harness remain explicit slice 2D work.
 
+## Slice 2D contract
+
+### Current behavior
+
+Jest-based accessibility tests verify login headings, field semantics, compose
+navigation, and reduced-motion behavior through JSDOM. Cross-engine visual
+equivalence and interaction behavior are undocumented and unverified.
+
+### Target behavior
+
+- Playwright runs accessibility and visual regression tests across Chromium and
+  WebKit at phone (390×844), narrow (320×800), tablet (768×1024), and desktop
+  (1440×900) viewports.
+- axe-core WCAG 2.2 AA audit runs against the foundational controls fixture.
+- Visual baselines capture each control section in light, dark, and
+  reduced-motion configurations. Diffs exceeding 1% pixel ratio fail.
+- Keyboard interaction tests verify tab order, roving tabindex, live-region
+  announcements, 44px touch targets, focus-visible ring, and
+  no-horizontal-scroll at reflow width.
+- `e2e/fixtures-site/` renders all nine foundational controls with design
+  tokens and canonical styles without webpack or React runtime.
+- CI workflow runs sharded Playwright with artifact upload and snapshot diffs.
+- Baselines are committed to `e2e/snapshots/`; test results and reports are
+  gitignored.
+
+### Security and privacy
+
+Fixtures use inline SVG data URIs with synthetic content. No secrets, user data,
+instance configuration, network requests, or authentication tokens are involved.
+The fixture server is a static file server with no backend.
+
+### Migration and rollback
+
+Rollback is a revert of the `e2e/` directory, `playwright.config.ts`, the CI
+workflow, and the `serve` / `@playwright/test` / `@axe-core/playwright` dev
+dependencies. No persisted data, remote contract, or production behavior is
+affected.
+
+### Risks and controls
+
+- Firefox/Playwright is unstable on macOS for axe-core evaluation; the project
+  is commented in local config but can be enabled in Linux CI.
+- WebKit macOS does not tab to buttons without a system preference; the strict
+  tab-order test is skipped on WebKit.
+- Visual baselines are platform-specific (font rendering); CI generates Linux
+  baselines independently.
+- The fixture uses design-token CSS custom properties extracted from the
+  canonical generated stylesheet to remain in sync with token changes.
+
 ## Phase 2 completion checklist
 
 - [x] Color, typography, spacing, radius, elevation, motion, and breakpoint tokens.
@@ -216,7 +265,7 @@ and tests. No stored data or remote contract requires rollback or cleanup.
 - [x] Foundational button, icon button, list row, card shell, chip, segmented
       control, field, avatar, and menu trigger.
 - [x] Focus-management and reduced-motion utilities.
-- [ ] Accessibility test harness and cross-engine visual regression baseline.
+- [x] Accessibility test harness and cross-engine visual regression baseline.
 - [x] Component state documentation and examples.
 - [x] Foundational components meet WCAG 2.2 AA targets.
 - [x] New raw icon-library imports are rejected outside the registry.

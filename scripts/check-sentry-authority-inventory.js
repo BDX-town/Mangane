@@ -37,9 +37,16 @@ assert.ok(read('webpack/production.js').includes('clean: true'), 'Production out
 assert.ok(read('webpack/development.js').includes('devtool: \'source-map\''), 'Development source maps must remain explicitly non-production');
 assert.ok(read('app/soapbox/store.ts').includes('devTools: BuildConfig.NODE_ENV !== \'production\''), 'Production Redux DevTools must remain disabled');
 const artifactWorkflow = read('.github/workflows/architecture-inventory.yml');
-assert.equal(manifest.callsites.filter(item => item.kind === 'artifact-upload').length, 1, 'Only the classified architecture inventory artifact may be uploaded');
+const artifactUploads = manifest.callsites.filter(item => item.kind === 'artifact-upload');
+const archArtifacts = artifactUploads.filter(item => item.path === '.github/workflows/architecture-inventory.yml');
+const e2eArtifacts = artifactUploads.filter(item => item.path === '.github/workflows/accessibility-visual-baselines.yml');
+assert.equal(archArtifacts.length, 1, 'Only one architecture inventory artifact upload is permitted');
+assert.equal(e2eArtifacts.length, 2, 'Accessibility baselines upload test results and snapshot diffs');
+assert.equal(artifactUploads.length, archArtifacts.length + e2eArtifacts.length, 'No unclassified artifact uploads are permitted');
 assert.ok(artifactWorkflow.includes('path: architecture-inventory/'), 'Artifact upload must remain limited to generated architecture evidence');
 assert.ok(artifactWorkflow.includes('retention-days: 30'), 'Architecture evidence retention must remain bounded to 30 days');
+const e2eWorkflow = read('.github/workflows/accessibility-visual-baselines.yml');
+assert.ok(e2eWorkflow.includes('retention-days: 7') || e2eWorkflow.includes('retention-days: 14'), 'Accessibility baseline artifacts must have bounded retention');
 
 process.stdout.write(`${JSON.stringify({
   schemaVersion: manifest.schemaVersion,

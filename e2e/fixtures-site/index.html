@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mangane Foundational Controls — Accessibility &amp; Visual Baseline</title>
+<style>
+/* Design tokens (inline for deterministic rendering without build) */
+:root {
+  --ds-font-family-ui: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ds-font-size-base: 0.9375rem;
+  --ds-font-size-sm: 0.875rem;
+  --ds-font-size-xs: 0.75rem;
+  --ds-font-weight-medium: 500;
+  --ds-font-weight-semibold: 600;
+  --ds-space-0: 0px;
+  --ds-space-1: 4px;
+  --ds-space-2: 8px;
+  --ds-space-3: 12px;
+  --ds-space-4: 16px;
+  --ds-space-5: 20px;
+  --ds-space-6: 24px;
+  --ds-space-8: 32px;
+  --ds-radius-button: 10px;
+  --ds-radius-card: 16px;
+  --ds-radius-control: 6px;
+  --ds-radius-round: 9999px;
+  --ds-elevation-0: none;
+  --ds-elevation-1: 0 1px 2px rgb(15 23 42 / 0.08);
+  --ds-elevation-2: 0 8px 24px rgb(15 23 42 / 0.12);
+  --ds-motion-duration-fast: 120ms;
+  --ds-motion-duration-standard: 180ms;
+  --ds-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ds-color-accent: #4338ca;
+  --ds-color-canvas: #f6f7f9;
+  --ds-color-canvas-elevated: #ffffff;
+  --ds-color-destructive: #b42318;
+  --ds-color-focus-ring: #1d4ed8;
+  --ds-color-on-accent: #ffffff;
+  --ds-color-on-destructive: #ffffff;
+  --ds-color-positive: #166534;
+  --ds-color-selected: #e7e5ff;
+  --ds-color-separator: #c9cdd6;
+  --ds-color-surface-primary: #ffffff;
+  --ds-color-surface-secondary: #eceef2;
+  --ds-color-text-primary: #17181c;
+  --ds-color-text-secondary: #444750;
+  --ds-color-text-tertiary: #5f636e;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ds-color-accent: #a5b4fc;
+    --ds-color-canvas: #111216;
+    --ds-color-canvas-elevated: #202229;
+    --ds-color-destructive: #ffb4ab;
+    --ds-color-focus-ring: #bfdbfe;
+    --ds-color-on-accent: #17122e;
+    --ds-color-on-destructive: #3b0906;
+    --ds-color-positive: #86efac;
+    --ds-color-selected: #2e325d;
+    --ds-color-separator: #454a55;
+    --ds-color-surface-primary: #191b20;
+    --ds-color-surface-secondary: #23262d;
+    --ds-color-text-primary: #f7f7f8;
+    --ds-color-text-secondary: #d1d4dc;
+    --ds-color-text-tertiary: #b4b8c2;
+    color-scheme: dark;
+  }
+}
+
+@media (forced-colors: active) {
+  :root {
+    --ds-color-accent: Highlight;
+    --ds-color-canvas: Canvas;
+    --ds-color-canvas-elevated: Canvas;
+    --ds-color-destructive: LinkText;
+    --ds-color-focus-ring: Highlight;
+    --ds-color-on-accent: HighlightText;
+    --ds-color-on-destructive: Canvas;
+    --ds-color-selected: Highlight;
+    --ds-color-separator: CanvasText;
+    --ds-color-surface-primary: Canvas;
+    --ds-color-surface-secondary: ButtonFace;
+    --ds-color-text-primary: CanvasText;
+    --ds-color-text-secondary: CanvasText;
+    --ds-color-text-tertiary: GrayText;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ds-motion-duration-fast: 0.01ms;
+    --ds-motion-duration-standard: 0.01ms;
+  }
+}
+
+/* Foundational control styles (from app/styles/components/foundational-controls.scss) */
+.ds-button,
+.ds-icon-button,
+.ds-list-row,
+.ds-chip,
+.ds-segmented-control__option {
+  transition:
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-standard),
+    border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-standard),
+    color var(--ds-motion-duration-fast) var(--ds-motion-easing-standard),
+    box-shadow var(--ds-motion-duration-fast) var(--ds-motion-easing-standard);
+}
+.ds-button:focus-visible,
+.ds-icon-button:focus-visible,
+.ds-list-row:focus-visible,
+.ds-chip:focus-visible,
+.ds-segmented-control__option:focus-visible {
+  outline: 3px solid var(--ds-color-focus-ring);
+  outline-offset: 2px;
+}
+.ds-button, .ds-icon-button, .ds-list-row, .ds-segmented-control__option { min-height: 44px; }
+.ds-icon-button { min-width: 44px; }
+
+.ds-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-2) var(--ds-space-4);
+  font-family: var(--ds-font-family-ui);
+  font-size: var(--ds-font-size-base);
+  font-weight: var(--ds-font-weight-semibold);
+  color: var(--ds-color-on-accent);
+  background: var(--ds-color-accent);
+  border: none;
+  border-radius: var(--ds-radius-button);
+  cursor: pointer;
+}
+.ds-button--secondary {
+  color: var(--ds-color-text-primary);
+  background: var(--ds-color-surface-secondary);
+}
+.ds-button--destructive {
+  color: var(--ds-color-on-destructive);
+  background: var(--ds-color-destructive);
+}
+
+.ds-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ds-space-2);
+  color: var(--ds-color-text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: var(--ds-radius-control);
+  cursor: pointer;
+}
+
+.ds-list-row {
+  display: flex;
+  gap: var(--ds-space-3);
+  align-items: center;
+  width: 100%;
+  padding: var(--ds-space-3) var(--ds-space-4);
+  color: var(--ds-color-text-primary);
+  text-align: start;
+  background: var(--ds-color-surface-primary);
+  border: none;
+  border-radius: var(--ds-radius-control);
+}
+.ds-list-row--selected { background: var(--ds-color-selected); }
+.ds-list-row__content { flex: 1 1 auto; min-width: 0; }
+.ds-list-row__leading, .ds-list-row__trailing { display: inline-flex; flex: 0 0 auto; align-items: center; }
+
+.ds-chip {
+  display: inline-flex;
+  gap: var(--ds-space-1);
+  align-items: center;
+  min-height: 32px;
+  padding: var(--ds-space-1) var(--ds-space-3);
+  font-family: var(--ds-font-family-ui);
+  font-size: var(--ds-font-size-sm);
+  color: var(--ds-color-text-secondary);
+  background: var(--ds-color-surface-secondary);
+  border: 1px solid var(--ds-color-separator);
+  border-radius: var(--ds-radius-round);
+  cursor: default;
+}
+.ds-chip--selected {
+  color: var(--ds-color-text-primary);
+  background: var(--ds-color-selected);
+  border-color: var(--ds-color-accent);
+}
+button.ds-chip { cursor: pointer; }
+
+.ds-segmented-control {
+  display: inline-flex;
+  padding: var(--ds-space-1);
+  background: var(--ds-color-surface-secondary);
+  border: 1px solid var(--ds-color-separator);
+  border-radius: var(--ds-radius-control);
+}
+.ds-segmented-control__option {
+  padding: var(--ds-space-2) var(--ds-space-4);
+  font-family: var(--ds-font-family-ui);
+  font-size: var(--ds-font-size-sm);
+  font-weight: var(--ds-font-weight-medium);
+  color: var(--ds-color-text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: var(--ds-radius-button);
+  cursor: pointer;
+}
+.ds-segmented-control__option--selected {
+  color: var(--ds-color-text-primary);
+  background: var(--ds-color-surface-primary);
+  box-shadow: var(--ds-elevation-1);
+}
+
+.ds-card {
+  padding: var(--ds-space-4);
+  background: var(--ds-color-surface-primary);
+  border-radius: var(--ds-radius-card);
+  box-shadow: var(--ds-elevation-1);
+}
+
+.ds-avatar {
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--ds-radius-round);
+  background: var(--ds-color-surface-secondary);
+  object-fit: cover;
+}
+
+.ds-field { margin-bottom: var(--ds-space-4); }
+.ds-field__label {
+  display: block;
+  margin-bottom: var(--ds-space-1);
+  font-family: var(--ds-font-family-ui);
+  font-size: var(--ds-font-size-sm);
+  font-weight: var(--ds-font-weight-medium);
+  color: var(--ds-color-text-primary);
+}
+.ds-field__input {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: var(--ds-space-2) var(--ds-space-3);
+  font-family: var(--ds-font-family-ui);
+  font-size: var(--ds-font-size-base);
+  color: var(--ds-color-text-primary);
+  background: var(--ds-color-surface-primary);
+  border: 1px solid var(--ds-color-separator);
+  border-radius: var(--ds-radius-control);
+}
+.ds-field__input:focus-visible {
+  outline: 3px solid var(--ds-color-focus-ring);
+  outline-offset: 2px;
+}
+.ds-field__input[aria-invalid="true"] { border-color: var(--ds-color-destructive); }
+.ds-field__hint {
+  margin-top: var(--ds-space-1);
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-color-text-tertiary);
+}
+.ds-field__error {
+  margin-top: var(--ds-space-1);
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-color-destructive);
+}
+
+.ds-button:disabled,
+.ds-icon-button:disabled,
+.ds-list-row:disabled,
+.ds-chip:disabled,
+.ds-segmented-control__option:disabled,
+[aria-disabled='true'].ds-button,
+[aria-disabled='true'].ds-list-row {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-button, .ds-icon-button, .ds-list-row, .ds-chip, .ds-segmented-control__option {
+    transition-duration: 0.01ms;
+    transform: none;
+  }
+}
+@media (forced-colors: active) {
+  .ds-button, .ds-icon-button, .ds-list-row, .ds-chip, .ds-segmented-control__option {
+    border: 1px solid ButtonText;
+  }
+  .ds-button:focus-visible, .ds-icon-button:focus-visible, .ds-list-row:focus-visible, .ds-chip:focus-visible, .ds-segmented-control__option:focus-visible {
+    outline-color: Highlight;
+  }
+}
+
+/* Page layout */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--ds-font-family-ui);
+  font-size: var(--ds-font-size-base);
+  color: var(--ds-color-text-primary);
+  background: var(--ds-color-canvas);
+  padding: var(--ds-space-6);
+}
+h1 { font-size: 1.5rem; margin-bottom: var(--ds-space-4); }
+h2 { font-size: 1.125rem; margin: var(--ds-space-6) 0 var(--ds-space-3); color: var(--ds-color-text-secondary); }
+section { margin-bottom: var(--ds-space-6); }
+.control-row { display: flex; flex-wrap: wrap; gap: var(--ds-space-3); align-items: center; margin-bottom: var(--ds-space-3); }
+.stack { display: flex; flex-direction: column; gap: var(--ds-space-3); max-width: 400px; }
+</style>
+</head>
+<body>
+<main>
+<h1 id="page-title">Foundational Controls Baseline</h1>
+
+<!-- Button -->
+<section aria-labelledby="section-button">
+<h2 id="section-button">Button</h2>
+<div class="control-row">
+  <button class="ds-button" type="button">Primary</button>
+  <button class="ds-button ds-button--secondary" type="button">Secondary</button>
+  <button class="ds-button ds-button--destructive" type="button">Destructive</button>
+  <button class="ds-button" type="button" disabled>Disabled</button>
+  <button class="ds-button" type="button" aria-busy="true" aria-disabled="true">Loading…</button>
+  <a href="#" class="ds-button" role="link">Link button</a>
+</div>
+</section>
+
+<!-- Icon Button -->
+<section aria-labelledby="section-icon-button">
+<h2 id="section-icon-button">Icon Button</h2>
+<div class="control-row">
+  <button class="ds-icon-button" type="button" aria-label="Bookmark">
+    <svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M184,32H72A16,16,0,0,0,56,48V224a8,8,0,0,0,12.24,6.78L128,193.43l59.77,37.35A8,8,0,0,0,200,224V48A16,16,0,0,0,184,32Z"/></svg>
+  </button>
+  <button class="ds-icon-button" type="button" aria-label="Share" disabled>
+    <svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M229.66,109.66l-48,48a8,8,0,0,1-11.32-11.32L204.69,112H165a88,88,0,0,0-85.23,66,8,8,0,0,1-15.5-4A104,104,0,0,1,165,96h39.71L170.34,61.66a8,8,0,0,1,11.32-11.32l48,48A8,8,0,0,1,229.66,109.66Z"/></svg>
+  </button>
+  <button class="ds-icon-button" type="button" aria-label="Favourite" aria-pressed="true">
+    <svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,98a57.63,57.63,0,0,1-17,41L133.7,229.62a8,8,0,0,1-11.4,0L33,139a58,58,0,0,1,82-82.1L128,69.05l13.09-12.19A58,58,0,0,1,240,98Z"/></svg>
+  </button>
+</div>
+</section>
+
+<!-- Card -->
+<section aria-labelledby="section-card">
+<h2 id="section-card">Card Shell</h2>
+<article class="ds-card" aria-label="Example post card">
+  <p>A calm, content-led editorial social system with restrained surfaces and rigorous spacing.</p>
+</article>
+</section>
+
+<!-- Avatar -->
+<section aria-labelledby="section-avatar">
+<h2 id="section-avatar">Avatar</h2>
+<div class="control-row">
+  <img class="ds-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Crect width='48' height='48' fill='%234338ca'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' dy='.35em' fill='white' font-size='20'%3EM%3C/text%3E%3C/svg%3E" alt="User M avatar">
+  <img class="ds-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Crect width='48' height='48' fill='%23999'/%3E%3C/svg%3E" alt="">
+</div>
+</section>
+
+<!-- Chip -->
+<section aria-labelledby="section-chip">
+<h2 id="section-chip">Chip</h2>
+<div class="control-row">
+  <span class="ds-chip">Label</span>
+  <button class="ds-chip ds-chip--selected" type="button" aria-pressed="true">Selected</button>
+  <button class="ds-chip" type="button" aria-pressed="false">Unselected</button>
+  <button class="ds-chip" type="button" disabled>Disabled</button>
+</div>
+</section>
+
+<!-- List Row -->
+<section aria-labelledby="section-list-row">
+<h2 id="section-list-row">List Row</h2>
+<div class="stack">
+  <button class="ds-list-row" type="button">
+    <span class="ds-list-row__leading">
+      <svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><circle cx="128" cy="128" r="96"/></svg>
+    </span>
+    <span class="ds-list-row__content">Default row</span>
+    <span class="ds-list-row__trailing" aria-hidden="true">›</span>
+  </button>
+  <button class="ds-list-row ds-list-row--selected" type="button" aria-current="true">
+    <span class="ds-list-row__leading">
+      <svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><circle cx="128" cy="128" r="96"/></svg>
+    </span>
+    <span class="ds-list-row__content">Selected row</span>
+    <span class="ds-list-row__trailing" aria-hidden="true">›</span>
+  </button>
+  <button class="ds-list-row" type="button" disabled>
+    <span class="ds-list-row__content">Disabled row</span>
+  </button>
+</div>
+</section>
+
+<!-- Segmented Control -->
+<section aria-labelledby="section-segmented">
+<h2 id="section-segmented">Segmented Control</h2>
+<div class="ds-segmented-control" role="radiogroup" aria-label="View mode">
+  <button class="ds-segmented-control__option ds-segmented-control__option--selected" role="radio" aria-checked="true" type="button">Posts</button>
+  <button class="ds-segmented-control__option" role="radio" aria-checked="false" type="button">Replies</button>
+  <button class="ds-segmented-control__option" role="radio" aria-checked="false" type="button" disabled>Media</button>
+</div>
+</section>
+
+<!-- Field -->
+<section aria-labelledby="section-field">
+<h2 id="section-field">Field</h2>
+<div class="stack">
+  <div class="ds-field">
+    <label class="ds-field__label" for="field-username">Username</label>
+    <input class="ds-field__input" id="field-username" type="text" placeholder="@handle" aria-describedby="field-username-hint">
+    <p class="ds-field__hint" id="field-username-hint">Your public handle on this instance.</p>
+  </div>
+  <div class="ds-field">
+    <label class="ds-field__label" for="field-password">Password</label>
+    <input class="ds-field__input" id="field-password" type="password" aria-invalid="true" aria-describedby="field-password-error">
+    <p class="ds-field__error" id="field-password-error" role="alert">Password must be at least 8 characters.</p>
+  </div>
+  <div class="ds-field">
+    <label class="ds-field__label" for="field-disabled">Disabled field</label>
+    <input class="ds-field__input" id="field-disabled" type="text" disabled value="Cannot edit">
+  </div>
+</div>
+</section>
+
+<!-- Menu Trigger -->
+<section aria-labelledby="section-menu">
+<h2 id="section-menu">Menu Trigger</h2>
+<div class="control-row">
+  <button class="ds-icon-button" type="button" aria-label="More actions" aria-haspopup="menu" aria-expanded="false">
+    <svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><circle cx="128" cy="60" r="16"/><circle cx="128" cy="128" r="16"/><circle cx="128" cy="196" r="16"/></svg>
+  </button>
+</div>
+</section>
+
+<!-- Live region for announcements -->
+<div aria-live="polite" aria-atomic="true" class="sr-only" id="live-region"></div>
+</main>
+
+<script>
+// Minimal interaction: segmented control keyboard roving
+const segmented = document.querySelector('[role="radiogroup"]');
+if (segmented) {
+  const options = Array.from(segmented.querySelectorAll('[role="radio"]:not(:disabled)'));
+  segmented.addEventListener('keydown', (e) => {
+    const current = options.indexOf(document.activeElement);
+    if (current < 0) return;
+    let next = -1;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (current + 1) % options.length;
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (current - 1 + options.length) % options.length;
+    if (next >= 0) {
+      e.preventDefault();
+      options.forEach(o => { o.setAttribute('aria-checked', 'false'); o.classList.remove('ds-segmented-control__option--selected'); o.setAttribute('tabindex', '-1'); });
+      options[next].setAttribute('aria-checked', 'true');
+      options[next].classList.add('ds-segmented-control__option--selected');
+      options[next].setAttribute('tabindex', '0');
+      options[next].focus();
+      document.getElementById('live-region').textContent = options[next].textContent + ' selected';
+    }
+  });
+  // Set initial tabindex
+  options.forEach((o, i) => o.setAttribute('tabindex', o.getAttribute('aria-checked') === 'true' ? '0' : '-1'));
+}
+</script>
+</body>
+</html>

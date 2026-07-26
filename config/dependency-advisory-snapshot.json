@@ -226,6 +226,20 @@
       "vulnerableVersions": "2.0.6"
     },
     {
+      "advisoryId": "1113715",
+      "dependents": [
+        "serve@npm:14.2.4"
+      ],
+      "issue": "ajv has ReDoS when using `$data` option",
+      "package": "ajv",
+      "severity": "moderate",
+      "treeVersions": [
+        "8.12.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-2g4f-4pwh-qvx6",
+      "vulnerableVersions": ">=7.0.0-alpha.0 <8.18.0"
+    },
+    {
       "advisoryId": "1117574",
       "dependents": [
         "mangane-fe@workspace:."
@@ -1608,13 +1622,15 @@
     {
       "advisoryId": "1113459",
       "dependents": [
-        "babel-core@npm:5.8.38"
+        "babel-core@npm:5.8.38",
+        "serve-handler@npm:6.1.6"
       ],
       "issue": "minimatch has a ReDoS via repeated wildcards with non-matching literal in pattern",
       "package": "minimatch",
       "severity": "high",
       "treeVersions": [
-        "2.0.10"
+        "2.0.10",
+        "3.1.2"
       ],
       "url": "https://github.com/advisories/GHSA-3ppc-4f35-3m26",
       "vulnerableVersions": "<3.1.3"
@@ -1622,13 +1638,15 @@
     {
       "advisoryId": "1113538",
       "dependents": [
-        "babel-core@npm:5.8.38"
+        "babel-core@npm:5.8.38",
+        "serve-handler@npm:6.1.6"
       ],
       "issue": "minimatch has ReDoS: matchOne() combinatorial backtracking via multiple non-adjacent GLOBSTAR segments",
       "package": "minimatch",
       "severity": "high",
       "treeVersions": [
-        "2.0.10"
+        "2.0.10",
+        "3.1.2"
       ],
       "url": "https://github.com/advisories/GHSA-7r86-cg39-jmmj",
       "vulnerableVersions": "<3.1.3"
@@ -1636,16 +1654,32 @@
     {
       "advisoryId": "1113546",
       "dependents": [
-        "babel-core@npm:5.8.38"
+        "babel-core@npm:5.8.38",
+        "serve-handler@npm:6.1.6"
       ],
       "issue": "minimatch ReDoS: nested *() extglobs generate catastrophically backtracking regular expressions",
       "package": "minimatch",
       "severity": "high",
       "treeVersions": [
-        "2.0.10"
+        "2.0.10",
+        "3.1.2"
       ],
       "url": "https://github.com/advisories/GHSA-23c5-xmqv-rm74",
       "vulnerableVersions": "<3.1.4"
+    },
+    {
+      "advisoryId": "1106812",
+      "dependents": [
+        "compression@npm:1.7.4"
+      ],
+      "issue": "on-headers is vulnerable to http response header manipulation",
+      "package": "on-headers",
+      "severity": "low",
+      "treeVersions": [
+        "1.0.2"
+      ],
+      "url": "https://github.com/advisories/GHSA-76c9-3jph-rj3q",
+      "vulnerableVersions": "<1.1.0"
     },
     {
       "advisoryId": "1103364",
@@ -1660,6 +1694,20 @@
       ],
       "url": "https://github.com/advisories/GHSA-8g77-54rh-46hx",
       "vulnerableVersions": "<=3.0.0"
+    },
+    {
+      "advisoryId": "1109208",
+      "dependents": [
+        "@playwright/test@npm:1.52.0"
+      ],
+      "issue": "Playwright downloads and installs browsers without verifying the authenticity of the SSL certificate",
+      "package": "playwright",
+      "severity": "high",
+      "treeVersions": [
+        "1.52.0"
+      ],
+      "url": "https://github.com/advisories/GHSA-7mvr-c777-76hp",
+      "vulnerableVersions": "<1.55.1"
     },
     {
       "advisoryId": "1093539",
@@ -2375,5 +2423,6 @@
       "url": "https://github.com/advisories/GHSA-96hv-2xvq-fx4p",
       "vulnerableVersions": ">=8.0.0 <8.21.0"
     }
-  ]
+  ],
+  "generatedAt": "2026-07-26T22:51:59.012Z"
 }

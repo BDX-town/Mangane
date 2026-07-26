@@ -30,6 +30,22 @@
   },
   "callsites": [
     {
+      "id": "artifact-upload:.github/workflows/accessibility-visual-baselines.yml:40",
+      "kind": "artifact-upload",
+      "path": ".github/workflows/accessibility-visual-baselines.yml",
+      "line": 40,
+      "expression": "uses: actions/upload-artifact@v4",
+      "classification": "ci-controlled-artifact"
+    },
+    {
+      "id": "artifact-upload:.github/workflows/accessibility-visual-baselines.yml:50",
+      "kind": "artifact-upload",
+      "path": ".github/workflows/accessibility-visual-baselines.yml",
+      "line": 50,
+      "expression": "uses: actions/upload-artifact@v4",
+      "classification": "ci-controlled-artifact"
+    },
+    {
       "id": "artifact-upload:.github/workflows/architecture-inventory.yml:107",
       "kind": "artifact-upload",
       "path": ".github/workflows/architecture-inventory.yml",
@@ -1287,7 +1303,7 @@
     }
   ],
   "counts": {
-    "artifact-upload": 1,
+    "artifact-upload": 3,
     "console": 71,
     "notification-payload": 13,
     "environment-read": 64,

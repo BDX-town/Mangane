@@ -1,0 +1,54 @@
+name: Accessibility & Visual Baselines
+
+on:
+  push:
+    branches: [main, 'phase-*']
+  pull_request:
+    branches: [main, 'phase-*']
+
+jobs:
+  e2e-baselines:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1/3, 2/3, 3/3]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium webkit
+
+      - name: Run Playwright tests
+        run: npx playwright test --shard=${{ matrix.shard }} --update-snapshots
+        env:
+          CI: 'true'
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-results-${{ strategy.job-index }}
+          path: |
+            e2e/test-results/
+            e2e/report/
+          retention-days: 7
+
+      - name: Upload snapshot diffs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-snapshot-diffs-${{ strategy.job-index }}
+          path: e2e/test-results/**/*-diff.png
+          retention-days: 14

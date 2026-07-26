@@ -151,8 +151,8 @@
       "classification": "current-supporting-evidence",
       "replacement": null,
       "inheritedBrandingReferences": 0,
-      "statusHeader": "Phase 0G enforced",
-      "contentSha256": "38292461450fb69c6f1159eb794582f085452d1ad97838c208e93b3278819cde"
+      "statusHeader": "Phase 2D complete",
+      "contentSha256": "fd1e57c63564a5188b13e5b1689f69f4164c99ac9f3bf2348eaf32e1d9f7ea99"
     },
     {
       "path": "docs/architecture/ACCOUNT_ISOLATION_MATRIX.md",
@@ -561,8 +561,8 @@
       "classification": "current-supporting-evidence",
       "replacement": null,
       "inheritedBrandingReferences": 1,
-      "statusHeader": "In progress",
-      "contentSha256": "225e26875bb0989a48c2bfe1f60e3c511f27b904d2293b64e9395c14872132fb"
+      "statusHeader": "Complete",
+      "contentSha256": "83a0e7eb3830415d53c624d5d92d60b1ffadfcee25ec353208078933b0b3eb72"
     },
     {
       "path": "docs/architecture/PREVIEW_AND_EMBED_INVENTORY.md",
