@@ -830,6 +830,14 @@
       "classification": "test-only"
     },
     {
+      "id": "environment-read:scripts/__tests__/design-token-foundation.test.js:41",
+      "kind": "environment-read",
+      "path": "scripts/__tests__/design-token-foundation.test.js",
+      "line": 41,
+      "expression": "env: { ...process.env, DESIGN_TOKEN_ROOT: root },",
+      "classification": "test-only"
+    },
+    {
       "id": "environment-read:scripts/check-api-transport-authority-inventory.js:6",
       "kind": "environment-read",
       "path": "scripts/check-api-transport-authority-inventory.js",
@@ -923,6 +931,14 @@
       "path": "scripts/check-design-component-authority-inventory.js",
       "line": 9,
       "expression": "const root = path.resolve(process.env.DESIGN_AUTHORITY_INVENTORY_ROOT || path.resolve(__dirname, '..'));",
+      "classification": "repository-tooling"
+    },
+    {
+      "id": "environment-read:scripts/check-design-tokens.js:9",
+      "kind": "environment-read",
+      "path": "scripts/check-design-tokens.js",
+      "line": 9,
+      "expression": "const root = path.resolve(process.env.DESIGN_TOKEN_ROOT || path.resolve(__dirname, '..'));",
       "classification": "repository-tooling"
     },
     {
@@ -1234,7 +1250,7 @@
     "artifact-upload": 1,
     "console": 71,
     "notification-payload": 13,
-    "environment-read": 57,
+    "environment-read": 59,
     "clipboard": 3,
     "error-boundary": 2,
     "devtools": 1,

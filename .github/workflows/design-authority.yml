@@ -10,8 +10,10 @@ on:
       - 'app/styles/**'
       - 'config/component-ownership-manifest.json'
       - 'config/design-component-authority-inventory.json'
+      - 'config/design-tokens.json'
       - 'docs/architecture/**'
       - 'scripts/**design**'
+      - 'scripts/**token**'
       - 'scripts/__tests__/check-design-component-authority-inventory.test.js'
       - 'tailwind/**'
       - 'tailwind.config.js'
@@ -27,7 +29,9 @@ on:
       - 'app/styles/**'
       - 'config/component-ownership-manifest.json'
       - 'config/design-component-authority-inventory.json'
+      - 'config/design-tokens.json'
       - 'scripts/**design**'
+      - 'scripts/**token**'
       - 'tailwind/**'
       - 'tailwind.config.js'
 
@@ -47,3 +51,7 @@ jobs:
         run: node scripts/check-design-component-authority-inventory.js
       - name: Run authority mutation tests
         run: node --test scripts/__tests__/check-design-component-authority-inventory.test.js
+      - name: Verify semantic design tokens and compatibility aliases
+        run: node scripts/check-design-tokens.js
+      - name: Run design token contract tests
+        run: node --test scripts/__tests__/design-token-foundation.test.js

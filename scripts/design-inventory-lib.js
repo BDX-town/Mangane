@@ -72,7 +72,7 @@ const buildComponents = root => {
 
 const styleClassification = relative => {
   if (relative === 'app/styles/application.scss') return 'global-entry-authority';
-  if (/\/(?:themes|variables|mixins)\.(?:s?css|sass)$/.test(relative)) return 'token-authority';
+  if (/\/(?:design-tokens\.generated|themes|variables|mixins)\.(?:s?css|sass)$/.test(relative)) return 'token-authority';
   if (relative.includes('/components/')) return 'shared-component-style';
   if (relative.includes('/features/')) return 'feature-style';
   if (relative.includes('/rtl.')) return 'rtl-compatibility';
@@ -176,12 +176,13 @@ const buildDesignInventory = root => {
 
   return {
     schemaVersion: 1,
-    status: 'phase-0f-verified',
+    status: 'phase-2-foundation-in-progress',
     generatedFrom: ['app/soapbox/components', 'app/soapbox/containers', 'app/soapbox/features', 'app/soapbox/pages', 'app/styles', 'all app/soapbox icon and interaction callsites'],
     authorities: {
       componentOwnership: 'components[].owner',
       globalStyleEntry: 'app/styles/application.scss',
-      tokens: ['app/styles/variables.scss', 'app/styles/themes.scss', 'tailwind.config.js', 'tailwind/colors.js'],
+      tokens: ['config/design-tokens.json', 'app/styles/design-tokens.generated.scss'],
+      legacyTokenBridges: ['app/styles/variables.scss', 'app/styles/themes.scss', 'tailwind.config.js', 'tailwind/colors.js'],
       iconMigrationTarget: 'Phosphor-compatible adapter before provider replacement',
       motionPolicy: 'app/styles/accessibility.scss',
     },
@@ -202,19 +203,21 @@ const buildDesignInventory = root => {
       },
       {
         concern: 'tokens',
-        sources: ['app/styles/variables.scss', 'app/styles/themes.scss', 'tailwind.config.js', 'tailwind/colors.js'],
-        disposition: 'documented-multi-source-authority',
+        sources: ['config/design-tokens.json', 'app/styles/design-tokens.generated.scss'],
+        compatibilitySources: ['app/styles/variables.scss', 'app/styles/themes.scss', 'tailwind.config.js', 'tailwind/colors.js'],
+        disposition: 'canonical-source-with-generated-runtime-and-legacy-bridges',
       },
     ],
     framework7: {
       currentImports: framework7,
+      compatibilityContract: 'config/design-tokens.json#framework7Aliases',
       replacementRule: 'A replacement must preserve routes, labels, keyboard behavior, focus restoration, reduced motion, gestures, and target sizes.',
     },
     baselines: {
       minimumPointerTargetCssPixels: 44,
       reducedMotionImplemented: true,
       focusRestorationRequiredForOverlays: true,
-      automatedContrastTarget: 'WCAG 2.1 AA',
+      automatedContrastTarget: 'WCAG 2.2 AA',
       breakpoints: { sm: '581px', md: '768px', lg: '976px', xl: '1280px' },
       screenshotPlan: 'docs/architecture/SCREENSHOT_AND_INTERACTION_BASELINE_PLAN.md',
     },

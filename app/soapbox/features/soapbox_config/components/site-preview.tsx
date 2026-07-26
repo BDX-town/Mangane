@@ -33,6 +33,8 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
     {
       'bg-white': !dark,
       'bg-slate-900': dark,
+      'theme-mode-light': !dark,
+      'theme-mode-dark': dark,
     });
 
   return (

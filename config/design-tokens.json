@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "status": "phase-2-foundation",
+  "primitives": {
+    "typography": {
+      "family-ui": "'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      "family-editorial": "'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      "family-mono": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+      "size-xs": "0.75rem",
+      "size-sm": "0.875rem",
+      "size-base": "0.9375rem",
+      "size-lg": "1.0625rem",
+      "size-xl": "1.25rem",
+      "size-2xl": "1.5rem",
+      "size-3xl": "2rem",
+      "line-tight": "1.2",
+      "line-body": "1.5",
+      "line-reading": "1.65",
+      "weight-regular": "400",
+      "weight-medium": "500",
+      "weight-semibold": "600",
+      "weight-bold": "700"
+    },
+    "space": {
+      "0": "0px",
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "5": "20px",
+      "6": "24px",
+      "8": "32px",
+      "10": "40px",
+      "12": "48px",
+      "16": "64px",
+      "20": "80px"
+    },
+    "radius": {
+      "control": "6px",
+      "button": "10px",
+      "card": "16px",
+      "sheet": "20px",
+      "media": "14px",
+      "round": "9999px"
+    },
+    "elevation": {
+      "0": "none",
+      "1": "0 1px 2px rgb(15 23 42 / 0.08)",
+      "2": "0 8px 24px rgb(15 23 42 / 0.12)",
+      "3": "0 20px 48px rgb(15 23 42 / 0.18)"
+    },
+    "motion": {
+      "duration-fast": "120ms",
+      "duration-standard": "180ms",
+      "duration-slow": "280ms",
+      "easing-standard": "cubic-bezier(0.2, 0, 0, 1)",
+      "easing-emphasized": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+      "distance-small": "4px",
+      "distance-medium": "12px"
+    },
+    "breakpoint": {
+      "sm": "581px",
+      "md": "768px",
+      "lg": "976px",
+      "xl": "1280px"
+    }
+  },
+  "modes": {
+    "light": {
+      "color": {
+        "canvas": "#f6f7f9",
+        "canvas-elevated": "#ffffff",
+        "surface-primary": "#ffffff",
+        "surface-secondary": "#eceef2",
+        "text-primary": "#17181c",
+        "text-secondary": "#444750",
+        "text-tertiary": "#5f636e",
+        "separator": "#c9cdd6",
+        "accent": "#4338ca",
+        "on-accent": "#ffffff",
+        "selected": "#e7e5ff",
+        "positive": "#166534",
+        "caution": "#92400e",
+        "destructive": "#b42318",
+        "on-destructive": "#ffffff",
+        "information": "#075985",
+        "focus-ring": "#1d4ed8",
+        "overlay": "#17181c"
+      }
+    },
+    "dark": {
+      "color": {
+        "canvas": "#111216",
+        "canvas-elevated": "#202229",
+        "surface-primary": "#191b20",
+        "surface-secondary": "#23262d",
+        "text-primary": "#f7f7f8",
+        "text-secondary": "#d1d4dc",
+        "text-tertiary": "#b4b8c2",
+        "separator": "#454a55",
+        "accent": "#a5b4fc",
+        "on-accent": "#17122e",
+        "selected": "#2e325d",
+        "positive": "#86efac",
+        "caution": "#fde68a",
+        "destructive": "#ffb4ab",
+        "on-destructive": "#3b0906",
+        "information": "#7dd3fc",
+        "focus-ring": "#bfdbfe",
+        "overlay": "#000000"
+      }
+    },
+    "increasedContrast": {
+      "light": {
+        "separator": "#6b7280",
+        "focus-ring": "#1e3a8a"
+      },
+      "dark": {
+        "separator": "#d1d5db",
+        "focus-ring": "#ffffff"
+      }
+    },
+    "forcedColors": {
+      "color": {
+        "canvas": "Canvas",
+        "canvas-elevated": "Canvas",
+        "surface-primary": "Canvas",
+        "surface-secondary": "ButtonFace",
+        "text-primary": "CanvasText",
+        "text-secondary": "CanvasText",
+        "text-tertiary": "GrayText",
+        "separator": "CanvasText",
+        "accent": "Highlight",
+        "on-accent": "HighlightText",
+        "selected": "Highlight",
+        "positive": "LinkText",
+        "caution": "CanvasText",
+        "destructive": "LinkText",
+        "on-destructive": "Canvas",
+        "information": "LinkText",
+        "focus-ring": "Highlight",
+        "overlay": "CanvasText"
+      }
+    }
+  },
+  "reducedMotion": {
+    "duration-fast": "0.01ms",
+    "duration-standard": "0.01ms",
+    "duration-slow": "0.01ms",
+    "distance-small": "0px",
+    "distance-medium": "0px"
+  },
+  "framework7Aliases": {
+    "--f7-theme-color": "--ds-color-accent",
+    "--f7-page-bg-color": "--ds-color-canvas",
+    "--f7-text-color": "--ds-color-text-primary",
+    "--f7-block-bg-color": "--ds-color-surface-primary",
+    "--f7-list-bg-color": "--ds-color-surface-primary",
+    "--f7-bars-bg-color": "--ds-color-canvas-elevated",
+    "--f7-border-color": "--ds-color-separator"
+  }
+}

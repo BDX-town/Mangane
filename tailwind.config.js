@@ -1,21 +1,22 @@
+const designTokens = require('./config/design-tokens.json');
 const { parseColorMatrix } = require('./tailwind/colors');
+const { buildDesignTokenExtension } = require('./tailwind/design-token-extension');
+
+const designTokenExtension = buildDesignTokenExtension(designTokens);
 
 module.exports = {
   content: ['./app/**/*.{html,js,ts,tsx}', './custom/instance/**/*.html'],
   darkMode: 'class',
   theme: {
-    screens: {
-      sm: '581px',
-      md: '768px',
-      lg: '976px',
-      xl: '1280px',
-    },
+    screens: designTokens.primitives.breakpoint,
     extend: {
       boxShadow: {
         '3xl': '0 25px 75px -15px rgba(0, 0, 0, 0.25)',
+        ...designTokenExtension.boxShadow,
       },
       fontSize: {
         base: '0.9375rem',
+        ...designTokenExtension.fontSize,
       },
       fontFamily: {
         'sans': [
@@ -35,6 +36,7 @@ module.exports = {
           'Segoe UI Symbol',
           'Noto Color Emoji',
         ],
+        ...designTokenExtension.fontFamily,
       },
       colors: parseColorMatrix({
         // Define color matrix (of available colors)
@@ -48,6 +50,13 @@ module.exports = {
         'gradient-end': true,
         'sea-blue': true,
       }),
+      backgroundColor: designTokenExtension.backgroundColor,
+      borderColor: designTokenExtension.borderColor,
+      borderRadius: designTokenExtension.borderRadius,
+      spacing: designTokenExtension.spacing,
+      textColor: designTokenExtension.textColor,
+      transitionDuration: designTokenExtension.transitionDuration,
+      transitionTimingFunction: designTokenExtension.transitionTimingFunction,
       animation: {
         'fadein': 'fadein 0.5s ease-in-out',
         'sonar-scale-4': 'sonar-scale-4 3s linear infinite',

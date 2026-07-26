@@ -30,6 +30,16 @@ assert.ok((manifest.counts.behaviors.gesture || 0) > 0, 'Gesture behavior invent
 assert.ok((manifest.counts.behaviors.focus || 0) > 0, 'Focus behavior inventory must not be empty');
 assert.ok((manifest.counts.behaviors['live-region'] || 0) > 0, 'Live-region inventory must not be empty');
 assert.deepStrictEqual(manifest.framework7.currentImports, [], 'Framework7 imports require explicit compatibility and accessibility classification');
+assert.equal(
+  manifest.framework7.compatibilityContract,
+  'config/design-tokens.json#framework7Aliases',
+  'Framework7 token compatibility contract drifted',
+);
+assert.deepStrictEqual(
+  manifest.authorities.tokens,
+  ['config/design-tokens.json', 'app/styles/design-tokens.generated.scss'],
+  'Canonical Phase 2 token authority drifted',
+);
 
 const reducedMotion = read('app/styles/accessibility.scss');
 for (const evidence of ['prefers-reduced-motion: reduce', 'animation-duration: 0.01ms', 'transition-duration: 0.01ms', 'scroll-behavior: auto']) {
@@ -41,10 +51,12 @@ const notificationRegion = read('app/soapbox/features/ui/containers/notification
 for (const evidence of ['role=\'region\'', 'aria-live=\'assertive\'', 'aria-atomic=\'false\'', 'notifications.live_region.label']) {
   assert.ok(notificationRegion.includes(evidence), `Notification live-region baseline missing: ${evidence}`);
 }
-const tailwind = read('tailwind.config.js');
-for (const [name, value] of Object.entries(manifest.baselines.breakpoints)) {
-  assert.ok(tailwind.includes(`${name}: '${value}'`), `Breakpoint authority drifted: ${name}`);
-}
+const designTokens = JSON.parse(read('config/design-tokens.json'));
+assert.deepStrictEqual(
+  designTokens.primitives.breakpoint,
+  manifest.baselines.breakpoints,
+  'Breakpoint authority drifted from the canonical design token source',
+);
 for (const document of [
   'docs/architecture/DESIGN_AND_COMPONENT_INVENTORY.md',
   'docs/architecture/ICON_MIGRATION_MATRIX.md',
@@ -52,6 +64,8 @@ for (const document of [
   'docs/architecture/KEYBOARD_AND_GESTURE_INVENTORY.md',
   'docs/architecture/ACCESSIBILITY_BEHAVIOR_MATRIX.md',
   'docs/architecture/SCREENSHOT_AND_INTERACTION_BASELINE_PLAN.md',
+  'docs/architecture/PHASE_2_DESIGN_FOUNDATION.md',
+  'config/design-tokens.json',
 ]) assert.ok(fs.existsSync(path.join(root, document)), `Required Phase 0F artifact missing: ${document}`);
 
 process.stdout.write(`${JSON.stringify(manifest.counts, null, 2)}\n`);
