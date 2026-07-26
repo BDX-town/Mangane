@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "status": "current-phase-0a-evidence",
   "sourceDigests": {
-    "packageJsonSha256": "c383b023e03e50674c8ce5f05a5d5576f2ffd568d3757529a1e74c33f5bf01c6",
+    "packageJsonSha256": "dceab51a2d1c2e5c2bc66406c9f276d9518d3376159e3dc8fa2b74eeee2607fb",
     "twemojiDownloaderSha256": "89f1d9fec29b1d53c8862466efbfc270fc5324bfc476095ced7ae3ee5b26c303",
     "yarnLockSha256": "1b73722b7bd8068c6be269fb3edbe5b2955920416492b05b559864e1895c7239"
   },
@@ -16162,6 +16162,10 @@
           "context": "build"
         },
         {
+          "path": "package.json#scripts.check:foundational-controls",
+          "context": "build"
+        },
+        {
           "path": "package.json#scripts.check:html-safety",
           "context": "build"
         },
@@ -16259,6 +16263,10 @@
         },
         {
           "path": "package.json#scripts.test:documentation-authority",
+          "context": "build"
+        },
+        {
+          "path": "package.json#scripts.test:foundational-controls",
           "context": "build"
         },
         {
@@ -29082,6 +29090,10 @@
           "context": "browser"
         },
         {
+          "path": "app/soapbox/components/ui/chip/chip.tsx",
+          "context": "browser"
+        },
+        {
           "path": "app/soapbox/components/ui/emoji-selector/emoji-selector.tsx",
           "context": "browser"
         },
@@ -29102,11 +29114,19 @@
           "context": "browser"
         },
         {
+          "path": "app/soapbox/components/ui/list-row/list-row.tsx",
+          "context": "browser"
+        },
+        {
           "path": "app/soapbox/components/ui/menu/menu.tsx",
           "context": "browser"
         },
         {
           "path": "app/soapbox/components/ui/modal/modal.tsx",
+          "context": "browser"
+        },
+        {
+          "path": "app/soapbox/components/ui/segmented-control/segmented-control.tsx",
           "context": "browser"
         },
         {
@@ -80252,6 +80272,10 @@
           "context": "browser"
         },
         {
+          "path": "app/soapbox/components/ui/list-row/list-row.tsx",
+          "context": "browser"
+        },
+        {
           "path": "app/soapbox/components/ui/tabs/tabs.tsx",
           "context": "browser"
         },
@@ -81684,6 +81708,10 @@
           "context": "browser"
         },
         {
+          "path": "app/soapbox/components/ui/__tests__/foundational-controls.test.tsx",
+          "context": "test"
+        },
+        {
           "path": "app/soapbox/components/ui/avatar/__tests__/avatar.test.tsx",
           "context": "test"
         },
@@ -81713,6 +81741,10 @@
         },
         {
           "path": "app/soapbox/components/ui/checkbox/checkbox.tsx",
+          "context": "browser"
+        },
+        {
+          "path": "app/soapbox/components/ui/chip/chip.tsx",
           "context": "browser"
         },
         {
@@ -81761,6 +81793,10 @@
         },
         {
           "path": "app/soapbox/components/ui/file-input/file-input.tsx",
+          "context": "browser"
+        },
+        {
+          "path": "app/soapbox/components/ui/focus/focus-utils.ts",
           "context": "browser"
         },
         {
@@ -81824,6 +81860,10 @@
           "context": "browser"
         },
         {
+          "path": "app/soapbox/components/ui/list-row/list-row.tsx",
+          "context": "browser"
+        },
+        {
           "path": "app/soapbox/components/ui/menu/menu.tsx",
           "context": "browser"
         },
@@ -81845,6 +81885,10 @@
         },
         {
           "path": "app/soapbox/components/ui/progress-bar/progress-bar.tsx",
+          "context": "browser"
+        },
+        {
+          "path": "app/soapbox/components/ui/segmented-control/segmented-control.tsx",
           "context": "browser"
         },
         {
@@ -110996,7 +111040,7 @@
     },
     {
       "action": "actions/checkout",
-      "line": 50,
+      "line": 54,
       "local": false,
       "path": ".github/workflows/design-authority.yml",
       "pinnedToCommit": true,
@@ -111004,7 +111048,7 @@
     },
     {
       "action": "actions/setup-node",
-      "line": 51,
+      "line": 55,
       "local": false,
       "path": ".github/workflows/design-authority.yml",
       "pinnedToCommit": true,

@@ -38,7 +38,7 @@ const useButtonStyles = ({
   };
 
   const buttonStyle = classNames({
-    'inline-flex items-center border font-medium rounded-full focus:outline-none appearance-none transition-all': true,
+    'ds-button inline-flex items-center border font-medium rounded-full appearance-none': true,
     'select-none disabled:opacity-50 disabled:cursor-default': disabled,
     [`${themes[theme]}`]: true,
     [`${sizes[size]}`]: true,

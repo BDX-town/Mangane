@@ -36,6 +36,8 @@ describe('<FormGroup />', () => {
     );
 
     expect(screen.getByTestId('form-group-error')).toHaveTextContent('is invalid');
+    expect(screen.getByRole('textbox')).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByRole('textbox')).toHaveAccessibleDescription('is invalid, is required');
   });
 
   it('renders label', () => {
@@ -56,5 +58,6 @@ describe('<FormGroup />', () => {
     );
 
     expect(screen.getByTestId('form-group-hint')).toHaveTextContent('My hint');
+    expect(screen.getByRole('textbox')).toHaveAccessibleDescription('My hint');
   });
 });

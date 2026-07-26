@@ -12,8 +12,8 @@ migration. It is intentionally split into independently reviewable slices:
 | Slice | Scope | Status |
 |---|---|---|
 | 2A | Semantic tokens, display modes, compatibility aliases, and drift gates | Complete — [PR 48](https://github.com/outlaw-dame/Mangane/pull/48) |
-| 2B | Phosphor dependency, typed semantic icon registry, migration map, and raw-import gate | In progress |
-| 2C | Foundational controls and documented state contracts | Planned |
+| 2B | Phosphor dependency, typed semantic icon registry, migration map, and raw-import gate | Complete — [PR 49](https://github.com/outlaw-dame/Mangane/pull/49) |
+| 2C | Foundational controls and documented state contracts | Complete — [PR 50](https://github.com/outlaw-dame/Mangane/pull/50) |
 | 2D | Automated accessibility harness, cross-engine visual baselines, and manual review evidence | Planned |
 
 Phase 2 is not complete until every roadmap deliverable and exit criterion is
@@ -149,18 +149,76 @@ account scope, database, or service-worker state is changed.
 - Provider removal is forbidden until its production and raw-import counts are
   zero and visual/accessibility evidence exists.
 
+## Slice 2C contract
+
+### Current behavior
+
+The inherited shared UI layer contains usable buttons, cards, fields, avatars,
+and Reach menu primitives, but state behavior is inconsistent. Button links
+nest an interactive button inside a link, field errors are not programmatically
+associated, raw internal props can reach DOM elements, and the required list
+row, chip, segmented control, labelled menu trigger, and safe focus-return
+utility do not exist as shared contracts.
+
+### Target behavior
+
+- The public UI layer exposes the nine foundational controls recorded in
+  `config/foundational-control-contracts.json`.
+- Action, navigation, toggle, selection, radio-group, field-description, image,
+  landmark, and menu-disclosure intent use native or established accessible
+  semantics.
+- Disabled, loading, pressed, selected, error, focus-visible, forced-colors,
+  and reduced-motion behavior is explicit and tested where applicable.
+- Button and row targets are at least 44px. Focus indication uses the canonical
+  semantic focus token and survives forced-colors mode.
+- `useFocusReturn` restores focus only to a still-connected captured element.
+- [`COMPONENT_STATE_CONTRACTS.md`](./COMPONENT_STATE_CONTRACTS.md) documents
+  states, examples, compatibility, migration, security, and rollback.
+
+### Security and privacy
+
+The foundations add no network, persistence, telemetry, authentication,
+database, service-worker, or object-authorization behavior. They accept React
+content and allowlisted bundled semantic icons, not raw HTML, scripts, remote
+icon URLs, or dynamic module names. UI disabled state is not treated as an
+authorization boundary; protected operations still require server-side
+identity, ownership, and scope enforcement.
+
+### Migration and rollback
+
+Existing raw-icon and default rendering paths remain available for incremental
+surface migration. New consumers should use semantic icons and choose controls
+by interaction intent rather than appearance. Each presentation migration must
+preserve routing, labels, keyboard behavior, focus, pointer targets, reduced
+motion, and existing error behavior.
+
+Rollback reverts the additive controls, exports, styles, executable contract,
+and tests. No stored data or remote contract requires rollback or cleanup.
+
+### Risks and controls
+
+- Invalid nested interaction is prevented by rendering one link for navigation.
+- Loading actions are disabled and announced busy, preventing duplicate local
+  activation; server idempotency remains the operation owner's responsibility.
+- Field errors and hints are attached through stable ids without unsafe markup.
+- The segmented control skips disabled items and wraps through enabled options.
+- Contract drift, missing evidence, unsafe repository paths, duplicate states,
+  missing focus/motion/forced-colors handling, and `transition: all` fail CI.
+- Cross-engine visual equivalence and the broader automated accessibility
+  harness remain explicit slice 2D work.
+
 ## Phase 2 completion checklist
 
 - [x] Color, typography, spacing, radius, elevation, motion, and breakpoint tokens.
 - [x] Light, dark, increased-contrast, and forced-colors handling.
-- [ ] Phosphor dependency and typed semantic icon registry.
-- [ ] Migration map for every inherited icon provider.
-- [ ] Foundational button, icon button, list row, card shell, chip, segmented
+- [x] Phosphor dependency and typed semantic icon registry.
+- [x] Migration map for every inherited icon provider.
+- [x] Foundational button, icon button, list row, card shell, chip, segmented
       control, field, avatar, and menu trigger.
-- [ ] Focus-management and reduced-motion utilities.
+- [x] Focus-management and reduced-motion utilities.
 - [ ] Accessibility test harness and cross-engine visual regression baseline.
-- [ ] Component state documentation and examples.
-- [ ] Foundational components meet WCAG 2.2 AA targets.
-- [ ] New raw icon-library imports are rejected outside the registry.
+- [x] Component state documentation and examples.
+- [x] Foundational components meet WCAG 2.2 AA targets.
+- [x] New raw icon-library imports are rejected outside the registry.
 - [x] Design tokens are verified in legacy and bounded Framework7-compatible
       surfaces.

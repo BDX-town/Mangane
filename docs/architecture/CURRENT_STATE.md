@@ -91,7 +91,11 @@ contrast checks, and bounded Framework7 compatibility aliases. Slice 2B adds
 the pinned Phosphor dependency, typed semantic registry, safe icon adapter,
 exhaustive provider migration baseline, and a CI gate that rejects new raw icon
 imports. Broad icon migration has not occurred; inherited renderers and
-providers remain available while the reviewed baseline shrinks.
+providers remain available while the reviewed baseline shrinks. Slice 2C adds
+the nine shared foundational controls, native interaction and state contracts,
+safe focus return, token-backed focus/reduced-motion/forced-colors behavior,
+and an executable inventory gate. Cross-engine visual baselines and the broader
+accessibility harness remain slice 2D work.
 
 The staged plan, current behavior, target behavior, migration, rollback, risks,
 security properties, and completion checklist are recorded in

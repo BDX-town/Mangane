@@ -21,6 +21,8 @@ Known compatibility authorities are explicit in the manifest:
   Phosphor import boundary;
 - `config/icon-migration-baseline.json` is the exact shrinking raw-provider
   import authority. New raw icon imports fail CI.
+- `config/foundational-control-contracts.json` is the exact Phase 2C control,
+  state, native-semantics, and focused-test evidence authority.
 
 Framework7 is an accepted target and has no current source imports. Phase 2
 defines bounded Framework7 custom-property aliases backed only by canonical
@@ -32,6 +34,7 @@ gesture alternatives, and pointer targets are preserved and tested.
 
 Run `yarn generate:design-authority`, review both generated manifests, then run
 `yarn check:design-authority`, `yarn test:design-authority`,
-`yarn check:icons`, and `yarn test:icons`. CI performs the checks plus
+`yarn check:icons`, `yarn test:icons`, `yarn check:foundational-controls`, and
+`yarn test:foundational-controls`. CI performs the checks plus
 adversarial mutation tests. Unreconciled component, style, icon,
 keyboard/focus, or Framework7 drift fails.

@@ -897,7 +897,18 @@
       "owner": "design-system",
       "scope": "shared",
       "classifications": [
-        "reusable"
+        "reusable",
+        "accessibility-critical"
+      ]
+    },
+    {
+      "path": "app/soapbox/components/ui/chip/chip.tsx",
+      "kind": "component",
+      "owner": "design-system",
+      "scope": "shared",
+      "classifications": [
+        "reusable",
+        "accessibility-critical"
       ]
     },
     {
@@ -978,6 +989,16 @@
       ]
     },
     {
+      "path": "app/soapbox/components/ui/focus/focus-utils.ts",
+      "kind": "component",
+      "owner": "design-system",
+      "scope": "shared",
+      "classifications": [
+        "reusable",
+        "accessibility-critical"
+      ]
+    },
+    {
       "path": "app/soapbox/components/ui/form-actions/form-actions.tsx",
       "kind": "component",
       "owner": "design-system",
@@ -992,7 +1013,8 @@
       "owner": "design-system",
       "scope": "shared",
       "classifications": [
-        "reusable"
+        "reusable",
+        "accessibility-critical"
       ]
     },
     {
@@ -1020,6 +1042,7 @@
       "scope": "shared",
       "classifications": [
         "reusable",
+        "accessibility-critical",
         "phosphor-migration-candidate"
       ]
     },
@@ -1097,6 +1120,16 @@
       ]
     },
     {
+      "path": "app/soapbox/components/ui/list-row/list-row.tsx",
+      "kind": "component",
+      "owner": "design-system",
+      "scope": "shared",
+      "classifications": [
+        "reusable",
+        "accessibility-critical"
+      ]
+    },
+    {
       "path": "app/soapbox/components/ui/menu/menu.tsx",
       "kind": "component",
       "owner": "design-system",
@@ -1149,6 +1182,16 @@
       "scope": "shared",
       "classifications": [
         "reusable"
+      ]
+    },
+    {
+      "path": "app/soapbox/components/ui/segmented-control/segmented-control.tsx",
+      "kind": "component",
+      "owner": "design-system",
+      "scope": "shared",
+      "classifications": [
+        "reusable",
+        "accessibility-critical"
       ]
     },
     {
@@ -4791,6 +4834,11 @@
       "disposition": "retain-and-tokenize"
     },
     {
+      "path": "app/styles/components/foundational-controls.scss",
+      "authority": "shared-component-style",
+      "disposition": "retain-and-tokenize"
+    },
+    {
       "path": "app/styles/components/icon.scss",
       "authority": "shared-component-style",
       "disposition": "retain-and-tokenize"
@@ -6025,9 +6073,9 @@
       "disposition": "phosphor-migration-candidate"
     },
     {
-      "id": "svg-module:app/soapbox/components/ui/card/card.tsx:68:arrow-left.svg",
+      "id": "svg-module:app/soapbox/components/ui/card/card.tsx:74:arrow-left.svg",
       "path": "app/soapbox/components/ui/card/card.tsx",
-      "line": 68,
+      "line": 74,
       "kind": "svg-module",
       "provider": "tabler",
       "symbol": "arrow-left.svg",
@@ -11954,17 +12002,31 @@
       "classification": "accessibility-critical"
     },
     {
-      "id": "focus:app/soapbox/components/ui/button/button.tsx:90",
-      "kind": "focus",
+      "id": "label:app/soapbox/components/ui/button/button.tsx:12",
+      "kind": "label",
       "path": "app/soapbox/components/ui/button/button.tsx",
-      "line": 90,
+      "line": 12,
       "classification": "accessibility-critical"
     },
     {
-      "id": "motion:app/soapbox/components/ui/button/useButtonStyles.ts:41",
-      "kind": "motion",
-      "path": "app/soapbox/components/ui/button/useButtonStyles.ts",
-      "line": 41,
+      "id": "label:app/soapbox/components/ui/button/button.tsx:116",
+      "kind": "label",
+      "path": "app/soapbox/components/ui/button/button.tsx",
+      "line": 116,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "focus:app/soapbox/components/ui/button/button.tsx:118",
+      "kind": "focus",
+      "path": "app/soapbox/components/ui/button/button.tsx",
+      "line": 118,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "label:app/soapbox/components/ui/button/button.tsx:135",
+      "kind": "label",
+      "path": "app/soapbox/components/ui/button/button.tsx",
+      "line": 135,
       "classification": "accessibility-critical"
     },
     {
@@ -11982,32 +12044,39 @@
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/components/ui/card/card.tsx:56",
+      "id": "localization:app/soapbox/components/ui/card/card.tsx:62",
       "kind": "localization",
       "path": "app/soapbox/components/ui/card/card.tsx",
-      "line": 56,
+      "line": 62,
       "classification": "compatibility-critical"
     },
     {
-      "id": "label:app/soapbox/components/ui/card/card.tsx:67",
+      "id": "label:app/soapbox/components/ui/card/card.tsx:73",
       "kind": "label",
       "path": "app/soapbox/components/ui/card/card.tsx",
-      "line": 67,
+      "line": 73,
       "classification": "accessibility-critical"
     },
     {
-      "id": "localization:app/soapbox/components/ui/card/card.tsx:67",
+      "id": "localization:app/soapbox/components/ui/card/card.tsx:73",
       "kind": "localization",
       "path": "app/soapbox/components/ui/card/card.tsx",
-      "line": 67,
+      "line": 73,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/components/ui/card/card.tsx:69",
+      "id": "localization:app/soapbox/components/ui/card/card.tsx:75",
       "kind": "localization",
       "path": "app/soapbox/components/ui/card/card.tsx",
-      "line": 69,
+      "line": 75,
       "classification": "compatibility-critical"
+    },
+    {
+      "id": "label:app/soapbox/components/ui/checkbox/checkbox.tsx:3",
+      "kind": "label",
+      "path": "app/soapbox/components/ui/checkbox/checkbox.tsx",
+      "line": 3,
+      "classification": "accessibility-critical"
     },
     {
       "id": "label:app/soapbox/components/ui/column/column.tsx:60",
@@ -12094,17 +12163,52 @@
       "classification": "accessibility-critical"
     },
     {
-      "id": "label:app/soapbox/components/ui/form-group/form-group.tsx:43",
-      "kind": "label",
-      "path": "app/soapbox/components/ui/form-group/form-group.tsx",
-      "line": 43,
+      "id": "focus:app/soapbox/components/ui/focus/focus-utils.ts:9",
+      "kind": "focus",
+      "path": "app/soapbox/components/ui/focus/focus-utils.ts",
+      "line": 9,
       "classification": "accessibility-critical"
     },
     {
-      "id": "label:app/soapbox/components/ui/form-group/form-group.tsx:77",
+      "id": "focus:app/soapbox/components/ui/focus/focus-utils.ts:10",
+      "kind": "focus",
+      "path": "app/soapbox/components/ui/focus/focus-utils.ts",
+      "line": 10,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "focus:app/soapbox/components/ui/focus/focus-utils.ts:16",
+      "kind": "focus",
+      "path": "app/soapbox/components/ui/focus/focus-utils.ts",
+      "line": 16,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "label:app/soapbox/components/ui/form-group/form-group.tsx:68",
       "kind": "label",
       "path": "app/soapbox/components/ui/form-group/form-group.tsx",
-      "line": 77,
+      "line": 68,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "label:app/soapbox/components/ui/form-group/form-group.tsx:104",
+      "kind": "label",
+      "path": "app/soapbox/components/ui/form-group/form-group.tsx",
+      "line": 104,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "label:app/soapbox/components/ui/icon-button/icon-button.tsx:35",
+      "kind": "label",
+      "path": "app/soapbox/components/ui/icon-button/icon-button.tsx",
+      "line": 35,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "label:app/soapbox/components/ui/icon-button/icon-button.tsx:62",
+      "kind": "label",
+      "path": "app/soapbox/components/ui/icon-button/icon-button.tsx",
+      "line": 62,
       "classification": "accessibility-critical"
     },
     {
@@ -12185,10 +12289,24 @@
       "classification": "compatibility-critical"
     },
     {
-      "id": "keyboard:app/soapbox/components/ui/menu/menu.tsx:32",
+      "id": "focus:app/soapbox/components/ui/list-row/list-row.tsx:79",
+      "kind": "focus",
+      "path": "app/soapbox/components/ui/list-row/list-row.tsx",
+      "line": 79,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "label:app/soapbox/components/ui/menu/menu.tsx:36",
+      "kind": "label",
+      "path": "app/soapbox/components/ui/menu/menu.tsx",
+      "line": 36,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "keyboard:app/soapbox/components/ui/menu/menu.tsx:60",
       "kind": "keyboard",
       "path": "app/soapbox/components/ui/menu/menu.tsx",
-      "line": 32,
+      "line": 60,
       "classification": "accessibility-critical"
     },
     {
@@ -12245,6 +12363,34 @@
       "kind": "inline-style",
       "path": "app/soapbox/components/ui/progress-bar/progress-bar.tsx",
       "line": 10,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "focus:app/soapbox/components/ui/segmented-control/segmented-control.tsx:50",
+      "kind": "focus",
+      "path": "app/soapbox/components/ui/segmented-control/segmented-control.tsx",
+      "line": 50,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "label:app/soapbox/components/ui/segmented-control/segmented-control.tsx:70",
+      "kind": "label",
+      "path": "app/soapbox/components/ui/segmented-control/segmented-control.tsx",
+      "line": 70,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "focus:app/soapbox/components/ui/segmented-control/segmented-control.tsx:87",
+      "kind": "focus",
+      "path": "app/soapbox/components/ui/segmented-control/segmented-control.tsx",
+      "line": 87,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "keyboard:app/soapbox/components/ui/segmented-control/segmented-control.tsx:92",
+      "kind": "keyboard",
+      "path": "app/soapbox/components/ui/segmented-control/segmented-control.tsx",
+      "line": 92,
       "classification": "accessibility-critical"
     },
     {
@@ -12343,6 +12489,13 @@
       "kind": "inline-style",
       "path": "app/soapbox/components/ui/text/text.tsx",
       "line": 121,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "label:app/soapbox/components/ui/textarea/textarea.tsx:4",
+      "kind": "label",
+      "path": "app/soapbox/components/ui/textarea/textarea.tsx",
+      "line": 4,
       "classification": "accessibility-critical"
     },
     {
@@ -25890,16 +26043,16 @@
     "screenshotPlan": "docs/architecture/SCREENSHOT_AND_INTERACTION_BASELINE_PLAN.md"
   },
   "counts": {
-    "components": 470,
-    "styles": 73,
+    "components": 474,
+    "styles": 74,
     "icons": 392,
     "behaviors": {
       "localization": 1980,
-      "focus": 134,
+      "focus": 140,
       "inline-style": 75,
-      "keyboard": 89,
-      "label": 81,
-      "motion": 61,
+      "keyboard": 90,
+      "label": 90,
+      "motion": 60,
       "gesture": 37,
       "rtl": 13,
       "live-region": 1
@@ -25912,7 +26065,7 @@
     },
     "owners": {
       "shared-components": 85,
-      "design-system": 41,
+      "design-system": 45,
       "shared-containers": 5,
       "feature:about": 1,
       "feature:account": 1,

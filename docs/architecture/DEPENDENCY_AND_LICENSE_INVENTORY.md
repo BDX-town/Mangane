@@ -83,7 +83,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | @types/http-link-header | 1.0.7 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/jest | 28.1.8 | build-only | build | build-and-release-maintainers | 4 | none-recorded |
 | @types/lodash | 4.17.24 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
-| @types/node | 16.18.11 | build-only | build | build-and-release-maintainers | 40 | none-recorded |
+| @types/node | 16.18.11 | build-only | build | build-and-release-maintainers | 42 | none-recorded |
 | @types/object-assign | 4.0.33 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/object-fit-images | 3.2.5 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
 | @types/qrcode.react | 1.0.5 | build-only | unverified | build-and-release-maintainers | 0 | none-recorded |
@@ -119,7 +119,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | bowser | 2.14.1 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | browserslist | 4.28.2 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | cheerio | 1.2.0 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
-| classnames | 2.5.1 | runtime | browser | frontend-runtime-maintainers | 104 | none-recorded |
+| classnames | 2.5.1 | runtime | browser | frontend-runtime-maintainers | 107 | none-recorded |
 | commit-and-tag-version | 12.7.1 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
 | copy-webpack-plugin | 9.1.0 | build-only | build | build-and-release-maintainers | 2 | none-recorded |
 | core-js | 3.49.0 | unused-or-dynamically-referenced-unverified | unverified | dependency-governance-maintainers | 0 | review-required |
@@ -202,7 +202,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | react-overlays | 0.9.0 | runtime | browser | frontend-runtime-maintainers | 2 | none-recorded |
 | react-popper | 2.3.0 | runtime | browser | frontend-runtime-maintainers | 6 | none-recorded |
 | react-redux | 7.2.9 | runtime | browser, test | frontend-runtime-maintainers | 92 | none-recorded |
-| react-router-dom | 5.3.0 | runtime | browser, test | frontend-runtime-maintainers | 108 | none-recorded |
+| react-router-dom | 5.3.0 | runtime | browser, test | frontend-runtime-maintainers | 109 | none-recorded |
 | react-router-scroll-4 | 1.0.0-beta.2 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | react-simple-pull-to-refresh | 1.3.4 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | react-sparklines | 1.7.0 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
@@ -211,7 +211,7 @@ The machine-readable `duplicatePackages` register records every package name wit
 | react-textarea-autosize | 8.5.9 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | react-toggle | 4.1.3 | runtime | browser | frontend-runtime-maintainers | 5 | none-recorded |
 | react-virtuoso | 2.19.1 | runtime | browser | frontend-runtime-maintainers | 6 | none-recorded |
-| react | 17.0.2 | runtime | browser, test | frontend-runtime-maintainers | 490 | none-recorded |
+| react | 17.0.2 | runtime | browser, test | frontend-runtime-maintainers | 495 | none-recorded |
 | redux-immutable | 4.0.0 | runtime | browser | frontend-runtime-maintainers | 1 | none-recorded |
 | redux-thunk | 2.4.2 | runtime | browser, test | frontend-runtime-maintainers | 4 | none-recorded |
 | redux | 4.2.1 | runtime | browser, node, test | frontend-runtime-maintainers | 59 | none-recorded |

@@ -144,7 +144,8 @@ Jest runs in jsdom and excludes the service-worker entry from coverage. Dedicate
 | Theme/accessibility | complete Phase 0F ownership and behavior inventory | preserve through tokens and shell migration |
 | Tests/CI | complete Phase 0G executable baseline | preserve owner-specific required jobs |
 | Framework7 | absent/currently unverified | accepted Phase 3 target |
-| Phosphor | Phase 2B foundation in progress: pinned dependency, typed registry, bounded consumer, and raw-import gate | migrate inherited product icons incrementally through semantic names |
+| Phosphor | Phase 2B complete: pinned dependency, typed registry, bounded consumer, and raw-import gate | migrate inherited product icons incrementally through semantic names |
+| Foundational controls | Phase 2C additive foundation: nine governed controls, native state semantics, focus return, and motion/focus contracts | migrate presentation surfaces incrementally and add cross-engine evidence in Phase 2D |
 | Local canonical store | absent/unverified | accepted Phase 5 target |
 | Hybrid search | absent/unverified | accepted later target |
 
