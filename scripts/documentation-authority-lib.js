@@ -117,12 +117,51 @@ const buildRegistry = root => ({
   documents: walkMarkdown(root).map(relativePath => recordFor(root, relativePath)),
 });
 
+const maskInlineCode = line => {
+  const runs = [...line.matchAll(/`+/g)];
+  if (runs.length < 2) return line;
+  const characters = line.split('');
+  for (let opener = 0; opener < runs.length - 1; opener += 1) {
+    const opening = runs[opener];
+    const closingIndex = runs.findIndex((candidate, index) => (
+      index > opener && candidate[0].length === opening[0].length
+    ));
+    if (closingIndex === -1) continue;
+    const closing = runs[closingIndex];
+    characters.fill(' ', opening.index, closing.index + closing[0].length);
+    opener = closingIndex;
+  }
+  return characters.join('');
+};
+
+const maskMarkdownCode = source => {
+  let fence = null;
+  return source.split(/(\r?\n)/).map(part => {
+    if (/^\r?\n$/.test(part)) return part;
+    const candidate = part.match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
+    if (fence) {
+      const isClosingFence = candidate
+        && candidate[1][0] === fence.character
+        && candidate[1].length >= fence.length
+        && candidate[2].trim() === '';
+      if (isClosingFence) fence = null;
+      return ' '.repeat(part.length);
+    }
+    if (candidate) {
+      fence = { character: candidate[1][0], length: candidate[1].length };
+      return ' '.repeat(part.length);
+    }
+    return maskInlineCode(part);
+  }).join('');
+};
+
 const localLinks = (source, sourcePath) => {
   const links = [];
+  const markdown = maskMarkdownCode(source);
   const targets = [
-    ...[...source.matchAll(/!?\[[^\]]*]\(([^)]+)\)/g)].map(match => match[1]),
-    ...[...source.matchAll(/^\s*\[[^\]]+]:\s*(\S+)/gm)].map(match => match[1]),
-    ...[...source.matchAll(/<(?:a|img)\b[^>]*\b(?:href|src)=["']([^"']+)["'][^>]*>/gi)].map(match => match[1]),
+    ...[...markdown.matchAll(/!?\[[^\]]*]\(([^)]+)\)/g)].map(match => match[1]),
+    ...[...markdown.matchAll(/^\s*\[[^\]]+]:\s*(\S+)/gm)].map(match => match[1]),
+    ...[...markdown.matchAll(/<(?:a|img)\b[^>]*\b(?:href|src)=["']([^"']+)["'][^>]*>/gi)].map(match => match[1]),
   ];
   for (const rawTarget of targets) {
     let target = rawTarget.trim();
@@ -145,10 +184,24 @@ const localLinks = (source, sourcePath) => {
 
 const resolveInsideRoot = (root, sourcePath, target) => {
   if (path.isAbsolute(target) || target.includes('\\')) return null;
-  const absolute = path.resolve(root, path.dirname(sourcePath), target);
-  const relative = path.relative(root, absolute);
-  if (!relative || (!relative.startsWith('..') && !path.isAbsolute(relative))) return absolute;
-  return null;
+  const lexicalRoot = path.resolve(root);
+  const absolute = path.resolve(lexicalRoot, path.dirname(sourcePath), target);
+  const relative = path.relative(lexicalRoot, absolute);
+  if (relative.startsWith('..') || path.isAbsolute(relative)) return null;
+
+  let current = lexicalRoot;
+  for (const segment of relative.split(path.sep).filter(Boolean)) {
+    current = path.join(current, segment);
+    let metadata;
+    try {
+      metadata = fs.lstatSync(current);
+    } catch (error) {
+      if (error.code === 'ENOENT') break;
+      throw error;
+    }
+    if (metadata.isSymbolicLink()) return null;
+  }
+  return absolute;
 };
 
 const validateRequirements = (requirements, root = null) => {

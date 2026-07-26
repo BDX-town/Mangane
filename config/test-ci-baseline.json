@@ -23,7 +23,7 @@
     "typeScriptUnbaselinedDiagnostics": 0,
     "jestSuites": 151,
     "jestTests": 718,
-    "nodeGovernanceTests": 160,
+    "nodeGovernanceTests": 163,
     "coveragePercent": {
       "statements": 36.87,
       "branches": 27.71,

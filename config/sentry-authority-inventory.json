@@ -694,10 +694,10 @@
       "classification": "test-only"
     },
     {
-      "id": "environment-read:scripts/__tests__/check-documentation-authority.test.js:31",
+      "id": "environment-read:scripts/__tests__/check-documentation-authority.test.js:33",
       "kind": "environment-read",
       "path": "scripts/__tests__/check-documentation-authority.test.js",
-      "line": 31,
+      "line": 33,
       "expression": "env: { ...process.env, DOCUMENTATION_AUTHORITY_ROOT: root },",
       "classification": "test-only"
     },

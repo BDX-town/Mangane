@@ -7,6 +7,8 @@ const os = require('node:os');
 const path = require('node:path');
 const test = require('node:test');
 
+const { localLinks } = require('../documentation-authority-lib');
+
 const repositoryRoot = path.resolve(__dirname, '../..');
 const checker = path.join(repositoryRoot, 'scripts', 'check-documentation-authority.js');
 const copyPath = (root, relativePath) => {
@@ -76,4 +78,44 @@ test('rejects unsafe local link traversal', () => {
   const root = fixture();
   fs.appendFileSync(path.join(root, 'README.md'), '\n[unsafe](../../outside.md)\n');
   assert.throws(() => run(root), /unsafe local link/);
+});
+
+test('ignores Markdown link examples inside inline and fenced code', () => {
+  const source = [
+    '🛡️ `[inline](missing-inline.md)`',
+    '`` `[nested](missing-nested.md)` ``',
+    '```md',
+    '[fenced](missing-fenced.md)',
+    '```',
+    '~~~html',
+    '<a href="missing-html.md">example</a>',
+    '~~~',
+    '[real](existing.md)',
+  ].join('\n');
+  assert.deepEqual(localLinks(source, 'README.md'), [
+    { sourcePath: 'README.md', target: 'existing.md' },
+  ]);
+});
+
+test('rejects a repository-local link through a symlink', t => {
+  const root = fixture();
+  const outside = path.join(path.dirname(root), `${path.basename(root)}-outside.md`);
+  t.after(() => fs.rmSync(outside, { force: true }));
+  fs.writeFileSync(outside, '# Outside\n');
+  fs.symlinkSync(outside, path.join(root, 'docs', 'outside.md'));
+  fs.appendFileSync(path.join(root, 'README.md'), '\n[unsafe symlink](docs/outside.md)\n');
+  assert.throws(() => run(root), /unsafe local link/);
+});
+
+test('rejects historical evidence through a symlink', t => {
+  const root = fixture();
+  const outside = path.join(path.dirname(root), `${path.basename(root)}-evidence.md`);
+  t.after(() => fs.rmSync(outside, { force: true }));
+  fs.writeFileSync(outside, '# Outside evidence\n');
+  fs.symlinkSync(outside, path.join(root, 'docs', 'outside-evidence.md'));
+  const target = path.join(root, 'config/historical-requirement-traceability.json');
+  const requirements = JSON.parse(fs.readFileSync(target, 'utf8'));
+  requirements.requirements[0].evidence = 'docs/outside-evidence.md';
+  fs.writeFileSync(target, `${JSON.stringify(requirements, null, 2)}\n`);
+  assert.throws(() => run(root), /unsafe evidence path/);
 });
