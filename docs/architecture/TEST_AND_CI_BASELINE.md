@@ -42,7 +42,7 @@ ESLint has zero errors. The inherited 183 warnings are a hard ceiling enforced b
 - Production webpack owns actual service-worker integration and bundle evidence.
 - The dependency workflow owns lockfile, license, action-pin and current-advisory evidence.
 
-The Phase 1 baseline expects 156 Jest suites and 738 tests, and the Node-native governance runner passes 170 adversarial and authority tests. The verified Phase 1 coverage result is 37.10% statements, 28.50% branches, 26.61% functions, and 38.43% lines. The committed Jest thresholds round each metric down to a hard non-regression floor; increasing coverage does not require baseline churn.
+The Phase 1 baseline expects 156 Jest suites and 740 tests, and the Node-native governance runner passes 170 adversarial and authority tests. The verified Phase 1 coverage result is 37.10% statements, 28.50% branches, 26.61% functions, and 38.43% lines. The committed Jest thresholds round each metric down to a hard non-regression floor; increasing coverage does not require baseline churn.
 
 The browser smoke is intentionally named as jsdom evidence rather than a claim of cross-engine coverage. Real Chromium/WebKit/Firefox automation remains the first browser-harness expansion described in [`BROWSER_WORKER_HARNESS_PLAN.md`](./BROWSER_WORKER_HARNESS_PLAN.md).
 

@@ -221,6 +221,27 @@ describe('fetchAccountByUsername()', () => {
         expect(actions[1].type).toEqual('ACCOUNTS_IMPORT');
         expect(actions[2].type).toEqual('ACCOUNT_FETCH_SUCCESS');
       });
+
+      it.each([
+        ['a legacy placeholder', '_legacy', undefined],
+        ['a partially migrated ID', '123', 'https://social.example/users/tiger'],
+      ])('does not treat %s as a URL', async(_label, selectedAccount, storedUrl) => {
+        const authUser = ImmutableMap({
+          access_token: 'secret',
+          id: selectedAccount,
+          ...(storedUrl ? { url: storedUrl } : {}),
+        });
+        store = mockStore(store.getState().set('auth', ImmutableMap({
+          me: selectedAccount,
+          users: ImmutableMap({ [selectedAccount]: authUser }),
+        })));
+
+        await expect(store.dispatch(fetchAccountByUsername(username))).resolves.toBeUndefined();
+
+        const actions = store.getActions();
+        expect(actions.some(action => action.type === 'ACCOUNT_FETCH_SUCCESS')).toBe(true);
+        expect(actions.some(action => action.type === 'ACCOUNT_FETCH_FAIL')).toBe(false);
+      });
     });
 
     describe('with an unsuccessful API request', () => {

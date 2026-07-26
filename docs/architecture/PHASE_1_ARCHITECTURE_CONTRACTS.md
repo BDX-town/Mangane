@@ -27,6 +27,7 @@ The default `fetchAccountByUsername` path now executes through `FindAccountByUse
 - Instance origins accept only credential-free HTTP(S) URLs.
 - Scoped destinations cannot cross origins.
 - Account identifiers reject empty, oversized, and control-character input.
+- Legacy placeholder/account IDs are never treated as URLs; a validated stored user URL or the current origin is used instead.
 - Direct endpoint path segments are encoded.
 - Account responses require stable string `id` and `acct` values before import.
 - Transport payloads are not copied into application errors.

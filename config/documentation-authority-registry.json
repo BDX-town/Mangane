@@ -542,7 +542,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Implemented; merge and CI evidence required for closure",
-      "contentSha256": "e707b2ffd9dbcb6b9a357461447f5f22f1c3ab239ddfc50336f10aa075737baf"
+      "contentSha256": "eb72d08327b14f963fa678ad376d7fb7081e5de61c12ed5348d13fc583ad126d"
     },
     {
       "path": "docs/architecture/PREVIEW_AND_EMBED_INVENTORY.md",
@@ -822,7 +822,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Phase 0G complete / executable",
-      "contentSha256": "098c9ee769dcf56b3ed2fe3405506c427633913309d9ffcdf94305e8bb9b73e3"
+      "contentSha256": "0bcccbc0b9ed5fda545d4dacbd289536c60035733011876a15f2414ec3692fb2"
     },
     {
       "path": "docs/architecture/URL_AND_DESTINATION_POLICY_MATRIX.md",

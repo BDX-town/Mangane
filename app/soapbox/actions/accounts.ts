@@ -5,7 +5,7 @@ import { LegacyAccountRepository } from 'soapbox/infrastructure/protocol/legacy-
 import { LegacyCapabilityAdapter } from 'soapbox/infrastructure/protocol/legacy-capability-adapter';
 import { runtimeEnvironment } from 'soapbox/runtime/environment';
 import { readFeatureFlag } from 'soapbox/runtime/feature-flags';
-import { isLoggedIn } from 'soapbox/utils/auth';
+import { getAuthUserUrl, isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
 
 import api, { getLinks } from '../api';
@@ -223,8 +223,7 @@ const fetchAccountByUsername = (username: string, history?: History) =>
       return legacyLookup();
     }
 
-    const selectedAccountUrl = getState().auth.get('me');
-    const accountUrl = typeof selectedAccountUrl === 'string' ? selectedAccountUrl : null;
+    const accountUrl = getAuthUserUrl(getState()) || null;
     const scope = createAccountScope({
       accountId: me || null,
       accountUrl,
