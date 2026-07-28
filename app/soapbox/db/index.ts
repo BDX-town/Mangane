@@ -31,6 +31,14 @@ export { RepositoryError, QuotaExceededRepositoryError, CorruptionError } from '
 
 // Schema (for testing and diagnostics only)
 export { SCHEMA_VERSION, SCHEMA_V1, ManganeDatabase } from './schema';
+
+// Migrations
+export { runPendingMigrations, registerMigration, getMigrationDiagnostics, resetMigrationJournal } from './migrations';
+export type { MigrationDefinition, MigrationReport, MigrationResult } from './migrations';
+
+// Integrity
+export { validateRecord, clampTimestamp, determineAction, createEmptyReport, accumulateReport } from './integrity';
+export type { IntegrityViolation, IntegrityReport } from './integrity';
 export type {
   BaseRecord,
   StoredAccount,
