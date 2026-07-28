@@ -358,18 +358,18 @@
       "classification": "startup-guarded-local-diagnostic"
     },
     {
-      "id": "console:app/soapbox/features/ui/index.tsx:408",
+      "id": "console:app/soapbox/features/ui/index.tsx:413",
       "kind": "console",
       "path": "app/soapbox/features/ui/index.tsx",
-      "line": 408,
+      "line": 413,
       "expression": "console.warn('Unknown message type:', data.type);",
       "classification": "startup-guarded-local-diagnostic"
     },
     {
-      "id": "console:app/soapbox/features/ui/index.tsx:436",
+      "id": "console:app/soapbox/features/ui/index.tsx:441",
       "kind": "console",
       "path": "app/soapbox/features/ui/index.tsx",
-      "line": 436,
+      "line": 441,
       "expression": ".catch(console.error);",
       "classification": "startup-guarded-local-diagnostic"
     },

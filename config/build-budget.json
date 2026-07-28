@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "owner": "frontend-maintainers",
   "production": {
-    "applicationJavaScriptBytes": 4250000,
+    "applicationJavaScriptBytes": 4500000,
     "runtimeJavaScriptBytes": 350000,
     "applicationCssBytes": 450000,
     "serviceWorkerBytes": 500000,

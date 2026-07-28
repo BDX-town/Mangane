@@ -123,6 +123,8 @@ Exit criteria:
 
 ## Phase 3 — Framework7 application shell
 
+Status: **In progress; see [`PHASE_3_FRAMEWORK7_SHELL.md`](./PHASE_3_FRAMEWORK7_SHELL.md).**
+
 Goal: introduce the adaptive shell without rewriting all content surfaces.
 
 Deliverables:

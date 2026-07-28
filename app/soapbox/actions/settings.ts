@@ -56,6 +56,8 @@ const defaultSettings = ImmutableMap({
 
   isDeveloper: false,
 
+  framework7Shell: false,
+
   chats: ImmutableMap({
     panes: ImmutableList(),
     mainWindow: 'minimized',

@@ -247,7 +247,7 @@ module.exports = {
       //   ],
       // },
     ],
-    'import/no-unresolved': 'error',
+    'import/no-unresolved': ['error', { ignore: ['^framework7', '^framework7-react'] }],
     'import/no-webpack-loader-syntax': 'error',
     'import/order': [
       'error',

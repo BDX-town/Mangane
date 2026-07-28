@@ -1,6 +1,4 @@
 {
-  "schemaVersion": 1,
-  "status": "phase-2-foundation-in-progress",
   "components": {
     "app/soapbox/components/__mocks__/react-inlinesvg.tsx": "shared-components",
     "app/soapbox/components/account.tsx": "shared-components",
@@ -257,6 +255,11 @@
     "app/soapbox/features/export_data/index.tsx": "feature:export_data",
     "app/soapbox/features/external_login/components/external-login-form.tsx": "feature:external_login",
     "app/soapbox/features/external_login/index.tsx": "feature:external_login",
+    "app/soapbox/features/f7-shell/components/bottom-tabs.tsx": "feature:f7-shell",
+    "app/soapbox/features/f7-shell/components/desktop-layout.tsx": "feature:f7-shell",
+    "app/soapbox/features/f7-shell/components/sidebar-navigation.tsx": "feature:f7-shell",
+    "app/soapbox/features/f7-shell/hooks/use-breakpoint.ts": "feature:f7-shell",
+    "app/soapbox/features/f7-shell/index.tsx": "feature:f7-shell",
     "app/soapbox/features/favourited_statuses/index.js": "feature:favourited_statuses",
     "app/soapbox/features/federation_restrictions/components/instance_restrictions.js": "feature:federation_restrictions",
     "app/soapbox/features/federation_restrictions/components/restricted_instance.tsx": "feature:federation_restrictions",
@@ -512,6 +515,7 @@
     "feature:emoji": 8,
     "feature:export_data": 2,
     "feature:external_login": 2,
+    "feature:f7-shell": 5,
     "feature:favourited_statuses": 1,
     "feature:federation_restrictions": 3,
     "feature:feed-filtering": 1,

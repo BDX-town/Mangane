@@ -1,0 +1,80 @@
+/**
+ * Phase 3A — Framework7 adaptive application shell.
+ *
+ * This module provides the Framework7 React app root that replaces the legacy
+ * Layout + React Router shell when the `framework7Shell` feature flag is enabled.
+ *
+ * Layout selection:
+ * - Phone (< 768px): bottom toolbar with tab navigation
+ * - Tablet (768–1024px): split view with sidebar + main panel
+ * - Desktop (> 1024px): multi-column with sidebar, main, and aside
+ *
+ * Content components are rendered unchanged through a compatibility bridge.
+ */
+import { App, View, Panel } from 'framework7-react';
+import React from 'react';
+
+import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
+import { isStandalone } from 'soapbox/utils/state';
+
+import F7BottomTabs from './components/bottom-tabs';
+import F7DesktopLayout from './components/desktop-layout';
+import F7SidebarNavigation from './components/sidebar-navigation';
+import { useBreakpoint } from './hooks/use-breakpoint';
+
+/** Framework7 app parameters — no router in Slice 3A. */
+const f7params = {
+  name: 'Mangane',
+  theme: 'ios' as const,
+  colors: {
+    primary: '#4338ca',
+  },
+};
+
+export type ShellBreakpoint = 'phone' | 'tablet' | 'desktop';
+
+interface F7ShellProps {
+  children: React.ReactNode;
+}
+
+/**
+ * The Framework7 adaptive shell.
+ * Wraps existing content in the appropriate phone/tablet/desktop layout.
+ */
+const F7Shell: React.FC<F7ShellProps> = ({ children }) => {
+  const breakpoint = useBreakpoint();
+  const account = useOwnAccount();
+  const standalone = useAppSelector(isStandalone);
+
+  return (
+    <App {...f7params} className='f7-shell'>
+      {breakpoint === 'desktop' && (
+        <F7DesktopLayout standalone={standalone}>
+          {children}
+        </F7DesktopLayout>
+      )}
+
+      {breakpoint === 'tablet' && (
+        <div className='f7-shell__tablet'>
+          <Panel left cover visibleBreakpoint={768} className='f7-shell__sidebar-panel'>
+            {!standalone && <F7SidebarNavigation />}
+          </Panel>
+          <View main className='f7-shell__main-view'>
+            {children}
+          </View>
+        </div>
+      )}
+
+      {breakpoint === 'phone' && (
+        <div className='f7-shell__phone'>
+          <View main className='f7-shell__main-view'>
+            {children}
+          </View>
+          {account && <F7BottomTabs />}
+        </div>
+      )}
+    </App>
+  );
+};
+
+export default F7Shell;

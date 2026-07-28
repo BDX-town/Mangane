@@ -472,7 +472,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical implementation sequence",
-      "contentSha256": "9d1a1708af0fb88170551fd3ae6bc0692ce4ad41666fd925af16798996cb7a39"
+      "contentSha256": "b1f0b960750b551e2ada6b857cb06ed3008c762a9e3d82481faab216638c7c5c"
     },
     {
       "path": "docs/architecture/KEYBOARD_AND_GESTURE_INVENTORY.md",
@@ -563,6 +563,16 @@
       "inheritedBrandingReferences": 1,
       "statusHeader": "Complete",
       "contentSha256": "83a0e7eb3830415d53c624d5d92d60b1ffadfcee25ec353208078933b0b3eb72"
+    },
+    {
+      "path": "docs/architecture/PHASE_3_FRAMEWORK7_SHELL.md",
+      "title": "Phase 3 Framework7 Application Shell",
+      "authorityId": "phase-3-framework7-application-shell",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 1,
+      "statusHeader": "In progress",
+      "contentSha256": "ea1fab4b7fc3ca8567af364a32ff2880af16fe39ffe3721b64d63b56af57210f"
     },
     {
       "path": "docs/architecture/PREVIEW_AND_EMBED_INVENTORY.md",

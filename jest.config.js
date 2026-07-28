@@ -46,6 +46,9 @@ module.exports = {
     // CommonJS export target is empty under Node 24, so Jest uses a behaviorally
     // equivalent SVG adapter for component contract tests.
     '^@phosphor-icons/react(?:/.*)?$': '<rootDir>/jest/phosphor-icon-mock.js',
+    // Framework7 and framework7-react are ESM-only; Jest uses a thin mock.
+    '^framework7-react$': '<rootDir>/jest/framework7-react-mock.js',
+    '^framework7(?:/.*)?$': '<rootDir>/jest/framework7-mock.js',
     // eld exposes ESM-only conditional exports; Jest 28 resolves CommonJS by default.
     '^eld/small$': '<rootDir>/node_modules/eld/src/entries/static.small.js',
     // https://github.com/uuidjs/uuid/pull/616#issuecomment-1111012599

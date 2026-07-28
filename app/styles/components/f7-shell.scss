@@ -1,0 +1,107 @@
+/**
+ * Phase 3A — Framework7 shell layout styles.
+ *
+ * Framework7's CSS variables are aliased to Mangane design tokens in the
+ * generated token stylesheet. These styles provide layout structure for
+ * the phone/tablet/desktop shell variants.
+ */
+
+.f7-shell {
+  min-height: 100vh;
+}
+
+/* Desktop: three-column layout */
+.f7-shell__desktop {
+  display: flex;
+  max-width: 1280px;
+  margin: 0 auto;
+  min-height: 100vh;
+  gap: var(--ds-space-6);
+  padding: 0 var(--ds-space-6);
+}
+
+.f7-shell__desktop-sidebar {
+  position: sticky;
+  top: 0;
+  flex: 0 0 280px;
+  max-width: 280px;
+  height: 100vh;
+  overflow-y: auto;
+  padding: var(--ds-space-4) 0;
+}
+
+.f7-shell__desktop-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-y: auto;
+}
+
+.f7-shell__desktop-aside {
+  flex: 0 0 200px;
+  max-width: 200px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  padding: var(--ds-space-4) 0;
+  display: none;
+
+  @media (min-width: 1280px) {
+    display: block;
+  }
+}
+
+/* Tablet: sidebar panel + main */
+.f7-shell__tablet {
+  display: flex;
+  min-height: 100vh;
+}
+
+.f7-shell__sidebar-panel {
+  width: 280px;
+  max-width: 280px;
+}
+
+.f7-shell__main-view {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Phone: full-width with bottom tabs */
+.f7-shell__phone {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.f7-shell__phone .f7-shell__main-view {
+  flex: 1 1 auto;
+  padding-bottom: calc(50px + env(safe-area-inset-bottom, 0));
+}
+
+.f7-shell__bottom-tabs {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .f7-shell,
+  .f7-shell * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Forced colors */
+@media (forced-colors: active) {
+  .f7-shell__bottom-tabs,
+  .f7-shell__desktop-sidebar,
+  .f7-shell__sidebar-panel {
+    border: 1px solid ButtonText;
+  }
+}

@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "status": "current-phase-0a-evidence",
   "sourceDigests": {
-    "packageJsonSha256": "1bc0a0deef004e7078e20b51a60bca3307625a2a41db130daa64dd53880a1794",
+    "packageJsonSha256": "a4c60881dff55b0f2ff1cff1a973a2934b70f68c4d14d1db2f76b9e396c4dd52",
     "twemojiDownloaderSha256": "89f1d9fec29b1d53c8862466efbfc270fc5324bfc476095ced7ae3ee5b26c303",
-    "yarnLockSha256": "35f02423bea70280d900a3ff950d978502965ed9e0c237ac31036aabf4f3d37a"
+    "yarnLockSha256": "fc856dc8259f711d8d02094094baeba8db741cf6972c80f075aa2da779b4b848"
   },
   "repositorySupplyChain": {
     "postinstall": {
@@ -37196,6 +37196,30 @@
       "version": "2.0.0"
     },
     {
+      "locator": "dom7@npm:4.0.6",
+      "name": "dom7",
+      "version": "4.0.6",
+      "direct": false,
+      "rootDependencies": [
+        "framework7"
+      ],
+      "classification": "development-tooling",
+      "owner": "architecture-authority",
+      "purpose": "Transitive dependency of framework7",
+      "maintenanceStatus": "active",
+      "license": {
+        "expression": "MIT",
+        "obligations": [
+          "attribution"
+        ]
+      },
+      "installBehavior": "scripts-disabled",
+      "upstream": {
+        "author": "community",
+        "repository": "public"
+      }
+    },
+    {
       "classification": "build-transitive",
       "declaredSection": null,
       "descriptors": [
@@ -45115,6 +45139,54 @@
       "version": "0.2.1"
     },
     {
+      "locator": "framework7-react@npm:8.3.4",
+      "name": "framework7-react",
+      "version": "8.3.4",
+      "direct": true,
+      "rootDependencies": [
+        "framework7-react"
+      ],
+      "classification": "development-tooling",
+      "owner": "architecture-authority",
+      "purpose": "Phase 3 Framework7 adaptive shell",
+      "maintenanceStatus": "active",
+      "license": {
+        "expression": "MIT",
+        "obligations": [
+          "attribution"
+        ]
+      },
+      "installBehavior": "scripts-disabled",
+      "upstream": {
+        "author": "community",
+        "repository": "public"
+      }
+    },
+    {
+      "locator": "framework7@npm:8.3.4",
+      "name": "framework7",
+      "version": "8.3.4",
+      "direct": true,
+      "rootDependencies": [
+        "framework7"
+      ],
+      "classification": "development-tooling",
+      "owner": "architecture-authority",
+      "purpose": "Phase 3 Framework7 adaptive shell",
+      "maintenanceStatus": "active",
+      "license": {
+        "expression": "MIT",
+        "obligations": [
+          "attribution"
+        ]
+      },
+      "installBehavior": "scripts-disabled",
+      "upstream": {
+        "author": "community",
+        "repository": "public"
+      }
+    },
+    {
       "classification": "build-transitive",
       "declaredSection": null,
       "descriptors": [
@@ -49384,6 +49456,30 @@
       },
       "usageEvidence": [],
       "version": "2.1.6"
+    },
+    {
+      "locator": "htm@npm:3.1.1",
+      "name": "htm",
+      "version": "3.1.1",
+      "direct": false,
+      "rootDependencies": [
+        "framework7"
+      ],
+      "classification": "development-tooling",
+      "owner": "architecture-authority",
+      "purpose": "Transitive dependency of framework7",
+      "maintenanceStatus": "active",
+      "license": {
+        "expression": "MIT",
+        "obligations": [
+          "attribution"
+        ]
+      },
+      "installBehavior": "scripts-disabled",
+      "upstream": {
+        "author": "community",
+        "repository": "public"
+      }
     },
     {
       "classification": "unverified-transitive",
@@ -72790,6 +72886,30 @@
       }
     },
     {
+      "locator": "path-to-regexp@npm:6.3.0",
+      "name": "path-to-regexp",
+      "version": "6.3.0",
+      "direct": false,
+      "rootDependencies": [
+        "framework7"
+      ],
+      "classification": "development-tooling",
+      "owner": "architecture-authority",
+      "purpose": "Transitive dependency of framework7",
+      "maintenanceStatus": "active",
+      "license": {
+        "expression": "MIT",
+        "obligations": [
+          "attribution"
+        ]
+      },
+      "installBehavior": "scripts-disabled",
+      "upstream": {
+        "author": "community",
+        "repository": "public"
+      }
+    },
+    {
       "classification": "unverified-transitive",
       "declaredSection": null,
       "descriptors": [
@@ -90190,6 +90310,30 @@
       "version": "1.0.5"
     },
     {
+      "locator": "skeleton-elements@npm:4.0.1",
+      "name": "skeleton-elements",
+      "version": "4.0.1",
+      "direct": false,
+      "rootDependencies": [
+        "framework7"
+      ],
+      "classification": "development-tooling",
+      "owner": "architecture-authority",
+      "purpose": "Transitive dependency of framework7",
+      "maintenanceStatus": "active",
+      "license": {
+        "expression": "MIT",
+        "obligations": [
+          "attribution"
+        ]
+      },
+      "installBehavior": "scripts-disabled",
+      "upstream": {
+        "author": "community",
+        "repository": "public"
+      }
+    },
+    {
       "classification": "runtime-transitive",
       "declaredSection": null,
       "descriptors": [
@@ -91784,6 +91928,30 @@
       },
       "usageEvidence": [],
       "version": "1.0.3"
+    },
+    {
+      "locator": "ssr-window@npm:4.0.2",
+      "name": "ssr-window",
+      "version": "4.0.2",
+      "direct": false,
+      "rootDependencies": [
+        "framework7"
+      ],
+      "classification": "development-tooling",
+      "owner": "architecture-authority",
+      "purpose": "Transitive dependency of framework7",
+      "maintenanceStatus": "active",
+      "license": {
+        "expression": "MIT",
+        "obligations": [
+          "attribution"
+        ]
+      },
+      "installBehavior": "scripts-disabled",
+      "upstream": {
+        "author": "community",
+        "repository": "public"
+      }
     },
     {
       "classification": "runtime-transitive",
@@ -94312,6 +94480,30 @@
       },
       "usageEvidence": [],
       "version": "2.8.2"
+    },
+    {
+      "locator": "swiper@npm:10.3.1",
+      "name": "swiper",
+      "version": "10.3.1",
+      "direct": false,
+      "rootDependencies": [
+        "framework7"
+      ],
+      "classification": "development-tooling",
+      "owner": "architecture-authority",
+      "purpose": "Transitive dependency of framework7",
+      "maintenanceStatus": "active",
+      "license": {
+        "expression": "MIT",
+        "obligations": [
+          "attribution"
+        ]
+      },
+      "installBehavior": "scripts-disabled",
+      "upstream": {
+        "author": "community",
+        "repository": "public"
+      }
     },
     {
       "classification": "unverified-transitive",
@@ -106850,10 +107042,12 @@
       "locators": [
         "path-to-regexp@npm:0.1.13",
         "path-to-regexp@npm:1.9.0",
-        "path-to-regexp@npm:3.3.0"
+        "path-to-regexp@npm:3.3.0",
+        "path-to-regexp@npm:6.3.0"
       ],
       "name": "path-to-regexp",
       "rootDependencies": [
+        "framework7",
         "react-router-dom",
         "serve",
         "webpack-dev-server"
@@ -106861,7 +107055,8 @@
       "versions": [
         "0.1.13",
         "1.9.0",
-        "3.3.0"
+        "3.3.0",
+        "6.3.0"
       ]
     },
     {

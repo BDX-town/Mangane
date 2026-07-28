@@ -25,7 +25,9 @@ import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb_navigation';
 import { Layout } from 'soapbox/components/ui';
+import F7Shell from 'soapbox/features/f7-shell';
 import { useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
+import { useSettings } from 'soapbox/hooks/useSettings';
 import AdminPage from 'soapbox/pages/admin_page';
 import DefaultPage from 'soapbox/pages/default_page';
 // import GroupsPage from 'soapbox/pages/groups_page';
@@ -338,6 +340,9 @@ const UI: React.FC = ({ children }: { children: ReactNode}) => {
   const streamingUrl = useAppSelector(state => state.instance.urls.get('streaming_api'));
   const standalone = useAppSelector(isStandalone);
 
+  const settings = useSettings();
+  const useF7Shell = settings.get('framework7Shell') as boolean;
+
   const handleDragEnter = (e: DragEvent) => {
     e.preventDefault();
 
@@ -623,45 +628,55 @@ const UI: React.FC = ({ children }: { children: ReactNode}) => {
         <BackgroundShapes />
 
         <div className='z-10 flex flex-col'>
-          <Layout>
-            <Layout.Sidebar>
-              {!standalone && <SidebarNavigation />}
-            </Layout.Sidebar>
+          {useF7Shell ? (
+            <F7Shell>
+              <SwitchingColumnsArea>
+                {children}
+              </SwitchingColumnsArea>
+            </F7Shell>
+          ) : (
+            <>
+              <Layout>
+                <Layout.Sidebar>
+                  {!standalone && <SidebarNavigation />}
+                </Layout.Sidebar>
 
-            <SwitchingColumnsArea>
-              {children}
-            </SwitchingColumnsArea>
-          </Layout>
+                <SwitchingColumnsArea>
+                  {children}
+                </SwitchingColumnsArea>
+              </Layout>
 
-          {me && !shouldHideFAB && (
-            <button
-              key='floating-action-button'
-              onClick={handleGoToCompose}
-              className='floating-action-button'
-              aria-label={intl.formatMessage(messages.publish)}
-            >
-              <Icon src={require('@tabler/icons/pencil-plus.svg')} />
-            </button>
+              {me && !shouldHideFAB && (
+                <button
+                  key='floating-action-button'
+                  onClick={handleGoToCompose}
+                  className='floating-action-button'
+                  aria-label={intl.formatMessage(messages.publish)}
+                >
+                  <Icon src={require('@tabler/icons/pencil-plus.svg')} />
+                </button>
+              )}
+
+              <BundleContainer fetchComponent={UploadArea}>
+                {Component => <Component active={draggingOver} onClose={closeUploadModal} />}
+              </BundleContainer>
+
+              {me && (
+                <BundleContainer fetchComponent={SidebarMenu}>
+                  {Component => <Component />}
+                </BundleContainer>
+              )}
+              <ThumbNavigation className='lg:hidden' />
+
+              <BundleContainer fetchComponent={ProfileHoverCard}>
+                {Component => <Component />}
+              </BundleContainer>
+
+              <BundleContainer fetchComponent={StatusHoverCard}>
+                {Component => <Component />}
+              </BundleContainer>
+            </>
           )}
-
-          <BundleContainer fetchComponent={UploadArea}>
-            {Component => <Component active={draggingOver} onClose={closeUploadModal} />}
-          </BundleContainer>
-
-          {me && (
-            <BundleContainer fetchComponent={SidebarMenu}>
-              {Component => <Component />}
-            </BundleContainer>
-          )}
-          <ThumbNavigation className='lg:hidden' />
-
-          <BundleContainer fetchComponent={ProfileHoverCard}>
-            {Component => <Component />}
-          </BundleContainer>
-
-          <BundleContainer fetchComponent={StatusHoverCard}>
-            {Component => <Component />}
-          </BundleContainer>
         </div>
       </div>
     </HotKeys>

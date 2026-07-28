@@ -2512,6 +2512,55 @@
       ]
     },
     {
+      "path": "app/soapbox/features/f7-shell/components/bottom-tabs.tsx",
+      "kind": "component",
+      "owner": "feature:f7-shell",
+      "scope": "feature",
+      "classifications": [
+        "feature-specific"
+      ]
+    },
+    {
+      "path": "app/soapbox/features/f7-shell/components/desktop-layout.tsx",
+      "kind": "component",
+      "owner": "feature:f7-shell",
+      "scope": "feature",
+      "classifications": [
+        "feature-specific",
+        "migration-adapter-required",
+        "framework7-replacement-candidate"
+      ]
+    },
+    {
+      "path": "app/soapbox/features/f7-shell/components/sidebar-navigation.tsx",
+      "kind": "component",
+      "owner": "feature:f7-shell",
+      "scope": "feature",
+      "classifications": [
+        "feature-specific",
+        "migration-adapter-required",
+        "framework7-replacement-candidate"
+      ]
+    },
+    {
+      "path": "app/soapbox/features/f7-shell/hooks/use-breakpoint.ts",
+      "kind": "component",
+      "owner": "feature:f7-shell",
+      "scope": "feature",
+      "classifications": [
+        "feature-specific"
+      ]
+    },
+    {
+      "path": "app/soapbox/features/f7-shell/index.tsx",
+      "kind": "component",
+      "owner": "feature:f7-shell",
+      "scope": "feature",
+      "classifications": [
+        "feature-specific"
+      ]
+    },
+    {
       "path": "app/soapbox/features/favourited_statuses/index.js",
       "kind": "component",
       "owner": "feature:favourited_statuses",
@@ -4825,6 +4874,11 @@
     },
     {
       "path": "app/styles/components/enlistment.scss",
+      "authority": "shared-component-style",
+      "disposition": "retain-and-tokenize"
+    },
+    {
+      "path": "app/styles/components/f7-shell.scss",
       "authority": "shared-component-style",
       "disposition": "retain-and-tokenize"
     },
@@ -8431,9 +8485,9 @@
       "disposition": "phosphor-migration-candidate"
     },
     {
-      "id": "svg-module:app/soapbox/features/ui/index.tsx:643:pencil-plus.svg",
+      "id": "svg-module:app/soapbox/features/ui/index.tsx:656:pencil-plus.svg",
       "path": "app/soapbox/features/ui/index.tsx",
-      "line": 643,
+      "line": 656,
       "kind": "svg-module",
       "provider": "tabler",
       "symbol": "pencil-plus.svg",
@@ -25162,66 +25216,66 @@
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/ui/index.tsx:127",
+      "id": "localization:app/soapbox/features/ui/index.tsx:129",
       "kind": "localization",
       "path": "app/soapbox/features/ui/index.tsx",
-      "line": 127,
+      "line": 129,
       "classification": "compatibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/ui/index.tsx:320",
+      "id": "localization:app/soapbox/features/ui/index.tsx:322",
       "kind": "localization",
       "path": "app/soapbox/features/ui/index.tsx",
-      "line": 320,
+      "line": 322,
       "classification": "compatibility-critical"
     },
     {
-      "id": "focus:app/soapbox/features/ui/index.tsx:507",
+      "id": "focus:app/soapbox/features/ui/index.tsx:512",
       "kind": "focus",
       "path": "app/soapbox/features/ui/index.tsx",
-      "line": 507,
+      "line": 512,
       "classification": "accessibility-critical"
     },
     {
-      "id": "focus:app/soapbox/features/ui/index.tsx:518",
+      "id": "focus:app/soapbox/features/ui/index.tsx:523",
       "kind": "focus",
       "path": "app/soapbox/features/ui/index.tsx",
-      "line": 518,
+      "line": 523,
       "classification": "accessibility-critical"
     },
     {
-      "id": "keyboard:app/soapbox/features/ui/index.tsx:535",
+      "id": "keyboard:app/soapbox/features/ui/index.tsx:540",
       "kind": "keyboard",
       "path": "app/soapbox/features/ui/index.tsx",
-      "line": 535,
+      "line": 540,
       "classification": "accessibility-critical"
     },
     {
-      "id": "keyboard:app/soapbox/features/ui/index.tsx:621",
+      "id": "keyboard:app/soapbox/features/ui/index.tsx:626",
       "kind": "keyboard",
       "path": "app/soapbox/features/ui/index.tsx",
-      "line": 621,
+      "line": 626,
       "classification": "accessibility-critical"
     },
     {
-      "id": "label:app/soapbox/features/ui/index.tsx:641",
+      "id": "label:app/soapbox/features/ui/index.tsx:654",
       "kind": "label",
       "path": "app/soapbox/features/ui/index.tsx",
-      "line": 641,
+      "line": 654,
       "classification": "accessibility-critical"
     },
     {
-      "id": "localization:app/soapbox/features/ui/index.tsx:641",
+      "id": "localization:app/soapbox/features/ui/index.tsx:654",
       "kind": "localization",
       "path": "app/soapbox/features/ui/index.tsx",
-      "line": 641,
+      "line": 654,
       "classification": "compatibility-critical"
     },
     {
-      "id": "keyboard:app/soapbox/features/ui/index.tsx:667",
+      "id": "keyboard:app/soapbox/features/ui/index.tsx:682",
       "kind": "keyboard",
       "path": "app/soapbox/features/ui/index.tsx",
-      "line": 667,
+      "line": 682,
       "classification": "accessibility-critical"
     },
     {
@@ -26025,7 +26079,14 @@
     }
   ],
   "framework7": {
-    "currentImports": [],
+    "currentImports": [
+      "app/soapbox/actions/settings.ts",
+      "app/soapbox/features/f7-shell/components/bottom-tabs.tsx",
+      "app/soapbox/features/f7-shell/components/desktop-layout.tsx",
+      "app/soapbox/features/f7-shell/components/sidebar-navigation.tsx",
+      "app/soapbox/features/f7-shell/index.tsx",
+      "app/soapbox/features/ui/index.tsx"
+    ],
     "compatibilityContract": "config/design-tokens.json#framework7Aliases",
     "replacementRule": "A replacement must preserve routes, labels, keyboard behavior, focus restoration, reduced motion, gestures, and target sizes."
   },
@@ -26043,8 +26104,8 @@
     "screenshotPlan": "docs/architecture/SCREENSHOT_AND_INTERACTION_BASELINE_PLAN.md"
   },
   "counts": {
-    "components": 474,
-    "styles": 74,
+    "components": 479,
+    "styles": 75,
     "icons": 392,
     "behaviors": {
       "localization": 1980,
@@ -26098,6 +26159,7 @@
       "feature:emoji": 8,
       "feature:export_data": 2,
       "feature:external_login": 2,
+      "feature:f7-shell": 5,
       "feature:favourited_statuses": 1,
       "feature:federation_restrictions": 3,
       "feature:feed-filtering": 1,

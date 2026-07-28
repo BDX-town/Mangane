@@ -172,6 +172,8 @@
     "exif-js": "^2.3.0",
     "feather-icons": "^4.28.0",
     "fork-ts-checker-webpack-plugin": "^7.2.11",
+    "framework7": "8.3.4",
+    "framework7-react": "8.3.4",
     "history": "^4.10.1",
     "html-webpack-harddisk-plugin": "^2.0.0",
     "html-webpack-plugin": "^5.5.0",

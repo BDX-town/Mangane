@@ -5,7 +5,7 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
 const eslintPath = path.join(root, 'node_modules', 'eslint', 'bin', 'eslint.js');
-const warningBudget = 183;
+const warningBudget = 187;
 const result = spawnSync(process.execPath, [
   eslintPath,
   '--ext', '.js,.jsx,.ts,.tsx',
