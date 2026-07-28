@@ -147,6 +147,8 @@ Exit criteria:
 
 ## Phase 4 — PWA, service worker, and offline hardening
 
+Status: **Complete; see [`PHASE_4_PWA_OFFLINE_HARDENING.md`](./PHASE_4_PWA_OFFLINE_HARDENING.md).**
+
 Goal: make installation and degraded operation reliable.
 
 Deliverables:

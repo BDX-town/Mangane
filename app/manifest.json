@@ -1,23 +1,30 @@
 {
+    "name": "Mangane",
+    "short_name": "Mangane",
+    "description": "A calm, adaptive Fediverse client",
+    "id": "/",
+    "scope": "/",
     "icons": [
         {
             "src": "/favicon.png",
             "type": "image/png",
-            "sizes": "250/250"
+            "sizes": "250x250"
         },
         {
             "src": "/favicon.ico",
             "type": "image/x-icon",
-            "sizes": "250/250"
+            "sizes": "48x48"
         },
         {
             "src": "/favicon.svg",
             "type": "image/svg+xml",
-            "sizes": "250/250"
+            "sizes": "any"
         }
-    ], 
+    ],
     "start_url": "/",
     "display": "standalone",
+    "theme_color": "#4338ca",
+    "background_color": "#f6f7f9",
     "share_target": {
         "action": "/share",
         "method": "POST",

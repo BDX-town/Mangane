@@ -472,7 +472,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical implementation sequence",
-      "contentSha256": "3cddafa5e579429bf2f496213689b032f6556e05cd3d1dce59301c6fbb126530"
+      "contentSha256": "0bd5ae8fef8be404f5b9a96d4b761a845d588ddff09c667819f9be9b8c2f971c"
     },
     {
       "path": "docs/architecture/KEYBOARD_AND_GESTURE_INVENTORY.md",
@@ -573,6 +573,16 @@
       "inheritedBrandingReferences": 1,
       "statusHeader": "Complete",
       "contentSha256": "2cda74e826849e6174036b88f2256338530d98c8b6478cdaa13bf66fc8278e5f"
+    },
+    {
+      "path": "docs/architecture/PHASE_4_PWA_OFFLINE_HARDENING.md",
+      "title": "Phase 4 PWA, Service Worker, and Offline Hardening",
+      "authorityId": "phase-4-pwa-service-worker-and-offline-hardening",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 5,
+      "statusHeader": "Complete",
+      "contentSha256": "fc7fe471eaed70b263ef47575d0e7c1008d0c6e2bd90270d0f99e80b3dfb5b12"
     },
     {
       "path": "docs/architecture/PREVIEW_AND_EMBED_INVENTORY.md",

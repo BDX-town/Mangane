@@ -54,10 +54,10 @@
       "classification": "ci-controlled-artifact"
     },
     {
-      "id": "console:app/application.ts:18",
+      "id": "console:app/application.ts:22",
       "kind": "console",
       "path": "app/application.ts",
-      "line": 18,
+      "line": 22,
       "expression": "console.error(e);",
       "classification": "startup-guarded-local-diagnostic"
     },
