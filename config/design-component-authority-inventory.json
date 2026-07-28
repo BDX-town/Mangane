@@ -2561,6 +2561,15 @@
       ]
     },
     {
+      "path": "app/soapbox/features/f7-shell/hooks/use-viewport.ts",
+      "kind": "component",
+      "owner": "feature:f7-shell",
+      "scope": "feature",
+      "classifications": [
+        "feature-specific"
+      ]
+    },
+    {
       "path": "app/soapbox/features/f7-shell/index.tsx",
       "kind": "component",
       "owner": "feature:f7-shell",
@@ -2571,6 +2580,15 @@
     },
     {
       "path": "app/soapbox/features/f7-shell/route-manifest.ts",
+      "kind": "supporting-ui-module",
+      "owner": "feature:f7-shell",
+      "scope": "feature",
+      "classifications": [
+        "feature-specific"
+      ]
+    },
+    {
+      "path": "app/soapbox/features/f7-shell/transitions.ts",
       "kind": "supporting-ui-module",
       "owner": "feature:f7-shell",
       "scope": "feature",
@@ -17625,6 +17643,62 @@
       "classification": "compatibility-critical"
     },
     {
+      "id": "motion:app/soapbox/features/f7-shell/index.tsx:59",
+      "kind": "motion",
+      "path": "app/soapbox/features/f7-shell/index.tsx",
+      "line": 59,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "motion:app/soapbox/features/f7-shell/transitions.ts:2",
+      "kind": "motion",
+      "path": "app/soapbox/features/f7-shell/transitions.ts",
+      "line": 2,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "motion:app/soapbox/features/f7-shell/transitions.ts:4",
+      "kind": "motion",
+      "path": "app/soapbox/features/f7-shell/transitions.ts",
+      "line": 4,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "motion:app/soapbox/features/f7-shell/transitions.ts:16",
+      "kind": "motion",
+      "path": "app/soapbox/features/f7-shell/transitions.ts",
+      "line": 16,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "motion:app/soapbox/features/f7-shell/transitions.ts:21",
+      "kind": "motion",
+      "path": "app/soapbox/features/f7-shell/transitions.ts",
+      "line": 21,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "motion:app/soapbox/features/f7-shell/transitions.ts:41",
+      "kind": "motion",
+      "path": "app/soapbox/features/f7-shell/transitions.ts",
+      "line": 41,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "motion:app/soapbox/features/f7-shell/transitions.ts:47",
+      "kind": "motion",
+      "path": "app/soapbox/features/f7-shell/transitions.ts",
+      "line": 47,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "motion:app/soapbox/features/f7-shell/transitions.ts:48",
+      "kind": "motion",
+      "path": "app/soapbox/features/f7-shell/transitions.ts",
+      "line": 48,
+      "classification": "accessibility-critical"
+    },
+    {
       "id": "localization:app/soapbox/features/favourited_statuses/index.js:6",
       "kind": "localization",
       "path": "app/soapbox/features/favourited_statuses/index.js",
@@ -26122,7 +26196,7 @@
     "screenshotPlan": "docs/architecture/SCREENSHOT_AND_INTERACTION_BASELINE_PLAN.md"
   },
   "counts": {
-    "components": 481,
+    "components": 483,
     "styles": 75,
     "icons": 392,
     "behaviors": {
@@ -26131,7 +26205,7 @@
       "inline-style": 75,
       "keyboard": 90,
       "label": 90,
-      "motion": 60,
+      "motion": 68,
       "gesture": 37,
       "rtl": 13,
       "live-region": 1
@@ -26177,7 +26251,7 @@
       "feature:emoji": 8,
       "feature:export_data": 2,
       "feature:external_login": 2,
-      "feature:f7-shell": 7,
+      "feature:f7-shell": 9,
       "feature:favourited_statuses": 1,
       "feature:federation_restrictions": 3,
       "feature:feed-filtering": 1,

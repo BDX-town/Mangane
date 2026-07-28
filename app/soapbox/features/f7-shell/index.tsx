@@ -1,5 +1,5 @@
 /**
- * Phase 3A — Framework7 adaptive application shell.
+ * Phase 3 — Framework7 adaptive application shell.
  *
  * This module provides the Framework7 React app root that replaces the legacy
  * Layout + React Router shell when the `framework7Shell` feature flag is enabled.
@@ -11,10 +11,11 @@
  *
  * Content components are rendered unchanged through a compatibility bridge.
  */
+import classNames from 'classnames';
 import { App, View, Panel } from 'framework7-react';
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
+import { useAppSelector, useOwnAccount, useSettings } from 'soapbox/hooks';
 import { isStandalone } from 'soapbox/utils/state';
 
 import F7BottomTabs from './components/bottom-tabs';
@@ -22,6 +23,8 @@ import F7DesktopLayout from './components/desktop-layout';
 import F7SidebarNavigation from './components/sidebar-navigation';
 import { useBreakpoint } from './hooks/use-breakpoint';
 import { useRouteState } from './hooks/use-route-state';
+import { useViewport } from './hooks/use-viewport';
+import { getTransitionCssVars } from './transitions';
 
 /** Framework7 app parameters — no router in Slice 3A. */
 const f7params = {
@@ -46,12 +49,27 @@ const F7Shell: React.FC<F7ShellProps> = ({ children }) => {
   const breakpoint = useBreakpoint();
   const account = useOwnAccount();
   const standalone = useAppSelector(isStandalone);
+  const settings = useSettings();
+  const reduceMotion = settings.get('reduceMotion') as boolean;
+  const { keyboardVisible, isStandalone: isPwa, orientation } = useViewport();
 
   // Persist current route for session restoration (Slice 3D)
   useRouteState();
 
+  // Compute transition CSS variables based on reduced-motion preference
+  const transitionVars = useMemo(
+    () => getTransitionCssVars(reduceMotion),
+    [reduceMotion],
+  );
+
+  const shellClasses = classNames('f7-shell', {
+    'f7-shell--keyboard-visible': keyboardVisible,
+    'f7-shell--standalone': isPwa,
+    'f7-shell--landscape': orientation === 'landscape',
+  });
+
   return (
-    <App {...f7params} className='f7-shell'>
+    <App {...f7params} className={shellClasses} style={transitionVars as React.CSSProperties}>
       {breakpoint === 'desktop' && (
         <F7DesktopLayout standalone={standalone}>
           {children}
@@ -74,7 +92,7 @@ const F7Shell: React.FC<F7ShellProps> = ({ children }) => {
           <View main className='f7-shell__main-view'>
             {children}
           </View>
-          {account && <F7BottomTabs />}
+          {account && !keyboardVisible && <F7BottomTabs />}
         </div>
       )}
     </App>

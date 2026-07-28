@@ -97,6 +97,26 @@
   }
 }
 
+/* Keyboard visible: hide bottom tabs and reduce padding */
+.f7-shell--keyboard-visible .f7-shell__bottom-tabs {
+  display: none;
+}
+
+.f7-shell--keyboard-visible .f7-shell__phone .f7-shell__main-view {
+  padding-bottom: 0;
+}
+
+/* Standalone PWA: add top safe area for notch */
+.f7-shell--standalone {
+  padding-top: env(safe-area-inset-top, 0);
+}
+
+/* Page transition custom properties */
+.f7-shell {
+  --f7-page-transition-duration: 300ms;
+  --f7-page-transition-easing: cubic-bezier(0.2, 0, 0, 1);
+}
+
 /* Forced colors */
 @media (forced-colors: active) {
   .f7-shell__bottom-tabs,
