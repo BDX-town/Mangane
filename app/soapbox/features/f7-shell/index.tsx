@@ -20,9 +20,14 @@ import { isStandalone } from 'soapbox/utils/state';
 
 import F7BottomTabs from './components/bottom-tabs';
 import F7DesktopLayout from './components/desktop-layout';
+import OfflineBanner from './components/offline-banner';
+import RouteErrorBoundary from './components/route-error-boundary';
 import F7SidebarNavigation from './components/sidebar-navigation';
+import { useAccountSwitch } from './hooks/use-account-switch';
 import { useBreakpoint } from './hooks/use-breakpoint';
+import { useOnlineStatus } from './hooks/use-online-status';
 import { useRouteState } from './hooks/use-route-state';
+import { useSessionRestore } from './hooks/use-session-restore';
 import { useViewport } from './hooks/use-viewport';
 import { getTransitionCssVars } from './transitions';
 
@@ -52,9 +57,16 @@ const F7Shell: React.FC<F7ShellProps> = ({ children }) => {
   const settings = useSettings();
   const reduceMotion = settings.get('reduceMotion') as boolean;
   const { keyboardVisible, isStandalone: isPwa, orientation } = useViewport();
+  const { isOnline } = useOnlineStatus();
 
-  // Persist current route for session restoration (Slice 3D)
+  // Persist current route for session restoration
   useRouteState();
+
+  // Handle account switch — clears navigation state
+  useAccountSwitch();
+
+  // Restore last route on PWA relaunch / page refresh
+  useSessionRestore();
 
   // Compute transition CSS variables based on reduced-motion preference
   const transitionVars = useMemo(
@@ -70,9 +82,13 @@ const F7Shell: React.FC<F7ShellProps> = ({ children }) => {
 
   return (
     <App {...f7params} className={shellClasses} style={transitionVars as React.CSSProperties}>
+      <OfflineBanner isOffline={!isOnline} />
+
       {breakpoint === 'desktop' && (
         <F7DesktopLayout standalone={standalone}>
-          {children}
+          <RouteErrorBoundary>
+            {children}
+          </RouteErrorBoundary>
         </F7DesktopLayout>
       )}
 
@@ -82,7 +98,9 @@ const F7Shell: React.FC<F7ShellProps> = ({ children }) => {
             {!standalone && <F7SidebarNavigation />}
           </Panel>
           <View main className='f7-shell__main-view'>
-            {children}
+            <RouteErrorBoundary>
+              {children}
+            </RouteErrorBoundary>
           </View>
         </div>
       )}
@@ -90,7 +108,9 @@ const F7Shell: React.FC<F7ShellProps> = ({ children }) => {
       {breakpoint === 'phone' && (
         <div className='f7-shell__phone'>
           <View main className='f7-shell__main-view'>
-            {children}
+            <RouteErrorBoundary>
+              {children}
+            </RouteErrorBoundary>
           </View>
           {account && !keyboardVisible && <F7BottomTabs />}
         </div>

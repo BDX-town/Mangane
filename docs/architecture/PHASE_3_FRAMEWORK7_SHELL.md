@@ -1,6 +1,6 @@
 # Phase 3 Framework7 Application Shell
 
-Status: **In progress**
+Status: **Complete**
 
 Last updated: 2026-07-26
 
@@ -18,8 +18,8 @@ It is split into independently reviewable slices:
 |---|---|---|
 | 3A | Install Framework7 React, feature flag, adaptive app root with phone/tablet/desktop layout detection | Complete — [PR 52](https://github.com/outlaw-dame/Mangane/pull/52) |
 | 3B | Route mapping — bridge existing React Router routes to F7 views, deep-link preservation, back/forward | Complete — [PR 53](https://github.com/outlaw-dame/Mangane/pull/53) |
-| 3C | Page transitions, safe-area insets, viewport/keyboard/orientation, reduced-motion variants | In progress |
-| 3D | Account-switch, session restoration, route-level error and offline states, rollback evidence | Planned |
+| 3C | Page transitions, safe-area insets, viewport/keyboard/orientation, reduced-motion variants | Complete — [PR 54](https://github.com/outlaw-dame/Mangane/pull/54) |
+| 3D | Account-switch, session restoration, route-level error and offline states, rollback evidence | Complete — [PR 55](https://github.com/outlaw-dame/Mangane/pull/55) |
 
 Phase 3 is not complete until every roadmap deliverable and exit criterion is
 merged, verified in CI, and free of unresolved review findings.
@@ -138,12 +138,12 @@ Same as 3A — flag off restores legacy routing entirely.
 
 ## Phase 3 completion checklist
 
-- [ ] Framework7 React app root behind a feature flag.
-- [ ] Phone bottom navigation.
-- [ ] Tablet split/sidebar layout.
-- [ ] Desktop multi-column layout.
-- [ ] Route mapping and deep-link preservation.
-- [ ] Safe-area, standalone PWA, viewport, keyboard, and orientation.
-- [ ] Page transition policy with reduced-motion variants.
-- [ ] Account-switch and session restoration behavior.
-- [ ] Route-level error and offline states.
+- [x] Framework7 React app root behind a feature flag.
+- [x] Phone bottom navigation.
+- [x] Tablet split/sidebar layout.
+- [x] Desktop multi-column layout.
+- [x] Route mapping and deep-link preservation.
+- [x] Safe-area, standalone PWA, viewport, keyboard, and orientation.
+- [x] Page transition policy with reduced-motion variants.
+- [x] Account-switch and session restoration behavior.
+- [x] Route-level error and offline states.

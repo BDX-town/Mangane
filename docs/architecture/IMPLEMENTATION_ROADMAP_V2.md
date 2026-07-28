@@ -100,7 +100,7 @@ Exit criteria:
 
 ## Phase 2 — Design tokens, semantic icons, and accessibility foundation
 
-Status: **In progress; see [`PHASE_2_DESIGN_FOUNDATION.md`](./PHASE_2_DESIGN_FOUNDATION.md).**
+Status: **Complete; see [`PHASE_2_DESIGN_FOUNDATION.md`](./PHASE_2_DESIGN_FOUNDATION.md).**
 
 Goal: establish the product language before broad UI migration.
 
@@ -123,7 +123,7 @@ Exit criteria:
 
 ## Phase 3 — Framework7 application shell
 
-Status: **In progress; see [`PHASE_3_FRAMEWORK7_SHELL.md`](./PHASE_3_FRAMEWORK7_SHELL.md).**
+Status: **Complete; see [`PHASE_3_FRAMEWORK7_SHELL.md`](./PHASE_3_FRAMEWORK7_SHELL.md).**
 
 Goal: introduce the adaptive shell without rewriting all content surfaces.
 

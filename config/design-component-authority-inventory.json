@@ -2532,6 +2532,26 @@
       ]
     },
     {
+      "path": "app/soapbox/features/f7-shell/components/offline-banner.tsx",
+      "kind": "component",
+      "owner": "feature:f7-shell",
+      "scope": "feature",
+      "classifications": [
+        "feature-specific",
+        "accessibility-critical"
+      ]
+    },
+    {
+      "path": "app/soapbox/features/f7-shell/components/route-error-boundary.tsx",
+      "kind": "component",
+      "owner": "feature:f7-shell",
+      "scope": "feature",
+      "classifications": [
+        "feature-specific",
+        "accessibility-critical"
+      ]
+    },
+    {
       "path": "app/soapbox/features/f7-shell/components/sidebar-navigation.tsx",
       "kind": "component",
       "owner": "feature:f7-shell",
@@ -2540,6 +2560,15 @@
         "feature-specific",
         "migration-adapter-required",
         "framework7-replacement-candidate"
+      ]
+    },
+    {
+      "path": "app/soapbox/features/f7-shell/hooks/use-account-switch.ts",
+      "kind": "component",
+      "owner": "feature:f7-shell",
+      "scope": "feature",
+      "classifications": [
+        "feature-specific"
       ]
     },
     {
@@ -2552,7 +2581,25 @@
       ]
     },
     {
+      "path": "app/soapbox/features/f7-shell/hooks/use-online-status.ts",
+      "kind": "component",
+      "owner": "feature:f7-shell",
+      "scope": "feature",
+      "classifications": [
+        "feature-specific"
+      ]
+    },
+    {
       "path": "app/soapbox/features/f7-shell/hooks/use-route-state.ts",
+      "kind": "supporting-ui-module",
+      "owner": "feature:f7-shell",
+      "scope": "feature",
+      "classifications": [
+        "feature-specific"
+      ]
+    },
+    {
+      "path": "app/soapbox/features/f7-shell/hooks/use-session-restore.ts",
       "kind": "supporting-ui-module",
       "owner": "feature:f7-shell",
       "scope": "feature",
@@ -17643,10 +17690,24 @@
       "classification": "compatibility-critical"
     },
     {
-      "id": "motion:app/soapbox/features/f7-shell/index.tsx:59",
+      "id": "live-region:app/soapbox/features/f7-shell/components/offline-banner.tsx:21",
+      "kind": "live-region",
+      "path": "app/soapbox/features/f7-shell/components/offline-banner.tsx",
+      "line": 21,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "motion:app/soapbox/features/f7-shell/hooks/use-online-status.ts:12",
+      "kind": "motion",
+      "path": "app/soapbox/features/f7-shell/hooks/use-online-status.ts",
+      "line": 12,
+      "classification": "accessibility-critical"
+    },
+    {
+      "id": "motion:app/soapbox/features/f7-shell/index.tsx:71",
       "kind": "motion",
       "path": "app/soapbox/features/f7-shell/index.tsx",
-      "line": 59,
+      "line": 71,
       "classification": "accessibility-critical"
     },
     {
@@ -26196,7 +26257,7 @@
     "screenshotPlan": "docs/architecture/SCREENSHOT_AND_INTERACTION_BASELINE_PLAN.md"
   },
   "counts": {
-    "components": 483,
+    "components": 488,
     "styles": 75,
     "icons": 392,
     "behaviors": {
@@ -26205,10 +26266,10 @@
       "inline-style": 75,
       "keyboard": 90,
       "label": 90,
-      "motion": 68,
+      "motion": 69,
       "gesture": 37,
       "rtl": 13,
-      "live-region": 1
+      "live-region": 2
     },
     "iconProviders": {
       "tabler": 370,
@@ -26251,7 +26312,7 @@
       "feature:emoji": 8,
       "feature:export_data": 2,
       "feature:external_login": 2,
-      "feature:f7-shell": 9,
+      "feature:f7-shell": 14,
       "feature:favourited_statuses": 1,
       "feature:federation_restrictions": 3,
       "feature:feed-filtering": 1,

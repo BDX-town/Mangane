@@ -125,3 +125,53 @@
     border: 1px solid ButtonText;
   }
 }
+
+/* Offline banner */
+.f7-shell__offline-banner {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ds-space-2) var(--ds-space-4);
+  font-family: var(--ds-font-family-ui);
+  font-size: var(--ds-font-size-sm);
+  color: var(--ds-color-text-primary);
+  background: var(--ds-color-surface-secondary);
+  border-bottom: 1px solid var(--ds-color-separator);
+}
+
+/* Route error boundary */
+.f7-shell__error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  padding: var(--ds-space-6);
+}
+
+.f7-shell__error-content {
+  max-width: 400px;
+  text-align: center;
+}
+
+.f7-shell__error-title {
+  margin-bottom: var(--ds-space-3);
+  font-family: var(--ds-font-family-ui);
+  font-size: 1.25rem;
+  font-weight: var(--ds-font-weight-semibold);
+  color: var(--ds-color-text-primary);
+}
+
+.f7-shell__error-message {
+  margin-bottom: var(--ds-space-5);
+  font-size: var(--ds-font-size-base);
+  color: var(--ds-color-text-secondary);
+}
+
+.f7-shell__error-actions {
+  display: flex;
+  gap: var(--ds-space-3);
+  justify-content: center;
+}
