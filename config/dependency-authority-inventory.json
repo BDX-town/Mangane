@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "status": "current-phase-0a-evidence",
   "sourceDigests": {
-    "packageJsonSha256": "a4c60881dff55b0f2ff1cff1a973a2934b70f68c4d14d1db2f76b9e396c4dd52",
+    "packageJsonSha256": "7851cb526e62846039a87dd6f5b4141ac62c681be94a8104d0cc4f4f4c816c7f",
     "twemojiDownloaderSha256": "89f1d9fec29b1d53c8862466efbfc270fc5324bfc476095ced7ae3ee5b26c303",
-    "yarnLockSha256": "fc856dc8259f711d8d02094094baeba8db741cf6972c80f075aa2da779b4b848"
+    "yarnLockSha256": "28ba12c2764bd1a55ce29ce43e444935de91e821fcd5b6405ca6f2269576f830"
   },
   "repositorySupplyChain": {
     "postinstall": {
@@ -25765,52 +25765,6 @@
       "version": "0.11.2"
     },
     {
-      "classification": "test-transitive",
-      "declaredSection": null,
-      "descriptors": [
-        "base64-arraybuffer-es6@npm:^0.7.0"
-      ],
-      "direct": false,
-      "executionContexts": [
-        "test"
-      ],
-      "license": {
-        "evidence": "Installed package.json metadata.",
-        "expression": "MIT",
-        "obligations": [
-          "retain-applicable-copyright-license-and-notice-text"
-        ],
-        "status": "declared"
-      },
-      "locator": "base64-arraybuffer-es6@npm:0.7.0",
-      "maintenanceStatus": "not-declared-deprecated-in-audit-snapshot",
-      "name": "base64-arraybuffer-es6",
-      "owner": "dependency-governance-maintainers",
-      "upstream": {
-        "author": "Brett Zamir",
-        "repository": "https://github.com/brettz9/base64-arraybuffer"
-      },
-      "purpose": "Transitive dependency required by: fake-indexeddb.",
-      "replacementRelevance": "none-recorded",
-      "rootDependencies": [
-        "fake-indexeddb"
-      ],
-      "installBehavior": {
-        "hasInstallScript": false,
-        "hasInstallTimeNetworkIndicator": false,
-        "hasPackageScriptNetworkIndicator": true,
-        "hasCodeGenerationIndicator": true,
-        "hasNativeBinding": false,
-        "platformConstraints": {
-          "cpu": [],
-          "os": []
-        },
-        "scripts": {}
-      },
-      "usageEvidence": [],
-      "version": "0.7.0"
-    },
-    {
       "classification": "build-transitive",
       "declaredSection": null,
       "descriptors": [
@@ -36594,6 +36548,30 @@
       "version": "4.7.1"
     },
     {
+      "locator": "dexie@npm:4.0.10",
+      "name": "dexie",
+      "version": "4.0.10",
+      "direct": true,
+      "rootDependencies": [
+        "dexie"
+      ],
+      "classification": "development-tooling",
+      "owner": "architecture-authority",
+      "purpose": "Phase 5 local data store",
+      "maintenanceStatus": "active",
+      "license": {
+        "expression": "MIT",
+        "obligations": [
+          "attribution"
+        ]
+      },
+      "installBehavior": "scripts-disabled",
+      "upstream": {
+        "author": "community",
+        "repository": "public"
+      }
+    },
+    {
       "classification": "unverified-transitive",
       "declaredSection": null,
       "descriptors": [
@@ -37316,52 +37294,6 @@
       },
       "usageEvidence": [],
       "version": "2.3.0"
-    },
-    {
-      "classification": "test-transitive",
-      "declaredSection": null,
-      "descriptors": [
-        "domexception@npm:^1.0.1"
-      ],
-      "direct": false,
-      "executionContexts": [
-        "test"
-      ],
-      "license": {
-        "evidence": "Installed package.json metadata.",
-        "expression": "MIT",
-        "obligations": [
-          "retain-applicable-copyright-license-and-notice-text"
-        ],
-        "status": "declared"
-      },
-      "locator": "domexception@npm:1.0.1",
-      "maintenanceStatus": "deprecated",
-      "name": "domexception",
-      "owner": "dependency-governance-maintainers",
-      "upstream": {
-        "author": "Domenic Denicola <d@domenic.me> (https://domenic.me/)",
-        "repository": "jsdom/domexception"
-      },
-      "purpose": "Transitive dependency required by: fake-indexeddb.",
-      "replacementRelevance": "none-recorded",
-      "rootDependencies": [
-        "fake-indexeddb"
-      ],
-      "installBehavior": {
-        "hasInstallScript": false,
-        "hasInstallTimeNetworkIndicator": false,
-        "hasPackageScriptNetworkIndicator": false,
-        "hasCodeGenerationIndicator": true,
-        "hasNativeBinding": false,
-        "platformConstraints": {
-          "cpu": [],
-          "os": []
-        },
-        "scripts": {}
-      },
-      "usageEvidence": [],
-      "version": "1.0.1"
     },
     {
       "classification": "unverified-transitive",
@@ -42929,55 +42861,28 @@
       "version": "2.0.4"
     },
     {
-      "classification": "test-only",
-      "declaredSection": "devDependencies",
-      "descriptors": [
-        "fake-indexeddb@npm:^3.1.7"
-      ],
-      "direct": true,
-      "executionContexts": [
-        "test"
-      ],
-      "license": {
-        "evidence": "Installed package.json metadata.",
-        "expression": "Apache-2.0",
-        "obligations": [
-          "retain-applicable-copyright-license-and-notice-text"
-        ],
-        "status": "declared"
-      },
-      "locator": "fake-indexeddb@npm:3.1.8",
-      "maintenanceStatus": "not-declared-deprecated-in-audit-snapshot",
+      "locator": "fake-indexeddb@npm:6.0.0",
       "name": "fake-indexeddb",
-      "owner": "test-infrastructure-maintainers",
-      "upstream": {
-        "author": "Jeremy Scheff <jdscheff@gmail.com> (http://dumbmatter.com/)",
-        "repository": "git://github.com/dumbmatter/fakeIndexedDB.git"
-      },
-      "purpose": "Fake IndexedDB: a pure JS in-memory implementation of the IndexedDB API",
-      "replacementRelevance": "none-recorded",
+      "version": "6.0.0",
+      "direct": true,
       "rootDependencies": [
         "fake-indexeddb"
       ],
-      "installBehavior": {
-        "hasInstallScript": false,
-        "hasInstallTimeNetworkIndicator": false,
-        "hasPackageScriptNetworkIndicator": false,
-        "hasCodeGenerationIndicator": true,
-        "hasNativeBinding": false,
-        "platformConstraints": {
-          "cpu": [],
-          "os": []
-        },
-        "scripts": {}
+      "classification": "development-tooling",
+      "owner": "architecture-authority",
+      "purpose": "Phase 5 local data store",
+      "maintenanceStatus": "active",
+      "license": {
+        "expression": "MIT",
+        "obligations": [
+          "attribution"
+        ]
       },
-      "usageEvidence": [
-        {
-          "path": "app/soapbox/jest/test-setup.ts",
-          "context": "test"
-        }
-      ],
-      "version": "3.1.8"
+      "installBehavior": "scripts-disabled",
+      "upstream": {
+        "author": "community",
+        "repository": "public"
+      }
     },
     {
       "classification": "build-transitive",
@@ -84701,52 +84606,6 @@
       "version": "1.4.10"
     },
     {
-      "classification": "test-transitive",
-      "declaredSection": null,
-      "descriptors": [
-        "realistic-structured-clone@npm:^2.0.1"
-      ],
-      "direct": false,
-      "executionContexts": [
-        "test"
-      ],
-      "license": {
-        "evidence": "Installed package.json metadata.",
-        "expression": "Apache-2.0",
-        "obligations": [
-          "retain-applicable-copyright-license-and-notice-text"
-        ],
-        "status": "declared"
-      },
-      "locator": "realistic-structured-clone@npm:2.0.4",
-      "maintenanceStatus": "deprecated",
-      "name": "realistic-structured-clone",
-      "owner": "dependency-governance-maintainers",
-      "upstream": {
-        "author": "Jeremy Scheff <jdscheff@gmail.com> (http://dumbmatter.com/)",
-        "repository": "git://github.com/dumbmatter/realistic-structured-clone.git"
-      },
-      "purpose": "Transitive dependency required by: fake-indexeddb.",
-      "replacementRelevance": "none-recorded",
-      "rootDependencies": [
-        "fake-indexeddb"
-      ],
-      "installBehavior": {
-        "hasInstallScript": false,
-        "hasInstallTimeNetworkIndicator": false,
-        "hasPackageScriptNetworkIndicator": false,
-        "hasCodeGenerationIndicator": true,
-        "hasNativeBinding": false,
-        "platformConstraints": {
-          "cpu": [],
-          "os": []
-        },
-        "scripts": {}
-      },
-      "usageEvidence": [],
-      "version": "2.0.4"
-    },
-    {
       "classification": "runtime-transitive",
       "declaredSection": null,
       "descriptors": [
@@ -96217,52 +96076,6 @@
       "version": "0.0.3"
     },
     {
-      "classification": "test-transitive",
-      "declaredSection": null,
-      "descriptors": [
-        "tr46@npm:^2.1.0"
-      ],
-      "direct": false,
-      "executionContexts": [
-        "test"
-      ],
-      "license": {
-        "evidence": "Installed package.json metadata.",
-        "expression": "MIT",
-        "obligations": [
-          "retain-applicable-copyright-license-and-notice-text"
-        ],
-        "status": "declared"
-      },
-      "locator": "tr46@npm:2.1.0",
-      "maintenanceStatus": "not-declared-deprecated-in-audit-snapshot",
-      "name": "tr46",
-      "owner": "dependency-governance-maintainers",
-      "upstream": {
-        "author": "Sebastian Mayr <npm@smayr.name>",
-        "repository": "https://github.com/jsdom/tr46"
-      },
-      "purpose": "Transitive dependency required by: fake-indexeddb.",
-      "replacementRelevance": "none-recorded",
-      "rootDependencies": [
-        "fake-indexeddb"
-      ],
-      "installBehavior": {
-        "hasInstallScript": false,
-        "hasInstallTimeNetworkIndicator": false,
-        "hasPackageScriptNetworkIndicator": false,
-        "hasCodeGenerationIndicator": true,
-        "hasNativeBinding": false,
-        "platformConstraints": {
-          "cpu": [],
-          "os": []
-        },
-        "scripts": {}
-      },
-      "usageEvidence": [],
-      "version": "2.1.0"
-    },
-    {
       "classification": "unverified-transitive",
       "declaredSection": null,
       "descriptors": [
@@ -97781,99 +97594,6 @@
       },
       "usageEvidence": [],
       "version": "4.9.5"
-    },
-    {
-      "classification": "test-transitive",
-      "declaredSection": null,
-      "descriptors": [
-        "typeson-registry@npm:^1.0.0-alpha.20"
-      ],
-      "direct": false,
-      "executionContexts": [
-        "test"
-      ],
-      "license": {
-        "evidence": "Installed package.json metadata.",
-        "expression": "MIT",
-        "obligations": [
-          "retain-applicable-copyright-license-and-notice-text"
-        ],
-        "status": "declared"
-      },
-      "locator": "typeson-registry@npm:1.0.0-alpha.39",
-      "maintenanceStatus": "not-declared-deprecated-in-audit-snapshot",
-      "name": "typeson-registry",
-      "owner": "dependency-governance-maintainers",
-      "upstream": {
-        "author": "dfahlander",
-        "repository": "git+https://github.com/dfahlander/typeson-registry.git"
-      },
-      "purpose": "Transitive dependency required by: fake-indexeddb.",
-      "replacementRelevance": "none-recorded",
-      "rootDependencies": [
-        "fake-indexeddb"
-      ],
-      "installBehavior": {
-        "hasInstallScript": false,
-        "hasInstallTimeNetworkIndicator": false,
-        "hasPackageScriptNetworkIndicator": true,
-        "hasCodeGenerationIndicator": true,
-        "hasNativeBinding": false,
-        "platformConstraints": {
-          "cpu": [],
-          "os": []
-        },
-        "scripts": {}
-      },
-      "usageEvidence": [],
-      "version": "1.0.0-alpha.39"
-    },
-    {
-      "classification": "test-transitive",
-      "declaredSection": null,
-      "descriptors": [
-        "typeson@npm:^6.0.0",
-        "typeson@npm:^6.1.0"
-      ],
-      "direct": false,
-      "executionContexts": [
-        "test"
-      ],
-      "license": {
-        "evidence": "Installed package.json metadata.",
-        "expression": "MIT",
-        "obligations": [
-          "retain-applicable-copyright-license-and-notice-text"
-        ],
-        "status": "declared"
-      },
-      "locator": "typeson@npm:6.1.0",
-      "maintenanceStatus": "not-declared-deprecated-in-audit-snapshot",
-      "name": "typeson",
-      "owner": "dependency-governance-maintainers",
-      "upstream": {
-        "author": "dfahlander",
-        "repository": "git+https://github.com/dfahlander/typeson.git"
-      },
-      "purpose": "Transitive dependency required by: fake-indexeddb.",
-      "replacementRelevance": "none-recorded",
-      "rootDependencies": [
-        "fake-indexeddb"
-      ],
-      "installBehavior": {
-        "hasInstallScript": false,
-        "hasInstallTimeNetworkIndicator": false,
-        "hasPackageScriptNetworkIndicator": true,
-        "hasCodeGenerationIndicator": true,
-        "hasNativeBinding": false,
-        "platformConstraints": {
-          "cpu": [],
-          "os": []
-        },
-        "scripts": {}
-      },
-      "usageEvidence": [],
-      "version": "6.1.0"
     },
     {
       "classification": "build-transitive",
@@ -100588,98 +100308,6 @@
       "version": "3.0.1"
     },
     {
-      "classification": "test-transitive",
-      "declaredSection": null,
-      "descriptors": [
-        "webidl-conversions@npm:^4.0.2"
-      ],
-      "direct": false,
-      "executionContexts": [
-        "test"
-      ],
-      "license": {
-        "evidence": "Installed package.json metadata.",
-        "expression": "BSD-2-Clause",
-        "obligations": [
-          "retain-applicable-copyright-license-and-notice-text"
-        ],
-        "status": "declared"
-      },
-      "locator": "webidl-conversions@npm:4.0.2",
-      "maintenanceStatus": "not-declared-deprecated-in-audit-snapshot",
-      "name": "webidl-conversions",
-      "owner": "dependency-governance-maintainers",
-      "upstream": {
-        "author": "Domenic Denicola <d@domenic.me> (https://domenic.me/)",
-        "repository": "jsdom/webidl-conversions"
-      },
-      "purpose": "Transitive dependency required by: fake-indexeddb.",
-      "replacementRelevance": "none-recorded",
-      "rootDependencies": [
-        "fake-indexeddb"
-      ],
-      "installBehavior": {
-        "hasInstallScript": false,
-        "hasInstallTimeNetworkIndicator": false,
-        "hasPackageScriptNetworkIndicator": false,
-        "hasCodeGenerationIndicator": false,
-        "hasNativeBinding": false,
-        "platformConstraints": {
-          "cpu": [],
-          "os": []
-        },
-        "scripts": {}
-      },
-      "usageEvidence": [],
-      "version": "4.0.2"
-    },
-    {
-      "classification": "test-transitive",
-      "declaredSection": null,
-      "descriptors": [
-        "webidl-conversions@npm:^6.1.0"
-      ],
-      "direct": false,
-      "executionContexts": [
-        "test"
-      ],
-      "license": {
-        "evidence": "Installed package.json metadata.",
-        "expression": "BSD-2-Clause",
-        "obligations": [
-          "retain-applicable-copyright-license-and-notice-text"
-        ],
-        "status": "declared"
-      },
-      "locator": "webidl-conversions@npm:6.1.0",
-      "maintenanceStatus": "not-declared-deprecated-in-audit-snapshot",
-      "name": "webidl-conversions",
-      "owner": "dependency-governance-maintainers",
-      "upstream": {
-        "author": "Domenic Denicola <d@domenic.me> (https://domenic.me/)",
-        "repository": "jsdom/webidl-conversions"
-      },
-      "purpose": "Transitive dependency required by: fake-indexeddb.",
-      "replacementRelevance": "none-recorded",
-      "rootDependencies": [
-        "fake-indexeddb"
-      ],
-      "installBehavior": {
-        "hasInstallScript": false,
-        "hasInstallTimeNetworkIndicator": false,
-        "hasPackageScriptNetworkIndicator": false,
-        "hasCodeGenerationIndicator": false,
-        "hasNativeBinding": false,
-        "platformConstraints": {
-          "cpu": [],
-          "os": []
-        },
-        "scripts": {}
-      },
-      "usageEvidence": [],
-      "version": "6.1.0"
-    },
-    {
       "classification": "unverified-transitive",
       "declaredSection": null,
       "descriptors": [
@@ -101534,52 +101162,6 @@
       },
       "usageEvidence": [],
       "version": "5.0.0"
-    },
-    {
-      "classification": "test-transitive",
-      "declaredSection": null,
-      "descriptors": [
-        "whatwg-url@npm:^8.4.0"
-      ],
-      "direct": false,
-      "executionContexts": [
-        "test"
-      ],
-      "license": {
-        "evidence": "Installed package.json metadata.",
-        "expression": "MIT",
-        "obligations": [
-          "retain-applicable-copyright-license-and-notice-text"
-        ],
-        "status": "declared"
-      },
-      "locator": "whatwg-url@npm:8.7.0",
-      "maintenanceStatus": "not-declared-deprecated-in-audit-snapshot",
-      "name": "whatwg-url",
-      "owner": "dependency-governance-maintainers",
-      "upstream": {
-        "author": "Sebastian Mayr <github@smayr.name>",
-        "repository": "jsdom/whatwg-url"
-      },
-      "purpose": "Transitive dependency required by: fake-indexeddb.",
-      "replacementRelevance": "none-recorded",
-      "rootDependencies": [
-        "fake-indexeddb"
-      ],
-      "installBehavior": {
-        "hasInstallScript": false,
-        "hasInstallTimeNetworkIndicator": false,
-        "hasPackageScriptNetworkIndicator": false,
-        "hasCodeGenerationIndicator": true,
-        "hasNativeBinding": false,
-        "platformConstraints": {
-          "cpu": [],
-          "os": []
-        },
-        "scripts": {}
-      },
-      "usageEvidence": [],
-      "version": "8.7.0"
     },
     {
       "classification": "runtime-transitive",
@@ -105089,21 +104671,6 @@
     },
     {
       "locators": [
-        "domexception@npm:1.0.1",
-        "domexception@npm:4.0.0"
-      ],
-      "name": "domexception",
-      "rootDependencies": [
-        "fake-indexeddb",
-        "jest-environment-jsdom"
-      ],
-      "versions": [
-        "1.0.1",
-        "4.0.0"
-      ]
-    },
-    {
-      "locators": [
         "domhandler@npm:2.4.2",
         "domhandler@npm:4.3.1",
         "domhandler@npm:5.0.3"
@@ -108004,18 +107571,15 @@
     {
       "locators": [
         "tr46@npm:0.0.3",
-        "tr46@npm:2.1.0",
         "tr46@npm:3.0.0"
       ],
       "name": "tr46",
       "rootDependencies": [
         "danger",
-        "fake-indexeddb",
         "jest-environment-jsdom"
       ],
       "versions": [
         "0.0.3",
-        "2.1.0",
         "3.0.0"
       ]
     },
@@ -108178,20 +107742,15 @@
     {
       "locators": [
         "webidl-conversions@npm:3.0.1",
-        "webidl-conversions@npm:4.0.2",
-        "webidl-conversions@npm:6.1.0",
         "webidl-conversions@npm:7.0.0"
       ],
       "name": "webidl-conversions",
       "rootDependencies": [
         "danger",
-        "fake-indexeddb",
         "jest-environment-jsdom"
       ],
       "versions": [
         "3.0.1",
-        "4.0.2",
-        "6.1.0",
         "7.0.0"
       ]
     },
@@ -108229,20 +107788,17 @@
       "locators": [
         "whatwg-url@npm:10.0.0",
         "whatwg-url@npm:11.0.0",
-        "whatwg-url@npm:5.0.0",
-        "whatwg-url@npm:8.7.0"
+        "whatwg-url@npm:5.0.0"
       ],
       "name": "whatwg-url",
       "rootDependencies": [
         "danger",
-        "fake-indexeddb",
         "jest-environment-jsdom"
       ],
       "versions": [
         "10.0.0",
         "11.0.0",
-        "5.0.0",
-        "8.7.0"
+        "5.0.0"
       ]
     },
     {

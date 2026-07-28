@@ -58,8 +58,8 @@ const assertRunFails = (root, pattern) => {
 
 test('verifies every resolved package and high/critical disposition', () => {
   const report = JSON.parse(run());
-  assert.equal(report.resolvedPackages, 2042);
-  assert.equal(report.directPackages, 211);
+  assert.equal(report.resolvedPackages, 2034);
+  assert.equal(report.directPackages, 212);
   assert.equal(report.highOrCriticalAdvisories, 54);
   assert.ok(report.actionUses > 0);
 });

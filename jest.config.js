@@ -67,7 +67,7 @@ module.exports = {
   'transformIgnorePatterns': [
     // FIXME: react-sticky-box and eld don't provide compatible CJS builds, so transform them for now
     // https://github.com/codecks-io/react-sticky-box/issues/79
-    `/node_modules/(?!(eld|react-sticky-box|.+\\.(${ASSET_EXTS})$))`,
+    `/node_modules/(?!(eld|react-sticky-box|dexie|fake-indexeddb|.+\\.(${ASSET_EXTS})$))`,
     // Ignore node_modules, except static assets
     // `/node_modules/(?!.+\\.(${ASSET_EXTS})$)`,
   ],

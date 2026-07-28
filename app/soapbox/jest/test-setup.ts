@@ -4,6 +4,11 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { __clear as clearApiMocks } from '../__mocks__/api';
 
+// Polyfill structuredClone for fake-indexeddb in test environment
+if (typeof globalThis.structuredClone === 'undefined') {
+  globalThis.structuredClone = <T>(value: T): T => JSON.parse(JSON.stringify(value));
+}
+
 // API mocking
 jest.mock('soapbox/api');
 afterEach(() => clearApiMocks());
