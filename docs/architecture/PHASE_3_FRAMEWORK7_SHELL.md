@@ -16,8 +16,8 @@ It is split into independently reviewable slices:
 
 | Slice | Scope | Status |
 |---|---|---|
-| 3A | Install Framework7 React, feature flag, adaptive app root with phone/tablet/desktop layout detection | Planned |
-| 3B | Route mapping — bridge existing React Router routes to F7 views, deep-link preservation, back/forward | Planned |
+| 3A | Install Framework7 React, feature flag, adaptive app root with phone/tablet/desktop layout detection | Complete — [PR 52](https://github.com/outlaw-dame/Mangane/pull/52) |
+| 3B | Route mapping — bridge existing React Router routes to F7 views, deep-link preservation, back/forward | In progress |
 | 3C | Page transitions, safe-area insets, viewport/keyboard/orientation, reduced-motion variants | Planned |
 | 3D | Account-switch, session restoration, route-level error and offline states, rollback evidence | Planned |
 

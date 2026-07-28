@@ -21,6 +21,7 @@ import F7BottomTabs from './components/bottom-tabs';
 import F7DesktopLayout from './components/desktop-layout';
 import F7SidebarNavigation from './components/sidebar-navigation';
 import { useBreakpoint } from './hooks/use-breakpoint';
+import { useRouteState } from './hooks/use-route-state';
 
 /** Framework7 app parameters — no router in Slice 3A. */
 const f7params = {
@@ -45,6 +46,9 @@ const F7Shell: React.FC<F7ShellProps> = ({ children }) => {
   const breakpoint = useBreakpoint();
   const account = useOwnAccount();
   const standalone = useAppSelector(isStandalone);
+
+  // Persist current route for session restoration (Slice 3D)
+  useRouteState();
 
   return (
     <App {...f7params} className='f7-shell'>

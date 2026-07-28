@@ -2552,8 +2552,26 @@
       ]
     },
     {
+      "path": "app/soapbox/features/f7-shell/hooks/use-route-state.ts",
+      "kind": "supporting-ui-module",
+      "owner": "feature:f7-shell",
+      "scope": "feature",
+      "classifications": [
+        "feature-specific"
+      ]
+    },
+    {
       "path": "app/soapbox/features/f7-shell/index.tsx",
       "kind": "component",
+      "owner": "feature:f7-shell",
+      "scope": "feature",
+      "classifications": [
+        "feature-specific"
+      ]
+    },
+    {
+      "path": "app/soapbox/features/f7-shell/route-manifest.ts",
+      "kind": "supporting-ui-module",
       "owner": "feature:f7-shell",
       "scope": "feature",
       "classifications": [
@@ -26104,7 +26122,7 @@
     "screenshotPlan": "docs/architecture/SCREENSHOT_AND_INTERACTION_BASELINE_PLAN.md"
   },
   "counts": {
-    "components": 479,
+    "components": 481,
     "styles": 75,
     "icons": 392,
     "behaviors": {
@@ -26159,7 +26177,7 @@
       "feature:emoji": 8,
       "feature:export_data": 2,
       "feature:external_login": 2,
-      "feature:f7-shell": 5,
+      "feature:f7-shell": 7,
       "feature:favourited_statuses": 1,
       "feature:federation_restrictions": 3,
       "feature:feed-filtering": 1,
