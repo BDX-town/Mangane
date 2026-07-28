@@ -39,6 +39,10 @@ export type { MigrationDefinition, MigrationReport, MigrationResult } from './mi
 // Integrity
 export { validateRecord, clampTimestamp, determineAction, createEmptyReport, accumulateReport } from './integrity';
 export type { IntegrityViolation, IntegrityReport } from './integrity';
+
+// Quota and retention
+export { getQuotaStatus, enforceRetention, enforceMaxRecords, getStorageDiagnostics, DEFAULT_RETENTION } from './quota';
+export type { QuotaStatus, RetentionConfig, EvictionReport, StorageDiagnostics } from './quota';
 export type {
   BaseRecord,
   StoredAccount,
