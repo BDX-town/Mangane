@@ -212,7 +212,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical ADR index",
-      "contentSha256": "43c34380e2eeaad6aedc9e1dac6fdf2be8f1bf78d746436ee335f4fcd60b5378"
+      "contentSha256": "b7effabb271c20b0ab6ffdea7dae3f2ccae31529a30c4e9b2495ee511ec36fe7"
     },
     {
       "path": "docs/architecture/AUTH_PERSISTENCE_INVENTORY.md",
@@ -321,8 +321,8 @@
       "classification": "current-supporting-evidence",
       "replacement": null,
       "inheritedBrandingReferences": 0,
-      "statusHeader": "Canonical verified current state / Phases 0 and 1 complete / Phase 2 in progress",
-      "contentSha256": "f47025eeeab8966872c0218cdd1c7df9aa104ad8aad1bf9e0e667683af91b2bc"
+      "statusHeader": "Canonical verified current state / Phases 0–4 complete / Phase 5 in progress",
+      "contentSha256": "484e71866a7eaf25d4ae48b42c69dc7476c6b587badaba9f594c1db542fdf056"
     },
     {
       "path": "docs/architecture/DATA_PRIVACY_AND_RESILIENCE.md",
@@ -472,7 +472,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical implementation sequence",
-      "contentSha256": "0bd5ae8fef8be404f5b9a96d4b761a845d588ddff09c667819f9be9b8c2f971c"
+      "contentSha256": "aabfd0192e75fa73ed4cd74c19adb512fb6b9458dd19da0035104155f932ce48"
     },
     {
       "path": "docs/architecture/KEYBOARD_AND_GESTURE_INVENTORY.md",
@@ -555,6 +555,16 @@
       "contentSha256": "e3e98948492b9743d654ebd66147936001febb33187a9c2ebe0a86d0b667c98d"
     },
     {
+      "path": "docs/architecture/PHASE_23A_CUSTOM_FEEDS.md",
+      "title": "Phase 23A Custom Feeds",
+      "authorityId": "phase-23a-custom-feeds",
+      "classification": "accepted-target",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Accepted target / queued",
+      "contentSha256": "4cdad1be8a36f1504cc6f77817990321e0aeebbc2615f909b3f673892d792748"
+    },
+    {
       "path": "docs/architecture/PHASE_2_DESIGN_FOUNDATION.md",
       "title": "Phase 2 Design Foundation",
       "authorityId": "phase-2-design-foundation",
@@ -583,6 +593,16 @@
       "inheritedBrandingReferences": 5,
       "statusHeader": "Complete",
       "contentSha256": "fc7fe471eaed70b263ef47575d0e7c1008d0c6e2bd90270d0f99e80b3dfb5b12"
+    },
+    {
+      "path": "docs/architecture/PHASE_8_HOME_AND_BUILT_IN_FEEDS.md",
+      "title": "Phase 8 Home and Built-in Feeds",
+      "authorityId": "phase-8-home-and-built-in-feeds",
+      "classification": "accepted-target",
+      "replacement": null,
+      "inheritedBrandingReferences": 1,
+      "statusHeader": "Accepted target / blocked on Phase 5–7 exit criteria",
+      "contentSha256": "5800ec1787ce7664c6f90640830f208c7996c90e029f8f6884acdf514f936d36"
     },
     {
       "path": "docs/architecture/PREVIEW_AND_EMBED_INVENTORY.md",
@@ -642,7 +662,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 1,
       "statusHeader": "Canonical architecture index / Phase 0 closed",
-      "contentSha256": "ef6677f598dc0b45292cc5e7afc4a70504e850c2e87205366e9ee68c082def9c"
+      "contentSha256": "104ab798314f3f71ecdcd0e27aefedae2e7934a92fb2642c5193c2636d49d670"
     },
     {
       "path": "docs/architecture/REDUX_AUTHORITY_DRIFT_GATE.md",

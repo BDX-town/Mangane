@@ -1,8 +1,8 @@
 # Mangane Verified Current State
 
-Status: **Canonical verified current state / Phases 0 and 1 complete / Phase 2 in progress**
+Status: **Canonical verified current state / Phases 0–4 complete / Phase 5 in progress**
 
-Last updated: 2026-07-26
+Last updated: 2026-07-28
 
 This document records verified repository behavior and known unknowns before modernization begins. It is intentionally distinct from accepted-target architecture. A claim belongs here only when supported by the current repository or a reproducible inspection.
 
@@ -62,12 +62,13 @@ The current Jest harness runs in jsdom and excludes the service-worker entry fro
 
 ## 4. Current versus target
 
-The current inherited application is the compatibility base. The Phosphor
-dependency and semantic registry are now a bounded Phase 2 foundation, but
-broad Phosphor presentation migration remains a target. Framework7,
-local-first canonical storage, hybrid search, local intelligence, composer
-context, and interpolation are accepted targets and must not be described as
-current implementation.
+The inherited application remains the compatibility base. Phase 2's design
+foundation and Phase 3's flagged Framework7 shell are current, but broad
+presentation migration remains a target. Phase 4's PWA hardening and Phase 5's
+account-scoped canonical-store foundation are current. Durable synchronization,
+feed-neutral application boundaries, Home/For You separation, Custom
+Feeds, hybrid search, local intelligence, composer context, and interpolation
+remain accepted targets and must not be described as current implementation.
 
 Existing functionality must not be removed merely because it is absent from target documents. Removal requires inventory, compatibility analysis, migration, rollback and an architectural decision.
 
@@ -83,20 +84,75 @@ Account lookup is the first representative feature routed through domain, applic
 
 The repository TypeScript authority baseline is now zero diagnostics. A presentation-boundary inventory makes inherited direct backend coupling explicit and rejects new coupling. Detailed behavior, migration, rollback, risks, and verification requirements are recorded in [`PHASE_1_ARCHITECTURE_CONTRACTS.md`](./PHASE_1_ARCHITECTURE_CONTRACTS.md).
 
-## 7. Phase 2 implementation state
+## 7. Phase 2 completion state
 
-Phase 2 is active. Slice 2A established a canonical semantic token source,
-deterministic generated CSS, Tailwind consumption, display-mode behavior, core
-contrast checks, and bounded Framework7 compatibility aliases. Slice 2B adds
-the pinned Phosphor dependency, typed semantic registry, safe icon adapter,
-exhaustive provider migration baseline, and a CI gate that rejects new raw icon
-imports. Broad icon migration has not occurred; inherited renderers and
-providers remain available while the reviewed baseline shrinks. Slice 2C adds
-the nine shared foundational controls, native interaction and state contracts,
-safe focus return, token-backed focus/reduced-motion/forced-colors behavior,
-and an executable inventory gate. Cross-engine visual baselines and the broader
-accessibility harness remain slice 2D work.
+Phase 2 is complete. It established the canonical semantic token source,
+Phosphor semantic registry, foundational controls, focus and reduced-motion
+contracts, executable component/icon drift gates, accessibility harness, and
+cross-engine visual baseline. Broad feature-surface migration remains later
+roadmap work and does not reopen the completed foundation phase.
 
-The staged plan, current behavior, target behavior, migration, rollback, risks,
-security properties, and completion checklist are recorded in
+Completion evidence, migration, rollback, risks, security properties, and the
+slice checklist are recorded in
 [`PHASE_2_DESIGN_FOUNDATION.md`](./PHASE_2_DESIGN_FOUNDATION.md).
+
+## 8. Phase 3 completion state
+
+Phase 3 is complete. The Framework7 application shell remains behind its
+rollback flag and supplies adaptive phone, tablet, and desktop layouts,
+route/deep-link compatibility, viewport and safe-area behavior, account-switch
+navigation reset, session restoration, and route-level offline/error states.
+
+The implementation and slice evidence are recorded in
+[`PHASE_3_FRAMEWORK7_SHELL.md`](./PHASE_3_FRAMEWORK7_SHELL.md).
+
+## 9. Phase 4 completion state
+
+Phase 4 is complete. The installable PWA has a documented asset update and
+rollback path, static-only CacheStorage policy, cache purge coverage, offline
+shell behavior, and Safari/WebKit capability handling. Private API responses
+are not cached in CacheStorage.
+
+The implementation and exit evidence are recorded in
+[`PHASE_4_PWA_OFFLINE_HARDENING.md`](./PHASE_4_PWA_OFFLINE_HARDENING.md).
+
+## 10. Phase 5 implementation state
+
+Phase 5 is in progress. Merged slices A–D provide:
+
+- an account-scoped Dexie store and repository API;
+- versioned migrations and corruption quarantine/healing;
+- quota monitoring, TTL retention, and bounded eviction;
+- a feature-flagged bridge that persists API-normalized accounts, statuses, and
+  notifications and can hydrate cached statuses and notifications.
+
+The current schema does not yet store feed membership/order, source provenance,
+gaps, or feed-owned cursors. The bridge does not yet hydrate conversations.
+The stored editorial projection is also insufficient for Phase 8 parity, and
+presentation code must not parse `raw` to compensate.
+
+Accordingly, Phase 5's representative timeline and conversation hydration exit
+criterion is not complete. The required gap contract is recorded in
+[`IMPLEMENTATION_ROADMAP_V2.md`](./IMPLEMENTATION_ROADMAP_V2.md) and
+[`PHASE_8_HOME_AND_BUILT_IN_FEEDS.md`](./PHASE_8_HOME_AND_BUILT_IN_FEEDS.md).
+
+## 11. Feed roadmap state
+
+Home relationship filtering, For You, and Custom Feeds are accepted targets,
+not current
+features:
+
+- Phase 8 makes Home and For You separate timelines and does not add a
+  Following feed.
+- Home contains mutual, two-way relationship content.
+- Initial For You is the latest-first union of outbound-only, one-way
+  relationship content and explicitly followed hashtags; it is not an opaque
+  algorithmic feed.
+- Future personalization belongs to the account-scoped, inspectable work in
+  Phases 19 and 25.
+- Custom Feeds are Phase 23A because their full publication, subscription,
+  semantic, list, and discovery scope depends on multiple earlier phases and a
+  trusted publication authority not currently present in this repository.
+
+See [`PHASE_8_HOME_AND_BUILT_IN_FEEDS.md`](./PHASE_8_HOME_AND_BUILT_IN_FEEDS.md)
+and [`PHASE_23A_CUSTOM_FEEDS.md`](./PHASE_23A_CUSTOM_FEEDS.md).

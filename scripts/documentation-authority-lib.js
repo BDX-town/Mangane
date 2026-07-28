@@ -35,6 +35,8 @@ const CANONICAL_DOCUMENTS = new Set([
 const ACCEPTED_TARGETS = new Set([
   'docs/architecture/DATA_PRIVACY_AND_RESILIENCE.md',
   'docs/architecture/DESIGN_SYSTEM.md',
+  'docs/architecture/PHASE_23A_CUSTOM_FEEDS.md',
+  'docs/architecture/PHASE_8_HOME_AND_BUILT_IN_FEEDS.md',
   'docs/architecture/PRODUCT_VISION.md',
   'docs/architecture/SEARCH_AND_INTELLIGENCE.md',
   'docs/architecture/TECHNICAL_ARCHITECTURE.md',

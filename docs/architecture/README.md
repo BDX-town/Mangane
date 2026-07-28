@@ -2,7 +2,7 @@
 
 Status: **Canonical architecture index / Phase 0 closed**
 
-Last updated: 2026-07-25
+Last updated: 2026-07-28
 
 This directory is the canonical source for Mangane's product direction, technical architecture, local intelligence system, design language, data model, privacy boundaries, architectural decisions, and implementation roadmap.
 
@@ -19,6 +19,16 @@ Every implementation agent and contributor must read these documents in order be
 5. [`DATA_PRIVACY_AND_RESILIENCE.md`](./DATA_PRIVACY_AND_RESILIENCE.md)
 6. [`ARCHITECTURAL_DECISIONS.md`](./ARCHITECTURAL_DECISIONS.md)
 7. [`IMPLEMENTATION_ROADMAP_V2.md`](./IMPLEMENTATION_ROADMAP_V2.md)
+
+## Active and accepted phase plans
+
+- [`PHASE_8_HOME_AND_BUILT_IN_FEEDS.md`](./PHASE_8_HOME_AND_BUILT_IN_FEEDS.md)
+  defines the Home/For You source contracts, Phase 5–7 prerequisites,
+  editorial migration slices, and safe scroll-restoration requirements.
+- [`PHASE_23A_CUSTOM_FEEDS.md`](./PHASE_23A_CUSTOM_FEEDS.md) defines the
+  staged Custom Feeds program, including trusted publication authority,
+  protocol sources, local-first semantics, pinning, privacy, abuse controls,
+  and completion gates.
 
 ## Verified current-state evidence
 

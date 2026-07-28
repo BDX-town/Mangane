@@ -2,7 +2,7 @@
 
 Status: **Canonical ADR index**
 
-Last updated: 2026-07-25
+Last updated: 2026-07-28
 
 This register is append-oriented. A decision may be superseded, but its rationale must remain available. Material implementation changes require an ADR update in the same pull request.
 
@@ -155,6 +155,90 @@ Consequences and tradeoffs: Transitional adapters add a small amount of indirect
 Security/privacy impact: Repositories bind to exact account and instance scope; response data is validated; application errors avoid retaining transport payloads; runtime flag input is allowlisted.
 
 Migration/rollback: `architecture.accountLookupAdapter` defaults to the new account-lookup path. Its registered rollback value restores the prior path. The flag is removed only after Phase 7 equivalence evidence.
+
+## ADR-020 — Home and For You are distinct relationship-aware timelines
+
+Status: Accepted
+
+Date: 2026-07-28
+
+Decision: Home and For You are separate built-in timelines. Home is based on
+mutual, two-way follow provenance. Initial For You is the latest-first,
+deduplicated union of outbound-only, one-way follow provenance and posts from
+explicitly followed hashtags. There is no separate Following feed.
+
+Context: The inherited `home` timeline combines server behavior behind one
+label and does not provide relationship-classified membership or independent
+For You state. Mangane needs a clean mutual-relationship Home and a separate
+place for one-way follows and followed hashtags without prematurely
+introducing opaque ranking.
+
+Alternatives considered: add a separate Following feed; put all followed
+accounts into Home regardless of reciprocity; launch engagement ranking
+immediately; merge future Custom Feeds into one Home stream.
+
+Rationale: Distinct source contracts are understandable, testable, and
+portable across protocol adapters. A deterministic baseline establishes
+observable behavior before personalization experiments.
+
+Consequences and tradeoffs: Phase 5 must store feed membership/order separately
+from statuses, and Phase 7 must expose a feed-neutral read model. Relationship
+changes must move membership between Home and For You idempotently. Servers
+that cannot enumerate followed hashtags keep the outbound-only For You source
+available and report the degraded capability rather than fabricating results.
+
+Security/privacy impact: Feed records, checkpoints, and view state are bound to
+account and instance scope. Initial For You does not infer sensitive interests
+or upload interaction history. Subscriber moderation and server authorization
+remain mandatory.
+
+Migration/rollback: Ship through a bounded Phase 8 feature flag. The legacy
+Home surface remains the rollback path until parity, account-isolation,
+accessibility, and performance gates pass.
+
+## ADR-021 — Custom Feeds are a separate staged phase with a trusted publication authority
+
+Status: Accepted
+
+Date: 2026-07-28
+
+Decision: Custom Feeds are Phase 23A, with private local feeds allowed before
+public publication. Public/unlisted publication, discovery, revision
+distribution, subscriber counts, and private-feed access require a documented
+server protocol or authenticated registry authority. A portable signed recipe
+may transport a public definition and prove authorship/integrity, but cannot
+authorize stateful or private operations. Client-supplied creator identity is
+never authorization.
+
+Context: The requested feature spans non-followed accounts, list
+synchronization, keywords, semantic topics, publication, subscription,
+discovery, pinning, migration, and resilient multi-source retrieval. The
+current repository is a frontend and contains no verified authority for the
+community publication operations.
+
+Alternatives considered: expand Phase 8; treat browser storage as the public
+authority; silently depend on one backend's list semantics; renumber the
+established roadmap.
+
+Rationale: Phase 23A can depend explicitly on the canonical store, sync,
+timeline renderer, search/topic/filtering engines, and migrated list/settings
+surfaces without reopening or renumbering completed phases.
+
+Consequences and tradeoffs: Private local creation can deliver value earlier,
+but cross-device/community claims wait for an authority decision. Published
+output may vary by subscriber because visibility, federation reach, and
+moderation differ.
+
+Security/privacy impact: Every object action requires authenticated
+object-level authorization and account binding. Definitions, memberships,
+revisions, resolvers, media, retries, and fan-out are bounded and validated.
+Subscriber policy overrides creator selection, and private tuning evidence is
+not disclosed.
+
+Migration/rollback: Each Phase 23A slice is additive and feature-flagged.
+Definitions and revisions are schema-versioned; disabling publication leaves
+private local feeds intact where compatible. Removal follows the documented
+purge and tombstone policy.
 
 ## ADR template
 

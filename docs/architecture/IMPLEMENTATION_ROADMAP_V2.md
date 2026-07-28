@@ -2,7 +2,7 @@
 
 Status: **Canonical implementation sequence**
 
-Last updated: 2026-07-26
+Last updated: 2026-07-28
 
 This roadmap supersedes earlier informal phases when they conflict. It preserves the original direction—Framework7, adaptive PWA, local-first intelligence, hybrid search, semantic filtering, entity understanding, and editorial redesign—while adding the architectural, migration, privacy, testing, and drift-control work required to implement it safely.
 
@@ -15,8 +15,15 @@ authoritative for scope and exit criteria.
 |---|---|---|
 | Phase 0 — Repository and documentation reconciliation | Complete | [`PHASE_0_CLOSURE_REPORT.md`](./PHASE_0_CLOSURE_REPORT.md) |
 | Phase 1 — Architecture seams and compatibility contracts | Complete | [`PHASE_1_ARCHITECTURE_CONTRACTS.md`](./PHASE_1_ARCHITECTURE_CONTRACTS.md) |
-| Phase 2 — Design tokens, semantic icons, and accessibility foundation | In progress | [`PHASE_2_DESIGN_FOUNDATION.md`](./PHASE_2_DESIGN_FOUNDATION.md) |
-| Phases 3–31 | Queued | Begin only after the preceding phase satisfies its exit criteria |
+| Phase 2 — Design tokens, semantic icons, and accessibility foundation | Complete | [`PHASE_2_DESIGN_FOUNDATION.md`](./PHASE_2_DESIGN_FOUNDATION.md) |
+| Phase 3 — Framework7 application shell | Complete | [`PHASE_3_FRAMEWORK7_SHELL.md`](./PHASE_3_FRAMEWORK7_SHELL.md) |
+| Phase 4 — PWA, service worker, and offline hardening | Complete | [`PHASE_4_PWA_OFFLINE_HARDENING.md`](./PHASE_4_PWA_OFFLINE_HARDENING.md) |
+| Phase 5 — Canonical local data store | In progress | Slices A–D are merged; timeline/order and conversation-hydration exit criteria remain open |
+| Phases 6–7 | Queued | Required before Phase 8 runtime migration |
+| Phase 8 — Home and For You editorial migration | Queued | [`PHASE_8_HOME_AND_BUILT_IN_FEEDS.md`](./PHASE_8_HOME_AND_BUILT_IN_FEEDS.md) |
+| Phases 9–23 | Queued | Begin only after their dependency and preceding-phase exit criteria are met |
+| Phase 23A — Custom Feeds | Queued | [`PHASE_23A_CUSTOM_FEEDS.md`](./PHASE_23A_CUSTOM_FEEDS.md) |
+| Phases 24–31 | Queued | Begin only after their dependency and preceding-phase exit criteria are met |
 
 ## Global implementation rules
 
@@ -171,6 +178,9 @@ Exit criteria:
 
 ## Phase 5 — Canonical local data store
 
+Status: **In progress.** Slices A–D are merged, but the exit criteria below
+remain authoritative.
+
 Goal: create normalized local records independent of UI and derived indexes.
 
 Deliverables:
@@ -183,10 +193,19 @@ Deliverables:
 - storage quota and retention policy;
 - local diagnostics without content leakage;
 - integration with current remote data flow behind flags.
+- account-scoped timeline definitions, membership/order entries, gaps, source
+  cursors, and checkpoints that keep feed identity separate from status
+  records;
+- editorial status, media, and conversation projections sufficient for Phase 8
+  without presentation code parsing raw protocol payloads;
+- fail-closed visibility normalization that preserves supported values,
+  including `local`, without coercing unknown values to `public`.
 
 Exit criteria:
 
 - representative timelines and conversations can hydrate from canonical local records;
+- timeline ordering, source provenance, and cursor ownership survive hydration
+  without reconstructing them from status timestamps;
 - migration interruption recovers safely;
 - cross-account IDOR-style tests pass.
 
@@ -224,6 +243,8 @@ Deliverables:
 - module migration template;
 - deprecated API tracking;
 - test helpers for legacy/new-path equivalence;
+- a feed-neutral timeline read model and commands that hide Redux, Dexie,
+  transport, and protocol payloads from migrated presentation code;
 - no direct legacy store access in newly migrated modules.
 
 Exit criteria:
@@ -231,16 +252,29 @@ Exit criteria:
 - at least Home and one secondary module use stable application boundaries;
 - duplicate state sources have defined authority and retirement plan.
 
-## Phase 8 — Home timeline editorial migration
+## Phase 8 — Home and For You editorial migration
 
-Goal: deliver the first complete Paper-influenced content surface.
+Status: **Queued; see
+[`PHASE_8_HOME_AND_BUILT_IN_FEEDS.md`](./PHASE_8_HOME_AND_BUILT_IN_FEEDS.md).**
+
+Goal: deliver the first complete Paper-influenced content surface with
+separate Home and For You timelines.
 
 Deliverables:
 
+- Home sourced from mutual, two-way relationship provenance;
+- For You sourced from outbound-only, one-way relationship provenance and
+  explicitly followed hashtags;
+- no separate Following feed;
+- deterministic relationship-transition reconciliation so entries move safely
+  when a relationship becomes mutual or ceases to be mutual;
+- account-scoped feed membership/order, source provenance, cursors,
+  checkpoints, and independent state;
 - post card anatomy using design-system components;
 - media and quote treatment;
 - conversation context preview;
-- stable virtualization and scroll restoration;
+- stable virtualization and versioned, account/instance/feed-scoped
+  anchor-based scroll restoration;
 - contextual actions and visible alternatives;
 - skeleton, empty, offline, stale, and error states;
 - selected/active icon states;
@@ -249,8 +283,14 @@ Deliverables:
 
 Exit criteria:
 
+- Home and For You obey their documented source contracts and For You degrades
+  honestly when followed-hashtag capability is unavailable;
 - timeline behavior matches existing capabilities;
 - no regression in moderation, visibility, media, CW, or backend-specific actions;
+- no migrated presentation component parses raw payloads or directly reads
+  Redux, Dexie, or transport clients;
+- corrupt, expired, missing-anchor, logout, account-switch, and cross-account
+  restoration cases pass;
 - scrolling remains responsive under realistic feeds.
 
 ## Phase 9 — Conversation and reading experience
@@ -565,6 +605,44 @@ Exit criteria:
 - remaining high-use legacy screens have migration or retirement status;
 - no major feature loses backend capability parity.
 
+## Phase 23A — Custom Feeds
+
+Status: **Queued; see
+[`PHASE_23A_CUSTOM_FEEDS.md`](./PHASE_23A_CUSTOM_FEEDS.md).**
+
+Goal: add playlist-like user-created feeds with private local operation,
+protocol-aware sources, optional publication and subscription, semantic
+composition, and pinned Home timelines.
+
+Deliverables:
+
+- versioned feed definitions, revisions, multi-origin membership,
+  subscriptions, pin order, timeline entries, checkpoints, and view state;
+- manual people, non-followed accounts, copied/synchronized lists, hashtags,
+  literal keywords, semantic topics, and exclusions;
+- protocol-aware Akkoma, Pleroma, and Mastodon-compatible source adapters;
+- bounded, cancellable, rate-limit-aware assembly with canonical-URI
+  deduplication and partial results;
+- Feeds library, discovery-ready profile and artwork, creator preview, and
+  accessible pin management;
+- public, unlisted, private, publication, discovery, and subscription behavior
+  only through a documented trusted authority;
+- subscriber moderation, visibility, and server policy applied after creator
+  selection and before display.
+
+Exit criteria:
+
+- ownership, private access, revision, subscription, cross-account IDOR, SSRF,
+  migration, replay, race, fan-out, and hidden-membership tests pass;
+- subscription and pinning remain distinct and independently reversible;
+- non-followed accounts work without altering the user's follow graph;
+- list synchronization preserves multi-origin membership;
+- pinned feeds reuse the Phase 8 renderer and scoped anchor restoration;
+- semantic unavailability degrades to lexical/hashtag behavior without
+  bypassing safety policy;
+- current, degraded, unsupported, and deferred behavior is documented
+  accurately.
+
 ## Phase 24 — Media-rich editorial experiences
 
 Goal: add modern Paper-like media and story treatment selectively.
@@ -726,14 +804,16 @@ Exit criteria:
 ```text
 0 → 1 → 2 → 3
         ├→ 4
-        ├→ 5 → 6 → 7
-        └→ 8 → 9 → 10 → 11
+        └→ 5 → 6 → 7 → 8 → 9 → 10 → 11
 
 5 + 11 → 12 → 13 → 14 → 15 → 16 → 17 → 18
                                       ├→ 19 → 20
                                       └→ 21 → 22
 
-Design/application migrations continue through 23–24.
+5 + 6 + 7 + 8 + 12–17 + 19–20 + 23 → 23A
+
+Design/application migrations continue through 23–24. Custom Feeds are added
+as Phase 23A without renumbering the established roadmap.
 Advanced experiments begin only after measurable baseline: 25.
 Native readiness: 26.
 Cross-cutting hardening: 27–29.
