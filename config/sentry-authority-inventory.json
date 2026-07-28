@@ -254,6 +254,54 @@
       "classification": "startup-guarded-local-diagnostic"
     },
     {
+      "id": "environment-read:app/soapbox/db/sync.ts:92",
+      "kind": "environment-read",
+      "path": "app/soapbox/db/sync.ts",
+      "line": 92,
+      "expression": "if (process.env.NODE_ENV === 'development') {",
+      "classification": "application-surface"
+    },
+    {
+      "id": "console:app/soapbox/db/sync.ts:93",
+      "kind": "console",
+      "path": "app/soapbox/db/sync.ts",
+      "line": 93,
+      "expression": "console.warn('[local-store] Failed to persist accounts:', error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "environment-read:app/soapbox/db/sync.ts:146",
+      "kind": "environment-read",
+      "path": "app/soapbox/db/sync.ts",
+      "line": 146,
+      "expression": "if (process.env.NODE_ENV === 'development') {",
+      "classification": "application-surface"
+    },
+    {
+      "id": "console:app/soapbox/db/sync.ts:147",
+      "kind": "console",
+      "path": "app/soapbox/db/sync.ts",
+      "line": 147,
+      "expression": "console.warn('[local-store] Failed to persist statuses:', error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
+      "id": "environment-read:app/soapbox/db/sync.ts:187",
+      "kind": "environment-read",
+      "path": "app/soapbox/db/sync.ts",
+      "line": 187,
+      "expression": "if (process.env.NODE_ENV === 'development') {",
+      "classification": "application-surface"
+    },
+    {
+      "id": "console:app/soapbox/db/sync.ts:188",
+      "kind": "console",
+      "path": "app/soapbox/db/sync.ts",
+      "line": 188,
+      "expression": "console.warn('[local-store] Failed to persist notifications:', error);",
+      "classification": "startup-guarded-local-diagnostic"
+    },
+    {
       "id": "console:app/soapbox/features/account/components/header.tsx:348",
       "kind": "console",
       "path": "app/soapbox/features/account/components/header.tsx",
@@ -1304,9 +1352,9 @@
   ],
   "counts": {
     "artifact-upload": 3,
-    "console": 71,
+    "console": 74,
     "notification-payload": 13,
-    "environment-read": 64,
+    "environment-read": 67,
     "clipboard": 3,
     "error-boundary": 2,
     "devtools": 1,

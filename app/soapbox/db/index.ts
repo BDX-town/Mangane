@@ -43,6 +43,17 @@ export type { IntegrityViolation, IntegrityReport } from './integrity';
 // Quota and retention
 export { getQuotaStatus, enforceRetention, enforceMaxRecords, getStorageDiagnostics, DEFAULT_RETENTION } from './quota';
 export type { QuotaStatus, RetentionConfig, EvictionReport, StorageDiagnostics } from './quota';
+
+// Sync bridge (API ↔ IndexedDB)
+export {
+  setLocalStoreEnabled,
+  isLocalStoreEnabled,
+  persistAccounts,
+  persistStatuses,
+  persistNotifications,
+  loadCachedStatuses,
+  loadCachedNotifications,
+} from './sync';
 export type {
   BaseRecord,
   StoredAccount,
