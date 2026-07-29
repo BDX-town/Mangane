@@ -422,6 +422,26 @@ Security/privacy impact: Every record and command is account/instance scoped. Pu
 
 Migration/rollback: Phase 23B is additive and feature-flagged. Rollback stops Story ingestion/view writes and routes subscribed-post notifications back to ordinary Notifications while preserving server bell subscriptions, canonical statuses, notification history, and compatible read receipts.
 
+## ADR-028 — Link creator attribution is distinct, proof-tiered derived metadata
+
+Status: Accepted
+
+Date: 2026-07-29
+
+Decision: Add Phase 8B for creator attribution inside external link previews. Native Mastodon PreviewCard.authors data is normalized first, legacy author fields remain fallback inputs, and other supported platforms may expose conventional creator bylines through adapters. A Fediverse account is shown as verified creator attribution only when the connected server supplied a verified account or Mangane independently proved that the publication domain is authorized by the resolved account. Status authorship, linked-work creation, and publication/provider identity remain separate.
+
+Context: Mastodon 4.3 introduced the fediverse:creator feature and PreviewCard.authors API, while Mastodon 4.6 added missing_attribution and newer profile attribution-domain APIs. Akkoma, Pleroma, and older Mastodon-compatible servers may supply only legacy metadata or no creator account. A browser PWA also cannot safely or reliably fetch arbitrary article HTML without CORS or a hardened resolver.
+
+Alternatives considered: support Mastodon only; trust any fediverse:creator tag; treat rel=me as equivalent proof; replace the status author with the article creator; run a generic open proxy; omit creator attribution on unsupported platforms.
+
+Rationale: A normalized, proof-tiered model gives Mangane broad creator bylines while preventing malicious publications from framing unrelated Fediverse accounts. Native support remains simple and external resolution remains optional and separately hardened.
+
+Consequences and tradeoffs: The feature adds preview schema migration, multiple-author UI, account deduplication, proof freshness, profile-setting capability checks, and optional resolver complexity. Metadata-only creator names must remain visibly distinct from verified account attribution.
+
+Security/privacy impact: All URLs, redirects, actor lookups, domains, bodies, schemas, and caches are bounded and validated. Tokens and cookies never go to publication or creator servers. External resolution defaults off, raw HTML is not persisted, and proof fails closed.
+
+Migration/rollback: Native and legacy fields migrate additively into one canonical preview authority. Rollback disables enrichment and account actions while preserving ordinary preview cards, provider data, server profile settings, and canonical statuses.
+
 ## ADR template
 
 ```markdown

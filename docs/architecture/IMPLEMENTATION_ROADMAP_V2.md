@@ -21,6 +21,7 @@ authoritative for scope and exit criteria.
 | Phase 5 — Canonical local data store | In progress | Slices A–D are merged; timeline/order and conversation-hydration exit criteria remain open |
 | Phases 6–7 | Queued | Required before Phase 8 runtime migration |
 | Phase 8 — Home and For You editorial migration | Queued | [`PHASE_8_HOME_AND_BUILT_IN_FEEDS.md`](./PHASE_8_HOME_AND_BUILT_IN_FEEDS.md) |
+| Phase 8B — Creator Attribution | Queued | [`PHASE_8B_CREATOR_ATTRIBUTION.md`](./PHASE_8B_CREATOR_ATTRIBUTION.md) |
 | Phases 9–23 | Queued | Begin only after their dependency and preceding-phase exit criteria are met |
 | Phase 23A — Custom Feeds | Queued | [`PHASE_23A_CUSTOM_FEEDS.md`](./PHASE_23A_CUSTOM_FEEDS.md) |
 | Phase 23B — Subscribed Post Stories | Queued | [`PHASE_23B_SUBSCRIBED_POST_STORIES.md`](./PHASE_23B_SUBSCRIBED_POST_STORIES.md) |
@@ -293,6 +294,33 @@ Exit criteria:
 - corrupt, expired, missing-anchor, logout, account-switch, and cross-account
   restoration cases pass;
 - scrolling remains responsive under realistic feeds.
+
+## Phase 8B — Creator Attribution
+
+Status: **Queued; see [`PHASE_8B_CREATOR_ATTRIBUTION.md`](./PHASE_8B_CREATOR_ATTRIBUTION.md).**
+
+Goal: display accurate linked-work creator bylines and verified Fediverse creator accounts in link previews without confusing them with the author of the sharing status.
+
+Deliverables:
+
+- verified inventory of preview-card schemas, renderers, storage authorities, and supported backend fixtures;
+- native Mastodon PreviewCard.authors and missing_attribution normalization;
+- legacy author_name/author_url and platform-specific metadata fallback;
+- multiple-author canonical model and deterministic account/resource deduplication;
+- proof-tiered distinction between metadata-only, unverified claims, native server verification, and independently verified domain/account attribution;
+- shared creator byline presentation across post cards, bookmarks, Search, Explore, conversations, and Gist evidence;
+- capability-gated Mastodon attribution-domain profile settings;
+- optional later direct-CORS or hardened trusted-resolver enrichment for servers without native support;
+- URL, redirect, SSRF, WebFinger, actor, IDNA, privacy, cache, migration, rollback, accessibility, and performance gates.
+
+Exit criteria:
+
+- status author, linked-work creator, and publication remain distinct;
+- one resource/creator identity does not create duplicate bylines or account records;
+- native and legacy responses degrade without breaking link previews;
+- an arbitrary publication cannot attribute itself to an unrelated Fediverse account;
+- external resolution is absent or passes all hardened resolver gates;
+- account isolation, moderation, moves, suspension, offline, migration, rollback, accessibility, and performance tests pass.
 
 ## Phase 9 — Conversation and reading experience
 

@@ -212,7 +212,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical ADR index",
-      "contentSha256": "2ac5dcdfe84d93fc7281e81633495bc32f8f9c5fb74dde2baec7d4365a0d750f"
+      "contentSha256": "85d5aec2ab865e23fa6dbe7add33da5b0a318a1f94d054cdcfb436f10c76779d"
     },
     {
       "path": "docs/architecture/AUTH_PERSISTENCE_INVENTORY.md",
@@ -482,7 +482,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical implementation sequence",
-      "contentSha256": "5161bbb90a527b39446c174b229e584e858ef1c69a532f2b8f98e39df0d63b3c"
+      "contentSha256": "3429de605b444f24fd1fda79fc1e951abfa863756b489d2bb222247a5fa44292"
     },
     {
       "path": "docs/architecture/KEYBOARD_AND_GESTURE_INVENTORY.md",
@@ -655,6 +655,16 @@
       "contentSha256": "472364331468536bb4226e0eb0f13600237eddea4e9bebaaa87fb39426e35f5c"
     },
     {
+      "path": "docs/architecture/PHASE_8B_CREATOR_ATTRIBUTION.md",
+      "title": "Phase 8B — Creator Attribution for Link Previews",
+      "authorityId": "phase-8b-creator-attribution-for-link-previews",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Accepted target / queued",
+      "contentSha256": "6ff050d4cc61df5eef08b1cea43d686344477f4c3c5b16492a046ccf3f95b172"
+    },
+    {
       "path": "docs/architecture/PHASE_8_HOME_AND_BUILT_IN_FEEDS.md",
       "title": "Phase 8 Home and Built-in Feeds",
       "authorityId": "phase-8-home-and-built-in-feeds",
@@ -722,7 +732,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 1,
       "statusHeader": "Canonical architecture index / Phase 0 closed",
-      "contentSha256": "cfe5ec82de9f5be1cc62106158584cb90572f58453187b1bfbb3fcc9f6b53098"
+      "contentSha256": "4065757c69c1b05c88e7e6ddbc191af769212136b1121d92a609d2cb8ce6e43f"
     },
     {
       "path": "docs/architecture/REDUX_AUTHORITY_DRIFT_GATE.md",
