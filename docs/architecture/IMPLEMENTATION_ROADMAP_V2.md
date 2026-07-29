@@ -22,6 +22,7 @@ authoritative for scope and exit criteria.
 | Phases 6–7 | Queued | Required before Phase 8 runtime migration |
 | Phase 8 — Home and For You editorial migration | Queued | [`PHASE_8_HOME_AND_BUILT_IN_FEEDS.md`](./PHASE_8_HOME_AND_BUILT_IN_FEEDS.md) |
 | Phase 8B — Entity Resolution & Creator Attribution | Queued | [`PHASE_8B_ENTITY_RESOLUTION_AND_CREATOR_ATTRIBUTION.md`](./PHASE_8B_ENTITY_RESOLUTION_AND_CREATOR_ATTRIBUTION.md) |
+| Phase 8C — Shared Activity Aggregation and Shared Shelf | Queued | [`PHASE_8C_SHARED_ACTIVITY_AGGREGATION_AND_SHELF.md`](./PHASE_8C_SHARED_ACTIVITY_AGGREGATION_AND_SHELF.md) |
 | Phases 9–23 | Queued | Begin only after their dependency and preceding-phase exit criteria are met |
 | Phase 23A — Custom Feeds | Queued | [`PHASE_23A_CUSTOM_FEEDS.md`](./PHASE_23A_CUSTOM_FEEDS.md) |
 | Phase 23B — Subscribed Post Stories | Queued | [`PHASE_23B_SUBSCRIBED_POST_STORIES.md`](./PHASE_23B_SUBSCRIBED_POST_STORIES.md) |
@@ -322,6 +323,44 @@ Exit criteria:
 - status author, creator, publication, social identity, and verification proof remain distinct;
 - entity-aware feeds are bounded, deterministic, explainable, revisioned, and policy-safe;
 - merge/split, aliases, account moves, provider redirects, offline, corruption, purge, rollback, security, accessibility, and performance tests pass.
+
+## Phase 8C — Shared Activity Aggregation and Shared Shelf
+
+Status: **Queued; see [`PHASE_8C_SHARED_ACTIVITY_AGGREGATION_AND_SHELF.md`](./PHASE_8C_SHARED_ACTIVITY_AGGREGATION_AND_SHELF.md).**
+
+Goal: preserve every legitimate share event while presenting repeated shares of the same canonical post as one safe, stable group and compacting dense runs of distinct shared posts into an accessible responsive Shared Shelf.
+
+Dependencies:
+
+- Phase 5 canonical records, timeline membership, cursor ownership, and account isolation;
+- Phase 6 exact-event reconciliation across pagination, streaming, hydration, replay, retries, and multi-tab ingestion;
+- Phase 7 feed-neutral timeline read models and commands;
+- Phase 8 canonical Home/For You renderer, virtualization, moderation, and anchor restoration;
+- Phase 8A canonical origin/alias authority where available.
+
+Deliverables:
+
+- separate event, canonical-content, and presentation identities;
+- exact event idempotency without collapsing legitimate shares by different actors;
+- canonical-original grouping with bounded, moderation-safe attribution such as “Shared by Alice, Bob, and 4 others”;
+- one rolling presentation window spanning network-page boundaries while preserving server cursors and source order;
+- responsive Shared Shelf behavior: touch carousel on compact layouts and keyboard-complete shelf/grid/stack alternatives where horizontal presentation is unsuitable;
+- deterministic density, consecutive-run, and projected-height activation rules over distinct grouped posts rather than raw share wrappers;
+- stable in-place attribution updates and bounded adaptive resurfacing based on elapsed time, material edits, discussion growth, share velocity, explicit priorities, prior viewing, and dismissal state;
+- correct undo-share, deletion, edit, moderation-policy change, canonical-alias migration, account move, corruption repair, retention, purge, and rollback behavior;
+- application-wide user-facing **Share / Shared** terminology while retaining protocol/API terms such as Mastodon-compatible `reblog`, `reblogged`, `show_reblogs`, `exclude_reblogs`, and ActivityPub `Announce` at compatibility boundaries;
+- generated terminology inventory and guarded migration covering localization, accessibility text, menus, settings, help, tests, and visual baselines without blind symbol replacement;
+- account-isolation, IDOR, visibility, moderation, privacy, accessibility, performance, pagination, virtualization, and adversarial tests.
+
+Exit criteria:
+
+- identical delivery events never create duplicate local events or cards, while shares by distinct actors remain recoverable and individually undoable;
+- repeated shares of one canonical post render as one group with bounded safe attribution and no blocked, muted, or inaccessible actor leakage;
+- the Shared Shelf never changes server cursor ownership, fabricates chronology, causes unbounded fetch loops, or destabilizes reading anchors;
+- phone, tablet, desktop, keyboard-only, screen-reader, reduced-motion, forced-colors, RTL, and narrow-column behavior pass acceptance tests;
+- deletion, undo, edit, alias migration, moderation changes, logout, account switch, purge, corruption, offline hydration, and rollback converge deterministically;
+- user-facing product copy uses Share / Shared, while wire, adapter, persisted-schema, and historical protocol terminology remains compatible;
+- no second timeline, status store, canonicalization authority, moderation path, renderer, pagination system, or personalization dependency is introduced.
 
 ## Phase 9 — Conversation and reading experience
 

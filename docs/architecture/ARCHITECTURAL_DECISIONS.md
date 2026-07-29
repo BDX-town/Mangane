@@ -432,6 +432,26 @@ Decision: Replace the creator-only Phase 8B plan with an application-wide Entity
 
 Consequences: literal hashtags remain available independently of semantic bindings; ambiguous matches must abstain; creator discovery, social identity, Fediverse resolution, and publication authorization remain distinct; entity-aware feed traversal is explicit and bounded; provider outages degrade to local and lexical behavior; all external evidence is provenance-bearing, expiring, correctable, and privacy-minimized.
 
+## ADR-029 — Preserve share events while grouping canonical content for presentation
+
+Status: Accepted
+
+Date: 2026-07-29
+
+Decision: Add Phase 8C as the single presentation and reconciliation contract for shared activity. Mangane preserves each legitimate share event and its actor, event identity, source position, undo lifecycle, and provenance; exact repeated delivery is idempotent; multiple shares of the same canonical original are projected as one presentation group with bounded safe attribution; dense runs of distinct grouped shared posts may be presented through a responsive Shared Shelf. User-facing product language is Share / Shared, while protocol and API terms remain unchanged at compatibility boundaries.
+
+Context: Mastodon’s bounded feed falloff and simple client suppression reduce repetition but discard or hide meaningful social context and are sensitive to feed velocity. Phanpy’s boost carousel efficiently prevents shared posts from vertically dominating a feed, but its first-wrapper retention and page-bounded heuristics can discard later booster context and vary at pagination boundaries. Mangane needs a local-first model that keeps protocol truth, supports undo/deletion and moderation changes, preserves cursor and anchor correctness, and improves presentation without creating another timeline system.
+
+Alternatives considered: copy Mastodon’s fixed item falloff; retain every share as a full chronological card; discard later share wrappers like a simple client map; put every raw share event into a carousel; require personalization or AI for grouping; rename protocol fields and symbols from reblog/Announce to share.
+
+Rationale: Separating event identity, canonical content identity, and presentation identity allows exact idempotency, complete social provenance, compact rendering, deterministic repair, and reversible resurfacing. A shelf over distinct grouped originals solves boost-density domination without moving deduplication into the protocol layer. Share / Shared is clearer product language, while retaining wire terminology prevents compatibility and migration damage.
+
+Consequences and tradeoffs: Grouping and shelf decisions require bounded rolling state across page boundaries, safe actor attribution, stable virtualization, explicit resurfacing policy, and surface-specific presentation. Strict chronological inspection surfaces must remain available. Horizontal presentation needs non-gesture controls and responsive alternatives. Later personalization may supply optional signals but cannot become required for correctness.
+
+Security/privacy impact: Visibility, authorization, blocks, mutes, domains, filters, and content warnings are applied before grouping and attribution. Records and caches remain account/instance/feed scoped; diagnostics exclude content, actor IDs, canonical URIs, and relationship data. Deleted or inaccessible originals cannot be resurrected from share caches, and blocked or muted actors cannot leak through labels or accessibility text.
+
+Migration/rollback: Phase 8C is additive and feature-flagged. A generated terminology inventory separates product copy from protocol contracts before migration. Rollback disables grouping, shelf presentation, and adaptive resurfacing, restores the existing canonical Phase 8 timeline projection, and retains canonical events/statuses, server cursors, moderation state, and protocol adapter fields. Optional projection state may be rebuilt or purged without data loss.
+
 ## ADR template
 
 ```markdown

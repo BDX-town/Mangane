@@ -212,7 +212,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical ADR index",
-      "contentSha256": "d0c5dc2e7ff15902cbb54654cea056e7d13da749b12c34348e8768c146d7af7b"
+      "contentSha256": "5072cf9bf4a426bd8a20adfe3ff1d0e5a38d893370039a9714aa3b439eea038d"
     },
     {
       "path": "docs/architecture/AUTH_PERSISTENCE_INVENTORY.md",
@@ -482,7 +482,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical implementation sequence",
-      "contentSha256": "dba436fc3057c02c119432be9a8271c890746c43834230acd7aa9979c4394b03"
+      "contentSha256": "e8232ea93034242253859b5235b5730f9681e1553a3e58751518a477ff936c1e"
     },
     {
       "path": "docs/architecture/KEYBOARD_AND_GESTURE_INVENTORY.md",
@@ -665,6 +665,16 @@
       "contentSha256": "897d25ad4f25e350a148409405f3a860c18285826e21e5203b67e20e4649b9ea"
     },
     {
+      "path": "docs/architecture/PHASE_8C_SHARED_ACTIVITY_AGGREGATION_AND_SHELF.md",
+      "title": "Phase 8C — Shared Activity Aggregation and Shared Shelf",
+      "authorityId": "phase-8c-shared-activity-aggregation-and-shared-shelf",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Accepted target / queued",
+      "contentSha256": "852704ca9d6a4d4d9d085f7062846f0a63258f38291798fc93dc3c46a8c86aae"
+    },
+    {
       "path": "docs/architecture/PHASE_8_HOME_AND_BUILT_IN_FEEDS.md",
       "title": "Phase 8 Home and Built-in Feeds",
       "authorityId": "phase-8-home-and-built-in-feeds",
@@ -732,7 +742,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 1,
       "statusHeader": "Canonical architecture index / Phase 0 closed",
-      "contentSha256": "ad18799e3ab0991f94718bd8e7098a5f761422f72157cdf16e5883f15da0eef6"
+      "contentSha256": "c5af34508724ba6a5dc826a483b21979043aec841772372c0025f903ba4ca9de"
     },
     {
       "path": "docs/architecture/REDUX_AUTHORITY_DRIFT_GATE.md",
