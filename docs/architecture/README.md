@@ -2,7 +2,7 @@
 
 Status: **Canonical architecture index / Phase 0 closed**
 
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 This directory is the canonical source for Mangane's product direction, technical architecture, local intelligence system, design language, data model, privacy boundaries, architectural decisions, and implementation roadmap.
 
@@ -22,6 +22,11 @@ Every implementation agent and contributor must read these documents in order be
 
 ## Active and accepted phase plans
 
+- [`PHASE_6A_DURABLE_STREAMS.md`](./PHASE_6A_DURABLE_STREAMS.md) defines the
+  provider-neutral resumable event-delivery phase, external authority and
+  producer requirements, opaque-offset and transactional checkpoint contracts,
+  retention/reset behavior, security boundaries, rollback, and first-consumer
+  gates.
 - [`PHASE_8_HOME_AND_BUILT_IN_FEEDS.md`](./PHASE_8_HOME_AND_BUILT_IN_FEEDS.md)
   defines the Home/For You source contracts, Phase 5–7 prerequisites,
   editorial migration slices, and safe scroll-restoration requirements.
@@ -29,6 +34,11 @@ Every implementation agent and contributor must read these documents in order be
   staged Custom Feeds program, including trusted publication authority,
   protocol sources, local-first semantics, pinning, privacy, abuse controls,
   and completion gates.
+- [`FEDIBUZZ_CUSTOM_FEED_SOURCE.md`](./FEDIBUZZ_CUSTOM_FEED_SOURCE.md) defines
+  the optional client-side FediBuzz broader-discovery source for Phase 23A,
+  including the one-shared-stream rule, browser capability probe, indexed
+  dispatch, semantic filtering, matched-only persistence, degraded behavior,
+  and the explicit absence of durable replay or separate relay infrastructure.
 
 ## Verified current-state evidence
 

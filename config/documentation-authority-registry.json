@@ -212,7 +212,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical ADR index",
-      "contentSha256": "b7effabb271c20b0ab6ffdea7dae3f2ccae31529a30c4e9b2495ee511ec36fe7"
+      "contentSha256": "cf4113e0dbea640819c6fb610049aab115fc995c53cb8a6c9492afe659754adb"
     },
     {
       "path": "docs/architecture/AUTH_PERSISTENCE_INVENTORY.md",
@@ -415,6 +415,16 @@
       "contentSha256": "53164b37891502328d69a00cb194fbdac5a48e6295b3de3133011a41a856e689"
     },
     {
+      "path": "docs/architecture/FEDIBUZZ_CUSTOM_FEED_SOURCE.md",
+      "title": "FediBuzz Custom Feed Source",
+      "authorityId": "fedibuzz-custom-feed-source",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Accepted target / Phase 23A source plan",
+      "contentSha256": "2fd4d0ce738666837d3d8a11123cd4dd2698e995e80caad4b5993e702f5617d3"
+    },
+    {
       "path": "docs/architecture/FLAKY_TEST_AND_QUARANTINE_POLICY.md",
       "title": "Flaky Test and Quarantine Policy",
       "authorityId": "flaky-test-and-quarantine-policy",
@@ -595,6 +605,16 @@
       "contentSha256": "fc7fe471eaed70b263ef47575d0e7c1008d0c6e2bd90270d0f99e80b3dfb5b12"
     },
     {
+      "path": "docs/architecture/PHASE_6A_DURABLE_STREAMS.md",
+      "title": "Phase 6A Durable Streams",
+      "authorityId": "phase-6a-durable-streams",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Accepted target / queued after Phase 6 foundations",
+      "contentSha256": "3c62a953b23f70636075d94168caa3ade7157bba5fae35afcbdb89b4dd6aa5dd"
+    },
+    {
       "path": "docs/architecture/PHASE_8_HOME_AND_BUILT_IN_FEEDS.md",
       "title": "Phase 8 Home and Built-in Feeds",
       "authorityId": "phase-8-home-and-built-in-feeds",
@@ -662,7 +682,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 1,
       "statusHeader": "Canonical architecture index / Phase 0 closed",
-      "contentSha256": "104ab798314f3f71ecdcd0e27aefedae2e7934a92fb2642c5193c2636d49d670"
+      "contentSha256": "4904ed3c3606e002475929ceefabfe062f455df2fb5a16fa2c985721008c8f0c"
     },
     {
       "path": "docs/architecture/REDUX_AUTHORITY_DRIFT_GATE.md",

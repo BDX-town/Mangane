@@ -2,7 +2,7 @@
 
 Status: **Canonical ADR index**
 
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 This register is append-oriented. A decision may be superseded, but its rationale must remain available. Material implementation changes require an ADR update in the same pull request.
 
@@ -239,6 +239,108 @@ Migration/rollback: Each Phase 23A slice is additive and feature-flagged.
 Definitions and revisions are schema-versioned; disabling publication leaves
 private local feeds intact where compatible. Removal follows the documented
 purge and tombstone policy.
+
+## ADR-022 — FediBuzz is an optional client-side broader-discovery source
+
+Status: Accepted
+
+Date: 2026-07-29
+
+Decision: Integrate the advertised FediBuzz aggregate public Mastodon-compatible
+stream as an optional Phase 23A Custom Feed candidate source through one
+account-scoped shared browser connection. Mangane applies indexed hashtag,
+author-domain, literal, and semantic rules locally, persists only statuses
+accepted by at least one feed, deduplicates by canonical ActivityPub object URI,
+and renders accepted posts through the normal timeline components.
+
+The first implementation does not follow generated FediBuzz relay actors, expose
+an ActivityPub inbox, operate a relay service, require Cloudflare Tunnel or
+ngrok, or add a separate ingestion backend. The source advertises live but not
+historical, resumable, or replayable capability.
+
+Context: FediBuzz differs from conventional push-only relays by advertising an
+aggregate public streaming endpoint and by exposing filtered hashtag/instance
+relay actors. Mangane needs broader public discovery for topic-oriented Custom
+Feeds without turning the PWA into federation infrastructure. One aggregate
+connection can carry statuses originating from many instances observed by
+FediBuzz; it is not a connection to only mastodon.social or another single
+origin instance.
+
+Alternatives considered: connect directly to one large instance; open one
+connection per feed or hashtag; follow FediBuzz actors through a public Mangane
+inbox; operate a Mangane relay/ingestion service; omit broader discovery.
+
+Rationale: A single shared direct stream is the least complex path that broadens
+candidate coverage while preserving home-server APIs as historical and
+protocol-authoritative sources. Indexed local dispatch avoids per-feed socket
+fan-out and unnecessary semantic work.
+
+Consequences and tradeoffs: Coverage depends on what FediBuzz observes and is
+not the entire Fediverse. Collection is not guaranteed while the PWA is closed.
+Direct browser use depends on a successful CORS/event-schema/mobile capability
+probe. Unsupported deployments degrade to account, list, Home, Local, and
+native hashtag sources.
+
+Security/privacy impact: FediBuzz is candidate transport, not a moderation or
+authorization override. Subscriber blocks, mutes, domain policy, visibility,
+and server restrictions remain mandatory. Raw aggregate traffic is not
+persisted. All queues, caches, workers, diagnostics, and lifecycle state are
+bounded and account scoped.
+
+Migration/rollback: Ship behind an owned feature/capability flag. Rollback closes
+the shared reader, cancels worker work, removes source registrations, purges
+FediBuzz-only matches according to policy, and retains canonical records that
+have independent protocol-source provenance.
+
+## ADR-023 — Durable Streams are a separate optional resumable event phase
+
+Status: Accepted
+
+Date: 2026-07-29
+
+Decision: Add Phase 6A for provider-neutral Durable Streams adoption after Phase
+6 foundations. Mangane may use an external durable stream authority for
+approved event families that require ordered replay and offset-based catch-up.
+Application code depends on opaque-offset, account-scoped resumable event
+contracts rather than a vendor SDK. Event effects and the next offset commit in
+one local transaction, and every consumer retains a canonical snapshot/reset
+and prior polling/local rollback path.
+
+Context: PWAs lose ephemeral SSE/WebSocket continuity during suspension,
+termination, refresh, offline periods, and device changes. Durable Streams can
+improve feed revision delivery, status lifecycle reconciliation, account moves,
+index journals, long-running jobs, notifications, and other Mangane features,
+not only FediBuzz or Custom Feeds. Durability, however, requires an external
+producer and retained stream; a browser client cannot make an ephemeral
+FediBuzz stream durable by itself.
+
+Alternatives considered: treat direct SSE checkpoints as durable resume; make
+Durable Streams part of Phase 23A only; adopt one hosted vendor directly in
+feature code; require all Mangane deployments to run a stream server; rely only
+on polling forever.
+
+Rationale: A separate additive phase preserves architectural clarity and allows
+one narrow, high-value event family to prove authorization, replay,
+transactionality, reset, retention, mobile performance, and provider exit before
+broader adoption.
+
+Consequences and tradeoffs: Durable delivery adds an external authority,
+producer, retention, authentication, operations, and cost boundary when used.
+It remains optional; cached reading, ordinary protocol polling, local search,
+and Phase 6 outbox behavior must continue when the provider is disabled or
+unavailable.
+
+Security/privacy impact: Producer/admin credentials never enter the PWA. Read,
+append, and administration privileges are separate. Private streams require
+object-level authorization and account/tenant isolation. URLs and opaque IDs are
+not authorization. Payloads are minimized, bounded, versioned, and excluded from
+content-bearing diagnostics.
+
+Migration/rollback: Provider selection requires a later implementation ADR with
+conformance, retention, privacy, cost, and exit evidence. Each stream class has
+its own feature flag. Rollback cancels readers/producers, preserves committed
+canonical state, restores the prior polling/snapshot path, and revokes or purges
+provider-specific credentials and checkpoints according to policy.
 
 ## ADR template
 
