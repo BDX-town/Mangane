@@ -257,7 +257,10 @@ export async function loadCachedNotifications(
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function normalizeVisibility(v: unknown): 'public' | 'unlisted' | 'private' | 'direct' {
-  if (v === 'public' || v === 'unlisted' || v === 'private' || v === 'direct') return v;
-  return 'public';
+function normalizeVisibility(v: unknown): string {
+  if (v === null || v === undefined || v === '') return 'public';
+  if (typeof v !== 'string') return 'public';
+  // Preserve the value as-is — never coerce unknown visibilities to 'public'
+  // which could expose a private post. The projection layer handles display logic.
+  return v;
 }

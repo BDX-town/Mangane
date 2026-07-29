@@ -144,7 +144,7 @@ describe('persistStatuses', () => {
     expect((record?.raw as any).custom_field).toBe('preserved');
   });
 
-  it('normalizes invalid visibility to public', async() => {
+  it('preserves unknown visibility values (fail-closed, never coerces to public)', async() => {
     await persistStatuses(ACCOUNT_URL, [{
       id: 's-invalid-vis', uri: '', content: '', account: { id: 'a' },
       visibility: 'bogus', sensitive: false, spoiler_text: '', media_attachments: [],
@@ -152,7 +152,7 @@ describe('persistStatuses', () => {
 
     const testDb = getTestDb();
     const record = await testDb.statuses.get([ACCOUNT_URL, 's-invalid-vis']);
-    expect(record?.visibility).toBe('public');
+    expect(record?.visibility).toBe('bogus'); // Preserved, not coerced
   });
 });
 

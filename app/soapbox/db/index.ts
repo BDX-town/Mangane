@@ -54,6 +54,27 @@ export {
   loadCachedStatuses,
   loadCachedNotifications,
 } from './sync';
+
+// Timeline membership and ordering
+export { timelineRepo } from './timelines';
+export type { TimelineId, TimelineMember, TimelineCursor, TimelineGap } from './timelines';
+
+// Projections (storage → presentation boundary)
+export {
+  normalizeVisibility,
+  isKnownVisibility,
+  projectStatus,
+  projectAccount,
+  projectNotification,
+  projectConversation,
+} from './projections';
+export type {
+  KnownVisibility,
+  StatusProjection,
+  AccountProjection,
+  NotificationProjection,
+  ConversationProjection,
+} from './projections';
 export type {
   BaseRecord,
   StoredAccount,

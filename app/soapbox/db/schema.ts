@@ -57,7 +57,7 @@ export interface StoredStatus extends BaseRecord {
   readonly content: string;
   readonly accountId: string;
   readonly createdAt: string;
-  readonly visibility: 'public' | 'unlisted' | 'private' | 'direct';
+  readonly visibility: string; // Preserved as-is from server; never coerced to public
   readonly sensitive: boolean;
   readonly spoilerText: string;
   readonly mediaAttachmentIds: string[];
@@ -157,7 +157,7 @@ export interface StoredSetting extends BaseRecord {
 
 // ─── Database Schema Version ─────────────────────────────────────────────────
 
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
 /**
  * Schema definition string for Dexie.
@@ -179,6 +179,14 @@ export const SCHEMA_V1 = {
   settings: '[accountUrl+key], accountUrl, updatedAt',
 };
 
+/** V2 adds timeline membership, cursors, and gaps. */
+export const SCHEMA_V2 = {
+  ...SCHEMA_V1,
+  timelineMembers: '[accountUrl+timelineId+statusId], [accountUrl+timelineId], accountUrl, insertedAt',
+  timelineCursors: '[accountUrl+timelineId], accountUrl, updatedAt',
+  timelineGaps: '[accountUrl+timelineId+gapId], [accountUrl+timelineId], accountUrl, detectedAt',
+};
+
 // ─── Database Class ──────────────────────────────────────────────────────────
 
 export class ManganeDatabase extends Dexie {
@@ -198,7 +206,10 @@ export class ManganeDatabase extends Dexie {
   constructor(name = 'mangane-local-store') {
     super(name);
 
-    this.version(SCHEMA_VERSION).stores(SCHEMA_V1);
+    // V1: core entity tables
+    this.version(1).stores(SCHEMA_V1);
+    // V2: add timeline membership, cursors, and gaps
+    this.version(SCHEMA_VERSION).stores(SCHEMA_V2);
   }
 
 }
