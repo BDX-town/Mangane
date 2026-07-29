@@ -342,6 +342,66 @@ its own feature flag. Rollback cancels readers/producers, preserves committed
 canonical state, restores the prior polling/snapshot path, and revokes or purges
 provider-specific credentials and checkpoints according to policy.
 
+## ADR-024 — Compression is capability-negotiated and bounded
+
+Status: Accepted
+
+Date: 2026-07-29
+
+Decision: Add Phase 4A for gzip and zstd across deployment response coding, selected local persistence, and export/import boundaries. Browser JavaScript does not set Accept-Encoding or manually decode normal fetch responses. Gzip is the portable baseline; zstd is optional and requires verified browser/server capability, RFC 9659 window limits, measured benefit, bounded worker execution, and an identity fallback.
+
+Context: Mangane can reduce network and storage cost, but HTTP negotiation is user-agent/server controlled, browser zstd support is uneven by operation, and careless decompression or shared secret compression creates security and reliability risks.
+
+Alternatives considered: gzip only forever; mandatory zstd WebAssembly; compress every record; application-controlled HTTP negotiation; deployment-only documentation.
+
+Rationale: A provider-neutral codec boundary and measured per-payload policy preserve portability while allowing zstd where it is genuinely beneficial.
+
+Consequences and tradeoffs: Compression adds CPU, memory, migration, cache-variant, and corruption handling. Small or already-compressed payloads remain identity.
+
+Security/privacy impact: Expanded bytes, ratio, time, window, queue, and recursion are bounded. Secrets and attacker-controlled material do not share unsafe compression contexts. Codec diagnostics contain no payloads or sensitive identifiers.
+
+Migration/rollback: Mixed compressed and identity local records remain readable. Disabling zstd falls back to gzip or identity; disabling local compression preserves canonical data.
+
+## ADR-025 — Origin servers are preferred for public aggregate reconciliation
+
+Status: Accepted
+
+Date: 2026-07-29
+
+Decision: Add Phase 8A to reconcile remote posts against the server controlling the canonical ActivityPub object URI when safe and available. Origin observations may refresh public edits, tombstones, polls, replies, and aggregate counts. Connected-server state remains authoritative for viewer permissions, moderation, local action IDs, and favourited/reblogged/bookmarked/muted state.
+
+Context: Federated copies can lag. ActivityPub routes replies, Likes, Announces, Updates, and Deletes toward the object authority, making the origin the strongest available public aggregate perspective, but not a guaranteed globally complete source. Direct browser access may also be blocked by CORS or authentication.
+
+Alternatives considered: trust only the connected copy; replace the whole connected status with origin JSON; poll every origin continuously; operate a generic CORS proxy; label origin counts globally exact.
+
+Rationale: Field-level authority gains freshness without discarding viewer-aware state or weakening browser security.
+
+Consequences and tradeoffs: Coverage varies by origin capabilities and federation delivery. Adaptive polling, validators, per-origin budgets, and connected-server fallback are required.
+
+Security/privacy impact: Canonical destinations, redirects, schemas, bodies, recursion, concurrency, and credentials are fail-closed and bounded. Connected tokens never go to origin servers, and subscriber moderation still wins.
+
+Migration/rollback: Origin observations and aliases are additive provenance. Rollback stops origin scheduling and returns to connected-server streaming/polling plus local cache without changing viewer state.
+
+## ADR-026 — Timeline position uses semantic local anchors and does not require Durable Streams
+
+Status: Accepted
+
+Date: 2026-07-29
+
+Decision: Add Phase 5E for account-scoped timeline position continuity using canonical item identity, order key, relative visual offset, neighbour hints, layout revision, and optional source checkpoint. Local IndexedDB persistence, bounded hydration, virtualization adapters, and layout stabilization provide same-device restoration. Durable Streams and Mastodon markers remain optional enhancements rather than prerequisites or visual-position authorities.
+
+Context: Native clients preserve reading position, while a PWA must survive asynchronous hydration, variable-height cards, virtualization, media loading, browser refresh, suspension, and new items inserted above the viewport. Raw scrollTop and server last-read IDs are insufficient.
+
+Alternatives considered: raw pixel persistence; always return to newest; require Durable Streams; rely only on browser scroll restoration; use Mastodon markers as exact position.
+
+Rationale: A semantic anchor survives content and layout changes and can be reconstructed from the local-first timeline store and ordinary pagination.
+
+Consequences and tradeoffs: Restoration needs account-scoped records, tab ownership, bounded window hydration, media sizing, compensation, and deterministic missing-anchor recovery.
+
+Security/privacy impact: Position records contain no post body or credentials, are purged with account data, and are not synchronized remotely without explicit authority and privacy policy.
+
+Migration/rollback: Position capture/restoration is feature-flagged and additive. Rollback retains normal browser navigation and canonical timeline data; optional records may be purged by policy.
+
 ## ADR template
 
 ```markdown

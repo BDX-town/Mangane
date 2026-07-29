@@ -212,7 +212,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical ADR index",
-      "contentSha256": "cf4113e0dbea640819c6fb610049aab115fc995c53cb8a6c9492afe659754adb"
+      "contentSha256": "5504d85ab23604a8f175d2ce060ca22537460b0e26f38984498e4dbb56c2f481"
     },
     {
       "path": "docs/architecture/AUTH_PERSISTENCE_INVENTORY.md",
@@ -595,6 +595,16 @@
       "contentSha256": "2cda74e826849e6174036b88f2256338530d98c8b6478cdaa13bf66fc8278e5f"
     },
     {
+      "path": "docs/architecture/PHASE_4A_ZSTD_AND_GZIP_COMPRESSION.md",
+      "title": "Phase 4A Zstd and Gzip Compression",
+      "authorityId": "phase-4a-zstd-and-gzip-compression",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Accepted target / queued after Phase 4 foundations",
+      "contentSha256": "3d2bc3df1a1533592ecd0bd39291bc374d0b084104d401957b497549c5d025d8"
+    },
+    {
       "path": "docs/architecture/PHASE_4_PWA_OFFLINE_HARDENING.md",
       "title": "Phase 4 PWA, Service Worker, and Offline Hardening",
       "authorityId": "phase-4-pwa-service-worker-and-offline-hardening",
@@ -605,6 +615,16 @@
       "contentSha256": "fc7fe471eaed70b263ef47575d0e7c1008d0c6e2bd90270d0f99e80b3dfb5b12"
     },
     {
+      "path": "docs/architecture/PHASE_5E_TIMELINE_POSITION_CONTINUITY.md",
+      "title": "Phase 5E Timeline Position Continuity",
+      "authorityId": "phase-5e-timeline-position-continuity",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Accepted target / queued within Phase 5 before broad Phase 8 rollout",
+      "contentSha256": "c8e139dda888f413a403a10f54099ddd1f79beea8e0b5c055701db8645d0b58b"
+    },
+    {
       "path": "docs/architecture/PHASE_6A_DURABLE_STREAMS.md",
       "title": "Phase 6A Durable Streams",
       "authorityId": "phase-6a-durable-streams",
@@ -613,6 +633,16 @@
       "inheritedBrandingReferences": 0,
       "statusHeader": "Accepted target / queued after Phase 6 foundations",
       "contentSha256": "3c62a953b23f70636075d94168caa3ade7157bba5fae35afcbdb89b4dd6aa5dd"
+    },
+    {
+      "path": "docs/architecture/PHASE_8A_ORIGIN_AUTHORITY_RECONCILIATION.md",
+      "title": "Phase 8A Origin Authority Reconciliation",
+      "authorityId": "phase-8a-origin-authority-reconciliation",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Accepted target / queued after Phase 7 and the Phase 8 timeline baseline",
+      "contentSha256": "472364331468536bb4226e0eb0f13600237eddea4e9bebaaa87fb39426e35f5c"
     },
     {
       "path": "docs/architecture/PHASE_8_HOME_AND_BUILT_IN_FEEDS.md",
@@ -682,7 +712,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 1,
       "statusHeader": "Canonical architecture index / Phase 0 closed",
-      "contentSha256": "4904ed3c3606e002475929ceefabfe062f455df2fb5a16fa2c985721008c8f0c"
+      "contentSha256": "1789e9967888965f4410e4235c8f658d9b8c3e52d684d5a85e38e3f11c63ca75"
     },
     {
       "path": "docs/architecture/REDUX_AUTHORITY_DRIFT_GATE.md",
