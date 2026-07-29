@@ -2,7 +2,7 @@
 
 Status: **Accepted target / queued**
 
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## Placement
 
@@ -16,7 +16,8 @@ The complete feature depends on:
 - Phase 6 durable, idempotent synchronization and bounded retry;
 - Phase 7 feed-neutral application boundaries;
 - Phase 8 the shared renderer, timeline state, and pinned-feed shell;
-- Phases 12–17 lexical, semantic, topic, fusion, and explanation contracts;
+- Phase 8B the canonical entity authority, semantic hashtag bindings, Wikidata/DBpedia enrichment, confidence/ambiguity policy, and entity feed-rule contract;
+- Phases 12–17 lexical, semantic, entity-retrieval, topic, fusion, and explanation contracts;
 - Phases 19–20 local personalization and semantic-filter controls;
 - Phase 23 lists, profiles, settings, and remaining high-use migrations.
 
@@ -165,6 +166,16 @@ Assembly:
 Partial source failure returns successful and cached results with a recoverable
 status. It does not replace the whole feed with a fatal error.
 
+## Entity-aware hashtags, topics, and feed rules
+
+Custom Feeds preserve literal hashtag and keyword rules while optionally referencing Phase 8B canonical entities. Definitions may use exact entities, selected first-degree related entities, and versioned include, exclude, boost, or require modes. They store stable CanonicalEntityId references rather than Wikidata Q IDs, DBpedia URIs, labels, or model-generated names as primary identity.
+
+A rule such as Apple Inc. may match high-confidence entity mentions, context-resolved hashtags, linked resources, official accounts, products, or events only when the feed revision explicitly permits those relationship predicates. Traversal is never implicit or unbounded: depth is initially zero or one, predicates are explicit, confidence thresholds and candidate budgets are versioned, and fan-out is capped.
+
+Creator controls distinguish literal matching, exact entity matching, selected related entities, ambiguity policy, and behavior when providers, local indexes, or semantic models are unavailable. Degraded behavior returns to literal hashtag, keyword, account, and lexical rules. Entity failure never empties an otherwise valid feed, bypasses subscriber policy, or changes the follow graph.
+
+Private feed definitions, examples, exclusions, negative feedback, and subscriber context are never sent to Wikidata, DBpedia, or another public resolver. Entity-aware decisions retain evidence and policy versions so creator preview and “Why included” explanations reflect the actual rule.
+
 ## Semantic and privacy contract
 
 Semantic processing is local-first, versioned, bounded, and optional.
@@ -257,6 +268,16 @@ Required controls:
 - lexical fallback and model lifecycle controls;
 - relevance, overblocking, privacy, and adversarial tests.
 
+### 23A.6 — Entity-aware feed precision
+
+- Phase 8B canonical entity references and semantic hashtag bindings;
+- exact-entity and selected-related-entity rules with bounded predicates/depth;
+- include, exclude, boost, and require modes;
+- ambiguity handling and private creator preview;
+- literal/lexical fallback during provider, model, index, or cache failure;
+- Wikidata/DBpedia privacy, request-volume, stale-data, disagreement, and outage fixtures;
+- explanation, relevance, over-expansion, deduplication, migration, and adversarial tests.
+
 ## Explicit deferrals
 
 - nested Boolean query builders;
@@ -281,8 +302,7 @@ Phase 23A is complete only when:
 4. list copy and synchronization preserve multi-origin membership;
 5. migration, deletion, suspension, outage, rate-limit, revision-race, and
    partial-source fixtures reconcile safely;
-6. hashtags, keywords, topics, and exclusions are predictable and creator
-   preview is private;
+6. literal hashtags, semantic hashtag bindings, keywords, topics, canonical entities, related-entity rules, and exclusions are predictable, bounded, explainable, and creator preview is private;
 7. subscriber policy always overrides creator selection;
 8. pinned feeds use the shared renderer and independent scoped restoration;
 9. storage, request fan-out, latency, memory, battery, and accessibility

@@ -212,7 +212,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical ADR index",
-      "contentSha256": "85d5aec2ab865e23fa6dbe7add33da5b0a318a1f94d054cdcfb436f10c76779d"
+      "contentSha256": "d0c5dc2e7ff15902cbb54654cea056e7d13da749b12c34348e8768c146d7af7b"
     },
     {
       "path": "docs/architecture/AUTH_PERSISTENCE_INVENTORY.md",
@@ -482,7 +482,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical implementation sequence",
-      "contentSha256": "3429de605b444f24fd1fda79fc1e951abfa863756b489d2bb222247a5fa44292"
+      "contentSha256": "dba436fc3057c02c119432be9a8271c890746c43834230acd7aa9979c4394b03"
     },
     {
       "path": "docs/architecture/KEYBOARD_AND_GESTURE_INVENTORY.md",
@@ -572,7 +572,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Accepted target / queued",
-      "contentSha256": "4cdad1be8a36f1504cc6f77817990321e0aeebbc2615f909b3f673892d792748"
+      "contentSha256": "27618d4087f0c6d6ec2f6dfb1c5311afd6535c8af8f306bd651a447082647458"
     },
     {
       "path": "docs/architecture/PHASE_23B_SUBSCRIBED_POST_STORIES.md",
@@ -655,14 +655,14 @@
       "contentSha256": "472364331468536bb4226e0eb0f13600237eddea4e9bebaaa87fb39426e35f5c"
     },
     {
-      "path": "docs/architecture/PHASE_8B_CREATOR_ATTRIBUTION.md",
-      "title": "Phase 8B — Creator Attribution for Link Previews",
-      "authorityId": "phase-8b-creator-attribution-for-link-previews",
+      "path": "docs/architecture/PHASE_8B_ENTITY_RESOLUTION_AND_CREATOR_ATTRIBUTION.md",
+      "title": "Phase 8B — Entity Resolution & Creator Attribution",
+      "authorityId": "phase-8b-entity-resolution-creator-attribution",
       "classification": "current-supporting-evidence",
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Accepted target / queued",
-      "contentSha256": "6ff050d4cc61df5eef08b1cea43d686344477f4c3c5b16492a046ccf3f95b172"
+      "contentSha256": "897d25ad4f25e350a148409405f3a860c18285826e21e5203b67e20e4649b9ea"
     },
     {
       "path": "docs/architecture/PHASE_8_HOME_AND_BUILT_IN_FEEDS.md",
@@ -732,7 +732,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 1,
       "statusHeader": "Canonical architecture index / Phase 0 closed",
-      "contentSha256": "4065757c69c1b05c88e7e6ddbc191af769212136b1121d92a609d2cb8ce6e43f"
+      "contentSha256": "ad18799e3ab0991f94718bd8e7098a5f761422f72157cdf16e5883f15da0eef6"
     },
     {
       "path": "docs/architecture/REDUX_AUTHORITY_DRIFT_GATE.md",
@@ -782,7 +782,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Accepted target",
-      "contentSha256": "cf7f97cfaf57e9f96c909aeb3884994e5412ef3b3750eb00404038fd74f0936b"
+      "contentSha256": "72f988a6cbb060c353d4486503ad6b0f5bbe18ef4cecafe0a2525d973e6d266b"
     },
     {
       "path": "docs/architecture/SECURITY_REGRESSION_SUITE.md",

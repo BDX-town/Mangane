@@ -2,7 +2,7 @@
 
 Status: **Canonical implementation sequence**
 
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 This roadmap supersedes earlier informal phases when they conflict. It preserves the original direction—Framework7, adaptive PWA, local-first intelligence, hybrid search, semantic filtering, entity understanding, and editorial redesign—while adding the architectural, migration, privacy, testing, and drift-control work required to implement it safely.
 
@@ -21,7 +21,7 @@ authoritative for scope and exit criteria.
 | Phase 5 — Canonical local data store | In progress | Slices A–D are merged; timeline/order and conversation-hydration exit criteria remain open |
 | Phases 6–7 | Queued | Required before Phase 8 runtime migration |
 | Phase 8 — Home and For You editorial migration | Queued | [`PHASE_8_HOME_AND_BUILT_IN_FEEDS.md`](./PHASE_8_HOME_AND_BUILT_IN_FEEDS.md) |
-| Phase 8B — Creator Attribution | Queued | [`PHASE_8B_CREATOR_ATTRIBUTION.md`](./PHASE_8B_CREATOR_ATTRIBUTION.md) |
+| Phase 8B — Entity Resolution & Creator Attribution | Queued | [`PHASE_8B_ENTITY_RESOLUTION_AND_CREATOR_ATTRIBUTION.md`](./PHASE_8B_ENTITY_RESOLUTION_AND_CREATOR_ATTRIBUTION.md) |
 | Phases 9–23 | Queued | Begin only after their dependency and preceding-phase exit criteria are met |
 | Phase 23A — Custom Feeds | Queued | [`PHASE_23A_CUSTOM_FEEDS.md`](./PHASE_23A_CUSTOM_FEEDS.md) |
 | Phase 23B — Subscribed Post Stories | Queued | [`PHASE_23B_SUBSCRIBED_POST_STORIES.md`](./PHASE_23B_SUBSCRIBED_POST_STORIES.md) |
@@ -295,32 +295,33 @@ Exit criteria:
   restoration cases pass;
 - scrolling remains responsive under realistic feeds.
 
-## Phase 8B — Creator Attribution
+## Phase 8B — Entity Resolution & Creator Attribution
 
-Status: **Queued; see [`PHASE_8B_CREATOR_ATTRIBUTION.md`](./PHASE_8B_CREATOR_ATTRIBUTION.md).**
+Status: **Queued; see [`PHASE_8B_ENTITY_RESOLUTION_AND_CREATOR_ATTRIBUTION.md`](./PHASE_8B_ENTITY_RESOLUTION_AND_CREATOR_ATTRIBUTION.md).**
 
-Goal: display accurate linked-work creator bylines and verified Fediverse creator accounts in link previews without confusing them with the author of the sharing status.
+Goal: establish one local-first canonical entity authority and use it for creator attribution, semantic hashtags, entity-aware Custom Feeds, Search, Explore, Gist, recommendations, composer context, and future semantic navigation without duplicate entity stores.
 
 Deliverables:
 
-- verified inventory of preview-card schemas, renderers, storage authorities, and supported backend fixtures;
-- native Mastodon PreviewCard.authors and missing_attribution normalization;
-- legacy author_name/author_url and platform-specific metadata fallback;
-- multiple-author canonical model and deterministic account/resource deduplication;
-- proof-tiered distinction between metadata-only, unverified claims, native server verification, and independently verified domain/account attribution;
-- shared creator byline presentation across post cards, bookmarks, Search, Explore, conversations, and Gist evidence;
-- capability-gated Mastodon attribution-domain profile settings;
-- optional later direct-CORS or hardened trusted-resolver enrichment for servers without native support;
-- URL, redirect, SSRF, WebFinger, actor, IDNA, privacy, cache, migration, rollback, accessibility, and performance gates.
+- canonical entities, aliases, relationships, mentions, evidence, provider references, resolutions, merges/splits, tombstones, migrations, purge, and repair;
+- provider-neutral resolver and confidence/abstention contracts;
+- bounded Wikidata and DBpedia matching/enrichment with provenance, attribution, caching, retry, circuit breakers, privacy, and degraded modes;
+- native Mastodon PreviewCard.authors, legacy fallback, multiple creators, missing_attribution, and capability-gated attribution-domain settings;
+- cross-platform extraction of fediverse:creator, Schema.org JSON-LD, sameAs, rel=author, Open Graph, oEmbed, microformats, Dublin Core, conventional author metadata, and low-confidence visible bylines;
+- proof-tiered separation of creator discovery, social-profile discovery, Fediverse account resolution, and publication authorization;
+- literal-plus-semantic hashtag bindings and ambiguity handling;
+- bounded entity rules for Custom Feeds with exact, related, include, exclude, boost, require, preview, and lexical-fallback behavior;
+- shared integration with Search, Explore, Gist, recommendations, topic/entity pages, composer context, and the interpolator;
+- account isolation, moderation, URL/SSRF/DNS, Unicode/IDNA, cache-poisoning, migration, rollback, accessibility, performance, and evaluation gates.
 
 Exit criteria:
 
-- status author, linked-work creator, and publication remain distinct;
-- one resource/creator identity does not create duplicate bylines or account records;
-- native and legacy responses degrade without breaking link previews;
-- an arbitrary publication cannot attribute itself to an unrelated Fediverse account;
-- external resolution is absent or passes all hardened resolver gates;
-- account isolation, moderation, moves, suspension, offline, migration, rollback, accessibility, and performance tests pass.
+- every consumer uses one canonical entity authority and no creator- or feature-specific duplicate graph remains;
+- ambiguous entities and hashtags abstain or remain literal rather than binding silently;
+- Wikidata/DBpedia outage never disables local search, previews, hashtags, or Custom Feeds;
+- status author, creator, publication, social identity, and verification proof remain distinct;
+- entity-aware feeds are bounded, deterministic, explainable, revisioned, and policy-safe;
+- merge/split, aliases, account moves, provider redirects, offline, corruption, purge, rollback, security, accessibility, and performance tests pass.
 
 ## Phase 9 — Conversation and reading experience
 
@@ -451,27 +452,31 @@ Exit criteria:
 - hybrid beats lexical and semantic baselines on agreed quality metrics without harming exact queries;
 - ranking remains stable under candidate depth and filter changes.
 
-## Phase 15 — Entity resolution and knowledge enrichment
+## Phase 15 — Entity retrieval, graph expansion, and search integration
 
-Goal: add canonical entity understanding without coupling to external services.
+Goal: mature and evaluate the Phase 8B canonical entity authority as a first-class retrieval channel without creating a second entity schema, provider layer, cache, or confidence engine.
+
+Dependencies:
+
+- Phase 8B canonical entity contracts, local repository, resolver/evidence model, Wikidata/DBpedia adapters, semantic hashtag bindings, and migration rules;
+- Phases 12–14 lexical, vector, query-planning, and fusion foundations.
 
 Deliverables:
 
-- local entity schema and alias index;
-- mention detection and candidate generation;
-- contextual disambiguation;
-- Wikidata and DBpedia enrichment adapters;
-- provenance, license/attribution, freshness, caching, and retry policy;
-- ambiguous/unresolved states;
-- entity facets and cards;
-- privacy-minimized requests;
-- evaluation for common ambiguous names.
+- entity retriever over the Phase 8B canonical repository and alias index;
+- query mention detection and contextual candidate generation using the shared resolver;
+- bounded graph expansion by explicitly allowed relationship predicates and depth;
+- entity facets, cards, topic/entity navigation, and explanation evidence;
+- multilingual aliases, redirects, freshness, and provider-outage behavior inherited from Phase 8B;
+- calibrated fusion of entity candidates with lexical, vector, topic, and conversation retrieval;
+- privacy-minimized evaluation for common names, ambiguous hashtags, events, organizations, creators, and multilingual queries.
 
 Exit criteria:
 
-- entity matches improve relevant queries;
-- unavailable external enrichment leaves local search functional;
-- incorrect links are correctable and do not become permanent facts.
+- entity retrieval improves agreed relevance metrics without harming exact identifiers or literal hashtags;
+- all records and evidence resolve through the Phase 8B authority rather than duplicate Phase 15 stores;
+- unavailable external enrichment leaves local entity and lexical search functional;
+- incorrect links remain correctable, explainable, reversible, and non-permanent.
 
 ## Phase 16 — Topic graph and conversation retrieval
 

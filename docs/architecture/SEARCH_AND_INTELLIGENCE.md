@@ -2,7 +2,7 @@
 
 Status: **Accepted target**
 
-Last updated: 2026-07-23
+Last updated: 2026-07-29
 
 ## 1. Objective
 
@@ -128,11 +128,15 @@ Canonical relevance and personal utility are recorded separately so personalizat
 
 ## 8. Entities, topics, Gist, and Explore
 
-Entity processing follows mention detection, candidate generation, contextual resolution, a canonical local entity, and optional Wikidata/DBpedia enrichment. External knowledge bases enrich internal records but do not define them. Cached enrichment retains provenance, retrieval time, and attribution metadata.
+Phase 8B defines the single canonical entity authority used by Search and every other intelligent consumer. Processing follows mention or hashtag extraction, candidate generation, contextual resolution, confidence plus margin gates, explicit ambiguity/abstention, canonical local identity, and optional Wikidata/DBpedia enrichment. External graphs provide aliases, multilingual labels, types, redirects, official links, and selected relationships; they do not define ownership, authorship, authorization, or truth. Cached enrichment retains provider, evidence, retrieval time, freshness, license/attribution metadata, and independently disableable provider state.
 
-Topic assignments are local, versioned derived data with confidence values. They are not permanent facts about users or authors.
+Literal hashtags remain independently searchable social tokens. A separate HashtagEntityBinding may resolve context-specific meanings, equivalent event tags, aliases, and translations for semantic search, Custom Feeds, recommendations, topic pages, and Gist grouping. Ambiguous tags remain literal or unresolved rather than receiving a universal meaning.
 
-Gist requires sufficient and diverse evidence, citations to posts or linked sources, separation of facts/claims/interpretation, visible uncertainty, disagreement preservation, and refusal to synthesize when evidence is insufficient.
+Phase 15 entity retrieval, graph expansion, and fusion must reuse Phase 8B schemas, repositories, aliases, evidence, Wikidata/DBpedia clients, caches, confidence policy, merge/split history, and privacy boundaries. It may add retrieval indexes and evaluation but may not establish a second entity graph.
+
+Topic assignments are local, versioned derived data with confidence values. They are not permanent facts about users or authors. Topic/entity relationships preserve provenance and cannot bypass canonical-record access checks.
+
+Gist requires sufficient and diverse evidence, citations to posts or linked sources, separation of facts/claims/interpretation, visible uncertainty, disagreement preservation, and refusal to synthesize when evidence is insufficient. Knowledge-graph matches help disambiguation but do not independently prove source claims.
 
 Explore may use follows, lists, bookmarks, explicit interests, retention-governed search/reading history, topic/entity affinity, trends, recency, diversity, and negative feedback. It must not become a hidden engagement-maximization feed.
 
