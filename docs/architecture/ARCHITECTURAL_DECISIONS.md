@@ -402,6 +402,26 @@ Security/privacy impact: Position records contain no post body or credentials, a
 
 Migration/rollback: Position capture/restoration is feature-flagged and additive. Rollback retains normal browser navigation and canonical timeline data; optional records may be purged by policy.
 
+## ADR-027 — Subscribed post Stories are a shared read-state presentation of ordinary statuses
+
+Status: Accepted
+
+Date: 2026-07-29
+
+Decision: Add Phase 23B for an optional story-shaped tray and viewer over public-post notifications from accounts whose profile notification bell the user enabled. The canonical status remains an ordinary federated post. Mangane stores only account-scoped subscription generations, queue identity/provenance, shared notification projection, view receipts, grouping, and viewer position. Stories and Notifications share one unread obligation and must not double count.
+
+Context: The existing profile bell expresses an explicit account-post subscription. Presenting those notifications as Stories provides a focused reading experience across compatible Fediverse servers without inventing ephemeral objects, requiring Pixelfed Story support, or changing source-post lifetime. Multiple delivery paths can observe the same status, so canonical URI deduplication and one transactional upsert authority are mandatory.
+
+Alternatives considered: implement Pixelfed Stories; create Mangane-hosted ephemeral objects; duplicate statuses into a Story store; independently track unread state in Stories and Notifications; use notification ID as canonical identity; require Durable Streams for the first release.
+
+Rationale: Reusing explicit subscription intent and canonical statuses adds product value while preserving protocol truth, moderation, actions, origin reconciliation, local-first continuity, and reversible notification fallback.
+
+Consequences and tradeoffs: The feature requires verified backend capability inventory, subscription-generation boundaries, cross-source deduplication, meaningful-view semantics, bounded queues, multi-tab coordination, reconciliation, and careful accessibility for text-rich posts. Cross-device completion is deferred.
+
+Security/privacy impact: Every record and command is account/instance scoped. Push and URLs are untrusted hints. Visibility, authorization, blocks, filters, and content warnings are rechecked before rendering. Prefetch cannot create view receipts. Content and identifiers are excluded from diagnostics.
+
+Migration/rollback: Phase 23B is additive and feature-flagged. Rollback stops Story ingestion/view writes and routes subscribed-post notifications back to ordinary Notifications while preserving server bell subscriptions, canonical statuses, notification history, and compatible read receipts.
+
 ## ADR template
 
 ```markdown

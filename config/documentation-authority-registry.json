@@ -212,7 +212,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical ADR index",
-      "contentSha256": "5504d85ab23604a8f175d2ce060ca22537460b0e26f38984498e4dbb56c2f481"
+      "contentSha256": "2ac5dcdfe84d93fc7281e81633495bc32f8f9c5fb74dde2baec7d4365a0d750f"
     },
     {
       "path": "docs/architecture/AUTH_PERSISTENCE_INVENTORY.md",
@@ -482,7 +482,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical implementation sequence",
-      "contentSha256": "aabfd0192e75fa73ed4cd74c19adb512fb6b9458dd19da0035104155f932ce48"
+      "contentSha256": "5161bbb90a527b39446c174b229e584e858ef1c69a532f2b8f98e39df0d63b3c"
     },
     {
       "path": "docs/architecture/KEYBOARD_AND_GESTURE_INVENTORY.md",
@@ -573,6 +573,16 @@
       "inheritedBrandingReferences": 0,
       "statusHeader": "Accepted target / queued",
       "contentSha256": "4cdad1be8a36f1504cc6f77817990321e0aeebbc2615f909b3f673892d792748"
+    },
+    {
+      "path": "docs/architecture/PHASE_23B_SUBSCRIBED_POST_STORIES.md",
+      "title": "Phase 23B — Subscribed Post Stories",
+      "authorityId": "phase-23b-subscribed-post-stories",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Accepted target / queued",
+      "contentSha256": "9e77f5ba77f65e79f36d8a99f245d21eee3d881f31c953308a20a5f58e3a4d4a"
     },
     {
       "path": "docs/architecture/PHASE_2_DESIGN_FOUNDATION.md",
@@ -712,7 +722,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 1,
       "statusHeader": "Canonical architecture index / Phase 0 closed",
-      "contentSha256": "1789e9967888965f4410e4235c8f658d9b8c3e52d684d5a85e38e3f11c63ca75"
+      "contentSha256": "cfe5ec82de9f5be1cc62106158584cb90572f58453187b1bfbb3fcc9f6b53098"
     },
     {
       "path": "docs/architecture/REDUX_AUTHORITY_DRIFT_GATE.md",

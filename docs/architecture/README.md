@@ -22,6 +22,7 @@ Every implementation agent and contributor must read these documents in order be
 
 ## Active and accepted phase plans
 
+- [`PHASE_23B_SUBSCRIBED_POST_STORIES.md`](./PHASE_23B_SUBSCRIBED_POST_STORIES.md) defines the optional story-shaped presentation of profile-bell subscribed public-post notifications, including canonical-status reuse, subscription generations, cross-source deduplication, shared notification read state, bounded queues, meaningful-view receipts, reconciliation, accessibility, rollback, and optional later Durable Streams continuity.
 - [`PHASE_4A_ZSTD_AND_GZIP_COMPRESSION.md`](./PHASE_4A_ZSTD_AND_GZIP_COMPRESSION.md) defines negotiated gzip/zstd delivery, bounded local codecs, decompression safety, migration, deployment, fallback, and performance gates.
 - [`PHASE_5E_TIMELINE_POSITION_CONTINUITY.md`](./PHASE_5E_TIMELINE_POSITION_CONTINUITY.md) defines semantic reading anchors, local PWA restoration, virtualization/layout stabilization, optional Mastodon markers, and the separate future Durable Streams extension.
 - [`PHASE_8A_ORIGIN_AUTHORITY_RECONCILIATION.md`](./PHASE_8A_ORIGIN_AUTHORITY_RECONCILIATION.md) defines field-level origin/connected/local authority, safe origin resolution, adaptive polling, reply union, aggregate freshness, and degraded operation.

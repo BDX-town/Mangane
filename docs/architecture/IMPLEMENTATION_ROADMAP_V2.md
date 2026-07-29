@@ -23,6 +23,7 @@ authoritative for scope and exit criteria.
 | Phase 8 — Home and For You editorial migration | Queued | [`PHASE_8_HOME_AND_BUILT_IN_FEEDS.md`](./PHASE_8_HOME_AND_BUILT_IN_FEEDS.md) |
 | Phases 9–23 | Queued | Begin only after their dependency and preceding-phase exit criteria are met |
 | Phase 23A — Custom Feeds | Queued | [`PHASE_23A_CUSTOM_FEEDS.md`](./PHASE_23A_CUSTOM_FEEDS.md) |
+| Phase 23B — Subscribed Post Stories | Queued | [`PHASE_23B_SUBSCRIBED_POST_STORIES.md`](./PHASE_23B_SUBSCRIBED_POST_STORIES.md) |
 | Phases 24–31 | Queued | Begin only after their dependency and preceding-phase exit criteria are met |
 
 ## Global implementation rules
@@ -642,6 +643,32 @@ Exit criteria:
   bypassing safety policy;
 - current, degraded, unsupported, and deferred behavior is documented
   accurately.
+
+## Phase 23B — Subscribed Post Stories
+
+Status: **Queued; see [`PHASE_23B_SUBSCRIBED_POST_STORIES.md`](./PHASE_23B_SUBSCRIBED_POST_STORIES.md).**
+
+Goal: present ordinary public-post notifications from explicitly bell-subscribed accounts through an optional story-shaped tray and viewer, with canonical-status reuse, one shared unread obligation, deterministic deduplication, and ordinary Notifications as the rollback path.
+
+Deliverables:
+
+- verified inventory of profile-bell relationship capabilities and notification/event behavior per backend;
+- account-scoped subscription generations and effective boundaries;
+- canonical-URI queue identity and one transactional cross-source upsert authority;
+- shared Stories/Notifications unread projection with no duplicate badges or obligations;
+- meaningful foreground view receipts, mark-unread behavior, grouping, bounded queues, and deterministic ordering;
+- accessible Framework7 tray/viewer reusing canonical status, media, moderation, sanitization, and action implementations;
+- stream, push-hint, and bounded polling reconciliation with backoff, jitter, cancellation, multi-tab leases, edits, deletes, moves, and origin refresh;
+- local PWA continuation through Phase 5E and optional later Phase 6A Durable Streams integration;
+- feature flags, migration, corruption repair, account purge, rollback, security, accessibility, and performance proof.
+
+Exit criteria:
+
+- one logical subscribed post produces one item across notification, stream, push, poll, hydration, and future durable delivery;
+- Stories and Notifications always agree on one unread obligation;
+- viewing does not alter or expire the ordinary source status;
+- account isolation, authorization, moderation, meaningful-view, overflow, offline, relaunch, multi-tab, and rollback tests pass;
+- unsupported server capabilities degrade honestly to ordinary Notifications.
 
 ## Phase 24 — Media-rich editorial experiences
 
