@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle, IndexLocationWithAlign, ListItem } from 'react-virtuoso';
 
 import { useSettings } from 'soapbox/hooks';
+import { useScrollAnchor } from 'soapbox/hooks/useScrollAnchor';
 
 import LoadMore from './load_more';
 import { Card, Spinner, Text } from './ui';
@@ -39,6 +40,10 @@ const List: Components<Context>['List'] = React.forwardRef((props, ref) => {
 interface IScrollableList extends VirtuosoProps<any, any> {
   /** Unique key to preserve the scroll position when navigating back. */
   scrollKey?: string,
+  /** Timeline ID for IndexedDB position anchor persistence (Phase 5E). */
+  timelineId?: string,
+  /** Ordered item IDs for position anchor (required when timelineId is set). */
+  itemIds?: readonly string[],
   /** Pagination callback when the end of the list is reached. */
   onLoadMore?: () => void,
   /** Whether the data is currently being fetched. */
@@ -95,6 +100,8 @@ function findNearestScrollableParent(el: HTMLElement): HTMLElement | undefined {
 /** Legacy ScrollableList with Virtuoso for backwards-compatibility. */
 const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   scrollKey,
+  timelineId,
+  itemIds,
   prepend = null,
   alwaysPrepend,
   children,
@@ -132,6 +139,13 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   const scrollDataKey = useMemo(() => scrollKey ? `soapbox:scrollData:${scrollKey}` : undefined, [scrollKey]);
   const scrollData: SavedScrollPosition | null = useMemo(() => JSON.parse(sessionStorage.getItem(scrollDataKey)!), [scrollDataKey]);
   const [ready, setReady] = useState(!scrollData);
+
+  // Phase 5E: IndexedDB-backed position anchor (when timelineId is provided)
+  const scrollAnchor = useScrollAnchor({
+    timelineId,
+    items: itemIds ?? [],
+    disabled: !timelineId || !itemIds || itemIds.length === 0,
+  });
 
   const showPlaceholder = useMemo(() => showLoading && Placeholder && placeholderCount > 0, [Placeholder, placeholderCount, showLoading]);
 
@@ -231,18 +245,23 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
       size: items[0].size,
     };
     mayRestoreScrollDebounced(firstVisibleItem.current);
-  }, [mayRestoreScrollDebounced]);
+
+    // Phase 5E: capture semantic position anchor
+    scrollAnchor.handleItemsRendered(items);
+  }, [mayRestoreScrollDebounced, scrollAnchor]);
 
   /** Figure out the initial index to scroll to. */
   const initialIndex = useMemo<number | IndexLocationWithAlign>(() => {
     if (showLoading) return 0;
     if (initialTopMostItemIndex) return initialTopMostItemIndex;
+    // Phase 5E: prefer IndexedDB anchor over sessionStorage
+    if (scrollAnchor.initialIndex !== 0) return scrollAnchor.initialIndex;
     if (scrollData && history.action === 'POP') {
       // offset is restored via other means
       return scrollData.index;
     }
     return 0;
-  }, [showLoading, initialTopMostItemIndex, scrollData, history.action]);
+  }, [showLoading, initialTopMostItemIndex, scrollAnchor.initialIndex, scrollData, history.action]);
 
   return (
     <div ref={setScrollParent}>
@@ -250,7 +269,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
         ref={virtuoso}
         id={id}
         {...(scrollParent ? { customScrollParent: scrollParent } : { useWindowScroll })}
-        className={`${className} transition-opacity ${ready ? 'opacity-100' : 'opacity-0'}`}
+        className={`${className} transition-opacity ${ready && scrollAnchor.ready ? 'opacity-100' : 'opacity-0'}`}
         data={data}
         startReached={onScrollToTop}
         endReached={handleEndReached}

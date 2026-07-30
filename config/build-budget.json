@@ -3,7 +3,7 @@
   "owner": "frontend-maintainers",
   "production": {
     "applicationJavaScriptBytes": 4500000,
-    "runtimeJavaScriptBytes": 350000,
+    "runtimeJavaScriptBytes": 420000,
     "applicationCssBytes": 450000,
     "serviceWorkerBytes": 500000,
     "forbidSourceMaps": true

@@ -566,9 +566,9 @@
       "staleResurrectionRisk": "bounded-or-unproven"
     },
     {
-      "id": "d8eef74b1ddd7716",
+      "id": "5b2e4dcfea79214a",
       "file": "app/soapbox/components/scrollable_list.tsx",
-      "line": 133,
+      "line": 140,
       "engine": "sessionStorage",
       "operation": "getItem",
       "key": "<dynamic>",
@@ -589,9 +589,9 @@
       "staleResurrectionRisk": "bounded-or-unproven"
     },
     {
-      "id": "a0e1331fa8fed2e0",
+      "id": "cd87d83b3862e826",
       "file": "app/soapbox/components/scrollable_list.tsx",
-      "line": 203,
+      "line": 217,
       "engine": "sessionStorage",
       "operation": "setItem",
       "key": "<dynamic>",

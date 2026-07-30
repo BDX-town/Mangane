@@ -11145,10 +11145,10 @@
       "classification": "compatibility-critical"
     },
     {
-      "id": "motion:app/soapbox/components/scrollable_list.tsx:253",
+      "id": "motion:app/soapbox/components/scrollable_list.tsx:272",
       "kind": "motion",
       "path": "app/soapbox/components/scrollable_list.tsx",
-      "line": 253,
+      "line": 272,
       "classification": "accessibility-critical"
     },
     {
@@ -26069,6 +26069,13 @@
       "classification": "compatibility-critical"
     },
     {
+      "id": "motion:app/soapbox/hooks/useScrollAnchor.ts:43",
+      "kind": "motion",
+      "path": "app/soapbox/hooks/useScrollAnchor.ts",
+      "line": 43,
+      "classification": "accessibility-critical"
+    },
+    {
       "id": "localization:app/soapbox/main.tsx:7",
       "kind": "localization",
       "path": "app/soapbox/main.tsx",
@@ -26266,7 +26273,7 @@
       "inline-style": 75,
       "keyboard": 90,
       "label": 90,
-      "motion": 69,
+      "motion": 70,
       "gesture": 37,
       "rtl": 13,
       "live-region": 2
