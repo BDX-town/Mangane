@@ -155,9 +155,50 @@ export interface StoredSetting extends BaseRecord {
   readonly updatedAt: number;
 }
 
+export interface StoredOutboxEntry extends BaseRecord {
+  /** Client-generated UUIDv4 operation ID. */
+  readonly id: string;
+  /** Mutation type (e.g., 'status.create', 'media.upload'). */
+  readonly operationType: string;
+  /** User-visible lifecycle state. */
+  state: string;
+  /** Operation-specific payload. */
+  readonly payload: unknown;
+  /** Idempotency key sent to the server. */
+  readonly idempotencyKey: string | null;
+  /** How this operation handles duplicates. */
+  readonly idempotencyStrategy: string;
+  /** How to handle conflicts with remote state. */
+  readonly conflictPolicy: string;
+  /** Operation IDs that must complete first. */
+  readonly dependsOn: string[];
+  /** Lower = higher priority. */
+  readonly priority: number;
+  /** When enqueued. */
+  readonly createdAt: number;
+  /** When last attempted. */
+  attemptedAt: number | null;
+  /** When the next retry should occur. */
+  nextAttemptAt: number | null;
+  /** When the operation reached a terminal state. */
+  completedAt: number | null;
+  /** Number of delivery attempts. */
+  attemptCount: number;
+  /** Max attempts before permanent failure. */
+  readonly maxAttempts: number;
+  /** Last failure classification. */
+  lastFailureReason: string | null;
+  /** Human-readable error from last failure. */
+  lastErrorMessage: string | null;
+  /** Server-suggested retry delay. */
+  serverRetryAfterMs: number | null;
+  /** Server response on success. */
+  result: unknown | null;
+}
+
 // ─── Database Schema Version ─────────────────────────────────────────────────
 
-export const SCHEMA_VERSION = 3;
+export const SCHEMA_VERSION = 4;
 
 /**
  * Schema definition string for Dexie.
@@ -193,6 +234,12 @@ export const SCHEMA_V3 = {
   positionAnchors: '[accountUrl+timelineId], accountUrl, capturedAt',
 };
 
+/** V4 adds the durable outbox for reliable local-first mutations. */
+export const SCHEMA_V4 = {
+  ...SCHEMA_V3,
+  outbox: '[accountUrl+id], accountUrl, [accountUrl+state], [accountUrl+nextAttemptAt], [accountUrl+priority], createdAt',
+};
+
 // ─── Database Class ──────────────────────────────────────────────────────────
 
 export class ManganeDatabase extends Dexie {
@@ -208,6 +255,7 @@ export class ManganeDatabase extends Dexie {
   tombstones!: Table<StoredTombstone>;
   capabilities!: Table<StoredCapability>;
   settings!: Table<StoredSetting>;
+  outbox!: Table<StoredOutboxEntry>;
 
   constructor(name = 'mangane-local-store') {
     super(name);
@@ -217,7 +265,9 @@ export class ManganeDatabase extends Dexie {
     // V2: add timeline membership, cursors, and gaps
     this.version(2).stores(SCHEMA_V2);
     // V3: add position anchors for scroll restoration
-    this.version(SCHEMA_VERSION).stores(SCHEMA_V3);
+    this.version(3).stores(SCHEMA_V3);
+    // V4: add durable outbox for reliable offline-first mutations
+    this.version(SCHEMA_VERSION).stores(SCHEMA_V4);
   }
 
 }

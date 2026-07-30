@@ -106,7 +106,25 @@ export type {
   StoredTombstone,
   StoredCapability,
   StoredSetting,
+  StoredOutboxEntry,
 } from './schema';
 
 // Database instance (for diagnostics and purge operations only)
 export { db } from './instance';
+
+// Outbox repository (Phase 6 — durable mutations)
+export {
+  enqueue as outboxEnqueue,
+  getEntry as outboxGetEntry,
+  updateEntry as outboxUpdateEntry,
+  getReadyOperations as outboxGetReady,
+  getByState as outboxGetByState,
+  getActiveOperations as outboxGetActive,
+  countByState as outboxCountByState,
+  cancelEntry as outboxCancel,
+  retryEntry as outboxRetry,
+  discardEntry as outboxDiscard,
+  purgeCompleted as outboxPurgeCompleted,
+  purgeAccount as outboxPurgeAccount,
+  recoverStaleInflight as outboxRecoverStale,
+} from './outbox-repository';
