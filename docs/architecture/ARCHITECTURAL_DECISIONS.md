@@ -452,6 +452,26 @@ Security/privacy impact: Visibility, authorization, blocks, mutes, domains, filt
 
 Migration/rollback: Phase 8C is additive and feature-flagged. A generated terminology inventory separates product copy from protocol contracts before migration. Rollback disables grouping, shelf presentation, and adaptive resurfacing, restores the existing canonical Phase 8 timeline projection, and retains canonical events/statuses, server cursors, moderation state, and protocol adapter fields. Optional projection state may be rebuilt or purged without data loss.
 
+## ADR-030 — Conversation reading uses one origin-authoritative immutable reply graph
+
+Status: Accepted
+
+Date: 2026-07-30
+
+Decision: Expand canonical Phase 9 into Origin-Authoritative Conversation Trees and Reading Experience. Public conversation hydration uses Phase 8A origin authority by default when safe and available, merges connected-server viewer authorization and moderation by field authority, imports verified ancestor repairs through the existing Context Recovery Coordinator, and projects one immutable canonical reply graph into structural, focused-path, chronological, branch-summary, unread, and responsive reading views.
+
+Context: The inherited Mangane thread surface reconstructs parent/child relationships but flattens them into a depth-first list. Phanpy demonstrates that recursive semi-collapsible branches, author continuations, missing-parent placeholders, and remembered expansion make conversations easier to follow, but its implementation mutates presentation reply arrays onto status objects and does not provide Mangane's required origin-first authority, account-scoped durable reading state, focused-path mode, strict chronology alternative, or moderation-before-summary guarantees.
+
+Alternatives considered: retain the flat thread; copy Phanpy directly; add a separate reply store or thread fetcher; make origin retrieval a manual user action; trust only the connected federated copy; require AI summaries or popularity ranking for branch selection; create a literal ARIA tree.
+
+Rationale: Separating canonical reply-edge truth from rebuildable presentation projections preserves protocol and moderation correctness while allowing a much clearer branch-oriented reading experience. Reusing Phase 8A, canonical repositories, the Context Recovery Coordinator, Phase 5E anchors, and the Phase 8 renderer avoids duplicate authorities and keeps migration reversible.
+
+Consequences and tradeoffs: The graph builder and projections require deterministic bounds, conflict and cycle handling, provenance, alias migration, moderation-safe summaries, branch-aware unread semantics, semantic-anchor compensation, and large-thread performance work. Structural order becomes the default, so strict chronological view remains explicitly available.
+
+Security/privacy impact: Connected credentials never go to origin servers. Authorization, visibility, blocks, mutes, filters, domain policy, and content warnings apply before branch counts, avatars, previews, labels, unread totals, or accessible text. View state is account scoped, bounded, purgeable, corruption checked, and excluded from content-bearing diagnostics. Private/direct conversations do not use unauthenticated origin retrieval.
+
+Migration/rollback: Phase 9 is additive and feature-flagged. Rollback restores the inherited flat conversation presentation while retaining Phase 8A reconciliation, the Context Recovery Coordinator, canonical statuses, reply edges, aliases, tombstones, viewer state, and pending replies. Optional conversation view-state projections may expire or be purged without social-data loss.
+
 ## ADR template
 
 ```markdown

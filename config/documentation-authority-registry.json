@@ -212,7 +212,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical ADR index",
-      "contentSha256": "5072cf9bf4a426bd8a20adfe3ff1d0e5a38d893370039a9714aa3b439eea038d"
+      "contentSha256": "4b6b53748576f1bcfb5d28a68e757d8006e725f7df86da28f54b226aed1640f6"
     },
     {
       "path": "docs/architecture/AUTH_PERSISTENCE_INVENTORY.md",
@@ -482,7 +482,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical implementation sequence",
-      "contentSha256": "8d3beb4a61749de7fb19a5f3aff2f99bf4d31543e91b29fa8747f021d6bd183d"
+      "contentSha256": "fadc44bffe9b95f01e5af17f9030104782c4cb38553207db7db59a0ba53d6f75"
     },
     {
       "path": "docs/architecture/KEYBOARD_AND_GESTURE_INVENTORY.md",
@@ -695,6 +695,16 @@
       "contentSha256": "5800ec1787ce7664c6f90640830f208c7996c90e029f8f6884acdf514f936d36"
     },
     {
+      "path": "docs/architecture/PHASE_9_ORIGIN_AUTHORITATIVE_CONVERSATION_TREES.md",
+      "title": "Phase 9 — Origin-Authoritative Conversation Trees and Reading Experience",
+      "authorityId": "phase-9-origin-authoritative-conversation-trees-and-reading-experience",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": "Accepted target / queued after Phase 8D and required Phase 8A/Phase 7 dependencies",
+      "contentSha256": "7ab1380bb155a22a41fcb9da183cc732abc0969ac8c316d63e8712c83ad51c73"
+    },
+    {
       "path": "docs/architecture/PREVIEW_AND_EMBED_INVENTORY.md",
       "title": "Preview and Embed Inventory",
       "authorityId": "preview-and-embed-inventory",
@@ -752,7 +762,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 1,
       "statusHeader": "Canonical architecture index / Phase 0 closed",
-      "contentSha256": "c5af34508724ba6a5dc826a483b21979043aec841772372c0025f903ba4ca9de"
+      "contentSha256": "9b7c4b5b27484e0890c313a9a030e2036536e29dbd67561cc79cdffb03d318c9"
     },
     {
       "path": "docs/architecture/REDUX_AUTHORITY_DRIFT_GATE.md",

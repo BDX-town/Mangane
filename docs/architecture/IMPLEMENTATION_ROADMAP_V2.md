@@ -24,7 +24,8 @@ authoritative for scope and exit criteria.
 | Phase 8B — Entity Resolution & Creator Attribution | Queued | [`PHASE_8B_ENTITY_RESOLUTION_AND_CREATOR_ATTRIBUTION.md`](./PHASE_8B_ENTITY_RESOLUTION_AND_CREATOR_ATTRIBUTION.md) |
 | Phase 8C — Shared Activity Aggregation and Shared Shelf | Queued | [`PHASE_8C_SHARED_ACTIVITY_AGGREGATION_AND_SHELF.md`](./PHASE_8C_SHARED_ACTIVITY_AGGREGATION_AND_SHELF.md) |
 | Phase 8D — Misskey post, Markdown, and MFM compatibility | Queued; required before the next implementation phase | [`PHASE_8D_MISSKEY_MARKDOWN_MFM_COMPATIBILITY.md`](./PHASE_8D_MISSKEY_MARKDOWN_MFM_COMPATIBILITY.md) |
-| Phases 9–23 | Queued | Begin only after their dependency and preceding-phase exit criteria are met |
+| Phase 9 — Origin-Authoritative Conversation Trees and Reading Experience | Queued | [`PHASE_9_ORIGIN_AUTHORITATIVE_CONVERSATION_TREES.md`](./PHASE_9_ORIGIN_AUTHORITATIVE_CONVERSATION_TREES.md) |
+| Phases 10–23 | Queued | Begin only after their dependency and preceding-phase exit criteria are met |
 | Phase 23A — Custom Feeds | Queued | [`PHASE_23A_CUSTOM_FEEDS.md`](./PHASE_23A_CUSTOM_FEEDS.md) |
 | Phase 23B — Subscribed Post Stories | Queued | [`PHASE_23B_SUBSCRIBED_POST_STORIES.md`](./PHASE_23B_SUBSCRIBED_POST_STORIES.md) |
 | Phases 24–31 | Queued | Begin only after their dependency and preceding-phase exit criteria are met |
@@ -364,24 +365,13 @@ Exit criteria:
 - user-facing product copy uses Share / Shared, while wire, adapter, persisted-schema, and historical protocol terminology remains compatible;
 - no second timeline, status store, canonicalization authority, moderation path, renderer, pagination system, or personalization dependency is introduced.
 
-## Phase 9 — Conversation and reading experience
+## Phase 9 — Origin-Authoritative Conversation Trees and Reading Experience
 
-Goal: make long, branched social conversations understandable.
+Status: **Queued; see [`PHASE_9_ORIGIN_AUTHORITATIVE_CONVERSATION_TREES.md`](./PHASE_9_ORIGIN_AUTHORITATIVE_CONVERSATION_TREES.md).**
 
-Deliverables:
+Goal: make long, branched social conversations understandable through one immutable canonical reply graph, origin-first public context reconciliation, focused-path navigation, adaptive branch summaries, strict chronological inspection, and durable account-scoped reading state.
 
-- thread graph/normalized reply edges;
-- branch navigation and ancestor context;
-- participant and chronology cues;
-- collapsed branch and load-more behavior;
-- stable focus and scroll when replies arrive;
-- accessible hierarchy and keyboard navigation;
-- hooks for later summaries/interpolation without coupling UI to models.
-
-Exit criteria:
-
-- complex thread fixtures render correctly;
-- deleted, hidden, blocked, and inaccessible ancestors do not leak content.
+Deliverables and exit criteria are authoritative in the detailed Phase 9 plan. Phase 9 reuses Phase 8A origin authority, the Context Recovery Coordinator, canonical repositories, Phase 5E semantic anchors, the Phase 8 renderer, and existing moderation and protocol boundaries. It must not introduce a second origin resolver, context fetcher, status/reply store, moderation path, renderer, router, pagination system, or AI dependency.
 
 ## Phase 10 — Composer and publishing migration
 

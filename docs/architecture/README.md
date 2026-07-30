@@ -28,6 +28,7 @@ Every implementation agent and contributor must read these documents in order be
 - [`PHASE_4A_ZSTD_AND_GZIP_COMPRESSION.md`](./PHASE_4A_ZSTD_AND_GZIP_COMPRESSION.md) defines negotiated gzip/zstd delivery, bounded local codecs, decompression safety, migration, deployment, fallback, and performance gates.
 - [`PHASE_5E_TIMELINE_POSITION_CONTINUITY.md`](./PHASE_5E_TIMELINE_POSITION_CONTINUITY.md) defines semantic reading anchors, local PWA restoration, virtualization/layout stabilization, optional Mastodon markers, and the separate future Durable Streams extension.
 - [`PHASE_8A_ORIGIN_AUTHORITY_RECONCILIATION.md`](./PHASE_8A_ORIGIN_AUTHORITY_RECONCILIATION.md) defines field-level origin/connected/local authority, safe origin resolution, adaptive polling, reply union, aggregate freshness, and degraded operation.
+- [`PHASE_9_ORIGIN_AUTHORITATIVE_CONVERSATION_TREES.md`](./PHASE_9_ORIGIN_AUTHORITATIVE_CONVERSATION_TREES.md) defines Mangane’s origin-first immutable conversation graph, focused-path and chronological projections, adaptive branch summaries, durable account-scoped reading state, moderation-safe unread semantics, responsive Framework7 presentation, accessibility, performance, repair, migration, and rollback gates without duplicating Phase 8A or the Context Recovery Coordinator.
 - [`PHASE_6A_DURABLE_STREAMS.md`](./PHASE_6A_DURABLE_STREAMS.md) defines the
   provider-neutral resumable event-delivery phase, external authority and
   producer requirements, opaque-offset and transactional checkpoint contracts,
