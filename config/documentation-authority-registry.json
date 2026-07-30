@@ -482,7 +482,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical implementation sequence",
-      "contentSha256": "fadc44bffe9b95f01e5af17f9030104782c4cb38553207db7db59a0ba53d6f75"
+      "contentSha256": "e93f50d5b86b51362ec08350fbd02cc7086d5762fb3416ce607c8e30f293a542"
     },
     {
       "path": "docs/architecture/KEYBOARD_AND_GESTURE_INVENTORY.md",
@@ -602,7 +602,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 1,
       "statusHeader": "Shell foundation complete / application-surface migration remains phased",
-      "contentSha256": "7b0dcca586e9fafba6431737de17a64afe1f9c2c97e0ed9e8129181ffe090436"
+      "contentSha256": "56dfc7008bb140600e46694a4a69658b69c17407f74c9c1fffa946115e5c867b"
     },
     {
       "path": "docs/architecture/PHASE_4A_ZSTD_AND_GZIP_COMPRESSION.md",

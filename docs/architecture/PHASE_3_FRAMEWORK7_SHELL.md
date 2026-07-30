@@ -26,7 +26,7 @@ It is split into independently reviewable slices:
 | 3B | Route manifest, React Router compatibility bridge, deep-link preservation, and session route state | Complete — [PR 53](https://github.com/outlaw-dame/Mangane/pull/53) |
 | 3C | Transition policy, safe-area insets, viewport/keyboard/orientation, and reduced-motion variants | Complete — [PR 54](https://github.com/outlaw-dame/Mangane/pull/54) |
 | 3D | Account-switch, session restoration, route-level error and offline states, rollback evidence | Complete — [PR 55](https://github.com/outlaw-dame/Mangane/pull/55) |
-| 3E | Post-closure semantic-icon parity, boundary clarification, rollout gates, and generated inventory refresh | In progress |
+| 3E | Post-closure semantic-icon parity, boundary clarification, rollout gates, and generated inventory refresh | Complete — [PR 79](https://github.com/outlaw-dame/Mangane/pull/79), [PR 81](https://github.com/outlaw-dame/Mangane/pull/81) |
 
 ## Delivered architecture
 
@@ -169,6 +169,6 @@ private route query data, status content, tokens, or account identifiers.
 - [x] Completion wording distinguishes shell foundation from application migration.
 - [x] Post-shell Framework7 import policy is explicit.
 - [x] Default-on and legacy-retirement gates are explicit.
-- [ ] Shell semantic-icon migration and generated inventory refresh are merged and green.
-- [ ] Cross-engine full-shell interaction and visual matrices pass; these remain
+- [x] Shell semantic-icon migration and generated inventory refresh are merged and green.
+- [x] Cross-engine full-shell interaction and visual matrices pass; these remain
   incremental acceptance evidence as owning presentation phases migrate.
