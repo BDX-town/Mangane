@@ -1,4 +1,5 @@
 import { isLoggedIn } from 'soapbox/utils/auth';
+import { recoverAncestorContext } from 'soapbox/utils/context-recovery';
 import { getFeatures } from 'soapbox/utils/features';
 import { shouldHaveCard } from 'soapbox/utils/status';
 
@@ -49,7 +50,10 @@ const STATUS_HIDE   = 'STATUS_HIDE';
 
 const STATUS_APPLY_FILTERS = 'STATUS_APPLY_FILTERS';
 
-const statusExists = (getState: () => RootState, statusId: string) => {
+const statusExists = (
+  getState: () => RootState,
+  statusId: string,
+) => {
   return (getState().statuses.get(statusId) || null) !== null;
 };
 
@@ -131,7 +135,7 @@ const editStatus = (id: string) => (dispatch: AppDispatch, getState: () => RootS
   });
 };
 
-const fetchStatus = (id: string) => {
+const fetchStatus = (id: string, throwOnError = false) => {
   return (dispatch: AppDispatch, getState: () => RootState) => {
     const skipLoading = statusExists(getState, id);
 
@@ -143,10 +147,10 @@ const fetchStatus = (id: string) => {
       return status;
     }).catch(error => {
       dispatch({ type: STATUS_FETCH_FAIL, id, error, skipLoading, skipAlert: true });
+      if (throwOnError) throw error;
     });
   };
 };
-
 const deleteStatus = (id: string, withRedraft = false) => {
   return (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return null;
@@ -241,28 +245,27 @@ const fetchStatusWithContext = (id: string) =>
 
     if (features.paginatedContext) {
       await dispatch(fetchStatus(id));
-      const responses = await Promise.all([
+      const responses = await Promise.allSettled([
         dispatch(fetchAncestors(id)),
         dispatch(fetchDescendants(id)),
       ]);
-
-      dispatch({
-        type: CONTEXT_FETCH_SUCCESS,
-        id,
-        ancestors: responses[0].data,
-        descendants: responses[1].data,
-      });
-
-      const next = getNextLink(responses[1]);
-      return { next };
+      const ancestors = responses[0].status === 'fulfilled' ? responses[0].value.data : [];
+      const descendants = responses[1].status === 'fulfilled' ? responses[1].value.data : [];
+      const next = responses[1].status === 'fulfilled' ? getNextLink(responses[1].value) : undefined;
+      return dispatch(coordinateStatusContext(id, ancestors, descendants)).then(recovery => ({ next, recovery }));
     } else {
-      await Promise.all([
+      const [context] = await Promise.all([
         dispatch(fetchContext(id)),
         dispatch(fetchStatus(id)),
       ]);
-      return { next: undefined };
+      const known = Array.isArray(context) ? context : (context?.ancestors || []);
+      const descendants = Array.isArray(context) ? [] : (context?.descendants || []);
+      return dispatch(coordinateStatusContext(id, known, descendants)).then(recovery => ({ next: undefined, recovery }));
     }
   };
+
+
+
 
 const muteStatus = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
@@ -327,6 +330,45 @@ const toggleStatusHidden = (status: Status) => {
   }
 };
 
+type ContextStatus = APIEntity & {
+  id: string,
+  in_reply_to_id?: string | null,
+};
+
+function coordinateStatusContext(
+  id: string,
+  knownStatuses: ContextStatus[],
+  descendants: ContextStatus[],
+) {
+  return async(dispatch: AppDispatch, getState: () => RootState) => {
+    const focusedStatusRecord = getState().statuses.get(id);
+    const focusedStatus = focusedStatusRecord?.toJS() as ContextStatus | undefined;
+    if (!focusedStatus) return { ancestors: [], fetched: [], outcome: 'partial-malformed' as const };
+
+    const recovery = await recoverAncestorContext({
+      focusedStatus,
+      knownStatuses,
+      fetchStatusById: async(parentId: string) => {
+        const cachedRecord = getState().statuses.get(parentId);
+        const cached = cachedRecord?.toJS() as ContextStatus | undefined;
+        if (cached) return cached;
+        const parent = await dispatch(fetchStatus(parentId, true));
+        if (!parent) throw new Error('Parent status fetch completed without an entity');
+        return parent;
+      },
+    });
+
+    dispatch({
+      type: CONTEXT_FETCH_SUCCESS,
+      id,
+      ancestors: recovery.ancestors,
+      descendants,
+    });
+
+    return recovery;
+  };
+}
+
 export {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_SUCCESS,
@@ -365,6 +407,7 @@ export {
   fetchAncestors,
   fetchDescendants,
   fetchStatusWithContext,
+  coordinateStatusContext,
   muteStatus,
   unmuteStatus,
   toggleMuteStatus,

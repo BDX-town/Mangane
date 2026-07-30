@@ -4810,9 +4810,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "ad9cd98684d6d742",
+      "id": "29a703b1d80dcc00",
       "file": "app/soapbox/actions/statuses.ts",
-      "line": 96,
+      "line": 100,
       "kind": "axios",
       "method": "GET",
       "route": "/api/v1/statuses/${status.id}",
@@ -4836,9 +4836,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "9921e8c53ecb8f06",
+      "id": "7a32cb74dfda53a6",
       "file": "app/soapbox/actions/statuses.ts",
-      "line": 125,
+      "line": 129,
       "kind": "axios",
       "method": "GET",
       "route": "/api/v1/statuses/${id}/source",
@@ -4862,9 +4862,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "15ee35442832ca87",
+      "id": "eb9274d07091ba31",
       "file": "app/soapbox/actions/statuses.ts",
-      "line": 140,
+      "line": 144,
       "kind": "axios",
       "method": "GET",
       "route": "/api/v1/statuses/${id}",
@@ -4888,9 +4888,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "d14bb9e031bbd551",
+      "id": "8c84cd7c6e63ac67",
       "file": "app/soapbox/actions/statuses.ts",
-      "line": 162,
+      "line": 166,
       "kind": "axios",
       "method": "DELETE",
       "route": "/api/v1/statuses/${id}",
@@ -4914,9 +4914,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "62897c2880337596",
+      "id": "9890449a4ab26809",
       "file": "app/soapbox/actions/statuses.ts",
-      "line": 186,
+      "line": 190,
       "kind": "axios",
       "method": "GET",
       "route": "/api/v1/statuses/${id}/context",
@@ -4940,9 +4940,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "f30639a4e8a9e60c",
+      "id": "048de39753c5f2ad",
       "file": "app/soapbox/actions/statuses.ts",
-      "line": 211,
+      "line": 215,
       "kind": "axios",
       "method": "GET",
       "route": "<dynamic>",
@@ -4966,9 +4966,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "cb3928caa22daf7e",
+      "id": "c75473876b1bcf33",
       "file": "app/soapbox/actions/statuses.ts",
-      "line": 226,
+      "line": 230,
       "kind": "axios",
       "method": "GET",
       "route": "/api/v1/statuses/${id}/context/ancestors",
@@ -4992,9 +4992,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "4227d815f4dcec39",
+      "id": "4083de6856e8c4b0",
       "file": "app/soapbox/actions/statuses.ts",
-      "line": 233,
+      "line": 237,
       "kind": "axios",
       "method": "GET",
       "route": "/api/v1/statuses/${id}/context/descendants",
@@ -5018,9 +5018,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "9ff72c31bd7f3cc4",
+      "id": "30db96812366cdb0",
       "file": "app/soapbox/actions/statuses.ts",
-      "line": 272,
+      "line": 275,
       "kind": "axios",
       "method": "POST",
       "route": "/api/v1/statuses/${id}/mute",
@@ -5044,9 +5044,9 @@
       "degradedBehavior": "error-path-or-cached-ui"
     },
     {
-      "id": "05b517f40e30ab99",
+      "id": "4fdf92edfb095ab5",
       "file": "app/soapbox/actions/statuses.ts",
-      "line": 284,
+      "line": 287,
       "kind": "axios",
       "method": "POST",
       "route": "/api/v1/statuses/${id}/unmute",

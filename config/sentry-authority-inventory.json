@@ -182,10 +182,10 @@
       "classification": "startup-guarded-local-diagnostic"
     },
     {
-      "id": "console:app/soapbox/actions/statuses.ts:102",
+      "id": "console:app/soapbox/actions/statuses.ts:106",
       "kind": "console",
       "path": "app/soapbox/actions/statuses.ts",
-      "line": 102,
+      "line": 106,
       "expression": "}).catch(console.error);",
       "classification": "startup-guarded-local-diagnostic"
     },
