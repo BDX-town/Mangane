@@ -59,6 +59,10 @@ export {
 export { timelineRepo } from './timelines';
 export type { TimelineId, TimelineMember, TimelineCursor, TimelineGap } from './timelines';
 
+// Bounded timeline hydration for semantic position continuity
+export { loadTimelineWindow } from './timeline-window';
+export type { TimelineWindowRequest, TimelineWindow } from './timeline-window';
+
 // Projections (storage → presentation boundary)
 export {
   normalizeVisibility,
