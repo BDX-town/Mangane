@@ -79,6 +79,16 @@ export type {
   NotificationProjection,
   ConversationProjection,
 } from './projections';
+
+// Position anchors (scroll restoration)
+export {
+  capturePosition,
+  restorePosition,
+  clearPosition,
+  purgePositions,
+  getPositionDiagnostics,
+} from './position-anchor';
+export type { PositionAnchor } from './position-anchor';
 export type {
   BaseRecord,
   StoredAccount,

@@ -482,7 +482,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical implementation sequence",
-      "contentSha256": "e8232ea93034242253859b5235b5730f9681e1553a3e58751518a477ff936c1e"
+      "contentSha256": "580e1788f09032f76e9538d3e2b6d251bb2a4392fad71463b67eb84274964123"
     },
     {
       "path": "docs/architecture/KEYBOARD_AND_GESTURE_INVENTORY.md",

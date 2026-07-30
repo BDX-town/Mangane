@@ -18,7 +18,7 @@ authoritative for scope and exit criteria.
 | Phase 2 — Design tokens, semantic icons, and accessibility foundation | Complete | [`PHASE_2_DESIGN_FOUNDATION.md`](./PHASE_2_DESIGN_FOUNDATION.md) |
 | Phase 3 — Framework7 application shell | Complete | [`PHASE_3_FRAMEWORK7_SHELL.md`](./PHASE_3_FRAMEWORK7_SHELL.md) |
 | Phase 4 — PWA, service worker, and offline hardening | Complete | [`PHASE_4_PWA_OFFLINE_HARDENING.md`](./PHASE_4_PWA_OFFLINE_HARDENING.md) |
-| Phase 5 — Canonical local data store | In progress | Slices A–D are merged; timeline/order and conversation-hydration exit criteria remain open |
+| Phase 5 — Canonical local data store | Complete (data layer); Position continuity in progress | Slices A–E merged; [`PHASE_5E_TIMELINE_POSITION_CONTINUITY.md`](./PHASE_5E_TIMELINE_POSITION_CONTINUITY.md) |
 | Phases 6–7 | Queued | Required before Phase 8 runtime migration |
 | Phase 8 — Home and For You editorial migration | Queued | [`PHASE_8_HOME_AND_BUILT_IN_FEEDS.md`](./PHASE_8_HOME_AND_BUILT_IN_FEEDS.md) |
 | Phase 8B — Entity Resolution & Creator Attribution | Queued | [`PHASE_8B_ENTITY_RESOLUTION_AND_CREATOR_ATTRIBUTION.md`](./PHASE_8B_ENTITY_RESOLUTION_AND_CREATOR_ATTRIBUTION.md) |
@@ -181,8 +181,9 @@ Exit criteria:
 
 ## Phase 5 — Canonical local data store
 
-Status: **In progress.** Slices A–D are merged, but the exit criteria below
-remain authoritative.
+Status: **Complete (data layer).** Slices A–E and bounded timeline hydration
+are merged. Position continuity (scroll restoration) is tracked separately
+as Phase 5E; see [`PHASE_5E_TIMELINE_POSITION_CONTINUITY.md`](./PHASE_5E_TIMELINE_POSITION_CONTINUITY.md).
 
 Goal: create normalized local records independent of UI and derived indexes.
 

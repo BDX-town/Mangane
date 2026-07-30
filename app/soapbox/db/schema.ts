@@ -157,7 +157,7 @@ export interface StoredSetting extends BaseRecord {
 
 // ─── Database Schema Version ─────────────────────────────────────────────────
 
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;
 
 /**
  * Schema definition string for Dexie.
@@ -187,6 +187,12 @@ export const SCHEMA_V2 = {
   timelineGaps: '[accountUrl+timelineId+gapId], [accountUrl+timelineId], accountUrl, detectedAt',
 };
 
+/** V3 adds position anchors for scroll restoration. */
+export const SCHEMA_V3 = {
+  ...SCHEMA_V2,
+  positionAnchors: '[accountUrl+timelineId], accountUrl, capturedAt',
+};
+
 // ─── Database Class ──────────────────────────────────────────────────────────
 
 export class ManganeDatabase extends Dexie {
@@ -209,7 +215,9 @@ export class ManganeDatabase extends Dexie {
     // V1: core entity tables
     this.version(1).stores(SCHEMA_V1);
     // V2: add timeline membership, cursors, and gaps
-    this.version(SCHEMA_VERSION).stores(SCHEMA_V2);
+    this.version(2).stores(SCHEMA_V2);
+    // V3: add position anchors for scroll restoration
+    this.version(SCHEMA_VERSION).stores(SCHEMA_V3);
   }
 
 }
