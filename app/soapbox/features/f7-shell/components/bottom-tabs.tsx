@@ -8,6 +8,7 @@ import { Toolbar, Link } from 'framework7-react';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
+import { SemanticIcon } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
 const F7BottomTabs: React.FC = () => {
@@ -17,6 +18,11 @@ const F7BottomTabs: React.FC = () => {
 
   const navigate = (path: string) => () => history.push(path);
 
+  const homeActive = pathname === '/';
+  const searchActive = pathname.startsWith('/search');
+  const notificationsActive = pathname.startsWith('/notifications');
+  const settingsActive = pathname.startsWith('/settings');
+
   return (
     <Toolbar
       bottom
@@ -25,33 +31,37 @@ const F7BottomTabs: React.FC = () => {
     >
       <Link
         tabLink
-        tabLinkActive={pathname === '/'}
+        tabLinkActive={homeActive}
         onClick={navigate('/')}
-        iconF7='house_fill'
         text='Home'
-      />
+      >
+        <SemanticIcon name='home' size={24} weight={homeActive ? 'fill' : 'regular'} />
+      </Link>
       <Link
         tabLink
-        tabLinkActive={pathname.startsWith('/search')}
+        tabLinkActive={searchActive}
         onClick={navigate('/search')}
-        iconF7='search'
         text='Search'
-      />
+      >
+        <SemanticIcon name='search' size={24} weight={searchActive ? 'bold' : 'regular'} />
+      </Link>
       <Link
         tabLink
-        tabLinkActive={pathname.startsWith('/notifications')}
+        tabLinkActive={notificationsActive}
         onClick={navigate('/notifications')}
-        iconF7='bell_fill'
         iconBadge={notificationCount > 0 ? notificationCount : undefined}
         text='Alerts'
-      />
+      >
+        <SemanticIcon name='notifications' size={24} weight={notificationsActive ? 'fill' : 'regular'} />
+      </Link>
       <Link
         tabLink
-        tabLinkActive={pathname.startsWith('/settings')}
+        tabLinkActive={settingsActive}
         onClick={navigate('/settings')}
-        iconF7='gear'
         text='Settings'
-      />
+      >
+        <SemanticIcon name='settings' size={24} weight={settingsActive ? 'fill' : 'regular'} />
+      </Link>
     </Toolbar>
   );
 };

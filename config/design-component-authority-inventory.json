@@ -2558,6 +2558,7 @@
       "scope": "feature",
       "classifications": [
         "feature-specific",
+        "accessibility-critical",
         "migration-adapter-required",
         "framework7-replacement-candidate"
       ]
@@ -6219,9 +6220,9 @@
       "disposition": "phosphor-migration-candidate"
     },
     {
-      "id": "semantic-module:app/soapbox/components/ui/icon/semantic-icon-registry.ts:27:semantic-registry",
+      "id": "semantic-module:app/soapbox/components/ui/icon/semantic-icon-registry.ts:30:semantic-registry",
       "path": "app/soapbox/components/ui/icon/semantic-icon-registry.ts",
-      "line": 27,
+      "line": 30,
       "kind": "semantic-module",
       "provider": "phosphor",
       "symbol": "semantic-registry",

@@ -1,4 +1,6 @@
 {
+  "schemaVersion": 1,
+  "status": "phase-2-foundation-in-progress",
   "components": {
     "app/soapbox/components/__mocks__/react-inlinesvg.tsx": "shared-components",
     "app/soapbox/components/account.tsx": "shared-components",

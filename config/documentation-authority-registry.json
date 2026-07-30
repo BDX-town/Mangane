@@ -471,8 +471,8 @@
       "classification": "current-supporting-evidence",
       "replacement": null,
       "inheritedBrandingReferences": 0,
-      "statusHeader": "Phase 2B in progress / executable",
-      "contentSha256": "334146ea313755767ac1642de9df2eccaf266f3fba3a43e7182e359c331aa083"
+      "statusHeader": "Semantic authority complete / surface migration active",
+      "contentSha256": "efd42faa98c4139c4b37076a9fe3bd22f146ffd55d82de8530359ed34bc91ccd"
     },
     {
       "path": "docs/architecture/IMPLEMENTATION_ROADMAP_V2.md",
@@ -601,8 +601,8 @@
       "classification": "current-supporting-evidence",
       "replacement": null,
       "inheritedBrandingReferences": 1,
-      "statusHeader": "Complete",
-      "contentSha256": "2cda74e826849e6174036b88f2256338530d98c8b6478cdaa13bf66fc8278e5f"
+      "statusHeader": "Shell foundation complete / application-surface migration remains phased",
+      "contentSha256": "7b0dcca586e9fafba6431737de17a64afe1f9c2c97e0ed9e8129181ffe090436"
     },
     {
       "path": "docs/architecture/PHASE_4A_ZSTD_AND_GZIP_COMPRESSION.md",

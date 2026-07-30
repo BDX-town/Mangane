@@ -18,6 +18,7 @@ export { useFocusReturn } from './focus/focus-utils';
 export { default as HStack } from './hstack/hstack';
 export { default as Icon } from './icon/icon';
 export { default as SemanticIcon } from './icon/semantic-icon';
+export type { ISemanticIcon, SemanticIconName } from './icon/semantic-icon';
 export { default as IconButton } from './icon-button/icon-button';
 export { default as Input } from './input/input';
 export { default as Layout } from './layout/layout';
