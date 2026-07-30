@@ -482,7 +482,7 @@
       "replacement": null,
       "inheritedBrandingReferences": 0,
       "statusHeader": "Canonical implementation sequence",
-      "contentSha256": "580e1788f09032f76e9538d3e2b6d251bb2a4392fad71463b67eb84274964123"
+      "contentSha256": "8d3beb4a61749de7fb19a5f3aff2f99bf4d31543e91b29fa8747f021d6bd183d"
     },
     {
       "path": "docs/architecture/KEYBOARD_AND_GESTURE_INVENTORY.md",
@@ -673,6 +673,16 @@
       "inheritedBrandingReferences": 0,
       "statusHeader": "Accepted target / queued",
       "contentSha256": "852704ca9d6a4d4d9d085f7062846f0a63258f38291798fc93dc3c46a8c86aae"
+    },
+    {
+      "path": "docs/architecture/PHASE_8D_MISSKEY_MARKDOWN_MFM_COMPATIBILITY.md",
+      "title": "Phase 8D — Misskey post, Markdown, and MFM compatibility",
+      "authorityId": "phase-8d-misskey-post-markdown-and-mfm-compatibility",
+      "classification": "current-supporting-evidence",
+      "replacement": null,
+      "inheritedBrandingReferences": 0,
+      "statusHeader": null,
+      "contentSha256": "ceb649cb2e8d206de1878daa1e1c20d8862620fb8ffbce353cad01dcaf5b5ecb"
     },
     {
       "path": "docs/architecture/PHASE_8_HOME_AND_BUILT_IN_FEEDS.md",

@@ -2,7 +2,7 @@
 
 Status: **Canonical implementation sequence**
 
-Last updated: 2026-07-29
+Last updated: 2026-07-30
 
 This roadmap supersedes earlier informal phases when they conflict. It preserves the original direction—Framework7, adaptive PWA, local-first intelligence, hybrid search, semantic filtering, entity understanding, and editorial redesign—while adding the architectural, migration, privacy, testing, and drift-control work required to implement it safely.
 
@@ -23,6 +23,7 @@ authoritative for scope and exit criteria.
 | Phase 8 — Home and For You editorial migration | Queued | [`PHASE_8_HOME_AND_BUILT_IN_FEEDS.md`](./PHASE_8_HOME_AND_BUILT_IN_FEEDS.md) |
 | Phase 8B — Entity Resolution & Creator Attribution | Queued | [`PHASE_8B_ENTITY_RESOLUTION_AND_CREATOR_ATTRIBUTION.md`](./PHASE_8B_ENTITY_RESOLUTION_AND_CREATOR_ATTRIBUTION.md) |
 | Phase 8C — Shared Activity Aggregation and Shared Shelf | Queued | [`PHASE_8C_SHARED_ACTIVITY_AGGREGATION_AND_SHELF.md`](./PHASE_8C_SHARED_ACTIVITY_AGGREGATION_AND_SHELF.md) |
+| Phase 8D — Misskey post, Markdown, and MFM compatibility | Queued; required before the next implementation phase | [`PHASE_8D_MISSKEY_MARKDOWN_MFM_COMPATIBILITY.md`](./PHASE_8D_MISSKEY_MARKDOWN_MFM_COMPATIBILITY.md) |
 | Phases 9–23 | Queued | Begin only after their dependency and preceding-phase exit criteria are met |
 | Phase 23A — Custom Feeds | Queued | [`PHASE_23A_CUSTOM_FEEDS.md`](./PHASE_23A_CUSTOM_FEEDS.md) |
 | Phase 23B — Subscribed Post Stories | Queued | [`PHASE_23B_SUBSCRIBED_POST_STORIES.md`](./PHASE_23B_SUBSCRIBED_POST_STORIES.md) |
@@ -927,3 +928,29 @@ Convergence and release: 30–31.
 - Do not renumber completed phases casually; append subphases when needed.
 - Record deferrals in the phase and ADR register.
 - Review the roadmap after every five phases or major architectural discovery.
+
+---
+
+## Phase 8D — Misskey post, Markdown, and MFM compatibility
+
+Status: **Queued and required before another implementation phase proceeds; see [`PHASE_8D_MISSKEY_MARKDOWN_MFM_COMPATIBILITY.md`](./PHASE_8D_MISSKEY_MARKDOWN_MFM_COMPATIBILITY.md).**
+
+Goal: establish tested, capability-aware, and safely degraded support for direct and federated Misskey-origin posts, standard Markdown, and Misskey Flavored Markdown without bypassing Mangane's normalization, sanitization, URL, accessibility, reduced-motion, or build authorities.
+
+Deliverables:
+
+- versioned direct and federated Misskey fixture suites with provenance and tested-version records;
+- per-payload content-format classification based on explicit field metadata or documented endpoint contracts;
+- standard Markdown and MFM support/degradation matrices;
+- bounded deterministic parsers and inert readable fallbacks;
+- composer, preview, edit, and redraft source preservation when the connected server proves support;
+- fuzz, adversarial, accessibility, reduced-motion, normalization, rendering, and end-to-end tests;
+- a dedicated Misskey compatibility CI contract that preserves all existing authority gates.
+
+Exit criteria:
+
+- representative Misskey posts survive fetch, normalization, storage, and rendering without avoidable semantic loss;
+- instance capabilities gate availability and authoring but never misclassify individual payload fields;
+- unsupported or unsafe MFM remains readable and inert;
+- all new and existing CI checks pass on the final head.
+
