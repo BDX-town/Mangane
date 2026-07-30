@@ -82,7 +82,7 @@ const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
   },
   status: {
     id: 'notification.status',
-    defaultMessage: '{name} just posted',
+    defaultMessage: '{name} posted',
   },
   poll: {
     id: 'notification.poll',
@@ -160,8 +160,8 @@ const Notification: React.FC<INotificaton> = (props) => {
   const history = useHistory();
   const intl = useIntl();
   const instance = useAppSelector((state) => state.instance);
-
-  const type = notification.type;
+  const me = useAppSelector((state) => state.me);
+  const type = notification.type === 'mention' && me && notification.status && typeof notification.status === 'object' && !notification.status.mentions.some(mention => mention.id === me) ? 'status' : notification.type;
   const { account, status } = notification;
 
   const getHandlers = () => ({

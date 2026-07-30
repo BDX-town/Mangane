@@ -6,8 +6,9 @@ import { render, screen, rootState, createTestStore } from 'soapbox/jest/test-he
 import Notification from '../notification';
 
 /** Prepare the notification for use by the component */
-const normalize = (notification: any) => {
-  const store = createTestStore(rootState);
+const normalize = (notification: any, me?: string) => {
+  const initialState = me ? rootState.set('me', me) : rootState;
+  const store = createTestStore(initialState);
   store.dispatch(updateNotifications(notification) as any);
   const state = store.getState();
 
@@ -82,6 +83,46 @@ describe('<Notification />', () => {
 
     expect(screen.getByTestId('notification')).toContainHTML('silverpill@mitra.social');
     expect(screen.getByTestId('status')).toContainHTML('ActivityPub spec');
+  });
+
+  it('renders a profile-bell subscription notification as posted when the viewer was not mentioned', async() => {
+    const source = require('soapbox/__fixtures__/notification-mention.json');
+    const { notification, state } = normalize({
+      ...source,
+      status: {
+        ...source.status,
+        mentions: [],
+      },
+    }, 'viewer-account-id');
+
+    render(<Notification notification={notification} />, undefined, state);
+
+    expect(screen.getByTestId('message')).toHaveTextContent('silverpill posted');
+    expect(screen.getByTestId('message')).not.toHaveTextContent('mentioned you');
+    expect(screen.getByTestId('message').closest('.notification')).toHaveAttribute(
+      'aria-label',
+      expect.stringContaining('silverpill@mitra.social posted'),
+    );
+  });
+
+  it('keeps a genuine mention as mentioned you', async() => {
+    const source = require('soapbox/__fixtures__/notification-mention.json');
+    const { notification, state } = normalize({
+      ...source,
+      status: {
+        ...source.status,
+        mentions: [{
+          id: 'viewer-account-id',
+          acct: 'viewer',
+          username: 'viewer',
+          url: 'https://example.com/@viewer',
+        }],
+      },
+    }, 'viewer-account-id');
+
+    render(<Notification notification={notification} />, undefined, state);
+
+    expect(screen.getByTestId('message')).toHaveTextContent('silverpill mentioned you');
   });
 
   it('renders a move notification', async() => {
