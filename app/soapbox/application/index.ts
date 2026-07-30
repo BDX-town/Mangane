@@ -65,3 +65,25 @@ export type {
   ModuleMigration,
   DeprecatedAccess,
 } from './migration-framework';
+
+// ─── Feeds (Phase 8 — Home and For You) ──────────────────────────────────────
+export {
+  classifyRelationship,
+  assignToFeed,
+  computeFeedTransition,
+  deduplicationKey,
+  queryBuiltInFeed,
+  useFeedState,
+  saveScrollAnchor,
+  restoreScrollAnchor,
+  purgeScrollAnchor,
+  purgeAllScrollAnchors,
+} from './feeds';
+export type {
+  BuiltInFeedId,
+  FeedId,
+  FeedEntry,
+  SourceKind,
+  RelationshipClass,
+  ScrollAnchor,
+} from './feeds';
