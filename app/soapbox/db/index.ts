@@ -89,6 +89,10 @@ export {
   getPositionDiagnostics,
 } from './position-anchor';
 export type { PositionAnchor } from './position-anchor';
+
+// Server marker degradation
+export { resolvePosition, shouldUploadMarker } from './markers';
+export type { ServerMarker, MarkerResolution } from './markers';
 export type {
   BaseRecord,
   StoredAccount,

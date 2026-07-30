@@ -1,6 +1,7 @@
 # Phase 5E Timeline Position Continuity
 
-Status: **Accepted target / queued within Phase 5 before broad Phase 8 rollout**
+Status: **Complete.** All exit criteria addressed across PRs #73, #74, and the
+remaining-criteria hardening PR.
 
 Last updated: 2026-07-29
 

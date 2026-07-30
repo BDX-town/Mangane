@@ -631,8 +631,8 @@
       "classification": "current-supporting-evidence",
       "replacement": null,
       "inheritedBrandingReferences": 0,
-      "statusHeader": "Accepted target / queued within Phase 5 before broad Phase 8 rollout",
-      "contentSha256": "c8e139dda888f413a403a10f54099ddd1f79beea8e0b5c055701db8645d0b58b"
+      "statusHeader": null,
+      "contentSha256": "8a99815a263178dea54997d4fe2d928d389874f244999d59ae931cef0f4af200"
     },
     {
       "path": "docs/architecture/PHASE_6A_DURABLE_STREAMS.md",
