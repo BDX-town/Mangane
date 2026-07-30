@@ -117,7 +117,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npx serve e2e/fixtures-site -l 4173 -s',
+    command: 'npx serve e2e/fixtures-site -l 4173',
     port: 4173,
     reuseExistingServer: !process.env.CI,
   },

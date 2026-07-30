@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mangane Framework7 Shell Parity Fixture</title>
+<style>
+:root{--bg:#f6f7f9;--surface:#fff;--muted:#eceef2;--text:#17181c;--secondary:#444750;--border:#c9cdd6;--focus:#1d4ed8;--safe-top:0px;--safe-bottom:0px;--motion:180ms;color-scheme:light;font-family:Inter,system-ui,sans-serif}
+@media(prefers-color-scheme:dark){:root{--bg:#111216;--surface:#191b20;--muted:#23262d;--text:#f7f7f8;--secondary:#d1d4dc;--border:#454a55;--focus:#bfdbfe;color-scheme:dark}}
+@media(prefers-reduced-motion:reduce){:root{--motion:.01ms}}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;max-width:100%;overflow-x:hidden}body{background:var(--bg);color:var(--text)}button,a{font:inherit}button:focus-visible,a:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.shell{min-height:100vh;padding-top:var(--safe-top);transition:opacity var(--motion)}.offline{display:none;position:sticky;top:0;z-index:20;padding:8px 16px;text-align:center;background:var(--muted);border-bottom:1px solid var(--border)}.shell[data-offline="true"] .offline{display:block}.layout{min-height:100vh}.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:16px}.aside{display:none}.nav{display:grid;gap:4px}.nav button,.tabs button{min-height:44px;border:0;background:transparent;color:var(--secondary);border-radius:10px;cursor:pointer}.nav button{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;text-align:left}.nav button[aria-current="page"],.tabs button[aria-current="page"]{color:var(--text);background:var(--muted);font-weight:600}.icon{width:24px;text-align:center}.main{min-width:0;padding:24px}.card{max-width:680px;margin:auto;padding:24px;border-radius:16px;background:var(--surface);border:1px solid var(--border)}.tabs{display:none;position:fixed;inset:auto 0 0 0;grid-template-columns:repeat(4,1fr);padding:6px 8px calc(6px + var(--safe-bottom));background:var(--surface);border-top:1px solid var(--border)}.tabs button{display:grid;place-items:center;gap:2px;font-size:12px}.tabs .icon{font-size:20px}.account-controls,.error-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.account-controls button,.error-actions button{min-height:44px;padding:8px 14px;border:1px solid var(--border);border-radius:10px;background:var(--muted);color:var(--text)}.error{display:none;min-height:50vh;place-items:center;text-align:center}.shell[data-error="true"] .content{display:none}.shell[data-error="true"] .error{display:grid}.legacy{display:none;min-height:100vh;place-items:center;background:var(--surface)}body[data-shell="legacy"] .shell{display:none}body[data-shell="legacy"] .legacy{display:grid}
+@media(max-width:767px){.layout{display:block}.sidebar{display:none}.main{padding:16px 16px calc(82px + var(--safe-bottom))}.tabs{display:grid}}
+@media(min-width:768px) and (max-width:1024px){.layout{display:grid;grid-template-columns:280px minmax(0,1fr)}}
+@media(min-width:1025px){.layout{display:grid;grid-template-columns:280px minmax(0,720px) 220px;justify-content:center;gap:24px}.aside{display:block;padding:24px 0;color:var(--secondary)}}
+.shell[data-keyboard="true"] .tabs{display:none}.shell[data-keyboard="true"] .main{padding-bottom:16px}
+@media(forced-colors:active){.sidebar,.tabs,.card{border:1px solid ButtonText}}
+</style>
+</head>
+<body data-shell="framework7">
+<div class="legacy" data-testid="legacy-shell"><p>Legacy shell rollback path</p></div>
+<div class="shell" data-testid="f7-shell" data-offline="false" data-account="alpha" data-keyboard="false" data-error="false">
+<div class="offline" role="status" aria-live="polite">You are offline. Cached content remains available.</div>
+<div class="layout">
+<aside class="sidebar"><strong>Mangane</strong><nav class="nav" aria-label="Primary navigation">
+<button data-route="home" aria-current="page"><span class="icon" aria-hidden="true">⌂</span>Home</button>
+<button data-route="search"><span class="icon" aria-hidden="true">⌕</span>Search</button>
+<button data-route="notifications"><span class="icon" aria-hidden="true">◉</span>Notifications</button>
+<button data-route="settings"><span class="icon" aria-hidden="true">⚙</span>Settings</button>
+</nav></aside>
+<main class="main" id="main" tabindex="-1">
+<div class="content"><article class="card"><p id="account">Account Alpha</p><h1 id="route-title">Home</h1><p>Deterministic synthetic content for shell layout, navigation, accessibility, account-switch, offline, error recovery, and rollback testing.</p><div class="account-controls"><button id="switch-account">Switch account</button><button id="toggle-offline">Toggle offline</button><button id="legacy-shell">Use legacy shell</button></div></article></div>
+<section class="error" role="alert" aria-labelledby="error-title"><div><h1 id="error-title">This page could not be displayed</h1><p>The error boundary preserves a safe recovery path.</p><div class="error-actions"><button id="retry">Retry</button><button id="go-home">Go home</button></div></div></section>
+</main>
+<aside class="aside" aria-label="Context panel">Context panel</aside>
+</div>
+<nav class="tabs" aria-label="Primary navigation">
+<button data-route="home" aria-current="page"><span class="icon" aria-hidden="true">⌂</span>Home</button>
+<button data-route="search"><span class="icon" aria-hidden="true">⌕</span>Search</button>
+<button data-route="notifications"><span class="icon" aria-hidden="true">◉</span>Alerts</button>
+<button data-route="settings"><span class="icon" aria-hidden="true">⚙</span>Settings</button>
+</nav>
+</div>
+<script>
+const params=new URLSearchParams(location.search);const shell=document.querySelector('.shell');const title=document.querySelector('#route-title');const account=document.querySelector('#account');const main=document.querySelector('#main');
+shell.dataset.keyboard=String(params.get('keyboard')==='true');shell.dataset.offline=String(params.get('offline')==='true');shell.dataset.error=String(params.get('error')==='true');if(params.get('legacy')==='true')document.body.dataset.shell='legacy';
+function navigate(route,{push=true}={}){document.querySelectorAll('[data-route]').forEach(el=>{if(el.dataset.route===route)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current')});title.textContent=route[0].toUpperCase()+route.slice(1);if(push)history.pushState({route},'',`#${route}`);main.focus()}
+document.querySelectorAll('[data-route]').forEach(el=>el.addEventListener('click',()=>navigate(el.dataset.route)));
+document.querySelector('#toggle-offline').addEventListener('click',()=>shell.dataset.offline=String(shell.dataset.offline!=='true'));
+document.querySelector('#switch-account').addEventListener('click',()=>{shell.dataset.account=shell.dataset.account==='alpha'?'beta':'alpha';account.textContent=shell.dataset.account==='alpha'?'Account Alpha':'Account Beta';navigate('home')});
+document.querySelector('#legacy-shell').addEventListener('click',()=>document.body.dataset.shell='legacy');
+document.querySelector('#retry').addEventListener('click',()=>shell.dataset.error='false');document.querySelector('#go-home').addEventListener('click',()=>{shell.dataset.error='false';navigate('home')});
+addEventListener('popstate',event=>navigate(event.state?.route||'home',{push:false}));
+</script>
+</body>
+</html>
