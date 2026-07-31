@@ -56,6 +56,17 @@ const defaultSettings = ImmutableMap({
 
   isDeveloper: false,
 
+  translation: ImmutableMap({
+    provider: 'server',
+    deeplApiKey: '',
+    deeplPro: false,
+    libreTranslateUrl: '',
+    libreTranslateApiKey: '',
+    targetLanguage: locale,
+    autoTranslate: false,
+    hideLanguages: ImmutableList(),
+  }),
+
   framework7Shell: false,
 
   localStore: false,

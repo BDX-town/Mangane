@@ -11,6 +11,8 @@ import { useFeatures, useSettings } from 'soapbox/hooks';
 
 import ThemeToggle from '../ui/components/theme-toggle';
 
+import TranslationSettings from './components/translation-settings';
+
 
 const languages = {
   en: 'English',
@@ -219,6 +221,8 @@ const Preferences = () => {
           <SettingToggle settings={settings} settingPath={['autoloadMore']} onChange={onToggleChange} />
         </ListItem>
       </List>
+
+      <TranslationSettings />
     </Form>
   );
 };

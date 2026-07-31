@@ -22,6 +22,7 @@ import StatusActionBar from './status-action-bar';
 import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
 import StatusContent from './status_content';
+import TranslationBlock from './translation-block';
 import { HStack, Text } from './ui';
 
 import type { Map as ImmutableMap } from 'immutable';
@@ -352,6 +353,10 @@ const Status: React.FC<IStatus> = (props) => {
               onExpandedToggle={handleExpandedToggle}
               collapsable
             />
+
+            {!actualStatus.hidden && (
+              <TranslationBlock status={actualStatus} mini />
+            )}
 
             {
               !actualStatus.hidden && (
