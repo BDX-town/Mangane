@@ -21,9 +21,9 @@ authoritative for scope and exit criteria.
 | Phase 5 — Canonical local data store | Complete | All slices merged including position continuity; [`PHASE_5E_TIMELINE_POSITION_CONTINUITY.md`](./PHASE_5E_TIMELINE_POSITION_CONTINUITY.md) |
 | Phases 6–7 | Complete | [`PHASE_6_DURABLE_OUTBOX.md`](./PHASE_6_DURABLE_OUTBOX.md), [`PHASE_7_LEGACY_STATE_ISOLATION.md`](./PHASE_7_LEGACY_STATE_ISOLATION.md) |
 | Phase 8 — Home and For You editorial migration | Complete | [`PHASE_8_HOME_AND_BUILT_IN_FEEDS.md`](./PHASE_8_HOME_AND_BUILT_IN_FEEDS.md), [`PHASE_8_CLOSURE_REPORT.md`](./PHASE_8_CLOSURE_REPORT.md) |
-| Phase 8B — Entity Resolution & Creator Attribution | Queued | [`PHASE_8B_ENTITY_RESOLUTION_AND_CREATOR_ATTRIBUTION.md`](./PHASE_8B_ENTITY_RESOLUTION_AND_CREATOR_ATTRIBUTION.md) |
-| Phase 8C — Shared Activity Aggregation and Shared Shelf | Queued | [`PHASE_8C_SHARED_ACTIVITY_AGGREGATION_AND_SHELF.md`](./PHASE_8C_SHARED_ACTIVITY_AGGREGATION_AND_SHELF.md) |
-| Phase 8D — Misskey post, Markdown, and MFM compatibility | Queued; required before the next implementation phase | [`PHASE_8D_MISSKEY_MARKDOWN_MFM_COMPATIBILITY.md`](./PHASE_8D_MISSKEY_MARKDOWN_MFM_COMPATIBILITY.md) |
+| Phase 8B — Entity Resolution & Creator Attribution | Complete | [`PHASE_8B_ENTITY_RESOLUTION_AND_CREATOR_ATTRIBUTION.md`](./PHASE_8B_ENTITY_RESOLUTION_AND_CREATOR_ATTRIBUTION.md) |
+| Phase 8C — Shared Activity Aggregation and Shared Shelf | Complete | [`PHASE_8C_SHARED_ACTIVITY_AGGREGATION_AND_SHELF.md`](./PHASE_8C_SHARED_ACTIVITY_AGGREGATION_AND_SHELF.md) |
+| Phase 8D — Misskey post, Markdown, and MFM compatibility | Complete | [`PHASE_8D_MISSKEY_MARKDOWN_MFM_COMPATIBILITY.md`](./PHASE_8D_MISSKEY_MARKDOWN_MFM_COMPATIBILITY.md) |
 | Phase 9 — Origin-Authoritative Conversation Trees and Reading Experience | Queued | [`PHASE_9_ORIGIN_AUTHORITATIVE_CONVERSATION_TREES.md`](./PHASE_9_ORIGIN_AUTHORITATIVE_CONVERSATION_TREES.md) |
 | Phases 10–23 | Queued | Begin only after their dependency and preceding-phase exit criteria are met |
 | Phase 23A — Custom Feeds | Queued | [`PHASE_23A_CUSTOM_FEEDS.md`](./PHASE_23A_CUSTOM_FEEDS.md) |
