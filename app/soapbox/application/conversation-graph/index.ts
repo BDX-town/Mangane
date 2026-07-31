@@ -52,3 +52,7 @@ export {
   purgeAllConversationStates,
   purgeAllConversationStatesGlobal,
 } from './conversation-reading-state';
+
+// Conversation hook (9.5 + 9.7 — focused-path navigation + live updates)
+export { useConversation } from './use-conversation';
+export type { UseConversationOptions, UseConversationResult } from './use-conversation';
