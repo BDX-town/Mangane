@@ -15,6 +15,10 @@ const messages = defineMessages({
     id: 'login.fields.password_placeholder',
     defaultMessage: 'Password',
   },
+  otherInstance: {
+    id: 'login.other_instance',
+    defaultMessage: 'Log in to another instance',
+  },
 });
 
 interface ILoginForm {
@@ -80,6 +84,12 @@ const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
         </Form>
 
         <ConsumersList />
+
+        <div className='text-center pt-4 border-t border-gray-200 dark:border-gray-600'>
+          <Link to='/login/external' className='text-sm text-primary-600 dark:text-primary-400 hover:underline'>
+            {intl.formatMessage(messages.otherInstance)}
+          </Link>
+        </div>
       </Stack>
     </div>
   );
