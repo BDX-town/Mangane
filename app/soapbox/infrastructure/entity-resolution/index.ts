@@ -65,3 +65,48 @@ export {
   getHashtagEntityId,
 } from './semantic-hashtags';
 export type { HashtagContext } from './semantic-hashtags';
+
+// 8B-6: Custom Feed entity rules
+export {
+  setFeedRules,
+  getFeedRules,
+  removeFeedRules,
+  evaluateStatus,
+  hasFeedRules,
+  resetAllRules,
+} from './entity-feed-rules';
+export type { FeedRuleDecision, MatchedRule, FeedRuleEvaluation } from './entity-feed-rules';
+
+// 8B-7: Consumer integration (Search, Explore, Gist, Composer)
+export {
+  prepareSearchContext,
+  buildExploreContext,
+  wouldExceedDiversityCap,
+  buildGistContext,
+  analyzeComposerContent,
+  isEntityFeatureEnabled,
+  setEntityFeatureFlag,
+  getEntityFeatureFlags,
+} from './entity-consumers';
+export type {
+  SearchEntityContext,
+  ResolvedQueryEntity,
+  ExploreEntityContext,
+  GistEntityContext,
+  GistEntityInfo,
+  ComposerEntityContext,
+} from './entity-consumers';
+
+// 8B-8: Trusted resolver contract and attribution domain validation
+export {
+  isUrlSafeForResolution,
+  normalizeAttributionDomain,
+  validateAttributionDomains,
+} from './trusted-resolver-contract';
+export type {
+  TrustedMetadataResolver,
+  MetadataResolveRequest,
+  MetadataResolveResponse,
+  ResolverHealthStatus,
+  UrlSafetyResult,
+} from './trusted-resolver-contract';
