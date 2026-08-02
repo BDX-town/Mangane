@@ -137,7 +137,6 @@ const StatusMedia: React.FC<IStatusMedia> = ({
       <Card
         onOpenMedia={openMedia}
         card={status.card}
-        compact
       />
     );
   } else if (status.expectsCard) {
