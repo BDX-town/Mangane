@@ -51,7 +51,7 @@
     "@babel/preset-react": "^7.17.12",
     "@babel/preset-typescript": "^7.17.12",
     "@babel/runtime": "^7.18.3",
-    "@bdxtown/ruisseau": "../ruisseau",
+    "@bdxtown/ruisseau": "git+https://codeberg.org/Clovis/ruisseau.git#c47cf7868672f0891fa0114d83d50030c05e5a88",
     "@emoji-mart/data": "^1.1.1",
     "@emoji-mart/react": "^1.1.0",
     "@fontsource/inter": "^4.5.1",
@@ -248,5 +248,5 @@
     "webpack-dev-server": "4.9.1",
     "yargs": "^16.0.3"
   },
-  "packageManager": "yarn@4.0.2"
+  "packageManager": "yarn@4.18.0"
 }
