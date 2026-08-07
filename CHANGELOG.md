@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.22.3 (2026-08-07)
+
+
+### Bug Fixes
+
+* replace use of virtuoso by home made scroller allowing to actually correct scroll restore  ([#466](https://github.com/BDX-town/Mangane/issues/466)) ([768b06c](https://github.com/BDX-town/Mangane/commit/768b06c51bbdcba8c198d7f15abf0191adecfb34))
+
 ## 1.22.2 (2026-07-17)
 
 
