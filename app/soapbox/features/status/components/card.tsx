@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import { List as ImmutableList } from 'immutable';
-import React, { useState, useEffect } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
@@ -45,36 +45,63 @@ const addAutoPlay = (html: string): string => {
 
 interface ICard {
   card: CardEntity,
-  maxTitle?: number,
-  maxDescription?: number,
   onOpenMedia: (attachments: ImmutableList<Attachment>, index: number) => void,
-  compact?: boolean,
-  defaultWidth?: number,
-  cacheWidth?: (width: number) => void,
-  horizontal?: boolean,
 }
 
-const Card: React.FC<ICard> = ({
+const CardLink = ({
+  className,
   card,
-  defaultWidth = 467,
-  maxTitle = 120,
-  maxDescription = 200,
-  compact = false,
-  cacheWidth,
+  description,
+}: { className: string, card: ICard['card'], description: ReactNode }) => {
+  return (
+    <a
+      href={card.url}
+      className={className}
+      target='_blank'
+      rel='noopener'
+      onClick={e => e.stopPropagation()}
+    >
+      {
+        card.image ? (
+          <div className={classnames(
+            'status-card__image',
+            'w-full rounded-l md:w-auto md:h-auto flex-none md:flex-auto',
+            'h-[200px]',
+          )}
+          >
+            <Blurhash
+              className='absolute w-full h-full inset-0 -z-10'
+              hash={card.blurhash}
+            />
+            <div
+              style={{
+                backgroundImage: `url(${card.image})`,
+              }}
+              className='status-card__image-image'
+            />
+          </div>
+        ) : (
+          <div className='status-card__image status-card__image--empty'>
+            <Icon src={require('@tabler/icons/file-text.svg')} />
+          </div>
+        )
+      }
+
+      {description}
+    </a>
+  );
+};
+
+const CardPhoto = ({
+  className,
+  card,
+  description,
   onOpenMedia,
-  horizontal,
-}): JSX.Element => {
-  const [width, setWidth] = useState(defaultWidth);
-  const [embedded, setEmbedded] = useState(false);
+  trimmedTitle,
+}: { className: string, trimmedTitle: string, card: ICard['card'], description: ReactNode, onOpenMedia: ICard['onOpenMedia'] }) => {
 
-  useEffect(() => {
-    setEmbedded(false);
-  }, [card.url]);
-
-  const trimmedTitle       = trim(card.title, maxTitle);
-  const trimmedDescription = trim(card.description, maxDescription);
-
-  const handlePhotoClick = () => {
+  const handlePhotoClick = (e) => {
+    e.stopPropagation();
     const attachment = normalizeAttachment({
       type: 'image',
       url: card.embed_url,
@@ -90,54 +117,130 @@ const Card: React.FC<ICard> = ({
     onOpenMedia(ImmutableList([attachment]), 0);
   };
 
-  const handleEmbedClick: React.MouseEventHandler = (e) => {
-    e.stopPropagation();
+  return (
+    <a
+      href={card.url}
+      className={className}
+      target='_blank'
+      rel='noopener'
+      onClick={handlePhotoClick}
+    >
+      <div className={classnames(
+        'status-card__image',
+        'w-full rounded-l md:w-auto md:h-auto flex-none md:flex-auto',
+        'h-[200px]',
+      )}
+      >
+        <Blurhash
+          className='absolute w-full h-full inset-0 -z-10'
+          hash={card.blurhash}
+        />
+        <div
+          style={{
+            backgroundImage: `url(${card.image})`,
+          }}
+          className='status-card__image-image'
+        />
+      </div>
+      {description}
+    </a>
+  );
+};
 
-    if (card.type === 'photo') {
-      handlePhotoClick();
-    } else {
-      setEmbedded(true);
-    }
-  };
 
-  const setRef: React.RefCallback<HTMLElement> = c => {
-    if (c) {
-      if (cacheWidth) {
-        cacheWidth(c.offsetWidth);
-      }
-
-      setWidth(c.offsetWidth);
-    }
-  };
-
-  const renderVideo = () => {
-    const content   = { __html: addAutoPlay(card.html) };
-    const ratio     = getRatio(card);
-    const height    = width / ratio;
-
-    return (
-      <div
-        ref={setRef}
-        className='status-card__image status-card-video'
-        dangerouslySetInnerHTML={content}
-        style={{ height }}
-      />
-    );
-  };
+const CardVideo = ({
+  className,
+  card,
+  description,
+}: { className: string, card: ICard['card'], description: ReactNode }) => {
+  const [embedded, setEmbedded] = useState(false);
+  const [width, setWidth] = useState(0);
 
   const getRatio = (card: CardEntity): number => {
-    const ratio  = (card.width / card.height) || 16 / 9;
+    const ratio = (card.width / card.height) || 16 / 9;
 
     // Constrain to a sane limit
     // https://en.wikipedia.org/wiki/Aspect_ratio_(image)
     return Math.min(Math.max(9 / 16, ratio), 4);
   };
 
+  const ratio = getRatio(card);
+  const height = width / ratio;
+
+  const handleEmbedClick: React.MouseEventHandler = (e) => {
+    e.stopPropagation();
+    setEmbedded(true);
+  };
+
+  const setRef: React.RefCallback<HTMLElement> = c => {
+    if (c) {
+      setWidth(c.offsetWidth);
+    }
+  };
+
+  return (
+    <a
+      href={card.url}
+      className={className}
+      target='_blank'
+      rel='noopener'
+      onClick={e => e.stopPropagation()}
+    >
+      {
+        embedded ? (
+          <div
+            ref={setRef}
+            className='status-card__image status-card-video'
+            dangerouslySetInnerHTML={{ __html: addAutoPlay(card.html) }}
+            style={{ height }}
+          />
+        ) : (
+          <div className='status-card__image'>
+            <Blurhash
+              className='absolute w-full h-full inset-0 -z-10'
+              hash={card.blurhash}
+            />
+            <div
+              style={{
+                backgroundImage: `url(${card.image})`,
+              }}
+              className='status-card__image-image'
+            />
+
+            <div className='absolute inset-0 flex items-center justify-center'>
+              <div className='bg-white shadow-md rounded-md p-2 flex items-center justify-center'>
+                <HStack space={3} alignItems='center'>
+                  <button onClick={handleEmbedClick} className='appearance-none text-gray-400 hover:text-gray-600'>
+                    <Icon
+                      src={require('@tabler/icons/player-play.svg')}
+                      className='w-5 h-5 text-inherit'
+                    />
+                  </button>
+                </HStack>
+              </div>
+            </div>
+          </div>
+        )
+
+      }
+
+      {description}
+    </a>
+  );
+};
+
+
+
+const Card: React.FC<ICard> = ({
+  card,
+  onOpenMedia,
+}): JSX.Element => {
+
+  const trimmedTitle = trim(card.title, 120);
+  const trimmedDescription = trim(card.description, 200);
+
   const interactive = card.type !== 'link';
-  horizontal = typeof horizontal === 'boolean' ? horizontal : interactive || embedded;
-  const className   = classnames('status-card', { horizontal, compact, interactive }, `status-card--${card.type}`);
-  const ratio       = getRatio(card);
-  const height      = (compact && !embedded) ? (width / (16 / 9)) : (width / ratio);
+  const className = classnames('status-card', { interactive }, `status-card--${card.type}`);
 
   const title = interactive ? (
     <a
@@ -172,114 +275,13 @@ const Card: React.FC<ICard> = ({
     </Stack>
   );
 
-  let embed: React.ReactNode = '';
-
-  const canvas = (
-    <Blurhash
-      className='absolute w-full h-full inset-0 -z-10'
-      hash={card.blurhash}
-    />
-  );
-
-  const thumbnail = (
-    <div
-      style={{
-        backgroundImage: `url(${card.image})`,
-        width: horizontal ? width : undefined,
-        height: horizontal ? height : undefined,
-      }}
-      className='status-card__image-image'
-    />
-  );
-
-  if (interactive) {
-    if (embedded) {
-      embed = renderVideo();
-    } else {
-      let iconVariant = require('@tabler/icons/player-play.svg');
-
-      if (card.type === 'photo') {
-        iconVariant = require('@tabler/icons/zoom-in.svg');
-      }
-
-      embed = (
-        <div className='status-card__image'>
-          {canvas}
-          {thumbnail}
-
-          <div className='absolute inset-0 flex items-center justify-center'>
-            <div className='bg-white shadow-md rounded-md p-2 flex items-center justify-center'>
-              <HStack space={3} alignItems='center'>
-                <button onClick={handleEmbedClick} className='appearance-none text-gray-400 hover:text-gray-600'>
-                  <Icon
-                    src={iconVariant}
-                    className='w-5 h-5 text-inherit'
-                  />
-                </button>
-
-                {horizontal && (
-                  <a
-                    onClick={(e) => e.stopPropagation()}
-                    href={card.url}
-                    target='_blank'
-                    rel='noopener'
-                    className='text-gray-400 hover:text-gray-600'
-                  >
-                    <Icon
-                      src={require('@tabler/icons/external-link.svg')}
-                      className='w-5 h-5 text-inherit'
-                    />
-                  </a>
-                )}
-              </HStack>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <div className={className} ref={setRef}>
-        {embed}
-        {description}
-      </div>
-    );
-  } else if (card.image) {
-    embed = (
-      <div className={classnames(
-        'status-card__image',
-        'w-full rounded-l md:w-auto md:h-auto flex-none md:flex-auto',
-        {
-          'h-auto': horizontal,
-          'h-[200px]': !horizontal,
-        },
-      )}
-      >
-        {canvas}
-        {thumbnail}
-      </div>
-    );
-  } else {
-    embed = (
-      <div className='status-card__image status-card__image--empty'>
-        <Icon src={require('@tabler/icons/file-text.svg')} />
-      </div>
-    );
+  if (card.type === 'video') {
+    return <CardVideo card={card} className={className} description={description} />;
+  } else if (card.type === 'photo') {
+    return <CardPhoto trimmedTitle={trimmedTitle} onOpenMedia={onOpenMedia} card={card} className={className} description={description} />;
   }
+  return <CardLink card={card} className={className} description={description} />;
 
-  return (
-    <a
-      href={card.url}
-      className={className}
-      target='_blank'
-      rel='noopener'
-      ref={setRef}
-      onClick={e => e.stopPropagation()}
-    >
-      {embed}
-      {description}
-    </a>
-  );
 };
 
 export default Card;

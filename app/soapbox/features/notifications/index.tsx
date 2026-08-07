@@ -12,7 +12,7 @@ import {
 } from 'soapbox/actions/notifications';
 import { getSettings } from 'soapbox/actions/settings';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import ScrollTopButton from 'soapbox/components/scroll-top-button';
+import ScrollTopButton from 'soapbox/components/scroll-to-button';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { Column } from 'soapbox/components/ui';
 import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
@@ -180,6 +180,7 @@ const Notifications = () => {
         onClick={handleDequeueNotifications}
         count={totalQueuedNotificationsCount}
         message={messages.queue}
+        to={column}
       />
       <PullToRefresh onRefresh={handleRefresh}>
         {scrollContainer}

@@ -67,7 +67,7 @@ const CommunityTimeline = () => {
       {
         showSettings && <TimelineSettings className='mb-3' timeline='public' onClose={() => setShowSettings(false)} />
       }
-      {showExplanationBox && <div className='mb-4'>
+      {showExplanationBox && <div className='mb-4 px-3'>
         <Text size='lg' weight='bold' className='mb-2'>
           <FormattedMessage id='fediverse_tab.explanation_box.title' defaultMessage='What is the Fediverse?' />
         </Text>

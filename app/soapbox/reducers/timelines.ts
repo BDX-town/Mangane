@@ -322,10 +322,12 @@ const handleExpandFail = (state: State, timelineId: string) => {
 export default function timelines(state: State = initialState, action: AnyAction) {
   switch (action.type) {
     case STATUS_CREATE_REQUEST:
-      if (action.params.scheduled_at) return state;
+      // we dont want to add a pending status to timeline if it's a reply (was already shown in thread)
+      if (action.params.scheduled_at || action.params.in_reply_to_id) return state;
       return importPendingStatus(state, action.params, action.idempotencyKey);
     case STATUS_CREATE_SUCCESS:
-      if (action.status.scheduled_at) return state;
+      // we dont want to add a pending status to timeline if it's a reply (was already shown in thread)
+      if (action.status.scheduled_at || action.params.in_reply_to_id) return state;
       return importStatus(state, action.status, action.idempotencyKey);
     case TIMELINE_EXPAND_REQUEST:
       return setLoading(state, action.timeline, true);

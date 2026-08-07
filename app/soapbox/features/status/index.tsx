@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { debounce } from 'lodash';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -47,7 +47,6 @@ import DetailedStatus from './components/detailed-status';
 import ThreadLoginCta from './components/thread-login-cta';
 import ThreadStatus from './components/thread-status';
 
-import type { VirtuosoHandle } from 'react-virtuoso';
 import type { RootState } from 'soapbox/store';
 import type {
   Account as AccountEntity,
@@ -172,7 +171,11 @@ const Thread: React.FC<IThread> = (props) => {
 
   const node = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
-  const scroller = useRef<VirtuosoHandle>(null);
+  // ruisseau scroller
+  const [scroller, setScroller] = useState<HTMLElement>(null);
+  // box size for the 'fake' status shown during loading to avoid jumps
+  const [actualStatusNode, setActualStatusNode] = useState<{ top: number, left: number, width: number, height: number} | undefined>(undefined);
+
 
   const handleToggleMediaVisibility = useCallback(() => {
     setShowMedia(!showMedia);
@@ -281,18 +284,8 @@ const Thread: React.FC<IThread> = (props) => {
   }, [dispatch]);
 
   const _selectChild = useCallback((index: number) => {
-    scroller.current?.scrollIntoView({
-      index,
-      behavior: 'smooth',
-      done: () => {
-        const element = document.querySelector<HTMLDivElement>(`#thread [data-index="${index}"] .focusable`);
-
-        if (element) {
-          element.focus();
-        }
-      },
-    });
-  }, []);
+    scroller?.children[index].scrollIntoView({ behavior: 'smooth' });
+  }, [scroller]);
 
   const handleMoveUp = useCallback((id: string) => {
     if (id === actualStatus?.id) {
@@ -380,9 +373,11 @@ const Thread: React.FC<IThread> = (props) => {
     }
   }, [actualStatus, history]);
 
+  const [seeking, setSeeking] = useState(false);
+
   const renderTombstone = useCallback((id: string) => {
     return (
-      <div className='py-4 pb-8'>
+      <div className={'py-4 pb-8'}>
         <Tombstone
           key={id}
           id={id}
@@ -403,14 +398,14 @@ const Thread: React.FC<IThread> = (props) => {
         onMoveDown={handleMoveDown}
       />
     );
-  }, [handleMoveDown, handleMoveUp, actualStatus]);
+  }, [actualStatus, handleMoveUp, handleMoveDown]);
 
   const renderPendingStatus = useCallback((id: string) => {
     const idempotencyKey = id.replace(/^末pending-/, '');
 
     return (
       <PendingStatus
-        className='thread__status'
+        className={'thread__status'}
         key={id}
         idempotencyKey={idempotencyKey}
       />
@@ -444,7 +439,7 @@ const Thread: React.FC<IThread> = (props) => {
 
   /** Fetch the status (and context) from the API. */
   const fetchDataRef = useRef(null);
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async() => {
     try {
       const time = new Date().getTime();
       fetchDataRef.current = time;
@@ -467,7 +462,7 @@ const Thread: React.FC<IThread> = (props) => {
     return fetchData();
   }, [fetchData]);
 
-  const handleLoadMore = useCallback(async () => {
+  const handleLoadMore = useCallback(async() => {
     if (!next || !actualStatus) return;
     try {
       const { next: _next } = await dispatch(fetchNext(actualStatus.id, next));
@@ -479,21 +474,13 @@ const Thread: React.FC<IThread> = (props) => {
 
   const handleLoadMoreDebounced = useMemo(() => debounce(handleLoadMore, 300, { leading: true }), [handleLoadMore]);
 
-  useEffect(() => {
-    if (ready && ancestorsIds.size > 0) {
-      scroller.current.scrollIntoView({ index: ancestorsIds.size, align: 'center' });
-    }
-  }, [ancestorsIds.size, ready]);
-
   const renderAncestors = useCallback(() => {
     // if we have the context, let's show it
     if (ready && ancestorsIds.size > 0) {
       return renderChildren(ancestorsIds).toArray();
     }
-    // context is not fully loaded and either we dont have actual status yet or it is a reply
-    if (!actualStatus || actualStatus.in_reply_to_id) return [<PlaceholderStatus />];
     return [];
-  }, [ready, ancestorsIds, actualStatus, renderChildren]);
+  }, [ready, ancestorsIds, renderChildren]);
 
   const renderDescendants = useCallback(() => {
     // if we have the context, let's show it
@@ -506,6 +493,21 @@ const Thread: React.FC<IThread> = (props) => {
     // or it has replies
     return new Array(actualStatus.replies_count).fill(undefined).map(() => <PlaceholderStatus />);
   }, [ready, actualStatus, renderChildren, descendantsIds]);
+
+
+  // when actual status is loaded and show we capture it's position and size to show a 'fake' status over the actual thread
+  // to hide scroll 'jumps'
+  useEffect(() => {
+    if (!actualStatus || !actualStatus.in_reply_to_id) return;
+    const rect = {
+      top:  (scroller?.children[0].getBoundingClientRect().top - node.current?.getBoundingClientRect().top) * -1,
+      left: node.current?.getBoundingClientRect().left,
+      width: node.current?.getBoundingClientRect().width,
+      height: node.current?.getBoundingClientRect().height,
+    };
+    setActualStatusNode(rect);
+  }, [actualStatus, scroller]);
+
 
   const renderActualStatus = useCallback(() => {
     // we dont have actual status yet
@@ -542,13 +544,13 @@ const Thread: React.FC<IThread> = (props) => {
           me && <>
             <hr className='my-5 border-gray-200 dark:border-gray-700' />
             <div className='py-4'>
-              <ComposeFormContainer autoFocus={false} onSubmit={handleComposeSubmit} />
+              <ComposeFormContainer autoFocus={false} disabled={!ready} onSubmit={handleComposeSubmit} />
             </div>
           </>
         }
       </>
     )];
-  }, [actualStatus, handleComposeSubmit, handleOpenCompareHistoryModal, handleOpenMedia, handleOpenVideo, handleToggleHidden, handleToggleMediaVisibility, handleTranslate, handlers, intl, me, onDeleteStatus, showMedia]);
+  }, [actualStatus, handleComposeSubmit, handleOpenCompareHistoryModal, handleOpenMedia, handleOpenVideo, handleToggleHidden, handleToggleMediaVisibility, handleTranslate, handlers, intl, me, onDeleteStatus, ready, showMedia]);
 
   if (!actualStatus && ready) {
     // this need to be kept separate from children as it carries its own column
@@ -565,24 +567,30 @@ const Thread: React.FC<IThread> = (props) => {
         </div>
       </Sticky>
       <PullToRefresh onRefresh={handleRefresh}>
-        <Stack space={2}>
-          <div ref={node} className='thread'>
-            <ScrollableList
-              id='thread'
-              ref={scroller}
-              hasMore={!!next}
-              onLoadMore={handleLoadMoreDebounced}
-              placeholderComponent={() => <PlaceholderStatus />}
-              initialTopMostItemIndex={ancestorsIds.size}
-            >
-              {
-                [...renderAncestors(), ...renderActualStatus(), ...renderDescendants()]
-              }
-            </ScrollableList>
-          </div>
-
-          {!me && <ThreadLoginCta />}
-        </Stack>
+        <div ref={node} className={`thread ${(seeking || (!ready && actualStatus && actualStatusNode)) ? 'opacity-0' : 'opacity-100'}`}>
+          <ScrollableList
+            ref={setScroller}
+            onSeeking={setSeeking}
+            hasMore={!!next}
+            onLoadMore={handleLoadMoreDebounced}
+            placeholderComponent={() => <PlaceholderStatus />}
+            start={ready && ancestorsIds.size > 0 ? ancestorsIds.size : undefined}
+          >
+            {
+              [...renderAncestors(), ...renderActualStatus(), ...renderDescendants()]
+            }
+          </ScrollableList>
+        </div>
+        {
+          // this is the fake status show to hide jumps while still allowing the reader to read
+          actualStatusNode && (seeking || !ready) && (
+            <div className={'fixed thread'} style={{ top: `${actualStatusNode.top}px`, left: `${actualStatusNode.left}px`, width: `${actualStatusNode.width}px`, minHeight: `${actualStatusNode.height}px` }}>
+              {renderActualStatus()}
+              <PlaceholderStatus />
+            </div>
+          )
+        }
+        {!me && <ThreadLoginCta />}
       </PullToRefresh>
     </Column>
   );
