@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Text, IconButton } from 'soapbox/components/ui';
 import HStack from 'soapbox/components/ui/hstack/hstack';
@@ -29,6 +29,7 @@ interface IWidget {
   /** Text for the action. */
   actionTitle?: string,
   action?: JSX.Element,
+  children: ReactNode,
 }
 
 /** Sidebar widget. */

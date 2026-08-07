@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
@@ -90,7 +90,7 @@ const CardTitle: React.FC<ICardTitle> = ({ title }): JSX.Element => (
 );
 
 /** A card's body. */
-const CardBody: React.FC = ({ children }): JSX.Element => (
+const CardBody: React.FC<{ children: ReactNode}> = ({ children }): JSX.Element => (
   <div data-testid='card-body'>{children}</div>
 );
 

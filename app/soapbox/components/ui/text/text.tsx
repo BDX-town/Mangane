@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 type Themes = 'default' | 'danger' | 'primary' | 'muted' | 'subtle' | 'success' | 'inherit' | 'white'
 type Weights = 'normal' | 'medium' | 'semibold' | 'bold'
@@ -84,7 +84,8 @@ interface IText extends Pick<React.HTMLAttributes<HTMLParagraphElement>, 'danger
   /** Whether to truncate the text if its container is too small. */
   truncate?: boolean,
   /** Font weight of the text. */
-  weight?: Weights
+  weight?: Weights,
+  children: ReactNode
 }
 
 /** UI-friendly text container with dark mode support. */

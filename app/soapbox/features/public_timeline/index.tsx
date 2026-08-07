@@ -56,7 +56,7 @@ const CommunityTimeline = () => {
 
   return (
     <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
-      <div className='px-4 py-4 flex justify-between items-center'>
+      <div className='px-4 pb-4 pt-4 sm:pt-0 flex justify-between items-center'>
         <SubNavigation className='!mb-0' message={intl.formatMessage(messages.title)} />
         <IconButton
           src={!showSettings ? require('@tabler/icons/chevron-down.svg') : require('@tabler/icons/chevron-up.svg')}
@@ -67,7 +67,7 @@ const CommunityTimeline = () => {
       {
         showSettings && <TimelineSettings className='mb-3' timeline='public' onClose={() => setShowSettings(false)} />
       }
-      {showExplanationBox && <div className='mb-4'>
+      {showExplanationBox && <div className='mb-4 px-3'>
         <Text size='lg' weight='bold' className='mb-2'>
           <FormattedMessage id='fediverse_tab.explanation_box.title' defaultMessage='What is the Fediverse?' />
         </Text>

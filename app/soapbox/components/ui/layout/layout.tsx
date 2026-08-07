@@ -1,48 +1,40 @@
 import classNames from 'classnames';
-import React from 'react';
-import StickyBox from 'react-sticky-box';
+import React, { ReactNode } from 'react';
 
 interface LayoutComponent extends React.FC {
   Sidebar: React.FC,
   Main: React.FC<React.HTMLAttributes<HTMLDivElement>>,
-  Aside: React.FC,
+  Aside: React.FC<{ className?: string, children: ReactNode }>,
 }
 
 /** Layout container, to hold Sidebar, Main, and Aside. */
-const Layout: LayoutComponent = ({ children }) => (
-  <div className='sm:pt-4 relative'>
-    <div className='max-w-3xl mx-auto sm:px-6 md:max-w-7xl md:px-8 md:grid md:grid-cols-12 md:gap-8'>
+const Layout: LayoutComponent = ({ children }: { children: ReactNode }) => (
+  <div className='relative'>
+    <div className='max-w-3xl mx-auto sm:px-6 md:max-w-7xl md:px-8 md:flex md:gap-8 h-screen overflow-y-auto grow'>
       {children}
     </div>
   </div>
 );
 
 /** Left sidebar container in the UI. */
-const Sidebar: React.FC = ({ children }) => (
-  <div className='hidden lg:block lg:col-span-3'>
-    <StickyBox offsetTop={32} style={{ height: 'calc(100vh - 32px)' }}>
-      {children}
-    </StickyBox>
+const Sidebar: React.FC = ({ children }: { children: ReactNode }) => (
+  <div className='hidden lg:block lg:col-span-3 md:min-w-[300px] md:max-w-[300px] sm:py-4'>
+    {children}
   </div>
 );
 
 /** Center column container in the UI. */
 const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className }) => (
-  <main
-    className={classNames({
-      'md:col-span-12 lg:col-span-6 xl:col-span-6 pb-36': true,
-    }, className)}
-  >
+  // pb is here to let space for the bottom bar
+  <main className={classNames('md:w-full md:min-w-0 md:overflow-y-auto animate-fadein grow flex flex-col sm:pt-4 pb-[110px] lg:pb-0 ', className)}>
     {children}
   </main>
 );
 
 /** Right sidebar container in the UI. */
-const Aside: React.FC = ({ children }) => (
-  <aside className='hidden lg:block lg:col-span-3'>
-    <StickyBox offsetTop={32} className='space-y-6 pb-12' >
-      {children}
-    </StickyBox>
+const Aside: React.FC<{ className?: string, children: ReactNode }> = ({ children, className }) => (
+  <aside className={`hidden lg:flex flex-col lg:col-span-3 md:min-w-[200px] md:max-w-[200px] grow animate-fadein sm:py-4 ${className || ''}`}>
+    {children}
   </aside>
 );
 

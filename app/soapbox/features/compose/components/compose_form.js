@@ -90,6 +90,7 @@ class ComposeForm extends ImmutablePureComponent {
     features: PropTypes.object.isRequired,
     spoilerForced: PropTypes.bool,
     scheduledStatus: PropTypes.array,
+    disabled: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -262,10 +263,10 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars, scheduledStatus, features, spoilerForced } = this.props;
+    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars, scheduledStatus, features, spoilerForced, disabled: disabledProps } = this.props;
 
     const condensed = shouldCondense && !this.state.composeFocused && this.isEmpty() && !this.props.isUploading;
-    const disabled = this.props.isSubmitting;
+    const disabled = disabledProps || this.props.isSubmitting;
     const text     = [this.props.spoilerText, countableText(this.props.text)].join('');
     const disabledButton = disabled || this.props.isUploading || this.props.isChangingUpload || length(text) > maxTootChars || (text.length !== 0 && text.trim().length === 0 && !anyMedia);
     const shouldAutoFocus = autoFocus && !showSearch && !isMobile(window.innerWidth);
@@ -379,7 +380,7 @@ class ComposeForm extends ImmutablePureComponent {
             'hidden': condensed,
           })}
         >
-          <div className='flex items-center space-x-2'>
+          <div className={`flex items-center space-x-2 ${disabled ? 'pointer-events-none' : ''}`}>
             {features.media && <UploadButtonContainer />}
             <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} />
             {features.polls && <PollButtonContainer />}

@@ -15,8 +15,7 @@ import { getFeatures } from 'soapbox/utils/features';
 import SidebarNavigationLink from './sidebar-navigation-link';
 
 
-/** Desktop sidebar with links to different views in the app. */
-const SidebarNavigation = () => {
+const SidebarNavigation = ({ className }: { className?: string }) => {
 
   const logo = useLogo();
   const instance = useAppSelector((state) => state.instance);
@@ -33,7 +32,7 @@ const SidebarNavigation = () => {
   }, [instance.pleroma]);
 
   return (
-    <div className='flex flex-col gap-2 h-full'>
+    <div className={`flex flex-col gap-2 h-full ${className}`}>
       <div className='flex flex-col gap-5 mb-5'>
         {
           account && (
@@ -200,10 +199,9 @@ const SidebarNavigation = () => {
         }
 
       </div>
+      <div className='grow' />
       {account && (
-        <div className='pb-4'>
-          <ComposeButton />
-        </div>
+        <ComposeButton />
       )}
     </div>
 

@@ -2,6 +2,87 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.22.3 (2026-08-07)
+
+
+### Bug Fixes
+
+* replace use of virtuoso by home made scroller allowing to actually correct scroll restore  ([#466](https://github.com/BDX-town/Mangane/issues/466)) ([768b06c](https://github.com/BDX-town/Mangane/commit/768b06c51bbdcba8c198d7f15abf0191adecfb34))
+
+## 1.22.2 (2026-07-17)
+
+
+### Bug Fixes
+
+* better scroll restoration method ([057b045](https://github.com/BDX-town/Mangane/commit/057b04542ce624255b581b790bb0286257800551))
+
+## 1.22.1 (2026-07-14)
+
+
+### Bug Fixes
+
+* status page link footer position ([96b5f3d](https://github.com/BDX-town/Mangane/commit/96b5f3d12cfb6a91284526d19adb6f263906a8bc))
+
+## 1.22.0 (2026-07-14)
+
+
+### Features
+
+* better thread loading ([#463](https://github.com/BDX-town/Mangane/issues/463)) ([ce80c56](https://github.com/BDX-town/Mangane/commit/ce80c56f1dac0bec8f8065694585668615685e65))
+
+## 1.21.13 (2026-07-14)
+
+
+### Bug Fixes
+
+* better scroll restoration method ([#462](https://github.com/BDX-town/Mangane/issues/462)) ([d62d5eb](https://github.com/BDX-town/Mangane/commit/d62d5ebb112d3c9863661f0b59e4862176c0f222))
+
+## 1.21.12 (2026-07-08)
+
+
+### Bug Fixes
+
+* rules to hide fab ([6ba13a9](https://github.com/BDX-town/Mangane/commit/6ba13a90d4d35afd9d9050305a04e75b65a0ff7e))
+
+## 1.21.11 (2026-07-06)
+
+
+### Bug Fixes
+
+* layout issues after recent rework ([3879834](https://github.com/BDX-town/Mangane/commit/3879834852c49cd0cbfddaaeeb9733baf8cefc4e))
+
+## 1.21.10 (2026-07-05)
+
+
+### Bug Fixes
+
+* add spanner on status page too ([0b0149d](https://github.com/BDX-town/Mangane/commit/0b0149ddb9d85c6802e54d5e0e1a27f18bbbd72c))
+
+## 1.21.9 (2026-07-05)
+
+## 1.21.8 (2026-07-05)
+
+
+### Bug Fixes
+
+* resolve flash on android ([e92a1e5](https://github.com/BDX-town/Mangane/commit/e92a1e5bce5381d2add6af01891b9cc060744187))
+
+## 1.21.7 (2026-07-05)
+
+
+### Bug Fixes
+
+* rework layout to reduce clunkyness ([#460](https://github.com/BDX-town/Mangane/issues/460)) ([9c7105d](https://github.com/BDX-town/Mangane/commit/9c7105df31f989015cf11c11923f44302a0e3325))
+
+## 1.21.6 (2026-07-05)
+
+
+### Bug Fixes
+
+* better ux from waiting for approval follow button for verbose la… ([#459](https://github.com/BDX-town/Mangane/issues/459)) ([131a103](https://github.com/BDX-town/Mangane/commit/131a103913e7de8b0e5488fff7a7e7a95c4f110e))
+
+## 1.21.5 (2026-04-26)
+
 ## 1.21.4 (2026-04-26)
 
 ## 1.21.3 (2026-04-26)

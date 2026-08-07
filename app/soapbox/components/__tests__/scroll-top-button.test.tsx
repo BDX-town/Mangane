@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { render, screen } from '../../jest/test-helpers';
-import ScrollTopButton from '../scroll-top-button';
+import ScrollTopButton from '../scroll-to-button';
 
 const messages = defineMessages({
   queue: { id: 'status_list.queue_label', defaultMessage: 'Click to see {count} new {count, plural, one {post} other {posts}}' },

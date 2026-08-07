@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
-import React, { useRef, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState, ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import LoadGap from 'soapbox/components/load_gap';
@@ -12,7 +12,6 @@ import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import { useAppSelector } from 'soapbox/hooks';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import type { VirtuosoHandle } from 'react-virtuoso';
 import type { IScrollableList } from 'soapbox/components/scrollable_list';
 
 interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
@@ -40,6 +39,7 @@ interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
   divideType?: 'space' | 'border',
   /** Whether to display ads. */
   showAds?: boolean,
+  children?: ReactNode,
 }
 
 const renderPendingStatus = (statusId: string) => {
@@ -95,16 +95,17 @@ const renderFeaturedStatuses = (featuredStatusIds, handleMoveUp, handleMoveDown,
 const renderStatuses = (isLoading, statusIds, onLoadMore, handleMoveUp, handleMoveDown, timelineId, suggestedProfiles, areSuggestedProfilesLoaded): React.ReactNode[] => {
   if (isLoading || statusIds.size > 0) {
     return statusIds.toList().reduce((acc, statusId, index) => {
+      let el = null;
 
       if (statusId === null) {
-        acc.push(renderLoadGap(index, statusIds, onLoadMore, isLoading));
+        el = renderLoadGap(index, statusIds, onLoadMore, isLoading);
       } else if (statusId.startsWith('末suggestions-')) {
         const suggestions = renderFeedSuggestions(suggestedProfiles, areSuggestedProfilesLoaded);
-        if (suggestions) acc.push(suggestions);
+        if (suggestions) el = suggestions;
       } else if (statusId.startsWith('末pending-')) {
-        acc.push(renderPendingStatus(statusId));
+        el = renderPendingStatus(statusId);
       } else {
-        acc.push(<StatusContainer
+        el = (<StatusContainer
           timeline={!!timelineId}
           key={statusId}
           id={statusId}
@@ -113,6 +114,12 @@ const renderStatuses = (isLoading, statusIds, onLoadMore, handleMoveUp, handleMo
           contextType={timelineId}
         />);
       }
+
+      acc.push(
+        <div className='sm:pb-3'>
+          {el}
+        </div>,
+      );
 
       return acc;
     }, [] as React.ReactNode[]);
@@ -136,7 +143,7 @@ const renderScrollableContent = (featuredStatusIds, isLoading, statusIds, onLoad
 
 
 const makePlaceholder = ({ timelineId }: {timelineId: string}) => (props) => {
-  return <PlaceholderStatus {...props} timeline={!!timelineId} />;
+  return <div className='sm:pb-3'><PlaceholderStatus {...props} timeline={!!timelineId} /></div>;
 };
 
 
@@ -150,10 +157,11 @@ const StatusList: React.FC<IStatusList> = ({
   timelineId,
   isLoading,
   isPartial,
+  children,
   ...other
 }) => {
   const Placeholder = useMemo(() => makePlaceholder({ timelineId }), [timelineId]);
-  const node = useRef<VirtuosoHandle>(null);
+  const [root, setRoot] = useState<HTMLElement>(null);
 
   const suggestedProfiles = useAppSelector((state) => state.suggestions.items);
   const areSuggestedProfilesLoaded = useAppSelector((state) => state.suggestions.isLoading);
@@ -172,15 +180,8 @@ const StatusList: React.FC<IStatusList> = ({
   }, [featuredStatusIds, getFeaturedStatusCount, statusIds]);
 
   const selectChild = useCallback((index: number) => {
-    node.current?.scrollIntoView({
-      index,
-      behavior: 'smooth',
-      done: () => {
-        const element = document.querySelector<HTMLDivElement>(`#status-list [data-index="${index}"] .focusable`);
-        element?.focus();
-      },
-    });
-  }, []);
+    root?.children[index].scrollIntoView({ behavior: 'smooth' });
+  }, [root]);
 
   const handleMoveUp = useCallback((id: string, featured: boolean = false) => {
     const elementIndex = getCurrentStatusIndex(id, featured) - 1;
@@ -193,13 +194,14 @@ const StatusList: React.FC<IStatusList> = ({
   }, [getCurrentStatusIndex, selectChild]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleLoadOlder = useCallback(debounce(() => {
+  const _handleLoadOlder = useCallback(() => {
     const maxId = lastStatusId || statusIds.last();
     if (onLoadMore && maxId) {
       onLoadMore(maxId.replace('末suggestions-', ''));
     }
-  }, 300, { leading: true }), [onLoadMore, lastStatusId, statusIds.last()]);
+  }, [lastStatusId, statusIds, onLoadMore]);
 
+  const handleLoadOlder = useMemo(() => debounce(_handleLoadOlder, 300, { leading: true }), [_handleLoadOlder]);
 
   const scrollableContent = useMemo(() => renderScrollableContent(featuredStatusIds, isLoading, statusIds, onLoadMore, handleMoveUp, handleMoveDown, timelineId, suggestedProfiles, areSuggestedProfilesLoaded), [areSuggestedProfilesLoaded, featuredStatusIds, handleMoveDown, handleMoveUp, isLoading, onLoadMore, statusIds, suggestedProfiles, timelineId]);
 
@@ -218,15 +220,14 @@ const StatusList: React.FC<IStatusList> = ({
 
   return (
     <ScrollableList
+      ref={setRoot}
       id='status-list'
-      key='scrollable-list'
+      prepend={children}
       isLoading={isLoading}
-      showLoading={isLoading && statusIds.size === 0}
       onLoadMore={handleLoadOlder}
       placeholderComponent={Placeholder}
       placeholderCount={20}
-      ref={node}
-      className={classNames('flex flex-col sm:gap-3 divide-y divide-solid divide-gray-200 dark:divide-slate-700', {
+      className={classNames('divide-y divide-solid divide-gray-200 dark:divide-slate-700', {
         'divide-none': divideType !== 'border',
       })}
       {...other}

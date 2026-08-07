@@ -89,21 +89,6 @@ const connectTimelineStream = (
         case 'filters_changed':
           dispatch(fetchFilters());
           break;
-        case 'pleroma:chat_update':
-          dispatch((dispatch: AppDispatch, getState: () => RootState) => {
-            const chat = JSON.parse(data.payload);
-            const me = getState().me;
-            const messageOwned = !(chat.last_message && chat.last_message.account_id !== me);
-
-            dispatch({
-              type: STREAMING_CHAT_UPDATE,
-              chat,
-              me,
-              // Only play sounds for recipient messages
-              meta: !messageOwned && getSettings(getState()).getIn(['chats', 'sound']) && { sound: 'chat' },
-            });
-          });
-          break;
         case 'pleroma:follow_relationships_update':
           dispatch(updateFollowRelationships(JSON.parse(data.payload)));
           break;

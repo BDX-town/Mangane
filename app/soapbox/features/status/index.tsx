@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { debounce } from 'lodash';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -47,7 +47,6 @@ import DetailedStatus from './components/detailed-status';
 import ThreadLoginCta from './components/thread-login-cta';
 import ThreadStatus from './components/thread-status';
 
-import type { VirtuosoHandle } from 'react-virtuoso';
 import type { RootState } from 'soapbox/store';
 import type {
   Account as AccountEntity,
@@ -161,39 +160,22 @@ const Thread: React.FC<IThread> = (props) => {
     }
 
     return {
-      status: actualStatus,
       ancestorsIds,
       descendantsIds,
     };
   });
 
   const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(actualStatus, displayMedia));
-  const [isLoaded, setIsLoaded] = useState<boolean>(!!actualStatus);
+  // fonction to load more context
   const [next, setNext] = useState<string>();
 
   const node = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
-  const scroller = useRef<VirtuosoHandle>(null);
+  // ruisseau scroller
+  const [scroller, setScroller] = useState<HTMLElement>(null);
+  // box size for the 'fake' status shown during loading to avoid jumps
+  const [actualStatusNode, setActualStatusNode] = useState<{ top: number, left: number, width: number, height: number} | undefined>(undefined);
 
-  /** Fetch the status (and context) from the API. */
-  const fetchDataRef = useRef(null);
-  const fetchData = useCallback(async() => {
-    try {
-      const time = new Date().getTime();
-      fetchDataRef.current = time;
-      const { next } = await dispatch(fetchStatusWithContext(props.params.statusId));
-      if (time < fetchDataRef.current) return; // this is not the last call, we stop there
-      setNext(next);
-    } catch (e) {
-      console.error(e);
-    }
-    setIsLoaded(true);
-  }, [dispatch, props.params.statusId]);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchData();
-  }, [fetchData, props.params.statusId]);
 
   const handleToggleMediaVisibility = useCallback(() => {
     setShowMedia(!showMedia);
@@ -302,18 +284,8 @@ const Thread: React.FC<IThread> = (props) => {
   }, [dispatch]);
 
   const _selectChild = useCallback((index: number) => {
-    scroller.current?.scrollIntoView({
-      index,
-      behavior: 'smooth',
-      done: () => {
-        const element = document.querySelector<HTMLDivElement>(`#thread [data-index="${index}"] .focusable`);
-
-        if (element) {
-          element.focus();
-        }
-      },
-    });
-  }, []);
+    scroller?.children[index].scrollIntoView({ behavior: 'smooth' });
+  }, [scroller]);
 
   const handleMoveUp = useCallback((id: string) => {
     if (id === actualStatus?.id) {
@@ -356,96 +328,11 @@ const Thread: React.FC<IThread> = (props) => {
   }, [handleMoveDown, actualStatus]);
 
 
-
-  const renderTombstone = useCallback((id: string) => {
-    return (
-      <div className='py-4 pb-8'>
-        <Tombstone
-          key={id}
-          id={id}
-          onMoveUp={handleMoveUp}
-          onMoveDown={handleMoveDown}
-        />
-      </div>
-    );
-  }, [handleMoveDown, handleMoveUp]);
-
-  const renderStatus = useCallback((id: string) => {
-    return (
-      <ThreadStatus
-        key={id}
-        id={id}
-        focusedStatusId={actualStatus!.id}
-        onMoveUp={handleMoveUp}
-        onMoveDown={handleMoveDown}
-      />
-    );
-  }, [handleMoveDown, handleMoveUp, actualStatus]);
-
-  const renderPendingStatus = useCallback((id: string) => {
-    const idempotencyKey = id.replace(/^末pending-/, '');
-
-    return (
-      <PendingStatus
-        className='thread__status'
-        key={id}
-        idempotencyKey={idempotencyKey}
-      />
-    );
-  }, []);
-
-  const renderChildren = useCallback((list: ImmutableOrderedSet<string>) => {
-    return list.map(id => {
-      if (id.endsWith('-tombstone')) {
-        return renderTombstone(id);
-      } else if (id.startsWith('末pending-')) {
-        return renderPendingStatus(id);
-      } else {
-        return renderStatus(id);
-      }
-    });
-  }, [renderPendingStatus, renderStatus, renderTombstone]);
-
-  // Reset media visibility if status changes.
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    // setShowMedia(defaultMediaVisibility(status, displayMedia));
-  }, [displayMedia, actualStatus, actualStatus?.id]);
-
-  // Scroll focused status into view when thread updates.
-  useEffect(() => {
-    scroller.current?.scrollToIndex({
-      index: ancestorsIds.size,
-      offset: -80,
-    });
-
-    setImmediate(() => statusRef.current?.querySelector<HTMLDivElement>('.detailed-status')?.focus());
-  }, [props.params.statusId, actualStatus?.id, ancestorsIds.size, isLoaded]);
-
-  const handleRefresh = useCallback(() => {
-    return fetchData();
-  }, [fetchData]);
-
-  const handleLoadMore = useCallback(async() => {
-    if (!next || !actualStatus) return;
-    try {
-      const { next: _next } = await dispatch(fetchNext(actualStatus.id, next));
-      setNext(_next);
-    } catch (e) {
-      console.error(e);
-    }
-  }, [dispatch, next, actualStatus]);
-
-  const handleLoadMoreDebounced = useMemo(() => debounce(handleLoadMore, 300, { leading: true }), [handleLoadMore]);
-
   const handleOpenCompareHistoryModal = useCallback((status: StatusEntity) => {
     dispatch(openModal('COMPARE_HISTORY', {
       statusId: status.id,
     }));
   }, [dispatch]);
-
-  const hasAncestors = ancestorsIds.size > 0;
-  const hasDescendants = descendantsIds.size > 0;
 
 
   const handlers: HotkeyHandlers = useMemo(() => ({
@@ -486,67 +373,189 @@ const Thread: React.FC<IThread> = (props) => {
     }
   }, [actualStatus, history]);
 
-  const focusedStatus = useMemo(() => !actualStatus ? null : (
-    <>
-      <div className={classNames('thread__detailed-status')} key={actualStatus.id}>
-        <HotKeys handlers={handlers}>
-          <div
-            ref={statusRef}
-            className='detailed-status__wrapper focusable'
-            tabIndex={0}
-            // FIXME: no "reblogged by" text is added for the screen reader
-            aria-label={textForScreenReader(intl, actualStatus)}
-          >
-            <DetailedStatus
-              status={actualStatus}
-              onOpenVideo={handleOpenVideo}
-              onOpenMedia={handleOpenMedia}
-              onToggleHidden={handleToggleHidden}
-              showMedia={showMedia}
-              onToggleMediaVisibility={handleToggleMediaVisibility}
-              onOpenCompareHistoryModal={handleOpenCompareHistoryModal}
-              onTranslate={handleTranslate}
-            />
-            <StatusActionBar
-              status={actualStatus}
-              onDelete={onDeleteStatus}
-            />
-          </div>
-        </HotKeys>
+  const [seeking, setSeeking] = useState(false);
+
+  const renderTombstone = useCallback((id: string) => {
+    return (
+      <div className={'py-4 pb-8'}>
+        <Tombstone
+          key={id}
+          id={id}
+          onMoveUp={handleMoveUp}
+          onMoveDown={handleMoveDown}
+        />
       </div>
-      {
-        me && <>
-          <hr className='my-5 border-gray-200 dark:border-gray-700' />
-          <div className='py-4'>
-            <ComposeFormContainer autoFocus={false} onSubmit={handleComposeSubmit} />
-          </div>
-        </>
+    );
+  }, [handleMoveDown, handleMoveUp]);
+
+  const renderStatus = useCallback((id: string) => {
+    return (
+      <ThreadStatus
+        key={id}
+        id={id}
+        focusedStatusId={actualStatus!.id}
+        onMoveUp={handleMoveUp}
+        onMoveDown={handleMoveDown}
+      />
+    );
+  }, [actualStatus, handleMoveUp, handleMoveDown]);
+
+  const renderPendingStatus = useCallback((id: string) => {
+    const idempotencyKey = id.replace(/^末pending-/, '');
+
+    return (
+      <PendingStatus
+        className={'thread__status'}
+        key={id}
+        idempotencyKey={idempotencyKey}
+      />
+    );
+  }, []);
+
+  const renderChildren = useCallback((list: ImmutableOrderedSet<string>) => {
+    return list.map(id => {
+      if (id.endsWith('-tombstone')) {
+        return renderTombstone(id);
+      } else if (id.startsWith('末pending-')) {
+        return renderPendingStatus(id);
+      } else {
+        return renderStatus(id);
       }
+    });
+  }, [renderPendingStatus, renderStatus, renderTombstone]);
 
-    </>
-  ), [actualStatus, handlers, intl, handleOpenVideo, handleOpenMedia, handleToggleHidden, showMedia, handleToggleMediaVisibility, handleOpenCompareHistoryModal, handleTranslate, me, handleComposeSubmit]);
 
 
-  const children = useMemo(() => {
-    const childs: JSX.Element[] = [];
-    if (hasAncestors) {
-      childs.push(...renderChildren(ancestorsIds).toArray());
+  // Reset media visibility if status changes.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setShowMedia(defaultMediaVisibility(status, displayMedia));
+  }, [displayMedia, status]);
+
+
+  // =============== DATA LOADING ============================================================
+
+  const [ready, setReady] = useState(false);
+
+  /** Fetch the status (and context) from the API. */
+  const fetchDataRef = useRef(null);
+  const fetchData = useCallback(async() => {
+    try {
+      const time = new Date().getTime();
+      fetchDataRef.current = time;
+      const { next } = await dispatch(fetchStatusWithContext(props.params.statusId));
+      if (time < fetchDataRef.current) return; // this is not the last call, we stop there
+      setNext(next);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setReady(true);
     }
-    childs.push(focusedStatus);
-    if (hasDescendants) {
-      childs.push(...renderChildren(descendantsIds).toArray());
+  }, [dispatch, props.params.statusId]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchData();
+  }, [fetchData]);
+
+  const handleRefresh = useCallback(() => {
+    return fetchData();
+  }, [fetchData]);
+
+  const handleLoadMore = useCallback(async() => {
+    if (!next || !actualStatus) return;
+    try {
+      const { next: _next } = await dispatch(fetchNext(actualStatus.id, next));
+      setNext(_next);
+    } catch (e) {
+      console.error(e);
     }
-    return childs;
-  }, [ancestorsIds, descendantsIds, focusedStatus, hasAncestors, hasDescendants, renderChildren]);
+  }, [dispatch, next, actualStatus]);
+
+  const handleLoadMoreDebounced = useMemo(() => debounce(handleLoadMore, 300, { leading: true }), [handleLoadMore]);
+
+  const renderAncestors = useCallback(() => {
+    // if we have the context, let's show it
+    if (ready && ancestorsIds.size > 0) {
+      return renderChildren(ancestorsIds).toArray();
+    }
+    return [];
+  }, [ready, ancestorsIds, renderChildren]);
+
+  const renderDescendants = useCallback(() => {
+    // if we have the context, let's show it
+    if (ready) {
+      if (descendantsIds.size > 0) return renderChildren(descendantsIds).toArray();
+      return [];
+    }
+    // context is not fully loaded and either we dont have actual status
+    if (!actualStatus) return [<PlaceholderStatus />];
+    // or it has replies
+    return new Array(actualStatus.replies_count).fill(undefined).map(() => <PlaceholderStatus />);
+  }, [ready, actualStatus, renderChildren, descendantsIds]);
 
 
-  if (!actualStatus && isLoaded) {
+  // when actual status is loaded and show we capture it's position and size to show a 'fake' status over the actual thread
+  // to hide scroll 'jumps'
+  useEffect(() => {
+    if (!actualStatus || !actualStatus.in_reply_to_id) return;
+    const rect = {
+      top:  (scroller?.children[0].getBoundingClientRect().top - node.current?.getBoundingClientRect().top) * -1,
+      left: node.current?.getBoundingClientRect().left,
+      width: node.current?.getBoundingClientRect().width,
+      height: node.current?.getBoundingClientRect().height,
+    };
+    setActualStatusNode(rect);
+  }, [actualStatus, scroller]);
+
+
+  const renderActualStatus = useCallback(() => {
+    // we dont have actual status yet
+    if (!actualStatus) return [<PlaceholderStatus />];
+    return [(
+      <>
+        <div className={classNames('thread__detailed-status')} key={actualStatus.id}>
+          <HotKeys handlers={handlers}>
+            <div
+              ref={statusRef}
+              className='detailed-status__wrapper focusable'
+              tabIndex={0}
+              // FIXME: no "reblogged by" text is added for the screen reader
+              aria-label={textForScreenReader(intl, actualStatus)}
+            >
+              <DetailedStatus
+                status={actualStatus}
+                onOpenVideo={handleOpenVideo}
+                onOpenMedia={handleOpenMedia}
+                onToggleHidden={handleToggleHidden}
+                showMedia={showMedia}
+                onToggleMediaVisibility={handleToggleMediaVisibility}
+                onOpenCompareHistoryModal={handleOpenCompareHistoryModal}
+                onTranslate={handleTranslate}
+              />
+              <StatusActionBar
+                status={actualStatus}
+                onDelete={onDeleteStatus}
+              />
+            </div>
+          </HotKeys>
+        </div>
+        {
+          me && <>
+            <hr className='my-5 border-gray-200 dark:border-gray-700' />
+            <div className='py-4'>
+              <ComposeFormContainer autoFocus={false} disabled={!ready} onSubmit={handleComposeSubmit} />
+            </div>
+          </>
+        }
+      </>
+    )];
+  }, [actualStatus, handleComposeSubmit, handleOpenCompareHistoryModal, handleOpenMedia, handleOpenVideo, handleToggleHidden, handleToggleMediaVisibility, handleTranslate, handlers, intl, me, onDeleteStatus, ready, showMedia]);
+
+  if (!actualStatus && ready) {
+    // this need to be kept separate from children as it carries its own column
     return (
       <MissingIndicator />
-    );
-  } else if (!actualStatus) {
-    return (
-      <PlaceholderStatus />
     );
   }
 
@@ -558,22 +567,30 @@ const Thread: React.FC<IThread> = (props) => {
         </div>
       </Sticky>
       <PullToRefresh onRefresh={handleRefresh}>
-        <Stack space={2}>
-          <div ref={node} className='thread'>
-            <ScrollableList
-              id='thread'
-              ref={scroller}
-              hasMore={!!next}
-              onLoadMore={handleLoadMoreDebounced}
-              placeholderComponent={() => <PlaceholderStatus />}
-              initialTopMostItemIndex={ancestorsIds.size}
-            >
-              {children}
-            </ScrollableList>
-          </div>
-
-          {!me && <ThreadLoginCta />}
-        </Stack>
+        <div ref={node} className={`thread ${(seeking || (!ready && actualStatus && actualStatusNode)) ? 'opacity-0' : 'opacity-100'}`}>
+          <ScrollableList
+            ref={setScroller}
+            onSeeking={setSeeking}
+            hasMore={!!next}
+            onLoadMore={handleLoadMoreDebounced}
+            placeholderComponent={() => <PlaceholderStatus />}
+            start={ready && ancestorsIds.size > 0 ? ancestorsIds.size : undefined}
+          >
+            {
+              [...renderAncestors(), ...renderActualStatus(), ...renderDescendants()]
+            }
+          </ScrollableList>
+        </div>
+        {
+          // this is the fake status show to hide jumps while still allowing the reader to read
+          actualStatusNode && (seeking || !ready) && (
+            <div className={'fixed thread'} style={{ top: `${actualStatusNode.top}px`, left: `${actualStatusNode.left}px`, width: `${actualStatusNode.width}px`, minHeight: `${actualStatusNode.height}px` }}>
+              {renderActualStatus()}
+              <PlaceholderStatus />
+            </div>
+          )
+        }
+        {!me && <ThreadLoginCta />}
       </PullToRefresh>
     </Column>
   );

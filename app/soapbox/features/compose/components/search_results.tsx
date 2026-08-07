@@ -16,7 +16,6 @@ import PlaceholderStatus from 'soapbox/features/placeholder/components/placehold
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import type { VirtuosoHandle } from 'react-virtuoso';
 import type { SearchFilter } from 'soapbox/reducers/search';
 
 const messages = defineMessages({
@@ -26,7 +25,7 @@ const messages = defineMessages({
 });
 
 const SearchResults = () => {
-  const node = useRef<VirtuosoHandle>(null);
+  const node = useRef<HTMLElement>(null);
 
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -100,7 +99,7 @@ const SearchResults = () => {
 
   useEffect(() => {
     dispatch(fetchTrendingStatuses());
-  }, []);
+  }, [dispatch]);
 
   let searchResults;
   let hasMore = false;
@@ -115,9 +114,9 @@ const SearchResults = () => {
     placeholderComponent = PlaceholderAccount;
 
     if (results.accounts && results.accounts.size > 0) {
-      searchResults = results.accounts.map(accountId => <AccountContainer key={accountId} id={accountId} />);
+      searchResults = results.accounts.map(accountId => <AccountContainer className="pb-3" key={accountId} id={accountId} />);
     } else if (!submitted && suggestions && !suggestions.isEmpty()) {
-      searchResults = suggestions.map(suggestion => <AccountContainer key={suggestion.account} id={suggestion.account} />);
+      searchResults = suggestions.map(suggestion => <AccountContainer className="pb-3" key={suggestion.account} id={suggestion.account} />);
     } else if (loaded) {
       noResultsMessage = (
         <div className='empty-column-indicator'>
@@ -214,17 +213,12 @@ const SearchResults = () => {
           key={selectedFilter}
           scrollKey={`${selectedFilter}:${value}`}
           isLoading={submitted && !loaded}
-          showLoading={submitted && !loaded && searchResults?.isEmpty()}
           hasMore={hasMore}
           onLoadMore={handleLoadMore}
           placeholderComponent={placeholderComponent}
           placeholderCount={20}
           className={classNames({
             'divide-gray-200 dark:divide-slate-700 divide-solid divide-y': selectedFilter === 'statuses',
-          })}
-          itemClassName={classNames({
-            'pb-4': selectedFilter === 'accounts',
-            'pb-3': selectedFilter === 'hashtags',
           })}
         >
           {searchResults || []}

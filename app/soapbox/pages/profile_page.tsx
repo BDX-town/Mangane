@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Redirect, useHistory } from 'react-router-dom';
 
@@ -21,6 +21,7 @@ interface IProfilePage {
   params?: {
     username?: string,
   },
+  children: ReactNode,
 }
 
 const getAccount = makeGetAccount();
@@ -87,7 +88,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
 
   return (
     <>
-      <Layout.Main>
+      <Layout.Main className=''>
         <Column label={account ? `@${getAcct(account, displayFqn)}` : ''} withHeader={false}>
           <div className='space-y-4'>
             <Header account={account} />
@@ -105,18 +106,18 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
         </Column>
       </Layout.Main>
 
-      <Layout.Aside>
-        {!me && (
-          <BundleContainer fetchComponent={SignUpPanel}>
-            {Component => <Component key='sign-up-panel' />}
-          </BundleContainer>
-        )}
+      <Layout.Aside className=''>
         {account && !account.fields.isEmpty() && (
           <Widget title={<FormattedMessage id='profile_fields_panel.title' defaultMessage='Profile fields' />}>
             <BundleContainer fetchComponent={ProfileFieldsPanel}>
               {Component => <Component account={account} />}
             </BundleContainer>
           </Widget>
+        )}
+        {!me && (
+          <BundleContainer fetchComponent={SignUpPanel}>
+            {Component => <Component key='sign-up-panel' />}
+          </BundleContainer>
         )}
         {(features.accountEndorsements && account && isLocal(account) && me) ? (
           <BundleContainer fetchComponent={PinnedAccountsPanel}>
@@ -127,6 +128,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
             {Component => <Component limit={5} key='wtf-panel' />}
           </BundleContainer>
         )}
+        <div className='grow' />
         <LinkFooter key='link-footer' />
       </Layout.Aside>
     </>

@@ -1,37 +1,37 @@
-import throttle from 'lodash/throttle';
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useEffect, useRef, RefObject } from 'react';
 import { useIntl, MessageDescriptor } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
 import { Text } from 'soapbox/components/ui';
 import { useSettings } from 'soapbox/hooks';
 
-interface IScrollTopButton {
+interface IScrollToButton {
   /** Callback when clicked, and also when scrolled to the top. */
   onClick: () => void,
   /** Number of unread items. */
   count: number,
   /** Message to display in the button (should contain a `{count}` value). */
   message: MessageDescriptor,
-  /** Distance from the top of the screen (scrolling down) before the button appears. */
-  threshold?: number,
   /** Distance from the top of the screen (scrolling up) before the action is triggered. */
   autoloadThreshold?: number,
+  to: RefObject<HTMLDivElement>
 }
 
+
+
+
 /** Floating new post counter above timelines, clicked to scroll to top. */
-const ScrollTopButton: React.FC<IScrollTopButton> = ({
+const ScrollToButton: React.FC<IScrollToButton> = ({
   onClick,
   count,
   message,
-  threshold = 400,
+  to,
   autoloadThreshold = 50,
 }) => {
   const intl = useIntl();
   const settings = useSettings();
 
   const timer = React.useRef(null);
-  const [scrolled, setScrolled] = useState<boolean>(false);
   const autoload = settings.get('autoloadTimelines') === true;
 
   const getScrollTop = React.useCallback((): number => {
@@ -51,51 +51,30 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
     }, 1000);
   }, [count, autoload, getScrollTop, autoloadThreshold, onClick]);
 
-  const handleScrollThrottled = useMemo(() => {
-    return throttle(() => {
-      if (getScrollTop() > threshold) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    }, 150, { trailing: true });
-  }, [getScrollTop, threshold]);
-
-  const handleScroll = useCallback(() => handleScrollThrottled(), [handleScrollThrottled]);
-
-  const scrollUp = React.useCallback(() => {
-    window.scrollTo({ top: 0 });
-  }, []);
 
   const handleClick: React.MouseEventHandler = () => {
-    setTimeout(scrollUp, 10);
     onClick();
+    to.current.scrollIntoView({ block: 'start' });
   };
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [handleScroll, onClick]);
+  const root = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     maybeUnload();
   }, [maybeUnload]);
 
-  const visible = React.useMemo(() => count > 0 && scrolled, [count, scrolled]) ;
+  const visible = React.useMemo(() => count > 0, [count]) ;
 
   if (!visible) return null;
 
   return (
-    <div className='left-1/2 -translate-x-1/2 fixed top-2 z-50'>
+    <div ref={root} className='left-1/2 -translate-x-1/2 fixed top-2 z-50'>
       <button
         className='flex items-center bg-primary-600 hover:bg-primary-700 hover:scale-105 active:scale-100 transition-transform text-white rounded-full px-4 py-2 space-x-1.5 cursor-pointer whitespace-nowrap'
         onClick={handleClick}
       >
-        <Icon src={require('@tabler/icons/arrow-bar-to-up.svg')} />
-        <Text theme='inherit' size='sm'>
+        <Icon src={require('@tabler/icons/arrow-bar-to-up.svg')} fixedWidth={8} />
+        <Text theme='inherit' size='xs'>
           {intl.formatMessage(message, { count })}
         </Text>
       </button>
@@ -103,4 +82,4 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
   );
 };
 
-export default ScrollTopButton;
+export default ScrollToButton;

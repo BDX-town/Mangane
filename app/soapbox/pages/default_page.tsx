@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
@@ -6,23 +6,23 @@ import {
   WhoToFollowPanel,
   TrendsPanel,
   SignUpPanel,
-  CtaBanner,
+  PromoPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 
 import { Layout } from '../components/ui';
 
-const DefaultPage: React.FC = ({ children }) => {
+const DefaultPage: React.FC = ({ children }: { children: ReactNode }) => {
   const me = useAppSelector(state => state.me);
   const features = useFeatures();
 
   return (
     <>
-      <Layout.Main>
+      <Layout.Main className=''>
         {children}
       </Layout.Main>
 
-      <Layout.Aside>
+      <Layout.Aside className=''>
         {!me && (
           <BundleContainer fetchComponent={SignUpPanel}>
             {Component => <Component key='sign-up-panel' />}
@@ -33,11 +33,15 @@ const DefaultPage: React.FC = ({ children }) => {
             {Component => <Component limit={3} key='trends-panel' />}
           </BundleContainer>
         )}
+        <BundleContainer fetchComponent={PromoPanel}>
+          {Component => <Component />}
+        </BundleContainer>
         {features.suggestions && (
           <BundleContainer fetchComponent={WhoToFollowPanel}>
             {Component => <Component limit={5} key='wtf-panel' />}
           </BundleContainer>
         )}
+        <div className='grow' />
         <LinkFooter key='link-footer' />
       </Layout.Aside>
     </>
