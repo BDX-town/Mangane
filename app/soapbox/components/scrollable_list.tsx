@@ -13,6 +13,8 @@ interface IScrollableList extends Omit<HTMLProps<HTMLDivElement>, 'onSeeking'> {
   scrollKey?: string,
   /** Pagination callback when the end of the list is reached. */
   onLoadMore?: () => void,
+  /** callback when user is a start */
+  onStart?: () => void,
   /** Whether the data is currently being fetched. */
   isLoading?: boolean,
   /** Whether we expect an additional page of data. */
@@ -51,6 +53,7 @@ const ScrollableList = React.forwardRef<HTMLElement, IScrollableList>(({
   placeholderComponent: Placeholder,
   placeholderCount = 0,
   prepend,
+  onStart,
   start,
   ...rest
 }, ref) => {
@@ -84,7 +87,7 @@ const ScrollableList = React.forwardRef<HTMLElement, IScrollableList>(({
   }, []);
 
   return (
-    <Ruisseau ref={findScrollableParent} {...rest} onSeeking={onSeeking} start={start} endRatio={0.7} name={scrollKey} className={`grow ${className}`} onEnd={onEnd} scrollElement={scrollableParent}>
+    <Ruisseau ref={findScrollableParent} {...rest} onStart={onStart} onSeeking={onSeeking} start={start} endRatio={0.7} name={scrollKey} className={`grow ${className}`} onEnd={onEnd} scrollElement={scrollableParent}>
       {prepend}
       {children}
       {React.Children.count(children) === 0 && !isLoading && (

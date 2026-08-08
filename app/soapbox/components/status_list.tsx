@@ -26,6 +26,8 @@ interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
   featuredStatusIds?: ImmutableOrderedSet<string>,
   /** Pagination callback when the end of the list is reached. */
   onLoadMore?: (lastStatusId: string) => void,
+  /** callback to call when user is at list top */
+  onStart?: () => void,
   /** Whether the data is currently being fetched. */
   isLoading: boolean,
   /** Whether the server did not return a complete page. */
@@ -161,6 +163,7 @@ const StatusList: React.FC<IStatusList> = ({
   isLoading,
   isPartial,
   children,
+  onStart,
   ...other
 }) => {
   const Placeholder = useMemo(() => makePlaceholder({ timelineId }), [timelineId]);
@@ -230,6 +233,7 @@ const StatusList: React.FC<IStatusList> = ({
       onLoadMore={handleLoadOlder}
       placeholderComponent={Placeholder}
       placeholderCount={20}
+      onStart={onStart}
       className={classNames('divide-y divide-solid divide-gray-200 dark:divide-slate-700', {
         'divide-none': divideType !== 'border',
       })}

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import debounce from 'lodash/debounce';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { createSelector } from 'reselect';
 
@@ -62,22 +62,24 @@ const Notifications = () => {
   const column = useRef<HTMLDivElement>(null);
   const scrollableContentRef = useRef<ImmutableList<JSX.Element> | null>(null);
 
-  // const handleLoadGap = (maxId) => {
-  //   dispatch(expandNotifications({ maxId }));
-  // };
-
-  const handleLoadOlder = useCallback(debounce(() => {
+  const _handleLoadOlder = useCallback(() => {
     const last = notifications.last();
     dispatch(expandNotifications({ maxId: last && last.get('id') }));
-  }, 300, { leading: true }), [notifications]);
+  }, [dispatch, notifications]);
 
-  const handleScrollToTop = useCallback(debounce(() => {
+  const handleLoadOlder = useMemo(() => debounce(_handleLoadOlder, 300, { leading: true }), [_handleLoadOlder]);
+
+  const _handleScrollToTop = useCallback(() => {
     dispatch(scrollTopNotifications(true));
-  }, 100), []);
+  }, [dispatch]);
 
-  const handleScroll = useCallback(debounce(() => {
+  const handleScrollToTop = useMemo(() => debounce(_handleScrollToTop, 100), [_handleScrollToTop]);
+
+  const _handleScroll = useCallback(() => {
     dispatch(scrollTopNotifications(false));
-  }, 100), []);
+  }, [dispatch]);
+
+  const handleScroll = useMemo(() => debounce(_handleScroll, 100), [_handleScroll]);
 
   const handleMoveUp = (id: string) => {
     const elementIndex = notifications.findIndex(item => item !== null && item.get('id') === id) - 1;
@@ -93,9 +95,16 @@ const Notifications = () => {
     scrollIntoViewAndFocus(node.current, index);
   };
 
-  const handleDequeueNotifications = () => {
+  const handleDequeueNotifications = useCallback(() => {
     dispatch(dequeueNotifications());
-  };
+  }, [dispatch]);
+
+  const onStart = useMemo(() => debounce(handleDequeueNotifications, 1000), [handleDequeueNotifications]);
+
+  const onClick = useCallback(() => {
+    column.current.scrollIntoView({ behavior: 'instant', block: 'start' });
+    handleDequeueNotifications();
+  }, [handleDequeueNotifications]);
 
   const handleRefresh = () => {
     return dispatch(expandNotifications());
@@ -111,7 +120,7 @@ const Notifications = () => {
       handleScroll.cancel();
       dispatch(scrollTopNotifications(false));
     };
-  }, []);
+  }, [dispatch, handleDequeueNotifications, handleLoadOlder, handleScroll, handleScrollToTop]);
 
   const emptyMessage = activeFilter === 'all'
     ? <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />
@@ -144,15 +153,14 @@ const Notifications = () => {
   const scrollContainer = (
     <ScrollableList
       ref={node}
+      onStart={onStart}
       scrollKey='notifications'
       isLoading={isLoading}
-      showLoading={isLoading && notifications.size === 0}
       hasMore={hasMore}
       emptyMessage={emptyMessage}
       placeholderComponent={PlaceholderNotification}
       placeholderCount={20}
       onLoadMore={handleLoadOlder}
-      onScrollToTop={handleScrollToTop}
       onScroll={handleScroll}
       className={classNames({
         'divide-y divide-gray-200 dark:divide-gray-600 divide-solid': notifications.size > 0,
@@ -167,10 +175,9 @@ const Notifications = () => {
     <Column ref={column} label={intl.formatMessage(messages.title)} withHeader={false}>
       {filterBarContainer}
       <ScrollTopButton
-        onClick={handleDequeueNotifications}
+        onClick={onClick}
         count={totalQueuedNotificationsCount}
         message={messages.queue}
-        to={column}
       />
       <PullToRefresh onRefresh={handleRefresh}>
         {scrollContainer}
