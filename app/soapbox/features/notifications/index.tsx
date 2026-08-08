@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import debounce from 'lodash/debounce';
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { createSelector } from 'reselect';
 
@@ -103,6 +103,14 @@ const Notifications = () => {
   const handleRefresh = () => {
     return dispatch(expandNotifications());
   };
+
+  useEffect(() => {
+    dispatch(scrollTopNotifications(true));
+
+    return () => {
+      dispatch(scrollTopNotifications(false));
+    };
+  }, [dispatch]);
 
   const emptyMessage = activeFilter === 'all'
     ? <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />
