@@ -88,7 +88,7 @@ const ScrollableList = React.forwardRef<HTMLElement, IScrollableList>(({
     <Ruisseau ref={findScrollableParent} {...rest} onSeeking={onSeeking} start={start} endRatio={0.7} name={scrollKey} className={`grow ${className}`} onEnd={onEnd} scrollElement={scrollableParent}>
       {prepend}
       {children}
-      {React.Children.count(children) === 0 && !isLoading && (
+      {React.Children.count(children) === 0 && !isLoading && emptyMessage && (
         <div className='mt-2'>
           <Card variant='rounded' size='lg'>
             <Text>{emptyMessage}</Text>

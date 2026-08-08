@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { Map as ImmutableMap } from 'immutable';
 import debounce from 'lodash/debounce';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -54,9 +54,11 @@ const Search = (props: ISearch) => {
   const value = useAppSelector((state) => state.search.value);
   const submitted = useAppSelector((state) => state.search.submitted);
 
-  const debouncedSubmit = useCallback(debounce(() => {
+  const _submit = useCallback(() => {
     dispatch(submitSearch());
-  }, 900), []);
+  }, [dispatch]);
+
+  const submit = useMemo(() => debounce(_submit, 900), [_submit]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -64,7 +66,7 @@ const Search = (props: ISearch) => {
     dispatch(changeSearch(value));
 
     if (autoSubmit) {
-      debouncedSubmit();
+      submit();
     }
   };
 

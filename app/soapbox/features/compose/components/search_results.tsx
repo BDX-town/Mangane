@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React, { useEffect, useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
@@ -87,14 +86,8 @@ const SearchResults = () => {
   };
 
   const selectChild = (index: number) => {
-    node.current?.scrollIntoView({
-      index,
-      behavior: 'smooth',
-      done: () => {
-        const element = document.querySelector<HTMLDivElement>(`#search-results [data-index="${index}"] .focusable`);
-        element?.focus();
-      },
-    });
+    node.current?.children[index]?.scrollIntoView({ behavior: 'smooth' });
+    (node.current?.children[index] as HTMLElement | undefined)?.focus();
   };
 
   useEffect(() => {
@@ -114,9 +107,9 @@ const SearchResults = () => {
     placeholderComponent = PlaceholderAccount;
 
     if (results.accounts && results.accounts.size > 0) {
-      searchResults = results.accounts.map(accountId => <AccountContainer className="pb-3" key={accountId} id={accountId} />);
+      searchResults = results.accounts.map(accountId => <AccountContainer className='py-3' key={accountId} id={accountId} />);
     } else if (!submitted && suggestions && !suggestions.isEmpty()) {
-      searchResults = suggestions.map(suggestion => <AccountContainer className="pb-3" key={suggestion.account} id={suggestion.account} />);
+      searchResults = suggestions.map(suggestion => <AccountContainer className='py-3' key={suggestion.account} id={suggestion.account} />);
     } else if (loaded) {
       noResultsMessage = (
         <div className='empty-column-indicator'>
@@ -216,10 +209,15 @@ const SearchResults = () => {
           hasMore={hasMore}
           onLoadMore={handleLoadMore}
           placeholderComponent={placeholderComponent}
-          placeholderCount={20}
-          className={classNames({
-            'divide-gray-200 dark:divide-slate-700 divide-solid divide-y': selectedFilter === 'statuses',
-          })}
+          placeholderCount={3}
+          emptyMessage={
+            <div className='empty-column-indicator'>
+              <FormattedMessage
+                id='search_results.empty-search'
+                defaultMessage='Search anything :)'
+              />
+            </div>
+          }
         >
           {searchResults || []}
         </ScrollableList>
