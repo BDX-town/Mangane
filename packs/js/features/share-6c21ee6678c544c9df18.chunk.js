@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkmangane_fe=self.webpackChunkmangane_fe||[]).push([[64],{1107:function(e,t,n){n.r(t);var a=n(2),r=n(28),u=n(79),s=n(7);t.default=()=>{const e=(0,s.jL)(),{search:t}=(0,r.zy)(),n=new URLSearchParams(t),c=[n.get("title"),n.get("text"),n.get("url")].filter(e=>e).join("\n\n");return c&&e((0,u.uA)(c)),(0,a.A)(r.rd,{to:"/"})}}}]);
+//# sourceMappingURL=share-6c21ee6678c544c9df18.chunk.js.map
