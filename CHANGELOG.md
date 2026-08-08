@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.22.7 (2026-08-08)
+
+
+### Bug Fixes
+
+* autoload of new status is not triggered when scrolling anymore ([e918c62](https://github.com/BDX-town/Mangane/commit/e918c6250bcad157a99d450bd723dfee28bacc4b))
+
 ## 1.22.6 (2026-08-08)
 
 ## 1.22.5 (2026-08-08)
