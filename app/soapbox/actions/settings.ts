@@ -48,7 +48,6 @@ const defaultSettings = ImmutableMap({
   showExplanationBox: true,
   explanationBox: true,
   autoloadTimelines: true,
-  autoloadMore: true,
 
   systemFont: false,
   dyslexicFont: false,

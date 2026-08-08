@@ -844,7 +844,7 @@
   "poll_button.add_poll": "Dodaj głosowanie",
   "poll_button.remove_poll": "Usuń głosowanie",
   "preferences.fields.auto_play_gif_label": "Automatycznie odtwarzaj anonimowe GIF-y",
-  "preferences.fields.autoload_more_label": "Automatycznie ładuj więcej wpisów po przewinięciu na dół strony",
+  
   "preferences.fields.autoload_timelines_label": "Automatycznie załaduj nowe wpisy po przewinięciu na szczyt strony",
   "preferences.fields.boost_modal_label": "Pokazuj prośbę o potwierdzenie przed podbiciem",
   "preferences.fields.content_type_label": "Format wpisów",

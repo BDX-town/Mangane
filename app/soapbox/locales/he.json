@@ -844,7 +844,7 @@
   "poll_button.add_poll": "הוסף סקר",
   "poll_button.remove_poll": "הסר סקר",
   "preferences.fields.auto_play_gif_label": "הפעל אוטומטית קובצי GIF מונפשים",
-  "preferences.fields.autoload_more_label": "טען אוטומטית יותר פריטים כאשר אתה מגיע לתחתית העמוד",
+  
   "preferences.fields.autoload_timelines_label": "טען אוטומטית פוסטים חדשים לאחר גלילה לראש העמוד",
   "preferences.fields.boost_modal_label": "הצג תיבת אישור לפני הדהוד",
   "preferences.fields.content_type_label": "Default post format",

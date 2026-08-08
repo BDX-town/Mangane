@@ -844,7 +844,7 @@
   "poll_button.add_poll": "Додати опитування",
   "poll_button.remove_poll": "Видалити опитування",
   "preferences.fields.auto_play_gif_label": "Автоматичне відтворення анімованих GIF-файлів",
-  "preferences.fields.autoload_more_label": "Автоматичне завантаження більшої кількості елементів при прокручуванні до кінця сторінки",
+  
   "preferences.fields.autoload_timelines_label": "Автоматичне завантаження нових постів при прокручуванні в початок сторінки",
   "preferences.fields.boost_modal_label": "Показувати діалог підтвердження перед репостом",
   "preferences.fields.content_type_label": "Формат повідомлення за замовчуванням",

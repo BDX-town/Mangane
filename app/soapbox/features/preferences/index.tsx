@@ -214,10 +214,6 @@ const Preferences = () => {
         <ListItem label={<FormattedMessage id='preferences.fields.autoload_timelines_label' defaultMessage='Automatically load new posts when scrolled to the top of the page' />}>
           <SettingToggle settings={settings} settingPath={['autoloadTimelines']} onChange={onToggleChange} />
         </ListItem>
-
-        <ListItem label={<FormattedMessage id='preferences.fields.autoload_more_label' defaultMessage='Automatically load more items when scrolled to the bottom of the page' />}>
-          <SettingToggle settings={settings} settingPath={['autoloadMore']} onChange={onToggleChange} />
-        </ListItem>
       </List>
     </Form>
   );

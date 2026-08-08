@@ -846,7 +846,7 @@
   "poll_button.add_poll": "Ajouter un sondage",
   "poll_button.remove_poll": "Supprimer le sondage",
   "preferences.fields.auto_play_gif_label": "Jouer automatiquement les GIFs",
-  "preferences.fields.autoload_more_label": "Charger automatiquement d'autres publications lors du scroll en bas de page",
+  
   "preferences.fields.autoload_timelines_label": "Charger automatiquement les nouvelles publications lors du scroll en haut de page",
   "preferences.fields.boost_modal_label": "Demander confirmation avant de booster",
   "preferences.fields.content_type_label": "Format de publication par défaut",
