@@ -105,7 +105,7 @@ class InstanceRestrictions extends ImmutablePureComponent {
     }
 
     return items;
-  }
+  };
 
   renderContent = () => {
     const { instance, remoteInstance } = this.props;
@@ -150,7 +150,7 @@ class InstanceRestrictions extends ImmutablePureComponent {
         </Text>
       );
     }
-  }
+  };
 
   render() {
     return (

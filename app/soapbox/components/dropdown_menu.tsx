@@ -68,7 +68,7 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
     if (this.node && !this.node.contains(e.target as Node)) {
       this.props.onClose();
     }
-  }
+  };
 
   componentDidMount() {
     document.addEventListener('click', this.handleDocumentClick, false);
@@ -88,11 +88,11 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
 
   setRef: React.RefCallback<HTMLDivElement> = c => {
     this.node = c;
-  }
+  };
 
   setFocusRef: React.RefCallback<HTMLAnchorElement> = c => {
     this.focusedItem = c;
-  }
+  };
 
   handleKeyDown = (e: KeyboardEvent) => {
     if (!this.node) return;
@@ -131,13 +131,13 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
       e.preventDefault();
       e.stopPropagation();
     }
-  }
+  };
 
   handleItemKeyPress: React.EventHandler<React.KeyboardEvent> = e => {
     if (e.key === 'Enter' || e.key === ' ') {
       this.handleClick(e);
     }
-  }
+  };
 
   handleClick: React.EventHandler<React.MouseEvent | React.KeyboardEvent> = e => {
     const i = Number(e.currentTarget.getAttribute('data-index'));
@@ -154,7 +154,7 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
       e.preventDefault();
       this.props.history.push(to);
     }
-  }
+  };
 
   handleMiddleClick: React.EventHandler<React.MouseEvent> = e => {
     const i = Number(e.currentTarget.getAttribute('data-index'));
@@ -168,13 +168,13 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
       e.preventDefault();
       middleClick(e);
     }
-  }
+  };
 
   handleAuxClick: React.EventHandler<React.MouseEvent> = e => {
     if (e.button === 1) {
       this.handleMiddleClick(e);
     }
-  }
+  };
 
   renderItem(option: MenuItem | null, i: number): JSX.Element {
     if (option === null) {
@@ -305,7 +305,7 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
 
       onOpen(this.state.id, this.handleItemClick, placement, e.type !== 'click');
     }
-  }
+  };
 
   handleClose = () => {
     if (this.activeElement && this.activeElement === this.target) {
@@ -316,13 +316,13 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
     if (this.props.onClose) {
       this.props.onClose(this.state.id);
     }
-  }
+  };
 
   handleMouseDown: React.EventHandler<React.MouseEvent | React.KeyboardEvent> = () => {
     if (!this.state.open) {
       this.activeElement = document.activeElement;
     }
-  }
+  };
 
   handleButtonKeyDown: React.EventHandler<React.KeyboardEvent> = (e) => {
     switch (e.key) {
@@ -331,7 +331,7 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
         this.handleMouseDown(e);
         break;
     }
-  }
+  };
 
   handleKeyPress: React.EventHandler<React.KeyboardEvent<HTMLButtonElement>> = (e) => {
     switch (e.key) {
@@ -342,7 +342,7 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
         e.preventDefault();
         break;
     }
-  }
+  };
 
   handleItemClick: React.EventHandler<React.MouseEvent> = e => {
     const i = Number(e.currentTarget.getAttribute('data-index'));
@@ -360,21 +360,21 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
     } else if (to) {
       this.props.history?.push(to);
     }
-  }
+  };
 
   setTargetRef: React.RefCallback<HTMLButtonElement> = c => {
     this.target = c;
-  }
+  };
 
   findTarget = () => {
     return this.target;
-  }
+  };
 
   componentWillUnmount = () => {
     if (this.state.id === this.props.openDropdownId) {
       this.handleClose();
     }
-  }
+  };
 
   render() {
     const { src = dots, items, title, disabled, dropdownPlacement, openDropdownId, openedViaKeyboard = false, pressed, text, children } = this.props;

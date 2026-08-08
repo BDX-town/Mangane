@@ -1,8 +1,8 @@
 import MockAdapter from 'axios-mock-adapter';
 import { Map as ImmutableMap } from 'immutable';
+import { mockStore } from 'soapbox/jest/test-helpers';
 
 import { staticClient } from 'soapbox/api';
-import { mockStore } from 'soapbox/jest/test-helpers';
 
 import {
   FETCH_ABOUT_PAGE_REQUEST,

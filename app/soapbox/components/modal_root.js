@@ -71,7 +71,7 @@ class ModalRoot extends React.PureComponent {
          && !!this.props.children) {
       this.handleOnClose();
     }
-  }
+  };
 
   handleOnClose = () => {
     const { onOpenModal, onCloseModal, hasComposeContent, isEditing, intl, type, onCancelReplyCompose } = this.props;
@@ -111,7 +111,7 @@ class ModalRoot extends React.PureComponent {
         e.preventDefault();
       }
     }
-  }
+  };
 
   componentDidMount() {
     window.addEventListener('keyup', this.handleKeyUp, false);
@@ -183,11 +183,11 @@ class ModalRoot extends React.PureComponent {
 
   getSiblings = () => {
     return Array(...this.node.parentElement.childNodes).filter(node => node !== this.node);
-  }
+  };
 
   setRef = ref => {
     this.node = ref;
-  }
+  };
 
   render() {
     const { children, type } = this.props;

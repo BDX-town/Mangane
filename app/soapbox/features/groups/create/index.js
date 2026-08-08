@@ -56,20 +56,20 @@ class Create extends React.PureComponent {
 
   handleTitleChange = e => {
     this.props.onTitleChange(e.target.value);
-  }
+  };
 
   handleDescriptionChange = e => {
     this.props.onDescriptionChange(e.target.value);
-  }
+  };
 
   handleCoverImageChange = e => {
     this.props.onCoverImageChange(e.target.files[0]);
-  }
+  };
 
   handleSubmit = e => {
     e.preventDefault();
     this.props.onSubmit(this.props.history);
-  }
+  };
 
   render() {
     const { title, description, coverImage, disabled, intl } = this.props;

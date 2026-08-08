@@ -1,5 +1,6 @@
-import { __stub } from 'soapbox/api';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
+
+import { __stub } from 'soapbox/api';
 
 import { fetchRules, RULES_FETCH_REQUEST, RULES_FETCH_SUCCESS } from '../rules';
 

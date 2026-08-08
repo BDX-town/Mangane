@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
+
 import { fetchFilters, createFilter, deleteFilter } from 'soapbox/actions/filters';
 import snackbar from 'soapbox/actions/snackbar';
 import Icon from 'soapbox/components/icon';

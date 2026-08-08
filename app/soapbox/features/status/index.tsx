@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { debounce } from 'lodash';
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -34,7 +34,7 @@ import StatusActionBar from 'soapbox/components/status-action-bar';
 import Sticky from 'soapbox/components/sticky';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import Tombstone from 'soapbox/components/tombstone';
-import { Column, Stack } from 'soapbox/components/ui';
+import { Column } from 'soapbox/components/ui';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
@@ -428,7 +428,6 @@ const Thread: React.FC<IThread> = (props) => {
 
   // Reset media visibility if status changes.
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setShowMedia(defaultMediaVisibility(status, displayMedia));
   }, [displayMedia, status]);
 
@@ -454,7 +453,6 @@ const Thread: React.FC<IThread> = (props) => {
   }, [dispatch, props.params.statusId]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchData();
   }, [fetchData]);
 

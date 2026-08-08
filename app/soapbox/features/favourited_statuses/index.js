@@ -108,7 +108,7 @@ class Favourites extends ImmutablePureComponent {
     } else {
       this.props.dispatch(expandAccountFavouritedStatuses(accountId));
     }
-  }, 300, { leading: true })
+  }, 300, { leading: true });
 
   render() {
     const { intl, statusIds, isLoading, hasMore, isMyAccount, isAccount, accountId, unavailable } = this.props;

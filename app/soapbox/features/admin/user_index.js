@@ -35,7 +35,7 @@ class UserIndex extends ImmutablePureComponent {
     page: 0,
     query: '',
     nextLink: undefined,
-  }
+  };
 
   clearState = callback => {
     this.setState({
@@ -43,7 +43,7 @@ class UserIndex extends ImmutablePureComponent {
       accountIds: ImmutableOrderedSet(),
       page: 0,
     }, callback);
-  }
+  };
 
   fetchNextPage = () => {
     const { filters, page, query, pageSize, nextLink } = this.state;
@@ -62,7 +62,7 @@ class UserIndex extends ImmutablePureComponent {
         });
       })
       .catch(() => { });
-  }
+  };
 
   componentDidMount() {
     this.fetchNextPage();
@@ -72,7 +72,7 @@ class UserIndex extends ImmutablePureComponent {
     this.clearState(() => {
       this.fetchNextPage();
     });
-  }
+  };
 
   componentDidUpdate(prevProps, prevState) {
     const { filters, query } = this.state;
@@ -90,7 +90,7 @@ class UserIndex extends ImmutablePureComponent {
 
   updateQuery = debounce(query => {
     this.setState({ query });
-  }, 900)
+  }, 900);
 
   handleQueryChange = e => {
     this.updateQuery(e.target.value);

@@ -1,8 +1,8 @@
+import { Map as ImmutableMap } from 'immutable';
 import React, { useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
 import { useHistory } from 'react-router-dom';
-import { Map as ImmutableMap } from 'immutable';
 
 import { mentionCompose } from 'soapbox/actions/compose';
 import { reblog, favourite, unreblog, unfavourite } from 'soapbox/actions/interactions';

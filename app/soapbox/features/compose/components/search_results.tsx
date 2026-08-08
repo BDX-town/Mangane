@@ -114,9 +114,9 @@ const SearchResults = () => {
     placeholderComponent = PlaceholderAccount;
 
     if (results.accounts && results.accounts.size > 0) {
-      searchResults = results.accounts.map(accountId => <AccountContainer className="pb-3" key={accountId} id={accountId} />);
+      searchResults = results.accounts.map(accountId => <AccountContainer className='pb-3' key={accountId} id={accountId} />);
     } else if (!submitted && suggestions && !suggestions.isEmpty()) {
-      searchResults = suggestions.map(suggestion => <AccountContainer className="pb-3" key={suggestion.account} id={suggestion.account} />);
+      searchResults = suggestions.map(suggestion => <AccountContainer className='pb-3' key={suggestion.account} id={suggestion.account} />);
     } else if (loaded) {
       noResultsMessage = (
         <div className='empty-column-indicator'>

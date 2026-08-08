@@ -4,11 +4,11 @@ import {
   fromJS,
   is,
 } from 'immutable';
+import { applyActions } from 'soapbox/jest/test-helpers';
 
 import { STATUS_IMPORT } from 'soapbox/actions/importer';
 import { CONTEXT_FETCH_SUCCESS } from 'soapbox/actions/statuses';
 import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
-import { applyActions } from 'soapbox/jest/test-helpers';
 
 import reducer, { ReducerRecord } from '../contexts';
 

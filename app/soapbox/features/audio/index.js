@@ -67,7 +67,7 @@ class Audio extends React.PureComponent {
     if (this.player) {
       this._setDimensions();
     }
-  }
+  };
 
   _pack() {
     return {
@@ -95,11 +95,11 @@ class Audio extends React.PureComponent {
 
   setSeekRef = c => {
     this.seek = c;
-  }
+  };
 
   setVolumeRef = c => {
     this.volume = c;
-  }
+  };
 
   setAudioRef = c => {
     this.audio = c;
@@ -107,13 +107,13 @@ class Audio extends React.PureComponent {
     if (this.audio) {
       this.setState({ volume: this.audio.volume, muted: this.audio.muted });
     }
-  }
+  };
 
   setCanvasRef = c => {
     this.canvas = c;
 
     this.visualizer.setCanvas(c);
-  }
+  };
 
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
@@ -146,7 +146,7 @@ class Audio extends React.PureComponent {
     } else {
       this.setState({ paused: true }, () => this.audio.pause());
     }
-  }
+  };
 
   handleResize = debounce(() => {
     if (this.player) {
@@ -164,7 +164,7 @@ class Audio extends React.PureComponent {
     }
 
     this._renderCanvas();
-  }
+  };
 
   handlePause = () => {
     this.setState({ paused: true });
@@ -172,7 +172,7 @@ class Audio extends React.PureComponent {
     if (this.audioContext) {
       this.audioContext.suspend();
     }
-  }
+  };
 
   handleProgress = () => {
     const lastTimeRange = this.audio.buffered.length - 1;
@@ -180,7 +180,7 @@ class Audio extends React.PureComponent {
     if (lastTimeRange > -1) {
       this.setState({ buffer: Math.ceil(this.audio.buffered.end(lastTimeRange) / this.audio.duration * 100) });
     }
-  }
+  };
 
   toggleMute = () => {
     const muted = !this.state.muted;
@@ -188,7 +188,7 @@ class Audio extends React.PureComponent {
     this.setState({ muted }, () => {
       this.audio.muted = muted;
     });
-  }
+  };
 
   handleVolumeMouseDown = e => {
     document.addEventListener('mousemove', this.handleMouseVolSlide, true);
@@ -200,14 +200,14 @@ class Audio extends React.PureComponent {
 
     e.preventDefault();
     e.stopPropagation();
-  }
+  };
 
   handleVolumeMouseUp = () => {
     document.removeEventListener('mousemove', this.handleMouseVolSlide, true);
     document.removeEventListener('mouseup', this.handleVolumeMouseUp, true);
     document.removeEventListener('touchmove', this.handleMouseVolSlide, true);
     document.removeEventListener('touchend', this.handleVolumeMouseUp, true);
-  }
+  };
 
   handleMouseDown = e => {
     document.addEventListener('mousemove', this.handleMouseMove, true);
@@ -221,7 +221,7 @@ class Audio extends React.PureComponent {
 
     e.preventDefault();
     e.stopPropagation();
-  }
+  };
 
   handleMouseUp = () => {
     document.removeEventListener('mousemove', this.handleMouseMove, true);
@@ -231,7 +231,7 @@ class Audio extends React.PureComponent {
 
     this.setState({ dragging: false });
     this.audio.play();
-  }
+  };
 
   handleMouseMove = throttle(e => {
     const { x } = getPointerPosition(this.seek, e);
@@ -249,7 +249,7 @@ class Audio extends React.PureComponent {
       currentTime: this.audio.currentTime,
       duration: this.audio.duration,
     });
-  }
+  };
 
   handleMouseVolSlide = throttle(e => {
     const { x } = getPointerPosition(this.volume, e);
@@ -282,11 +282,11 @@ class Audio extends React.PureComponent {
 
   handleMouseEnter = () => {
     this.setState({ hovered: true });
-  }
+  };
 
   handleMouseLeave = () => {
     this.setState({ hovered: false });
-  }
+  };
 
   handleLoadedData = () => {
     const { autoPlay, currentTime, volume, muted } = this.props;
@@ -308,7 +308,7 @@ class Audio extends React.PureComponent {
     if (autoPlay) {
       this.togglePlay();
     }
-  }
+  };
 
   _initAudioContext() {
     // eslint-disable-next-line compat/compat
@@ -338,7 +338,7 @@ class Audio extends React.PureComponent {
     }).catch(err => {
       console.error(err);
     });
-  }
+  };
 
   _renderCanvas() {
     requestAnimationFrame(() => {
@@ -409,7 +409,7 @@ class Audio extends React.PureComponent {
       e.stopPropagation();
       this.togglePlay();
     }
-  }
+  };
 
   handleKeyDown = e => {
     switch (e.key) {
@@ -434,7 +434,7 @@ class Audio extends React.PureComponent {
         this.seekBy(10);
         break;
     }
-  }
+  };
 
   render() {
     const { src, intl, alt, editable } = this.props;

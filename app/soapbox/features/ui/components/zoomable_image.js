@@ -22,7 +22,7 @@ export default class ZoomableImage extends React.PureComponent {
     width: PropTypes.number,
     height: PropTypes.number,
     onClick: PropTypes.func,
-  }
+  };
 
   static defaultProps = {
     alt: '',
@@ -32,7 +32,7 @@ export default class ZoomableImage extends React.PureComponent {
 
   state = {
     scale: MIN_SCALE,
-  }
+  };
 
   removers = [];
   container = null;
@@ -64,7 +64,7 @@ export default class ZoomableImage extends React.PureComponent {
     if (e.touches.length !== 2) return;
 
     this.lastDistance = getDistance(...e.touches);
-  }
+  };
 
   handleTouchMove = e => {
     const { scrollTop, scrollHeight, clientHeight } = this.container;
@@ -86,7 +86,7 @@ export default class ZoomableImage extends React.PureComponent {
 
     this.lastMidpoint = midpoint;
     this.lastDistance = distance;
-  }
+  };
 
   zoom(nextScale, midpoint) {
     const { scale } = this.state;
@@ -112,15 +112,15 @@ export default class ZoomableImage extends React.PureComponent {
     e.stopPropagation();
     const handler = this.props.onClick;
     if (handler) handler();
-  }
+  };
 
   setContainerRef = c => {
     this.container = c;
-  }
+  };
 
   setImageRef = c => {
     this.image = c;
-  }
+  };
 
   render() {
     const { alt, src } = this.props;

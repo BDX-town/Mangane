@@ -4,6 +4,7 @@ import {
   Record as ImmutableRecord,
 } from 'immutable';
 import take from 'lodash/take';
+import { applyActions } from 'soapbox/jest/test-helpers';
 
 import intlMessages from 'soapbox/__fixtures__/intlMessages.json';
 import notification from 'soapbox/__fixtures__/notification.json';
@@ -28,7 +29,6 @@ import {
   NOTIFICATIONS_MARK_READ_REQUEST,
 } from 'soapbox/actions/notifications';
 import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
-import { applyActions } from 'soapbox/jest/test-helpers';
 
 import reducer from '../notifications';
 

@@ -1,9 +1,9 @@
 import userEvent from '@testing-library/user-event';
 import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
+import { fireEvent, render, screen } from 'soapbox/jest/test-helpers';
 
 import { __stub } from 'soapbox/api';
-import { fireEvent, render, screen } from 'soapbox/jest/test-helpers';
 
 import AgeVerification from '../age-verification';
 

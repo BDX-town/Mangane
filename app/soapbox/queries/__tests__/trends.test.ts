@@ -1,5 +1,6 @@
-import { __stub } from 'soapbox/api';
 import { queryClient, renderHook, waitFor } from 'soapbox/jest/test-helpers';
+
+import { __stub } from 'soapbox/api';
 
 import useTrends from '../trends';
 

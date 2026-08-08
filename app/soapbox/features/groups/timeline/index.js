@@ -58,7 +58,7 @@ class GroupTimeline extends React.PureComponent {
   handleLoadMore = maxId => {
     const { id } = this.props.params;
     this.props.dispatch(expandGroupTimeline(id, { maxId }));
-  }
+  };
 
   render() {
     const { columnId, group, relationships, account } = this.props;

@@ -1,8 +1,8 @@
 import { fromJS, Map as ImmutableMap } from 'immutable';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 
 import { STATUSES_IMPORT } from 'soapbox/actions/importer';
 import { __stub } from 'soapbox/api';
-import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { normalizeStatus } from 'soapbox/normalizers/status';
 
 import { deleteStatus, fetchContext } from '../statuses';

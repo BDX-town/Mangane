@@ -18,7 +18,7 @@ const tagDir = `twemoji-${TWEMOJI_TAG.replace(/^v/, '')}/assets/svg`;
 
 execSync(
   `curl -sL "${url}" | tar -xz --strip-components=3 -C "${path.join(twemojiDir, 'assets')}" "${tagDir}"`,
-  { stdio: 'inherit' }
+  { stdio: 'inherit' },
 );
 
 console.log('twemoji assets ready.');

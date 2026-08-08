@@ -1,11 +1,11 @@
 import { Record as ImmutableRecord, List as ImmutableList } from 'immutable';
+import { applyActions } from 'soapbox/jest/test-helpers';
 
 import {
   ALERT_SHOW,
   ALERT_DISMISS,
   ALERT_CLEAR,
 } from 'soapbox/actions/alerts';
-import { applyActions } from 'soapbox/jest/test-helpers';
 
 import reducer from '../alerts';
 

@@ -49,7 +49,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
     error: undefined,
     componentStack: undefined,
     browser: undefined,
-  }
+  };
 
   textarea: HTMLTextAreaElement | null = null;
 
@@ -71,7 +71,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
 
   setTextareaRef: React.RefCallback<HTMLTextAreaElement> = c => {
     this.textarea = c;
-  }
+  };
 
   handleCopy: React.MouseEventHandler = () => {
     if (!this.textarea) return;
@@ -80,12 +80,12 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
     this.textarea.setSelectionRange(0, 99999);
 
     document.execCommand('copy');
-  }
+  };
 
   getErrorText = (): string => {
     const { error, componentStack } = this.state;
     return error + componentStack;
-  }
+  };
 
   clearCookies: React.MouseEventHandler = (e) => {
     localStorage.clear();
@@ -96,7 +96,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
       e.preventDefault();
       unregisterSw().then(goHome).catch(goHome);
     }
-  }
+  };
 
   render() {
     const { browser, hasError } = this.state;

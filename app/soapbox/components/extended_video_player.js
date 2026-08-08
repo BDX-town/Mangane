@@ -20,7 +20,7 @@ export default class ExtendedVideoPlayer extends React.PureComponent {
     if (this.props.time) {
       this.video.currentTime = this.props.time;
     }
-  }
+  };
 
   componentDidMount() {
     this.video.addEventListener('loadeddata', this.handleLoadedData);
@@ -32,13 +32,13 @@ export default class ExtendedVideoPlayer extends React.PureComponent {
 
   setRef = (c) => {
     this.video = c;
-  }
+  };
 
   handleClick = e => {
     e.stopPropagation();
     const handler = this.props.onClick;
     if (handler) handler();
-  }
+  };
 
   render() {
     const { src, muted, controls, alt } = this.props;

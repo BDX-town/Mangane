@@ -1,8 +1,8 @@
 import { List as ImmutableList } from 'immutable';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 
 import { fetchAnnouncements, dismissAnnouncement, addReaction, removeReaction } from 'soapbox/actions/announcements';
 import { __stub } from 'soapbox/api';
-import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { normalizeAnnouncement, normalizeInstance } from 'soapbox/normalizers';
 
 import type { APIEntity } from 'soapbox/types/entities';

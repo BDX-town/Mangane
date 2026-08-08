@@ -71,14 +71,14 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
   }, []);
 
   const accounts = React.useMemo(() => {
-    if(!reactions) return null;
-    if(reaction) {
+    if (!reactions) return null;
+    if (reaction) {
       const selected = reactions.find(({ name }) => name === reaction);
-      return selected?.accounts.map(account => ({ id: account, reaction: selected }))
+      return selected?.accounts.map(account => ({ id: account, reaction: selected }));
     }
 
-    return reactions.map(({ accounts, name, url }) => accounts.map(account => ({ id: account, reaction: ImmutableMap({ name, url }) }))).flatten() as ImmutableList<{ id: string, reaction: EmojiReactType }>
-  }, [reactions, reaction]);  
+    return reactions.map(({ accounts, name, url }) => accounts.map(account => ({ id: account, reaction: ImmutableMap({ name, url }) }))).flatten() as ImmutableList<{ id: string, reaction: EmojiReactType }>;
+  }, [reactions, reaction]);
 
 
 

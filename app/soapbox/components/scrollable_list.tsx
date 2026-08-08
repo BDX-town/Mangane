@@ -66,7 +66,6 @@ const ScrollableList = React.forwardRef<HTMLElement, IScrollableList>(({
       root.current?.scrollTo(0, 0);
     }
     if (firstRender && !isLoading) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFirstRender(false);
     }
   }, [isLoading, firstRender]);
