@@ -5,6 +5,7 @@ interface IForm {
   onSubmit?: (event: React.FormEvent) => void,
   /** Class name override for the <form> element. */
   className?: string,
+  children: React.ReactNode,
 }
 
 /** Form element with custom styles. */

@@ -8,10 +8,12 @@ interface ITombstone {
   id: string,
   onMoveUp: (statusId: string) => void,
   onMoveDown: (statusId: string) => void,
+  /** Absolute position of this item within the list, used for keyboard navigation. */
+  index?: number,
 }
 
 /** Represents a deleted item. */
-const Tombstone: React.FC<ITombstone> = ({ id, onMoveUp, onMoveDown }) => {
+const Tombstone: React.FC<ITombstone> = ({ id, onMoveUp, onMoveDown, index }) => {
   const handlers = {
     moveUp: () => onMoveUp(id),
     moveDown: () => onMoveDown(id),
@@ -19,7 +21,7 @@ const Tombstone: React.FC<ITombstone> = ({ id, onMoveUp, onMoveDown }) => {
 
   return (
     <HotKeys handlers={handlers}>
-      <div className='p-9 flex items-center justify-center sm:rounded-xl bg-gray-100 border border-solid border-gray-200 dark:bg-slate-900 dark:border-slate-700 focusable' tabIndex={0}>
+      <div className='p-9 flex items-center justify-center sm:rounded-xl bg-gray-100 border border-solid border-gray-200 dark:bg-slate-900 dark:border-slate-700 focusable' tabIndex={0} data-index={index}>
         <Text>
           <FormattedMessage id='statuses.tombstone' defaultMessage='One or more posts are unavailable.' />
         </Text>

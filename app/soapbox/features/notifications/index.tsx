@@ -17,11 +17,11 @@ import ScrollableList from 'soapbox/components/scrollable_list';
 import { Column } from 'soapbox/components/ui';
 import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
+import scrollIntoViewAndFocus from 'soapbox/utils/scroll_into_view';
 
 import FilterBar from './components/filter_bar';
 import Notification from './components/notification';
 
-import type { VirtuosoHandle } from 'react-virtuoso';
 import type { RootState } from 'soapbox/store';
 import type { Notification as NotificationEntity } from 'soapbox/types/entities';
 
@@ -58,7 +58,7 @@ const Notifications = () => {
   const hasMore = useAppSelector(state => state.notifications.hasMore);
   const totalQueuedNotificationsCount = useAppSelector(state => state.notifications.totalQueuedNotificationsCount || 0);
 
-  const node = useRef<VirtuosoHandle>(null);
+  const node = useRef<HTMLElement>(null);
   const column = useRef<HTMLDivElement>(null);
   const scrollableContentRef = useRef<ImmutableList<JSX.Element> | null>(null);
 
@@ -90,18 +90,7 @@ const Notifications = () => {
   };
 
   const _selectChild = (index: number) => {
-    node.current?.scrollIntoView({
-      index,
-      behavior: 'smooth',
-      done: () => {
-        const container = column.current;
-        const element = container?.querySelector(`[data-index="${index}"] .focusable`);
-
-        if (element) {
-          (element as HTMLDivElement).focus();
-        }
-      },
-    });
+    scrollIntoViewAndFocus(node.current, index);
   };
 
   const handleDequeueNotifications = () => {
@@ -137,10 +126,11 @@ const Notifications = () => {
   if (isLoading && scrollableContentRef.current) {
     scrollableContent = scrollableContentRef.current;
   } else if (notifications.size > 0 || hasMore) {
-    scrollableContent = notifications.map((item) => (
+    scrollableContent = notifications.map((item, index) => (
       <Notification
         key={item.id}
         notification={item}
+        index={index}
         onMoveUp={handleMoveUp}
         onMoveDown={handleMoveDown}
       />

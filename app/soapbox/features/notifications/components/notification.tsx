@@ -147,10 +147,12 @@ interface INotificaton {
   onReblog?: (status: StatusEntity, e?: KeyboardEvent) => void,
   getScrollPosition?: () => ScrollPosition | undefined,
   updateScrollBottom?: (bottom: number) => void,
+  /** Absolute position of this notification within the list, used for keyboard navigation. */
+  index?: number,
 }
 
 const Notification: React.FC<INotificaton> = (props) => {
-  const { hidden = false, onMoveUp, onMoveDown } = props;
+  const { hidden = false, onMoveUp, onMoveDown, index } = props;
 
   const dispatch = useAppDispatch();
 
@@ -337,6 +339,7 @@ const Notification: React.FC<INotificaton> = (props) => {
       <div
         className='notification focusable'
         tabIndex={0}
+        data-index={index}
         aria-label={ariaLabel}
       >
         <div className='p-4 focusable'>

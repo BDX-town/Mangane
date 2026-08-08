@@ -45,6 +45,8 @@ export interface IStatus {
   unread?: boolean,
   onMoveUp?: (statusId: string, featured?: boolean) => void,
   onMoveDown?: (statusId: string, featured?: boolean) => void,
+  /** Absolute position of this status within its list, used for keyboard navigation. */
+  index?: number,
   group?: ImmutableMap<string, any>,
   focusable?: boolean,
   featured?: boolean,
@@ -63,6 +65,7 @@ const Status: React.FC<IStatus> = (props) => {
     onClick,
     onMoveUp,
     onMoveDown,
+    index,
     muted,
     hidden,
     featured,
@@ -250,6 +253,7 @@ const Status: React.FC<IStatus> = (props) => {
       <div
         className={classNames('status cursor-pointer ', { focusable })}
         tabIndex={focusable && !muted ? 0 : undefined}
+        data-index={index}
         data-featured={featured ? 'true' : null}
         aria-label={textForScreenReader(intl, actualStatus, intl.formatMessage(
           messages.reblogged_by,

@@ -14,6 +14,7 @@ import PlaceholderAccount from 'soapbox/features/placeholder/components/placehol
 import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder_hashtag';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import scrollIntoViewAndFocus from 'soapbox/utils/scroll_into_view';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { SearchFilter } from 'soapbox/reducers/search';
@@ -87,14 +88,7 @@ const SearchResults = () => {
   };
 
   const selectChild = (index: number) => {
-    node.current?.scrollIntoView({
-      index,
-      behavior: 'smooth',
-      done: () => {
-        const element = document.querySelector<HTMLDivElement>(`#search-results [data-index="${index}"] .focusable`);
-        element?.focus();
-      },
-    });
+    scrollIntoViewAndFocus(node.current, index);
   };
 
   useEffect(() => {
@@ -135,22 +129,24 @@ const SearchResults = () => {
     loaded = results.statusesLoaded;
 
     if (results.statuses && results.statuses.size > 0) {
-      searchResults = results.statuses.map((statusId: string) => (
+      searchResults = results.statuses.toArray().map((statusId: string, index: number) => (
         // @ts-ignore
         <StatusContainer
           key={statusId}
           id={statusId}
+          index={index}
           onMoveUp={handleMoveUp}
           onMoveDown={handleMoveDown}
         />
       ));
       resultsIds = results.statuses;
     } else if (!submitted && trendingStatuses && !trendingStatuses.isEmpty()) {
-      searchResults = trendingStatuses.map((statusId: string) => (
+      searchResults = trendingStatuses.toArray().map((statusId: string, index: number) => (
         // @ts-ignore
         <StatusContainer
           key={statusId}
           id={statusId}
+          index={index}
           onMoveUp={handleMoveUp}
           onMoveDown={handleMoveDown}
         />

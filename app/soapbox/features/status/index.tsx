@@ -39,6 +39,7 @@ import PlaceholderStatus from 'soapbox/features/placeholder/components/placehold
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
+import scrollIntoViewAndFocus from 'soapbox/utils/scroll_into_view';
 import { defaultMediaVisibility, textForScreenReader } from 'soapbox/utils/status';
 
 import ComposeFormContainer from '../compose/containers/compose_form_container';
@@ -284,7 +285,7 @@ const Thread: React.FC<IThread> = (props) => {
   }, [dispatch]);
 
   const _selectChild = useCallback((index: number) => {
-    scroller?.children[index].scrollIntoView({ behavior: 'smooth' });
+    scrollIntoViewAndFocus(scroller, index);
   }, [scroller]);
 
   const handleMoveUp = useCallback((id: string) => {
@@ -375,12 +376,13 @@ const Thread: React.FC<IThread> = (props) => {
 
   const [seeking, setSeeking] = useState(false);
 
-  const renderTombstone = useCallback((id: string) => {
+  const renderTombstone = useCallback((id: string, index: number) => {
     return (
       <div className={'py-4 pb-8'}>
         <Tombstone
           key={id}
           id={id}
+          index={index}
           onMoveUp={handleMoveUp}
           onMoveDown={handleMoveDown}
         />
@@ -388,11 +390,12 @@ const Thread: React.FC<IThread> = (props) => {
     );
   }, [handleMoveDown, handleMoveUp]);
 
-  const renderStatus = useCallback((id: string) => {
+  const renderStatus = useCallback((id: string, index: number) => {
     return (
       <ThreadStatus
         key={id}
         id={id}
+        index={index}
         focusedStatusId={actualStatus!.id}
         onMoveUp={handleMoveUp}
         onMoveDown={handleMoveDown}
@@ -412,14 +415,16 @@ const Thread: React.FC<IThread> = (props) => {
     );
   }, []);
 
-  const renderChildren = useCallback((list: ImmutableOrderedSet<string>) => {
-    return list.map(id => {
+  const renderChildren = useCallback((list: ImmutableOrderedSet<string>, baseIndex: number) => {
+    return list.toList().map((id, i) => {
+      const index = baseIndex + i;
+
       if (id.endsWith('-tombstone')) {
-        return renderTombstone(id);
+        return renderTombstone(id, index);
       } else if (id.startsWith('末pending-')) {
         return renderPendingStatus(id);
       } else {
-        return renderStatus(id);
+        return renderStatus(id, index);
       }
     });
   }, [renderPendingStatus, renderStatus, renderTombstone]);
@@ -475,7 +480,7 @@ const Thread: React.FC<IThread> = (props) => {
   const renderAncestors = useCallback(() => {
     // if we have the context, let's show it
     if (ready && ancestorsIds.size > 0) {
-      return renderChildren(ancestorsIds).toArray();
+      return renderChildren(ancestorsIds, 0).toArray();
     }
     return [];
   }, [ready, ancestorsIds, renderChildren]);
@@ -483,14 +488,14 @@ const Thread: React.FC<IThread> = (props) => {
   const renderDescendants = useCallback(() => {
     // if we have the context, let's show it
     if (ready) {
-      if (descendantsIds.size > 0) return renderChildren(descendantsIds).toArray();
+      if (descendantsIds.size > 0) return renderChildren(descendantsIds, ancestorsIds.size + 1).toArray();
       return [];
     }
     // context is not fully loaded and either we dont have actual status
     if (!actualStatus) return [<PlaceholderStatus />];
     // or it has replies
     return new Array(actualStatus.replies_count).fill(undefined).map(() => <PlaceholderStatus />);
-  }, [ready, actualStatus, renderChildren, descendantsIds]);
+  }, [ready, actualStatus, renderChildren, descendantsIds, ancestorsIds.size]);
 
 
   // when actual status is loaded and show we capture it's position and size to show a 'fake' status over the actual thread
@@ -498,13 +503,13 @@ const Thread: React.FC<IThread> = (props) => {
   useEffect(() => {
     if (!actualStatus || !actualStatus.in_reply_to_id) return;
     const rect = {
-      top:  (scroller?.children[0].getBoundingClientRect().top - node.current?.getBoundingClientRect().top) * -1,
+      top:  (statusRef.current?.getBoundingClientRect().top - node.current?.getBoundingClientRect().top) * -1,
       left: node.current?.getBoundingClientRect().left,
       width: node.current?.getBoundingClientRect().width,
       height: node.current?.getBoundingClientRect().height,
     };
     setActualStatusNode(rect);
-  }, [actualStatus, scroller]);
+  }, [actualStatus]);
 
 
   const renderActualStatus = useCallback(() => {
@@ -518,6 +523,7 @@ const Thread: React.FC<IThread> = (props) => {
               ref={statusRef}
               className='detailed-status__wrapper focusable'
               tabIndex={0}
+              data-index={ancestorsIds.size}
               // FIXME: no "reblogged by" text is added for the screen reader
               aria-label={textForScreenReader(intl, actualStatus)}
             >
@@ -548,7 +554,7 @@ const Thread: React.FC<IThread> = (props) => {
         }
       </>
     )];
-  }, [actualStatus, handleComposeSubmit, handleOpenCompareHistoryModal, handleOpenMedia, handleOpenVideo, handleToggleHidden, handleToggleMediaVisibility, handleTranslate, handlers, intl, me, onDeleteStatus, ready, showMedia]);
+  }, [actualStatus, ancestorsIds.size, handleComposeSubmit, handleOpenCompareHistoryModal, handleOpenMedia, handleOpenVideo, handleToggleHidden, handleToggleMediaVisibility, handleTranslate, handlers, intl, me, onDeleteStatus, ready, showMedia]);
 
   if (!actualStatus && ready) {
     // this need to be kept separate from children as it carries its own column

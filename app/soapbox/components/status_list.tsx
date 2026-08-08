@@ -10,6 +10,7 @@ import FeedSuggestions from 'soapbox/features/feed-suggestions/feed-suggestions'
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import { useAppSelector } from 'soapbox/hooks';
+import scrollIntoViewAndFocus from 'soapbox/utils/scroll_into_view';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { IScrollableList } from 'soapbox/components/scrollable_list';
@@ -79,11 +80,12 @@ const renderLoadGap = (index: number, statusIds: ImmutableOrderedSet<string>, on
 const renderFeaturedStatuses = (featuredStatusIds, handleMoveUp, handleMoveDown, timelineId): React.ReactNode[] => {
   if (!featuredStatusIds) return [];
 
-  return featuredStatusIds.toArray().map(statusId => (
+  return featuredStatusIds.toArray().map((statusId, index) => (
     <StatusContainer
       key={`f-${statusId}`}
       timeline={!!timelineId}
       id={statusId}
+      index={index}
       featured
       onMoveUp={handleMoveUp}
       onMoveDown={handleMoveDown}
@@ -92,7 +94,7 @@ const renderFeaturedStatuses = (featuredStatusIds, handleMoveUp, handleMoveDown,
   ));
 };
 
-const renderStatuses = (isLoading, statusIds, onLoadMore, handleMoveUp, handleMoveDown, timelineId, suggestedProfiles, areSuggestedProfilesLoaded): React.ReactNode[] => {
+const renderStatuses = (isLoading, statusIds, onLoadMore, handleMoveUp, handleMoveDown, timelineId, suggestedProfiles, areSuggestedProfilesLoaded, featuredCount): React.ReactNode[] => {
   if (isLoading || statusIds.size > 0) {
     return statusIds.toList().reduce((acc, statusId, index) => {
       let el = null;
@@ -109,6 +111,7 @@ const renderStatuses = (isLoading, statusIds, onLoadMore, handleMoveUp, handleMo
           timeline={!!timelineId}
           key={statusId}
           id={statusId}
+          index={featuredCount + index}
           onMoveUp={handleMoveUp}
           onMoveDown={handleMoveDown}
           contextType={timelineId}
@@ -132,7 +135,7 @@ const renderStatuses = (isLoading, statusIds, onLoadMore, handleMoveUp, handleMo
 
 const renderScrollableContent = (featuredStatusIds, isLoading, statusIds, onLoadMore, handleMoveUp, handleMoveDown, timelineId, suggestedProfiles, areSuggestedProfilesLoaded) => {
   const featuredStatuses = renderFeaturedStatuses(featuredStatusIds, handleMoveUp, handleMoveDown, timelineId);
-  const statuses = renderStatuses(isLoading, statusIds, onLoadMore, handleMoveUp, handleMoveDown, timelineId, suggestedProfiles, areSuggestedProfilesLoaded);
+  const statuses = renderStatuses(isLoading, statusIds, onLoadMore, handleMoveUp, handleMoveDown, timelineId, suggestedProfiles, areSuggestedProfilesLoaded, featuredStatuses.length);
 
   if (featuredStatuses && statuses) {
     return featuredStatuses.concat(statuses);
@@ -180,7 +183,7 @@ const StatusList: React.FC<IStatusList> = ({
   }, [featuredStatusIds, getFeaturedStatusCount, statusIds]);
 
   const selectChild = useCallback((index: number) => {
-    root?.children[index].scrollIntoView({ behavior: 'smooth' });
+    scrollIntoViewAndFocus(root, index);
   }, [root]);
 
   const handleMoveUp = useCallback((id: string, featured: boolean = false) => {

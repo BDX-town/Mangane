@@ -14,9 +14,11 @@ interface IConversation {
   conversationId: string,
   onMoveUp: (id: string) => void,
   onMoveDown: (id: string) => void,
+  /** Absolute position of this conversation within the list, used for keyboard navigation. */
+  index?: number,
 }
 
-const Conversation: React.FC<IConversation> = ({ conversationId, onMoveUp, onMoveDown, className }) => {
+const Conversation: React.FC<IConversation> = ({ conversationId, onMoveUp, onMoveDown, className, index }) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
 
@@ -60,7 +62,7 @@ const Conversation: React.FC<IConversation> = ({ conversationId, onMoveUp, onMov
 
   return (
     <HotKeys handlers={handlers} data-testid='status'>
-      <div onClick={handleClick} role='button' tabIndex={0} className={`bg-white dark:bg-slate-800 px-4 py-6 sm:shadow-sm dark:shadow-inset sm:p-5 rounded-xl ${className}`}>
+      <div onClick={handleClick} role='button' tabIndex={0} data-index={index} className={`bg-white dark:bg-slate-800 px-4 py-6 sm:shadow-sm dark:shadow-inset sm:p-5 rounded-xl ${className}`}>
         <div className='flex justify-between gap-3'>
           <div className='flex gap-2 grow'>
             {accounts.map((a) => <Account withLinkToProfile={false} account={a} />)}
