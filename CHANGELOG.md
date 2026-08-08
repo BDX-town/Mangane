@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.22.8 (2026-08-08)
+
+
+### Bug Fixes
+
+* crash on notification view ([bd04d58](https://github.com/BDX-town/Mangane/commit/bd04d58c6d69ecd52b6ca6a101e11c0cb1feb57e))
+
 ## 1.22.7 (2026-08-08)
 
 
