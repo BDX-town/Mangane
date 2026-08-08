@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.22.5 (2026-08-08)
+
+
+### Bug Fixes
+
+* add new composed status to queue ([bc06725](https://github.com/BDX-town/Mangane/commit/bc067257304bb588fdfc5e130db38c4362ba7697))
+
 ## 1.22.4 (2026-08-07)
 
 ## 1.22.3 (2026-08-07)
