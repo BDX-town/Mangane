@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.22.9 (2026-08-08)
+
+
+### Bug Fixes
+
+* clean notification counter when showing notifications ([a1d2ee6](https://github.com/BDX-town/Mangane/commit/a1d2ee6ed89e97b8226176230be940d314b1113b))
+
 ## 1.22.8 (2026-08-08)
 
 
