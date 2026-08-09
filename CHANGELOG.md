@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.22.11 (2026-08-09)
+
+
+### Bug Fixes
+
+* do not dequeue when going back on timeline ([b40fc0b](https://github.com/BDX-town/Mangane/commit/b40fc0beec5cebc7931bc0c8fa33a6516b6f80f1))
+
 ## 1.22.10 (2026-08-09)
 
 ## 1.22.9 (2026-08-08)
