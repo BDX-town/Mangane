@@ -51,7 +51,7 @@
     "@babel/preset-react": "^7.17.12",
     "@babel/preset-typescript": "^7.17.12",
     "@babel/runtime": "^7.18.3",
-    "@bdxtown/ruisseau": "git+https://codeberg.org/Clovis/ruisseau.git#c47cf7868672f0891fa0114d83d50030c05e5a88",
+    "@bdxtown/ruisseau": "git+https://codeberg.org/Clovis/ruisseau.git#bd6a79cb37ae949f6470b773f0a996c8af2699ff",
     "@emoji-mart/data": "^1.1.1",
     "@emoji-mart/react": "^1.1.0",
     "@fontsource/inter": "^4.5.1",

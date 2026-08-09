@@ -1551,14 +1551,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bdxtown/ruisseau@git+https://codeberg.org/Clovis/ruisseau.git#c47cf7868672f0891fa0114d83d50030c05e5a88":
+"@bdxtown/ruisseau@git+https://codeberg.org/Clovis/ruisseau.git#bd6a79cb37ae949f6470b773f0a996c8af2699ff":
   version: 0.0.0
-  resolution: "@bdxtown/ruisseau@https://codeberg.org/Clovis/ruisseau.git#commit=c47cf7868672f0891fa0114d83d50030c05e5a88"
+  resolution: "@bdxtown/ruisseau@https://codeberg.org/Clovis/ruisseau.git#commit=bd6a79cb37ae949f6470b773f0a996c8af2699ff"
   peerDependencies:
     lodash: ^4.18.1
     react: ^19.2.7
     react-dom: ^19.2.7
-  checksum: 10c0/25b20b6fa0fd8dd0b9c95f19876c0ab3e933b2d08b97e8d5730919f3346adf03f0c1c112b0816ffe5f4e0ac85eda965acd1e0719922a692940bef8ef70ee17d3
+  checksum: 10c0/8b2261b62954e3e07cc944a9a707b2f071c81dfc6c3f244711d1c272347f553045d3bd10862ebda13c9a5c6a50cb29e2be59688584526607026f3bcdb55369a9
   languageName: node
   linkType: hard
 
@@ -13272,7 +13272,7 @@ __metadata:
     "@babel/preset-react": "npm:^7.17.12"
     "@babel/preset-typescript": "npm:^7.17.12"
     "@babel/runtime": "npm:^7.18.3"
-    "@bdxtown/ruisseau": "git+https://codeberg.org/Clovis/ruisseau.git#c47cf7868672f0891fa0114d83d50030c05e5a88"
+    "@bdxtown/ruisseau": "git+https://codeberg.org/Clovis/ruisseau.git#bd6a79cb37ae949f6470b773f0a996c8af2699ff"
     "@commitlint/cli": "npm:^19.5.0"
     "@commitlint/config-conventional": "npm:^19.5.0"
     "@emoji-mart/data": "npm:^1.1.1"
