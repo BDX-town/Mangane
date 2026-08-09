@@ -4,8 +4,8 @@
   "application.css": "/Mangane/packs/css/application-bcdb4378.css",
   "application.css.map": "/Mangane/packs/css/application-bcdb4378.css.map",
   "application.eot": "/Mangane/packs/fonts/fa-solid-900-3c8c46bb.eot",
-  "application.js": "/Mangane/packs/js/application-eb970f82621e52bb7473.js",
-  "application.js.map": "/Mangane/packs/js/application-eb970f82621e52bb7473.js.map",
+  "application.js": "/Mangane/packs/js/application-3ad6a32019104939d2c1.js",
+  "application.js.map": "/Mangane/packs/js/application-3ad6a32019104939d2c1.js.map",
   "application.json": "/Mangane/manifest.json",
   "application.mp3": "/Mangane/packs/sounds/chat-ad2374f0.mp3",
   "application.oga": "/Mangane/packs/sounds/chat-bca16b82.oga",
@@ -27,7 +27,7 @@
       "assets": {
         "js": [
           "/Mangane/packs/js/common-bdc42e0ec7a4db802098.js",
-          "/Mangane/packs/js/application-eb970f82621e52bb7473.js"
+          "/Mangane/packs/js/application-3ad6a32019104939d2c1.js"
         ],
         "css": [
           "/Mangane/packs/css/application-bcdb4378.css"
@@ -4713,7 +4713,7 @@
   "packs/js/206-4e006a140671b5d7b7a8.chunk.js.map": "/Mangane/packs/js/206-4e006a140671b5d7b7a8.chunk.js.map",
   "packs/js/207-31be3dd380143c92e589.chunk.js": "/Mangane/packs/js/207-31be3dd380143c92e589.chunk.js",
   "packs/js/207-31be3dd380143c92e589.chunk.js.map": "/Mangane/packs/js/207-31be3dd380143c92e589.chunk.js.map",
-  "packs/js/application-eb970f82621e52bb7473.js.LICENSE.txt": "/Mangane/packs/js/application-eb970f82621e52bb7473.js.LICENSE.txt",
+  "packs/js/application-3ad6a32019104939d2c1.js.LICENSE.txt": "/Mangane/packs/js/application-3ad6a32019104939d2c1.js.LICENSE.txt",
   "packs/js/common-bdc42e0ec7a4db802098.js.LICENSE.txt": "/Mangane/packs/js/common-bdc42e0ec7a4db802098.js.LICENSE.txt",
   "packs/js/extra_polyfills-206e94630ce3909b87da.chunk.js.LICENSE.txt": "/Mangane/packs/js/extra_polyfills-206e94630ce3909b87da.chunk.js.LICENSE.txt",
   "packs/sounds/boop.mp3": "/Mangane/packs/sounds/boop-36d29be1.mp3",
