@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.23.0 (2026-08-15)
+
+
+### Features
+
+* remove autoload more option on scrollable list ([#471](https://github.com/BDX-town/Mangane/issues/471)) ([59c1104](https://github.com/BDX-town/Mangane/commit/59c11043e760dd334a2abd86fd9556e7bd785439))
+
 ## 1.22.11 (2026-08-09)
 
 
