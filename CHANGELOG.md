@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.24.0 (2026-08-15)
+
+
+### Features
+
+* better search with cancellation control ([#470](https://github.com/BDX-town/Mangane/issues/470)) ([3a71f0f](https://github.com/BDX-town/Mangane/commit/3a71f0f7e875302b1a45c87e671fedcd4a6bd05c))
+
 ## 1.23.0 (2026-08-15)
 
 
