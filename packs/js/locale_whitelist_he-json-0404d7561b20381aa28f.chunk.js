@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmangane_fe=self.webpackChunkmangane_fe||[]).push([[158],{957:function(e){e.exports=[]}}]);
