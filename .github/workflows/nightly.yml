@@ -34,21 +34,21 @@ jobs:
           # end of optional handling for multi line json
           echo "::set-output name=packageJson::$content"
 
-    - name: Extract changelog for this version
+    - name: Extract changelog since last published release
       id: changelog
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-          VERSION="${{ fromJson(steps.set_var.outputs.packageJson).version }}"
-          awk -v ver="$VERSION" '
+          LAST_TAG=$(gh release list --json tagName,isDraft,isPrerelease \
+            --jq '[.[] | select(.isDraft==false and .isPrerelease==false)] | .[0].tagName')
+          LAST_VERSION="${LAST_TAG#v}"
+
+          awk -v last="$LAST_VERSION" '
             index($0, "## ") == 1 {
-              if (incurrent) exit
-              if (index($0, "## " ver " (") == 1) incurrent = 1
-              next
-            }
-            incurrent {
-              if (!started && $0 ~ /^[ \t]*$/) next
+              if (index($0, "## " last " (") == 1) exit
               started = 1
-              print
             }
+            started { print }
           ' CHANGELOG.md > release_notes.md
 
           if [ ! -s release_notes.md ]; then
@@ -79,13 +79,17 @@ jobs:
 
         if gh release view "$TAG" >/dev/null 2>&1; then
           IS_DRAFT=$(gh release view "$TAG" --json isDraft --jq '.isDraft')
-          if [ "$IS_DRAFT" = "true" ]; then
-            gh release delete "$TAG" --yes
-          else
+          if [ "$IS_DRAFT" != "true" ]; then
             echo "Release $TAG is already published, leaving it untouched."
             exit 0
           fi
         fi
+
+        DRAFT_TAGS=$(gh release list --json tagName,isDraft --jq '.[] | select(.isDraft==true) | .tagName')
+        for t in $DRAFT_TAGS; do
+          echo "Deleting existing draft release $t"
+          gh release delete "$t" --yes
+        done
 
         gh release create "$TAG" \
           --draft \
