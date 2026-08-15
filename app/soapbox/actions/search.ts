@@ -41,16 +41,25 @@ const clearSearch = () => ({
   type: SEARCH_CLEAR,
 });
 
+
+let controller: AbortController | undefined;
 const submitSearch = (filter?: SearchFilter) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const value = getState().search.value;
     const type = filter || getState().search.filter || 'accounts';
     const accountId = getState().search.accountId;
 
+
+    if (controller && !controller.signal.aborted) {
+      controller.abort();
+    }
+
     // An empty search doesn't return any results
     if (value.length === 0) {
       return;
     }
+
+    controller = new AbortController();
 
     dispatch(fetchSearchRequest(value));
 
@@ -65,7 +74,9 @@ const submitSearch = (filter?: SearchFilter) =>
 
     api(getState).get('/api/v2/search', {
       params,
+      signal: controller.signal,
     }).then(response => {
+      controller = undefined;
       if (response.data.accounts) {
         dispatch(importFetchedAccounts(response.data.accounts));
       }
@@ -76,8 +87,10 @@ const submitSearch = (filter?: SearchFilter) =>
 
       dispatch(fetchSearchSuccess(response.data, value, type));
       dispatch(fetchRelationships(response.data.accounts.map((item: APIEntity) => item.id)));
-    }).catch(error => {
-      dispatch(fetchSearchFail(error));
+    }).catch((error: AxiosError) => {
+      if (error.code !== 'ERR_CANCELED') {
+        dispatch(fetchSearchFail(error));
+      }
     });
   };
 
@@ -113,6 +126,13 @@ const expandSearch = (type: SearchFilter) => (dispatch: AppDispatch, getState: (
   const value  = getState().search.value;
   const offset = getState().search.results[type].size;
 
+  if (controller && !controller.signal.aborted) {
+    controller.abort();
+  }
+
+  controller = new AbortController();
+
+
   dispatch(expandSearchRequest(type));
 
   api(getState).get('/api/v2/search', {
@@ -121,7 +141,9 @@ const expandSearch = (type: SearchFilter) => (dispatch: AppDispatch, getState: (
       type,
       offset,
     },
+    signal: controller.signal,
   }).then(({ data }) => {
+    controller = undefined;
     if (data.accounts) {
       dispatch(importFetchedAccounts(data.accounts));
     }
@@ -133,7 +155,9 @@ const expandSearch = (type: SearchFilter) => (dispatch: AppDispatch, getState: (
     dispatch(expandSearchSuccess(data, value, type));
     dispatch(fetchRelationships(data.accounts.map((item: APIEntity) => item.id)));
   }).catch(error => {
-    dispatch(expandSearchFail(error));
+    if (error.code !== 'ERR_CANCELED') {
+      dispatch(expandSearchFail(error));
+    }
   });
 };
 

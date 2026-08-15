@@ -53,7 +53,8 @@ export interface IStatus {
   hideActionBar?: boolean,
   hoverable?: boolean,
   withDismiss?: boolean,
-  timeline?:boolean
+  timeline?:boolean,
+  className?: string,
 }
 
 
@@ -73,6 +74,7 @@ const Status: React.FC<IStatus> = (props) => {
     group,
     hideActionBar,
     withDismiss,
+    className,
     timeline = false,
   } = props;
   const intl = useIntl();
@@ -251,7 +253,7 @@ const Status: React.FC<IStatus> = (props) => {
   return (
     <HotKeys handlers={handlers} data-testid='status'>
       <div
-        className={classNames('status cursor-pointer ', { focusable })}
+        className={classNames('status cursor-pointer ', { focusable }, className)}
         tabIndex={focusable && !muted ? 0 : undefined}
         data-index={index}
         data-featured={featured ? 'true' : null}

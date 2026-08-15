@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React, { useEffect, useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
@@ -132,6 +131,7 @@ const SearchResults = () => {
       searchResults = results.statuses.toArray().map((statusId: string, index: number) => (
         // @ts-ignore
         <StatusContainer
+          className='pb-3'
           key={statusId}
           id={statusId}
           index={index}
@@ -144,6 +144,7 @@ const SearchResults = () => {
       searchResults = trendingStatuses.toArray().map((statusId: string, index: number) => (
         // @ts-ignore
         <StatusContainer
+          className='pb-3'
           key={statusId}
           id={statusId}
           index={index}
@@ -154,7 +155,7 @@ const SearchResults = () => {
       resultsIds = trendingStatuses;
     } else if (loaded) {
       noResultsMessage = (
-        <div className='empty-column-indicator'>
+        <div className='text-center'>
           <FormattedMessage
             id='empty_column.search.statuses'
             defaultMessage='There are no posts results for "{term}"'
@@ -176,7 +177,7 @@ const SearchResults = () => {
       searchResults = trends.map(hashtag => <Hashtag key={hashtag.name} hashtag={hashtag} />);
     } else if (loaded) {
       noResultsMessage = (
-        <div className='empty-column-indicator'>
+        <div className='text-center'>
           <FormattedMessage
             id='empty_column.search.hashtags'
             defaultMessage='There are no hashtags results for "{term}"'
@@ -212,10 +213,15 @@ const SearchResults = () => {
           hasMore={hasMore}
           onLoadMore={handleLoadMore}
           placeholderComponent={placeholderComponent}
-          placeholderCount={20}
-          className={classNames({
-            'divide-gray-200 dark:divide-slate-700 divide-solid divide-y': selectedFilter === 'statuses',
-          })}
+          placeholderCount={3}
+          emptyMessage={
+            <div className='text-center'>
+              <FormattedMessage
+                id='search_results.empty-search'
+                defaultMessage='Search anything :)'
+              />
+            </div>
+          }
         >
           {searchResults || []}
         </ScrollableList>
