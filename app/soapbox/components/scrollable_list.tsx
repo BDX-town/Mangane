@@ -2,10 +2,6 @@ import 'react/jsx-dev-runtime';
 import { Ruisseau } from '@bdxtown/ruisseau';
 import React, { useRef, useCallback, useState, useImperativeHandle, useEffect, HTMLProps, ReactNode } from 'react';
 
-
-import { useSettings } from 'soapbox/hooks';
-
-import LoadMore from './load_more';
 import { Card, Text } from './ui';
 
 interface IScrollableList extends Omit<HTMLProps<HTMLDivElement>, 'onSeeking'> {
@@ -57,8 +53,6 @@ const ScrollableList = React.forwardRef<HTMLElement, IScrollableList>(({
   start,
   ...rest
 }, ref) => {
-  const settings = useSettings();
-  const autoloadMore = settings.get('autoloadMore');
 
   const root = useRef<HTMLElement>(null);
   useImperativeHandle(ref, () => root.current);
@@ -75,9 +69,9 @@ const ScrollableList = React.forwardRef<HTMLElement, IScrollableList>(({
 
 
   const onEnd = useCallback(() => {
-    if (isLoading || !autoloadMore || !hasMore) return;
+    if (isLoading || !hasMore) return;
     onLoadMore();
-  }, [autoloadMore, hasMore, isLoading, onLoadMore]);
+  }, [onLoadMore, hasMore, isLoading]);
 
   const [scrollableParent, setScrollableParent] = useState<HTMLElement | undefined>(undefined);
   const findScrollableParent = useCallback((e: HTMLElement) => {
@@ -99,9 +93,6 @@ const ScrollableList = React.forwardRef<HTMLElement, IScrollableList>(({
       )}
       {
         isLoading && Placeholder && Array(Math.max(1, firstRender ? placeholderCount : 1)).fill('').map(() => <Placeholder />)
-      }
-      {
-        !autoloadMore && hasMore && <LoadMore disabled={isLoading} onClick={onLoadMore} />
       }
     </Ruisseau>
   );

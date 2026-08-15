@@ -844,7 +844,7 @@
   "poll_button.add_poll": "வாக்கெடுப்பைச் சேர்க்கவும்",
   "poll_button.remove_poll": "வாக்கெடுப்பை அகற்று",
   "preferences.fields.auto_play_gif_label": "Auto-play animated GIFs",
-  "preferences.fields.autoload_more_label": "Automatically load more items when scrolled to the bottom of the page",
+  
   "preferences.fields.autoload_timelines_label": "Automatically load new posts when scrolled to the top of the page",
   "preferences.fields.boost_modal_label": "Show confirmation dialog before reposting",
   "preferences.fields.content_type_label": "Default post format",

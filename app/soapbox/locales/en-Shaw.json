@@ -844,7 +844,7 @@
   "poll_button.add_poll": "𐑨𐑛 𐑩 𐑐𐑴𐑤",
   "poll_button.remove_poll": "𐑮𐑦𐑥𐑵𐑝 𐑐𐑴𐑤",
   "preferences.fields.auto_play_gif_label": "𐑷𐑑𐑴-𐑐𐑤𐑱 𐑨𐑯𐑦𐑥𐑱𐑑𐑩𐑛 GIFs",
-  "preferences.fields.autoload_more_label": "𐑷𐑑𐑩𐑥𐑨𐑑𐑦𐑒𐑤𐑦 𐑤𐑴𐑛 𐑥𐑹 𐑲𐑑𐑩𐑥𐑟 𐑢𐑧𐑯 scrolled 𐑑 𐑞 𐑚𐑪𐑑𐑩𐑥 𐑝 𐑞 𐑐𐑱𐑡",
+  
   "preferences.fields.autoload_timelines_label": "𐑷𐑑𐑩𐑥𐑨𐑑𐑦𐑒𐑤𐑦 𐑤𐑴𐑛 𐑯𐑿 𐑐𐑴𐑕𐑑𐑕 𐑢𐑧𐑯 scrolled 𐑑 𐑞 𐑑𐑪𐑐 𐑝 𐑞 𐑐𐑱𐑡",
   "preferences.fields.boost_modal_label": "𐑖𐑴 𐑒𐑪𐑯𐑓𐑼𐑥𐑱𐑖𐑩𐑯 𐑛𐑲𐑩𐑤𐑪𐑜 𐑚𐑦𐑓𐑹 𐑮𐑰𐑐𐑴𐑕𐑑𐑦𐑙",
   "preferences.fields.content_type_label": "Default post format",

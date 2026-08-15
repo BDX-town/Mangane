@@ -844,7 +844,7 @@
   "poll_button.add_poll": "Añadir una encuesta",
   "poll_button.remove_poll": "Eliminar encuesta",
   "preferences.fields.auto_play_gif_label": "Auto-reproducir GIFs animados",
-  "preferences.fields.autoload_more_label": "Cargar automáticamente más elementos al desplazarse hasta la parte inferior de la página",
+  
   "preferences.fields.autoload_timelines_label": "Cargar automáticamente nuevas publicaciones al desplazarse hacia la parte superior de la página",
   "preferences.fields.boost_modal_label": "Mostrar diálogo de confirmación antes de retootear",
   "preferences.fields.content_type_label": "Formato predeterminado de las publicaciones",

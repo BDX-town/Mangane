@@ -844,7 +844,7 @@
   "poll_button.add_poll": "Adicionar sondagem",
   "poll_button.remove_poll": "Remover sondagem",
   "preferences.fields.auto_play_gif_label": "Reproduzir automaticamente GIFs animados",
-  "preferences.fields.autoload_more_label": "Automatically load more items when scrolled to the bottom of the page",
+  
   "preferences.fields.autoload_timelines_label": "Automatically load new posts when scrolled to the top of the page",
   "preferences.fields.boost_modal_label": "Exibir caixa de diálogo de confirmação antes de partilhar uma publicação",
   "preferences.fields.content_type_label": "Default post format",

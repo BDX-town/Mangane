@@ -13,6 +13,7 @@ interface IListItem {
   hint?: React.ReactNode,
   onClick?: () => void,
   className?: string,
+  children: React.ReactNode,
 }
 
 const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick, className }) => {
