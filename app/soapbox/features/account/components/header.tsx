@@ -5,6 +5,7 @@ import React, { useCallback } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
+
 import { blockAccount, followAccount, pinAccount, removeFromFollowers, unblockAccount, unmuteAccount, unpinAccount } from 'soapbox/actions/accounts';
 import { verifyUser, unverifyUser, setDonor, removeDonor, promoteToAdmin, promoteToModerator, demoteToUser, suggestUsers, unsuggestUsers } from 'soapbox/actions/admin';
 import { mentionCompose, directCompose } from 'soapbox/actions/compose';
@@ -133,7 +134,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
     dispatch(mentionCompose(account));
   }, [account, dispatch]);
 
-  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const onDirect = useCallback(() => {
     dispatch(directCompose(account));
     history.push('/statuses/compose');

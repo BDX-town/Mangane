@@ -844,7 +844,7 @@
   "poll_button.add_poll": "Aggiungi un sondaggio",
   "poll_button.remove_poll": "Rimuovi sondaggio",
   "preferences.fields.auto_play_gif_label": "Anima le GIF automaticamente",
-  "preferences.fields.autoload_more_label": "Carica automaticamente altri contenuti quando raggiungi il fondo della pagina",
+  
   "preferences.fields.autoload_timelines_label": "Carica automaticamente nuovi contenuti torni in cima alla pagina",
   "preferences.fields.boost_modal_label": "Richiedi conferma prima di condividere",
   "preferences.fields.content_type_label": "Default post format",

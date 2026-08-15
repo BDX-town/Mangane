@@ -93,16 +93,16 @@ export default class ModalRoot extends React.PureComponent {
 
   renderLoading = modalId => () => {
     return !['MEDIA', 'VIDEO', 'BOOST', 'CONFIRM', 'ACTIONS'].includes(modalId) ? <ModalLoading /> : null;
-  }
+  };
 
   renderError = (props) => {
     return <BundleModalError {...props} onClose={this.onClickClose} />;
-  }
+  };
 
   onClickClose = (_) => {
     const { onClose, type } = this.props;
     onClose(type);
-  }
+  };
 
   render() {
     const { type, props } = this.props;

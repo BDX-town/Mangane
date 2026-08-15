@@ -134,7 +134,7 @@ const htmlToPlainText = (html: string): string =>
 
 /** ServiceWorker `push` event callback. */
 const handlePush = (event: PushEvent) => {
-  const { access_token, notification_id, preferred_locale, title, body, icon } = event.data?.json();
+  const { access_token, notification_id, preferred_locale, title, body, icon } = event.data!.json();
 
   // Placeholder until more information can be loaded
   event.waitUntil(

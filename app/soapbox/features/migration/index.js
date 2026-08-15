@@ -33,15 +33,15 @@ class Migration extends ImmutablePureComponent {
     targetAccount: '',
     password: '',
     isLoading: false,
-  }
+  };
 
   handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-  }
+  };
 
   clearForm = () => {
     this.setState({ targetAccount: '', password: '' });
-  }
+  };
 
   handleSubmit = e => {
     const { targetAccount, password } = this.state;
@@ -55,7 +55,7 @@ class Migration extends ImmutablePureComponent {
     }).then(() => {
       this.setState({ isLoading: false });
     });
-  }
+  };
 
   render() {
     const { intl } = this.props;

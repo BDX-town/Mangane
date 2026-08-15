@@ -844,7 +844,7 @@
   "poll_button.add_poll": "Bæta við könnun",
   "poll_button.remove_poll": "Fjarlægja könnun",
   "preferences.fields.auto_play_gif_label": "Spila GIF hreyfimyndir sjálfvirkt",
-  "preferences.fields.autoload_more_label": "Hlaða sjálfkrafa nýju efni þegar þú er neðst á síðu",
+  
   "preferences.fields.autoload_timelines_label": "Hlaða sjálfkrafa nýjum færslum þegar þú er efst á síðu",
   "preferences.fields.boost_modal_label": "Sýna staðfestingarglugga áður en að endurbirta færslu",
   "preferences.fields.content_type_label": "Default post format",

@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { render, screen, rootState, createTestStore } from 'soapbox/jest/test-helpers';
 
 import { updateNotifications } from 'soapbox/actions/notifications';
-import { render, screen, rootState, createTestStore } from 'soapbox/jest/test-helpers';
 
 import Notification from '../notification';
 

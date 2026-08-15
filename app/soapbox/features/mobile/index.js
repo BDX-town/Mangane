@@ -21,7 +21,7 @@ class MobilePage extends ImmutablePureComponent {
   state = {
     pageHtml: '',
     locale: this.props.locale,
-  }
+  };
 
   loadPageHtml = () => {
     const { dispatch, match, mobilePages } = this.props;
@@ -35,7 +35,7 @@ class MobilePage extends ImmutablePureComponent {
       // TODO: Better error handling. 404 page?
       this.setState({ pageHtml: '<h1>Page not found</h1>' });
     });
-  }
+  };
 
   setLocale = (locale) => () => {
     this.setState({ locale });

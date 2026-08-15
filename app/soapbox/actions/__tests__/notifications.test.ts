@@ -1,7 +1,7 @@
 import { OrderedMap as ImmutableOrderedMap } from 'immutable';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 
 import { __stub } from 'soapbox/api';
-import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { normalizeNotification } from 'soapbox/normalizers';
 
 import { markReadNotifications } from '../notifications';

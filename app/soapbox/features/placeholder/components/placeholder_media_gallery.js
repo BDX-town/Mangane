@@ -8,7 +8,7 @@ export default class PlaceholderMediaGallery extends React.Component {
   static propTypes = {
     media: ImmutablePropTypes.map.isRequired,
     defaultWidth: PropTypes.number,
-  }
+  };
 
   state = {
     width: this.props.defaultWidth,
@@ -20,7 +20,7 @@ export default class PlaceholderMediaGallery extends React.Component {
         width: node.offsetWidth,
       });
     }
-  }
+  };
 
   getSizeData = size => {
     const { defaultWidth } = this.props;
@@ -67,7 +67,7 @@ export default class PlaceholderMediaGallery extends React.Component {
       size,
       width,
     });
-  }
+  };
 
   renderItem = (dimensions, i) => {
     const width = dimensions.w;
@@ -80,7 +80,7 @@ export default class PlaceholderMediaGallery extends React.Component {
     const position = dimensions.pos || 'relative';
 
     return <div key={i} className='media-gallery__item' style={{ position, float, left, top, right, bottom, height, width }} />;
-  }
+  };
 
   render() {
     const { media } = this.props;

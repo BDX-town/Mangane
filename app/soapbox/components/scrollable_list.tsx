@@ -2,10 +2,6 @@ import 'react/jsx-dev-runtime';
 import { Ruisseau } from '@bdxtown/ruisseau';
 import React, { useRef, useCallback, useState, useImperativeHandle, useEffect, HTMLProps, ReactNode } from 'react';
 
-
-import { useSettings } from 'soapbox/hooks';
-
-import LoadMore from './load_more';
 import { Card, Text } from './ui';
 
 interface IScrollableList extends Omit<HTMLProps<HTMLDivElement>, 'onSeeking'> {
@@ -13,6 +9,8 @@ interface IScrollableList extends Omit<HTMLProps<HTMLDivElement>, 'onSeeking'> {
   scrollKey?: string,
   /** Pagination callback when the end of the list is reached. */
   onLoadMore?: () => void,
+  /** callback when user is a start */
+  onStart?: () => void,
   /** Whether the data is currently being fetched. */
   isLoading?: boolean,
   /** Whether we expect an additional page of data. */
@@ -51,11 +49,10 @@ const ScrollableList = React.forwardRef<HTMLElement, IScrollableList>(({
   placeholderComponent: Placeholder,
   placeholderCount = 0,
   prepend,
+  onStart,
   start,
   ...rest
 }, ref) => {
-  const settings = useSettings();
-  const autoloadMore = settings.get('autoloadMore');
 
   const root = useRef<HTMLElement>(null);
   useImperativeHandle(ref, () => root.current);
@@ -66,16 +63,15 @@ const ScrollableList = React.forwardRef<HTMLElement, IScrollableList>(({
       root.current?.scrollTo(0, 0);
     }
     if (firstRender && !isLoading) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFirstRender(false);
     }
   }, [isLoading, firstRender]);
 
 
   const onEnd = useCallback(() => {
-    if (isLoading || !autoloadMore || !hasMore) return;
+    if (isLoading || !hasMore) return;
     onLoadMore();
-  }, [autoloadMore, hasMore, isLoading, onLoadMore]);
+  }, [onLoadMore, hasMore, isLoading]);
 
   const [scrollableParent, setScrollableParent] = useState<HTMLElement | undefined>(undefined);
   const findScrollableParent = useCallback((e: HTMLElement) => {
@@ -85,7 +81,7 @@ const ScrollableList = React.forwardRef<HTMLElement, IScrollableList>(({
   }, []);
 
   return (
-    <Ruisseau ref={findScrollableParent} {...rest} onSeeking={onSeeking} start={start} endRatio={0.7} name={scrollKey} className={`grow ${className}`} onEnd={onEnd} scrollElement={scrollableParent}>
+    <Ruisseau ref={findScrollableParent} {...rest} onStart={onStart} onSeeking={onSeeking} start={start} endRatio={0.7} name={scrollKey} className={`grow ${className}`} onEnd={onEnd} scrollElement={scrollableParent}>
       {prepend}
       {children}
       {React.Children.count(children) === 0 && !isLoading && emptyMessage && (
@@ -97,9 +93,6 @@ const ScrollableList = React.forwardRef<HTMLElement, IScrollableList>(({
       )}
       {
         isLoading && Placeholder && Array(Math.max(1, firstRender ? placeholderCount : 1)).fill('').map(() => <Placeholder />)
-      }
-      {
-        !autoloadMore && hasMore && <LoadMore disabled={isLoading} onClick={onLoadMore} />
       }
     </Ruisseau>
   );

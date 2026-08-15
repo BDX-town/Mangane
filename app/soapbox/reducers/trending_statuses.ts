@@ -6,6 +6,7 @@ import {
 } from 'soapbox/actions/trending_statuses';
 import { APIEntity } from 'soapbox/types/entities';
 
+
 import type { AnyAction } from 'redux';
 
 const ReducerRecord = ImmutableRecord({

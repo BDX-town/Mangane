@@ -307,7 +307,7 @@ const importStatus = (state: State, status: APIEntity, idempotencyKey: string) =
     const timelineIds = getTimelinesByVisibility(status.visibility);
 
     timelineIds.forEach(timelineId => {
-      updateTimeline(state, timelineId, status.id);
+      updateTimelineQueue(state, timelineId, status.id);
     });
   });
 };

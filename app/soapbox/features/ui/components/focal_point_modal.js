@@ -58,11 +58,11 @@ class FocalPointModal extends ImmutablePureComponent {
 
     this.updatePosition(e);
     this.setState({ dragging: true });
-  }
+  };
 
   handleMouseMove = e => {
     this.updatePosition(e);
-  }
+  };
 
   handleMouseUp = () => {
     document.removeEventListener('mousemove', this.handleMouseMove);
@@ -70,7 +70,7 @@ class FocalPointModal extends ImmutablePureComponent {
 
     this.setState({ dragging: false });
     this.props.onSave(this.state.focusX, this.state.focusY);
-  }
+  };
 
   updatePosition = e => {
     const { x, y } = getPointerPosition(this.node, e);
@@ -78,7 +78,7 @@ class FocalPointModal extends ImmutablePureComponent {
     const focusY   = (y - .5) * -2;
 
     this.setState({ x, y, focusX, focusY });
-  }
+  };
 
   updatePositionFromMedia = media => {
     const focusX = media.getIn(['meta', 'focus', 'x']);
@@ -92,11 +92,11 @@ class FocalPointModal extends ImmutablePureComponent {
     } else {
       this.setState({ x: 0.5, y: 0.5, focusX: 0, focusY: 0 });
     }
-  }
+  };
 
   setRef = c => {
     this.node = c;
-  }
+  };
 
   render() {
     const { media } = this.props;

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import debounce from 'lodash/debounce';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { createSelector } from 'reselect';
 
@@ -17,11 +17,11 @@ import ScrollableList from 'soapbox/components/scrollable_list';
 import { Column } from 'soapbox/components/ui';
 import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
+import scrollIntoViewAndFocus from 'soapbox/utils/scroll_into_view';
 
 import FilterBar from './components/filter_bar';
 import Notification from './components/notification';
 
-import type { VirtuosoHandle } from 'react-virtuoso';
 import type { RootState } from 'soapbox/store';
 import type { Notification as NotificationEntity } from 'soapbox/types/entities';
 
@@ -58,26 +58,22 @@ const Notifications = () => {
   const hasMore = useAppSelector(state => state.notifications.hasMore);
   const totalQueuedNotificationsCount = useAppSelector(state => state.notifications.totalQueuedNotificationsCount || 0);
 
-  const node = useRef<VirtuosoHandle>(null);
+  const node = useRef<HTMLElement>(null);
   const column = useRef<HTMLDivElement>(null);
   const scrollableContentRef = useRef<ImmutableList<JSX.Element> | null>(null);
 
-  // const handleLoadGap = (maxId) => {
-  //   dispatch(expandNotifications({ maxId }));
-  // };
-
-  const handleLoadOlder = useCallback(debounce(() => {
+  const _handleLoadOlder = useCallback(() => {
     const last = notifications.last();
     dispatch(expandNotifications({ maxId: last && last.get('id') }));
-  }, 300, { leading: true }), [notifications]);
+  }, [dispatch, notifications]);
 
-  const handleScrollToTop = useCallback(debounce(() => {
-    dispatch(scrollTopNotifications(true));
-  }, 100), []);
+  const handleLoadOlder = useMemo(() => debounce(_handleLoadOlder, 300, { leading: true }), [_handleLoadOlder]);
 
-  const handleScroll = useCallback(debounce(() => {
+  const _handleScroll = useCallback(() => {
     dispatch(scrollTopNotifications(false));
-  }, 100), []);
+  }, [dispatch]);
+
+  const handleScroll = useMemo(() => debounce(_handleScroll, 100), [_handleScroll]);
 
   const handleMoveUp = (id: string) => {
     const elementIndex = notifications.findIndex(item => item !== null && item.get('id') === id) - 1;
@@ -90,39 +86,31 @@ const Notifications = () => {
   };
 
   const _selectChild = (index: number) => {
-    node.current?.scrollIntoView({
-      index,
-      behavior: 'smooth',
-      done: () => {
-        const container = column.current;
-        const element = container?.querySelector(`[data-index="${index}"] .focusable`);
-
-        if (element) {
-          (element as HTMLDivElement).focus();
-        }
-      },
-    });
+    scrollIntoViewAndFocus(node.current, index);
   };
 
-  const handleDequeueNotifications = () => {
+  const handleDequeueNotifications = useCallback(() => {
     dispatch(dequeueNotifications());
-  };
+  }, [dispatch]);
+
+  const onStart = useMemo(() => debounce(handleDequeueNotifications, 1000), [handleDequeueNotifications]);
+
+  const onClick = useCallback(() => {
+    column.current.scrollIntoView({ behavior: 'instant', block: 'start' });
+    handleDequeueNotifications();
+  }, [handleDequeueNotifications]);
 
   const handleRefresh = () => {
     return dispatch(expandNotifications());
   };
 
   useEffect(() => {
-    handleDequeueNotifications();
     dispatch(scrollTopNotifications(true));
 
     return () => {
-      handleLoadOlder.cancel();
-      handleScrollToTop.cancel();
-      handleScroll.cancel();
       dispatch(scrollTopNotifications(false));
     };
-  }, []);
+  }, [dispatch]);
 
   const emptyMessage = activeFilter === 'all'
     ? <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />
@@ -137,10 +125,11 @@ const Notifications = () => {
   if (isLoading && scrollableContentRef.current) {
     scrollableContent = scrollableContentRef.current;
   } else if (notifications.size > 0 || hasMore) {
-    scrollableContent = notifications.map((item) => (
+    scrollableContent = notifications.map((item, index) => (
       <Notification
         key={item.id}
         notification={item}
+        index={index}
         onMoveUp={handleMoveUp}
         onMoveDown={handleMoveDown}
       />
@@ -154,15 +143,14 @@ const Notifications = () => {
   const scrollContainer = (
     <ScrollableList
       ref={node}
+      onStart={onStart}
       scrollKey='notifications'
       isLoading={isLoading}
-      showLoading={isLoading && notifications.size === 0}
       hasMore={hasMore}
       emptyMessage={emptyMessage}
       placeholderComponent={PlaceholderNotification}
       placeholderCount={20}
       onLoadMore={handleLoadOlder}
-      onScrollToTop={handleScrollToTop}
       onScroll={handleScroll}
       className={classNames({
         'divide-y divide-gray-200 dark:divide-gray-600 divide-solid': notifications.size > 0,
@@ -177,10 +165,9 @@ const Notifications = () => {
     <Column ref={column} label={intl.formatMessage(messages.title)} withHeader={false}>
       {filterBarContainer}
       <ScrollTopButton
-        onClick={handleDequeueNotifications}
+        onClick={onClick}
         count={totalQueuedNotificationsCount}
         message={messages.queue}
-        to={column}
       />
       <PullToRefresh onRefresh={handleRefresh}>
         {scrollContainer}

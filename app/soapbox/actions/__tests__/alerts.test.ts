@@ -1,5 +1,4 @@
 import { AxiosError } from 'axios';
-
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 
 import { dismissAlert, showAlert, showAlertForError } from '../alerts';

@@ -1,6 +1,6 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
-
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
+
 import { InstanceRecord } from 'soapbox/normalizers';
 
 import { uploadCompose, submitCompose } from '../compose';

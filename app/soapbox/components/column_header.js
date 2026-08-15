@@ -38,20 +38,20 @@ class ColumnHeader extends React.PureComponent {
     } else {
       this.props.history.goBack();
     }
-  }
+  };
 
   handleToggleClick = (e) => {
     e.stopPropagation();
     this.setState({ collapsed: !this.state.collapsed, animating: true });
-  }
+  };
 
   handleBackClick = () => {
     this.historyBack();
-  }
+  };
 
   handleTransitionEnd = () => {
     this.setState({ animating: false });
-  }
+  };
 
   render() {
     const { title } = this.props;

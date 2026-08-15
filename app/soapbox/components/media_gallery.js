@@ -71,14 +71,14 @@ class Item extends React.PureComponent {
     if (this.hoverToPlay()) {
       e.target.play();
     }
-  }
+  };
 
   handleMouseLeave = (e) => {
     if (this.hoverToPlay()) {
       e.target.pause();
       e.target.currentTime = 0;
     }
-  }
+  };
 
   hoverToPlay() {
     const { attachment, autoPlayGif } = this.props;
@@ -103,21 +103,21 @@ class Item extends React.PureComponent {
     }
 
     e.stopPropagation();
-  }
+  };
 
   handleImageLoad = () => {
     this.setState({ loaded: true });
-  }
+  };
 
   handleVideoHover = ({ target: video }) => {
     video.playbackRate = 3.0;
     video.play();
-  }
+  };
 
   handleVideoLeave = ({ target: video }) => {
     video.pause();
     video.currentTime = 0;
-  }
+  };
 
   render() {
     const { attachment, standalone, visible, dimensions, autoPlayGif, last, total } = this.props;
@@ -313,11 +313,11 @@ class MediaGallery extends React.PureComponent {
     } else {
       this.setState({ visible: !this.state.visible });
     }
-  }
+  };
 
   handleClick = (index) => {
     this.props.onOpenMedia(this.props.media, index);
-  }
+  };
 
   handleRef = (node) => {
     if (node) {
@@ -328,7 +328,7 @@ class MediaGallery extends React.PureComponent {
         width: node.offsetWidth,
       });
     }
-  }
+  };
 
   getSizeDataSingle = () => {
     const { media, defaultWidth } = this.props;
@@ -348,7 +348,7 @@ class MediaGallery extends React.PureComponent {
       size: 1,
       width,
     });
-  }
+  };
 
   getSizeDataMultiple = size => {
     const { media, defaultWidth } = this.props;
@@ -547,7 +547,7 @@ class MediaGallery extends React.PureComponent {
       width,
     });
 
-  }
+  };
 
   getSizeData = size => {
     const { height, defaultWidth } = this.props;
@@ -565,7 +565,7 @@ class MediaGallery extends React.PureComponent {
       size,
       width,
     });
-  }
+  };
 
   render() {
     const { media, intl, sensitive, compact } = this.props;

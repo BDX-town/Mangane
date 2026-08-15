@@ -844,7 +844,7 @@
   "poll_button.add_poll": "Eine Umfrage erstellen",
   "poll_button.remove_poll": "Umfrage entfernen",
   "preferences.fields.auto_play_gif_label": "Animierte GIFs automatisch abspielen",
-  "preferences.fields.autoload_more_label": "Automatisch mehr Elemente laden, wenn zum unteren Ende der Seite gescrollt wird",
+  
   "preferences.fields.autoload_timelines_label": "Lade automatisch neue Beiträge, wenn zum Seitenanfang gescrollt wird",
   "preferences.fields.boost_modal_label": "Bestätigungsdialog vor dem Teilen anzeigen",
   "preferences.fields.content_type_label": "Standardformat für Beiträge",

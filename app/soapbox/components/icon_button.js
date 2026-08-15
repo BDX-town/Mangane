@@ -60,31 +60,31 @@ export default class IconButton extends React.PureComponent {
     if (!this.props.disabled) {
       this.props.onClick(e);
     }
-  }
+  };
 
   handleMouseDown = (e) => {
     if (!this.props.disabled && this.props.onMouseDown) {
       this.props.onMouseDown(e);
     }
-  }
+  };
 
   handleKeyDown = (e) => {
     if (!this.props.disabled && this.props.onKeyDown) {
       this.props.onKeyDown(e);
     }
-  }
+  };
 
   handleKeyUp = (e) => {
     if (!this.props.disabled && this.props.onKeyUp) {
       this.props.onKeyUp(e);
     }
-  }
+  };
 
   handleKeyPress = (e) => {
     if (this.props.onKeyPress && !this.props.disabled) {
       this.props.onKeyPress(e);
     }
-  }
+  };
 
   render() {
     const style = {

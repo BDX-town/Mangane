@@ -41,20 +41,20 @@ class MediaModal extends ImmutablePureComponent {
 
   handleSwipe = (index) => {
     this.setState({ index: index % this.props.media.size });
-  }
+  };
 
   handleNextClick = () => {
     this.setState({ index: (this.getIndex() + 1) % this.props.media.size });
-  }
+  };
 
   handlePrevClick = () => {
     this.setState({ index: (this.props.media.size + this.getIndex() - 1) % this.props.media.size });
-  }
+  };
 
   handleChangeIndex = (e) => {
     const index = Number(e.currentTarget.getAttribute('data-index'));
     this.setState({ index: index % this.props.media.size });
-  }
+  };
 
   handleKeyDown = (e) => {
     switch (e.key) {
@@ -69,7 +69,7 @@ class MediaModal extends ImmutablePureComponent {
         e.stopPropagation();
         break;
     }
-  }
+  };
 
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown, false);
@@ -98,7 +98,7 @@ class MediaModal extends ImmutablePureComponent {
       this.props.history.push(`/@${acct}/posts/${statusId}`);
       this.props.onClose(null, true);
     }
-  }
+  };
 
   handleCloserClick = ({ target }) => {
     const whitelist = ['zoomable-image'];
@@ -110,7 +110,7 @@ class MediaModal extends ImmutablePureComponent {
     if (isClickOutside || isWhitelisted) {
       this.props.onClose();
     }
-  }
+  };
 
   render() {
     const { media, status, account, intl, onClose } = this.props;

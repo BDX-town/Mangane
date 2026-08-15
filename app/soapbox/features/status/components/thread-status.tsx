@@ -12,6 +12,8 @@ interface IThreadStatus {
   onMoveUp: (id: string) => void,
   onMoveDown: (id: string) => void,
   className?: string,
+  /** Absolute position of this status within the thread, used for keyboard navigation. */
+  index?: number,
 }
 
 /** Status with reply-connector in threads. */

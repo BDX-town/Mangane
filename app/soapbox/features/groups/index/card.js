@@ -24,34 +24,34 @@ export default @connect(mapStateToProps)
 @injectIntl
 class GroupCard extends ImmutablePureComponent {
 
-    static propTypes = {
-      group: ImmutablePropTypes.map,
-      relationships: ImmutablePropTypes.map,
-    }
+  static propTypes = {
+    group: ImmutablePropTypes.map,
+    relationships: ImmutablePropTypes.map,
+  };
 
-    getRole() {
-      const { intl, relationships } = this.props;
+  getRole() {
+    const { intl, relationships } = this.props;
 
-      if (relationships.get('admin')) return intl.formatMessage(messages.role_admin);
-      if (relationships.get('member')) return intl.formatMessage(messages.role_member);
-      return null;
-    }
+    if (relationships.get('admin')) return intl.formatMessage(messages.role_admin);
+    if (relationships.get('member')) return intl.formatMessage(messages.role_member);
+    return null;
+  }
 
-    render() {
-      const { intl, group } = this.props;
-      const coverImageUrl = group.get('cover_image_url');
-      const role = this.getRole();
+  render() {
+    const { intl, group } = this.props;
+    const coverImageUrl = group.get('cover_image_url');
+    const role = this.getRole();
 
-      return (
-        <Link to={`/groups/${group.get('id')}`} className='group-card'>
-          <div className='group-card__header'>{coverImageUrl && <img alt='' src={coverImageUrl} />}</div>
-          <div className='group-card__content'>
-            <div className='group-card__title'>{group.get('title')}</div>
-            <div className='group-card__meta'><strong>{shortNumberFormat(group.get('member_count'))}</strong> {intl.formatMessage(messages.members)}{role && <span> · {role}</span>}</div>
-            <div className='group-card__description'>{group.get('description')}</div>
-          </div>
-        </Link>
-      );
-    }
+    return (
+      <Link to={`/groups/${group.get('id')}`} className='group-card'>
+        <div className='group-card__header'>{coverImageUrl && <img alt='' src={coverImageUrl} />}</div>
+        <div className='group-card__content'>
+          <div className='group-card__title'>{group.get('title')}</div>
+          <div className='group-card__meta'><strong>{shortNumberFormat(group.get('member_count'))}</strong> {intl.formatMessage(messages.members)}{role && <span> · {role}</span>}</div>
+          <div className='group-card__description'>{group.get('description')}</div>
+        </div>
+      </Link>
+    );
+  }
 
 }

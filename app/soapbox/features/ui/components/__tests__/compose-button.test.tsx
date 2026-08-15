@@ -4,8 +4,9 @@ import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import '@testing-library/jest-dom';
 
-import { MODAL_OPEN } from 'soapbox/actions/modals';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
+
+import { MODAL_OPEN } from 'soapbox/actions/modals';
 
 import ComposeButton from '../compose-button';
 

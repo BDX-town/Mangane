@@ -2,8 +2,8 @@ name: Build and Deploy to GitHub Pages
 
 on:
   push:
-    tags:        
-      - '*'
+    tags:
+      - 'v[0-9]*'
   workflow_dispatch:  # Permet de lancer manuellement
 
 permissions:

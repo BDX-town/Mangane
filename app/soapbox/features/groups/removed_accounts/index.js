@@ -58,7 +58,7 @@ class GroupRemovedAccounts extends ImmutablePureComponent {
     return () => {
       this.props.dispatch(removeRemovedAccount(group.get('id'), id));
     };
-  }
+  };
 
   render() {
     const { accountIds, hasMore, group, intl } = this.props;

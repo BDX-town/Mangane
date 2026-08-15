@@ -13,6 +13,7 @@ import PlaceholderAccount from 'soapbox/features/placeholder/components/placehol
 import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder_hashtag';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import scrollIntoViewAndFocus from 'soapbox/utils/scroll_into_view';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { SearchFilter } from 'soapbox/reducers/search';
@@ -86,8 +87,7 @@ const SearchResults = () => {
   };
 
   const selectChild = (index: number) => {
-    node.current?.children[index]?.scrollIntoView({ behavior: 'smooth' });
-    (node.current?.children[index] as HTMLElement | undefined)?.focus();
+    scrollIntoViewAndFocus(node.current, index);
   };
 
   useEffect(() => {
@@ -107,9 +107,9 @@ const SearchResults = () => {
     placeholderComponent = PlaceholderAccount;
 
     if (results.accounts && results.accounts.size > 0) {
-      searchResults = results.accounts.map(accountId => <AccountContainer className='py-3' key={accountId} id={accountId} />);
+      searchResults = results.accounts.map(accountId => <AccountContainer className='pb-3' key={accountId} id={accountId} />);
     } else if (!submitted && suggestions && !suggestions.isEmpty()) {
-      searchResults = suggestions.map(suggestion => <AccountContainer className='py-3' key={suggestion.account} id={suggestion.account} />);
+      searchResults = suggestions.map(suggestion => <AccountContainer className='pb-3' key={suggestion.account} id={suggestion.account} />);
     } else if (loaded) {
       noResultsMessage = (
         <div className='empty-column-indicator'>
@@ -128,22 +128,26 @@ const SearchResults = () => {
     loaded = results.statusesLoaded;
 
     if (results.statuses && results.statuses.size > 0) {
-      searchResults = results.statuses.map((statusId: string) => (
+      searchResults = results.statuses.toArray().map((statusId: string, index: number) => (
         // @ts-ignore
         <StatusContainer
+          className='pb-3'
           key={statusId}
           id={statusId}
+          index={index}
           onMoveUp={handleMoveUp}
           onMoveDown={handleMoveDown}
         />
       ));
       resultsIds = results.statuses;
     } else if (!submitted && trendingStatuses && !trendingStatuses.isEmpty()) {
-      searchResults = trendingStatuses.map((statusId: string) => (
+      searchResults = trendingStatuses.toArray().map((statusId: string, index: number) => (
         // @ts-ignore
         <StatusContainer
+          className='pb-3'
           key={statusId}
           id={statusId}
+          index={index}
           onMoveUp={handleMoveUp}
           onMoveDown={handleMoveDown}
         />
@@ -151,7 +155,7 @@ const SearchResults = () => {
       resultsIds = trendingStatuses;
     } else if (loaded) {
       noResultsMessage = (
-        <div className='empty-column-indicator'>
+        <div className='text-center'>
           <FormattedMessage
             id='empty_column.search.statuses'
             defaultMessage='There are no posts results for "{term}"'
@@ -173,7 +177,7 @@ const SearchResults = () => {
       searchResults = trends.map(hashtag => <Hashtag key={hashtag.name} hashtag={hashtag} />);
     } else if (loaded) {
       noResultsMessage = (
-        <div className='empty-column-indicator'>
+        <div className='text-center'>
           <FormattedMessage
             id='empty_column.search.hashtags'
             defaultMessage='There are no hashtags results for "{term}"'
@@ -211,7 +215,7 @@ const SearchResults = () => {
           placeholderComponent={placeholderComponent}
           placeholderCount={3}
           emptyMessage={
-            <div className='empty-column-indicator'>
+            <div className='text-center'>
               <FormattedMessage
                 id='search_results.empty-search'
                 defaultMessage='Search anything :)'

@@ -45,13 +45,16 @@ export interface IStatus {
   unread?: boolean,
   onMoveUp?: (statusId: string, featured?: boolean) => void,
   onMoveDown?: (statusId: string, featured?: boolean) => void,
+  /** Absolute position of this status within its list, used for keyboard navigation. */
+  index?: number,
   group?: ImmutableMap<string, any>,
   focusable?: boolean,
   featured?: boolean,
   hideActionBar?: boolean,
   hoverable?: boolean,
   withDismiss?: boolean,
-  timeline?:boolean
+  timeline?:boolean,
+  className?: string,
 }
 
 
@@ -63,6 +66,7 @@ const Status: React.FC<IStatus> = (props) => {
     onClick,
     onMoveUp,
     onMoveDown,
+    index,
     muted,
     hidden,
     featured,
@@ -70,6 +74,7 @@ const Status: React.FC<IStatus> = (props) => {
     group,
     hideActionBar,
     withDismiss,
+    className,
     timeline = false,
   } = props;
   const intl = useIntl();
@@ -248,8 +253,9 @@ const Status: React.FC<IStatus> = (props) => {
   return (
     <HotKeys handlers={handlers} data-testid='status'>
       <div
-        className={classNames('status cursor-pointer ', { focusable })}
+        className={classNames('status cursor-pointer ', { focusable }, className)}
         tabIndex={focusable && !muted ? 0 : undefined}
+        data-index={index}
         data-featured={featured ? 'true' : null}
         aria-label={textForScreenReader(intl, actualStatus, intl.formatMessage(
           messages.reblogged_by,

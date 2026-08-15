@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl';
 import { dequeueTimeline, scrollTopTimeline } from 'soapbox/actions/timelines';
 import ScrollToButton from 'soapbox/components/scroll-to-button';
 import StatusList, { IStatusList } from 'soapbox/components/status_list';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks';
 import { makeGetStatusIds } from 'soapbox/selectors';
 
 const messages = defineMessages({
@@ -37,6 +37,12 @@ const Timeline: React.FC<ITimeline> = ({
   const hasMore = useAppSelector(state => state.timelines.get(timelineId)?.hasMore === true);
   const totalQueuedItemsCount = useAppSelector(state => state.timelines.get(timelineId)?.totalQueuedItemsCount || 0);
   const isFilteringFeed = useAppSelector(state => !!state.timelines.get(timelineId)?.feedAccountId);
+  const settings = useSettings();
+  const autoload = settings.get('autoloadTimelines') === true;
+
+  const top = useRef<HTMLDivElement>(null);
+
+
 
   const handleDequeueTimeline = useCallback(() => {
     if (isFilteringFeed) {
@@ -44,6 +50,13 @@ const Timeline: React.FC<ITimeline> = ({
     }
     dispatch(dequeueTimeline(timelineId, onLoadMore));
   }, [dispatch, isFilteringFeed, onLoadMore, timelineId]);
+
+  const onStart = useMemo(() => debounce(handleDequeueTimeline, 1000), [handleDequeueTimeline]);
+
+  const onClick = useCallback(() => {
+    top.current.scrollIntoView({ behavior: 'instant', block: 'start' });
+    handleDequeueTimeline();
+  }, [handleDequeueTimeline]);
 
   const handleScrollDebounced = useMemo(() => {
     return debounce(() => {
@@ -53,22 +66,20 @@ const Timeline: React.FC<ITimeline> = ({
 
   const handleScroll = useCallback(() => handleScrollDebounced(), [handleScrollDebounced]);
 
-  const top = useRef<HTMLDivElement>(null);
-
   return (
     <>
       {
         createPortal(<ScrollToButton
           key='timeline-queue-button-header'
-          onClick={handleDequeueTimeline}
+          onClick={onClick}
           count={totalQueuedItemsCount}
           message={messages.queue}
-          to={top}
         />, document.body)
       }
       <div ref={top} />
       <StatusList
         timelineId={timelineId}
+        onStart={autoload ? onStart : undefined}
         onScroll={handleScroll}
         lastStatusId={lastStatusId}
         statusIds={statusIds}

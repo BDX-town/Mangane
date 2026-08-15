@@ -19,7 +19,7 @@ module.exports = {
     ATTACHMENT_HOST: false,
   },
 
-  parser: 'babel-eslint',
+  parser: '@babel/eslint-parser',
 
   plugins: [
     'react',
@@ -38,6 +38,10 @@ module.exports = {
       jsx: true,
     },
     ecmaVersion: 2018,
+    requireConfigFile: false,
+    babelOptions: {
+      configFile: require.resolve('./babel.config.js'),
+    },
   },
 
   settings: {
@@ -124,6 +128,7 @@ module.exports = {
       {
         vars: 'all',
         args: 'none',
+        caughtErrors: 'none',
         ignoreRestSiblings: true,
       },
     ],
@@ -267,7 +272,7 @@ module.exports = {
         alphabetize: { order: 'asc' },
       },
     ],
-    '@typescript-eslint/no-duplicate-imports': 'error',
+    'no-duplicate-imports': 'error',
 
     'promise/catch-or-return': 'error',
 
@@ -278,6 +283,8 @@ module.exports = {
       files: ['**/*.ts', '**/*.tsx'],
       rules: {
         'no-undef': 'off', // https://stackoverflow.com/a/69155899
+        // Base rule can't tell `import type { X }` apart from a duplicate `import { X }`.
+        'no-duplicate-imports': 'off',
       },
       parser: '@typescript-eslint/parser',
     },

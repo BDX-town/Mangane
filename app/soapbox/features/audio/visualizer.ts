@@ -15,10 +15,10 @@ const hex2rgba = (hex: string, alpha = 1) => {
 
 export default class Visualizer {
 
-  tickSize: number
-  canvas?: HTMLCanvasElement
-  context?: CanvasRenderingContext2D
-  analyser?: AnalyserNode
+  tickSize: number;
+  canvas?: HTMLCanvasElement;
+  context?: CanvasRenderingContext2D;
+  analyser?: AnalyserNode;
 
   constructor(tickSize: number) {
     this.tickSize = tickSize;

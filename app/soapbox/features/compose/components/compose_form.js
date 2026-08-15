@@ -55,7 +55,7 @@ class ComposeForm extends ImmutablePureComponent {
 
   state = {
     composeFocused: false,
-  }
+  };
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
@@ -100,30 +100,30 @@ class ComposeForm extends ImmutablePureComponent {
 
   handleChange = (e) => {
     this.props.onChange(e.target.value);
-  }
+  };
 
   handleComposeFocus = () => {
     this.setState({
       composeFocused: true,
     });
-  }
+  };
 
   handleKeyDown = (e) => {
     if (e.keyCode === 13 && (e.ctrlKey || e.metaKey)) {
       this.handleSubmit();
       e.preventDefault(); // Prevent bubbling to other ComposeForm instances
     }
-  }
+  };
 
   getClickableArea = () => {
     const { clickableAreaRef } = this.props;
     return clickableAreaRef ? clickableAreaRef.current : this.form;
-  }
+  };
 
   isEmpty = () => {
     const { text, spoilerText, anyMedia } = this.props;
     return !(text || spoilerText || anyMedia);
-  }
+  };
 
   isClickOutside = (e) => {
     return ![
@@ -134,19 +134,19 @@ class ComposeForm extends ImmutablePureComponent {
       document.querySelector('.emoji-picker-dropdown__menu'),
       document.getElementById('modal-overlay'),
     ].some(element => element?.contains(e.target));
-  }
+  };
 
   handleClick = (e) => {
     if (this.isEmpty() && this.isClickOutside(e)) {
       this.handleClickOutside();
     }
-  }
+  };
 
   handleClickOutside = () => {
     this.setState({
       composeFocused: false,
     });
-  }
+  };
 
   handleSubmit = () => {
     if (this.props.text !== this.autosuggestTextarea.textarea.value) {
@@ -164,32 +164,32 @@ class ComposeForm extends ImmutablePureComponent {
     }
 
     this.props.onSubmit(this.props.history ? this.props.history : null, this.props.group);
-  }
+  };
 
   onSuggestionsClearRequested = () => {
     this.props.onClearSuggestions();
-  }
+  };
 
   onSuggestionsFetchRequested = (token) => {
     this.props.onFetchSuggestions(token);
-  }
+  };
 
   onSuggestionSelected = (tokenStart, token, value) => {
     this.props.onSuggestionSelected(tokenStart, token, value, ['text']);
-  }
+  };
 
   onSpoilerSuggestionSelected = (tokenStart, token, value) => {
     this.props.onSuggestionSelected(tokenStart, token, value, ['spoiler_text']);
-  }
+  };
 
   handleChangeSpoilerText = (e) => {
     this.props.onChangeSpoilerText(e.target.value);
-  }
+  };
 
   setCursor = (start, end = start) => {
     if (!this.autosuggestTextarea) return;
     this.autosuggestTextarea.textarea.setSelectionRange(start, end);
-  }
+  };
 
   componentDidMount() {
     const length = this.props.text.length;
@@ -206,15 +206,15 @@ class ComposeForm extends ImmutablePureComponent {
 
   setAutosuggestTextarea = (c) => {
     this.autosuggestTextarea = c;
-  }
+  };
 
   setForm = (c) => {
     this.form = c;
-  }
+  };
 
   setSpoilerText = (c) => {
     this.spoilerText = c;
-  }
+  };
 
   handleEmojiPick = (data) => {
     const { text }   = this.props;
@@ -222,17 +222,17 @@ class ComposeForm extends ImmutablePureComponent {
     const needsSpace = data.custom && position > 0 && !allowedAroundShortCode.includes(text[position - 1]);
 
     this.props.onPickEmoji(position, data, needsSpace);
-  }
+  };
 
   focusSpoilerInput = () => {
     const spoilerInput = get(this, ['spoilerText', 'input']);
     if (spoilerInput) spoilerInput.focus();
-  }
+  };
 
   focusTextarea = () => {
     const textarea = get(this, ['autosuggestTextarea', 'textarea']);
     if (textarea) textarea.focus();
-  }
+  };
 
   maybeUpdateFocus = prevProps => {
     const spoilerUpdated = this.props.spoiler !== prevProps.spoiler;
@@ -242,7 +242,7 @@ class ComposeForm extends ImmutablePureComponent {
         case false: this.focusTextarea(); break;
       }
     }
-  }
+  };
 
   maybeUpdateCursor = prevProps => {
     const shouldUpdate = [
@@ -255,7 +255,7 @@ class ComposeForm extends ImmutablePureComponent {
     if (shouldUpdate) {
       this.setCursor(this.props.caretPosition);
     }
-  }
+  };
 
   componentDidUpdate(prevProps) {
     this.maybeUpdateFocus(prevProps);

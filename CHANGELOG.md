@@ -2,6 +2,52 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.23.0 (2026-08-15)
+
+
+### Features
+
+* remove autoload more option on scrollable list ([#471](https://github.com/BDX-town/Mangane/issues/471)) ([59c1104](https://github.com/BDX-town/Mangane/commit/59c11043e760dd334a2abd86fd9556e7bd785439))
+
+## 1.22.11 (2026-08-09)
+
+
+### Bug Fixes
+
+* do not dequeue when going back on timeline ([b40fc0b](https://github.com/BDX-town/Mangane/commit/b40fc0beec5cebc7931bc0c8fa33a6516b6f80f1))
+
+## 1.22.10 (2026-08-09)
+
+## 1.22.9 (2026-08-08)
+
+
+### Bug Fixes
+
+* clean notification counter when showing notifications ([a1d2ee6](https://github.com/BDX-town/Mangane/commit/a1d2ee6ed89e97b8226176230be940d314b1113b))
+
+## 1.22.8 (2026-08-08)
+
+
+### Bug Fixes
+
+* crash on notification view ([bd04d58](https://github.com/BDX-town/Mangane/commit/bd04d58c6d69ecd52b6ca6a101e11c0cb1feb57e))
+
+## 1.22.7 (2026-08-08)
+
+
+### Bug Fixes
+
+* autoload of new status is not triggered when scrolling anymore ([e918c62](https://github.com/BDX-town/Mangane/commit/e918c6250bcad157a99d450bd723dfee28bacc4b))
+
+## 1.22.6 (2026-08-08)
+
+## 1.22.5 (2026-08-08)
+
+
+### Bug Fixes
+
+* add new composed status to queue ([bc06725](https://github.com/BDX-town/Mangane/commit/bc067257304bb588fdfc5e130db38c4362ba7697))
+
 ## 1.22.4 (2026-08-07)
 
 ## 1.22.3 (2026-08-07)

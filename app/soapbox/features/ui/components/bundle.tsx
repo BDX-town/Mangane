@@ -12,9 +12,9 @@ class Bundle extends React.PureComponent<{ fetchComponent: any, loading: any, er
     onFetch: noop,
     onFetchSuccess: noop,
     onFetchFail: noop,
-  }
+  };
 
-  static cache = new Map
+  static cache = new Map;
 
   unmounted: boolean = false;
   timeout;
@@ -23,7 +23,7 @@ class Bundle extends React.PureComponent<{ fetchComponent: any, loading: any, er
   state = {
     mod: undefined,
     forceRender: false,
-  }
+  };
 
   componentDidMount() {
     this.load(this.props);
@@ -80,7 +80,7 @@ class Bundle extends React.PureComponent<{ fetchComponent: any, loading: any, er
         this.setState({ mod: null });
         onFetchFail(error);
       });
-  }
+  };
 
   render() {
     const { loading: Loading, error: Error, children, renderDelay } = this.props;
