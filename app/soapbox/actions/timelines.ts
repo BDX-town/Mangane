@@ -1,4 +1,4 @@
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 
 import api, { getLinks } from '../api';
 
@@ -6,7 +6,12 @@ import { importFetchedStatus, importFetchedStatuses } from './importer';
 
 import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity, Status } from 'soapbox/types/entities';
+
+import { getSettings } from 'soapbox/actions/settings';
+import { normalizeStatus } from 'soapbox/normalizers';
+import { shouldFilter } from 'soapbox/utils/timelines';
+
 
 const TIMELINE_UPDATE = 'TIMELINE_UPDATE';
 const TIMELINE_DELETE = 'TIMELINE_DELETE';
@@ -33,6 +38,9 @@ const processTimelineUpdate = (timeline: string, status: APIEntity, accept: ((st
     const me = getState().me;
     const ownStatus = status.account?.id === me;
     const hasPendingStatuses = !getState().pending_statuses.isEmpty();
+    
+    const columnSettings = getSettings(getState()).get(timeline, ImmutableMap());
+    const shouldHide = shouldFilter(normalizeStatus(status) as Status, columnSettings);
 
     if (ownStatus && hasPendingStatuses) {
       // WebSockets push statuses without the Idempotency-Key,
@@ -42,7 +50,8 @@ const processTimelineUpdate = (timeline: string, status: APIEntity, accept: ((st
     }
 
     dispatch(importFetchedStatus(status));
-    dispatch(updateTimelineQueue(timeline, status.id, accept));
+    
+    if(!shouldHide) dispatch(updateTimelineQueue(timeline, status.id, accept));
   };
 
 const updateTimeline = (timeline: string, statusId: string, accept: ((status: APIEntity) => boolean) | null) =>
