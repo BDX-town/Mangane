@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.24.2 (2026-08-16)
+
+
+### Bug Fixes
+
+* wrong queue counter on timelines ([23f7d44](https://github.com/BDX-town/Mangane/commit/23f7d44384572d77afda38c1f4f3b1d259844e05))
+
 ## 1.24.1 (2026-08-15)
 
 ## 1.24.0 (2026-08-15)
