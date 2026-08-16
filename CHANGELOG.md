@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.24.3 (2026-08-16)
+
+
+### Bug Fixes
+
+* toggle media visibility was not working as expected ([2d415e1](https://github.com/BDX-town/Mangane/commit/2d415e1d9a701274a45dc0c96d1b8ec4932dd451))
+
 ## 1.24.2 (2026-08-16)
 
 
