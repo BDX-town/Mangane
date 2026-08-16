@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import classNames from 'classnames';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { NavLink, useHistory } from 'react-router-dom';
@@ -13,7 +13,7 @@ import Icon from 'soapbox/components/icon';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
 import { useAppDispatch, useSettings, useLogo } from 'soapbox/hooks';
-import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status';
+import { textForScreenReader, getActualStatus } from 'soapbox/utils/status';
 
 import { ProfilePopper } from './account';
 import HoverRefWrapper from './hover_ref_wrapper';
@@ -82,11 +82,8 @@ const Status: React.FC<IStatus> = (props) => {
   const dispatch = useAppDispatch();
 
   const settings = useSettings();
-  const displayMedia = settings.get('displayMedia') as string;
   const didShowCard = useRef(false);
   const node = useRef<HTMLDivElement>(null);
-
-  const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
 
   const actualStatus = useMemo(() => getActualStatus(status), [status]) ;
 
@@ -96,14 +93,6 @@ const Status: React.FC<IStatus> = (props) => {
   useEffect(() => {
     didShowCard.current = Boolean(!muted && !hidden && status?.card);
   }, [muted, hidden, status]);
-
-  useEffect(() => {
-    setShowMedia(defaultMediaVisibility(status, displayMedia));
-  }, [displayMedia, status, status.id]);
-
-  const handleToggleMediaVisibility = useCallback((): void => {
-    setShowMedia(!showMedia);
-  }, [showMedia]);
 
   const handleClick = (): void => {
     if (onClick) {
@@ -180,10 +169,6 @@ const Status: React.FC<IStatus> = (props) => {
     dispatch(toggleStatusHidden(actualStatus));
   }, [actualStatus, dispatch]);
 
-  const handleHotkeyToggleSensitive = useCallback((): void => {
-    handleToggleMediaVisibility();
-  }, [handleToggleMediaVisibility]);
-
   const handleHotkeyReact = useCallback((): void => {
     _expandEmojiSelector();
   }, []);
@@ -229,10 +214,9 @@ const Status: React.FC<IStatus> = (props) => {
     moveUp: handleHotkeyMoveUp,
     moveDown: handleHotkeyMoveDown,
     toggleHidden: handleHotkeyToggleHidden,
-    toggleSensitive: handleHotkeyToggleSensitive,
     openMedia: handleHotkeyOpenMedia,
     react: handleHotkeyReact,
-  }, [handleHotkeyBoost, handleHotkeyFavourite, handleHotkeyMention, handleHotkeyMoveDown, handleHotkeyMoveUp, handleHotkeyOpen, handleHotkeyOpenMedia, handleHotkeyOpenProfile, handleHotkeyReact, handleHotkeyReply, handleHotkeyToggleHidden, handleHotkeyToggleSensitive, muted]);
+  }, [handleHotkeyBoost, handleHotkeyFavourite, handleHotkeyMention, handleHotkeyMoveDown, handleHotkeyMoveUp, handleHotkeyOpen, handleHotkeyOpenMedia, handleHotkeyOpenProfile, handleHotkeyReact, handleHotkeyReply, handleHotkeyToggleHidden, muted]);
 
 
 
@@ -365,8 +349,6 @@ const Status: React.FC<IStatus> = (props) => {
                     status={actualStatus}
                     muted={muted}
                     onClick={handleClick}
-                    showMedia={showMedia}
-                    onToggleVisibility={handleToggleMediaVisibility}
                   />
                   { quote  }
                 </div>

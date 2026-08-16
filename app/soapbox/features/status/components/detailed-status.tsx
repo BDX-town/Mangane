@@ -24,18 +24,14 @@ interface IDetailedStatus {
   onOpenVideo: (media: ImmutableList<AttachmentEntity>, start: number) => void,
   onToggleHidden: (status: StatusEntity) => void,
   onTranslate: (status: StatusEntity, language: string) => void,
-  showMedia: boolean,
   onOpenCompareHistoryModal: (status: StatusEntity) => void,
-  onToggleMediaVisibility: () => void,
 }
 
 const DetailedStatus: React.FC<IDetailedStatus> = ({
   status,
   onToggleHidden,
   onOpenCompareHistoryModal,
-  onToggleMediaVisibility,
   onTranslate,
-  showMedia,
 }) => {
   const intl = useIntl();
   const node = useRef<HTMLDivElement>(null);
@@ -183,8 +179,6 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
           <>
             <StatusMedia
               status={actualStatus}
-              showMedia={showMedia}
-              onToggleVisibility={onToggleMediaVisibility}
             />
             { quote }
           </>

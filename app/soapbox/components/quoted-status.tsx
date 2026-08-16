@@ -1,13 +1,11 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React from 'react';
 import { defineMessages, useIntl, FormattedMessage, FormattedList } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import StatusMedia from 'soapbox/components/status-media';
 import { Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
-import { useSettings } from 'soapbox/hooks';
-import { defaultMediaVisibility } from 'soapbox/utils/status';
 
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
@@ -29,11 +27,6 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
   const intl = useIntl();
   const history = useHistory();
 
-  const settings = useSettings();
-  const displayMedia = settings.get('displayMedia');
-
-  const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
-
   const handleExpandClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!status) return;
     const account = status.account as AccountEntity;
@@ -49,10 +42,6 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
     if (onCancel) {
       onCancel();
     }
-  };
-
-  const handleToggleMediaVisibility = () => {
-    setShowMedia(!showMedia);
   };
 
   const renderReplyMentions = () => {
@@ -151,8 +140,6 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
       <StatusMedia
         status={status}
         muted={compose}
-        showMedia={showMedia}
-        onToggleVisibility={handleToggleMediaVisibility}
       />
     </Stack>
   );

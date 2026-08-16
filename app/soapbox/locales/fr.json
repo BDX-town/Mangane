@@ -691,7 +691,7 @@
   "login_external.errors.instance_fail": "The instance returned an error.",
   "login_external.errors.network_fail": "Connection failed. Is a browser extension blocking it?",
   "login_form.header": "Connexion",
-  "media_gallery.toggle_visible": "Modifier la visibilité",
+  "media_gallery.toggle_visible": "Masquer",
   "media_panel.empty_message": "No media found.",
   "media_panel.title": "Media",
   "mfa.confirm.success_message": "MFA confirmed",
