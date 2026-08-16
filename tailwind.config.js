@@ -1,4 +1,5 @@
 const { parseColorMatrix } = require('./tailwind/colors');
+const divideIgnoreEmpty = require('./tailwind/divide-ignore-empty');
 
 module.exports = {
   content: ['./app/**/*.{html,js,ts,tsx}', './custom/instance/**/*.html'],
@@ -83,5 +84,6 @@ module.exports = {
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
+    divideIgnoreEmpty,
   ],
 };
