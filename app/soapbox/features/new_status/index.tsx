@@ -66,7 +66,7 @@ const NewStatus = () => {
       <div className='px-4 pt-4 sm:p-0'>
         <SubNavigation message={renderTitle} />
       </div>
-      <div className='block w-full p-6 mx-auto text-left align-middle transition-all bg-white dark:bg-slate-800 text-black dark:text-white rounded-none sm:rounded-2xl pointer-events-auto max-w-xl'>
+      <div className='block w-full p-6 mx-auto text-left align-middle transition-all bg-white dark:bg-slate-800 text-black dark:text-white rounded-none sm:rounded-2xl pointer-events-auto'>
         <ComposeFormContainer  onSubmit={handleComposeSubmit} />
       </div>
 
