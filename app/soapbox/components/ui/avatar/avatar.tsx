@@ -28,7 +28,7 @@ const Avatar = (props: IAvatar) => {
       className={classNames('rounded-full overflow-hidden', className)}
       style={style}
       src={src}
-      alt='Avatar'
+      aria-hidden
     />
   );
 };
