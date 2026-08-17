@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.24.4 (2026-08-17)
+
+
+### Bug Fixes
+
+* do not show avatar alt on avatars ([ead18c4](https://github.com/BDX-town/Mangane/commit/ead18c4a42b1c5ba28a919fe48718fd874816444))
+
 ## 1.24.3 (2026-08-16)
 
 
