@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
+import { showAlertForError } from 'soapbox/actions/alerts';
 import { logIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { closeModal } from 'soapbox/actions/modals';
@@ -37,7 +38,11 @@ const LoginPage = () => {
     dispatch(logIn(username, password)).then(({ access_token }) => {
       return dispatch(verifyCredentials(access_token as string))
         // Refetch the instance for authenticated fetch
-        .then(() => dispatch(fetchInstance() as any));
+        .then(() => dispatch(fetchInstance() as any))
+        .catch((error: AxiosError) => {
+          dispatch(showAlertForError(error));
+          throw error;
+        });
     }).then((account: { id: string }) => {
       dispatch(closeModal());
       setShouldRedirect(true);
@@ -49,6 +54,8 @@ const LoginPage = () => {
       if (data?.error === 'mfa_required') {
         setMfaAuthNeeded(true);
         setMfaToken(data.mfa_token);
+      } else if (error.code !== 'ERR_BAD_REQUEST') {
+        dispatch(showAlertForError(error));
       }
       setIsLoading(false);
     });

@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Button, Form, FormActions, FormGroup, Input, Stack } from 'soapbox/components/ui';
+import { Button, Form, FormActions, FormGroup, Icon, Input, Stack } from 'soapbox/components/ui';
 
 import ConsumersList from './consumers-list';
 
@@ -74,6 +74,9 @@ const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
               type='submit'
               disabled={isLoading}
             >
+              {isLoading && (
+                <Icon src={require('@tabler/icons/loader-2.svg')} className='mr-2 w-4 h-4 animate-spin' />
+              )}
               <FormattedMessage id='login.sign_in' defaultMessage='Sign in' />
             </Button>
           </FormActions>

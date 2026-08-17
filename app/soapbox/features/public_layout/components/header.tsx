@@ -3,14 +3,14 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
+import { showAlertForError } from 'soapbox/actions/alerts';
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
-import { openModal } from 'soapbox/actions/modals';
+import Icon from 'soapbox/components/icon';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
 import { useAppSelector, useFeatures, useSoapboxConfig, useOwnAccount } from 'soapbox/hooks';
 
-import Sonar from './sonar';
 
 import type { AxiosError } from 'axios';
 
@@ -43,8 +43,6 @@ const Header = () => {
   const [shouldRedirect, setShouldRedirect] = React.useState(false);
   const [mfaToken, setMfaToken] = React.useState(false);
 
-  const open = () => dispatch(openModal('LANDING_PAGE'));
-
   const handleSubmit: React.FormEventHandler = (event) => {
     event.preventDefault();
     setLoading(true);
@@ -55,15 +53,20 @@ const Header = () => {
           dispatch(verifyCredentials(access_token) as any)
             // Refetch the instance for authenticated fetch
             .then(() => dispatch(fetchInstance()))
+            .catch((error: AxiosError) => {
+              dispatch(showAlertForError(error));
+              throw error;
+            })
             .then(() => setShouldRedirect(true))
         );
       })
       .catch((error: AxiosError) => {
         setLoading(false);
-
         const data: any = error.response?.data;
         if (data?.error === 'mfa_required') {
           setMfaToken(data.mfa_token);
+        } else if (error.code !== 'ERR_BAD_REQUEST') {
+          dispatch(showAlertForError(error));
         }
       });
   };
@@ -152,6 +155,9 @@ const Header = () => {
                 type='submit'
                 disabled={isLoading}
               >
+                {isLoading && (
+                  <Icon src={require('@tabler/icons/loader-2.svg')} className='mr-2 w-4 h-4 animate-spin' />
+                )}
                 {intl.formatMessage(messages.login)}
               </Button>
             </Form>

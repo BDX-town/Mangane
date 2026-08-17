@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import Checkbox from '../checkbox/checkbox';
@@ -13,7 +13,8 @@ interface IFormGroup {
   /** Input hint message. */
   hintText?: React.ReactNode,
   /** Input errors. */
-  errors?: string[]
+  errors?: string[],
+  children?: ReactNode,
 }
 
 /** Input container with label. Renders the child. */
