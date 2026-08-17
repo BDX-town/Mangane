@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.24.5 (2026-08-17)
+
+
+### Bug Fixes
+
+* do not restrict compose form width ([bd0dd31](https://github.com/BDX-town/Mangane/commit/bd0dd31fca76e3c7350172af26db3caf4cbef09d))
+
 ## 1.24.4 (2026-08-17)
 
 
