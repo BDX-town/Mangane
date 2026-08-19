@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 
 import StillImage from 'soapbox/components/still_image';
+import PlaceholderAvatar from 'soapbox/features/placeholder/components/placeholder_avatar';
 
 const AVATAR_SIZE = 42;
 
@@ -17,6 +18,7 @@ interface IAvatar {
 /** Round profile avatar for accounts. */
 const Avatar = (props: IAvatar) => {
   const { src, size = AVATAR_SIZE, className } = props;
+  const [loaded, setLoaded] = React.useState(false);
 
   const style: React.CSSProperties = React.useMemo(() => ({
     width: size,
@@ -24,12 +26,18 @@ const Avatar = (props: IAvatar) => {
   }), [size]);
 
   return (
-    <StillImage
-      className={classNames('rounded-full overflow-hidden', className)}
-      style={style}
-      src={src}
-      aria-hidden
-    />
+    <>
+      <StillImage
+        className={classNames('rounded-full overflow-hidden', className, { 'invisible absolute': !loaded })}
+        style={style}
+        src={src}
+        aria-hidden
+        onLoad={() => setLoaded(true)}
+      />
+      {
+        !loaded && <PlaceholderAvatar size={size} />
+      }
+    </>
   );
 };
 
