@@ -63,21 +63,21 @@ const Conversation: React.FC<IConversation> = ({ conversationId, onMoveUp, onMov
   return (
     <HotKeys handlers={handlers} data-testid='status'>
       <div onClick={handleClick} role='button' tabIndex={0} data-index={index} className={`bg-white dark:bg-slate-800 px-4 py-6 sm:shadow-sm dark:shadow-inset sm:p-5 rounded-xl ${className}`}>
-        <div className='flex justify-between gap-3'>
-          <div className='flex gap-2 grow'>
+        <div className='flex flex-col-reverse sm:flex-row justify-between items-start gap-3'>
+          <div className='flex gap-2 grow shrink min-w-0 w-full'>
             {accounts.map((a) => <Account withLinkToProfile={false} account={a} />)}
           </div>
-          <Icon
-            src={require('@tabler/icons/messages.svg')}
-            count={unread ? 1 : 0}
-            className='h-6 w-6 dark:group-hover:text-primary-500'
-          />
+          <div className='text-sm text-gray-500 dark:text-gray-200 flex gap-2 items-center grow sm:grow-0  w-full justify-end'>
+            {new Date(lastStatus.get('created_at')).toLocaleDateString(undefined, { day: '2-digit', month: '2-digit', year: 'numeric' })}
+            <Icon
+              src={require('@tabler/icons/messages.svg')}
+              count={unread ? 1 : 0}
+              className='h-6 w-6 dark:group-hover:text-primary-500'
+            />
+          </div>
         </div>
         <div className='flex justify-between mt-3 items-end gap-2'>
           <div style={{ 'whiteSpace': 'nowrap' }} className='overflow-x-hidden text-ellipsis text-gray-700 dark:text-gray-300' dangerouslySetInnerHTML={{ __html: lastStatus.contentHtml.replace(/<br ?\/?>/g, ' ') }} />
-          <div className='text-gray-300 dark:text-gray-300 text-xs'>
-            {new Date(lastStatus.get('created_at')).toLocaleDateString(undefined, { day: '2-digit', month: '2-digit', year: 'numeric' })}
-          </div>
         </div>
 
       </div>
