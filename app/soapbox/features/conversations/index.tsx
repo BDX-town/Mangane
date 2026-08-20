@@ -11,6 +11,7 @@ import { Button, CardTitle, Column } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import ConversationsList from './components/conversations_list';
+import ConversationsSearch from './components/conversations_search';
 
 const messages = defineMessages({
   title: { id: 'column.direct', defaultMessage: 'Conversations' },
@@ -41,16 +42,19 @@ const ConversationsTimeline = () => {
 
   return (
     <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
-      <div className='px-4 pt-4 pb-8 sm:px-0 sm:pt-0'>
+      <div className='px-4 pt-4 sm:px-0 sm:pt-0'>
         <SubNavigation className='flex justify-between gap-3 align-center'>
           <CardTitle title={intl.formatMessage(messages.title)} />
-          <Button size='sm' classNames='flex gap-2 items-center' onClick={handleNewConversation}>
+          <Button classNames='flex gap-2 items-center' onClick={handleNewConversation}>
             <Icon
               src={require('@tabler/icons/message-circle.svg')}
             />
             Nouvelle conversation
           </Button>
         </SubNavigation>
+        <div className='mb-3'>
+          <ConversationsSearch />
+        </div>
         <div className='flex flex-col gap-3'>
           <ConversationsList />
         </div>

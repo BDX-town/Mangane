@@ -19,6 +19,7 @@ const ConversationsList: React.FC = () => {
 
   const conversations = useAppSelector((state) => state.conversations.items);
   const isLoading = useAppSelector((state) => state.conversations.isLoading);
+  const hasRecipientsFilter = useAppSelector((state) => !!state.conversations.recipients);
 
   const getCurrentIndex = (id: string) => conversations.findIndex(x => x.id === id);
 
@@ -50,7 +51,11 @@ const ConversationsList: React.FC = () => {
       isLoading={isLoading}
       placeholderComponent={Placeholder}
       placeholderCount={5}
-      emptyMessage={<FormattedMessage id='empty_column.direct' defaultMessage="You don't have any direct messages yet. When you send or receive one, it will show up here." />}
+      emptyMessage={hasRecipientsFilter ? (
+        <FormattedMessage id='empty_column.direct_search' defaultMessage='No conversations found with the selected participants.' />
+      ) : (
+        <FormattedMessage id='empty_column.direct' defaultMessage="You don't have any direct messages yet. When you send or receive one, it will show up here." />
+      )}
     >
       {conversations.map((item: any, index: number) => (
         <Conversation
