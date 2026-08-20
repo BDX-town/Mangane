@@ -4,14 +4,13 @@ import { FormattedMessage } from 'react-intl';
 
 import { expandConversations } from 'soapbox/actions/conversations';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import scrollIntoViewAndFocus from 'soapbox/utils/scroll_into_view';
 
-import Conversation from '../components/conversation';
+import Conversation, { PlaceholderConversation } from '../components/conversation';
 
 const Placeholder = (props: object) => {
-  return <div className='sm:pb-3'><PlaceholderStatus {...props} timeline /></div>;
+  return <div className='sm:pb-3'><PlaceholderConversation /></div>;
 };
 
 const ConversationsList: React.FC = () => {

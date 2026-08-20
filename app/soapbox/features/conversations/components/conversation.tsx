@@ -1,13 +1,14 @@
 import React, { useCallback, useMemo } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { useHistory } from 'react-router-dom';
-import { accountSearch } from 'soapbox/actions/accounts';
 
 
 import { markConversationRead } from 'soapbox/actions/conversations';
 import Account, { ProfilePopper } from 'soapbox/components/account';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import { Avatar, Icon } from 'soapbox/components/ui';
+import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder_account';
+import PlaceholderStatusContent from 'soapbox/features/placeholder/components/placeholder_status_content';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { Account as AccountEntity, Status } from 'soapbox/types/entities';
 
@@ -19,6 +20,34 @@ interface IConversation {
   /** Absolute position of this conversation within the list, used for keyboard navigation. */
   index?: number,
 }
+
+
+export const PlaceholderConversation = ({ className }: { className?: string }) => {
+  return (
+    <div className={`bg-white dark:bg-slate-800 px-4 py-6 sm:shadow-sm dark:shadow-inset sm:p-5 rounded-xl ${className}`}>
+      <div className='flex items-center gap-3'>
+        <Icon
+          src={require('@tabler/icons/messages.svg')}
+          className='h-6 w-6 text-gray-300 dark:text-gray-700'
+        />
+        <div className='flex justify-between items-start shrink min-w-0 grow'>
+          <div className='flex gap-2 items-center shrink min-w-0 grow'>
+            <PlaceholderAccount />
+          </div>
+          <div className='text-gray-500 dark:text-gray-200 flex gap-2 items-center grow justify-end'>
+            <PlaceholderStatusContent minLength={10} maxLength={10} />
+          </div>
+        </div>
+      </div>
+      <div className='flex justify-between mt-3 items-end gap-2'>
+        <div style={{ 'whiteSpace': 'nowrap' }} className='overflow-x-hidden text-ellipsis text-gray-700 dark:text-gray-300'>
+          <PlaceholderStatusContent minLength={5} maxLength={120} />
+        </div>
+      </div>
+
+    </div>
+  );
+};
 
 const Conversation: React.FC<IConversation> = ({ conversationId, onMoveUp, onMoveDown, className, index }) => {
   const dispatch = useAppDispatch();

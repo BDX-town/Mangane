@@ -46,6 +46,7 @@ interface ICardHeader {
   backHref?: string,
   onBackClick?: (event: React.MouseEvent) => void,
   className?: string,
+  children?: ReactNode,
 }
 
 /**
