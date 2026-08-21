@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.24.6 (2026-08-21)
+
+
+### Bug Fixes
+
+* do not show divider on empty scroll list element ([#474](https://github.com/BDX-town/Mangane/issues/474)) ([d6c3bd7](https://github.com/BDX-town/Mangane/commit/d6c3bd76edd74214c8b0686b0a9b43d33b98f623))
+
 ## 1.24.5 (2026-08-17)
 
 
