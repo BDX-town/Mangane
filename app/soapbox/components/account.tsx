@@ -37,7 +37,8 @@ export const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account }) => {
 
 interface IProfilePopper {
   condition: boolean,
-  wrapper: (children: any) => React.ReactElement<any, any>
+  wrapper: (children: any) => React.ReactElement<any, any>,
+  children: React.ReactNode,
 }
 
 export const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children }): any =>
@@ -146,7 +147,7 @@ const Account = ({
 
   const LinkEl: any = React.useMemo(() => withLinkToProfile ? Link : 'div', [withLinkToProfile]);
 
-  const internalTimestamp = React.useMemo(() => withDate ? account.created_at : timestamp, [timestamp, withDate]);
+  const internalTimestamp = React.useMemo(() => withDate ? account.created_at : timestamp, [account.created_at, timestamp, withDate]);
 
   if (!account) {
     return null;
