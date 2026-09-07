@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
-import React, { useRef } from 'react';
+import React, { ReactNode, useRef } from 'react';
 
 import { fetchAccount } from 'soapbox/actions/accounts';
 import {
@@ -18,6 +18,7 @@ interface IHoverRefWrapper {
   accountId: string,
   inline?: boolean,
   className?: string,
+  children: ReactNode,
 }
 
 /** Makes a profile hover card appear when the wrapped element is hovered. */

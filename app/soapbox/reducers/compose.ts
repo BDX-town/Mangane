@@ -421,7 +421,7 @@ export default function compose(state = ReducerRecord({ idempotencyKey: uuid(), 
       });
     case COMPOSE_DIRECT:
       return state.withMutations(map => {
-        map.update('text', text => [text.trim(), `@${action.account.get('acct')} `].filter((str) => str.length !== 0).join(' '));
+        map.update('text', text => [text.trim(), action.account ? `@${action.account.get('acct')} ` : ''].filter((str) => str.length !== 0).join(' '));
         map.set('privacy', 'direct');
         map.set('focusDate', new Date());
         map.set('caretPosition', null);

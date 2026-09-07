@@ -1,6 +1,6 @@
 import 'react/jsx-dev-runtime';
 import { Ruisseau } from '@bdxtown/ruisseau';
-import React, { useRef, useCallback, useState, useImperativeHandle, useEffect, HTMLProps, ReactNode } from 'react';
+import React, { useRef, useCallback, useState, useImperativeHandle, HTMLProps, ReactNode, useLayoutEffect } from 'react';
 
 import { Card, Text } from './ui';
 
@@ -58,14 +58,14 @@ const ScrollableList = React.forwardRef<HTMLElement, IScrollableList>(({
   useImperativeHandle(ref, () => root.current);
 
   const [firstRender, setFirstRender] = useState(true);
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (firstRender && isLoading) {
       root.current?.scrollTo(0, 0);
     }
-    if (firstRender && !isLoading) {
+    if (firstRender && !isLoading && React.Children.count(children) > 0) {
       setFirstRender(false);
     }
-  }, [isLoading, firstRender]);
+  }, [isLoading, firstRender, children]);
 
 
   const onEnd = useCallback(() => {
