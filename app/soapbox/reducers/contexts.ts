@@ -116,6 +116,30 @@ const importBranch = (state: State, statuses: ContextStatus[], statusId?: string
   });
 };
 
+/**
+ * Import the ancestors branch (ordered root-first). Any ancestor's own
+ * in_reply_to_id can be null, or point to a status that isn't part of this
+ * response at all (deleted/invisible intermediate status) - bridge each
+ * ancestor to the previous one in the list regardless, and bridge the last
+ * ancestor to the viewed status itself.
+ */
+const importAncestors = (state: State, ancestors: ContextStatus[], id: string): State => {
+  return state.withMutations(state => {
+    ancestors.forEach((status, i) => {
+      importStatus(state, status);
+
+      const prevId = i > 0 ? ancestors[i - 1].id : undefined;
+      if (prevId) {
+        connectNodes(state, status.id, prevId);
+      }
+    });
+
+    if (ancestors.length > 0) {
+      connectNodes(state, id, ancestors[ancestors.length - 1].id);
+    }
+  });
+};
+
 /** Import a status's ancestors and descendants. */
 const normalizeContext = (
   state: State,
@@ -123,12 +147,8 @@ const normalizeContext = (
   ancestors: ContextStatus[],
   descendants: ContextStatus[],
 ) => state.withMutations(state => {
-  importBranch(state, ancestors);
+  importAncestors(state, ancestors, id);
   importBranch(state, descendants, id);
-
-  if (ancestors.length > 0 && !state.getIn(['inReplyTos', id])) {
-    insertTombstone(state, ancestors[ancestors.length - 1].id, id);
-  }
 });
 
 /** Remove a status from the reducer. */
