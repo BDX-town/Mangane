@@ -1082,7 +1082,7 @@
   "status.cancel_reblog_private": "Ne plus partager",
   "status.cannot_reblog": "Cette publication ne peut être boostée",
   "status.chat": "Chat with @{name}",
-  "status.copy": "Copier le lien vers le statut",
+  "status.copy": "Copier le lien",
   "status.cw": "Sujet:",
   "status.delete": "Effacer",
   "status.detailed_status": "Vue détaillée de la conversation",
