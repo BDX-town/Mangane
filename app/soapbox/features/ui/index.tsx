@@ -1,8 +1,8 @@
 'use strict';
 
-import React, { useState, useEffect, useRef, useCallback, useMemo, ReactNode } from 'react';
+import React, { useState, useEffect, useRef, ReactNode } from 'react';
 import { HotKeys } from 'react-hotkeys';
-import { defineMessages, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
@@ -21,7 +21,6 @@ import { connectUserStream } from 'soapbox/actions/streaming';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
 import { fetchTags } from 'soapbox/actions/tags';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
-import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb_navigation';
 import { Layout } from 'soapbox/components/ui';
@@ -121,10 +120,6 @@ import 'soapbox/components/status';
 const EmptyPage = HomePage;
 
 
-const messages = defineMessages({
-  beforeUnload: { id: 'ui.beforeunload', defaultMessage: 'Your draft will be lost if you leave.' },
-  publish: { id: 'compose_form.publish', defaultMessage: 'Publish' },
-});
 
 const keyMap = {
   help: '?',
@@ -318,7 +313,6 @@ const UI: React.FC = ({ children }: { children: ReactNode}) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const location = useLocation();
   const [draggingOver, setDraggingOver] = useState<boolean>(false);
 
   const dragTargets = useRef<EventTarget[]>([]);
@@ -576,15 +570,7 @@ const UI: React.FC = ({ children }: { children: ReactNode}) => {
     history.push('/follow_requests');
   };
 
-  const handleGoToCompose = useCallback(() => {
-    dispatch(compose());
-    history.push('/statuses/compose');
-  }, [dispatch, history]);
 
-  const shouldHideFAB = useMemo(() => {
-    const path = location.pathname;
-    return Boolean(path.match(/\/statuses|\/compose|\/posts\/|\/search|\/getting-started/));
-  }, [location.pathname]);
 
   // Wait for login to succeed or fail
   if (me === null) return null;
@@ -626,17 +612,6 @@ const UI: React.FC = ({ children }: { children: ReactNode}) => {
               {children}
             </SwitchingColumnsArea>
           </Layout>
-
-          {me && !shouldHideFAB && (
-            <button
-              key='floating-action-button'
-              onClick={handleGoToCompose}
-              className='floating-action-button'
-              aria-label={intl.formatMessage(messages.publish)}
-            >
-              <Icon src={require('@tabler/icons/pencil-plus.svg')} />
-            </button>
-          )}
 
           <BundleContainer fetchComponent={UploadArea}>
             {Component => <Component active={draggingOver} onClose={closeUploadModal} />}

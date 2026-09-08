@@ -308,7 +308,7 @@ article:last-child > .domain {
 }
 
 .floating-action-button {
-  @apply z-40 lg:hidden transition-all fixed bottom-24 right-4 p-4 text-white bg-accent-300 hover:bg-accent-500 rounded-full;
+  @apply transition-all p-4 text-white bg-accent-300 hover:bg-accent-500 rounded-full;
 
   .svg-icon {
     @apply w-6 h-6;
