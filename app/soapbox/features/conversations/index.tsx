@@ -45,7 +45,7 @@ const ConversationsTimeline = () => {
       <div className='px-4 pt-4 sm:px-0 sm:pt-0'>
         <SubNavigation className='flex justify-between gap-3 align-center'>
           <CardTitle title={intl.formatMessage(messages.title)} />
-          <Button classNames='flex gap-2 items-center' onClick={handleNewConversation}>
+          <Button classNames='flex gap-2 items-center text-nowrap' onClick={handleNewConversation}>
             <Icon
               src={require('@tabler/icons/message-circle.svg')}
             />

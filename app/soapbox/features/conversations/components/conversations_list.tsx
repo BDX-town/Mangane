@@ -10,7 +10,7 @@ import scrollIntoViewAndFocus from 'soapbox/utils/scroll_into_view';
 import Conversation, { PlaceholderConversation } from '../components/conversation';
 
 const Placeholder = (props: object) => {
-  return <div className='sm:pb-3'><PlaceholderConversation /></div>;
+  return <div className='pb-3'><PlaceholderConversation /></div>;
 };
 
 const ConversationsList: React.FC = () => {
