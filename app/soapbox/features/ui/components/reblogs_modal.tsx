@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { fetchReblogs } from 'soapbox/actions/interactions';
@@ -17,14 +17,14 @@ const ReblogsModal: React.FC<IReblogsModal> = ({ onClose, statusId }) => {
   const dispatch = useAppDispatch();
   const accountIds = useAppSelector((state) => state.user_lists.reblogged_by.get(statusId)?.items);
 
-  const fetchData = () => {
+  const fetchData = useCallback(() => {
     dispatch(fetchReblogs(statusId));
     dispatch(fetchStatus(statusId));
-  };
+  }, [dispatch, statusId]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   const onClickClose = () => {
     onClose('REBLOGS');
@@ -41,11 +41,12 @@ const ReblogsModal: React.FC<IReblogsModal> = ({ onClose, statusId }) => {
       <ScrollableList
         scrollKey='reblogs'
         emptyMessage={emptyMessage}
-        itemClassName='pb-3'
       >
-        {accountIds.map((id) =>
-          <AccountContainer key={id} id={id} />,
-        )}
+        {accountIds.map((id) => (
+          <div className='pb-3'>
+            <AccountContainer key={id} id={id} hideActions showProfileHoverCard={false} />
+          </div>
+        ))}
       </ScrollableList>
     );
   }
@@ -55,7 +56,9 @@ const ReblogsModal: React.FC<IReblogsModal> = ({ onClose, statusId }) => {
       title={<FormattedMessage id='column.reblogs' defaultMessage='Reposts' />}
       onClose={onClickClose}
     >
-      {body}
+      <div className='pt-3'>
+        {body}
+      </div>
     </Modal>
   );
 };
