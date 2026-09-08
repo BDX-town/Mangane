@@ -94,11 +94,12 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
         scrollKey='reactions'
         emptyMessage={emptyMessage}
         className='mt-4'
-        itemClassName='pb-3'
       >
-        {accounts.map((account) =>
-          <AccountContainer key={`${account.id}-${account.reaction}`} id={account.id} emoji={account.reaction} />,
-        )}
+        {accounts.map((account) => (
+          <div className='pb-3'>
+            <AccountContainer key={`${account.id}-${account.reaction}`} id={account.id} emoji={account.reaction} showProfileHoverCard={false} hideActions />
+          </div>
+        ))}
       </ScrollableList>
     </>);
   }
