@@ -154,7 +154,7 @@ const Thread: React.FC<IThread> = (props) => {
 
     if (actualStatus) {
       const statusId = actualStatus.id;
-      ancestorsIds = getAncestorsIds(state, state.contexts.inReplyTos.get(statusId));
+      ancestorsIds = getAncestorsIds(state, statusId);
       descendantsIds = getDescendantsIds(state, statusId);
       ancestorsIds = ancestorsIds.delete(statusId).subtract(descendantsIds);
       descendantsIds = descendantsIds.delete(statusId).subtract(ancestorsIds);
