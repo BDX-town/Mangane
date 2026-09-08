@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.25.1 (2026-09-08)
+
+
+### Bug Fixes
+
+* no more infinite loading when status.in_reply_to_id is invalid ([#478](https://github.com/BDX-town/Mangane/issues/478)) ([31f2734](https://github.com/BDX-town/Mangane/commit/31f2734060ce66cdc66b7ea922339d4d87e373f9))
+
+## 1.25.0 (2026-09-07)
+
+
+### Features
+
+* better conversations ui ([#475](https://github.com/BDX-town/Mangane/issues/475)) ([00e8ce1](https://github.com/BDX-town/Mangane/commit/00e8ce1446a1b76ee3d8afca2b2b03982b1ed327))
+
+## 1.24.7 (2026-09-07)
+
 ## 1.24.6 (2026-08-21)
 
 

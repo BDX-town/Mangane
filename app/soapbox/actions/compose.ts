@@ -1,5 +1,4 @@
 import axios, { AxiosError, Canceler } from 'axios';
-// @ts-expect-error no typdef
 // eslint-disable-next-line import/extensions, import/no-unresolved
 import { eld } from 'eld/small';
 import { List as ImmutableList } from 'immutable';
@@ -208,7 +207,7 @@ const mentionCompose = (account: Account) =>
     dispatch(openModal('COMPOSE'));
   };
 
-const directCompose = (account: Account) =>
+const directCompose = (account: Account | null) =>
   (dispatch: AppDispatch) => {
     dispatch(resetCompose());
     dispatch({

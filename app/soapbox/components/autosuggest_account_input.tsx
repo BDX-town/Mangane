@@ -1,6 +1,6 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import throttle from 'lodash/throttle';
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { debounce } from 'lodash';
+import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react';
 
 import { accountSearch } from 'soapbox/actions/accounts';
 import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest_input';
@@ -19,11 +19,14 @@ interface IAutosuggestAccountInput {
   autoSelect?: boolean,
   menu?: Menu,
   onKeyDown?: React.KeyboardEventHandler,
+  /** Callback fired whenever the account search starts or stops loading. */
+  onLoading?: (isLoading: boolean) => void,
 }
 
 const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
   onChange,
   onSelected,
+  onLoading = noOp,
   value = '',
   limit = 4,
   ...rest
@@ -31,6 +34,7 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
   const dispatch = useAppDispatch();
   const [accountIds, setAccountIds] = useState(ImmutableOrderedSet<string>());
   const controller = useRef(new AbortController());
+  const pendingRequests = useRef(0);
 
   const refreshCancelToken = () => {
     controller.current.abort();
@@ -41,17 +45,26 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
     setAccountIds(ImmutableOrderedSet());
   };
 
-  const handleAccountSearch = useCallback(throttle(q => {
+  const _handleAccountSearch = useCallback(q => {
     const params = { q, limit, resolve: false };
+
+    pendingRequests.current += 1;
+    onLoading(true);
 
     dispatch(accountSearch(params, controller.current.signal))
       .then((accounts: { id: string }[]) => {
         const accountIds = accounts.map(account => account.id);
         setAccountIds(ImmutableOrderedSet(accountIds));
       })
+      .finally(() => {
+        pendingRequests.current -= 1;
+        if (pendingRequests.current === 0) onLoading(false);
+      })
       .catch(noOp);
 
-  }, 900, { leading: true, trailing: true }), [limit]);
+  }, [dispatch, limit, onLoading]);
+
+  const handleAccountSearch = useMemo(() => debounce(_handleAccountSearch, 900, { leading: true, trailing: true }), [_handleAccountSearch]);
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = e => {
     refreshCancelToken();

@@ -8,6 +8,7 @@ import {
   CONVERSATIONS_FETCH_FAIL,
   CONVERSATIONS_UPDATE,
   CONVERSATIONS_READ,
+  CONVERSATIONS_FILTER_SET,
 } from '../actions/conversations';
 import compareId from '../compare_id';
 
@@ -27,6 +28,7 @@ const ReducerRecord = ImmutableRecord({
   isLoading: false,
   hasMore: true,
   mounted: 0,
+  recipients: null as ImmutableList<string> | null,
 });
 
 type State = ReturnType<typeof ReducerRecord>;
@@ -111,6 +113,12 @@ export default function conversations(state = ReducerRecord(), action: AnyAction
 
         return item;
       }));
+    case CONVERSATIONS_FILTER_SET:
+      return state.withMutations(mutable => {
+        mutable.set('recipients', action.recipients.length > 0 ? ImmutableList(action.recipients) : null);
+        mutable.set('items', ImmutableList());
+        mutable.set('hasMore', true);
+      });
     default:
       return state;
   }

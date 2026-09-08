@@ -4,8 +4,11 @@ import { useHistory } from 'react-router-dom';
 
 
 import { markConversationRead } from 'soapbox/actions/conversations';
-import Account from 'soapbox/components/account';
-import { Icon } from 'soapbox/components/ui';
+import Account, { ProfilePopper } from 'soapbox/components/account';
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import { Avatar, Icon } from 'soapbox/components/ui';
+import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder_account';
+import PlaceholderStatusContent from 'soapbox/features/placeholder/components/placeholder_status_content';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { Account as AccountEntity, Status } from 'soapbox/types/entities';
 
@@ -17,6 +20,34 @@ interface IConversation {
   /** Absolute position of this conversation within the list, used for keyboard navigation. */
   index?: number,
 }
+
+
+export const PlaceholderConversation = ({ className }: { className?: string }) => {
+  return (
+    <div className={`bg-white dark:bg-slate-800 px-4 py-6 sm:shadow-sm dark:shadow-inset sm:p-5 rounded-xl ${className}`}>
+      <div className='flex items-center gap-3'>
+        <Icon
+          src={require('@tabler/icons/messages.svg')}
+          className='h-6 w-6 text-gray-300 dark:text-gray-700'
+        />
+        <div className='flex justify-between items-start shrink min-w-0 grow'>
+          <div className='flex gap-2 items-center shrink min-w-0 grow'>
+            <PlaceholderAccount />
+          </div>
+          <div className='text-gray-500 dark:text-gray-200 flex gap-2 items-center grow justify-end'>
+            <PlaceholderStatusContent minLength={10} maxLength={10} />
+          </div>
+        </div>
+      </div>
+      <div className='flex justify-between mt-3 items-end gap-2'>
+        <div style={{ 'whiteSpace': 'nowrap' }} className='overflow-x-hidden text-ellipsis text-gray-700 dark:text-gray-300'>
+          <PlaceholderStatusContent minLength={5} maxLength={120} />
+        </div>
+      </div>
+
+    </div>
+  );
+};
 
 const Conversation: React.FC<IConversation> = ({ conversationId, onMoveUp, onMoveDown, className, index }) => {
   const dispatch = useAppDispatch();
@@ -56,6 +87,8 @@ const Conversation: React.FC<IConversation> = ({ conversationId, onMoveUp, onMov
     };
   }, [handleClick, handleHotkeyMoveDown, handleHotkeyMoveUp]);
 
+  const accountsCount = useMemo(() => accounts.count(), [accounts]);
+
   if (lastStatusId === null) {
     return null;
   }
@@ -63,21 +96,42 @@ const Conversation: React.FC<IConversation> = ({ conversationId, onMoveUp, onMov
   return (
     <HotKeys handlers={handlers} data-testid='status'>
       <div onClick={handleClick} role='button' tabIndex={0} data-index={index} className={`bg-white dark:bg-slate-800 px-4 py-6 sm:shadow-sm dark:shadow-inset sm:p-5 rounded-xl ${className}`}>
-        <div className='flex justify-between gap-3'>
-          <div className='flex gap-2 grow'>
-            {accounts.map((a) => <Account withLinkToProfile={false} account={a} />)}
-          </div>
+        <div className='flex items-center gap-3'>
           <Icon
             src={require('@tabler/icons/messages.svg')}
             count={unread ? 1 : 0}
-            className='h-6 w-6 dark:group-hover:text-primary-500'
+            className='h-6 w-6 text-gray-300 dark:text-gray-700'
           />
+          <div className='flex justify-between items-start shrink min-w-0 grow'>
+            <div className='flex gap-2 items-center shrink min-w-0 grow'>
+              {accountsCount === 1 ? (
+                <Account avatarSize={32} withLinkToProfile={false} account={accounts.get(0)} />
+              ) : (
+                <>
+                  {
+                    [...accounts, ...accounts, ...accounts, ...accounts, ...accounts].slice(0, 3).map((account) => (
+                      <ProfilePopper
+                        condition
+                        wrapper={(children) => <HoverRefWrapper className='relative' accountId={account.id} inline>{children}</HoverRefWrapper>}
+                      >
+                        <Avatar src={account.avatar} size={32} />
+                      </ProfilePopper>
+                    ))
+                  }
+                  {
+                    accountsCount > 3 && <span>+{accountsCount - 3}</span>
+                  }
+                </>
+              )
+              }
+            </div>
+            <div className='text-gray-500 dark:text-gray-200 flex gap-2 items-center grow justify-end'>
+              {new Date(lastStatus.get('created_at')).toLocaleDateString(undefined, { day: '2-digit', month: '2-digit', year: 'numeric' })}
+            </div>
+          </div>
         </div>
         <div className='flex justify-between mt-3 items-end gap-2'>
           <div style={{ 'whiteSpace': 'nowrap' }} className='overflow-x-hidden text-ellipsis text-gray-700 dark:text-gray-300' dangerouslySetInnerHTML={{ __html: lastStatus.contentHtml.replace(/<br ?\/?>/g, ' ') }} />
-          <div className='text-gray-300 dark:text-gray-300 text-xs'>
-            {new Date(lastStatus.get('created_at')).toLocaleDateString(undefined, { day: '2-digit', month: '2-digit', year: 'numeric' })}
-          </div>
         </div>
 
       </div>

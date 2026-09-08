@@ -7,7 +7,11 @@ import ScrollableList from 'soapbox/components/scrollable_list';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import scrollIntoViewAndFocus from 'soapbox/utils/scroll_into_view';
 
-import Conversation from '../components/conversation';
+import Conversation, { PlaceholderConversation } from '../components/conversation';
+
+const Placeholder = (props: object) => {
+  return <div className='sm:pb-3'><PlaceholderConversation /></div>;
+};
 
 const ConversationsList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -15,6 +19,7 @@ const ConversationsList: React.FC = () => {
 
   const conversations = useAppSelector((state) => state.conversations.items);
   const isLoading = useAppSelector((state) => state.conversations.isLoading);
+  const hasRecipientsFilter = useAppSelector((state) => !!state.conversations.recipients);
 
   const getCurrentIndex = (id: string) => conversations.findIndex(x => x.id === id);
 
@@ -44,7 +49,13 @@ const ConversationsList: React.FC = () => {
       scrollKey='direct'
       ref={ref}
       isLoading={isLoading}
-      emptyMessage={<FormattedMessage id='empty_column.direct' defaultMessage="You don't have any direct messages yet. When you send or receive one, it will show up here." />}
+      placeholderComponent={Placeholder}
+      placeholderCount={5}
+      emptyMessage={hasRecipientsFilter ? (
+        <FormattedMessage id='empty_column.direct_search' defaultMessage='No conversations found with the selected participants.' />
+      ) : (
+        <FormattedMessage id='empty_column.direct' defaultMessage="You don't have any direct messages yet. When you send or receive one, it will show up here." />
+      )}
     >
       {conversations.map((item: any, index: number) => (
         <Conversation
