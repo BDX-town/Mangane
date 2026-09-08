@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.25.2 (2026-09-08)
+
+
+### Bug Fixes
+
+* minor conversation fixes ([bb28d50](https://github.com/BDX-town/Mangane/commit/bb28d503f06c11e7cd5463ddbb8d3d258d17239f))
+
 ## 1.25.1 (2026-09-08)
 
 
