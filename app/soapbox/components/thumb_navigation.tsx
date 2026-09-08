@@ -1,13 +1,16 @@
 import { List as ImmutableList } from 'immutable';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { usePopper } from 'react-popper';
 import { useDispatch } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
+
+import { compose } from 'soapbox/actions/compose';
 import { getPinnedHosts } from 'soapbox/actions/remote_timeline';
 import { openSidebar } from 'soapbox/actions/sidebar';
+import Icon from 'soapbox/components/icon';
 import ThumbNavigationLink from 'soapbox/components/thumb_navigation-link';
 import { Text } from 'soapbox/components/ui';
 import { useAppSelector, useLogo, useOwnAccount } from 'soapbox/hooks';
@@ -15,6 +18,11 @@ import { getFeatures } from 'soapbox/utils/features';
 
 
 import { Avatar } from './ui';
+
+const messages = defineMessages({
+  beforeUnload: { id: 'ui.beforeunload', defaultMessage: 'Your draft will be lost if you leave.' },
+  publish: { id: 'compose_form.publish', defaultMessage: 'Publish' },
+});
 
 function calculateBottom(node: HTMLElement) {
   if (!node) return 0;
@@ -160,8 +168,11 @@ const CommunityTimelineMenu = ({ referenceElement, onClose }: { referenceElement
 const ThumbNavigation: React.FC<{ className?: string }> = ({ className = '', ...props }): JSX.Element => {
   const account = useOwnAccount();
   const { pathname } = useLocation();
+  const history = useHistory();
   const dispatch = useDispatch();
   const notificationCount = useAppSelector((state) => state.notifications.unread);
+  const intl = useIntl();
+  const me = useAppSelector(state => state.me);
 
   const [showCommunityMenu, setShowCommunityMenu] = React.useState(null);
 
@@ -177,44 +188,67 @@ const ThumbNavigation: React.FC<{ className?: string }> = ({ className = '', ...
     setShowCommunityMenu(null);
   }, [pathname]);
 
+  const handleGoToCompose = useCallback(() => {
+    dispatch(compose());
+    history.push('/statuses/compose');
+  }, [dispatch, history]);
+
+  const shouldHideFAB = useMemo(() => {
+    const path = pathname;
+    return Boolean(path.match(/\/statuses|\/compose|\/posts\/|\/search|\/getting-started/));
+  }, [pathname]);
+
   return (
     <>
-      <div className={`thumb-navigation fixed lg:hidden rounded-2xl bottom-2 mx-auto bg-white !bg-opacity-60 border-solid border-[1px] border-slate-100 dark:border-slate-700 dark:bg-slate-800 backdrop-blur-xl left-0 right-0 shadow-2xl w-[95%] flex z-50 flex items-center ${className}`}>
-        <ThumbNavigationLink
-          src={require('@tabler/icons/home.svg')}
-          text={<FormattedMessage id='navigation.home' defaultMessage='Home' />}
-          to='/'
-          exact
-        />
-
-        <ThumbNavigationLink
-          active={pathname.startsWith('/timeline')}
-          src={require('@tabler/icons/building-community.svg')}
-          text={<FormattedMessage id='navigation.community' defaultMessage='Community' />}
-          onClick={handleCommunityClick}
-        />
-
-        <ThumbNavigationLink
-          src={require('@tabler/icons/search.svg')}
-          text={<FormattedMessage id='column.search' defaultMessage='Search' />}
-          to='/search'
-        />
-
-
-        {account && (
-          <>
-            <ThumbNavigationLink
-              src={require('@tabler/icons/bell.svg')}
-              text={<FormattedMessage id='navigation.notifications' defaultMessage='Alerts' />}
-              to='/notifications'
-              exact
-              count={notificationCount}
-            />
-            <button className='mx-3 bg-transparent border-0' onClick={onOpenSidebar}>
-              <Avatar src={account.avatar} size={32} />
-            </button>
-          </>
+      <div className='fixed lg:hidden bottom-2 z-50 w-full flex flex-col gap-3 px-[2.5%]'>
+        {me && !shouldHideFAB && (
+          <button
+            key='floating-action-button'
+            onClick={handleGoToCompose}
+            className='floating-action-button self-end'
+            aria-label={intl.formatMessage(messages.publish)}
+          >
+            <Icon src={require('@tabler/icons/pencil-plus.svg')} />
+          </button>
         )}
+        <div className={`thumb-navigation mx-auto w-full rounded-2xl bg-white !bg-opacity-60 border-solid border-[1px] border-slate-100 dark:border-slate-700 dark:bg-slate-800 backdrop-blur-xl left-0 right-0 shadow-2xl  flex flex items-center ${className}`}>
+          <ThumbNavigationLink
+            src={require('@tabler/icons/home.svg')}
+            text={<FormattedMessage id='navigation.home' defaultMessage='Home' />}
+            to='/'
+            exact
+          />
+
+          <ThumbNavigationLink
+            active={pathname.startsWith('/timeline')}
+            src={require('@tabler/icons/building-community.svg')}
+            text={<FormattedMessage id='navigation.community' defaultMessage='Community' />}
+            onClick={handleCommunityClick}
+          />
+
+          <ThumbNavigationLink
+            src={require('@tabler/icons/search.svg')}
+            text={<FormattedMessage id='column.search' defaultMessage='Search' />}
+            to='/search'
+          />
+
+
+          {account && (
+            <>
+              <ThumbNavigationLink
+                src={require('@tabler/icons/bell.svg')}
+                text={<FormattedMessage id='navigation.notifications' defaultMessage='Alerts' />}
+                to='/notifications'
+                exact
+                count={notificationCount}
+              />
+              <button className='mx-3 bg-transparent border-0' onClick={onOpenSidebar}>
+                <Avatar src={account.avatar} size={32} />
+              </button>
+            </>
+          )}
+
+        </div>
 
       </div>
       {
