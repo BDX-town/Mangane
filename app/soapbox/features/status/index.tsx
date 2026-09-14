@@ -83,12 +83,10 @@ const getAncestorsIds = createSelector([
 ], (statusId, inReplyTos) => {
   let ancestorsIds = ImmutableOrderedSet<string>();
   let id: string | undefined = statusId;
-
   while (id && !ancestorsIds.includes(id)) {
     ancestorsIds = ImmutableOrderedSet([id]).union(ancestorsIds);
     id = inReplyTos.get(id);
   }
-
   return ancestorsIds;
 });
 
