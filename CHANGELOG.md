@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.25.3 (2026-10-27)
+
+
+### Bug Fixes
+
+* fab position overlapping thumb nav on some phones ([#480](https://github.com/BDX-town/Mangane/issues/480)) ([c513f7c](https://github.com/BDX-town/Mangane/commit/c513f7c2bc613492907865ffecd4ad2d09feb49b))
+
 ## 1.25.2 (2026-09-08)
 
 
