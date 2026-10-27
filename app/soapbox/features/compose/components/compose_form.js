@@ -234,7 +234,13 @@ class ComposeForm extends ImmutablePureComponent {
     if (textarea) textarea.focus();
   };
 
+  shouldAutoFocus = () => {
+    const { autoFocus, showSearch } = this.props;
+    return autoFocus && !showSearch && !isMobile(window.innerWidth);
+  };
+
   maybeUpdateFocus = prevProps => {
+    if(!this.shouldAutoFocus()) return;
     const spoilerUpdated = this.props.spoiler !== prevProps.spoiler;
     if (spoilerUpdated) {
       switch (this.props.spoiler) {
@@ -263,13 +269,12 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars, scheduledStatus, features, spoilerForced, disabled: disabledProps } = this.props;
+    const { intl, onPaste, anyMedia, shouldCondense, isModalOpen, maxTootChars, scheduledStatus, features, spoilerForced, disabled: disabledProps } = this.props;
 
     const condensed = shouldCondense && !this.state.composeFocused && this.isEmpty() && !this.props.isUploading;
     const disabled = disabledProps || this.props.isSubmitting;
     const text     = [this.props.spoilerText, countableText(this.props.text)].join('');
     const disabledButton = disabled || this.props.isUploading || this.props.isChangingUpload || length(text) > maxTootChars || (text.length !== 0 && text.trim().length === 0 && !anyMedia);
-    const shouldAutoFocus = autoFocus && !showSearch && !isMobile(window.innerWidth);
 
     let publishText = '';
 
@@ -342,7 +347,7 @@ class ComposeForm extends ImmutablePureComponent {
             searchTokens={[':']}
             id='cw-spoiler-input'
             className='border-none shadow-none px-0 py-2 text-base'
-            autoFocus={shouldAutoFocus}
+            autoFocus={this.shouldAutoFocus()}
           />
         </div>
 
@@ -359,7 +364,7 @@ class ComposeForm extends ImmutablePureComponent {
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
           onSuggestionSelected={this.onSuggestionSelected}
           onPaste={onPaste}
-          autoFocus={shouldAutoFocus}
+          autoFocus={this.shouldAutoFocus()}
           condensed={condensed}
           id='compose-textarea'
         >
