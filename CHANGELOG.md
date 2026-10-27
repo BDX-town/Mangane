@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.25.3 (2026-10-27)
+
+
+### Bug Fixes
+
+* reacts ui and account card ([#479](https://github.com/BDX-town/Mangane/issues/479)) ([13dcc1b](https://github.com/BDX-town/Mangane/commit/13dcc1bba0b937e19df0740729e6e94fa440e5dd))
+
 ## 1.25.2 (2026-09-08)
 
 
