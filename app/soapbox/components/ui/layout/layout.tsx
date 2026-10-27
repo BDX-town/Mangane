@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { ReactNode } from 'react';
 
 interface LayoutComponent extends React.FC {
-  Sidebar: React.FC,
+  Sidebar: React.FC<{ children: ReactNode }>,
   Main: React.FC<React.HTMLAttributes<HTMLDivElement>>,
   Aside: React.FC<{ className?: string, children: ReactNode }>,
 }
