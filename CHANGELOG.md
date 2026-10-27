@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.25.4 (2026-10-27)
+
+
+### Bug Fixes
+
+* prevent focusing spoiler input randomly ([9d37a69](https://github.com/BDX-town/Mangane/commit/9d37a693a8c2e3f0d459bb1aa8897220a8d11e16))
+
 ## 1.25.3 (2026-10-27)
 
 
