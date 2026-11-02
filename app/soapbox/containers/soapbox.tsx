@@ -58,9 +58,6 @@ store.dispatch(preload() as any);
 // This happens synchronously
 store.dispatch(checkOnboardingStatus() as any);
 
-/** Matches the paths of a profile and its tabs, capturing the username. */
-const PROFILE_TAB_REGEX = /^\/@([^/]+)(?:\/(?:with_replies|media|about))?\/?$/;
-
 /** Load initial data from the backend */
 const loadInitial = () => {
   // @ts-ignore
@@ -100,11 +97,6 @@ const SoapboxMount = () => {
 
   // @ts-ignore: I don't actually know what these should be, lol
   const shouldUpdateScroll = (prevRouterProps, { location }) => {
-    // Don't reset the scroll when switching between the tabs of the same profile.
-    const prevTab = prevRouterProps?.location?.pathname?.match(PROFILE_TAB_REGEX);
-    const nextTab = location.pathname.match(PROFILE_TAB_REGEX);
-    if (prevTab && nextTab && prevTab[1] === nextTab[1]) return false;
-
     return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
   };
 
