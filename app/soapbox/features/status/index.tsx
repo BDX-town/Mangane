@@ -429,10 +429,15 @@ const Thread: React.FC<IThread> = (props) => {
 
 
 
-  // Reset media visibility if status changes.
+  const mediaStatusId = status?.id;
+  const defaultVisibility = useMemo(
+    () => defaultMediaVisibility(status, displayMedia),
+    [status, displayMedia],
+  );
+
   useEffect(() => {
-    setShowMedia(defaultMediaVisibility(status, displayMedia));
-  }, [displayMedia, status]);
+    setShowMedia(defaultVisibility);
+  }, [mediaStatusId, defaultVisibility]);
 
 
   // =============== DATA LOADING ============================================================
