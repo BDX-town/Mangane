@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## 1.26.0 (2026-11-02)
+
+
+### Features
+
+* conversation ui does not reload on each print ([#486](https://github.com/BDX-town/Mangane/issues/486)) ([e1a4922](https://github.com/BDX-town/Mangane/commit/e1a49223b5c556413a22c0f5a86dc3722d96b111))
+
 ## 1.25.4 (2026-10-27)
 
 
