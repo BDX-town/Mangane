@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { fetchReports } from 'soapbox/actions/admin';
@@ -22,6 +22,11 @@ const Reports: React.FC = () => {
 
   const [isLoading, setLoading] = useState(true);
 
+  const [expandedReports, setExpandedReports] = useState<Record<string, boolean>>({});
+  const handleToggleExpanded = useCallback((id: string, expanded: boolean) => {
+    setExpandedReports(prev => ({ ...prev, [id]: expanded }));
+  }, []);
+
   const reports = useAppSelector(state => {
     const ids = state.admin.openReports;
     return ids.toList().map(id => getReport(state, id));
@@ -42,7 +47,7 @@ const Reports: React.FC = () => {
       scrollKey='admin-reports'
       emptyMessage={intl.formatMessage(messages.emptyMessage)}
     >
-      {reports.map(report => report && <Report report={report} key={report?.id} />)}
+      {reports.map(report => report && <Report report={report} key={report?.id} expanded={!!expandedReports[report.id]} onToggleExpanded={handleToggleExpanded} />)}
     </ScrollableList>
   );
 };
