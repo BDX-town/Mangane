@@ -32,6 +32,7 @@ const AwaitingApproval: React.FC = () => {
       isLoading={isLoading}
       showLoading={showLoading}
       scrollKey='awaiting-approval'
+      className='flex flex-col gap-3'
       emptyMessage={intl.formatMessage(messages.emptyMessage)}
     >
       {accountIds.map(id => (

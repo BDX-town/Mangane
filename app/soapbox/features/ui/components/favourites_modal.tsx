@@ -40,7 +40,7 @@ const FavouritesModal: React.FC<IFavouritesModal> = ({ onClose, statusId }) => {
       <ScrollableList
         scrollKey='favourites'
         emptyMessage={emptyMessage}
-        itemClassName='pb-3'
+        className='flex flex-col gap-3'
       >
         {accountIds.map((id) =>
           <AccountContainer key={id} id={id} />,

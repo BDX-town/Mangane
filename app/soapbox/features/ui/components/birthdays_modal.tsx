@@ -28,7 +28,7 @@ const BirthdaysModal = ({ onClose }: IBirthdaysModal) => {
       <ScrollableList
         scrollKey='birthdays'
         emptyMessage={emptyMessage}
-        itemClassName='pb-3'
+        className='flex flex-col gap-3'
       >
         {accountIds.map(id =>
           <Account key={id} accountId={id} />,

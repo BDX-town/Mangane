@@ -42,7 +42,7 @@ const DomainBlocks: React.FC = () => {
         onLoadMore={() => handleLoadMore(dispatch)}
         hasMore={hasMore}
         emptyMessage={emptyMessage}
-        itemClassName='flex flex-col gap-3'
+        className='flex flex-col gap-3'
       >
         {domains.map((domain) => (
           <div className='rounded p-1 bg-gray-100 dark:bg-slate-900'>

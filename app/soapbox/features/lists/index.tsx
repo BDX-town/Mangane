@@ -89,7 +89,7 @@ const Lists: React.FC = () => {
       <ScrollableList
         scrollKey='lists'
         emptyMessage={emptyMessage}
-        itemClassName='py-2'
+        className='flex flex-col gap-3'
       >
         {lists.map((list: any) => (
           <Link key={list.id} to={`/list/${list.id}`} className='flex items-center gap-1.5 p-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg'>

@@ -63,6 +63,7 @@ class GroupMembers extends ImmutablePureComponent {
       <Column>
         <ScrollableList
           scrollKey='members'
+          className='flex flex-col gap-3'
           hasMore={hasMore}
           onLoadMore={this.handleLoadMore}
           emptyMessage={<FormattedMessage id='group.members.empty' defaultMessage='This group does not has any members.' />}
