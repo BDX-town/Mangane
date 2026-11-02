@@ -82,12 +82,13 @@ const CardHeader: React.FC<ICardHeader> = ({ children, backHref, onBackClick, cl
 };
 
 interface ICardTitle {
-  title: React.ReactNode
+  title: React.ReactNode,
+  className?: string,
 }
 
 /** A card's title. */
-const CardTitle: React.FC<ICardTitle> = ({ title }): JSX.Element => (
-  <Text className='grow' size='xl' weight='bold' tag='h1' data-testid='card-title' truncate>{title}</Text>
+const CardTitle: React.FC<ICardTitle> = ({ title, className }): JSX.Element => (
+  <Text className={`grow ${className}`} size='xl' weight='bold' tag='h1' data-testid='card-title' truncate>{title}</Text>
 );
 
 /** A card's body. */

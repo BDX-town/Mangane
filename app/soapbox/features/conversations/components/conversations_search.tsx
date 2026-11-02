@@ -14,7 +14,7 @@ const messages = defineMessages({
 
 const getAccount = makeGetAccount();
 
-const ConversationsSearch: React.FC = () => {
+const ConversationsSearch: React.FC<{ className?: string}> = ({ className = '' }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
@@ -42,7 +42,7 @@ const ConversationsSearch: React.FC = () => {
   }, []);
 
   return (
-    <div className='flex flex-col gap-2'>
+    <div className={`flex flex-col gap-2 ${className}`}>
       <AccountSearch onSelected={handleSelected} placeholder={intl.formatMessage(messages.placeholder)} />
 
       {accounts.length > 0 && (

@@ -49,7 +49,7 @@ const ConversationsList: React.FC = () => {
       scrollKey='direct'
       ref={ref}
       isLoading={isLoading}
-      placeholderComponent={Placeholder}
+      placeholderComponent={conversations.isEmpty() ? Placeholder : undefined}
       placeholderCount={5}
       emptyMessage={hasRecipientsFilter ? (
         <FormattedMessage id='empty_column.direct_search' defaultMessage='No conversations found with the selected participants.' />

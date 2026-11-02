@@ -1,4 +1,4 @@
-import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
+import { is, List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 
 import {
   CONVERSATIONS_MOUNT,
@@ -57,8 +57,8 @@ const expandNormalizedConversations = (state: State, conversations: APIEntity[],
 
   return state.withMutations(mutable => {
     if (!items.isEmpty()) {
-      mutable.update('items', list => {
-        list = list.map(oldItem => {
+      mutable.update('items', previous => {
+        let list = previous.map(oldItem => {
           const newItemIndex = items.findIndex(x => x.get('id') === oldItem.get('id'));
 
           if (newItemIndex === -1) {
@@ -73,13 +73,16 @@ const expandNormalizedConversations = (state: State, conversations: APIEntity[],
 
         list = list.concat(items);
 
-        return list.sortBy(x => x.get('last_status'), (a, b) => {
+        const sorted = list.sortBy(x => x.get('last_status'), (a, b) => {
           if (a === null || b === null) {
             return -1;
           }
 
           return compareId(a, b) * -1;
         });
+
+        // Keep the same reference when nothing changed to avoid useless re-renders.
+        return is(sorted, previous) ? previous : sorted;
       });
     }
 
@@ -115,7 +118,12 @@ export default function conversations(state = ReducerRecord(), action: AnyAction
       }));
     case CONVERSATIONS_FILTER_SET:
       return state.withMutations(mutable => {
-        mutable.set('recipients', action.recipients.length > 0 ? ImmutableList(action.recipients) : null);
+        const recipients = action.recipients.length > 0 ? ImmutableList<string>(action.recipients) : null;
+
+        // Keep the cached items when the filter didn't actually change.
+        if (is(recipients, state.recipients)) return;
+
+        mutable.set('recipients', recipients);
         mutable.set('items', ImmutableList());
         mutable.set('hasMore', true);
       });
