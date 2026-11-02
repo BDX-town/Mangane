@@ -75,6 +75,7 @@ class GroupRemovedAccounts extends ImmutablePureComponent {
       <Column>
         <ScrollableList
           scrollKey='removed_accounts'
+          className='flex flex-col gap-3'
           hasMore={hasMore}
           onLoadMore={this.handleLoadMore}
           emptyMessage={<FormattedMessage id='group.removed_accounts.empty' defaultMessage='This group does not has any removed accounts.' />}

@@ -42,7 +42,7 @@ const MentionsModal: React.FC<IMentionsModal> = ({ onClose, statusId }) => {
     body = (
       <ScrollableList
         scrollKey='mentions'
-        itemClassName='pb-3'
+        className='flex flex-col gap-3'
       >
         {accountIds.map(id =>
           <AccountContainer key={id} id={id} />,

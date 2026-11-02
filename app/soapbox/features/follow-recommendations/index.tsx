@@ -52,7 +52,7 @@ const FollowRecommendations: React.FC = () => {
           scrollKey='suggestions'
           onLoadMore={handleLoadMore}
           hasMore={hasMore}
-          itemClassName='pb-4'
+          className='flex flex-col gap-3'
         >
           {features.truthSuggestions ? (
             suggestions.map((suggestedProfile) => (

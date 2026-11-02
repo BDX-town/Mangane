@@ -39,7 +39,7 @@ const Mutes: React.FC = () => {
         onLoadMore={() => handleLoadMore(dispatch)}
         hasMore={hasMore}
         emptyMessage={emptyMessage}
-        itemClassName='flex flex-col gap-3 pb-4'
+        className='flex flex-col gap-3'
       >
         {accountIds.map((id) =>
           <AccountContainer key={id} id={id} actionType='muting' />,

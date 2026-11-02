@@ -34,7 +34,7 @@ const FamiliarFollowersModal = ({ accountId, onClose }: IFamiliarFollowersModal)
       <ScrollableList
         scrollKey='familiar_followers'
         emptyMessage={emptyMessage}
-        itemClassName='pb-3'
+        className='flex flex-col gap-3'
       >
         {familiarFollowerIds.map(id =>
           <AccountContainer key={id} id={id} />,

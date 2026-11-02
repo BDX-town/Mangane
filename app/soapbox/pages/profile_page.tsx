@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useLayoutEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Redirect, useHistory } from 'react-router-dom';
 
@@ -16,6 +16,7 @@ import {
 import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 import { findAccountByUsername, makeGetAccount } from 'soapbox/selectors';
 import { getAcct, isLocal } from 'soapbox/utils/accounts';
+import { rememberProfileTabScroll, restoreProfileTabScroll } from 'soapbox/utils/profile_tab_scroll';
 
 interface IProfilePage {
   params?: {
@@ -41,8 +42,15 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
   });
 
   const me = useAppSelector(state => state.me);
+  const tabsRef = useRef<HTMLDivElement>(null);
   const features = useFeatures();
   const { displayFqn } = useSoapboxConfig();
+
+  const locationPath = history.location.pathname;
+  const hasAccount = !!account;
+  useLayoutEffect(() => {
+    restoreProfileTabScroll(tabsRef.current);
+  }, [locationPath, hasAccount]);
 
   // Fix case of username
   if (account && account.acct !== username) {
@@ -98,7 +106,9 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
             </BundleContainer>
 
             {account && showTabs && (
-              <Tabs items={tabItems} activeItem={activeItem} />
+              <div ref={tabsRef} onClickCapture={e => rememberProfileTabScroll(e.currentTarget)}>
+                <Tabs items={tabItems} activeItem={activeItem} />
+              </div>
             )}
 
             {children}
