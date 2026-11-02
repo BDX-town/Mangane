@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 
@@ -25,13 +25,13 @@ const messages = defineMessages({
 
 interface IReport {
   report: AdminReport;
+  expanded?: boolean;
+  onToggleExpanded?: (reportId: string, expanded: boolean) => void;
 }
 
-const Report: React.FC<IReport> = ({ report }) => {
+const Report: React.FC<IReport> = ({ report, expanded = false, onToggleExpanded }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-
-  const [accordionExpanded, setAccordionExpanded] = useState(false);
 
   const account = report.account as Account;
   const targetAccount = report.target_account as Account;
@@ -66,7 +66,7 @@ const Report: React.FC<IReport> = ({ report }) => {
   };
 
   const handleAccordionToggle = (setting: boolean) => {
-    setAccordionExpanded(setting);
+    onToggleExpanded?.(report.id, setting);
   };
 
   const menu = makeMenu();
@@ -100,7 +100,7 @@ const Report: React.FC<IReport> = ({ report }) => {
           {statusCount > 0 && (
             <Accordion
               headline={`Reported posts (${statusCount})`}
-              expanded={accordionExpanded}
+              expanded={expanded}
               onToggle={handleAccordionToggle}
             >
               {statuses.map(status => <ReportStatus report={report} status={status} key={status.id} />)}
